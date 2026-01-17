@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2BB8B0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A8A84;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background matching logo -->
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#grad)"/>
+  <!-- Letter M stylized as wave -->
+  <path d="M8 22 L8 12 L12 18 L16 12 L20 18 L24 12 L24 22"
+        fill="none"
+        stroke="white"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>

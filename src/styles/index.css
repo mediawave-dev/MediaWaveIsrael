@@ -1,0 +1,638 @@
+@import "tailwindcss";
+@import "./fonts.css";
+@import "@fontsource/heebo/400.css";
+@import "@fontsource/heebo/500.css";
+@import "@fontsource/heebo/700.css";
+
+/* ============================================
+   TAILWIND v4 THEME CONFIGURATION
+   Based on docs/DESIGN_SPEC.md
+   ============================================ */
+
+@theme {
+  /* -----------------------------
+     COLORS - Warm, Inviting Palette
+     ----------------------------- */
+
+  /* Background - Warm cream tones */
+  --color-cream: #FDFBF7;
+  --color-cream-dark: #F5F0E8;
+  --color-cream-darker: #EDE5D8;
+
+  /* Accent - Amber/Orange warmth */
+  --color-orange: #F5A623;
+  --color-orange-light: #FFBE4D;
+  --color-orange-dark: #D4890F;
+  --color-terracotta: #E07B54;
+  --color-coral: #F28B82;
+
+  /* Text - Warm browns, not cold black */
+  --color-brown: #4A4A4A;
+  --color-brown-light: #6A6A6A;
+  --color-brown-dark: #2A2A2A;
+  --color-brown-muted: #8A8A7A;
+
+  /* -----------------------------
+     FONT FAMILIES
+     ----------------------------- */
+  --font-headline: 'Noa Shalev', 'Heebo', sans-serif;
+  --font-body: 'Yarden', 'Heebo', sans-serif;
+  --font-fallback: 'Heebo', sans-serif;
+
+  /* -----------------------------
+     TYPOGRAPHY SCALE
+     ----------------------------- */
+
+  /* Fluid headline sizes */
+  --text-hero: clamp(3rem, 6vw, 5rem);
+  --text-h1: clamp(2.5rem, 4vw, 3.5rem);
+  --text-h2: clamp(2rem, 3vw, 2.75rem);
+  --text-h3: clamp(1.5rem, 2vw, 2rem);
+  --text-h4: clamp(1.25rem, 1.5vw, 1.5rem);
+
+  /* Body text sizes */
+  --text-lg: 1.25rem;
+  --text-base: 1.125rem;
+  --text-sm: 1rem;
+  --text-xs: 0.875rem;
+
+  /* Line heights for Hebrew readability */
+  --leading-tight: 1.3;
+  --leading-normal: 1.75;
+  --leading-relaxed: 1.85;
+  --leading-loose: 2;
+
+  /* Letter spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+
+  /* -----------------------------
+     SPACING SCALE (8px base)
+     ----------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+  --space-16: 8rem;
+
+  /* -----------------------------
+     SHADOWS
+     ----------------------------- */
+  --shadow-sm: 0 2px 8px rgba(74, 74, 74, 0.06);
+  --shadow-md: 0 4px 16px rgba(74, 74, 74, 0.08);
+  --shadow-lg: 0 8px 32px rgba(74, 74, 74, 0.10);
+  --shadow-glow: 0 0 24px rgba(245, 166, 35, 0.20);
+  --shadow-card: 0 4px 20px rgba(74, 74, 74, 0.08), 0 0 0 1px rgba(74, 74, 74, 0.03);
+
+  /* -----------------------------
+     BORDER RADIUS
+     ----------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 50px;
+
+  /* -----------------------------
+     TRANSITIONS
+     ----------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+html {
+  direction: rtl;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  background-color: var(--color-cream);
+  color: var(--color-brown);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headlines - Noa Shalev */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--color-brown-dark);
+}
+
+h1 { font-size: var(--text-h1); }
+h2 { font-size: var(--text-h2); }
+h3 { font-size: var(--text-h3); }
+h4 { font-size: var(--text-h4); }
+
+/* Links */
+a {
+  color: var(--color-orange);
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
+}
+
+a:hover {
+  color: var(--color-orange-dark);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(245, 166, 35, 0.2);
+  color: var(--color-brown-dark);
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Font utilities */
+.font-headline {
+  font-family: var(--font-headline);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Text emphasis without italics (for Hebrew) */
+.text-emphasis {
+  color: var(--color-orange);
+  font-weight: 600;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 4rem);
+}
+
+.container-narrow {
+  max-width: 768px;
+}
+
+/* Section spacing */
+.section {
+  padding-block: clamp(4rem, 10vh, 8rem);
+}
+
+/* Card base */
+.card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: var(--shadow-card);
+}
+
+/* Gradients */
+.bg-gradient-warm {
+  background: linear-gradient(135deg, #FDFBF7 0%, #F5F0E8 50%, #FDF8F0 100%);
+}
+
+.bg-gradient-hero {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(245, 166, 35, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(224, 123, 84, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #FDFBF7 0%, #F5F0E8 100%);
+}
+
+/* Watercolor decorative backgrounds */
+.watercolor-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.watercolor-orange {
+  background: rgba(245, 166, 35, 0.15);
+}
+
+.watercolor-terracotta {
+  background: rgba(224, 123, 84, 0.12);
+}
+
+.watercolor-sage {
+  background: rgba(139, 180, 160, 0.10);
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   Accessibility: Respect user's motion preferences
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable parallax and scroll-based effects */
+  .parallax,
+  [data-parallax] {
+    transform: none !important;
+  }
+
+  /* Disable floating animations */
+  .floating-element,
+  [data-floating] {
+    animation: none !important;
+  }
+
+  /* Keep essential UI feedback but make it instant */
+  .hover-lift:hover,
+  .hover-scale:hover {
+    transform: none;
+  }
+
+  /* Disable background animations */
+  .animate-blob,
+  .animate-pulse,
+  .animate-bounce {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   ENHANCED MICRO-INTERACTIONS
+   ============================================ */
+
+/* Interactive link underline animation */
+.link-animated {
+  position: relative;
+  display: inline-block;
+}
+
+.link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-orange);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-normal) var(--ease-out-expo);
+}
+
+.link-animated:hover::after,
+.link-animated:focus-visible::after {
+  width: 100%;
+}
+
+/* Button press effect */
+.press-effect {
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.press-effect:active {
+  transform: scale(0.97);
+}
+
+/* Card hover lift */
+.card-hover {
+  transition:
+    transform var(--duration-normal) var(--ease-out-expo),
+    box-shadow var(--duration-normal) ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Focus ring animation */
+.focus-ring-animated:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--color-cream),
+    0 0 0 4px var(--color-orange);
+  transition: box-shadow var(--duration-fast) ease;
+}
+
+/* Text reveal on scroll (CSS-only fallback) */
+.text-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: textReveal 0.6s var(--ease-out-expo) forwards;
+  animation-play-state: paused;
+}
+
+.text-reveal.is-visible {
+  animation-play-state: running;
+}
+
+@keyframes textReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger children animation helper */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+.stagger-children.is-visible > *:nth-child(1) { animation: staggerIn 0.5s var(--ease-out-expo) 0.1s forwards; }
+.stagger-children.is-visible > *:nth-child(2) { animation: staggerIn 0.5s var(--ease-out-expo) 0.2s forwards; }
+.stagger-children.is-visible > *:nth-child(3) { animation: staggerIn 0.5s var(--ease-out-expo) 0.3s forwards; }
+.stagger-children.is-visible > *:nth-child(4) { animation: staggerIn 0.5s var(--ease-out-expo) 0.4s forwards; }
+.stagger-children.is-visible > *:nth-child(5) { animation: staggerIn 0.5s var(--ease-out-expo) 0.5s forwards; }
+.stagger-children.is-visible > *:nth-child(6) { animation: staggerIn 0.5s var(--ease-out-expo) 0.6s forwards; }
+
+@keyframes staggerIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Smooth color transitions for interactive elements */
+.color-transition {
+  transition:
+    color var(--duration-fast) ease,
+    background-color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+/* Icon bounce on hover */
+.icon-bounce:hover svg,
+.icon-bounce:hover .icon {
+  animation: iconBounce 0.4s var(--ease-out-back);
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Magnetic hover effect helper class */
+.magnetic-hover {
+  transition: transform var(--duration-fast) var(--ease-out-expo);
+}
+
+/* Glow pulse for important CTAs */
+.glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(245, 166, 35, 0.5);
+  }
+}
+
+/* Loading shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================
+   RESPONSIVE IMPROVEMENTS
+   ============================================ */
+
+/* Touch-friendly tap targets (minimum 44px) */
+@media (pointer: coarse) {
+  button,
+  a,
+  [role="button"],
+  input[type="submit"],
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Larger touch targets for interactive elements */
+  nav a {
+    padding: 12px 16px;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  /* Reduce padding on small screens */
+  .container {
+    padding-inline: 1rem;
+  }
+
+  /* Adjust section spacing */
+  .section {
+    padding-block: clamp(3rem, 8vh, 5rem);
+  }
+
+  /* Improve text readability */
+  body {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  /* Reduce heading sizes slightly */
+  h1 { font-size: clamp(2rem, 8vw, 3rem); }
+  h2 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+  h3 { font-size: clamp(1.25rem, 4vw, 1.75rem); }
+
+  /* Stack elements on mobile */
+  .mobile-stack {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Full width buttons on mobile */
+  .mobile-full-width {
+    width: 100%;
+  }
+
+  /* Hide decorative elements on mobile for performance */
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .container {
+    padding-inline: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  /* Two-column layouts may need adjustment */
+  .tablet-single-col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  /* Larger text for big screens */
+  body {
+    font-size: 1.125rem;
+  }
+}
+
+/* RTL-specific fixes */
+[dir="rtl"] {
+  /* Ensure icons flip correctly in RTL */
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  /* Fix text alignment */
+  input,
+  textarea {
+    text-align: right;
+  }
+
+  /* Email/phone inputs should be LTR */
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"] {
+    direction: ltr;
+    text-align: left;
+  }
+}
+
+/* Smooth scrolling with reduced motion support */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-orange: #D4890F;
+    --color-brown: #1A1A1A;
+    --color-brown-light: #333333;
+  }
+
+  .card,
+  .bg-white {
+    border: 2px solid var(--color-brown);
+  }
+}
+
+/* Dark mode preparation (optional future support) */
+@media (prefers-color-scheme: dark) {
+  /* Uncomment to enable dark mode
+  :root {
+    --color-cream: #1A1A1A;
+    --color-cream-dark: #252525;
+    --color-brown: #E5E5E5;
+    --color-brown-light: #B0B0B0;
+    --color-brown-dark: #FFFFFF;
+  }
+  */
+}
+
+/* Print styles */
+@media print {
+  /* Hide interactive elements */
+  nav,
+  footer,
+  .no-print,
+  [role="button"],
+  button {
+    display: none !important;
+  }
+
+  /* Optimize for print */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: #fff;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  /* Show URLs after links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+  }
+}
+
+/* Focus visible polyfill for older browsers */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .safe-area-padding {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}

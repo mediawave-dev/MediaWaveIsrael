@@ -1,0 +1,74 @@
+/**
+ * Custom Hebrew Fonts - MediaWave Israel
+ *
+ * Font files are in:
+ * - src/fonts/noa-shalev/ (headlines)
+ * - src/fonts/yarden/ (body text)
+ */
+
+/* ============================================
+   NOA SHALEV - Headlines (Elegant Calligraphic)
+   Only Regular weight available
+   ============================================ */
+
+@font-face {
+  font-family: 'Noa Shalev';
+  src: url('../fonts/noa-shalev/NoaShalev-Regular.woff2') format('woff2'),
+       url('../fonts/noa-shalev/NoaShalev-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* For bold usage, use regular weight (single weight font) */
+@font-face {
+  font-family: 'Noa Shalev';
+  src: url('../fonts/noa-shalev/NoaShalev-Regular.woff2') format('woff2'),
+       url('../fonts/noa-shalev/NoaShalev-Regular.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   YARDEN - Body Text (Friendly Handwritten)
+   Using Regular weight only (no bold)
+   ============================================ */
+
+/* Regular */
+@font-face {
+  font-family: 'Yarden';
+  src: url('../fonts/yarden/Yarden-Regular.woff2') format('woff2'),
+       url('../fonts/yarden/Yarden-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Map all weights to Regular */
+@font-face {
+  font-family: 'Yarden';
+  src: url('../fonts/yarden/Yarden-Regular.woff2') format('woff2'),
+       url('../fonts/yarden/Yarden-Regular.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Yarden';
+  src: url('../fonts/yarden/Yarden-Regular.woff2') format('woff2'),
+       url('../fonts/yarden/Yarden-Regular.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Yarden';
+  src: url('../fonts/yarden/Yarden-Regular.woff2') format('woff2'),
+       url('../fonts/yarden/Yarden-Regular.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
