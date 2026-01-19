@@ -11,7 +11,19 @@
       "Bash(ls:*)",
       "Bash(del \"g:\\\\Web-Dev\\\\MediaWaveIsrael\\\\public\\\\vite.svg\")",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: MediaWave Israel website\n\n- React 18 + Vite + TypeScript setup\n- Tailwind CSS v4 with RTL support\n- Framer Motion animations\n- Custom Hebrew fonts \\(Noa Shalev, Yarden\\)\n- All sections: Hero, Services, About, Portfolio, Contact\n- Responsive design with mobile menu\n- Logo integration throughout\n- SEO and accessibility features\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(gh repo create:*)",
+      "Bash(where gh:*)",
+      "Bash(winget install:*)",
+      "Bash(cmd /c \"winget install GitHub.cli --accept-source-agreements --accept-package-agreements\")",
+      "Bash(gh auth status:*)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" auth status)",
+      "Bash(\"/c/Program Files \\(x86\\)/GitHub CLI/gh.exe\" auth status)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" auth login --web)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ]
   }
 }

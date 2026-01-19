@@ -138,7 +138,32 @@ Location: `src/fonts/`
 
 ---
 
-## Commands
+## Available Tools
+
+### Agents (invoke with @)
+| Agent | Purpose |
+|-------|---------|
+| `@planner` | Plan feature implementation before coding |
+| `@architect` | System design and technical decisions |
+| `@code-reviewer` | Code quality and security review |
+| `@e2e-runner` | Playwright E2E test creation |
+
+### Commands (invoke with /)
+| Command | Purpose |
+|---------|---------|
+| `/plan` | Create implementation plan |
+| `/code-review` | Review uncommitted changes |
+| `/build-fix` | Fix TypeScript/build errors |
+
+### Rules (auto-loaded)
+- `security` - No hardcoded secrets, input validation
+- `coding-style` - Immutability, file size limits
+- `testing` - 80% coverage, TDD workflow
+- `git-workflow` - Conventional commits
+
+---
+
+## NPM Commands
 ```bash
 npm run dev      # Start dev server
 npm run build    # Production build
