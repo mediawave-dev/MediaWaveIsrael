@@ -5,10 +5,10 @@ Hebrew website for MediaWave Israel (MediaWaveIsrael.com) - a digital media serv
 Design inspiration: https://microsoft.ai/about/
 
 ## Tech Stack
-- React 18 + Vite
-- Tailwind CSS
-- Framer Motion (animations)
-- TypeScript
+- React 18.3.1 + Vite 6.0.5
+- Tailwind CSS v4.1.18
+- Framer Motion 12.26.2 (animations)
+- TypeScript 5.6.2
 
 ---
 
@@ -115,30 +115,217 @@ Every animation should say: "אנחנו יודעים מה אנחנו עושים"
 This website IS the portfolio. The animations ARE the proof.
 A visitor should think: "If their OWN site looks this good, imagine what they'll build for ME!"
 
-### Hebrew & RTL
-- ALL text must be in Hebrew from CONTENT.md
-- DO NOT modify, translate, or invent any text content
-- Full RTL support: `dir="rtl"` on html
-- Use CSS logical properties: `margin-inline-start`, `padding-inline-end` (NOT margin-left/right)
-- Animations enter from RIGHT (RTL direction)
+---
 
-### Custom Fonts
-Location: `src/fonts/`
-- **Headlines**: "Noa Shalev" (noa-shalev/) - elegant calligraphic serif
-- **Body**: "Yarden" (yarden/) - friendly handwritten style
-- **Fallback**: "Heebo", sans-serif (Google Fonts)
+## 📁 PROJECT STRUCTURE (Complete)
 
-### Design Language (Microsoft AI inspired)
-- Watercolor/hand-drawn illustrations
-- Curved SVG connecting lines between sections
-- Scroll-triggered animations (staggered reveals)
-- Warm color palette: cream bg (#FDFBF7), orange accent (#F5A623), brown text (#4A4A4A)
-- Interactive cards with hover states
-- Generous whitespace
+```
+MediaWaveIsrael/
+├── .claude/                          # Claude Code configuration
+│   ├── agents/                       # Custom agents (@planner, @architect, etc.)
+│   ├── commands/                     # Commands (/plan, /code-review, /build-fix)
+│   ├── rules/                        # Auto-loaded rules (security, coding-style, etc.)
+│   ├── skills/                       # Skills (project-setup)
+│   ├── settings.json                 # Shared settings (Git-tracked)
+│   └── settings.local.json           # Local settings (not tracked)
+│
+├── src/
+│   ├── assets/                       # Static assets
+│   │   ├── mediawave-logo.png        # Main logo (transparent PNG)
+│   │   ├── yaelevy-screenshot.png    # Portfolio project screenshot
+│   │   └── microsoft.ai.about.txt    # Design inspiration reference
+│   │
+│   ├── components/
+│   │   ├── layout/                   # Layout components
+│   │   │   ├── Header.tsx            # Fixed nav with mobile menu
+│   │   │   ├── Footer.tsx            # Footer with WhatsApp button
+│   │   │   └── Layout.tsx            # Main wrapper (decorations, scroll-to-top)
+│   │   │
+│   │   ├── pages/                    # Page components
+│   │   │   └── NotFound.tsx          # 404 page
+│   │   │
+│   │   ├── sections/                 # Page sections (in order)
+│   │   │   ├── Hero.tsx              # Landing hero with parallax blobs
+│   │   │   ├── Services.tsx          # 6 service cards, asymmetric grid
+│   │   │   ├── About.tsx             # Company story, values, illustration
+│   │   │   ├── Portfolio.tsx         # Featured project showcase
+│   │   │   └── Contact.tsx           # Contact form + info
+│   │   │
+│   │   └── ui/                       # Reusable UI components
+│   │       ├── Button.tsx            # Variants: primary/secondary/ghost
+│   │       ├── Input.tsx             # Input + Textarea with floating labels
+│   │       ├── Logo.tsx              # Logo, LogoIcon, LogoText
+│   │       ├── ServiceCard.tsx       # Card with 6 animation types
+│   │       ├── ConnectingLine.tsx    # SVG path animator + FloatingBlob/Dot
+│   │       ├── PageDecorations.tsx   # Global decorative elements
+│   │       └── index.ts              # Barrel exports
+│   │
+│   ├── fonts/                        # Custom Hebrew fonts
+│   │   ├── noa-shalev/               # Headlines (calligraphic serif)
+│   │   │   ├── NoaShalev-Regular.woff2
+│   │   │   └── NoaShalev-Regular.woff
+│   │   └── yarden/                   # Body text (friendly handwritten)
+│   │       ├── Yarden-Regular.woff2
+│   │       └── Yarden-Regular.woff
+│   │
+│   ├── hooks/                        # Custom React hooks
+│   │   ├── useReducedMotion.ts       # Accessibility: motion preferences
+│   │   └── index.ts
+│   │
+│   ├── styles/
+│   │   ├── index.css                 # Main styles + Tailwind v4 theme
+│   │   └── fonts.css                 # @font-face declarations
+│   │
+│   ├── utils/                        # Helper functions
+│   │   └── index.ts
+│   │
+│   ├── App.tsx                       # Root component (renders all sections)
+│   ├── main.tsx                      # React DOM entry point
+│   └── vite-env.d.ts                 # Vite type declarations
+│
+├── public/                           # Static files (copied as-is)
+├── dist/                             # Build output (generated)
+│
+├── index.html                        # HTML entry point
+├── vite.config.ts                    # Vite configuration
+├── tsconfig.json                     # TypeScript config (references)
+├── tsconfig.app.json                 # App TypeScript config
+├── tsconfig.node.json                # Node TypeScript config
+├── eslint.config.js                  # ESLint configuration
+├── package.json                      # Dependencies & scripts
+│
+├── CLAUDE.md                         # This file - project instructions
+├── CONTENT.md                        # ALL Hebrew text content
+└── PROMPTS_GUIDE.md                  # Prompts documentation
+```
 
 ---
 
-## Available Tools
+## 🧩 COMPONENTS REFERENCE
+
+### Layout Components
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `Header` | `src/components/layout/Header.tsx` | Fixed navigation, mobile hamburger menu, scroll detection |
+| `Footer` | `src/components/layout/Footer.tsx` | Contact info, navigation, WhatsApp floating button |
+| `Layout` | `src/components/layout/Layout.tsx` | Main wrapper with decorations, scroll-to-top, skip-link |
+
+### Section Components (Page Order)
+
+| Section | File | Key Features |
+|---------|------|--------------|
+| `Hero` | `src/components/sections/Hero.tsx` | Parallax blobs, animated headline, social proof badges, scroll indicator |
+| `Services` | `src/components/sections/Services.tsx` | 6 cards in asymmetric grid, connecting lines, 6 animation types |
+| `About` | `src/components/sections/About.tsx` | Company story, pull quote, values, watercolor illustration |
+| `Portfolio` | `src/components/sections/Portfolio.tsx` | Browser mockup, project screenshot, tech badges, hover effects |
+| `Contact` | `src/components/sections/Contact.tsx` | Form (name/email/message), contact methods, envelope illustration |
+
+### UI Components
+
+| Component | File | Exports | Description |
+|-----------|------|---------|-------------|
+| `Button` | `src/components/ui/Button.tsx` | `Button` | Variants: primary/secondary/ghost, loading state, ripple effect |
+| `Input` | `src/components/ui/Input.tsx` | `Input`, `Textarea` | Floating labels, error states, focus glow |
+| `Logo` | `src/components/ui/Logo.tsx` | `Logo`, `LogoIcon`, `LogoText` | Main logo, SVG icon, text-only |
+| `ServiceCard` | `src/components/ui/ServiceCard.tsx` | `ServiceCard` | 6 animation types: tilt3d, glitch, reveal, float, pulse, wave |
+| `ConnectingLine` | `src/components/ui/ConnectingLine.tsx` | `ConnectingLine`, `FloatingBlob`, `FloatingDot`, `GrainOverlay` | SVG path animations, decorative elements |
+| `PageDecorations` | `src/components/ui/PageDecorations.tsx` | `PageDecorations` | Global blobs, dots, geometric shapes |
+
+### Hooks
+
+| Hook | File | Purpose |
+|------|------|---------|
+| `useReducedMotion` | `src/hooks/useReducedMotion.ts` | Detects `prefers-reduced-motion` |
+| `useMotionSafe` | `src/hooks/useReducedMotion.ts` | Returns appropriate animation variant |
+| `useReducedTransition` | `src/hooks/useReducedMotion.ts` | Returns instant transition if reduced motion |
+
+---
+
+## 🎨 DESIGN SYSTEM
+
+### Color Palette
+
+```css
+/* Backgrounds */
+--color-cream: #FDFBF7          /* Main background */
+--color-cream-dark: #F5F0E8     /* Slightly darker */
+--color-cream-darker: #EDE5D8   /* Borders/accents */
+
+/* Accents */
+--color-orange: #F5A623         /* Primary accent */
+--color-orange-light: #FFBE4D
+--color-orange-dark: #D4890F
+--color-terracotta: #E07B54     /* Warm earth tone */
+--color-coral: #F28B82          /* Warm accent */
+--color-sage: #8BB4A0           /* Muted green-blue */
+
+/* Text */
+--color-brown: #4A4A4A          /* Main text */
+--color-brown-light: #6A6A6A
+--color-brown-dark: #2A2A2A     /* Darkest */
+--color-brown-muted: #8A8A7A
+```
+
+### Typography
+
+```css
+/* Font Families */
+--font-headline: 'Noa Shalev', 'Heebo', sans-serif  /* Headlines */
+--font-body: 'Yarden', 'Heebo', sans-serif          /* Body text */
+
+/* Font Sizes (fluid) */
+--text-hero: clamp(3rem, 6vw, 5rem)
+--text-h1: clamp(2.5rem, 4vw, 3.5rem)
+--text-h2: clamp(2rem, 3vw, 2.75rem)
+--text-h3: clamp(1.5rem, 2vw, 2rem)
+--text-base: 1.125rem
+
+/* Line Heights (Hebrew) */
+--leading-normal: 1.75          /* Hebrew: 1.7-1.8 */
+```
+
+### Shadows & Effects
+
+```css
+--shadow-sm: 0 2px 8px rgba(74, 74, 74, 0.06)
+--shadow-md: 0 4px 16px rgba(74, 74, 74, 0.08)
+--shadow-lg: 0 8px 32px rgba(74, 74, 74, 0.10)
+--shadow-glow: 0 0 24px rgba(245, 166, 35, 0.20)  /* Orange glow */
+```
+
+### Animation Easing
+
+```css
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1)
+--ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1)
+--ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275)
+```
+
+---
+
+## 🌐 Hebrew & RTL
+
+### RTL Requirements
+- `dir="rtl"` on html element
+- Use CSS logical properties: `margin-inline-start`, `padding-inline-end` (NOT margin-left/right)
+- Logo positioned on RIGHT
+- Navigation menu slides from RIGHT
+- Animations enter from RIGHT
+
+### Typography Rules
+- **NO italic** for Hebrew - use color/weight for emphasis
+- Line-height: 1.7-1.8 for readability
+- Email/phone inputs: force LTR direction with `text-align: left`
+
+### Content Source
+- **ALL text from:** `CONTENT.md`
+- **NEVER** modify, translate, or invent Hebrew text
+- Contact: 052-8731808, mediawaveisrael@gmail.com
+
+---
+
+## 🛠 Available Tools
 
 ### Agents (invoke with @)
 | Agent | Purpose |
@@ -157,43 +344,50 @@ Location: `src/fonts/`
 
 ### Rules (auto-loaded)
 - `security` - No hardcoded secrets, input validation
-- `coding-style` - Immutability, file size limits
+- `coding-style` - Immutability, file size limits (<800 lines)
 - `testing` - 80% coverage, TDD workflow
 - `git-workflow` - Conventional commits
 
 ---
 
-## NPM Commands
+## 📦 NPM Commands
+
 ```bash
-npm run dev      # Start dev server
-npm run build    # Production build
+npm run dev      # Start dev server (http://localhost:5173)
+npm run build    # TypeScript check + production build
 npm run preview  # Preview production build
 npm run lint     # Run ESLint
 ```
 
-## Project Structure
-```
-src/
-├── fonts/           # Custom Hebrew fonts (Noa Shalev, Yarden)
-├── components/      # React components
-│   ├── ui/          # Reusable UI components
-│   ├── sections/    # Page sections (Hero, Services, About, etc.)
-│   └── layout/      # Layout components (Header, Footer)
-├── styles/          # Global styles and font declarations
-├── assets/          # Images, illustrations, SVGs
-├── hooks/           # Custom React hooks
-└── utils/           # Helper functions
-```
+---
 
-## Content Source
-- Read ALL text content from: `CONTENT.md`
-- NEVER change the Hebrew text
-- Only apply styling and design
+## ♿ Accessibility Features
+
+- Skip-to-content link (visible on focus)
+- Focus-visible outlines (2px orange)
+- Semantic HTML (proper heading hierarchy)
+- ARIA labels on interactive elements
+- Touch targets: 44px minimum
+- `prefers-reduced-motion` support
+- `prefers-contrast: high` support
+- Keyboard navigation throughout
+
+---
+
+## 🚀 Performance Considerations
+
+- Lazy loading for images (except header logo)
+- `font-display: swap` for custom fonts
+- Efficient SVG animations (paths vs. transforms)
+- CSS custom properties (reduce recalculations)
+- Code organized by feature/section
+
+---
 
 ## Important Notes
+
 - Mobile-first responsive design
 - Navigation aligned RIGHT
 - Logo on RIGHT side
-- No italic for Hebrew - use color/weight for emphasis
-- Line-height for Hebrew: 1.7-1.8
 - **ALWAYS use frontend-design skill for visual work!**
+- This website IS the portfolio - every animation demonstrates capabilities

@@ -25,6 +25,9 @@
   --color-orange-dark: #D4890F;
   --color-terracotta: #E07B54;
   --color-coral: #F28B82;
+  --color-sage: #8BB4A0;
+  --color-sage-light: #A8CFC0;
+  --color-sage-dark: #5A8A78;
 
   /* Text - Warm browns, not cold black */
   --color-brown: #4A4A4A;
@@ -38,13 +41,14 @@
   --font-headline: 'Noa Shalev', 'Heebo', sans-serif;
   --font-body: 'Yarden', 'Heebo', sans-serif;
   --font-fallback: 'Heebo', sans-serif;
+  --font-english: 'Poppins', sans-serif;
 
   /* -----------------------------
      TYPOGRAPHY SCALE
      ----------------------------- */
 
   /* Fluid headline sizes */
-  --text-hero: clamp(3rem, 6vw, 5rem);
+  --text-hero: clamp(3.5rem, 7vw, 6rem);
   --text-h1: clamp(2.5rem, 4vw, 3.5rem);
   --text-h2: clamp(2rem, 3vw, 2.75rem);
   --text-h3: clamp(1.5rem, 2vw, 2rem);
@@ -184,6 +188,10 @@ button {
 
 .font-body {
   font-family: var(--font-body);
+}
+
+.font-english {
+  font-family: var(--font-english);
 }
 
 /* Text emphasis without italics (for Hebrew) */

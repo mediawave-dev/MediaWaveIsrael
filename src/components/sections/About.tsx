@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 // Values/Unique Points from CONTENT.md
 const values = [
   { title: 'פיתוח מותאם אישית', icon: '✦' },
-  { title: 'עיצוב ממיר', icon: '◈' },
+  { title: 'עיצוב מרשים', icon: '◈' },
   { title: 'תמיכה שוטפת', icon: '◇' },
 ]
 
@@ -108,7 +108,7 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               אנחנו מתמחים בבניית אתרים ודפי נחיתה שמשלבים עיצוב מרשים עם חוויית משתמש מעולה.
-              כל פרויקט מותאם אישית לצרכי העסק ומיועד להביא תוצאות מדידות.
+              כל פרויקט מותאם אישית לצרכי העסק ונבנה להציג את העסק שלכם בצורה הטובה ביותר.
             </motion.p>
 
             {/* Pull quote with special styling */}

@@ -214,7 +214,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-brown-muted mb-1">אימייל</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-terracotta transition-colors break-all">
+                  <p className="text-lg font-semibold text-brown-dark group-hover:text-terracotta transition-colors break-all font-english">
                     {contactInfo.email}
                   </p>
                 </div>
@@ -235,7 +235,7 @@ export default function Contact() {
                 <div>
                   <p className="text-sm text-brown-muted mb-1">וואטסאפ</p>
                   <p className="text-lg font-semibold text-brown-dark group-hover:text-sage transition-colors">
-                    שלחו הודעה מיידית
+                    דברו איתנו
                   </p>
                 </div>
               </motion.a>

@@ -113,7 +113,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.h2
-            className="text-2xl md:text-3xl font-headline text-brown mb-4"
+            className="text-3xl md:text-4xl font-headline text-brown mb-4"
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
@@ -128,7 +128,7 @@ export default function Hero() {
 
           {/* Description */}
           <motion.p
-            className="text-xl font-headline text-brown-light mb-10 max-w-xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl font-headline text-brown-light mb-10 max-w-xl mx-auto leading-relaxed"
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
@@ -443,8 +443,8 @@ function MagneticButton({ href, children }: { href: string; children: React.Reac
     <motion.a
       ref={buttonRef}
       href={href}
-      className="group relative overflow-hidden bg-orange text-white font-semibold py-4 px-8 rounded-full shadow-md"
-      style={{ x: xSpring, y: ySpring }}
+      className="group relative overflow-hidden bg-orange font-semibold py-4 px-8 rounded-full shadow-md"
+      style={{ x: xSpring, y: ySpring, color: '#2A2A2A' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       whileTap={{ scale: 0.95 }}

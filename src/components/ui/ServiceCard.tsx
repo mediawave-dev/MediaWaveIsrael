@@ -14,28 +14,28 @@ const accentColors = {
   orange: {
     bg: 'rgba(245, 166, 35, 0.08)',
     blob: 'rgba(245, 166, 35, 0.15)',
-    hover: 'rgba(245, 166, 35, 0.12)',
+    hover: 'rgba(253, 249, 242, 1)',
     icon: '#F5A623',
     glow: 'rgba(245, 166, 35, 0.4)',
   },
   terracotta: {
     bg: 'rgba(224, 123, 84, 0.08)',
     blob: 'rgba(224, 123, 84, 0.15)',
-    hover: 'rgba(224, 123, 84, 0.12)',
+    hover: 'rgba(253, 247, 244, 1)',
     icon: '#E07B54',
     glow: 'rgba(224, 123, 84, 0.4)',
   },
   coral: {
     bg: 'rgba(242, 139, 130, 0.08)',
     blob: 'rgba(242, 139, 130, 0.15)',
-    hover: 'rgba(242, 139, 130, 0.12)',
+    hover: 'rgba(254, 248, 247, 1)',
     icon: '#F28B82',
     glow: 'rgba(242, 139, 130, 0.4)',
   },
   sage: {
     bg: 'rgba(139, 180, 160, 0.08)',
     blob: 'rgba(139, 180, 160, 0.15)',
-    hover: 'rgba(139, 180, 160, 0.12)',
+    hover: 'rgba(245, 250, 248, 1)',
     icon: '#8BB4A0',
     glow: 'rgba(139, 180, 160, 0.4)',
   },
@@ -177,6 +177,7 @@ export default function ServiceCard({
       whileHover={{
         y: animationType !== 'tilt3d' ? -8 : 0,
         boxShadow: `0 20px 40px -12px ${colors.glow}`,
+        backgroundColor: colors.hover,
       }}
     >
       {/* Dynamic glow background on hover */}
@@ -228,7 +229,7 @@ export default function ServiceCard({
 
       {/* Icon container with unique animations per type */}
       <motion.div
-        className="relative z-10 w-16 h-16 mb-6 flex items-center justify-center"
+        className="relative z-10 w-16 h-16 mb-6 mx-auto flex items-center justify-center"
         whileHover={
           animationType === 'pulse'
             ? { scale: [1, 1.15, 1], transition: { duration: 0.4, repeat: Infinity } }
@@ -263,7 +264,7 @@ export default function ServiceCard({
       </motion.div>
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 text-center">
         <motion.h3
           className="text-xl font-headline text-brown-dark mb-3 transition-colors duration-300 group-hover:text-orange"
         >

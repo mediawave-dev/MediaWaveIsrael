@@ -4,7 +4,7 @@ import { Logo } from '../ui'
 
 const navLinks = [
   { label: 'שירותים', href: '#services' },
-  { label: 'תיק עבודות', href: '#portfolio' },
+  { label: 'העבודות שלנו', href: '#portfolio' },
   { label: 'צור קשר', href: '#contact' },
 ]
 
@@ -80,7 +80,8 @@ export default function Header() {
               {/* CTA Button */}
               <motion.a
                 href="#contact"
-                className="relative overflow-hidden bg-orange text-white font-semibold py-3 px-6 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 group"
+                className="relative overflow-hidden bg-orange font-semibold py-3 px-6 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 group"
+                style={{ color: '#2A2A2A' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}
@@ -200,7 +201,8 @@ export default function Header() {
                 {/* CTA Button */}
                 <motion.a
                   href="#contact"
-                  className="mt-auto mb-8 bg-orange text-white text-center font-semibold py-4 px-8 rounded-full shadow-sm"
+                  className="mt-auto mb-8 bg-orange text-center font-semibold py-4 px-8 rounded-full shadow-sm"
+                  style={{ color: '#2A2A2A' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

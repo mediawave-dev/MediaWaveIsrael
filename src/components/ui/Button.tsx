@@ -39,9 +39,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       lg: 'py-5 px-10 text-lg',
     }
 
-    // Variant styles
+    // Variant styles - dark text on orange for better contrast
     const variantStyles = {
-      primary: 'bg-orange text-white hover:bg-orange-light',
+      primary: 'bg-orange text-brown-dark hover:bg-orange-light',
       secondary: 'bg-white text-brown-dark border-2 border-cream-darker hover:border-orange hover:text-orange',
       ghost: 'bg-transparent text-brown hover:bg-cream-dark hover:text-orange',
     }

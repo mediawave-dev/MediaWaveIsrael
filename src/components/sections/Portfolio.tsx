@@ -67,7 +67,7 @@ export default function Portfolio() {
             transition={{ duration: 0.5 }}
           >
             <span className="w-2 h-2 bg-terracotta rounded-full animate-pulse" />
-            תיק עבודות
+            העבודות שלנו
           </motion.span>
 
           {/* Title */}
@@ -79,7 +79,7 @@ export default function Portfolio() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              פרויקטים נבחרים
+              פרויקט לדוגמה
             </motion.h2>
 
             {/* Hand-drawn underline */}
@@ -114,7 +114,7 @@ export default function Portfolio() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            מבחר עבודות שמציגות את הגישה שלנו לפיתוח ועיצוב אתרים מקצועיים.
+            דוגמה לפרויקט שמציג את הגישה שלנו לפיתוח ועיצוב אתרים מקצועיים.
             כל פרויקט נבנה בהתאמה אישית עם דגש על עיצוב ייחודי וחוויית משתמש מעולה.
           </motion.p>
         </div>
@@ -146,7 +146,7 @@ export default function Portfolio() {
                     <span className="w-3 h-3 rounded-full bg-sage/60" />
                   </div>
                   {/* URL bar */}
-                  <div className="flex-1 bg-cream rounded-md px-3 py-1.5 text-sm text-brown-muted text-center" dir="ltr">
+                  <div className="flex-1 bg-cream rounded-md px-3 py-1.5 text-sm text-brown-muted text-center font-english" dir="ltr">
                     yaelevy.co.il
                   </div>
                 </div>
@@ -168,7 +168,8 @@ export default function Portfolio() {
                     href="https://yaelevy.co.il"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-brown-dark font-semibold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-orange hover:text-white flex items-center gap-2"
+                    className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white font-semibold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-orange hover:text-white flex items-center gap-2"
+                    style={{ color: '#2A2A2A' }}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -211,19 +212,19 @@ export default function Portfolio() {
             >
               <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 lg:p-10 shadow-xl border border-cream-darker/50">
                 {/* Project type badge */}
-                <span className="inline-block bg-sage/15 text-sage-dark text-sm font-semibold px-4 py-2 rounded-full mb-6">
+                <span className="inline-block bg-sage/20 text-brown-dark text-sm font-semibold px-4 py-2 rounded-full mb-6">
                   אתר תדמית אישי
                 </span>
 
                 {/* Project title */}
-                <h3 className="text-2xl md:text-3xl font-headline text-brown-dark mb-4">
+                <h3 className="text-2xl md:text-3xl font-english font-semibold text-brown-dark mb-4">
                   yaelevy.co.il
                 </h3>
 
                 {/* Description */}
                 <p className="text-brown-light leading-relaxed mb-6">
-                  אתר תדמית מרהיב לעסק של יעל לוי - עיצוב גרפי ואלבומים דיגיטליים מותאמים אישית.
-                  האתר משלב עיצוב אלגנטי ונקי עם חוויית משתמש אינטואיטיבית, ומציג את עבודותיה בצורה מושכת ומקצועית.
+                  אתר תדמית מקצועי מאפשר ללקוחות לגלות את העסק בכל שעה, לצפות בעבודות ולהתרשם מהשירותים - 24/7.
+                  הנוכחות הדיגיטלית בונה אמון, יוצרת רושם ראשוני מקצועי, ומקלה על בעל העסק לעדכן תוכן ולנהל פניות בקלות.
                 </p>
 
                 {/* Technologies used */}
@@ -233,7 +234,7 @@ export default function Portfolio() {
                     {['React', 'Tailwind CSS', 'Framer Motion', 'Vite'].map((tech) => (
                       <span
                         key={tech}
-                        className="bg-cream-dark text-brown text-sm px-3 py-1.5 rounded-lg"
+                        className="bg-cream-dark text-brown text-sm px-3 py-1.5 rounded-lg font-english"
                       >
                         {tech}
                       </span>
@@ -269,7 +270,8 @@ export default function Portfolio() {
                   href="https://yaelevy.co.il"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-orange text-white font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-all duration-300 group"
+                  className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-all duration-300 group"
+                  style={{ color: '#2A2A2A' }}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >

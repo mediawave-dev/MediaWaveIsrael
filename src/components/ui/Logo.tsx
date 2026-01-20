@@ -18,23 +18,21 @@ interface LogoProps {
  */
 export default function Logo({
   variant = 'header',
-  showText = true,
+  showText: _showText = false,
   className = '',
   isScrolled = false,
 }: LogoProps) {
-  // Size configurations
+  // Note: showText is kept for API compatibility but the new logo includes text
+  // Size configurations - MUCH LARGER sizes for visibility
   const sizes = {
     header: {
-      container: isScrolled ? 'h-10' : 'h-12 md:h-14',
-      text: isScrolled ? 'text-xl' : 'text-2xl md:text-3xl',
+      container: isScrolled ? 'h-16' : 'h-24 md:h-32',
     },
     footer: {
-      container: 'h-10',
-      text: 'text-2xl',
+      container: 'h-20',
     },
     mobile: {
-      container: 'h-10',
-      text: 'text-2xl',
+      container: 'h-16',
     },
   }
 
@@ -43,7 +41,7 @@ export default function Logo({
   return (
     <motion.a
       href="#"
-      className={`group flex items-center gap-2 relative ${className}`}
+      className={`group flex items-center relative ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, x: 20 }}
@@ -58,47 +56,23 @@ export default function Logo({
         <motion.div
           className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
-            background: 'radial-gradient(circle, rgba(43, 184, 176, 0.3) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(245, 166, 35, 0.3) 0%, transparent 70%)',
             filter: 'blur(8px)',
             transform: 'scale(1.5)',
           }}
         />
 
-        {/* Logo image */}
+        {/* Logo image with transparent background */}
         <motion.img
           src={logoImage}
           alt="MediaWave Israel - בניית אתרים מקצועית"
-          className={`${sizeConfig.container} w-auto object-contain relative z-10 drop-shadow-sm`}
-          style={{
-            // Apply a filter to make the logo work on light background
-            // This inverts the dark background parts while keeping the logo itself
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-          }}
+          className={`${sizeConfig.container} w-auto object-contain relative z-10`}
           loading={variant === 'header' ? 'eager' : 'lazy'}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         />
       </motion.div>
-
-      {/* Text logo (optional, for text-only or combined display) */}
-      {showText && (
-        <motion.span
-          className={`font-headline ${sizeConfig.text} text-brown-dark group-hover:text-orange transition-colors duration-300 relative`}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          MediaWave
-          {/* Animated underline on hover */}
-          <motion.span
-            className="absolute -bottom-1 right-0 h-0.5 bg-orange rounded-full"
-            initial={{ width: 0 }}
-            whileHover={{ width: '100%' }}
-            transition={{ duration: 0.3 }}
-          />
-        </motion.span>
-      )}
 
       {/* Decorative blob behind on hover */}
       <motion.div

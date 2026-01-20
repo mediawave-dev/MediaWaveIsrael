@@ -12,7 +12,7 @@ const services = [
     animationType: 'tilt3d' as const, // 3D tilt effect
   },
   {
-    title: 'עיצוב דפי נחיתה ממירים',
+    title: 'עיצוב דפי נחיתה',
     description: 'דפי נחיתה שמניעים לפעולה ומגדילים את אחוזי ההמרה עם עיצוב ממוקד מטרה.',
     icon: <LayoutIcon />,
     accent: 'terracotta' as const,
@@ -172,7 +172,7 @@ export default function Services() {
         </div>
 
         {/* Services Grid - ASYMMETRIC CREATIVE LAYOUT */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8">
           {/* Card 1 - Large, spans 7 columns */}
           <div className="lg:col-span-7">
             <ServiceCard
@@ -248,7 +248,7 @@ export default function Services() {
 
         {/* Decorative flowing line through cards - draws on scroll */}
         <svg
-          className="absolute top-[40%] left-0 right-0 h-[400px] pointer-events-none opacity-25 hidden lg:block"
+          className="absolute top-[40%] left-0 right-0 h-[400px] pointer-events-none opacity-25 hidden lg:block z-0"
           viewBox="0 0 1200 400"
           preserveAspectRatio="none"
         >
