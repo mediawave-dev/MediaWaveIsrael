@@ -217,7 +217,7 @@ export default function Portfolio() {
                 </span>
 
                 {/* Project title */}
-                <h3 className="text-2xl md:text-3xl font-english font-semibold text-brown-dark mb-4">
+                <h3 className="text-2xl md:text-3xl font-english-display font-semibold text-brown-dark mb-4">
                   yaelevy.co.il
                 </h3>
 

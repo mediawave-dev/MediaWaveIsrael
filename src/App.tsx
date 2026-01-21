@@ -1,5 +1,5 @@
 import { Layout } from './components/layout'
-import { Hero, Services, About, Portfolio, Contact } from './components/sections'
+import { Hero, Services, About, Portfolio, Testimonials, Contact } from './components/sections'
 
 function App() {
   return (
@@ -15,6 +15,9 @@ function App() {
 
       {/* Portfolio Section */}
       <Portfolio />
+
+      {/* Testimonials Section */}
+      <Testimonials />
 
       {/* Contact Section */}
       <Contact />

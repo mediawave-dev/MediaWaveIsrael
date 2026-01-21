@@ -72,3 +72,27 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* ============================================
+   AMERICAN CAPTAIN - English Text (Bold Display)
+   For all English content across the site
+   ============================================ */
+
+@font-face {
+  font-family: 'American Captain';
+  src: url('../fonts/american-captain/AmericanCaptain.otf') format('opentype'),
+       url('../fonts/american-captain/AmericanCaptain.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Map bold weight to regular (single weight font) */
+@font-face {
+  font-family: 'American Captain';
+  src: url('../fonts/american-captain/AmericanCaptain.otf') format('opentype'),
+       url('../fonts/american-captain/AmericanCaptain.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

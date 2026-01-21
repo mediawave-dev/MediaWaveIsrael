@@ -23,16 +23,16 @@ export default function Logo({
   isScrolled = false,
 }: LogoProps) {
   // Note: showText is kept for API compatibility but the new logo includes text
-  // Size configurations - MUCH LARGER sizes for visibility
+  // Size configurations - Increased by ~35% for better visibility
   const sizes = {
     header: {
-      container: isScrolled ? 'h-16' : 'h-24 md:h-32',
+      container: isScrolled ? 'h-20' : 'h-32 md:h-44',
     },
     footer: {
-      container: 'h-20',
+      container: 'h-28',
     },
     mobile: {
-      container: 'h-16',
+      container: 'h-20',
     },
   }
 
@@ -153,7 +153,7 @@ export function LogoText({
   return (
     <motion.a
       href="#"
-      className={`font-headline ${sizeClasses[size]} text-brown-dark hover:text-orange transition-colors duration-300 ${className}`}
+      className={`font-english-display ${sizeClasses[size]} text-brown-dark hover:text-orange transition-colors duration-300 ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >

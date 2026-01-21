@@ -4,6 +4,9 @@
 @import "@fontsource/heebo/500.css";
 @import "@fontsource/heebo/700.css";
 
+/* Google Fonts - Poppins for English body text */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 /* ============================================
    TAILWIND v4 THEME CONFIGURATION
    Based on docs/DESIGN_SPEC.md
@@ -41,7 +44,10 @@
   --font-headline: 'Noa Shalev', 'Heebo', sans-serif;
   --font-body: 'Yarden', 'Heebo', sans-serif;
   --font-fallback: 'Heebo', sans-serif;
-  --font-english: 'Poppins', sans-serif;
+  /* English fonts - two tiers */
+  --font-english-display: 'American Captain', 'Poppins', sans-serif;  /* For headings, logo, titles */
+  --font-english-body: 'Poppins', sans-serif;                          /* For nav, buttons, tags, body text */
+  --font-english: 'Poppins', sans-serif;                               /* Default English (body) */
 
   /* -----------------------------
      TYPOGRAPHY SCALE
@@ -190,8 +196,17 @@ button {
   font-family: var(--font-body);
 }
 
+/* English font utilities - two tiers */
 .font-english {
-  font-family: var(--font-english);
+  font-family: var(--font-english-body);  /* Default: Poppins for body text */
+}
+
+.font-english-display {
+  font-family: var(--font-english-display);  /* American Captain for headings/logo */
+}
+
+.font-english-body {
+  font-family: var(--font-english-body);  /* Poppins for nav, buttons, tags */
 }
 
 /* Text emphasis without italics (for Hebrew) */
