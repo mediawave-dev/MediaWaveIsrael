@@ -41,8 +41,8 @@ export default function Header() {
             : 'bg-transparent py-5'
         }`}
       >
-        <div className="container">
-          <nav className="flex items-center justify-between">
+        <div className="container px-4 sm:px-6">
+          <nav className="flex items-center justify-between gap-4">
             {/* Logo - RIGHT side (RTL) */}
             <Logo variant="header" isScrolled={isScrolled} />
 

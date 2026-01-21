@@ -23,16 +23,17 @@ export default function Logo({
   isScrolled = false,
 }: LogoProps) {
   // Note: showText is kept for API compatibility but the new logo includes text
-  // Size configurations - Increased by ~35% for better visibility
+  // Size configurations - Mobile-first with proper scaling
   const sizes = {
     header: {
-      container: isScrolled ? 'h-20' : 'h-32 md:h-44',
+      // Mobile: smaller logo to prevent overlap, Desktop: larger
+      container: isScrolled ? 'h-14 md:h-20' : 'h-20 md:h-32 lg:h-44',
     },
     footer: {
-      container: 'h-28',
+      container: 'h-20 md:h-28',
     },
     mobile: {
-      container: 'h-20',
+      container: 'h-16',
     },
   }
 

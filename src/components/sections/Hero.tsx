@@ -34,23 +34,23 @@ export default function Hero() {
         />
       </div>
 
-      {/* Floating watercolor blobs - parallax layers */}
+      {/* Floating watercolor blobs - parallax layers, smaller on mobile */}
       <motion.div
-        className="absolute top-[10%] right-[5%] w-[500px] h-[500px] pointer-events-none"
+        className="absolute top-[10%] right-[5%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] pointer-events-none"
         style={{ y: y1 }}
       >
         <WatercolorBlob1 />
       </motion.div>
 
       <motion.div
-        className="absolute bottom-[15%] left-[10%] w-[400px] h-[400px] pointer-events-none"
+        className="absolute bottom-[15%] left-[10%] w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] pointer-events-none"
         style={{ y: y2 }}
       >
         <WatercolorBlob2 />
       </motion.div>
 
       <motion.div
-        className="absolute top-[30%] left-[20%] w-[300px] h-[300px] pointer-events-none opacity-50"
+        className="absolute top-[30%] left-[20%] w-[150px] h-[150px] md:w-[200px] md:h-[200px] lg:w-[300px] lg:h-[300px] pointer-events-none opacity-50 hidden sm:block"
         style={{ y: y1 }}
       >
         <WatercolorBlob3 />
@@ -222,9 +222,9 @@ export default function Hero() {
           />
         </svg>
 
-        {/* Decorative flowing line */}
+        {/* Decorative flowing line - hidden on mobile */}
         <svg
-          className="absolute bottom-20 w-full h-20 overflow-visible"
+          className="absolute bottom-20 w-full h-20 overflow-visible hidden md:block"
           viewBox="0 0 1440 60"
           preserveAspectRatio="none"
         >

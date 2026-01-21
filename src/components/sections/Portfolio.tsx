@@ -296,9 +296,9 @@ export default function Portfolio() {
             </motion.div>
           </div>
 
-          {/* Connecting decorative line */}
+          {/* Connecting decorative line - only visible on large screens */}
           <svg
-            className="absolute top-1/2 left-0 w-full h-40 pointer-events-none opacity-20 hidden lg:block -translate-y-1/2"
+            className="absolute top-1/2 left-0 w-full h-40 pointer-events-none opacity-20 hidden xl:block -translate-y-1/2"
             viewBox="0 0 1000 160"
             preserveAspectRatio="none"
           >

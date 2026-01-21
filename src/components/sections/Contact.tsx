@@ -34,7 +34,6 @@ export default function Contact() {
     e.preventDefault()
     if (isSubmitting) return
 
-
     // מנקים הודעות קודמות
     setSuccessMsg('')
     setErrorMsg('')
@@ -49,24 +48,22 @@ export default function Contact() {
 
     setIsSubmitting(true)
     try {
-await fetch(endpoint, {
-  method: 'POST',
-  mode: 'no-cors',
-  body: new URLSearchParams({
-    fullName: formData.name,
-    email: formData.email,
-    message: formData.message,
-    page: window.location.href,
-    userAgent: navigator.userAgent,
-  }),
-})
-
-
+      await fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams({
+          fullName: formData.name,
+          email: formData.email,
+          message: formData.message,
+          page: window.location.href,
+          userAgent: navigator.userAgent,
+        }),
+      })
 
       // בגלל no-cors אנחנו לא יכולים לקרוא תשובה, אז אם הגענו לפה נניח שזה נשלח
       setSuccessMsg('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם 🙌')
       setFormData({ name: '', email: '', message: '' })
-    } catch (err) {
+    } catch {
       setErrorMsg('משהו השתבש בשליחה. נסי שוב בעוד רגע.')
     } finally {
       setIsSubmitting(false)
@@ -236,16 +233,16 @@ await fetch(endpoint, {
               {/* Phone */}
               <motion.a
                 href={`tel:${contactInfo.phone.replace(/-/g, '')}`}
-                className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/50 transition-colors"
+                className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl hover:bg-white/50 transition-colors"
                 whileHover={{ x: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="w-14 h-14 rounded-2xl bg-orange/10 flex items-center justify-center group-hover:bg-orange/20 transition-colors">
-                  <PhoneIcon className="w-6 h-6 text-orange" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-orange/10 flex items-center justify-center group-hover:bg-orange/20 transition-colors flex-shrink-0">
+                  <PhoneIcon className="w-5 h-5 sm:w-6 sm:h-6 text-orange" />
                 </div>
                 <div>
                   <p className="text-sm text-brown-muted mb-1">טלפון</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-orange transition-colors" dir="ltr">
+                  <p className="text-base sm:text-lg font-semibold text-brown-dark group-hover:text-orange transition-colors" dir="ltr">
                     {contactInfo.phone}
                   </p>
                 </div>
@@ -254,16 +251,16 @@ await fetch(endpoint, {
               {/* Email */}
               <motion.a
                 href={`mailto:${contactInfo.email}`}
-                className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/50 transition-colors"
+                className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl hover:bg-white/50 transition-colors"
                 whileHover={{ x: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="w-14 h-14 rounded-2xl bg-terracotta/10 flex items-center justify-center group-hover:bg-terracotta/20 transition-colors">
-                  <EmailIcon className="w-6 h-6 text-terracotta" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-terracotta/10 flex items-center justify-center group-hover:bg-terracotta/20 transition-colors flex-shrink-0">
+                  <EmailIcon className="w-5 h-5 sm:w-6 sm:h-6 text-terracotta" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-brown-muted mb-1">אימייל</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-terracotta transition-colors break-all font-english">
+                  <p className="text-sm sm:text-base md:text-lg font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english truncate" dir="ltr">
                     {contactInfo.email}
                   </p>
                 </div>
@@ -274,16 +271,16 @@ await fetch(endpoint, {
                 href="https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/50 transition-colors"
+                className="group flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl hover:bg-white/50 transition-colors"
                 whileHover={{ x: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="w-14 h-14 rounded-2xl bg-sage/15 flex items-center justify-center group-hover:bg-sage/25 transition-colors">
-                  <WhatsAppIcon className="w-6 h-6 text-sage" />
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sage/15 flex items-center justify-center group-hover:bg-sage/25 transition-colors flex-shrink-0">
+                  <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-sage" />
                 </div>
                 <div>
                   <p className="text-sm text-brown-muted mb-1">וואטסאפ</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-sage transition-colors">
+                  <p className="text-base sm:text-lg font-semibold text-brown-dark group-hover:text-sage transition-colors">
                     דברו איתנו
                   </p>
                 </div>

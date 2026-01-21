@@ -176,9 +176,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* Connecting curved line to next section */}
+      {/* Connecting curved line to next section - hidden on mobile */}
       <svg
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none overflow-visible"
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none overflow-visible hidden md:block"
         viewBox="0 0 1440 120"
         preserveAspectRatio="none"
       >
