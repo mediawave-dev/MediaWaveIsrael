@@ -49,18 +49,18 @@ export default function Contact() {
 
     setIsSubmitting(true)
     try {
-      await fetch(endpoint, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullName: formData.name,
-          email: formData.email,
-          message: formData.message,
-          page: window.location.href,
-          userAgent: navigator.userAgent,
-        }),
-      })
+await fetch(endpoint, {
+  method: 'POST',
+  mode: 'no-cors',
+  body: new URLSearchParams({
+    fullName: formData.name,
+    email: formData.email,
+    message: formData.message,
+    page: window.location.href,
+    userAgent: navigator.userAgent,
+  }),
+})
+
 
 
       // בגלל no-cors אנחנו לא יכולים לקרוא תשובה, אז אם הגענו לפה נניח שזה נשלח
