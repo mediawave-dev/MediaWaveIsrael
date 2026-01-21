@@ -19,6 +19,10 @@ export default function Contact() {
     message: '',
   })
 
+  const [successMsg, setSuccessMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
@@ -28,13 +32,47 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
+
+
+    // מנקים הודעות קודמות
+    setSuccessMsg('')
+    setErrorMsg('')
+
+    // כתובת מה־Cloudflare env
+    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
+
+    if (!endpoint) {
+      setErrorMsg('חסר קישור לשליחה (VITE_CONTACT_ENDPOINT). בדקי ב-Cloudflare Settings.')
+      return
+    }
+
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    // Reset form
-    setFormData({ name: '', email: '', message: '' })
+    try {
+      await fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+          message: formData.message,
+          page: window.location.href,
+          userAgent: navigator.userAgent,
+        }),
+      })
+
+
+      // בגלל no-cors אנחנו לא יכולים לקרוא תשובה, אז אם הגענו לפה נניח שזה נשלח
+      setSuccessMsg('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם 🙌')
+      setFormData({ name: '', email: '', message: '' })
+    } catch (err) {
+      setErrorMsg('משהו השתבש בשליחה. נסי שוב בעוד רגע.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
+
 
   return (
     <section
@@ -152,6 +190,17 @@ export default function Contact() {
                   value={formData.message}
                   onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
                 />
+                {successMsg && (
+                  <div className="rounded-xl bg-green-50 border border-green-200 p-3 text-sm text-green-700">
+                    {successMsg}
+                  </div>
+                )}
+
+                {errorMsg && (
+                  <div className="rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-700">
+                    {errorMsg}
+                  </div>
+                )}
 
                 {/* Submit button */}
                 <Button
