@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
 const testimonials = [
@@ -29,9 +29,24 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
-  // Show 2 cards at a time, so we have 2 "pages" (0-1 and 2-3)
+  // Responsive cards per page: 1 on mobile, 2 on desktop
   const [currentPage, setCurrentPage] = useState(0)
-  const cardsPerPage = 2
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      // Reset to first page when switching between mobile/desktop to avoid empty pages
+      setCurrentPage(0)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const cardsPerPage = isMobile ? 1 : 2
   const totalPages = Math.ceil(testimonials.length / cardsPerPage)
 
   const handlePrev = () => {
@@ -87,25 +102,27 @@ export default function Testimonials() {
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
       />
 
-      <div className="container relative">
+      <div className="container relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          {/* Badge */}
-          <motion.span
-            className="inline-flex items-center gap-2 bg-orange/10 text-orange text-sm font-semibold px-5 py-2.5 rounded-full mb-6 backdrop-blur-sm"
+          {/* Badge - centered above title */}
+          <motion.div
+            className="flex justify-center mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="w-2 h-2 bg-orange rounded-full animate-pulse" />
-            המלצות
-          </motion.span>
+            <span className="inline-flex items-center gap-2 bg-orange/10 text-orange text-sm font-semibold px-5 py-2.5 rounded-full backdrop-blur-sm">
+              <span className="w-2 h-2 bg-orange rounded-full animate-pulse" />
+              המלצות
+            </span>
+          </motion.div>
 
           {/* Title */}
           <div className="relative inline-block">
             <motion.h2
-              className="text-h2 mb-4"
+              className="text-h2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -137,53 +154,44 @@ export default function Testimonials() {
               />
             </motion.svg>
           </div>
-
-          {/* Subtitle */}
-          <motion.p
-            className="text-lg text-brown-light mt-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            מה הלקוחות שלנו אומרים על העבודה איתנו
-          </motion.p>
         </div>
 
         {/* Carousel Container */}
         <div className="relative">
-          {/* Navigation Arrows */}
-          <motion.button
-            onClick={handlePrev}
-            disabled={currentPage === 0}
-            className="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-6 lg:-right-14 z-10 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
-            whileHover={{ scale: currentPage === 0 ? 1 : 1.08 }}
-            whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
-            aria-label="הקודם"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </motion.button>
+          {/* Navigation Arrows - positioned outside cards on desktop, below cards on mobile */}
+          <div className="hidden md:block">
+            <motion.button
+              onClick={handlePrev}
+              disabled={currentPage === 0}
+              className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-14 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
+              whileHover={{ scale: currentPage === 0 ? 1 : 1.08 }}
+              whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
+              aria-label="הקודם"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </motion.button>
 
-          <motion.button
-            onClick={handleNext}
-            disabled={currentPage >= totalPages - 1}
-            className="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-6 lg:-left-14 z-10 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
-            whileHover={{ scale: currentPage >= totalPages - 1 ? 1 : 1.08 }}
-            whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
-            aria-label="הבא"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </motion.button>
+            <motion.button
+              onClick={handleNext}
+              disabled={currentPage >= totalPages - 1}
+              className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-14 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
+              whileHover={{ scale: currentPage >= totalPages - 1 ? 1 : 1.08 }}
+              whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
+              aria-label="הבא"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </motion.button>
+          </div>
 
-          {/* Cards Container */}
-          <div className="mx-8 md:mx-6 lg:mx-0">
+          {/* Cards Container - full width on mobile, with margins on desktop */}
+          <div className="px-4 md:mx-6 lg:mx-0">
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-5"
-              key={currentPage}
+              className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-md mx-auto md:max-w-none"
+              key={`${currentPage}-${isMobile}`}
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -30 }}
@@ -200,6 +208,33 @@ export default function Testimonials() {
                 </motion.div>
               ))}
             </motion.div>
+          </div>
+
+          {/* Mobile Navigation Arrows - below the card */}
+          <div className="flex md:hidden justify-center gap-4 mt-6">
+            <motion.button
+              onClick={handlePrev}
+              disabled={currentPage === 0}
+              className="w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed border border-cream-darker/20"
+              whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
+              aria-label="הקודם"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </motion.button>
+
+            <motion.button
+              onClick={handleNext}
+              disabled={currentPage >= totalPages - 1}
+              className="w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed border border-cream-darker/20"
+              whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
+              aria-label="הבא"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </motion.button>
           </div>
 
           {/* Dots Indicator */}
