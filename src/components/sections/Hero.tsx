@@ -324,13 +324,12 @@ function WatercolorBlob2() {
         </radialGradient>
       </defs>
       <motion.ellipse
-        cx="100"
-        cy="100"
-        rx="80"
-        ry="70"
         fill="url(#grad2)"
         filter="url(#blur2)"
+        initial={{ cx: 100, cy: 100, rx: 80, ry: 70 }}
         animate={{
+          cx: 100,
+          cy: 100,
           rx: [80, 85, 80],
           ry: [70, 75, 70],
         }}
@@ -358,7 +357,12 @@ function WatercolorBlob3() {
           <stop offset="100%" stopColor="#8BB4A0" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <circle cx="100" cy="100" r="70" fill="url(#grad3)" filter="url(#blur3)" />
+      <motion.circle
+        fill="url(#grad3)"
+        filter="url(#blur3)"
+        initial={{ cx: 100, cy: 100, r: 70 }}
+        animate={{ cx: 100, cy: 100, r: 70 }}
+      />
     </motion.svg>
   )
 }
