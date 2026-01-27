@@ -1,9 +1,12 @@
+import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
 import { Hero, Services, About, Portfolio, Testimonials, FAQ, Contact } from './components/sections'
+import { Terms, Privacy, NotFound } from './components/pages'
 
-function App() {
+// Home page with all sections
+function HomePage() {
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <Hero />
 
@@ -24,6 +27,19 @@ function App() {
 
       {/* Contact Section */}
       <Contact />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Layout>
   )
 }

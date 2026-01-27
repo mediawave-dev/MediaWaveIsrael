@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
 
 // All navigation links - plain text style
@@ -13,6 +14,11 @@ const navLinks = [
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // Check if we're on the home page
+  const isHomePage = location.pathname === '/'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +27,28 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Handle navigation - if not on home page, navigate to home first
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    if (!isHomePage) {
+      // Navigate to home page, then scroll to section
+      navigate('/')
+      // Wait for navigation to complete, then scroll
+      setTimeout(() => {
+        const element = document.querySelector(href)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    } else {
+      // Already on home page, just scroll
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -54,6 +82,7 @@ export default function Header() {
                 <motion.a
                   key={link.href}
                   href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="group relative text-brown hover:text-orange transition-colors duration-300 py-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -82,6 +111,7 @@ export default function Header() {
               {/* CTA Button */}
               <motion.a
                 href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
                 className="relative overflow-hidden bg-orange font-semibold py-3 px-6 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 group"
                 style={{ color: '#2A2A2A' }}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -190,7 +220,10 @@ export default function Header() {
                       key={link.href}
                       href={link.href}
                       className="text-2xl text-brown hover:text-orange transition-colors duration-300"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={(e) => {
+                        handleNavClick(e, link.href)
+                        setIsMobileMenuOpen(false)
+                      }}
                       initial={{ opacity: 0, x: 30 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
@@ -205,7 +238,10 @@ export default function Header() {
                   href="#contact"
                   className="mt-auto mb-8 bg-orange text-center font-semibold py-4 px-8 rounded-full shadow-sm"
                   style={{ color: '#2A2A2A' }}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    handleNavClick(e, '#contact')
+                    setIsMobileMenuOpen(false)
+                  }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
