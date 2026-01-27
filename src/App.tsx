@@ -1,5 +1,5 @@
 import { Layout } from './components/layout'
-import { Hero, Services, About, Portfolio, Testimonials, Contact } from './components/sections'
+import { Hero, Services, About, Portfolio, Testimonials, FAQ, Contact } from './components/sections'
 
 function App() {
   return (
@@ -18,6 +18,9 @@ function App() {
 
       {/* Testimonials Section */}
       <Testimonials />
+
+      {/* FAQ Section - after testimonials, before contact */}
+      <FAQ />
 
       {/* Contact Section */}
       <Contact />

@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Logo } from '../ui'
 
+// All navigation links - plain text style
 const navLinks = [
   { label: 'שירותים', href: '#services' },
   { label: 'העבודות שלנו', href: '#portfolio' },
+  { label: 'שאלות נפוצות', href: '#faq' },
   { label: 'צור קשר', href: '#contact' },
 ]
 
@@ -206,7 +208,7 @@ export default function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
+                  transition={{ delay: 0.6 }}
                 >
                   בואו נדבר
                 </motion.a>
