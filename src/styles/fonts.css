@@ -3,7 +3,7 @@
  *
  * Font files are in:
  * - src/fonts/BAPlatforma-Regular.otf (headlines)
- * - src/fonts/Sn_armilado/ (body text)
+ * - src/fonts/OS-Luizi-FFC-v1/ (body text)
  */
 
 /* ============================================
@@ -29,46 +29,50 @@
 }
 
 /* ============================================
-   SN ARMILADO - Body Text
-   Using Regular weight only (no bold)
+   OS LUIZI ROUND - Body Text
+   Using Regular weight only (single weight font)
    ============================================ */
 
 /* Regular */
 @font-face {
-  font-family: 'Sn Armilado';
-  src: url('../fonts/Sn_armilado/Sn_armilado.ttf') format('truetype');
+  font-family: 'OS Luizi';
+  src: url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff2') format('woff2'),
+       url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff') format('woff'),
+       url('../fonts/OS-Luizi-FFC-v1/OS_Luizi Round-FFC.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  size-adjust: 150%;
 }
 
 /* Map all weights to Regular */
 @font-face {
-  font-family: 'Sn Armilado';
-  src: url('../fonts/Sn_armilado/Sn_armilado.ttf') format('truetype');
+  font-family: 'OS Luizi';
+  src: url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff2') format('woff2'),
+       url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff') format('woff'),
+       url('../fonts/OS-Luizi-FFC-v1/OS_Luizi Round-FFC.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-  size-adjust: 150%;
 }
 
 @font-face {
-  font-family: 'Sn Armilado';
-  src: url('../fonts/Sn_armilado/Sn_armilado.ttf') format('truetype');
+  font-family: 'OS Luizi';
+  src: url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff2') format('woff2'),
+       url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff') format('woff'),
+       url('../fonts/OS-Luizi-FFC-v1/OS_Luizi Round-FFC.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  size-adjust: 150%;
 }
 
 @font-face {
-  font-family: 'Sn Armilado';
-  src: url('../fonts/Sn_armilado/Sn_armilado.ttf') format('truetype');
+  font-family: 'OS Luizi';
+  src: url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff2') format('woff2'),
+       url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff') format('woff'),
+       url('../fonts/OS-Luizi-FFC-v1/OS_Luizi Round-FFC.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  size-adjust: 150%;
 }
 
 /* ============================================
