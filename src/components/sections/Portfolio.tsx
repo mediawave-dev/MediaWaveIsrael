@@ -21,7 +21,7 @@ export default function Portfolio() {
     <section
       ref={containerRef}
       id="portfolio"
-      className="relative py-24 md:py-32 bg-cream overflow-hidden"
+      className="relative py-16 md:py-24 bg-cream overflow-hidden"
     >
       {/* Background decorations */}
       <motion.div
@@ -57,7 +57,7 @@ export default function Portfolio() {
 
       <div className="container relative">
         {/* Section Header */}
-        <div className="max-w-2xl mb-16 md:mb-24">
+        <div className="max-w-2xl mb-12 md:mb-16">
           {/* Badge */}
           <motion.span
             className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-5 py-2.5 rounded-full mb-6 backdrop-blur-sm"
@@ -318,7 +318,7 @@ export default function Portfolio() {
 
         {/* Bottom CTA - subtle call to action */}
         <motion.div
-          className="mt-20 md:mt-28 text-center"
+          className="mt-12 md:mt-16 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

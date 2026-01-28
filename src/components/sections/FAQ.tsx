@@ -47,7 +47,7 @@ export default function FAQ() {
   return (
     <section
       id="faq"
-      className="py-32 md:py-40 bg-cream-dark"
+      className="py-16 md:py-24 bg-cream-dark"
     >
       <div className="container max-w-3xl">
         {/* Header */}

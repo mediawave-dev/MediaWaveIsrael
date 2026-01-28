@@ -73,8 +73,12 @@ export default function Header() {
       >
         <div className="container px-4 sm:px-6">
           <nav className="flex items-center justify-between gap-4">
-            {/* Logo - RIGHT side (RTL), white on hero, normal when scrolled */}
-            <Logo variant="header" isScrolled={isScrolled} />
+            {/* Logo - RIGHT side (RTL), with bg pill on mobile for visibility */}
+            <div className={`rounded-md transition-all duration-300 ${
+              !isScrolled ? 'bg-white/90 p-1.5 md:bg-transparent md:p-0 md:rounded-none' : ''
+            }`}>
+              <Logo variant="header" isScrolled={isScrolled} />
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">

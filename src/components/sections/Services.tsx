@@ -63,7 +63,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-24 md:py-40 bg-cream overflow-hidden"
+      className="relative py-16 md:py-24 bg-cream overflow-hidden"
     >
       {/* Animated background shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -93,7 +93,7 @@ export default function Services() {
 
       <div className="container relative">
         {/* Header - Editorial style with large typography */}
-        <div className="mb-20 md:mb-32">
+        <div className="mb-12 md:mb-16">
           <motion.div
             className="flex items-center gap-4 mb-6"
             initial={{ opacity: 0, x: -20 }}
@@ -108,7 +108,7 @@ export default function Services() {
 
           <div className="grid lg:grid-cols-2 gap-8 items-end">
             <motion.h2
-              className="text-4xl md:text-5xl lg:text-6xl font-headline leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-headline leading-tight"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -144,7 +144,7 @@ export default function Services() {
 
         {/* Bottom CTA */}
         <motion.div
-          className="mt-20 md:mt-32 text-center"
+          className="mt-12 md:mt-16 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

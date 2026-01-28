@@ -59,7 +59,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-32 md:py-40 bg-cream"
+      className="py-16 md:py-24 bg-cream"
     >
       <div className="container max-w-5xl">
         {/* Header */}

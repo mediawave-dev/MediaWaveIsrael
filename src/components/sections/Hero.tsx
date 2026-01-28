@@ -87,13 +87,13 @@ export default function Hero() {
 
       {/* ===== LAYER 3: Content (z-[2]) ===== */}
       <motion.div
-        className="relative z-[2] container px-4 sm:px-6 pt-24 pb-16 md:pt-32 md:pb-32"
+        className="relative z-[2] container px-4 sm:px-6 pt-20 pb-12 md:pt-32 md:pb-32"
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.span
-            className="inline-flex items-center gap-2 bg-white/10 text-white text-sm md:text-base font-semibold px-4 py-2 md:px-5 md:py-2.5 rounded-full mb-6 md:mb-8 backdrop-blur-sm border border-white/20"
+            className="inline-flex items-center gap-2 bg-white/10 text-white text-xs md:text-sm font-semibold px-3 py-1 md:px-5 md:py-2 rounded-full mb-4 md:mb-8 backdrop-blur-sm border border-white/20"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -104,7 +104,7 @@ export default function Hero() {
 
           {/* Main Headline */}
           <motion.h1
-            className="text-4xl md:text-6xl lg:text-7xl font-headline leading-tight mb-4 md:mb-6"
+            className="text-3xl md:text-5xl lg:text-6xl font-headline leading-tight mb-3 md:mb-6"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -121,7 +121,7 @@ export default function Hero() {
 
           {/* Typewriter Section */}
           <motion.div
-            className="text-xl md:text-3xl lg:text-5xl text-white mb-3 md:mb-4 min-h-[1.4em]"
+            className="text-lg md:text-2xl lg:text-3xl text-white mb-2 md:mb-4 min-h-[1.4em]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -137,7 +137,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-base md:text-xl lg:text-2xl text-white/80 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-sm md:text-lg lg:text-xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -151,14 +151,14 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-10 md:mb-16 px-4 sm:px-0"
+            className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-16 px-2 md:px-0"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <motion.a
               href="#contact"
-              className="group relative overflow-hidden bg-orange text-base md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="group relative overflow-hidden bg-orange text-sm md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               style={{ color: '#FFFFFF' }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -182,7 +182,7 @@ export default function Hero() {
 
             <motion.a
               href="#portfolio"
-              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-base md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full sm:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-sm md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -192,7 +192,7 @@ export default function Hero() {
 
           {/* Social Proof / Stats */}
           <motion.div
-            className="grid grid-cols-3 gap-4 md:flex md:flex-wrap md:gap-8 justify-center pt-6 md:pt-8 border-t border-white/20"
+            className="grid grid-cols-3 gap-4 md:gap-12 justify-center pt-4 md:pt-8 pb-8 md:pb-0 border-t border-white/20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
@@ -204,14 +204,14 @@ export default function Hero() {
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className="flex flex-col md:flex-row items-center gap-1 md:gap-3 text-center"
+                className="flex flex-col items-center gap-1 md:gap-2 text-center"
                 style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9 + i * 0.1 }}
               >
-                <span className="text-2xl md:text-3xl font-headline text-orange">{stat.value}</span>
-                <span className="text-xs md:text-base text-white/80">{stat.label}</span>
+                <span className="text-2xl md:text-4xl font-headline text-orange">{stat.value}</span>
+                <span className="text-[10px] md:text-base text-white/80">{stat.label}</span>
               </motion.div>
             ))}
           </motion.div>

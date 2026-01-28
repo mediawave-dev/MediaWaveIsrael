@@ -26,7 +26,7 @@ export default function About() {
     <section
       ref={containerRef}
       id="about"
-      className="relative py-24 md:py-32 bg-cream overflow-hidden"
+      className="relative py-16 md:py-24 bg-cream overflow-hidden"
     >
       {/* Background decorative elements with parallax */}
       <motion.div

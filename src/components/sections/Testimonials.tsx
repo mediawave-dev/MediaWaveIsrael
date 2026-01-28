@@ -54,7 +54,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative py-32 md:py-40 bg-gradient-to-b from-cream to-cream-dark overflow-hidden"
+      className="relative py-16 md:py-24 bg-gradient-to-b from-cream to-cream-dark overflow-hidden"
     >
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -93,7 +93,7 @@ export default function Testimonials() {
 
       <div className="container relative">
         {/* Header */}
-        <div className="text-center mb-16 md:mb-24">
+        <div className="text-center mb-12 md:mb-16">
           <motion.div
             className="flex items-center justify-center gap-3 mb-4"
             initial={{ opacity: 0, y: 20 }}
@@ -119,7 +119,7 @@ export default function Testimonials() {
           </motion.div>
 
           <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-headline text-brown-dark mb-4"
+            className="text-3xl md:text-4xl font-headline text-brown-dark mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -204,7 +204,7 @@ export default function Testimonials() {
 
                   {/* Quote */}
                   <motion.p
-                    className="text-2xl md:text-3xl lg:text-4xl font-headline text-brown-dark leading-relaxed mb-8"
+                    className="text-xl md:text-2xl lg:text-3xl font-headline text-brown-dark leading-relaxed mb-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
