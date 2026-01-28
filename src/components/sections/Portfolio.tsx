@@ -126,7 +126,7 @@ export default function Portfolio() {
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
         >
           {/* Main card container */}
           <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
@@ -168,8 +168,7 @@ export default function Portfolio() {
                     href="https://yaelevy.co.il"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white font-semibold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-orange hover:text-white flex items-center gap-2"
-                    style={{ color: '#2A2A2A' }}
+                    className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white text-brown-dark font-semibold px-6 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 hover:bg-orange hover:text-white flex items-center gap-2"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -217,7 +216,7 @@ export default function Portfolio() {
                 </span>
 
                 {/* Project title */}
-                <h3 className="text-2xl md:text-3xl font-english-display font-semibold text-brown-dark mb-4">
+                <h3 className="text-2xl md:text-3xl font-english font-semibold text-brown-dark mb-4">
                   yaelevy.co.il
                 </h3>
 
@@ -270,8 +269,8 @@ export default function Portfolio() {
                   href="https://yaelevy.co.il"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-all duration-300 group"
-                  style={{ color: '#2A2A2A' }}
+                  className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow hover:bg-orange-dark transition-all duration-300 group"
+                  style={{ color: '#FFFFFF' }}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -296,9 +295,9 @@ export default function Portfolio() {
             </motion.div>
           </div>
 
-          {/* Connecting decorative line - only visible on large screens */}
+          {/* Connecting decorative line */}
           <svg
-            className="absolute top-1/2 left-0 w-full h-40 pointer-events-none opacity-20 hidden xl:block -translate-y-1/2"
+            className="absolute top-1/2 left-0 w-full h-40 pointer-events-none opacity-20 hidden lg:block -translate-y-1/2"
             viewBox="0 0 1000 160"
             preserveAspectRatio="none"
           >

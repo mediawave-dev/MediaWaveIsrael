@@ -39,9 +39,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       lg: 'py-5 px-10 text-lg',
     }
 
-    // Variant styles - dark text on orange for better contrast
+    // Variant styles - white text on orange for better visibility
     const variantStyles = {
-      primary: 'bg-orange text-brown-dark hover:bg-orange-light',
+      primary: 'bg-orange text-white hover:bg-orange-dark',
       secondary: 'bg-white text-brown-dark border-2 border-cream-darker hover:border-orange hover:text-orange',
       ghost: 'bg-transparent text-brown hover:bg-cream-dark hover:text-orange',
     }
@@ -61,6 +61,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       }
     }
 
+    // Text color styles for variants (inline to override any CSS)
+    const textColorStyles = {
+      primary: { color: '#FFFFFF' },
+      secondary: {},
+      ghost: {},
+    }
+
     return (
       <motion.button
         ref={ref}
@@ -74,6 +81,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ${variantStyles[variant]}
           ${className}
         `}
+        style={textColorStyles[variant]}
         disabled={disabled || isLoading}
         onClick={handleClick}
         whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}

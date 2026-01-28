@@ -119,7 +119,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="text-xl font-headline text-brown-dark italic leading-relaxed">
+              <p className="text-xl font-headline text-brown-dark leading-relaxed">
                 "יותר פניות, יותר מכירות, יותר הצלחה"
               </p>
               {/* Decorative quote mark */}
@@ -176,9 +176,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* Connecting curved line to next section - hidden on mobile */}
+      {/* Connecting curved line to next section */}
       <svg
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none overflow-visible hidden md:block"
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none overflow-visible"
         viewBox="0 0 1440 120"
         preserveAspectRatio="none"
       >
@@ -222,7 +222,7 @@ function WatercolorIllustration() {
       initial={{ opacity: 0, x: -60 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
     >
       <svg
         viewBox="0 0 400 400"

@@ -1,342 +1,410 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const testimonials = [
   {
     id: 1,
     name: 'יעל כ.',
+    role: 'בעלת עסק',
     quote: 'שירות מקצועי ואדיב, האתר יצא מעל ומעבר למצופה. ממליצה בחום!',
-    initial: 'י',
+    rating: 5,
+    color: '#F5A623',
   },
   {
     id: 2,
     name: 'דני ל.',
+    role: 'יזם',
     quote: 'תהליך עבודה נעים ומהיר, התוצאה מדהימה. תודה רבה!',
-    initial: 'ד',
+    rating: 5,
+    color: '#E07B54',
   },
   {
     id: 3,
     name: 'מיכל א.',
-    quote: 'מקצועיות ברמה גבוהה, זמינות מלאה ותוצאה מושלמת',
-    initial: 'מ',
+    role: 'מנהלת שיווק',
+    quote: 'מקצועיות ברמה גבוהה, זמינות מלאה ותוצאה מושלמת.',
+    rating: 5,
+    color: '#8BB4A0',
   },
   {
     id: 4,
     name: 'רון מ.',
-    quote: 'חוויה מעולה מההתחלה ועד הסוף, אתר מרשים ומקצועי',
-    initial: 'ר',
+    role: 'בעל חברה',
+    quote: 'חוויה מעולה מההתחלה ועד הסוף, אתר מרשים ומקצועי.',
+    rating: 5,
+    color: '#9B8AC4',
   },
 ]
 
 export default function Testimonials() {
-  // Responsive cards per page: 1 on mobile, 2 on desktop
-  const [currentPage, setCurrentPage] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
-  // Check if mobile on mount and resize
+  // Auto-rotate testimonials
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768
-      setIsMobile(mobile)
-      // Reset to first page when switching between mobile/desktop to avoid empty pages
-      setCurrentPage(0)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+    if (!isAutoPlaying) return
 
-  const cardsPerPage = isMobile ? 1 : 2
-  const totalPages = Math.ceil(testimonials.length / cardsPerPage)
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % testimonials.length)
+    }, 5000)
 
-  const handlePrev = () => {
-    setCurrentPage((prev) => Math.max(0, prev - 1))
-  }
-
-  const handleNext = () => {
-    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))
-  }
-
-  // Get current visible cards
-  const startIndex = currentPage * cardsPerPage
-  const visibleTestimonials = testimonials.slice(startIndex, startIndex + cardsPerPage)
+    return () => clearInterval(interval)
+  }, [isAutoPlaying])
 
   return (
     <section
       id="testimonials"
-      className="relative py-20 md:py-28 bg-cream-dark overflow-hidden"
+      className="relative py-32 md:py-40 bg-gradient-to-b from-cream to-cream-dark overflow-hidden"
     >
       {/* Background decorations */}
-      <motion.div
-        className="absolute top-20 left-[5%] w-80 h-80 rounded-full bg-orange/6 blur-3xl pointer-events-none"
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.4, 0.6, 0.4],
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-[10%] w-72 h-72 rounded-full bg-terracotta/5 blur-3xl pointer-events-none"
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.3, 0.5, 0.3],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-      />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Giant quote mark */}
+        <motion.div
+          className="absolute -top-20 -right-20 text-[400px] font-headline leading-none select-none"
+          style={{ color: 'rgba(245, 166, 35, 0.05)' }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+        >
+          "
+        </motion.div>
 
-      {/* Decorative floating dots */}
-      <motion.div
-        className="absolute top-32 right-[20%] w-3 h-3 rounded-full bg-orange/40 hidden lg:block"
-        animate={{
-          y: [0, -20, 0],
-          opacity: [0.4, 0.8, 0.4],
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="absolute bottom-40 left-[15%] w-2 h-2 rounded-full bg-terracotta/50 hidden lg:block"
-        animate={{
-          y: [0, 15, 0],
-          x: [0, -8, 0],
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-      />
+        {/* Floating shapes */}
+        <motion.div
+          className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%)' }}
+          animate={{
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-20 w-40 h-40 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(139,180,160,0.1) 0%, transparent 70%)' }}
+          animate={{
+            y: [0, 15, 0],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      </div>
 
-      <div className="container relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          {/* Badge - centered above title */}
+      <div className="container relative">
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-24">
           <motion.div
-            className="flex justify-center mb-4"
+            className="flex items-center justify-center gap-3 mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 bg-orange/10 text-orange text-sm font-semibold px-5 py-2.5 rounded-full backdrop-blur-sm">
-              <span className="w-2 h-2 bg-orange rounded-full animate-pulse" />
-              המלצות
-            </span>
+            {/* Stars decoration */}
+            {[...Array(5)].map((_, i) => (
+              <motion.svg
+                key={i}
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="#F5A623"
+                initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.4 }}
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </motion.svg>
+            ))}
           </motion.div>
 
-          {/* Title */}
-          <div className="relative inline-block">
-            <motion.h2
-              className="text-h2"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              לקוחות ממליצים
-            </motion.h2>
-
-            {/* Hand-drawn underline */}
-            <motion.svg
-              className="absolute -bottom-1 right-1/2 translate-x-1/2 w-40 h-3"
-              viewBox="0 0 160 10"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
-              <motion.path
-                d="M2 6 Q40 2 80 5 T158 4"
-                fill="none"
-                stroke="var(--color-orange)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                className="opacity-40"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-              />
-            </motion.svg>
-          </div>
-        </div>
-
-        {/* Carousel Container */}
-        <div className="relative">
-          {/* Navigation Arrows - positioned outside cards on desktop, below cards on mobile */}
-          <div className="hidden md:block">
-            <motion.button
-              onClick={handlePrev}
-              disabled={currentPage === 0}
-              className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-14 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
-              whileHover={{ scale: currentPage === 0 ? 1 : 1.08 }}
-              whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
-              aria-label="הקודם"
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </motion.button>
-
-            <motion.button
-              onClick={handleNext}
-              disabled={currentPage >= totalPages - 1}
-              className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-14 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange hover:shadow-xl transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-brown disabled:hover:shadow-lg border border-cream-darker/20"
-              whileHover={{ scale: currentPage >= totalPages - 1 ? 1 : 1.08 }}
-              whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
-              aria-label="הבא"
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </motion.button>
-          </div>
-
-          {/* Cards Container - full width on mobile, with margins on desktop */}
-          <div className="px-4 md:mx-6 lg:mx-0">
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-md mx-auto md:max-w-none"
-              key={`${currentPage}-${isMobile}`}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {visibleTestimonials.map((testimonial, index) => (
-                <motion.div
-                  key={testimonial.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <TestimonialCard testimonial={testimonial} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Mobile Navigation Arrows - below the card */}
-          <div className="flex md:hidden justify-center gap-4 mt-6">
-            <motion.button
-              onClick={handlePrev}
-              disabled={currentPage === 0}
-              className="w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed border border-cream-darker/20"
-              whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
-              aria-label="הקודם"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </motion.button>
-
-            <motion.button
-              onClick={handleNext}
-              disabled={currentPage >= totalPages - 1}
-              className="w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-brown hover:text-orange transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed border border-cream-darker/20"
-              whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
-              aria-label="הבא"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-            </motion.button>
-          </div>
-
-          {/* Dots Indicator */}
-          <div className="flex justify-center gap-2.5 mt-8">
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => setCurrentPage(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  currentPage === index
-                    ? 'bg-orange w-6'
-                    : 'bg-brown-muted/25 w-2 hover:bg-brown-muted/40'
-                }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                aria-label={`עבור לעמוד ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom wave transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none">
-        <svg
-          className="absolute bottom-0 w-full h-full"
-          viewBox="0 0 1440 64"
-          preserveAspectRatio="none"
-        >
-          <motion.path
-            d="M0,20 C360,50 720,10 1080,35 C1260,47 1380,30 1440,25 L1440,64 L0,64 Z"
-            fill="var(--color-cream)"
-            initial={{ opacity: 0, y: 10 }}
+          <motion.h2
+            className="text-4xl md:text-5xl lg:text-6xl font-headline text-brown-dark mb-4"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          />
-        </svg>
+            transition={{ delay: 0.2 }}
+          >
+            מה אומרים עלינו
+          </motion.h2>
+
+          <motion.p
+            className="text-brown-light text-lg max-w-md mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            לקוחות מרוצים מספרים על החוויה שלהם
+          </motion.p>
+        </div>
+
+        {/* Featured Testimonial - Large card */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              className="relative"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -30, scale: 0.95 }}
+              transition={{ duration: 0.5 }}
+              onMouseEnter={() => setIsAutoPlaying(false)}
+              onMouseLeave={() => setIsAutoPlaying(true)}
+            >
+              <div
+                className="relative bg-white rounded-3xl p-8 md:p-12 shadow-xl overflow-hidden"
+                style={{
+                  boxShadow: `0 25px 60px -15px ${testimonials[activeIndex].color}20`,
+                }}
+              >
+                {/* Gradient accent */}
+                <div
+                  className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30"
+                  style={{ background: testimonials[activeIndex].color }}
+                />
+
+                {/* Quote icon */}
+                <motion.div
+                  className="absolute top-6 right-6 md:top-8 md:right-8"
+                  initial={{ scale: 0, rotate: -45 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                >
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill={testimonials[activeIndex].color}
+                    className="opacity-20"
+                  >
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </motion.div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-6">
+                    {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                      <motion.svg
+                        key={i}
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill={testimonials[activeIndex].color}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1 + i * 0.05 }}
+                      >
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </motion.svg>
+                    ))}
+                  </div>
+
+                  {/* Quote */}
+                  <motion.p
+                    className="text-2xl md:text-3xl lg:text-4xl font-headline text-brown-dark leading-relaxed mb-8"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    "{testimonials[activeIndex].quote}"
+                  </motion.p>
+
+                  {/* Author */}
+                  <motion.div
+                    className="flex items-center gap-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    {/* Avatar */}
+                    <div
+                      className="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg"
+                      style={{ backgroundColor: testimonials[activeIndex].color }}
+                    >
+                      {testimonials[activeIndex].name.charAt(0)}
+                    </div>
+
+                    <div>
+                      <p className="font-bold text-lg text-brown-dark">
+                        {testimonials[activeIndex].name}
+                      </p>
+                      <p className="text-brown-light text-sm">
+                        {testimonials[activeIndex].role}
+                      </p>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Decorative line */}
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-1"
+                  style={{ backgroundColor: testimonials[activeIndex].color }}
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 5, ease: 'linear' }}
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Navigation dots */}
+        <div className="flex justify-center gap-3 mb-16">
+          {testimonials.map((testimonial, index) => (
+            <button
+              key={testimonial.id}
+              onClick={() => {
+                setActiveIndex(index)
+                setIsAutoPlaying(false)
+              }}
+              className="relative group"
+              aria-label={`עבור לביקורת ${index + 1}`}
+            >
+              <motion.div
+                className="w-3 h-3 rounded-full transition-all duration-300"
+                style={{
+                  backgroundColor: activeIndex === index ? testimonial.color : '#D4D4D4',
+                }}
+                whileHover={{ scale: 1.3 }}
+                whileTap={{ scale: 0.9 }}
+              />
+              {activeIndex === index && (
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  style={{ backgroundColor: testimonial.color }}
+                  layoutId="activeDot"
+                  initial={false}
+                  animate={{ scale: [1, 1.5, 1] }}
+                  transition={{ duration: 0.5 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Mini cards grid */}
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+        >
+          {testimonials.map((testimonial, index) => (
+            <motion.button
+              key={testimonial.id}
+              onClick={() => {
+                setActiveIndex(index)
+                setIsAutoPlaying(false)
+              }}
+              className={`relative p-4 rounded-xl text-right transition-all duration-300 ${
+                activeIndex === index
+                  ? 'bg-white shadow-lg scale-105'
+                  : 'bg-white/50 hover:bg-white hover:shadow-md'
+              }`}
+              whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {/* Active indicator */}
+              {activeIndex === index && (
+                <motion.div
+                  className="absolute inset-0 rounded-xl"
+                  style={{ border: `2px solid ${testimonial.color}` }}
+                  layoutId="activeCard"
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                />
+              )}
+
+              <div className="relative z-10">
+                {/* Mini avatar */}
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold mb-2"
+                  style={{ backgroundColor: testimonial.color }}
+                >
+                  {testimonial.name.charAt(0)}
+                </div>
+
+                {/* Name */}
+                <p className="font-semibold text-sm text-brown-dark truncate">
+                  {testimonial.name}
+                </p>
+
+                {/* Stars */}
+                <div className="flex gap-0.5 mt-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill={i < testimonial.rating ? testimonial.color : '#E5E5E5'}
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Trust badges */}
+        <motion.div
+          className="mt-16 pt-12 border-t border-cream-darker"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {/* Badge 1 */}
+            <div className="flex items-center gap-3 text-brown-light">
+              <div className="w-12 h-12 rounded-full bg-orange/10 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5A623" strokeWidth="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-brown-dark text-lg">100%</p>
+                <p className="text-sm">לקוחות מרוצים</p>
+              </div>
+            </div>
+
+            {/* Badge 2 */}
+            <div className="flex items-center gap-3 text-brown-light">
+              <div className="w-12 h-12 rounded-full bg-sage/20 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8BB4A0" strokeWidth="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-brown-dark text-lg">5.0</p>
+                <p className="text-sm">דירוג ממוצע</p>
+              </div>
+            </div>
+
+            {/* Badge 3 */}
+            <div className="flex items-center gap-3 text-brown-light">
+              <div className="w-12 h-12 rounded-full bg-terracotta/10 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E07B54" strokeWidth="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-bold text-brown-dark text-lg">50+</p>
+                <p className="text-sm">פרויקטים הושלמו</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
-  )
-}
-
-interface TestimonialCardProps {
-  testimonial: {
-    id: number
-    name: string
-    quote: string
-    initial: string
-  }
-}
-
-function TestimonialCard({ testimonial }: TestimonialCardProps) {
-  return (
-    <motion.article
-      className="relative bg-white rounded-2xl p-6 md:p-7 shadow-card hover:shadow-lg transition-all duration-400 h-full min-h-[200px] flex flex-col border border-cream-darker/10"
-      whileHover={{ y: -4, scale: 1.01 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* Quote Icon - top right */}
-      <div className="absolute top-5 right-5">
-        <motion.svg
-          width="40"
-          height="40"
-          viewBox="0 0 56 56"
-          fill="none"
-          className="text-orange/15"
-          initial={{ scale: 0.8, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <path
-            d="M18.667 25.667c-2.934 0-5.334 2.4-5.334 5.333v8c0 2.933 2.4 5.333 5.334 5.333h5.333c2.933 0 5.333-2.4 5.333-5.333V31c0-8.827-7.173-16-16-16v5.333c4.414 0 8 3.587 8 8v.334c0 1.466-1.2 2.666-2.666 2.666h-5.334c-1.466 0-2.666-1.2-2.666-2.666 0-1.467 1.2-2.667 2.666-2.667h5.334v-2.666c0-1.467-1.2-2.667-2.667-2.667h-2.667zm18.666 0c-2.933 0-5.333 2.4-5.333 5.333v8c0 2.933 2.4 5.333 5.333 5.333h5.334c2.933 0 5.333-2.4 5.333-5.333V31c0-8.827-7.173-16-16-16v5.333c4.413 0 8 3.587 8 8v.334c0 1.466-1.2 2.666-2.667 2.666h-5.333c-1.467 0-2.667-1.2-2.667-2.666 0-1.467 1.2-2.667 2.667-2.667h5.333v-2.666c0-1.467-1.2-2.667-2.667-2.667h-2.666z"
-            fill="currentColor"
-          />
-        </motion.svg>
-      </div>
-
-      {/* Quote Text - smaller font */}
-      <div className="flex-1 flex items-center pt-10 pb-3">
-        <p className="text-base md:text-lg text-brown leading-relaxed font-headline">
-          "{testimonial.quote}"
-        </p>
-      </div>
-
-      {/* Customer Info - name only */}
-      <div className="flex items-center gap-3 pt-4 border-t border-cream-darker/20">
-        {/* Avatar */}
-        <motion.div
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-orange via-orange-light to-terracotta flex items-center justify-center text-white font-bold text-sm shadow-sm"
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ duration: 0.2 }}
-        >
-          {testimonial.initial}
-        </motion.div>
-        {/* Name only */}
-        <p className="font-semibold text-brown-dark">{testimonial.name}</p>
-      </div>
-
-      {/* Subtle corner accent */}
-      <div className="absolute bottom-0 left-0 w-20 h-20 rounded-tl-2xl bg-gradient-to-tr from-orange/5 to-transparent pointer-events-none" />
-    </motion.article>
   )
 }

@@ -61,8 +61,8 @@ export default function NotFound() {
           {/* CTA Button */}
           <motion.a
             href="/"
-            className="inline-flex items-center gap-2 bg-orange font-semibold py-4 px-8 rounded-full shadow-md hover:shadow-glow transition-all duration-300"
-            style={{ color: '#2A2A2A' }}
+            className="inline-flex items-center gap-2 bg-orange font-semibold py-4 px-8 rounded-full shadow-md hover:shadow-glow hover:bg-orange-dark transition-all duration-300"
+            style={{ color: '#FFFFFF' }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

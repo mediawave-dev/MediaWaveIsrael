@@ -41,8 +41,8 @@
   /* -----------------------------
      FONT FAMILIES
      ----------------------------- */
-  --font-headline: 'Noa Shalev', 'Heebo', sans-serif;
-  --font-body: 'Yarden', 'Heebo', sans-serif;
+  --font-headline: 'BA Platforma', 'Heebo', sans-serif;
+  --font-body: 'Sn Armilado', 'Heebo', sans-serif;
   --font-fallback: 'Heebo', sans-serif;
   /* English fonts - two tiers */
   --font-english-display: 'American Captain', 'Poppins', sans-serif;  /* For headings, logo, titles */
@@ -60,11 +60,18 @@
   --text-h3: clamp(1.5rem, 2vw, 2rem);
   --text-h4: clamp(1.25rem, 1.5vw, 1.5rem);
 
-  /* Body text sizes */
-  --text-lg: 1.25rem;
-  --text-base: 1.125rem;
-  --text-sm: 1rem;
-  --text-xs: 0.875rem;
+  /* Tailwind text size overrides - scaled up ~30% for Sn Armilado / BA Platforma */
+  --text-xs: 1rem;
+  --text-sm: 1.15rem;
+  --text-base: 1.35rem;
+  --text-lg: 1.5rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+  --text-7xl: 5.5rem;
 
   /* Line heights for Hebrew readability */
   --leading-tight: 1.3;
@@ -129,6 +136,7 @@
 html {
   direction: rtl;
   scroll-behavior: smooth;
+  font-size: 18px;
 }
 
 body {
@@ -141,7 +149,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Headlines - Noa Shalev */
+/* Headlines - BA Platforma */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-headline);
   font-weight: 700;

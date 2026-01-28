@@ -26,8 +26,8 @@ export default function Logo({
   // Size configurations - Mobile-first with proper scaling
   const sizes = {
     header: {
-      // Mobile: smaller logo to prevent overlap, Desktop: larger
-      container: isScrolled ? 'h-14 md:h-20' : 'h-20 md:h-32 lg:h-44',
+      // Mobile: smaller logo to prevent overlap, Desktop: medium-sized
+      container: isScrolled ? 'h-14 md:h-18' : 'h-24 md:h-32 lg:h-40',
     },
     footer: {
       container: 'h-20 md:h-28',
@@ -63,11 +63,16 @@ export default function Logo({
           }}
         />
 
-        {/* Logo image with transparent background */}
+        {/* Logo image - white on hero (header not scrolled), normal elsewhere */}
         <motion.img
           src={logoImage}
           alt="MediaWave Israel - בניית אתרים מקצועית"
-          className={`${sizeConfig.container} w-auto object-contain relative z-10`}
+          className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
+          style={{
+            filter: variant === 'header' && !isScrolled
+              ? 'brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7))'
+              : 'none',
+          }}
           loading={variant === 'header' ? 'eager' : 'lazy'}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

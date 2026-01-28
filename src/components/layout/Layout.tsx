@@ -2,7 +2,6 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
-import { PageDecorations } from '../ui'
 
 interface LayoutProps {
   children: ReactNode
@@ -11,9 +10,6 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-cream relative">
-      {/* Global page decorations - connecting lines & floating elements */}
-      <PageDecorations />
-
       {/* Skip to content - Accessibility */}
       <a
         href="#main-content"
