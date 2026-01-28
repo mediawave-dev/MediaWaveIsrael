@@ -26,14 +26,16 @@ export default function Logo({
   // Size configurations - Mobile-first with proper scaling
   const sizes = {
     header: {
-      // Mobile: smaller logo to prevent overlap, Desktop: medium-sized
-      container: isScrolled ? 'h-14 md:h-18' : 'h-24 md:h-32 lg:h-40',
+      // Mobile: compact logo (max 140px), Desktop: larger (max 200px)
+      container: isScrolled
+        ? 'h-10 md:h-14 max-w-[120px] md:max-w-[160px]'
+        : 'h-14 md:h-24 lg:h-28 max-w-[140px] md:max-w-[200px]',
     },
     footer: {
-      container: 'h-20 md:h-28',
+      container: 'h-16 md:h-24 max-w-[160px] md:max-w-[200px]',
     },
     mobile: {
-      container: 'h-16',
+      container: 'h-12 max-w-[120px]',
     },
   }
 
