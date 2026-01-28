@@ -62,7 +62,7 @@ export default function FAQ() {
             שאלות נפוצות
           </motion.h2>
           <motion.p
-            className="text-brown-light"
+            className="text-brown-light text-xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -89,7 +89,7 @@ export default function FAQ() {
                 className="w-full text-right p-5 flex items-center justify-between gap-4 hover:bg-cream-dark/30 transition-colors"
                 aria-expanded={openIndex === index}
               >
-                <span className="font-semibold text-brown-dark">
+                <span className="font-semibold text-brown-dark text-lg">
                   {item.question}
                 </span>
                 <motion.span
@@ -114,7 +114,7 @@ export default function FAQ() {
                     className="overflow-hidden"
                   >
                     <div className="px-5 pb-5">
-                      <p className="text-brown-light leading-relaxed border-t border-cream-darker pt-4">
+                      <p className="text-brown-light text-lg leading-relaxed border-t border-cream-darker pt-4">
                         {item.answer}
                       </p>
                     </div>
@@ -133,10 +133,10 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-brown-light mb-4">עדיין יש שאלות?</p>
+          <p className="text-brown-light text-xl mb-4">עדיין יש שאלות?</p>
           <a
             href="#contact"
-            className="inline-block bg-orange px-8 py-3 rounded-full font-semibold hover:bg-orange-dark transition-colors"
+            className="inline-block bg-orange text-xl px-10 py-4 rounded-full font-semibold hover:bg-orange-dark transition-colors"
             style={{ color: '#FFFFFF' }}
           >
             צרו קשר

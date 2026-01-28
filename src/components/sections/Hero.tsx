@@ -93,7 +93,7 @@ export default function Hero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.span
-            className="inline-flex items-center gap-2 bg-white/10 text-white text-xs md:text-sm font-semibold px-3 py-1 md:px-5 md:py-2 rounded-full mb-4 md:mb-8 backdrop-blur-sm border border-white/20"
+            className="inline-flex items-center gap-2 bg-white/10 text-white text-sm md:text-lg font-semibold px-4 py-1.5 md:px-5 md:py-2 rounded-full mb-4 md:mb-8 backdrop-blur-sm border border-white/20"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -104,7 +104,7 @@ export default function Hero() {
 
           {/* Main Headline */}
           <motion.h1
-            className="text-3xl md:text-5xl lg:text-6xl font-headline leading-tight mb-3 md:mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl font-headline leading-tight mb-3 md:mb-6"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -121,7 +121,7 @@ export default function Hero() {
 
           {/* Typewriter Section */}
           <motion.div
-            className="text-lg md:text-2xl lg:text-3xl text-white mb-2 md:mb-4 min-h-[1.4em]"
+            className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-4 min-h-[1.4em]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -137,7 +137,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-sm md:text-lg lg:text-xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
+            className="text-lg md:text-xl lg:text-2xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -158,7 +158,7 @@ export default function Hero() {
           >
             <motion.a
               href="#contact"
-              className="group relative overflow-hidden bg-orange text-sm md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="group relative overflow-hidden bg-orange text-base md:text-xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               style={{ color: '#FFFFFF' }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -182,7 +182,7 @@ export default function Hero() {
 
             <motion.a
               href="#portfolio"
-              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-sm md:text-lg font-semibold py-3 px-6 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-base md:text-xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -210,8 +210,8 @@ export default function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9 + i * 0.1 }}
               >
-                <span className="text-2xl md:text-4xl font-headline text-orange">{stat.value}</span>
-                <span className="text-[10px] md:text-base text-white/80">{stat.label}</span>
+                <span className="text-3xl md:text-5xl lg:text-6xl font-headline text-orange">{stat.value}</span>
+                <span className="text-sm md:text-lg lg:text-xl text-white/80">{stat.label}</span>
               </motion.div>
             ))}
           </motion.div>

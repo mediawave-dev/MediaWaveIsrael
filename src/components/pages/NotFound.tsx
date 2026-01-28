@@ -49,10 +49,10 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h2 className="text-2xl md:text-3xl font-headline text-brown-dark mb-4">
+          <h2 className="text-3xl md:text-4xl font-headline text-brown-dark mb-4">
             העמוד לא נמצא
           </h2>
-          <p className="text-brown-light mb-8 leading-relaxed">
+          <p className="text-lg text-brown-light mb-8 leading-relaxed">
             מצטערים, העמוד שחיפשתם לא קיים או שהוסר.
             <br />
             אולי תרצו לחזור לדף הבית?

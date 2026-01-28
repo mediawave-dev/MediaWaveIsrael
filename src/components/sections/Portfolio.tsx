@@ -108,7 +108,7 @@ export default function Portfolio() {
 
           {/* Description */}
           <motion.p
-            className="text-lg text-brown-light leading-relaxed mt-10"
+            className="text-lg md:text-xl text-brown-light leading-relaxed mt-10"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -216,12 +216,12 @@ export default function Portfolio() {
                 </span>
 
                 {/* Project title */}
-                <h3 className="text-2xl md:text-3xl font-english font-semibold text-brown-dark mb-4">
+                <h3 className="text-3xl md:text-4xl font-english font-semibold text-brown-dark mb-4">
                   yaelevy.co.il
                 </h3>
 
                 {/* Description */}
-                <p className="text-brown-light leading-relaxed mb-6">
+                <p className="text-lg text-brown-light leading-relaxed mb-6">
                   אתר תדמית מקצועי מאפשר ללקוחות לגלות את העסק בכל שעה, לצפות בעבודות ולהתרשם מהשירותים - 24/7.
                   הנוכחות הדיגיטלית בונה אמון, יוצרת רושם ראשוני מקצועי, ומקלה על בעל העסק לעדכן תוכן ולנהל פניות בקלות.
                 </p>
@@ -324,7 +324,7 @@ export default function Portfolio() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <p className="text-brown-light mb-6 text-lg">
+          <p className="text-brown-light mb-6 text-xl">
             רוצים אתר כזה לעסק שלכם?
           </p>
           <motion.a

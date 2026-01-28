@@ -34,9 +34,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Size styles
     const sizeStyles = {
-      sm: 'py-2.5 px-5 text-sm',
-      md: 'py-4 px-8',
-      lg: 'py-5 px-10 text-lg',
+      sm: 'py-3 px-6 text-base',
+      md: 'py-4 px-10 text-xl',
+      lg: 'py-5 px-12 text-xl',
     }
 
     // Variant styles - white text on orange for better visibility

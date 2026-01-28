@@ -75,7 +75,7 @@ export default function Contact() {
           </motion.h2>
 
           <motion.p
-            className="text-lg text-brown-light"
+            className="text-xl text-brown-light"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

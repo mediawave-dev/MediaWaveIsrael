@@ -49,10 +49,10 @@ export default function Footer() {
             <div className="mb-5">
               <Logo variant="footer" />
             </div>
-            <p className="text-[#C89453] font-semibold text-lg mb-3">
+            <p className="text-[#C89453] font-semibold text-xl mb-3">
               נותנים לעסק שלך נוכחות דיגיטלית מנצחת
             </p>
-            <p className="text-gray-400 leading-relaxed text-sm">
+            <p className="text-gray-400 leading-relaxed text-base">
               אנחנו מתמחים בבניית אתרים מקצועיים ומודרניים שמביאים תוצאות אמיתיות.
               מהרעיון ועד ההשקה - אנחנו איתכם בכל שלב.
             </p>
@@ -60,14 +60,14 @@ export default function Footer() {
 
           {/* Section 2 - Quick Links */}
           <div className="lg:col-span-1">
-            <h3 className="text-[#C89453] font-headline text-lg mb-6">קישורים מהירים</h3>
+            <h3 className="text-[#C89453] font-headline text-xl mb-6">קישורים מהירים</h3>
             <nav className="flex flex-col gap-3">
               {quickLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className="text-gray-400 hover:text-[#C89453] transition-colors duration-300 w-fit text-sm"
+                  className="text-gray-400 hover:text-[#C89453] transition-colors duration-300 w-fit text-base"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -82,7 +82,7 @@ export default function Footer() {
 
           {/* Section 3 - Contact Info */}
           <div className="lg:col-span-1">
-            <h3 className="text-[#C89453] font-headline text-lg mb-6">יצירת קשר</h3>
+            <h3 className="text-[#C89453] font-headline text-xl mb-6">יצירת קשר</h3>
             <div className="space-y-4">
               {/* Email */}
               <a
@@ -92,7 +92,7 @@ export default function Footer() {
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 group-hover:bg-[#C89453]/20 transition-colors duration-300 flex-shrink-0">
                   <MailIcon />
                 </span>
-                <span className="text-sm" dir="ltr">mediawaveisrael@gmail.com</span>
+                <span className="text-base" dir="ltr">mediawaveisrael@gmail.com</span>
               </a>
 
               {/* Phone */}
@@ -103,7 +103,7 @@ export default function Footer() {
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 group-hover:bg-[#C89453]/20 transition-colors duration-300">
                   <PhoneIcon />
                 </span>
-                <span className="text-sm" dir="ltr">052-8731808</span>
+                <span className="text-base" dir="ltr">052-8731808</span>
               </a>
 
               {/* WhatsApp */}
@@ -116,7 +116,7 @@ export default function Footer() {
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 group-hover:bg-[#C89453]/20 transition-colors duration-300">
                   <WhatsAppIcon />
                 </span>
-                <span className="text-sm">WhatsApp</span>
+                <span className="text-base">WhatsApp</span>
               </a>
 
               {/* Hours */}
@@ -124,14 +124,14 @@ export default function Footer() {
                 <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 flex-shrink-0">
                   <ClockIcon />
                 </span>
-                <span className="text-sm">ראשון-חמישי: 9:00-18:00</span>
+                <span className="text-base">ראשון-חמישי: 9:00-18:00</span>
               </div>
             </div>
           </div>
 
           {/* Section 4 - Legal */}
           <div className="lg:col-span-1">
-            <h3 className="text-[#C89453] font-headline text-lg mb-6">משפטי</h3>
+            <h3 className="text-[#C89453] font-headline text-xl mb-6">משפטי</h3>
             <nav className="flex flex-col gap-3">
               {legalLinks.map((link, index) => (
                 <motion.div
@@ -147,7 +147,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-[#C89453] transition-colors duration-300 text-sm"
+                    className="text-gray-400 hover:text-[#C89453] transition-colors duration-300 text-base"
                   >
                     {link.label}
                   </a>
@@ -192,12 +192,12 @@ export default function Footer() {
             </div>
 
             {/* Copyright */}
-            <p className="text-gray-500 text-sm order-1 md:order-2">
+            <p className="text-gray-500 text-base order-1 md:order-2">
               © {currentYear} MediaWave Israel. כל הזכויות שמורות
             </p>
 
             {/* Credits */}
-            <p className="text-gray-500 text-sm order-3">
+            <p className="text-gray-500 text-base order-3">
               Designed & Developed by{' '}
               <a
                 href="https://www.mediawaveisrael.com"

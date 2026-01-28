@@ -108,7 +108,7 @@ export default function Services() {
 
           <div className="grid lg:grid-cols-2 gap-8 items-end">
             <motion.h2
-              className="text-3xl md:text-4xl lg:text-5xl font-headline leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-headline leading-tight"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -120,7 +120,7 @@ export default function Services() {
             </motion.h2>
 
             <motion.p
-              className="text-lg md:text-xl text-brown-light leading-relaxed max-w-md lg:pb-2"
+              className="text-lg md:text-xl lg:text-2xl text-brown-light leading-relaxed max-w-md lg:pb-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -149,10 +149,10 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <p className="text-brown-light mb-6 text-lg">רוצים לדעת עוד?</p>
+          <p className="text-brown-light mb-6 text-xl">רוצים לדעת עוד?</p>
           <motion.a
             href="#contact"
-            className="inline-flex items-center gap-3 bg-orange font-semibold py-4 px-8 rounded-full shadow-lg hover:shadow-glow transition-all duration-300"
+            className="inline-flex items-center gap-3 bg-orange text-xl font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300"
             style={{ color: '#FFFFFF' }}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
@@ -276,18 +276,18 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             </motion.span>
 
             {/* Title */}
-            <h3 className="text-xl md:text-2xl font-bold text-brown-dark group-hover:text-brown transition-colors leading-tight">
+            <h3 className="text-2xl md:text-3xl font-bold text-brown-dark group-hover:text-brown transition-colors leading-tight">
               {service.title}
             </h3>
 
             {/* Description */}
-            <p className="text-brown-light text-sm leading-relaxed">
+            <p className="text-brown-light text-base md:text-lg leading-relaxed">
               {service.description}
             </p>
 
             {/* Learn more link */}
             <motion.span
-              className="inline-flex items-center gap-2 text-sm font-semibold transition-colors mt-auto pt-2"
+              className="inline-flex items-center gap-2 text-base font-semibold transition-colors mt-auto pt-2"
               style={{ color: service.color }}
             >
               <span>למידע נוסף</span>

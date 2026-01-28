@@ -119,7 +119,7 @@ export default function Testimonials() {
           </motion.div>
 
           <motion.h2
-            className="text-3xl md:text-4xl font-headline text-brown-dark mb-4"
+            className="text-4xl md:text-5xl font-headline text-brown-dark mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -129,7 +129,7 @@ export default function Testimonials() {
           </motion.h2>
 
           <motion.p
-            className="text-brown-light text-lg max-w-md mx-auto"
+            className="text-brown-light text-xl max-w-md mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -204,7 +204,7 @@ export default function Testimonials() {
 
                   {/* Quote */}
                   <motion.p
-                    className="text-xl md:text-2xl lg:text-3xl font-headline text-brown-dark leading-relaxed mb-8"
+                    className="text-2xl md:text-3xl lg:text-4xl font-headline text-brown-dark leading-relaxed mb-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -228,7 +228,7 @@ export default function Testimonials() {
                     </div>
 
                     <div>
-                      <p className="font-bold text-lg text-brown-dark">
+                      <p className="font-bold text-xl text-brown-dark">
                         {testimonials[activeIndex].name}
                       </p>
                       <p className="text-brown-light text-sm">

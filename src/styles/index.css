@@ -54,24 +54,25 @@
      ----------------------------- */
 
   /* Fluid headline sizes */
-  --text-hero: clamp(2.5rem, 5vw, 4rem);
-  --text-h1: clamp(2rem, 3.5vw, 3rem);
-  --text-h2: clamp(1.75rem, 2.5vw, 2.25rem);
-  --text-h3: clamp(1.25rem, 1.75vw, 1.75rem);
-  --text-h4: clamp(1.125rem, 1.25vw, 1.375rem);
+  --text-hero: clamp(3.5rem, 7vw, 6rem);
+  --text-h1: clamp(2.5rem, 5vw, 4rem);
+  --text-h2: clamp(2rem, 3.5vw, 3rem);
+  --text-h3: clamp(1.5rem, 2.5vw, 2.25rem);
+  --text-h4: clamp(1.25rem, 1.75vw, 1.75rem);
 
-  /* Tailwind text size overrides - standard scale for 16px base */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-  --text-6xl: 3.75rem;
-  --text-7xl: 4.5rem;
+  /* Tailwind text size overrides - enlarged scale for OS Luizi font */
+  --text-xs: 1rem;
+  --text-sm: 1.125rem;
+  --text-base: 1.25rem;
+  --text-lg: 1.5rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+  --text-6xl: 5rem;
+  --text-7xl: 6rem;
+  --text-8xl: 7rem;
 
   /* Line heights for Hebrew readability */
   --leading-tight: 1.3;
@@ -136,7 +137,7 @@
 html {
   direction: rtl;
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 body {
@@ -527,14 +528,14 @@ button {
 
   /* Improve text readability */
   body {
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.8;
   }
 
-  /* Reduce heading sizes slightly */
-  h1 { font-size: clamp(2rem, 8vw, 3rem); }
-  h2 { font-size: clamp(1.75rem, 6vw, 2.5rem); }
-  h3 { font-size: clamp(1.25rem, 4vw, 1.75rem); }
+  /* Reduce heading sizes slightly on mobile */
+  h1 { font-size: clamp(2.25rem, 8vw, 3.5rem); }
+  h2 { font-size: clamp(2rem, 6vw, 3rem); }
+  h3 { font-size: clamp(1.5rem, 4vw, 2rem); }
 
   /* Stack elements on mobile */
   .mobile-stack {

@@ -101,7 +101,7 @@ export default function About() {
 
             {/* Main paragraph - from CONTENT.md */}
             <motion.p
-              className="text-lg text-brown-light leading-relaxed mb-6 font-body"
+              className="text-lg md:text-xl text-brown-light leading-relaxed mb-6 font-body"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -119,7 +119,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="text-xl font-headline text-brown-dark leading-relaxed">
+              <p className="text-xl md:text-2xl font-headline text-brown-dark leading-relaxed">
                 "יותר פניות, יותר מכירות, יותר הצלחה"
               </p>
               {/* Decorative quote mark */}
@@ -128,7 +128,7 @@ export default function About() {
 
             {/* Second paragraph */}
             <motion.p
-              className="text-brown-light leading-relaxed mb-8 font-body"
+              className="text-lg md:text-xl text-brown-light leading-relaxed mb-8 font-body"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}

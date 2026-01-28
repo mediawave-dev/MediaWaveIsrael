@@ -87,7 +87,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="group relative text-brown hover:text-orange transition-colors duration-300 py-2"
+                  className="group relative text-lg text-brown hover:text-orange transition-colors duration-300 py-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -116,7 +116,7 @@ export default function Header() {
               <motion.a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="relative overflow-hidden bg-orange font-semibold py-3 px-6 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
+                className="relative overflow-hidden bg-orange text-lg font-semibold py-3 px-7 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
                 style={{ color: '#FFFFFF' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -223,7 +223,7 @@ export default function Header() {
                     <motion.a
                       key={link.href}
                       href={link.href}
-                      className="text-2xl text-brown hover:text-orange transition-colors duration-300"
+                      className="text-xl text-brown hover:text-orange transition-colors duration-300"
                       onClick={(e) => {
                         handleNavClick(e, link.href)
                         setIsMobileMenuOpen(false)
@@ -240,7 +240,7 @@ export default function Header() {
                 {/* CTA Button */}
                 <motion.a
                   href="#contact"
-                  className="mt-auto mb-8 bg-orange text-center font-semibold py-4 px-8 rounded-full shadow-sm hover:bg-orange-dark transition-colors"
+                  className="mt-auto mb-8 bg-orange text-center text-lg font-semibold py-4 px-8 rounded-full shadow-sm hover:bg-orange-dark transition-colors"
                   style={{ color: '#FFFFFF' }}
                   onClick={(e) => {
                     handleNavClick(e, '#contact')
@@ -254,7 +254,7 @@ export default function Header() {
                 </motion.a>
 
                 {/* Contact info */}
-                <div className="text-brown-light text-sm">
+                <div className="text-brown-light text-base">
                   <p>052-8731808</p>
                   <p>mediawaveisrael@gmail.com</p>
                 </div>
