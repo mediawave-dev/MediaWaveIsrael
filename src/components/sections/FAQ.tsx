@@ -53,7 +53,7 @@ export default function FAQ() {
         {/* Header */}
         <div className="text-center mb-16">
           <motion.h2
-            className="text-h2 mb-4"
+            className="text-4xl md:text-5xl font-headline mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -62,7 +62,7 @@ export default function FAQ() {
             שאלות נפוצות
           </motion.h2>
           <motion.p
-            className="text-brown-light text-xl"
+            className="text-brown-light text-2xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -89,7 +89,7 @@ export default function FAQ() {
                 className="w-full text-right p-5 flex items-center justify-between gap-4 hover:bg-cream-dark/30 transition-colors"
                 aria-expanded={openIndex === index}
               >
-                <span className="font-semibold text-brown-dark text-lg">
+                <span className="font-headline font-semibold text-brown-dark text-xl">
                   {item.question}
                 </span>
                 <motion.span
@@ -114,7 +114,7 @@ export default function FAQ() {
                     className="overflow-hidden"
                   >
                     <div className="px-5 pb-5">
-                      <p className="text-brown-light text-lg leading-relaxed border-t border-cream-darker pt-4">
+                      <p className="font-body text-brown-light text-xl leading-relaxed border-t border-cream-darker pt-4">
                         {item.answer}
                       </p>
                     </div>
@@ -133,7 +133,7 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <p className="text-brown-light text-xl mb-4">עדיין יש שאלות?</p>
+          <p className="text-brown-light text-2xl mb-4">עדיין יש שאלות?</p>
           <a
             href="#contact"
             className="inline-block bg-orange text-xl px-10 py-4 rounded-full font-semibold hover:bg-orange-dark transition-colors"

@@ -53,7 +53,7 @@ export default function About() {
           >
             {/* Badge */}
             <motion.span
-              className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-5 py-2.5 rounded-full mb-6"
+              className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-base font-semibold px-5 py-2.5 rounded-full mb-6"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -66,7 +66,7 @@ export default function About() {
             {/* Title with decorative element */}
             <div className="relative mb-8">
               <motion.h2
-                className="text-h2"
+                className="text-4xl md:text-5xl font-headline"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -101,7 +101,7 @@ export default function About() {
 
             {/* Main paragraph - from CONTENT.md */}
             <motion.p
-              className="text-lg md:text-xl text-brown-light leading-relaxed mb-6 font-body"
+              className="text-xl md:text-2xl text-brown-light leading-relaxed mb-6 font-body"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -119,7 +119,7 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <p className="text-xl md:text-2xl font-headline text-brown-dark leading-relaxed">
+              <p className="text-2xl md:text-3xl font-headline text-brown-dark leading-relaxed">
                 "יותר פניות, יותר מכירות, יותר הצלחה"
               </p>
               {/* Decorative quote mark */}
@@ -128,7 +128,7 @@ export default function About() {
 
             {/* Second paragraph */}
             <motion.p
-              className="text-lg md:text-xl text-brown-light leading-relaxed mb-8 font-body"
+              className="text-xl md:text-2xl text-brown-light leading-relaxed mb-8 font-body"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -157,7 +157,7 @@ export default function About() {
                   whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.9)' }}
                 >
                   <span className="text-orange">{value.icon}</span>
-                  <span className="text-sm font-semibold text-brown-dark">{value.title}</span>
+                  <span className="text-base font-semibold text-brown-dark">{value.title}</span>
                 </motion.div>
               ))}
             </motion.div>

@@ -26,16 +26,16 @@ export default function Logo({
   // Size configurations - Mobile-first with proper scaling
   const sizes = {
     header: {
-      // Mobile: larger logo (max 160px), Desktop: larger (max 240px)
+      // Mobile: ~30-40% larger logo, Desktop: proportionally larger
       container: isScrolled
-        ? 'h-10 md:h-16 max-w-[120px] md:max-w-[180px]'
-        : 'h-12 md:h-28 lg:h-32 max-w-[160px] md:max-w-[240px]',
+        ? 'h-14 md:h-24 max-w-[170px] md:max-w-[260px]'
+        : 'h-16 md:h-36 lg:h-44 max-w-[200px] md:max-w-[320px]',
     },
     footer: {
-      container: 'h-20 md:h-28 max-w-[180px] md:max-w-[240px]',
+      container: 'h-24 md:h-36 max-w-[220px] md:max-w-[300px]',
     },
     mobile: {
-      container: 'h-12 max-w-[120px]',
+      container: 'h-16 max-w-[160px]',
     },
   }
 
@@ -69,9 +69,12 @@ export default function Logo({
         <motion.img
           src={logoImage}
           alt="MediaWave Israel - בניית אתרים מקצועית"
-          className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500 ${
-            variant === 'header' && !isScrolled ? 'logo-hero-white' : ''
-          }`}
+          className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
+          style={
+            variant === 'header' && !isScrolled
+              ? { filter: 'brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7))' }
+              : undefined
+          }
           loading={variant === 'header' ? 'eager' : 'lazy'}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

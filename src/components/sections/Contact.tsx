@@ -65,7 +65,7 @@ export default function Contact() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <motion.h2
-            className="text-h2 mb-4"
+            className="text-4xl md:text-5xl font-headline mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -75,7 +75,7 @@ export default function Contact() {
           </motion.h2>
 
           <motion.p
-            className="text-xl text-brown-light"
+            className="text-2xl text-brown-light"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -170,8 +170,8 @@ export default function Contact() {
                   <PhoneIcon className="w-5 h-5 text-orange" />
                 </div>
                 <div>
-                  <p className="text-sm text-brown-muted">טלפון</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-orange transition-colors" dir="ltr">
+                  <p className="text-base text-brown-muted">טלפון</p>
+                  <p className="text-xl font-semibold text-brown-dark group-hover:text-orange transition-colors font-english" dir="ltr">
                     {contactInfo.phone}
                   </p>
                 </div>
@@ -186,8 +186,8 @@ export default function Contact() {
                   <EmailIcon className="w-5 h-5 text-terracotta" />
                 </div>
                 <div>
-                  <p className="text-sm text-brown-muted">אימייל</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english" dir="ltr">
+                  <p className="text-base text-brown-muted">אימייל</p>
+                  <p className="text-xl font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english" dir="ltr">
                     {contactInfo.email}
                   </p>
                 </div>
@@ -204,15 +204,15 @@ export default function Contact() {
                   <WhatsAppIcon className="w-5 h-5 text-sage" />
                 </div>
                 <div>
-                  <p className="text-sm text-brown-muted">וואטסאפ</p>
-                  <p className="text-lg font-semibold text-brown-dark group-hover:text-sage transition-colors">
+                  <p className="text-base text-brown-muted">וואטסאפ</p>
+                  <p className="text-xl font-semibold text-brown-dark group-hover:text-sage transition-colors">
                     דברו איתנו
                   </p>
                 </div>
               </a>
 
               {/* Note */}
-              <p className="text-sm text-brown-muted p-4 bg-cream-dark rounded-lg">
+              <p className="text-base text-brown-muted p-4 bg-cream-dark rounded-lg">
                 אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים
               </p>
             </div>

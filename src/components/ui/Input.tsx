@@ -81,7 +81,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           `}
           animate={{
             top: isFloating ? '0.5rem' : '1.1rem',
-            fontSize: isFloating ? '0.75rem' : '1rem',
+            fontSize: isFloating ? '0.875rem' : '1.125rem',
             fontWeight: isFloating ? 600 : 400,
           }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -200,7 +200,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           `}
           animate={{
             top: isFloating ? '0.5rem' : '1.1rem',
-            fontSize: isFloating ? '0.75rem' : '1rem',
+            fontSize: isFloating ? '0.875rem' : '1.125rem',
             fontWeight: isFloating ? 600 : 400,
           }}
           transition={{ duration: 0.2, ease: 'easeOut' }}

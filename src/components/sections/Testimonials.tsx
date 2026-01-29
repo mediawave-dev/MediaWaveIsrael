@@ -119,7 +119,7 @@ export default function Testimonials() {
           </motion.div>
 
           <motion.h2
-            className="text-4xl md:text-5xl font-headline text-brown-dark mb-4"
+            className="text-5xl md:text-6xl font-headline text-brown-dark mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -129,7 +129,7 @@ export default function Testimonials() {
           </motion.h2>
 
           <motion.p
-            className="text-brown-light text-xl max-w-md mx-auto"
+            className="text-brown-light text-2xl max-w-md mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -204,7 +204,7 @@ export default function Testimonials() {
 
                   {/* Quote */}
                   <motion.p
-                    className="text-2xl md:text-3xl lg:text-4xl font-headline text-brown-dark leading-relaxed mb-8"
+                    className="text-xl md:text-2xl lg:text-3xl font-headline text-brown-dark leading-relaxed mb-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -321,14 +321,14 @@ export default function Testimonials() {
               <div className="relative z-10">
                 {/* Mini avatar */}
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold mb-2"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold mb-2"
                   style={{ backgroundColor: testimonial.color }}
                 >
                   {testimonial.name.charAt(0)}
                 </div>
 
                 {/* Name */}
-                <p className="font-semibold text-sm text-brown-dark truncate">
+                <p className="font-semibold text-base text-brown-dark truncate">
                   {testimonial.name}
                 </p>
 
@@ -337,8 +337,8 @@ export default function Testimonials() {
                   {[...Array(5)].map((_, i) => (
                     <svg
                       key={i}
-                      width="12"
-                      height="12"
+                      width="16"
+                      height="16"
                       viewBox="0 0 24 24"
                       fill={i < testimonial.rating ? testimonial.color : '#E5E5E5'}
                     >
@@ -349,60 +349,6 @@ export default function Testimonials() {
               </div>
             </motion.button>
           ))}
-        </motion.div>
-
-        {/* Trust badges */}
-        <motion.div
-          className="mt-16 pt-12 border-t border-cream-darker"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {/* Badge 1 */}
-            <div className="flex items-center gap-3 text-brown-light">
-              <div className="w-12 h-12 rounded-full bg-orange/10 flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5A623" strokeWidth="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-bold text-brown-dark text-lg">100%</p>
-                <p className="text-sm">לקוחות מרוצים</p>
-              </div>
-            </div>
-
-            {/* Badge 2 */}
-            <div className="flex items-center gap-3 text-brown-light">
-              <div className="w-12 h-12 rounded-full bg-sage/20 flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8BB4A0" strokeWidth="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-bold text-brown-dark text-lg">5.0</p>
-                <p className="text-sm">דירוג ממוצע</p>
-              </div>
-            </div>
-
-            {/* Badge 3 */}
-            <div className="flex items-center gap-3 text-brown-light">
-              <div className="w-12 h-12 rounded-full bg-terracotta/10 flex items-center justify-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E07B54" strokeWidth="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-bold text-brown-dark text-lg">50+</p>
-                <p className="text-sm">פרויקטים הושלמו</p>
-              </div>
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>

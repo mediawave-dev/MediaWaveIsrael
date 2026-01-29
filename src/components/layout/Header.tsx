@@ -6,7 +6,6 @@ import { Logo } from '../ui'
 // All navigation links - plain text style
 const navLinks = [
   { label: 'שירותים', href: '#services' },
-  { label: 'העבודות שלנו', href: '#portfolio' },
   { label: 'שאלות נפוצות', href: '#faq' },
   { label: 'צור קשר', href: '#contact' },
 ]
@@ -73,10 +72,8 @@ export default function Header() {
       >
         <div className="container px-4 sm:px-6">
           <nav className="flex items-center justify-between gap-4">
-            {/* Logo - RIGHT side (RTL), with bg pill on mobile for visibility */}
-            <div className={`rounded-md transition-all duration-300 ${
-              !isScrolled ? 'bg-white/90 p-1.5 md:bg-transparent md:p-0 md:rounded-none' : ''
-            }`}>
+            {/* Logo - RIGHT side (RTL), white on hero via CSS filter */}
+            <div className="transition-all duration-300">
               <Logo variant="header" isScrolled={isScrolled} />
             </div>
 
@@ -87,7 +84,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="group relative text-lg text-brown hover:text-orange transition-colors duration-300 py-2"
+                  className="group relative text-xl text-brown hover:text-orange transition-colors duration-300 py-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -116,7 +113,7 @@ export default function Header() {
               <motion.a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="relative overflow-hidden bg-orange text-lg font-semibold py-3 px-7 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
+                className="relative overflow-hidden bg-orange text-xl font-semibold py-3 px-7 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
                 style={{ color: '#FFFFFF' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -254,7 +251,7 @@ export default function Header() {
                 </motion.a>
 
                 {/* Contact info */}
-                <div className="text-brown-light text-base">
+                <div className="text-brown-light text-base font-english">
                   <p>052-8731808</p>
                   <p>mediawaveisrael@gmail.com</p>
                 </div>
