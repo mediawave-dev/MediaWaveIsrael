@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 // Words to cycle through with typewriter effect
-const typewriterWords = ['אתרים', 'דפי נחיתה', 'חנויות']
+const typewriterWords = ['אתרים', 'דפי נחיתה']
 
 export default function Hero() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -91,17 +91,6 @@ export default function Hero() {
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <motion.span
-            className="inline-flex items-center gap-2 bg-white/10 text-white text-sm md:text-base font-semibold px-4 py-1.5 md:px-5 md:py-2 rounded-full mb-4 md:mb-6 backdrop-blur-sm border border-white/20"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="w-2 h-2 bg-orange rounded-full animate-pulse" />
-            פיתוח אתרים מקצועי
-          </motion.span>
-
           {/* Main Headline */}
           <motion.h1
             className="text-6xl md:text-8xl lg:text-9xl font-headline leading-tight mb-3 md:mb-6"
