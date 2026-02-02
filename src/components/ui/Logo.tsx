@@ -26,10 +26,9 @@ export default function Logo({
   // Size configurations - larger mobile sizes for readability
   const sizes = {
     header: {
-      // Mobile logo much larger for visibility
       container: isScrolled
-        ? 'h-32 md:h-[7.5rem] max-w-[300px] md:max-w-[320px]'
-        : 'h-36 md:h-44 lg:h-52 max-w-[340px] md:max-w-[400px]',
+        ? 'h-10 md:h-12 max-w-[180px] md:max-w-[200px]'
+        : 'h-32 md:h-44 lg:h-52 max-w-[320px] md:max-w-[400px]',
     },
     footer: {
       container: 'h-28 md:h-44 max-w-[260px] md:max-w-[360px]',
