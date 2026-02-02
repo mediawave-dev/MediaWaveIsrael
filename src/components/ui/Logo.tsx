@@ -23,19 +23,19 @@ export default function Logo({
   isScrolled = false,
 }: LogoProps) {
   // Note: showText is kept for API compatibility but the new logo includes text
-  // Size configurations - Mobile-first with larger mobile sizes
+  // Size configurations - larger mobile sizes for readability
   const sizes = {
     header: {
-      // Mobile logo significantly larger for visibility
+      // Mobile logo much larger for visibility
       container: isScrolled
-        ? 'h-20 md:h-[7.5rem] max-w-[220px] md:max-w-[320px]'
-        : 'h-24 md:h-44 lg:h-52 max-w-[260px] md:max-w-[400px]',
+        ? 'h-32 md:h-[7.5rem] max-w-[300px] md:max-w-[320px]'
+        : 'h-36 md:h-44 lg:h-52 max-w-[340px] md:max-w-[400px]',
     },
     footer: {
       container: 'h-28 md:h-44 max-w-[260px] md:max-w-[360px]',
     },
     mobile: {
-      container: 'h-24 max-w-[240px]',
+      container: 'h-28 max-w-[280px]',
     },
   }
 
@@ -71,7 +71,7 @@ export default function Logo({
           alt="MediaWave Israel - בניית אתרים מקצועית"
           className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
           style={
-            variant === 'header' && !isScrolled
+            variant === 'header'
               ? { filter: 'brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7))' }
               : undefined
           }

@@ -64,11 +64,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'bg-cream/80 backdrop-blur-lg shadow-sm py-2 md:py-3'
+        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled
+            ? 'bg-brown-dark/95 backdrop-blur-lg shadow-sm py-2 md:py-3'
             : 'bg-transparent py-3 md:py-5'
-        }`}
+          }`}
       >
         <div className="container px-4 sm:px-6">
           <nav className="flex items-center justify-between gap-4">
@@ -84,7 +83,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="group relative text-xl text-brown hover:text-orange transition-colors duration-300 py-2"
+                  className={`group relative text-xl ${isScrolled ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'} transition-colors duration-300 py-2`}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -137,7 +136,7 @@ export default function Header() {
               <div className="relative w-6 h-5">
                 {/* Hamburger lines with smooth morph to X */}
                 <motion.span
-                  className="absolute right-0 h-0.5 bg-brown rounded-full"
+                  className={`absolute right-0 h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 24 : 24,
@@ -147,7 +146,7 @@ export default function Header() {
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 />
                 <motion.span
-                  className="absolute right-0 top-[10px] h-0.5 bg-brown rounded-full"
+                  className={`absolute right-0 top-[10px] h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 0 : 18,
@@ -156,7 +155,7 @@ export default function Header() {
                   transition={{ duration: 0.2 }}
                 />
                 <motion.span
-                  className="absolute right-0 h-0.5 bg-brown rounded-full"
+                  className={`absolute right-0 h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 24 : 12,
