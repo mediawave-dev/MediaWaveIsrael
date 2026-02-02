@@ -65,8 +65,8 @@ export default function Header() {
     <>
       <header
         className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled
-            ? 'bg-brown-dark/95 backdrop-blur-lg shadow-sm py-2 md:py-3'
-            : 'bg-transparent py-3 md:py-5'
+          ? 'bg-brown-dark/95 backdrop-blur-lg shadow-sm py-1 md:py-2'
+          : 'bg-transparent py-3 md:py-5'
           }`}
       >
         <div className="container px-4 sm:px-6">
@@ -136,7 +136,7 @@ export default function Header() {
               <div className="relative w-6 h-5">
                 {/* Hamburger lines with smooth morph to X */}
                 <motion.span
-                  className={`absolute right-0 h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
+                  className="absolute right-0 h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 24 : 24,
@@ -146,7 +146,7 @@ export default function Header() {
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 />
                 <motion.span
-                  className={`absolute right-0 top-[10px] h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
+                  className="absolute right-0 top-[10px] h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 0 : 18,
@@ -155,7 +155,7 @@ export default function Header() {
                   transition={{ duration: 0.2 }}
                 />
                 <motion.span
-                  className={`absolute right-0 h-0.5 ${isScrolled ? 'bg-cream' : 'bg-brown'} rounded-full transition-colors duration-300`}
+                  className="absolute right-0 h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
                     width: isMobileMenuOpen ? 24 : 12,
