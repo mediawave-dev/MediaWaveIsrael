@@ -163,9 +163,9 @@ export default function About() {
             </motion.div>
           </motion.div>
 
-          {/* Illustration Column - LEFT side for RTL (spans 5 cols) */}
+          {/* Illustration Column - LEFT side for RTL (spans 5 cols) - Hidden on mobile */}
           <motion.div
-            className="lg:col-span-5 lg:order-1 relative"
+            className="hidden lg:block lg:col-span-5 lg:order-1 relative"
             style={{ y: illustrationY }}
           >
             {/* Creative overlap - illustration extends beyond its grid */}

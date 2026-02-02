@@ -526,16 +526,17 @@ button {
     padding-block: clamp(3rem, 8vh, 5rem);
   }
 
-  /* Improve text readability */
+  /* Improved text readability on mobile */
   body {
-    font-size: 0.875rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
-  /* Reduce heading sizes on mobile */
-  h1 { font-size: 1.75rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.25rem; }
+  /* Readable heading sizes on mobile */
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
 
   /* Stack elements on mobile */
   .mobile-stack {

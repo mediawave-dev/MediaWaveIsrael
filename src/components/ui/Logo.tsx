@@ -23,19 +23,19 @@ export default function Logo({
   isScrolled = false,
 }: LogoProps) {
   // Note: showText is kept for API compatibility but the new logo includes text
-  // Size configurations - Mobile-first with proper scaling
+  // Size configurations - Mobile-first with larger mobile sizes
   const sizes = {
     header: {
-      // Mobile: ~30-40% larger logo, Desktop: proportionally larger
+      // Mobile logo significantly larger for visibility
       container: isScrolled
-        ? 'h-14 md:h-24 max-w-[170px] md:max-w-[260px]'
-        : 'h-16 md:h-36 lg:h-44 max-w-[200px] md:max-w-[320px]',
+        ? 'h-20 md:h-[7.5rem] max-w-[220px] md:max-w-[320px]'
+        : 'h-24 md:h-44 lg:h-52 max-w-[260px] md:max-w-[400px]',
     },
     footer: {
-      container: 'h-24 md:h-36 max-w-[220px] md:max-w-[300px]',
+      container: 'h-28 md:h-44 max-w-[260px] md:max-w-[360px]',
     },
     mobile: {
-      container: 'h-16 max-w-[160px]',
+      container: 'h-24 max-w-[240px]',
     },
   }
 
