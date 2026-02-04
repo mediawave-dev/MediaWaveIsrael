@@ -102,7 +102,7 @@ export default function Header() {
                   <motion.span
                     className="absolute inset-0 -z-10 rounded-lg"
                     initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1, backgroundColor: 'rgba(245, 166, 35, 0.05)' }}
+                    whileHover={{ opacity: 1, backgroundColor: 'rgba(212, 165, 116, 0.10)' }}
                     transition={{ duration: 0.2 }}
                   />
                 </motion.a>

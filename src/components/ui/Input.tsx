@@ -36,7 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{
-                boxShadow: '0 0 20px rgba(245, 166, 35, 0.15), 0 0 40px rgba(245, 166, 35, 0.08)',
+                boxShadow: '0 0 20px rgba(212, 165, 116, 0.18), 0 0 40px rgba(212, 165, 116, 0.10)',
               }}
             />
           )}
@@ -155,7 +155,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{
-                boxShadow: '0 0 20px rgba(245, 166, 35, 0.15), 0 0 40px rgba(245, 166, 35, 0.08)',
+                boxShadow: '0 0 20px rgba(212, 165, 116, 0.18), 0 0 40px rgba(212, 165, 116, 0.10)',
               }}
             />
           )}

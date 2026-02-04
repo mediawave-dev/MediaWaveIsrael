@@ -12,11 +12,11 @@ interface ServiceCardProps {
 
 const accentColors = {
   orange: {
-    bg: 'rgba(245, 166, 35, 0.08)',
-    blob: 'rgba(245, 166, 35, 0.15)',
-    hover: 'rgba(253, 249, 242, 1)',
-    icon: '#F5A623',
-    glow: 'rgba(245, 166, 35, 0.4)',
+    bg: 'rgba(212, 165, 116, 0.10)',
+    blob: 'rgba(212, 165, 116, 0.18)',
+    hover: 'rgba(250, 246, 240, 1)',
+    icon: '#D4A574',
+    glow: 'rgba(212, 165, 116, 0.45)',
   },
   terracotta: {
     bg: 'rgba(224, 123, 84, 0.08)',

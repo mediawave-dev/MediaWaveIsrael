@@ -28,7 +28,7 @@ export default function Footer() {
   return (
     <footer className="relative bg-[#1a1a1a] overflow-hidden">
       {/* Top gold border */}
-      <div className="absolute top-0 inset-x-0 h-px bg-[#C89453]" />
+      <div className="absolute top-0 inset-x-0 h-px bg-[#F5A623]" />
 
       {/* Main footer content */}
       <div className="max-w-[1100px] mx-auto px-6 pt-14 pb-5 md:pt-16">
@@ -48,7 +48,7 @@ export default function Footer() {
           <div>
             <h4
               className="text-sm font-semibold mb-4"
-              style={{ color: '#C89453' }}
+              style={{ color: '#F5A623' }}
             >
               קישורים מהירים
             </h4>
@@ -60,7 +60,7 @@ export default function Footer() {
                   onClick={(e) => handleSmoothScroll(e, link.href)}
                   className="text-sm transition-colors duration-200 w-fit mx-auto md:mx-0"
                   style={{ color: '#999' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
                   onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
                 >
                   {link.label}
@@ -73,7 +73,7 @@ export default function Footer() {
           <div>
             <h4
               className="text-sm font-semibold mb-4"
-              style={{ color: '#C89453' }}
+              style={{ color: '#F5A623' }}
             >
               יצירת קשר
             </h4>
@@ -83,7 +83,7 @@ export default function Footer() {
                 href="tel:052-8731808"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
                 style={{ color: '#999' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
               >
                 <PhoneIcon />
@@ -97,7 +97,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
                 style={{ color: '#999' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
               >
                 <WhatsAppIcon />
@@ -109,7 +109,7 @@ export default function Footer() {
                 href="mailto:mediawaveisrael@gmail.com"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
                 style={{ color: '#999' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
                 onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
               >
                 <MailIcon />
@@ -137,7 +137,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="transition-colors duration-200"
               style={{ color: '#666' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
               onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
             >
               תקנון שימוש
@@ -149,7 +149,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="transition-colors duration-200"
               style={{ color: '#666' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#C89453')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#F5A623')}
               onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
             >
               מדיניות פרטיות

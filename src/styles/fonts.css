@@ -29,16 +29,12 @@
 }
 
 /* ============================================
-   OS LUIZI ROUND - Body Text
-   Single weight font - range covers all weights to prevent synthetic bold
-   font-synthesis: none is also set on body/headings in index.css
+   EFT OFFSET BOLD - Body Text
    ============================================ */
 
 @font-face {
-  font-family: 'OS Luizi';
-  src: url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff2') format('woff2'),
-       url('../fonts/OS-Luizi-FFC-v1/OS-Luizi-Round-Webfonts-V1/os_luizi_round-ffc-web.woff') format('woff'),
-       url('../fonts/OS-Luizi-FFC-v1/OS_Luizi Round-FFC.otf') format('opentype');
+  font-family: 'EFT OffSet';
+  src: url('../fonts/EFT_OffSet-Bold.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

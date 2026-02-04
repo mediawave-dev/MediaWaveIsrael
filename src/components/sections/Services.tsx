@@ -79,7 +79,7 @@ export default function Services() {
         <motion.div
           className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(200, 148, 83, 0.2) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.2) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
           animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
@@ -97,7 +97,7 @@ export default function Services() {
         <motion.div
           className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(245, 166, 35, 0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%)',
             filter: 'blur(50px)',
           }}
           animate={{ scale: [1, 1.1, 1] }}
@@ -110,7 +110,7 @@ export default function Services() {
         <div className="mb-14 md:mb-16">
           <motion.span
             className="block text-base font-semibold tracking-widest uppercase mb-4"
-            style={{ color: '#C89453' }}
+            style={{ color: '#D4A574' }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -197,13 +197,13 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
       whileHover={{
         y: -8,
         boxShadow:
-          '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(200, 148, 83, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+          '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(212, 165, 116, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
     >
       {/* Gold accent top border — scales in on hover */}
       <div
         className="absolute top-0 inset-x-0 h-[3px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right"
-        style={{ background: 'linear-gradient(90deg, #E8B778, #C89453)' }}
+        style={{ background: 'linear-gradient(90deg, #E8B88A, #D4A574)' }}
       />
 
       {/* Card content — consistent horizontal layout: Icon RIGHT, Text LEFT (RTL) */}
@@ -213,11 +213,11 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
           className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
           style={{
             background:
-              'linear-gradient(135deg, rgba(200, 148, 83, 0.12) 0%, rgba(200, 148, 83, 0.04) 100%)',
-            border: '1px solid rgba(200, 148, 83, 0.08)',
+              'linear-gradient(135deg, rgba(212, 165, 116, 0.12) 0%, rgba(212, 165, 116, 0.04) 100%)',
+            border: '1px solid rgba(212, 165, 116, 0.08)',
           }}
         >
-          <IconComponent size={28} color="#C89453" strokeWidth={1.5} />
+          <IconComponent size={28} color="#D4A574" strokeWidth={1.5} />
         </div>
 
         {/* Text — second child = LEFT side in RTL flex-row */}
@@ -240,10 +240,10 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
                   key={tag}
                   className={`inline-block rounded-full text-sm transition-transform duration-300 group-hover:scale-105${/[a-zA-Z]/.test(tag) ? ' font-english' : ''}`}
                   style={{
-                    background: 'rgba(200, 148, 83, 0.1)',
-                    color: '#C89453',
+                    background: 'rgba(212, 165, 116, 0.1)',
+                    color: '#D4A574',
                     padding: '4px 12px',
-                    border: '1px solid rgba(200, 148, 83, 0.2)',
+                    border: '1px solid rgba(212, 165, 116, 0.2)',
                     transitionDelay: `${tagIndex * 100}ms`,
                   }}
                 >
@@ -259,7 +259,7 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
       <div
         className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(200, 148, 83, 0.03) 0%, transparent 60%)',
+          background: 'linear-gradient(135deg, rgba(212, 165, 116, 0.03) 0%, transparent 60%)',
         }}
       />
     </motion.div>

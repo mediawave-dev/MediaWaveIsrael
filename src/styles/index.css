@@ -42,12 +42,15 @@
      FONT FAMILIES
      ----------------------------- */
   --font-headline: 'BA Platforma', 'Heebo', sans-serif;
-  --font-body: 'OS Luizi', 'Heebo', sans-serif;
+  --font-body: 'EFT OffSet', 'Heebo', sans-serif;
   --font-fallback: 'Heebo', sans-serif;
   /* English fonts - Playfair Display for all English text */
-  --font-english-display: 'Playfair Display', serif;  /* For headings, logo, titles */
-  --font-english-body: 'Playfair Display', serif;     /* For nav, buttons, tags, body text */
-  --font-english: 'Playfair Display', serif;           /* Default English */
+  --font-english-display: 'Playfair Display', serif;
+  /* For headings, logo, titles */
+  --font-english-body: 'Playfair Display', serif;
+  /* For nav, buttons, tags, body text */
+  --font-english: 'Playfair Display', serif;
+  /* Default English */
 
   /* -----------------------------
      TYPOGRAPHY SCALE
@@ -137,7 +140,8 @@
 html {
   direction: rtl;
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: 18px;
+  /* Increased base size for small font */
 }
 
 body {
@@ -152,7 +156,12 @@ body {
 }
 
 /* Headlines - BA Platforma */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-headline);
   font-weight: 700;
   line-height: var(--leading-tight);
@@ -160,10 +169,21 @@ h1, h2, h3, h4, h5, h6 {
   font-synthesis: none;
 }
 
-h1 { font-size: 2rem; }
-h2 { font-size: 1.75rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
 
 /* Links */
 a {
@@ -209,17 +229,20 @@ button {
 
 /* English font utilities - Playfair Display Italic for English text only */
 .font-english {
-  font-family: var(--font-english);  /* Playfair Display */
+  font-family: var(--font-english);
+  /* Playfair Display */
   font-style: italic;
 }
 
 .font-english-display {
-  font-family: var(--font-english-display);  /* Playfair Display */
+  font-family: var(--font-english-display);
+  /* Playfair Display */
   font-style: italic;
 }
 
 .font-english-body {
-  font-family: var(--font-english-body);  /* Playfair Display */
+  font-family: var(--font-english-body);
+  /* Playfair Display */
   font-style: italic;
 }
 
@@ -298,6 +321,7 @@ button {
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -410,17 +434,34 @@ button {
 }
 
 /* Stagger children animation helper */
-.stagger-children > * {
+.stagger-children>* {
   opacity: 0;
   transform: translateY(15px);
 }
 
-.stagger-children.is-visible > *:nth-child(1) { animation: staggerIn 0.5s var(--ease-out-expo) 0.1s forwards; }
-.stagger-children.is-visible > *:nth-child(2) { animation: staggerIn 0.5s var(--ease-out-expo) 0.2s forwards; }
-.stagger-children.is-visible > *:nth-child(3) { animation: staggerIn 0.5s var(--ease-out-expo) 0.3s forwards; }
-.stagger-children.is-visible > *:nth-child(4) { animation: staggerIn 0.5s var(--ease-out-expo) 0.4s forwards; }
-.stagger-children.is-visible > *:nth-child(5) { animation: staggerIn 0.5s var(--ease-out-expo) 0.5s forwards; }
-.stagger-children.is-visible > *:nth-child(6) { animation: staggerIn 0.5s var(--ease-out-expo) 0.6s forwards; }
+.stagger-children.is-visible>*:nth-child(1) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.1s forwards;
+}
+
+.stagger-children.is-visible>*:nth-child(2) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.2s forwards;
+}
+
+.stagger-children.is-visible>*:nth-child(3) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.3s forwards;
+}
+
+.stagger-children.is-visible>*:nth-child(4) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.4s forwards;
+}
+
+.stagger-children.is-visible>*:nth-child(5) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.5s forwards;
+}
+
+.stagger-children.is-visible>*:nth-child(6) {
+  animation: staggerIn 0.5s var(--ease-out-expo) 0.6s forwards;
+}
 
 @keyframes staggerIn {
   to {
@@ -444,8 +485,15 @@ button {
 }
 
 @keyframes iconBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
 /* Magnetic hover effect helper class */
@@ -459,9 +507,12 @@ button {
 }
 
 @keyframes glowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
   }
+
   50% {
     box-shadow: 0 0 30px rgba(245, 166, 35, 0.5);
   }
@@ -477,12 +528,10 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent);
   transform: translateX(-100%);
   animation: shimmer 1.5s infinite;
 }
@@ -499,6 +548,7 @@ button {
 
 /* Touch-friendly tap targets (minimum 44px) */
 @media (pointer: coarse) {
+
   button,
   a,
   [role="button"],
@@ -516,6 +566,7 @@ button {
 
 /* Mobile-specific adjustments */
 @media (max-width: 640px) {
+
   /* Reduce padding on small screens */
   .container {
     padding-inline: 1rem;
@@ -533,10 +584,21 @@ button {
   }
 
   /* Readable heading sizes on mobile */
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+  }
 
   /* Stack elements on mobile */
   .mobile-stack {
@@ -581,6 +643,7 @@ button {
 
 /* RTL-specific fixes */
 [dir="rtl"] {
+
   /* Ensure icons flip correctly in RTL */
   .rtl-flip {
     transform: scaleX(-1);
@@ -637,6 +700,7 @@ button {
 
 /* Print styles */
 @media print {
+
   /* Hide interactive elements */
   nav,
   footer,

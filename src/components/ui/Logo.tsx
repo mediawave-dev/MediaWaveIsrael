@@ -58,7 +58,7 @@ export default function Logo({
         <motion.div
           className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
-            background: 'radial-gradient(circle, rgba(245, 166, 35, 0.3) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.35) 0%, transparent 70%)',
             filter: 'blur(8px)',
             transform: 'scale(1.5)',
           }}

@@ -93,13 +93,13 @@ export default function Hero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline */}
           <motion.h1
-            className="text-6xl md:text-8xl lg:text-9xl font-headline leading-tight mb-3 md:mb-6"
+            className="text-8xl md:text-[11rem] lg:text-[14rem] font-headline leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <span className="block text-white">העסק שלכם —</span>
+            <span className="block text-white mb-2 md:mb-4">העסק שלכם</span>
             <span
               className="inline-block text-white"
               style={{ borderBottom: '3px solid #F5A623', paddingBottom: '8px' }}
@@ -110,7 +110,7 @@ export default function Hero() {
 
           {/* Typewriter Section */}
           <motion.div
-            className="text-3xl md:text-5xl lg:text-6xl text-white mb-2 md:mb-4 min-h-[1.4em]"
+            className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-4 min-h-[1.4em]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
