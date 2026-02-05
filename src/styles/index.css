@@ -1,11 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "./fonts.css";
 @import "@fontsource/heebo/400.css";
 @import "@fontsource/heebo/500.css";
 @import "@fontsource/heebo/700.css";
-
-/* Google Fonts - Playfair Display Italic for English text */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
 /* ============================================
    TAILWIND v4 THEME CONFIGURATION
@@ -41,15 +39,15 @@
   /* -----------------------------
      FONT FAMILIES
      ----------------------------- */
-  --font-headline: 'BA Platforma', 'Heebo', sans-serif;
-  --font-body: 'EFT OffSet', 'Heebo', sans-serif;
+  /* Stack: English Font -> Hebrew Font -> Fallback */
+  --font-headline: 'Outfit', 'BA Platforma', 'Heebo', sans-serif;
+  --font-body: 'Outfit', 'EFT OffSet', 'Heebo', sans-serif;
   --font-fallback: 'Heebo', sans-serif;
-  /* English fonts - Playfair Display for all English text */
-  --font-english-display: 'Playfair Display', serif;
-  /* For headings, logo, titles */
-  --font-english-body: 'Playfair Display', serif;
-  /* For nav, buttons, tags, body text */
-  --font-english: 'Playfair Display', serif;
+
+  /* English specific overrides (if needed) */
+  --font-english-display: 'Outfit', sans-serif;
+  --font-english-body: 'Outfit', sans-serif;
+  --font-english: 'Outfit', sans-serif;
   /* Default English */
 
   /* -----------------------------

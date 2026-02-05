@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Input } from './ui/Input'
 import { Button } from './ui/Button'
-import { X } from 'lucide-react'
+import { X, User, Phone } from 'lucide-react'
 
 // Same endpoint as Contact form
 const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
@@ -132,7 +132,8 @@ export default function LeadModal() {
                                         required
                                         value={formData.name}
                                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                                        className="bg-cream-dark border-transparent focus:border-orange text-right"
+                                        icon={<User size={18} />}
+                                        className="bg-cream-dark border-cream-darker focus:border-orange text-right"
                                     />
 
                                     <Input
@@ -141,7 +142,8 @@ export default function LeadModal() {
                                         required
                                         value={formData.phone}
                                         onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                                        className="bg-cream-dark border-transparent focus:border-orange text-right"
+                                        className="bg-cream-dark border-cream-darker focus:border-orange text-right"
+                                        icon={<Phone size={18} />}
                                         dir="ltr" // Keep numbers LTR
                                     />
 

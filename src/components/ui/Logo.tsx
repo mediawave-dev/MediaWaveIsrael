@@ -27,7 +27,7 @@ export default function Logo({
   const sizes = {
     header: {
       container: isScrolled
-        ? 'h-10 md:h-12 max-w-[180px] md:max-w-[200px]'
+        ? 'h-10 md:h-12 max-w-[200px]' // Physical space stays small
         : 'h-32 md:h-44 lg:h-52 max-w-[320px] md:max-w-[400px]',
     },
     footer: {
@@ -52,7 +52,7 @@ export default function Logo({
     >
       {/* Logo image with glow effect on hover */}
       <motion.div
-        className={`relative ${sizeConfig.container} transition-all duration-300`}
+        className={`relative ${sizeConfig.container} transition-all duration-500 ${variant === 'header' && isScrolled ? 'scale-[2.5] origin-right translate-y-2' : ''}`}
       >
         {/* Glow effect behind logo */}
         <motion.div

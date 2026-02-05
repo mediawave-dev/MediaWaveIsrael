@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   error?: string
+  icon?: React.ReactNode
 }
 
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -13,8 +14,9 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 
 // Reusable Input with floating label and focus effects
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className = '', ...props }, ref) => {
+  ({ label, error, icon, className = '', ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false)
+
     const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue)
 
     const isFloating = isFocused || hasValue
@@ -42,14 +44,22 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </AnimatePresence>
 
+        {/* Optional Icon */}
+        {icon && (
+          <div className={`absolute top-1/2 -translate-y-1/2 right-4 text-brown-muted transition-colors duration-300 ${isFocused ? 'text-orange' : ''}`}>
+            {icon}
+          </div>
+        )}
+
         {/* Input field */}
         <input
           ref={ref}
           {...props}
           className={`
-            peer w-full px-5 py-4 pt-6 bg-white border-2 rounded-2xl
+            peer w-full py-4 pt-6 bg-white border-2 rounded-2xl
             outline-none transition-all duration-300
             text-brown-dark placeholder-transparent
+            ${icon ? 'px-12' : 'px-5'} 
             ${error
               ? 'border-red-400 focus:border-red-500'
               : 'border-cream-darker focus:border-orange hover:border-orange/50'
@@ -75,8 +85,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {/* Floating label */}
         <motion.label
           className={`
-            absolute right-5 pointer-events-none
+            absolute pointer-events-none
             transition-colors duration-200
+            ${icon ? 'right-12' : 'right-5'}
             ${error ? 'text-red-500' : isFocused ? 'text-orange' : 'text-brown-muted'}
           `}
           animate={{

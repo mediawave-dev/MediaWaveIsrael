@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 // Words to cycle through with typewriter effect
-const typewriterWords = ['אתרים', 'דפי נחיתה']
+const typewriterWords = ['אתרים', 'דפי נחיתה', "צ'אטבוטים"]
 
 export default function Hero() {
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
@@ -179,30 +179,7 @@ export default function Hero() {
             </motion.a>
           </motion.div>
 
-          {/* Social Proof / Stats */}
-          <motion.div
-            className="grid grid-cols-2 gap-8 md:gap-16 justify-center max-w-md mx-auto pt-4 md:pt-8 pb-8 md:pb-0 border-t border-white/20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            {[
-              { value: '50+', label: 'פרויקטים הושלמו' },
-              { value: '24h', label: 'זמן תגובה' },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                className="flex flex-col items-center gap-1 md:gap-2 text-center"
-                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 + i * 0.1 }}
-              >
-                <span className="text-2xl md:text-4xl lg:text-5xl font-english text-orange">{stat.value}</span>
-                <span className="text-xs md:text-base lg:text-lg text-white/80">{stat.label}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+
         </div>
       </motion.div>
 
