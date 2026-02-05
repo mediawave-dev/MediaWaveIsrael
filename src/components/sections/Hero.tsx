@@ -93,7 +93,7 @@ export default function Hero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline */}
           <motion.h1
-            className="text-8xl md:text-[11rem] lg:text-[14rem] font-headline leading-none mb-4 md:mb-8"
+            className="text-6xl md:text-[11rem] lg:text-[14rem] font-headline leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,7 +126,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <motion.p
-            className="text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
+            className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -147,7 +147,7 @@ export default function Hero() {
           >
             <motion.a
               href="#contact"
-              className="group relative overflow-hidden bg-orange text-lg md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="group relative overflow-hidden bg-orange text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               style={{ color: '#FFFFFF' }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -171,7 +171,7 @@ export default function Hero() {
 
             <motion.a
               href="#services"
-              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-lg md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >

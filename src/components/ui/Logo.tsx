@@ -70,7 +70,7 @@ export default function Logo({
           alt="MediaWave Israel - בניית אתרים מקצועית"
           className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
           style={
-            variant === 'header'
+            variant === 'header' || variant === 'footer'
               ? { filter: 'brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7))' }
               : undefined
           }
