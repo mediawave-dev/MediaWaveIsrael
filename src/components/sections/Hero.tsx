@@ -93,18 +93,18 @@ export default function Hero() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline */}
           <motion.h1
-            className="text-6xl md:text-[11rem] lg:text-[14rem] font-headline leading-none mb-4 md:mb-8"
+            className="text-6xl md:text-[11rem] lg:text-[14rem] font-body leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <span className="block text-white mb-2 md:mb-4">העסק שלכם</span>
+            <span className="block text-white mb-2 md:mb-4">החזון שלכם</span>
             <span
               className="inline-block text-white"
               style={{ borderBottom: '3px solid #F5A623', paddingBottom: '8px' }}
             >
-              הבמה שלנו
+              המומחיות שלנו
             </span>
           </motion.h1>
 
