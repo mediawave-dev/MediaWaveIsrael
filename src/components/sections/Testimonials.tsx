@@ -8,7 +8,7 @@ const testimonials = [
     role: 'בעלת עסק',
     quote: 'שירות מקצועי ואדיב, האתר יצא מעל ומעבר למצופה. ממליצה בחום!',
     rating: 5,
-    color: '#F5A623',
+    color: '#7DD3FC',
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const testimonials = [
     role: 'יזם',
     quote: 'תהליך עבודה נעים ומהיר, התוצאה מדהימה. תודה רבה!',
     rating: 5,
-    color: '#E07B54',
+    color: '#67E8F9',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const testimonials = [
     role: 'מנהלת שיווק',
     quote: 'מקצועיות ברמה גבוהה, זמינות מלאה ותוצאה מושלמת.',
     rating: 5,
-    color: '#8BB4A0',
+    color: '#5EEAD4',
   },
   {
     id: 4,
@@ -32,7 +32,7 @@ const testimonials = [
     role: 'בעל חברה',
     quote: 'חוויה מעולה מההתחלה ועד הסוף, אתר מרשים ומקצועי.',
     rating: 5,
-    color: '#9B8AC4',
+    color: '#38BDF8',
   },
 ]
 
@@ -61,7 +61,7 @@ export default function Testimonials() {
         {/* Giant quote mark */}
         <motion.div
           className="absolute -top-20 -right-20 text-[400px] font-headline leading-none select-none"
-          style={{ color: 'rgba(245, 166, 35, 0.05)' }}
+          style={{ color: 'rgba(14, 165, 233, 0.05)' }}
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -73,7 +73,7 @@ export default function Testimonials() {
         {/* Floating shapes */}
         <motion.div
           className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%)' }}
           animate={{
             y: [0, -20, 0],
             scale: [1, 1.1, 1],
@@ -107,7 +107,7 @@ export default function Testimonials() {
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
-                fill="#F5A623"
+                fill="#7DD3FC"
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}

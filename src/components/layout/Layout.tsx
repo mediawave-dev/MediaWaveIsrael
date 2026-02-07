@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
+import AccessibilityWidget from '../ui/AccessibilityWidget'
 
 interface LayoutProps {
   children: ReactNode
@@ -34,6 +35,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Scroll to top button */}
       <ScrollToTop />
+
+      {/* Accessibility widget */}
+      <AccessibilityWidget />
     </div>
   )
 }

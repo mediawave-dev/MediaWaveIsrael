@@ -7,13 +7,13 @@
  */
 
 /* ============================================
-   BA PLATFORMA - Headlines
-   Only Regular weight available
+   EFT BETAAMANGO - Headlines
+   Free version
    ============================================ */
 
 @font-face {
-  font-family: 'BA Platforma';
-  src: url('../fonts/BAPlatforma-Regular.otf') format('opentype');
+  font-family: 'EFT Betaamango';
+  src: url('../fonts/EFT_Betaamango-Free.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -21,9 +21,22 @@
 
 /* For bold usage, use regular weight (single weight font) */
 @font-face {
+  font-family: 'EFT Betaamango';
+  src: url('../fonts/EFT_Betaamango-Free.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================
+   BA PLATFORMA - Secondary Headlines (backup)
+   Only Regular weight available
+   ============================================ */
+
+@font-face {
   font-family: 'BA Platforma';
   src: url('../fonts/BAPlatforma-Regular.otf') format('opentype');
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }

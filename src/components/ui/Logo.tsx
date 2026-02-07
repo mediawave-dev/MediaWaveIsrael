@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
-import logoImage from '../../assets/mediawave-logo.png'
+
+// New logo from public folder - transparent background
+const logoImage = '/images/logo-mediawave-removebg-preview.png'
 
 interface LogoProps {
   /** Size variant */
@@ -59,22 +61,22 @@ export default function Logo({
         <motion.div
           className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
-            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.35) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(125, 211, 252, 0.35) 0%, transparent 70%)',
             filter: 'blur(8px)',
             transform: 'scale(1.5)',
           }}
         />
 
-        {/* Logo image - white on desktop hero (not scrolled), original on mobile/scrolled */}
+        {/* Logo image - white in header, original colors elsewhere */}
         <motion.img
           src={logoImage}
           alt="MediaWave Israel - בניית אתרים מקצועית"
           className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
-          style={
-            variant === 'header' || variant === 'footer'
-              ? { filter: 'brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7))' }
-              : undefined
-          }
+          style={{
+            filter: variant === 'header'
+              ? 'brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5))'
+              : 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+          }}
           loading={variant === 'header' ? 'eager' : 'lazy'}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

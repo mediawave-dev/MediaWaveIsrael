@@ -71,7 +71,7 @@ export default function Services() {
       id="services"
       className="relative py-20 md:py-28 overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #fff9f0 0%, #fff5eb 50%, #f0f4ff 100%)',
+        background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ecfeff 100%)',
       }}
     >
       {/* Animated decorative background orbs */}
@@ -79,7 +79,7 @@ export default function Services() {
         <motion.div
           className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.2) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(125, 211, 252, 0.2) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
           animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
@@ -88,7 +88,7 @@ export default function Services() {
         <motion.div
           className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(100, 130, 200, 0.15) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
           animate={{ y: [0, 20, 0], scale: [1, 1.08, 1] }}
@@ -97,7 +97,7 @@ export default function Services() {
         <motion.div
           className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(94, 234, 212, 0.1) 0%, transparent 70%)',
             filter: 'blur(50px)',
           }}
           animate={{ scale: [1, 1.1, 1] }}
@@ -110,7 +110,7 @@ export default function Services() {
         <div className="mb-14 md:mb-16">
           <motion.span
             className="block text-base font-semibold tracking-widest uppercase mb-4"
-            style={{ color: '#D4A574' }}
+            style={{ color: '#38BDF8' }}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -155,8 +155,8 @@ export default function Services() {
         >
           <motion.a
             href="#contact"
-            className="inline-flex items-center gap-3 bg-orange text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300"
-            style={{ color: '#FFFFFF' }}
+            className="inline-flex items-center gap-3 text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 bg-orange hover:bg-orange-dark"
+            style={{ color: '#1e3a5f' }}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -197,13 +197,13 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
       whileHover={{
         y: -8,
         boxShadow:
-          '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(212, 165, 116, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+          '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(125, 211, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
     >
-      {/* Gold accent top border — scales in on hover */}
+      {/* Blue accent top border — scales in on hover */}
       <div
         className="absolute top-0 inset-x-0 h-[3px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right"
-        style={{ background: 'linear-gradient(90deg, #E8B88A, #D4A574)' }}
+        style={{ background: 'linear-gradient(90deg, #BAE6FD, #BAE6FD)' }}
       />
 
       {/* Card content — consistent horizontal layout: Icon RIGHT, Text LEFT (RTL) */}
@@ -213,11 +213,11 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
           className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110"
           style={{
             background:
-              'linear-gradient(135deg, rgba(212, 165, 116, 0.12) 0%, rgba(212, 165, 116, 0.04) 100%)',
-            border: '1px solid rgba(212, 165, 116, 0.08)',
+              'linear-gradient(135deg, rgba(125, 211, 252, 0.15) 0%, rgba(125, 211, 252, 0.05) 100%)',
+            border: '1px solid rgba(125, 211, 252, 0.12)',
           }}
         >
-          <IconComponent size={28} color="#D4A574" strokeWidth={1.5} />
+          <IconComponent size={28} color="#38BDF8" strokeWidth={1.5} />
         </div>
 
         {/* Text — second child = LEFT side in RTL flex-row */}
@@ -240,10 +240,10 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
                   key={tag}
                   className={`inline-block rounded-full text-sm transition-transform duration-300 group-hover:scale-105${/[a-zA-Z]/.test(tag) ? ' font-english' : ''}`}
                   style={{
-                    background: 'rgba(212, 165, 116, 0.1)',
-                    color: '#D4A574',
+                    background: 'rgba(125, 211, 252, 0.12)',
+                    color: '#0EA5E9',
                     padding: '4px 12px',
-                    border: '1px solid rgba(212, 165, 116, 0.2)',
+                    border: '1px solid rgba(125, 211, 252, 0.25)',
                     transitionDelay: `${tagIndex * 100}ms`,
                   }}
                 >
@@ -259,7 +259,7 @@ function BentoCard({ service, index }: { service: Service; index: number }) {
       <div
         className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(212, 165, 116, 0.03) 0%, transparent 60%)',
+          background: 'linear-gradient(135deg, rgba(125, 211, 252, 0.05) 0%, transparent 60%)',
         }}
       />
     </motion.div>

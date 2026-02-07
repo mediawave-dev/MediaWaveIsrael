@@ -112,7 +112,7 @@ export default function Header() {
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
                 className="relative overflow-hidden bg-orange text-xl font-semibold py-3 px-7 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
-                style={{ color: '#FFFFFF' }}
+                style={{ color: '#1e3a5f' }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3 }}

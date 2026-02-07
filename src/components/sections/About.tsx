@@ -244,14 +244,14 @@ function WatercolorIllustration() {
 
           {/* Gradients */}
           <radialGradient id="orangeGrad" cx="30%" cy="30%" r="70%">
-            <stop offset="0%" stopColor="#F5A623" stopOpacity="0.6" />
-            <stop offset="70%" stopColor="#F5A623" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#F5A623" stopOpacity="0" />
+            <stop offset="0%" stopColor="#7DD3FC" stopOpacity="0.6" />
+            <stop offset="70%" stopColor="#7DD3FC" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#7DD3FC" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="terracottaGrad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#E07B54" stopOpacity="0.5" />
-            <stop offset="80%" stopColor="#E07B54" stopOpacity="0.15" />
-            <stop offset="100%" stopColor="#E07B54" stopOpacity="0" />
+            <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.5" />
+            <stop offset="80%" stopColor="#06B6D4" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#06B6D4" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="sageGrad" cx="60%" cy="60%" r="50%">
             <stop offset="0%" stopColor="#8BB4A0" stopOpacity="0.45" />
@@ -259,9 +259,9 @@ function WatercolorIllustration() {
             <stop offset="100%" stopColor="#8BB4A0" stopOpacity="0" />
           </radialGradient>
           <radialGradient id="coralGrad" cx="40%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="#F28B82" stopOpacity="0.4" />
-            <stop offset="75%" stopColor="#F28B82" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#F28B82" stopOpacity="0" />
+            <stop offset="0%" stopColor="#22D3EE" stopOpacity="0.4" />
+            <stop offset="75%" stopColor="#22D3EE" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#22D3EE" stopOpacity="0" />
           </radialGradient>
         </defs>
 
