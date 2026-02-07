@@ -129,7 +129,7 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden relative w-10 h-10 flex items-center justify-center"
+              className="md:hidden relative w-11 h-11 flex items-center justify-center"
               aria-label={isMobileMenuOpen ? 'סגור תפריט' : 'פתח תפריט'}
               aria-expanded={isMobileMenuOpen}
             >
@@ -199,7 +199,7 @@ export default function Header() {
                 {/* Close button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="absolute top-6 left-6 w-10 h-10 flex items-center justify-center text-brown hover:text-orange transition-colors"
+                  className="absolute top-6 left-6 w-11 h-11 flex items-center justify-center text-brown hover:text-orange transition-colors"
                   aria-label="סגור תפריט"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -219,7 +219,7 @@ export default function Header() {
                     <motion.a
                       key={link.href}
                       href={link.href}
-                      className="text-xl text-brown hover:text-orange transition-colors duration-300"
+                      className="text-xl text-brown hover:text-orange transition-colors duration-300 min-h-11 flex items-center"
                       onClick={(e) => {
                         handleNavClick(e, link.href)
                         setIsMobileMenuOpen(false)
