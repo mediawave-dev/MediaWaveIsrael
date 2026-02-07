@@ -9,6 +9,18 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
+  // Detect reduced motion preference
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mediaQuery.matches)
+
+    const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -17,8 +29,14 @@ export default function Hero() {
 
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
-  // Typewriter effect
+  // Typewriter effect - disabled when reduced motion is preferred
   useEffect(() => {
+    // If reduced motion is preferred, show full first word without animation
+    if (prefersReducedMotion) {
+      setDisplayText(typewriterWords[0])
+      return
+    }
+
     const currentWord = typewriterWords[currentWordIndex]
     const typeSpeed = isDeleting ? 80 : 120
     const pauseTime = 2000
@@ -43,7 +61,7 @@ export default function Hero() {
     }, typeSpeed)
 
     return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentWordIndex])
+  }, [displayText, isDeleting, currentWordIndex, prefersReducedMotion])
 
   return (
     <section
@@ -95,9 +113,9 @@ export default function Hero() {
           <motion.h1
             className="text-6xl md:text-[11rem] lg:text-[14rem] font-body leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
-            initial={{ opacity: 0, y: 30 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.1 }}
           >
             <span className="block text-white mb-2 md:mb-4">החזון שלכם</span>
             <span
@@ -186,20 +204,22 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[2]"
-        initial={{ opacity: 0 }}
+        initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.2 }}
+        aria-label="גלול למטה לתוכן נוסף"
+        role="img"
       >
         <span className="text-xs text-white/60">גלול למטה</span>
         <motion.div
           className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2"
-          animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          animate={prefersReducedMotion ? {} : { y: [0, 5, 0] }}
+          transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity }}
         >
           <motion.div
             className="w-1.5 h-1.5 bg-orange rounded-full"
-            animate={{ y: [0, 12, 0], opacity: [1, 0.5, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            animate={prefersReducedMotion ? {} : { y: [0, 12, 0], opacity: [1, 0.5, 1] }}
+            transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity }}
           />
         </motion.div>
       </motion.div>
