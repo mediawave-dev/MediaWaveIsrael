@@ -18,11 +18,12 @@ interface LogoProps {
  */
 export default function Logo({
   variant = 'header',
-  showText: _showText = false,
+  // showText kept for API compatibility but not used - new logo includes text
+  showText: _showText,
   className = '',
   isScrolled = false,
 }: LogoProps) {
-  // Note: showText is kept for API compatibility but the new logo includes text
+  void _showText // Suppress unused variable warning - kept for API compatibility
   // Size configurations - larger mobile sizes for readability
   const sizes = {
     header: {
