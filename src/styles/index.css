@@ -132,6 +132,22 @@
 }
 
 /* ============================================
+   DYNAMIC VIEWPORT HEIGHT FIX
+   For mobile Safari address bar issues
+   ============================================ */
+
+.min-h-screen-dvh {
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh;
+}
+
+@supports not (min-height: 100dvh) {
+  .min-h-screen-dvh {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* ============================================
    BASE STYLES
    ============================================ */
 

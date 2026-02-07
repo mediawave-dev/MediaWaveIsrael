@@ -67,7 +67,7 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen-dvh flex items-center justify-center overflow-hidden"
     >
       {/* ===== LAYER 1: Video Background (z-0) ===== */}
 
@@ -105,7 +105,7 @@ export default function Hero() {
 
       {/* ===== LAYER 3: Content (z-[2]) ===== */}
       <motion.div
-        className="relative z-[2] container px-4 sm:px-6 pt-32 pb-12 md:pt-36 md:pb-32"
+        className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-48 md:pb-32"
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">

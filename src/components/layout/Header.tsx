@@ -7,7 +7,6 @@ import { Logo } from '../ui'
 const navLinks = [
   { label: 'שירותים', href: '#services' },
   { label: 'שאלות נפוצות', href: '#faq' },
-  { label: 'צור קשר', href: '#contact' },
 ]
 
 export default function Header() {
