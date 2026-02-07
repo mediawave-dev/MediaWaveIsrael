@@ -58,8 +58,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={`
             peer w-full py-4 pt-6 bg-white border-2 rounded-2xl
             outline-none transition-all duration-300
-            text-brown-dark placeholder-transparent
-            ${icon ? 'px-12' : 'px-5'} 
+            text-brown-dark placeholder-transparent text-base
+            ${icon ? 'px-12' : 'px-5'}
             ${error
               ? 'border-red-400 focus:border-red-500'
               : 'border-cream-darker focus:border-orange hover:border-orange/50'
@@ -179,7 +179,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           className={`
             peer w-full px-5 py-4 pt-6 bg-white border-2 rounded-2xl
             outline-none transition-all duration-300 resize-none
-            text-brown-dark placeholder-transparent
+            text-brown-dark placeholder-transparent text-base
             ${error
               ? 'border-red-400 focus:border-red-500'
               : 'border-cream-darker focus:border-orange hover:border-orange/50'

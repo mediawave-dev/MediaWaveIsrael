@@ -757,3 +757,25 @@ button {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 }
+
+/* ============================================
+   TAP FEEDBACK FOR TOUCH DEVICES
+   Ensures responsive feel on mobile
+   ============================================ */
+
+.tap-feedback {
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 50ms ease-out, opacity 50ms ease-out;
+}
+
+.tap-feedback:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+/* Ensure inputs don't trigger iOS zoom (minimum 16px) */
+input,
+select,
+textarea {
+  font-size: 1rem; /* 16px minimum */
+}
