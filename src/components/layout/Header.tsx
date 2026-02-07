@@ -194,11 +194,11 @@ export default function Header() {
               <div className="absolute top-20 -left-10 w-40 h-40 watercolor-blob watercolor-orange opacity-30" />
               <div className="absolute bottom-40 right-10 w-32 h-32 watercolor-blob watercolor-terracotta opacity-20" />
 
-              <div className="relative h-full flex flex-col p-8 pt-24">
+              <div className="relative h-full flex flex-col p-6 pt-20">
                 {/* Close button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="absolute top-6 left-6 w-11 h-11 flex items-center justify-center text-brown hover:text-orange transition-colors"
+                  className="absolute top-5 left-5 w-11 h-11 flex items-center justify-center text-brown hover:text-orange transition-colors"
                   aria-label="סגור תפריט"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -207,18 +207,18 @@ export default function Header() {
                   </svg>
                 </button>
 
-                {/* Logo in mobile menu */}
-                <div className="mb-12">
+                {/* Logo in mobile menu - smaller */}
+                <div className="mb-8 max-w-40">
                   <Logo variant="mobile" />
                 </div>
 
                 {/* Navigation Links */}
-                <nav className="flex flex-col gap-6">
+                <nav className="flex flex-col gap-5">
                   {navLinks.map((link, index) => (
                     <motion.a
                       key={link.href}
                       href={link.href}
-                      className="text-xl text-brown hover:text-orange transition-colors duration-300 min-h-11 flex items-center"
+                      className="text-2xl text-brown hover:text-orange transition-colors duration-300 min-h-11 flex items-center"
                       onClick={(e) => {
                         handleNavClick(e, link.href)
                         setIsMobileMenuOpen(false)
@@ -230,26 +230,32 @@ export default function Header() {
                       {link.label}
                     </motion.a>
                   ))}
+
+                  {/* CTA Link - same style with arrow */}
+                  <motion.a
+                    href="#contact"
+                    className="text-2xl text-orange font-semibold hover:text-orange-dark transition-colors duration-300 min-h-11 flex items-center gap-2 group"
+                    onClick={(e) => {
+                      handleNavClick(e, '#contact')
+                      setIsMobileMenuOpen(false)
+                    }}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    בואו נדבר
+                    <motion.span
+                      className="inline-block"
+                      animate={{ x: [0, -4, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      ←
+                    </motion.span>
+                  </motion.a>
                 </nav>
 
-                {/* CTA Button */}
-                <motion.a
-                  href="#contact"
-                  className="mt-auto mb-8 bg-orange text-center text-lg font-semibold py-4 px-8 rounded-full shadow-sm hover:bg-orange-dark transition-colors"
-                  style={{ color: '#FFFFFF' }}
-                  onClick={(e) => {
-                    handleNavClick(e, '#contact')
-                    setIsMobileMenuOpen(false)
-                  }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  בואו נדבר
-                </motion.a>
-
-                {/* Contact info */}
-                <div className="text-brown-light text-base font-english">
+                {/* Contact info - pushed to bottom */}
+                <div className="mt-auto text-brown-light text-sm font-english space-y-1">
                   <p>052-8731808</p>
                   <p>mediawaveisrael@gmail.com</p>
                 </div>
