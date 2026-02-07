@@ -201,9 +201,9 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - hidden on mobile when sticky CTA is visible */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[2]"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 z-[2] hidden md:flex"
         initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.2 }}
@@ -222,6 +222,25 @@ export default function Hero() {
             transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity }}
           />
         </motion.div>
+      </motion.div>
+
+      {/* Sticky Mobile CTA - thumb zone */}
+      <motion.div
+        className="fixed bottom-0 inset-x-0 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]
+                   bg-gradient-to-t from-black/80 via-black/60 to-transparent
+                   z-30 md:hidden"
+        initial={prefersReducedMotion ? { opacity: 1 } : { y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.5, duration: 0.5 }}
+      >
+        <a
+          href="#contact"
+          className="block w-full text-center bg-orange text-white font-semibold
+                     py-4 px-6 rounded-full shadow-lg
+                     active:scale-[0.97] active:opacity-90 transition-transform"
+        >
+          בואו נדבר על הפרויקט שלכם
+        </a>
       </motion.div>
     </section>
   )
