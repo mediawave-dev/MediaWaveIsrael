@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 
 // Words to cycle through with typewriter effect
 const typewriterWords = ['אתרים', 'דפי נחיתה', "צ'אטבוטים"]
@@ -11,6 +11,8 @@ export default function Hero() {
 
   // Detect reduced motion preference
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  // Show sticky CTA only after scrolling past hero
+  const [showStickyCTA, setShowStickyCTA] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -19,6 +21,16 @@ export default function Hero() {
     const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  // Show sticky CTA when scrolled past 80% of viewport height
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 0.8
+      setShowStickyCTA(window.scrollY > scrollThreshold)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const containerRef = useRef<HTMLElement>(null)
@@ -224,24 +236,31 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Sticky Mobile CTA - thumb zone */}
-      <motion.div
-        className="fixed bottom-0 inset-x-0 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]
-                   bg-gradient-to-t from-black/80 via-black/60 to-transparent
-                   z-30 md:hidden"
-        initial={prefersReducedMotion ? { opacity: 1 } : { y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.5, duration: 0.5 }}
-      >
-        <a
-          href="#contact"
-          className="block w-full text-center bg-orange text-white font-semibold
-                     py-4 px-6 rounded-full shadow-lg
-                     active:scale-[0.97] active:opacity-90 transition-transform"
-        >
-          בואו נדבר על הפרויקט שלכם
-        </a>
-      </motion.div>
+      {/* Sticky Mobile CTA - compact, appears after scroll */}
+      <AnimatePresence>
+        {showStickyCTA && (
+          <motion.a
+            href="#contact"
+            className="fixed bottom-6 left-1/2 z-30 md:hidden
+                       flex items-center gap-2 bg-orange text-white
+                       py-3 px-5 rounded-full shadow-xl
+                       active:scale-95 transition-transform"
+            style={{
+              x: '-50%',
+              boxShadow: '0 4px 20px rgba(245, 166, 35, 0.4)'
+            }}
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+          >
+            <span className="text-sm font-semibold">בואו נדבר</span>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </motion.a>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
