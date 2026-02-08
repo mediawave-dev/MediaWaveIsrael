@@ -20,7 +20,7 @@ export const blogPosts: BlogPost[] = [
     date: '2026-02-08',
     author: 'MediaWave',
     tags: ['עסקים קטנים', 'נוכחות דיגיטלית', 'טיפים'],
-    published: false,
+    published: true,
     content: `
 <p>כשהלקוח הבא שלכם מחפש שירות — הוא פותח את גוגל, לא את ספר הטלפונים.</p>
 
@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
     date: '2026-02-08',
     author: 'MediaWave',
     tags: ['ביצועים', 'SEO', 'מדריך טכני'],
-    published: false,
+    published: true,
     content: `
 <p>האתר שלכם יפה. אבל אם הוא נטען ב-8 שניות — אף אחד לא יראה את זה.</p>
 

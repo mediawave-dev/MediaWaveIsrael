@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
-import { Hero, Services, About, Packages, Testimonials, FAQ, Contact } from './components/sections'
+import { Hero, Services, About, Portfolio, Packages, Testimonials, FAQ, Contact } from './components/sections'
 import { Terms, Privacy, NotFound, Blog, BlogPost } from './components/pages'
 import LeadModal from './components/LeadModal'
 
@@ -16,6 +16,9 @@ function HomePage() {
 
       {/* About Section */}
       <About />
+
+      {/* Portfolio Section */}
+      <Portfolio />
 
       {/* Packages / Pricing Section */}
       <Packages />

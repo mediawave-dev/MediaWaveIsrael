@@ -114,9 +114,10 @@ function PackageCard({ pkg }: { pkg: Package }) {
         href={pkg.ctaLink}
         className={`block text-center font-semibold py-3.5 px-6 rounded-full transition-colors duration-300 ${
           pkg.popular
-            ? 'bg-orange text-white hover:bg-orange-dark shadow-sm hover:shadow-glow'
+            ? 'shadow-md hover:shadow-lg'
             : 'bg-cream-dark text-brown-dark hover:bg-orange/10 hover:text-orange border border-cream-darker/50'
         }`}
+        style={pkg.popular ? { backgroundColor: '#0EA5E9', color: '#FFFFFF' } : undefined}
         whileHover={{ scale: 1.02, y: -1 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}

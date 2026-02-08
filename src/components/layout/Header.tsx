@@ -72,7 +72,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled
+        className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${isScrolled || !isHomePage
           ? 'bg-brown-dark/95 backdrop-blur-lg shadow-sm py-2'
           : 'bg-transparent py-3 md:py-6'
           }`}
@@ -81,7 +81,7 @@ export default function Header() {
           <nav className="flex items-center justify-between gap-4">
             {/* Logo - RIGHT side (RTL), white on hero via CSS filter */}
             <div className="transition-all duration-300">
-              <Logo variant="header" isScrolled={isScrolled} />
+              <Logo variant="header" isScrolled={isScrolled || !isHomePage} />
             </div>
 
             {/* Desktop Navigation */}
@@ -91,7 +91,7 @@ export default function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`group relative text-xl ${isScrolled ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'} transition-colors duration-300 py-2`}
+                  className={`group relative text-xl ${isScrolled || !isHomePage ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'} transition-colors duration-300 py-2`}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
