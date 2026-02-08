@@ -184,7 +184,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               <span className="absolute inset-0 rounded-full bg-orange animate-ping opacity-20" />
               <div className="relative z-10">
                 <LottieIcon
-                  animationPath="/animations/7 chatbot/chatbot_header.json"
+                  animationPath="/animations/7%20chatbot/chatbot_header.json"
                   size={48}
                   loop={true}
                   playOnHover={false}
@@ -223,7 +223,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               <div className="flex items-center gap-2.5">
                 <div className="w-12 h-12 rounded-full bg-orange/20 flex items-center justify-center overflow-hidden">
                   <LottieIcon
-                    animationPath="/animations/7 chatbot/chatbot_header.json"
+                    animationPath="/animations/7%20chatbot/chatbot_header.json"
                     size={44}
                     loop={true}
                     playOnHover={false}

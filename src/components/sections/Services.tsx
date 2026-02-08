@@ -23,14 +23,14 @@ const services: Service[] = [
     id: 'landing',
     title: 'דפי נחיתה',
     description: 'דף ממוקד המרה עם WhatsApp וטפסים חכמים.',
-    lottieAnimation: '/animations/3 landing page/Contact us.json',
+    lottieAnimation: '/animations/3%20landing%20page/Contact%20us.json',
     tags: ['עיצוב ממיר', 'Mobile-First'],
   },
   {
     id: 'seo',
     title: 'קידום אורגני',
     description: 'SEO שעובד — מחקר, תוכן, ומבנה טכני נכון.',
-    lottieAnimation: '/animations/4 SEO/Website SEO Audit.json',
+    lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
     tags: ['Google', 'תוכן ממוקד'],
   },
 ]

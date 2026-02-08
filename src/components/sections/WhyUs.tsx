@@ -13,19 +13,19 @@ interface Differentiator {
 
 const differentiators: Differentiator[] = [
   {
-    lottieAnimation: '/animations/2/computer technician.json',
+    lottieAnimation: '/animations/2/computer%20technician.json',
     title: 'טכנולוגיה מתקדמת',
     description: 'React, Next.js, Astro — לא WordPress ולא תבניות.',
     color: 'orange',
   },
   {
-    lottieAnimation: '/animations/5 performance/Internet speed test.json',
+    lottieAnimation: '/animations/5%20performance/Internet%20speed%20test.json',
     title: 'ביצועים מעולים',
     description: 'ציון גבוה ב-Google PageSpeed — כי מהירות זה גם SEO.',
     color: 'terracotta',
   },
   {
-    lottieAnimation: '/animations/6 personal/contact us.json',
+    lottieAnimation: '/animations/6%20personal/contact%20us.json',
     title: 'ליווי אישי',
     description: 'מדברים ישירות עם המפתח, בלי middlemen.',
     color: 'sage',
