@@ -59,6 +59,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
+      aria-label="יצירת קשר"
       className="py-16 md:py-24 bg-cream"
     >
       <div className="container max-w-5xl">
@@ -127,13 +128,13 @@ export default function Contact() {
                 />
 
                 {successMsg && (
-                  <div className="bg-sage/10 border border-sage/30 p-4 rounded text-sage-dark text-sm">
+                  <div role="status" aria-live="polite" className="bg-sage/10 border border-sage/30 p-4 rounded text-sage-dark text-sm">
                     {successMsg}
                   </div>
                 )}
 
                 {errorMsg && (
-                  <div className="bg-coral/10 border border-coral/30 p-4 rounded text-coral text-sm">
+                  <div role="alert" aria-live="assertive" className="bg-coral/10 border border-coral/30 p-4 rounded text-coral text-sm">
                     {errorMsg}
                   </div>
                 )}

@@ -1,12 +1,50 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { Code2, Gauge, HeartHandshake } from 'lucide-react'
 
-// Values/Unique Points from CONTENT.md
-const values = [
-  { title: 'פיתוח מותאם אישית', icon: '✦' },
-  { title: 'עיצוב מרשים', icon: '◈' },
-  { title: 'תמיכה שוטפת', icon: '◇' },
+// Differentiating points — what makes MediaWave unique
+const differentiators = [
+  {
+    icon: Code2,
+    title: 'טכנולוגיה מתקדמת',
+    description: 'אנחנו לא משתמשים בתבניות מוכנות. כל אתר נבנה מאפס עם הטכנולוגיות המתקדמות ביותר.',
+    color: 'orange' as const,
+  },
+  {
+    icon: Gauge,
+    title: 'ציון PageSpeed מושלם',
+    description: 'האתרים שלנו משיגים ציוני ביצועים של 95-100 — כי מהירות זה לא רק חוויית משתמש, זה גם SEO.',
+    color: 'terracotta' as const,
+  },
+  {
+    icon: HeartHandshake,
+    title: 'ליווי אישי',
+    description: 'אנחנו operation קטן ובכוונה. אתם מדברים ישירות עם המפתח, בלי middlemen.',
+    color: 'sage' as const,
+  },
 ]
+
+const colorMap = {
+  orange: { bg: 'bg-orange/10', text: 'text-orange', border: 'border-orange/20' },
+  terracotta: { bg: 'bg-terracotta/10', text: 'text-terracotta', border: 'border-terracotta/20' },
+  sage: { bg: 'bg-sage/10', text: 'text-sage-dark', border: 'border-sage/20' },
+}
+
+const diffContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.5 },
+  },
+}
+
+const diffCardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
+  },
+}
 
 export default function About() {
   const containerRef = useRef<HTMLElement>(null)
@@ -26,6 +64,7 @@ export default function About() {
     <section
       ref={containerRef}
       id="about"
+      aria-label="אודות"
       className="relative py-16 md:py-24 bg-cream overflow-hidden"
     >
       {/* Background decorative elements with parallax */}
@@ -138,28 +177,37 @@ export default function About() {
               אנחנו מלווים אתכם מהרעיון הראשוני ועד להשקת האתר - ואחרי.
             </motion.p>
 
-            {/* Values/Unique Points */}
+            {/* Differentiating Points */}
             <motion.div
-              className="flex flex-wrap gap-4 mt-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10"
+              variants={diffContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
             >
-              {values.map((value, index) => (
-                <motion.div
-                  key={value.title}
-                  className="flex items-center gap-2 bg-white/60 backdrop-blur-sm px-4 py-2.5 rounded-full shadow-sm border border-cream-darker/20"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.6 + index * 0.1 }}
-                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.9)' }}
-                >
-                  <span className="text-orange">{value.icon}</span>
-                  <span className="text-base font-semibold text-brown-dark">{value.title}</span>
-                </motion.div>
-              ))}
+              {differentiators.map((item) => {
+                const Icon = item.icon
+                const colors = colorMap[item.color]
+                return (
+                  <motion.div
+                    key={item.title}
+                    variants={diffCardVariants}
+                    className={`relative bg-white/70 backdrop-blur-sm rounded-xl p-5 border ${colors.border} shadow-sm`}
+                    whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(74, 74, 74, 0.08)' }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                  >
+                    <div className={`w-10 h-10 rounded-lg ${colors.bg} flex items-center justify-center mb-3`}>
+                      <Icon size={20} className={colors.text} strokeWidth={2} />
+                    </div>
+                    <h3 className="font-headline font-bold text-brown-dark text-lg mb-1.5">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-brown-light leading-relaxed">
+                      {item.description}
+                    </p>
+                  </motion.div>
+                )
+              })}
             </motion.div>
           </motion.div>
 

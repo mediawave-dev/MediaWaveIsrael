@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="50%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#E0F2FE"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="25%" cy="35%" r="40%">
+      <stop offset="0%" stop-color="#7DD3FC" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#7DD3FC" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="75%" cy="65%" r="35%">
+      <stop offset="0%" stop-color="#67E8F9" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#67E8F9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative glows -->
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="150" cy="120" r="80" fill="#7DD3FC" opacity="0.08"/>
+  <circle cx="1050" cy="500" r="100" fill="#67E8F9" opacity="0.08"/>
+  <circle cx="900" cy="150" r="50" fill="#99F6E4" opacity="0.1"/>
+
+  <!-- Top accent line -->
+  <rect x="0" y="0" width="1200" height="4" fill="#7DD3FC"/>
+
+  <!-- Company name -->
+  <text x="600" y="220" text-anchor="middle" font-family="'Outfit', 'Heebo', sans-serif" font-size="72" font-weight="700" fill="#2A2A2A">MediaWave</text>
+
+  <!-- Tagline in Hebrew -->
+  <text x="600" y="310" text-anchor="middle" font-family="'Heebo', sans-serif" font-size="38" font-weight="500" fill="#4A4A4A" direction="rtl">פיתוח אתרים מותאם אישית</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="380" text-anchor="middle" font-family="'Heebo', sans-serif" font-size="26" fill="#6A6A6A" direction="rtl">בנו את הנוכחות הדיגיטלית שלכם</text>
+
+  <!-- Decorative line under subtitle -->
+  <line x1="450" y1="410" x2="750" y2="410" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Services pills -->
+  <rect x="290" y="450" width="160" height="42" rx="21" fill="#7DD3FC" opacity="0.12"/>
+  <text x="370" y="477" text-anchor="middle" font-family="'Heebo', sans-serif" font-size="18" fill="#0EA5E9" direction="rtl">אתרי תדמית</text>
+
+  <rect x="480" y="450" width="160" height="42" rx="21" fill="#67E8F9" opacity="0.12"/>
+  <text x="560" y="477" text-anchor="middle" font-family="'Heebo', sans-serif" font-size="18" fill="#06B6D4" direction="rtl">דפי נחיתה</text>
+
+  <rect x="670" y="450" width="120" height="42" rx="21" fill="#99F6E4" opacity="0.12"/>
+  <text x="730" y="477" text-anchor="middle" font-family="'Heebo', sans-serif" font-size="18" fill="#14B8A6">SEO</text>
+
+  <!-- Contact info -->
+  <text x="600" y="560" text-anchor="middle" font-family="'Outfit', sans-serif" font-size="20" fill="#6A6A6A">mediawaveisrael.com | 052-8731808</text>
+</svg>

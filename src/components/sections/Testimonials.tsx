@@ -1,44 +1,23 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { testimonials } from '../../data/testimonials'
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'יעל כ.',
-    role: 'בעלת עסק',
-    quote: 'שירות מקצועי ואדיב, האתר יצא מעל ומעבר למצופה. ממליצה בחום!',
-    rating: 5,
-    color: '#7DD3FC',
-  },
-  {
-    id: 2,
-    name: 'דני ל.',
-    role: 'יזם',
-    quote: 'תהליך עבודה נעים ומהיר, התוצאה מדהימה. תודה רבה!',
-    rating: 5,
-    color: '#67E8F9',
-  },
-  {
-    id: 3,
-    name: 'מיכל א.',
-    role: 'מנהלת שיווק',
-    quote: 'מקצועיות ברמה גבוהה, זמינות מלאה ותוצאה מושלמת.',
-    rating: 5,
-    color: '#5EEAD4',
-  },
-  {
-    id: 4,
-    name: 'רון מ.',
-    role: 'בעל חברה',
-    quote: 'חוויה מעולה מההתחלה ועד הסוף, אתר מרשים ומקצועי.',
-    rating: 5,
-    color: '#38BDF8',
-  },
-]
+// Color palette for testimonial cards (from site design system)
+const cardColors = ['#F5A623', '#E07B54', '#8BB4A0', '#F28B82']
+
+function getColor(index: number): string {
+  return cardColors[index % cardColors.length]
+}
 
 export default function Testimonials() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+
+  // Don't render if no real testimonials exist
+  if (testimonials.length === 0) return null
+
+  const color = getColor(activeIndex)
+  const active = testimonials[activeIndex]
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -54,6 +33,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
+      aria-label="המלצות לקוחות"
       className="relative py-16 md:py-24 bg-gradient-to-b from-cream to-cream-dark overflow-hidden"
     >
       {/* Background decorations */}
@@ -61,19 +41,19 @@ export default function Testimonials() {
         {/* Giant quote mark */}
         <motion.div
           className="absolute -top-20 -right-20 text-[400px] font-headline leading-none select-none"
-          style={{ color: 'rgba(14, 165, 233, 0.05)' }}
+          style={{ color: 'rgba(245, 166, 35, 0.05)' }}
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
         >
-          "
+          &ldquo;
         </motion.div>
 
         {/* Floating shapes */}
         <motion.div
           className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%)' }}
           animate={{
             y: [0, -20, 0],
             scale: [1, 1.1, 1],
@@ -100,14 +80,13 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {/* Stars decoration */}
             {[...Array(5)].map((_, i) => (
               <motion.svg
                 key={i}
                 width="20"
                 height="20"
                 viewBox="0 0 24 24"
-                fill="#7DD3FC"
+                fill="#F5A623"
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                 viewport={{ once: true }}
@@ -155,13 +134,13 @@ export default function Testimonials() {
               <div
                 className="relative bg-white rounded-3xl p-8 md:p-12 shadow-xl overflow-hidden"
                 style={{
-                  boxShadow: `0 25px 60px -15px ${testimonials[activeIndex].color}20`,
+                  boxShadow: `0 25px 60px -15px ${color}20`,
                 }}
               >
                 {/* Gradient accent */}
                 <div
                   className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-30"
-                  style={{ background: testimonials[activeIndex].color }}
+                  style={{ background: color }}
                 />
 
                 {/* Quote icon */}
@@ -175,7 +154,7 @@ export default function Testimonials() {
                     width="48"
                     height="48"
                     viewBox="0 0 24 24"
-                    fill={testimonials[activeIndex].color}
+                    fill={color}
                     className="opacity-20"
                   >
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
@@ -185,22 +164,24 @@ export default function Testimonials() {
                 {/* Content */}
                 <div className="relative z-10">
                   {/* Stars */}
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
-                      <motion.svg
-                        key={i}
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill={testimonials[activeIndex].color}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.1 + i * 0.05 }}
-                      >
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </motion.svg>
-                    ))}
-                  </div>
+                  {active.rating && (
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(active.rating)].map((_, i) => (
+                        <motion.svg
+                          key={i}
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill={color}
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.1 + i * 0.05 }}
+                        >
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </motion.svg>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Quote */}
                   <motion.p
@@ -209,7 +190,7 @@ export default function Testimonials() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
-                    "{testimonials[activeIndex].quote}"
+                    &ldquo;{active.quote}&rdquo;
                   </motion.p>
 
                   {/* Author */}
@@ -219,21 +200,42 @@ export default function Testimonials() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
                   >
-                    {/* Avatar */}
-                    <div
-                      className="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg"
-                      style={{ backgroundColor: testimonials[activeIndex].color }}
-                    >
-                      {testimonials[activeIndex].name.charAt(0)}
-                    </div>
+                    {/* Avatar — real image preferred */}
+                    {active.image ? (
+                      <img
+                        src={active.image}
+                        alt={active.name}
+                        width={56}
+                        height={56}
+                        loading="lazy"
+                        className="w-14 h-14 rounded-full object-cover shadow-lg"
+                      />
+                    ) : (
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-lg"
+                        style={{ backgroundColor: color }}
+                      >
+                        {active.name.charAt(0)}
+                      </div>
+                    )}
 
                     <div>
                       <p className="font-bold text-xl text-brown-dark">
-                        {testimonials[activeIndex].name}
+                        {active.name}
                       </p>
                       <p className="text-brown-light text-sm">
-                        {testimonials[activeIndex].role}
+                        {active.business}
                       </p>
+                      {active.url && (
+                        <a
+                          href={active.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-orange text-sm hover:underline"
+                        >
+                          {active.url}
+                        </a>
+                      )}
                     </div>
                   </motion.div>
                 </div>
@@ -241,7 +243,7 @@ export default function Testimonials() {
                 {/* Decorative line */}
                 <motion.div
                   className="absolute bottom-0 left-0 right-0 h-1"
-                  style={{ backgroundColor: testimonials[activeIndex].color }}
+                  style={{ backgroundColor: color }}
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: 5, ease: 'linear' }}
@@ -252,104 +254,121 @@ export default function Testimonials() {
         </div>
 
         {/* Navigation dots */}
-        <div className="flex justify-center gap-3 mb-16">
-          {testimonials.map((testimonial, index) => (
-            <button
-              key={testimonial.id}
-              onClick={() => {
-                setActiveIndex(index)
-                setIsAutoPlaying(false)
-              }}
-              className="relative group"
-              aria-label={`עבור לביקורת ${index + 1}`}
-            >
-              <motion.div
-                className="w-3 h-3 rounded-full transition-all duration-300"
-                style={{
-                  backgroundColor: activeIndex === index ? testimonial.color : '#D4D4D4',
+        {testimonials.length > 1 && (
+          <div className="flex justify-center gap-3 mb-16">
+            {testimonials.map((testimonial, index) => (
+              <button
+                key={testimonial.id}
+                onClick={() => {
+                  setActiveIndex(index)
+                  setIsAutoPlaying(false)
                 }}
-                whileHover={{ scale: 1.3 }}
-                whileTap={{ scale: 0.9 }}
-              />
-              {activeIndex === index && (
+                className="relative group"
+                aria-label={`עבור לביקורת ${index + 1}`}
+              >
                 <motion.div
-                  className="absolute inset-0 rounded-full"
-                  style={{ backgroundColor: testimonial.color }}
-                  layoutId="activeDot"
-                  initial={false}
-                  animate={{ scale: [1, 1.5, 1] }}
-                  transition={{ duration: 0.5 }}
+                  className="w-3 h-3 rounded-full transition-all duration-300"
+                  style={{
+                    backgroundColor: activeIndex === index ? getColor(index) : '#D4D4D4',
+                  }}
+                  whileHover={{ scale: 1.3 }}
+                  whileTap={{ scale: 0.9 }}
                 />
-              )}
-            </button>
-          ))}
-        </div>
+                {activeIndex === index && (
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    style={{ backgroundColor: getColor(index) }}
+                    layoutId="activeDot"
+                    initial={false}
+                    animate={{ scale: [1, 1.5, 1] }}
+                    transition={{ duration: 0.5 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Mini cards grid */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          {testimonials.map((testimonial, index) => (
-            <motion.button
-              key={testimonial.id}
-              onClick={() => {
-                setActiveIndex(index)
-                setIsAutoPlaying(false)
-              }}
-              className={`relative p-4 rounded-xl text-right transition-all duration-300 ${
-                activeIndex === index
-                  ? 'bg-white shadow-lg scale-105'
-                  : 'bg-white/50 hover:bg-white hover:shadow-md'
-              }`}
-              whileHover={{ y: -4 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {/* Active indicator */}
-              {activeIndex === index && (
-                <motion.div
-                  className="absolute inset-0 rounded-xl"
-                  style={{ border: `2px solid ${testimonial.color}` }}
-                  layoutId="activeCard"
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-              )}
+        {testimonials.length > 1 && (
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.button
+                key={testimonial.id}
+                onClick={() => {
+                  setActiveIndex(index)
+                  setIsAutoPlaying(false)
+                }}
+                className={`relative p-4 rounded-xl text-right transition-all duration-300 ${
+                  activeIndex === index
+                    ? 'bg-white shadow-lg scale-105'
+                    : 'bg-white/50 hover:bg-white hover:shadow-md'
+                }`}
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {/* Active indicator */}
+                {activeIndex === index && (
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    style={{ border: `2px solid ${getColor(index)}` }}
+                    layoutId="activeCard"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
 
-              <div className="relative z-10">
-                {/* Mini avatar */}
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold mb-2"
-                  style={{ backgroundColor: testimonial.color }}
-                >
-                  {testimonial.name.charAt(0)}
-                </div>
-
-                {/* Name */}
-                <p className="font-semibold text-base text-brown-dark truncate">
-                  {testimonial.name}
-                </p>
-
-                {/* Stars */}
-                <div className="flex gap-0.5 mt-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill={i < testimonial.rating ? testimonial.color : '#E5E5E5'}
+                <div className="relative z-10">
+                  {/* Mini avatar */}
+                  {testimonial.image ? (
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={40}
+                      height={40}
+                      loading="lazy"
+                      className="w-10 h-10 rounded-full object-cover mb-2"
+                    />
+                  ) : (
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white text-base font-bold mb-2"
+                      style={{ backgroundColor: getColor(index) }}
                     >
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  ))}
+                      {testimonial.name.charAt(0)}
+                    </div>
+                  )}
+
+                  {/* Name */}
+                  <p className="font-semibold text-base text-brown-dark truncate">
+                    {testimonial.name}
+                  </p>
+
+                  {/* Stars */}
+                  {testimonial.rating && (
+                    <div className="flex gap-0.5 mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill={i < (testimonial.rating ?? 0) ? getColor(index) : '#E5E5E5'}
+                        >
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            </motion.button>
-          ))}
-        </motion.div>
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   )

@@ -7,6 +7,7 @@ import { Logo } from '../ui'
 const navLinks = [
   { label: 'שירותים', href: '#services' },
   { label: 'שאלות נפוצות', href: '#faq' },
+  { label: 'הבלוג', href: '/blog' },
 ]
 
 export default function Header() {
@@ -26,9 +27,17 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Handle navigation - if not on home page, navigate to home first
+  // Handle navigation - supports hash links (#section) and route links (/blog)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
+
+    // Route link (e.g., /blog) — use React Router navigation
+    if (href.startsWith('/')) {
+      navigate(href)
+      return
+    }
+
+    // Hash link (e.g., #services) — scroll to section
     if (!isHomePage) {
       // Navigate to home page, then scroll to section
       navigate('/')

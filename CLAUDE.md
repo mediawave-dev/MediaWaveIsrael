@@ -391,3 +391,4 @@ npm run lint     # Run ESLint
 - Logo on RIGHT side
 - **ALWAYS use frontend-design skill for visual work!**
 - This website IS the portfolio - every animation demonstrates capabilities
+

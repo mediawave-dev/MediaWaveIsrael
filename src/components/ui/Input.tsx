@@ -1,4 +1,4 @@
-import { useState, forwardRef } from 'react'
+import { useState, useId, forwardRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -15,6 +15,8 @@ interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
 // Reusable Input with floating label and focus effects
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, icon, className = '', ...props }, ref) => {
+    const generatedId = useId()
+    const inputId = props.id || `input-${generatedId}`
     const [isFocused, setIsFocused] = useState(false)
 
     const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue)
@@ -55,6 +57,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           ref={ref}
           {...props}
+          id={inputId}
+          aria-required={props.required || undefined}
           className={`
             peer w-full py-4 pt-6 bg-white border-2 rounded-2xl
             outline-none transition-all duration-300
@@ -84,6 +88,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Floating label */}
         <motion.label
+          htmlFor={inputId}
           className={`
             absolute pointer-events-none
             transition-colors duration-200
@@ -110,7 +115,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           }}
           transition={{ duration: 0.2 }}
         >
-          <svg viewBox="0 0 16 16" fill="none">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
               d="M2 14 Q2 8 8 8 Q14 8 14 2"
               stroke="var(--color-orange)"
@@ -124,6 +129,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <AnimatePresence>
           {error && (
             <motion.p
+              role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
@@ -144,6 +150,8 @@ Input.displayName = 'Input'
 // Reusable Textarea with floating label
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ label, error, className = '', ...props }, ref) => {
+    const generatedId = useId()
+    const textareaId = props.id || `textarea-${generatedId}`
     const [isFocused, setIsFocused] = useState(false)
     const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue)
 
@@ -176,6 +184,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           ref={ref}
           {...props}
+          id={textareaId}
+          aria-required={props.required || undefined}
           className={`
             peer w-full px-5 py-4 pt-6 bg-white border-2 rounded-2xl
             outline-none transition-all duration-300 resize-none
@@ -204,6 +214,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         {/* Floating label */}
         <motion.label
+          htmlFor={textareaId}
           className={`
             absolute right-5 pointer-events-none
             transition-colors duration-200
@@ -229,7 +240,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           }}
           transition={{ duration: 0.2 }}
         >
-          <svg viewBox="0 0 16 16" fill="none">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
               d="M2 14 Q2 8 8 8 Q14 8 14 2"
               stroke="var(--color-orange)"
@@ -243,6 +254,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <AnimatePresence>
           {error && (
             <motion.p
+              role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}

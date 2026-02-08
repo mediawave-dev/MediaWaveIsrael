@@ -67,6 +67,7 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="hero"
+      aria-label="ראשי"
       className="relative min-h-screen-dvh flex items-center justify-center overflow-hidden"
     >
       {/* ===== LAYER 1: Video Background (z-0) ===== */}
