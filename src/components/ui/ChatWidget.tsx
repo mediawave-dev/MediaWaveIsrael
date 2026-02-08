@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, X, Send, RotateCcw } from 'lucide-react'
+import { X, Send, RotateCcw } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
+import { LottieIcon } from './index'
 
 // --- Typing Indicator ---
 
@@ -157,7 +158,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}
@@ -168,20 +169,27 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-brown-dark text-white text-xs px-3 py-1.5 rounded-lg opacity-0 pointer-events-none"
               whileHover={{ opacity: 1 }}
             >
-              שאלו אותי
+              יש לכם שאלות?
               <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-brown-dark" />
             </motion.span>
 
             <motion.button
               onClick={() => setIsOpen(true)}
-              className="group relative w-14 h-14 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2"
+              className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
             >
               {/* Pulse ring */}
               <span className="absolute inset-0 rounded-full bg-orange animate-ping opacity-20" />
-              <MessageCircle size={24} className="text-brown-dark relative z-10" />
+              <div className="relative z-10">
+                <LottieIcon
+                  animationPath="/animations/7 chatbot/chatbot_header.json"
+                  size={48}
+                  loop={true}
+                  playOnHover={false}
+                />
+              </div>
             </motion.button>
           </motion.div>
         )}
@@ -195,7 +203,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             role="dialog"
             aria-label="צ'אט עם MediaWave"
             aria-modal="true"
-            className="fixed z-50 bottom-0 left-0 sm:bottom-6 sm:left-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            className="fixed z-50 bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             style={{
               background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
               border: '1px solid rgba(226, 232, 240, 0.6)',
@@ -213,12 +221,17 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               }}
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-orange/20 flex items-center justify-center">
-                  <MessageCircle size={16} className="text-orange" />
+                <div className="w-12 h-12 rounded-full bg-orange/20 flex items-center justify-center overflow-hidden">
+                  <LottieIcon
+                    animationPath="/animations/7 chatbot/chatbot_header.json"
+                    size={44}
+                    loop={true}
+                    playOnHover={false}
+                  />
                 </div>
                 <div>
                   <p className="text-white text-sm font-semibold font-english">MediaWave</p>
-                  <p className="text-white/50 text-xs">נציג דיגיטלי</p>
+                  <p className="text-white/50 text-xs">עוזר אוטומטי</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">

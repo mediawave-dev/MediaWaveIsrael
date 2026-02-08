@@ -13,6 +13,7 @@
     "@fontsource/heebo": "^5.2.8",
     "@tailwindcss/vite": "^4.1.18",
     "framer-motion": "^12.26.2",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.563.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

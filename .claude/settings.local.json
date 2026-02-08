@@ -27,9 +27,21 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: add Claude Code tooling \\(agents, commands, rules\\)\n\n- Add agents: planner, architect, code-reviewer, e2e-runner\n- Add commands: /plan, /code-review, /build-fix\n- Add rules: security, coding-style, testing, git-workflow\n- Add hooks in settings.json for auto-linting\n- Add story.txt documenting all build steps in Hebrew\n- Update CLAUDE.md with available tools reference\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: add Cloudflare Pages headers and redirects\n\n- Add _headers file to fix MIME types for JS/CSS/fonts\n- Add _redirects for SPA routing support\n- Fixes \"application/octet-stream\" MIME type error\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git commit:*)",
-      "Skill(gsd-orchestration)",
-      "Skill(gsd-orchestration:*)",
-      "Bash(node -e:*)"
+      "Bash(npx --yes create-video@latest hero-ambient --blank --typescript)",
+      "Bash(tee:*)",
+      "Bash(test:*)",
+      "Bash(start remotion/hero-ambient/preview.html)",
+      "Bash(start remotion/hero-ambient/services-preview.html)",
+      "WebFetch(domain:gist.githubusercontent.com)",
+      "Bash(git pull:*)",
+      "Bash(if exist \".gsd-frontend\" rmdir /s /q \".gsd-frontend\")",
+      "Bash(npm run lint:*)",
+      "Bash(npm run dev:*)",
+      "Bash(gh repo view:*)",
+      "Bash(git stash:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "chrome-devtools"
+  ]
 }

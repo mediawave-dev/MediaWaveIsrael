@@ -5,3 +5,4 @@ export { default as ConnectingLine, FloatingBlob, FloatingDot, GrainOverlay, cur
 export { default as PageDecorations } from './PageDecorations'
 export { default as Logo, LogoIcon, LogoText } from './Logo'
 export { default as AccessibilityWidget } from './AccessibilityWidget'
+export { LottieIcon } from './LottieIcon'
