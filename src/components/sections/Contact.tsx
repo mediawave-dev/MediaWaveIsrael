@@ -72,7 +72,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            בואו נדבר
+            דברו איתנו
           </motion.h2>
 
           <motion.p

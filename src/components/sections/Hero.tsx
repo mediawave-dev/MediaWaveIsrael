@@ -76,7 +76,7 @@ export default function Hero() {
       <div
         className="absolute inset-0 md:hidden bg-cover bg-center"
         style={{
-          backgroundImage: 'url(/images/hero-poster.jpg)',
+          backgroundImage: 'url(/images/hero-poster.webp)',
           zIndex: 0,
         }}
       />
@@ -88,7 +88,7 @@ export default function Hero() {
         loop
         playsInline
         aria-hidden="true"
-        poster="/images/hero-poster.jpg"
+        poster="/images/hero-poster.webp"
         className="absolute inset-0 w-full h-full object-cover hidden md:block"
         style={{ zIndex: 0 }}
       >

@@ -25,7 +25,7 @@ const MAX_MESSAGE_LENGTH = 1000
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
   role: 'assistant',
-  content: 'שלום! \u{1F44B} אני הנציג הדיגיטלי של MediaWave. איך אפשר לעזור?',
+  content: 'אהלן! אני העוזר של MediaWave. איך אפשר לעזור?',
 }
 
 const LIMIT_MESSAGE = 'תודה על השיחה! לשיחה מעמיקה יותר, צרו קשר בוואטסאפ 052-8731808'

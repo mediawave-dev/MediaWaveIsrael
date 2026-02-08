@@ -1,7 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState, CSSProperties } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { projects, type Project } from '../../data/projects'
 import { ExternalLink } from 'lucide-react'
+import { useTilt3D, useReducedMotion } from '../../hooks'
 
 // --- Animation variants (RTL-aware: horizontal enters from right = negative x) ---
 
@@ -9,8 +10,8 @@ const featureListVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.4,
+      staggerChildren: 0.12,
+      delayChildren: 0.5,
     },
   },
 }
@@ -20,7 +21,7 @@ const featureItemVariants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.4, ease: 'easeOut' as const },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
   },
 }
 
@@ -28,25 +29,85 @@ const tagVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.2,
+      staggerChildren: 0.05,
+      delayChildren: 0.3,
     },
   },
 }
 
 const tagItemVariants = {
-  hidden: { opacity: 0, scale: 0.85 },
+  hidden: { opacity: 0, scale: 0.8, y: 8 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.3, ease: 'easeOut' as const },
+    y: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 400,
+      damping: 25,
+    },
   },
+}
+
+// Animated checkmark SVG component
+function AnimatedCheckmark({ delay = 0 }: { delay?: number }) {
+  return (
+    <motion.svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      className="flex-shrink-0"
+    >
+      {/* Circle background */}
+      <motion.circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="none"
+        stroke="var(--color-orange)"
+        strokeWidth="2"
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ pathLength: 1, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: delay }}
+      />
+      {/* Checkmark */}
+      <motion.path
+        d="M8 12l2.5 2.5L16 9"
+        fill="none"
+        stroke="var(--color-orange)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.3, delay: delay + 0.2 }}
+      />
+    </motion.svg>
+  )
 }
 
 // --- Featured Project Card (asymmetric layout for single/primary project) ---
 
 function FeaturedProject({ project }: { project: Project }) {
   const cardRef = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = useReducedMotion()
+
+  // 3D Tilt effect for browser mockup
+  const { ref: tiltRef, style: tiltStyle, handlers, isHovering } = useTilt3D<HTMLDivElement>({
+    maxRotation: 8,
+    scale: 1.02,
+    perspective: 1000,
+  })
+
+  // Inner parallax for screenshot (moves opposite to tilt direction)
+  const [innerParallax, setInnerParallax] = useState<CSSProperties>({})
+
+  // Dynamic shadow that responds to tilt
+  const dynamicShadow = isHovering && !prefersReducedMotion
+    ? '0 30px 60px -12px rgba(74, 74, 74, 0.2), 0 0 50px rgba(245, 166, 35, 0.12), 0 10px 30px -5px rgba(74, 74, 74, 0.15)'
+    : '0 25px 50px -12px rgba(74, 74, 74, 0.15)'
 
   return (
     <motion.div
@@ -60,18 +121,53 @@ function FeaturedProject({ project }: { project: Project }) {
       <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-0 items-center">
         {/* Screenshot side - 7 columns on desktop */}
         <div className="lg:col-span-7 relative z-10">
-          {/* Browser window frame */}
-          <motion.div
-            className="relative bg-white rounded-2xl shadow-2xl overflow-hidden group"
-            whileHover={{ boxShadow: '0 30px 60px -12px rgba(74, 74, 74, 0.15), 0 0 40px rgba(245, 166, 35, 0.08)' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          {/* Browser window frame with 3D tilt */}
+          <div
+            ref={tiltRef}
+            className="relative bg-white rounded-2xl overflow-hidden group cursor-pointer"
+            style={{
+              ...tiltStyle,
+              boxShadow: dynamicShadow,
+              transition: 'box-shadow 0.3s ease',
+            }}
+            onMouseMove={(e) => {
+              handlers.onMouseMove(e)
+              // Calculate inner parallax based on mouse position
+              if (!prefersReducedMotion && tiltRef.current) {
+                const rect = tiltRef.current.getBoundingClientRect()
+                const centerX = rect.left + rect.width / 2
+                const centerY = rect.top + rect.height / 2
+                const offsetX = ((e.clientX - centerX) / (rect.width / 2)) * -5
+                const offsetY = ((e.clientY - centerY) / (rect.height / 2)) * -5
+                setInnerParallax({
+                  transform: `translate(${offsetX}px, ${offsetY}px) scale(1.05)`,
+                })
+              }
+            }}
+            onMouseEnter={handlers.onMouseEnter}
+            onMouseLeave={() => {
+              handlers.onMouseLeave()
+              setInnerParallax({})
+            }}
           >
             {/* Browser header */}
-            <div className="bg-cream-dark px-4 py-3 flex items-center gap-3 border-b border-cream-darker">
+            <div className="bg-cream-dark px-4 py-3 flex items-center gap-3 border-b border-cream-darker relative z-10">
               <div className="flex gap-2">
-                <span className="w-3 h-3 rounded-full bg-coral/60" />
-                <span className="w-3 h-3 rounded-full bg-orange/60" />
-                <span className="w-3 h-3 rounded-full bg-sage/60" />
+                <motion.span
+                  className="w-3 h-3 rounded-full bg-coral/60"
+                  whileHover={{ scale: 1.2, boxShadow: '0 0 8px rgba(242, 139, 130, 0.6)' }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                />
+                <motion.span
+                  className="w-3 h-3 rounded-full bg-orange/60"
+                  whileHover={{ scale: 1.2, boxShadow: '0 0 8px rgba(245, 166, 35, 0.6)' }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                />
+                <motion.span
+                  className="w-3 h-3 rounded-full bg-sage/60"
+                  whileHover={{ scale: 1.2, boxShadow: '0 0 8px rgba(139, 180, 160, 0.6)' }}
+                  transition={{ type: 'spring', stiffness: 400 }}
+                />
               </div>
               <div
                 className="flex-1 bg-cream rounded-md px-3 py-1.5 text-sm text-brown-muted text-center font-english"
@@ -81,18 +177,36 @@ function FeaturedProject({ project }: { project: Project }) {
               </div>
             </div>
 
-            {/* Screenshot with hover effects */}
+            {/* Screenshot with inner parallax for depth */}
             <div className="relative overflow-hidden">
-              <motion.img
-                src={project.image}
-                alt={`${project.title} - ${project.type}`}
-                width={800}
-                height={600}
-                className="w-full h-auto block"
-                loading="lazy"
-                whileHover={{ scale: 1.03 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              />
+              <motion.div
+                className="w-full"
+                style={{
+                  ...innerParallax,
+                  transition: 'transform 0.15s ease-out',
+                }}
+              >
+                <img
+                  src={project.image}
+                  alt={`${project.title} - ${project.type}`}
+                  width={800}
+                  height={600}
+                  className="w-full h-auto block"
+                  loading="lazy"
+                />
+              </motion.div>
+
+              {/* Shine/reflection effect that moves with tilt */}
+              {!prefersReducedMotion && (
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 45%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 55%, transparent 60%)',
+                    transform: isHovering ? 'translateX(0)' : 'translateX(-100%)',
+                    transition: 'transform 0.6s ease-out, opacity 0.5s ease',
+                  }}
+                />
+              )}
 
               {/* Overlay gradient on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-brown-dark/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -112,42 +226,92 @@ function FeaturedProject({ project }: { project: Project }) {
                 </motion.a>
               )}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Single decorative glow (one orchestrated accent, not multiple scattered) */}
-          <div
+          {/* Decorative glow that responds to hover */}
+          <motion.div
             className="absolute -bottom-8 -left-8 w-40 h-40 rounded-full bg-orange/8 blur-3xl -z-10 pointer-events-none"
+            animate={{
+              scale: isHovering ? 1.2 : 1,
+              opacity: isHovering ? 1 : 0.8,
+            }}
+            transition={{ duration: 0.4 }}
           />
         </div>
 
         {/* Info side - 5 columns, overlaps slightly (RTL: enters from right = negative x) */}
         <motion.div
           className="lg:col-span-5 lg:-mr-12 relative z-20"
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -40, rotate: -2 }}
+          whileInView={{ opacity: 1, x: 0, rotate: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 lg:p-10 shadow-xl border border-cream-darker/50">
-            {/* Project type badge */}
-            <span className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-4 py-2 rounded-full mb-6">
-              <span className="w-1.5 h-1.5 bg-terracotta rounded-full" />
+          <motion.div
+            className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 lg:p-10 shadow-xl border border-cream-darker/50 relative overflow-hidden"
+            whileHover={{ y: -4, boxShadow: '0 25px 50px -12px rgba(74, 74, 74, 0.15)' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          >
+            {/* Project type badge with shimmer */}
+            <motion.span
+              className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-4 py-2 rounded-full mb-6 relative overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, type: 'spring', stiffness: 400 }}
+            >
+              <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-pulse" />
               {project.type}
-            </span>
+              {/* Shimmer effect */}
+              <motion.span
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+                }}
+                initial={{ x: '-100%' }}
+                animate={{ x: '200%' }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: 'linear',
+                }}
+              />
+            </motion.span>
 
             {/* Project title */}
-            <h3 className="text-3xl md:text-4xl font-english font-semibold text-brown-dark mb-4">
+            <motion.h3
+              className="text-3xl md:text-4xl font-english font-semibold text-brown-dark mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
               {project.title}
-            </h3>
+            </motion.h3>
 
             {/* Description */}
-            <p className="text-lg text-brown-light leading-relaxed mb-6">
+            <motion.p
+              className="text-lg text-brown-light leading-relaxed mb-6"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+            >
               {project.description}
-            </p>
+            </motion.p>
 
-            {/* Tech tags — staggered entrance */}
+            {/* Tech tags — enhanced with hover glow */}
             <div className="mb-8">
-              <span className="text-sm font-semibold text-brown-dark block mb-3">טכנולוגיות:</span>
+              <motion.span
+                className="text-sm font-semibold text-brown-dark block mb-3"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8 }}
+              >
+                טכנולוגיות:
+              </motion.span>
               <motion.div
                 className="flex flex-wrap gap-2"
                 variants={tagVariants}
@@ -159,7 +323,14 @@ function FeaturedProject({ project }: { project: Project }) {
                   <motion.span
                     key={tag}
                     variants={tagItemVariants}
-                    className="bg-cream-dark text-brown text-sm px-3 py-1.5 rounded-lg border border-cream-darker/40 hover:border-orange/30 hover:bg-orange/5 transition-colors duration-200"
+                    className="bg-cream-dark text-brown text-sm px-3 py-1.5 rounded-lg border border-cream-darker/40 cursor-default"
+                    whileHover={{
+                      scale: 1.08,
+                      borderColor: 'rgba(245, 166, 35, 0.4)',
+                      backgroundColor: 'rgba(245, 166, 35, 0.08)',
+                      boxShadow: '0 0 12px rgba(245, 166, 35, 0.15)',
+                    }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                   >
                     {tag}
                   </motion.span>
@@ -167,32 +338,38 @@ function FeaturedProject({ project }: { project: Project }) {
               </motion.div>
             </div>
 
-            {/* Features — staggered list with variants (RTL: enter from right) */}
+            {/* Features — with animated checkmarks */}
             {project.features && project.features.length > 0 && (
               <motion.div
-                className="space-y-3 mb-8"
+                className="space-y-4 mb-8"
                 variants={featureListVariants}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <span className="text-sm font-semibold text-brown-dark block mb-3">
+                <motion.span
+                  className="text-sm font-semibold text-brown-dark block mb-3"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.9 }}
+                >
                   מאפיינים עיקריים:
-                </span>
-                {project.features.map((feature) => (
+                </motion.span>
+                {project.features.map((feature, index) => (
                   <motion.div
                     key={feature}
                     className="flex items-center gap-3 text-brown-light"
                     variants={featureItemVariants}
                   >
-                    <span className="w-2 h-2 bg-orange rounded-full flex-shrink-0" />
+                    <AnimatedCheckmark delay={0.5 + index * 0.12} />
                     <span>{feature}</span>
                   </motion.div>
                 ))}
               </motion.div>
             )}
 
-            {/* CTA Button — spring hover for tactile feel */}
+            {/* CTA Button — enhanced with animated arrow */}
             {project.selfLink ? (
               <motion.a
                 href="#"
@@ -200,33 +377,55 @@ function FeaturedProject({ project }: { project: Project }) {
                   e.preventDefault()
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-shadow duration-300"
+                className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-shadow duration-300 relative overflow-hidden group/cta"
                 style={{ color: '#FFFFFF' }}
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
               >
                 <span>אתם כבר כאן</span>
+                <motion.span
+                  className="absolute inset-0 bg-white/20"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.5 }}
+                />
               </motion.a>
             ) : (
               <motion.a
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-shadow duration-300 group"
+                className="inline-flex items-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow transition-shadow duration-300 group/cta relative overflow-hidden"
                 style={{ color: '#FFFFFF' }}
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
               >
                 <span>צפה באתר</span>
-                <ExternalLink
-                  size={18}
-                  className="transition-transform duration-300 group-hover:-translate-x-1"
+                <motion.span
+                  className="inline-block"
+                  animate={{ x: [0, -3, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <ExternalLink size={18} />
+                </motion.span>
+                {/* Shine sweep on hover */}
+                <motion.span
+                  className="absolute inset-0 bg-white/20 pointer-events-none"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.5 }}
                 />
               </motion.a>
             )}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -393,6 +592,40 @@ export default function Portfolio() {
       >
         <div className="w-full h-full rounded-full bg-terracotta/6 blur-3xl" />
       </motion.div>
+
+      {/* Floating decorative dots */}
+      <motion.div
+        className="absolute top-40 right-[15%] w-3 h-3 rounded-full bg-orange/40 pointer-events-none hidden lg:block"
+        animate={{
+          y: [0, -15, 0],
+          opacity: [0.4, 0.7, 0.4],
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="absolute top-60 left-[20%] w-2 h-2 rounded-full bg-terracotta/50 pointer-events-none hidden lg:block"
+        animate={{
+          y: [0, 12, 0],
+          x: [0, 5, 0],
+        }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+      />
+      <motion.div
+        className="absolute bottom-48 left-[25%] w-2.5 h-2.5 rounded-full bg-sage/50 pointer-events-none hidden lg:block"
+        animate={{
+          y: [0, -10, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+      />
+      <motion.div
+        className="absolute top-32 left-[8%] w-4 h-4 rounded-full border border-orange/30 pointer-events-none hidden lg:block"
+        animate={{
+          rotate: [0, 360],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+      />
 
       <div className="container relative">
         {/* Section Header — RTL: horizontal animations enter from right (negative x) */}
