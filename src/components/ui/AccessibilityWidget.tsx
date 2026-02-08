@@ -117,32 +117,16 @@ export default function AccessibilityWidget() {
     setIsOpen(prev => !prev)
   }, [])
 
-  // Animation variants - respect disable animations setting
-  const panelVariants = settings.disableAnimations
-    ? { hidden: { opacity: 0 }, visible: { opacity: 1 } }
-    : {
-        hidden: { opacity: 0, scale: 0.95, y: -10 },
-        visible: { opacity: 1, scale: 1, y: 0 },
-      }
+  // Animation variants
+  const panelVariants = {
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { x: '0%', opacity: 1 },
+  }
 
   return (
-    <div className="fixed top-24 left-4 z-50">
-      {/* Floating Button */}
-      <motion.button
-        ref={buttonRef}
-        onClick={handleToggle}
-        className="w-12 h-12 rounded-full bg-cream border-2 border-cream-darker text-brown shadow-md flex items-center justify-center hover:bg-orange hover:text-white hover:border-orange transition-colors duration-200"
-        whileHover={settings.disableAnimations ? undefined : { scale: 1.05 }}
-        whileTap={settings.disableAnimations ? undefined : { scale: 0.95 }}
-        aria-label="הגדרות נגישות"
-        aria-expanded={isOpen}
-        aria-controls="accessibility-panel"
-      >
-        <AccessibilityIcon className="w-6 h-6" />
-      </motion.button>
-
-      {/* Panel */}
-      <AnimatePresence>
+    <div className="fixed top-1/2 -translate-y-1/2 left-0 z-50 flex items-start">
+      {/* Side Panel Drawer */}
+      <AnimatePresence mode='wait'>
         {isOpen && (
           <motion.div
             ref={panelRef}
@@ -150,16 +134,19 @@ export default function AccessibilityWidget() {
             role="dialog"
             aria-label="הגדרות נגישות"
             aria-modal="true"
-            className="accessibility-panel absolute top-14 left-0 w-72 p-4"
+            className="bg-white/95 backdrop-blur-md shadow-2xl border-r border-y border-cream-darker rounded-r-2xl p-6 w-72 h-auto max-h-[80vh] overflow-y-auto"
             variants={panelVariants}
             initial="hidden"
             animate="visible"
             exit="hidden"
-            transition={{ duration: settings.disableAnimations ? 0 : 0.2 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-cream-darker">
-              <h2 className="text-lg font-bold text-brown-dark">נגישות</h2>
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-cream-darker">
+              <h2 className="text-xl font-bold text-brown-dark flex items-center gap-2">
+                <AccessibilityIcon className="w-5 h-5 text-orange" />
+                נגישות
+              </h2>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-brown-light hover:bg-cream-darker hover:text-brown-dark transition-colors"
@@ -170,8 +157,8 @@ export default function AccessibilityWidget() {
             </div>
 
             {/* Text Size */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-brown-dark mb-2">
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-brown-dark mb-3">
                 גודל טקסט
               </label>
               <div className="flex gap-2">
@@ -179,8 +166,11 @@ export default function AccessibilityWidget() {
                   <button
                     key={size}
                     onClick={() => setTextSize(size)}
-                    className="text-size-btn flex-1 text-sm"
-                    data-active={settings.textSize === size}
+                    className={`text-size-btn flex-1 py-2 text-sm rounded-lg border transition-all ${
+                      settings.textSize === size
+                        ? 'bg-orange text-white border-orange shadow-md'
+                        : 'bg-cream text-brown border-cream-darker hover:border-orange/50'
+                    }`}
                     aria-pressed={settings.textSize === size}
                   >
                     {TEXT_SIZE_LABELS[size]}
@@ -189,52 +179,80 @@ export default function AccessibilityWidget() {
               </div>
             </div>
 
-            {/* High Contrast */}
-            <div className="mb-3">
+            {/* Toggles */}
+            <div className="space-y-4 mb-6">
+              {/* High Contrast */}
               <button
                 onClick={toggleHighContrast}
-                className="accessibility-toggle w-full"
+                className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
+                  settings.highContrast
+                    ? 'bg-brown-dark text-white border-brown-dark'
+                    : 'bg-cream text-brown border-cream-darker hover:border-orange/50'
+                }`}
                 aria-pressed={settings.highContrast}
               >
-                <span className="text-sm font-medium text-brown-dark">
-                  ניגודיות גבוהה
-                </span>
-                <span
-                  className="accessibility-toggle-switch"
-                  data-active={settings.highContrast}
-                  aria-hidden="true"
-                />
+                <span className="text-sm font-medium">ניגודיות גבוהה</span>
+                <div className={`w-10 h-6 rounded-full relative transition-colors ${
+                  settings.highContrast ? 'bg-orange' : 'bg-gray-300'
+                }`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                    settings.highContrast ? 'left-1' : 'right-1'
+                  }`} />
+                </div>
               </button>
-            </div>
 
-            {/* Disable Animations */}
-            <div className="mb-4">
+              {/* Disable Animations */}
               <button
                 onClick={toggleAnimations}
-                className="accessibility-toggle w-full"
+                className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
+                  settings.disableAnimations
+                    ? 'bg-orange/10 border-orange text-brown-dark'
+                    : 'bg-cream text-brown border-cream-darker hover:border-orange/50'
+                }`}
                 aria-pressed={settings.disableAnimations}
               >
-                <span className="text-sm font-medium text-brown-dark">
-                  ללא אנימציות
-                </span>
-                <span
-                  className="accessibility-toggle-switch"
-                  data-active={settings.disableAnimations}
-                  aria-hidden="true"
-                />
+                <span className="text-sm font-medium">ללא אנימציות</span>
+                <div className={`w-10 h-6 rounded-full relative transition-colors ${
+                  settings.disableAnimations ? 'bg-orange' : 'bg-gray-300'
+                }`}>
+                  <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
+                    settings.disableAnimations ? 'left-1' : 'right-1'
+                  }`} />
+                </div>
               </button>
             </div>
 
             {/* Reset */}
             <button
               onClick={reset}
-              className="w-full py-2 px-4 rounded-lg border-2 border-cream-darker text-brown hover:bg-cream-darker transition-colors text-sm font-medium"
+              className="w-full py-2.5 px-4 rounded-lg border-2 border-cream-darker text-brown hover:bg-cream-darker hover:text-brown-dark transition-colors text-sm font-bold active:scale-95"
             >
-              איפוס
+              איפוס הגדרות
             </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Trigger Tab (Left Edge) */}
+      <motion.button
+        ref={buttonRef}
+        onClick={handleToggle}
+        className={`
+          relative z-40
+          flex items-center justify-center
+          w-10 h-12
+          bg-white/90 backdrop-blur-sm
+          border-y border-r border-cream-darker
+          rounded-r-xl shadow-md
+          text-brown hover:text-orange hover:w-12
+          transition-all duration-300 ease-out
+          ${isOpen ? 'translate-x-0 opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'}
+        `}
+        aria-label="פתח תפריט נגישות"
+        aria-expanded={isOpen}
+      >
+        <AccessibilityIcon className="w-6 h-6" />
+      </motion.button>
     </div>
   )
 }
