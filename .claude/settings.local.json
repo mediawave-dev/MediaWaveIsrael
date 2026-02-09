@@ -38,7 +38,8 @@
       "Bash(npm run lint:*)",
       "Bash(npm run dev:*)",
       "Bash(gh repo view:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "WebFetch(domain:lottie.host)"
     ]
   },
   "enabledMcpjsonServers": [

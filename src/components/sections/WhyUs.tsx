@@ -15,7 +15,7 @@ const differentiators: Differentiator[] = [
   {
     lottieAnimation: '/animations/2/computer%20technician.json',
     title: 'טכנולוגיה מתקדמת',
-    description: 'React, Next.js, Astro — לא WordPress ולא תבניות.',
+    description: 'React, Next.js, Astro — טכנולוגיה חדשנית לביצועים מעולים.',
     color: 'orange',
   },
   {

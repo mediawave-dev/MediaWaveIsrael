@@ -3,6 +3,7 @@ import { Logo } from '../ui'
 
 const quickLinks = [
   { label: 'דף הבית', href: '#top' },
+  { label: 'מחשבון הפסדים', href: '#roi-calculator' },
   { label: 'שירותים', href: '#services' },
   { label: 'שאלות נפוצות', href: '#faq' },
   { label: 'הבלוג', href: '/blog' },

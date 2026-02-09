@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useSpring, useTransform } from 'framer-motion'
 import { Calculator, MessageCircle, TrendingUp, Users, CreditCard, HelpCircle } from 'lucide-react'
+import { LottieIcon } from '../ui'
 
 // Format number with Hebrew locale
 function formatCurrency(value: number): string {
@@ -83,10 +84,10 @@ function InputField({
           </button>
           {/* Tooltip */}
           {showTooltip && (
-            <div className="absolute z-20 bottom-full right-0 mb-2 w-56 p-3 bg-brown-dark text-white text-sm rounded-lg shadow-lg">
+            <div className="fixed md:absolute z-50 md:z-20 left-4 right-4 md:left-auto md:right-0 bottom-auto md:bottom-full top-auto md:top-auto mb-0 md:mb-2 w-auto md:w-56 p-3 bg-brown-dark text-white text-sm rounded-lg shadow-lg">
               <p className="mb-1">{helperText}</p>
               <p className="text-orange-light text-xs">{example}</p>
-              <div className="absolute bottom-0 right-3 translate-y-1/2 rotate-45 w-2 h-2 bg-brown-dark" />
+              <div className="hidden md:block absolute bottom-0 right-3 translate-y-1/2 rotate-45 w-2 h-2 bg-brown-dark" />
             </div>
           )}
         </div>
@@ -317,7 +318,7 @@ export default function ROICalculator() {
                   href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] hover:bg-[#1da851] text-white rounded-xl
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0c2d4a] rounded-xl
                              font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
@@ -344,7 +345,10 @@ export default function ROICalculator() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            💡 בשיחה קצרה נראה לך בדיוק מה לשפר באתר
+            <span className="inline-flex items-center gap-1">
+              <LottieIcon animationPath="/animations/lightbulb.json" size={24} loop={true} playOnHover={false} className="inline-block" />
+              בשיחה קצרה נראה לך בדיוק מה לשפר באתר
+            </span>
           </motion.p>
         )}
       </div>

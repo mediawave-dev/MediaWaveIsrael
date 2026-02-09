@@ -63,7 +63,7 @@ function ScrollToTop({ isChatOpen }: { isChatOpen: boolean }) {
   return (
     <motion.button
       onClick={scrollToTop}
-      className={`fixed bottom-6 left-6 z-40 w-12 h-12 bg-cream border border-cream-darker text-brown rounded-full shadow-md flex items-center justify-center hover:bg-orange hover:text-white hover:border-orange transition-all duration-300 ${
+      className={`fixed bottom-20 left-4 sm:bottom-24 sm:left-6 z-40 w-12 h-12 bg-cream border border-cream-darker text-brown rounded-full shadow-md flex items-center justify-center hover:bg-orange hover:text-white hover:border-orange transition-all duration-300 ${
         isChatOpen ? 'sm:flex hidden' : ''
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -88,7 +88,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           href="https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 z-30 h-12 sm:h-14 bg-[#25D366] rounded-full shadow-lg flex items-center gap-2 px-3 sm:px-4"
+          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-12 sm:h-14 bg-[#25D366] rounded-full shadow-lg flex items-center gap-2 px-3 sm:px-4"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}

@@ -14,10 +14,7 @@ function HomePage() {
       {/* Why Us Section - show differentiators first */}
       <WhyUs />
 
-      {/* ROI Calculator - show what they're losing */}
-      <ROICalculator />
-
-      {/* Services Section - what we offer to fix it */}
+      {/* Services Section - what we offer */}
       <Services />
 
       {/* Portfolio Section */}
@@ -29,7 +26,10 @@ function HomePage() {
       {/* Testimonials — renders only when real data exists in data/testimonials.ts */}
       <Testimonials />
 
-      {/* FAQ Section - after testimonials, before contact */}
+      {/* ROI Calculator - show what they're losing */}
+      <ROICalculator />
+
+      {/* FAQ Section - after calculator, before contact */}
       <FAQ />
 
       {/* Contact Section */}

@@ -169,7 +169,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-brown-dark text-white text-xs px-3 py-1.5 rounded-lg opacity-0 pointer-events-none"
               whileHover={{ opacity: 1 }}
             >
-              יש לכם שאלות?
+              צ'אטבוט
               <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-brown-dark" />
             </motion.span>
 
