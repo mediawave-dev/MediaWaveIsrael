@@ -15,7 +15,7 @@ const services: Service[] = [
   {
     id: 'websites',
     title: 'בניית אתרים',
-    description: 'React, Next.js, WordPress — הטכנולוגיה הנכונה לעסק שלכם.',
+    description: 'אנחנו בוחרים את הטכנולוגיה הנכונה לעסק שלכם, בין אם זה React, Next.js או WordPress.',
     lottieAnimation: '/animations/1/web-design.json',
     tags: ['React', 'Next.js', 'WordPress'],
   },
@@ -29,7 +29,7 @@ const services: Service[] = [
   {
     id: 'seo',
     title: 'קידום אורגני',
-    description: 'SEO שעובד — מחקר, תוכן, ומבנה טכני נכון.',
+    description: 'קידום אורגני שבאמת עובד, עם מחקר מילות מפתח, תוכן ממוקד ומבנה טכני נכון.',
     lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
     tags: ['Google', 'תוכן ממוקד'],
   },
@@ -97,7 +97,7 @@ export default function Services() {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            מהרעיון הראשוני ועד להשקה - אנחנו מלווים אתכם בכל שלב.
+            מהרעיון הראשוני ועד להשקה, אנחנו מלווים אתכם בכל שלב.
           </motion.p>
         </div>
 

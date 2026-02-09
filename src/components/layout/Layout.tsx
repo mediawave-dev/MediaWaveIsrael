@@ -40,10 +40,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <Footer />
 
-      {/* Scroll to top button — hidden on mobile when chat is fullscreen */}
-      <ScrollToTop isChatOpen={isChatOpen} />
-
-      {/* Floating WhatsApp — above chat trigger, hidden when chat panel is open */}
+      {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />
 
       {/* Accessibility widget */}
@@ -52,31 +49,6 @@ export default function Layout({ children }: LayoutProps) {
       {/* AI Chat widget — bottom-right, lowest position */}
       <ChatWidget onOpenChange={handleChatOpenChange} />
     </div>
-  )
-}
-
-function ScrollToTop({ isChatOpen }: { isChatOpen: boolean }) {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  return (
-    <motion.button
-      onClick={scrollToTop}
-      className={`fixed bottom-20 left-4 sm:bottom-24 sm:left-6 z-40 w-12 h-12 bg-cream border border-cream-darker text-brown rounded-full shadow-md flex items-center justify-center hover:bg-orange hover:text-white hover:border-orange transition-all duration-300 ${
-        isChatOpen ? 'sm:flex hidden' : ''
-      }`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1.2 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      aria-label="חזרה למעלה"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m18 15-6-6-6 6"/>
-      </svg>
-    </motion.button>
   )
 }
 

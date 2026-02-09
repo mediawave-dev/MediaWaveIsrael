@@ -43,7 +43,7 @@ export default function Terms() {
           className="mb-12"
         >
           <h1 className="text-[32px] md:text-[40px] font-headline font-bold text-brown-dark mb-4">
-            תקנון שימוש - MediaWave Israel
+            תקנון שימוש | MediaWave Israel
           </h1>
           <p className="text-brown-light">
             <strong>עודכן לאחרונה:</strong> ינואר 2026
@@ -82,13 +82,13 @@ export default function Terms() {
             </h2>
             <div className="space-y-4 text-brown leading-relaxed">
               <p>
-                <strong>"הלקוח"</strong> - כל אדם או תאגיד המזמין שירותים מהחברה.
+                <strong>"הלקוח"</strong> הוא כל אדם או תאגיד המזמין שירותים מהחברה.
               </p>
               <p>
-                <strong>"פרויקט"</strong> - עבודת פיתוח אתר או שירות דיגיטלי אחר שהוזמן על ידי הלקוח.
+                <strong>"פרויקט"</strong> הוא עבודת פיתוח אתר או שירות דיגיטלי אחר שהוזמן על ידי הלקוח.
               </p>
               <p>
-                <strong>"השירותים"</strong> - כל השירותים המוצעים על ידי החברה, לרבות פיתוח אתרים, עיצוב, תחזוקה, אחסון, ושירותים נלווים.
+                <strong>"השירותים"</strong> כוללים את כל השירותים המוצעים על ידי החברה, לרבות פיתוח אתרים, עיצוב, תחזוקה, אחסון, ושירותים נלווים.
               </p>
             </div>
           </section>

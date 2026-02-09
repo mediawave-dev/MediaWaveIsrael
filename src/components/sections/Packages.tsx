@@ -186,7 +186,7 @@ export default function Packages() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' as const }}
           >
-            בחרו את החבילה שמתאימה לכם — כל פרויקט מותאם אישית לצרכים שלכם
+            בחרו את החבילה שמתאימה לכם. כל פרויקט מותאם אישית לצרכים שלכם
           </motion.p>
         </div>
 

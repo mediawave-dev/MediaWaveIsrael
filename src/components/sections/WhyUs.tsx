@@ -15,13 +15,13 @@ const differentiators: Differentiator[] = [
   {
     lottieAnimation: '/animations/2/computer%20technician.json',
     title: 'טכנולוגיה מתקדמת',
-    description: 'React, Next.js, Astro — טכנולוגיה חדשנית לביצועים מעולים.',
+    description: 'עובדים עם React, Next.js ו-Astro לביצועים מעולים ותחזוקה קלה.',
     color: 'orange',
   },
   {
     lottieAnimation: '/animations/5%20performance/Internet%20speed%20test.json',
     title: 'ביצועים מעולים',
-    description: 'ציון גבוה ב-Google PageSpeed — כי מהירות זה גם SEO.',
+    description: 'ציון גבוה ב-Google PageSpeed כי מהירות משפיעה ישירות על הדירוג שלכם.',
     color: 'terracotta',
   },
   {

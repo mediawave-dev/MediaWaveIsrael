@@ -43,7 +43,7 @@ export default function Privacy() {
           className="mb-12"
         >
           <h1 className="text-[32px] md:text-[40px] font-headline font-bold text-brown-dark mb-4">
-            מדיניות פרטיות - MediaWave Israel
+            מדיניות פרטיות | MediaWave Israel
           </h1>
           <p className="text-brown-light">
             <strong>עודכן לאחרונה:</strong> ינואר 2026
@@ -121,21 +121,21 @@ export default function Privacy() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">3.1 מתן שירותים</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>תקשורת איתך</strong> - לענות על שאלות, לספק הצעות מחיר, ולתאם פרויקטים</li>
-              <li><strong>ביצוע הפרויקט</strong> - פיתוח ועיצוב האתר שלך</li>
-              <li><strong>תמיכה טכנית</strong> - לספק סיוע ותחזוקה</li>
+              <li><strong>תקשורת איתך:</strong> לענות על שאלות, לספק הצעות מחיר, ולתאם פרויקטים</li>
+              <li><strong>ביצוע הפרויקט:</strong> פיתוח ועיצוב האתר שלך</li>
+              <li><strong>תמיכה טכנית:</strong> לספק סיוע ותחזוקה</li>
             </ul>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">3.2 שיפור השירותים</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>ניתוח שימוש</strong> - להבין כיצד משתמשים מנווטים באתר שלנו</li>
-              <li><strong>שיפור חווית משתמש</strong> - לשפר את העיצוב והתכונות של האתר</li>
+              <li><strong>ניתוח שימוש:</strong> להבין כיצד משתמשים מנווטים באתר שלנו</li>
+              <li><strong>שיפור חווית משתמש:</strong> לשפר את העיצוב והתכונות של האתר</li>
             </ul>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">3.3 תקשורת שיווקית (רק באישורך)</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>ניוזלטר</strong> - עדכונים על שירותים חדשים, טיפים, ומבצעים (רק אם נרשמת)</li>
-              <li><strong>הצעות מיוחדות</strong> - מידע על מבצעים רלוונטיים</li>
+              <li><strong>ניוזלטר:</strong> עדכונים על שירותים חדשים, טיפים, ומבצעים (רק אם נרשמת)</li>
+              <li><strong>הצעות מיוחדות:</strong> מידע על מבצעים רלוונטיים</li>
             </ul>
             <p className="text-brown leading-relaxed mt-4 bg-cream-dark p-4 rounded-lg">
               <strong>הערה חשובה:</strong> אנו לא נשלח לך תוכן שיווקי ללא הסכמתך המפורשת. תמיד תוכל להסיר עצמך מרשימת התפוצה.
@@ -143,7 +143,7 @@ export default function Privacy() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">3.4 דרישות חוקיות</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>עמידה בחוק</strong> - כאשר נדרש על פי חוק או צו שיפוטי</li>
+              <li><strong>עמידה בחוק:</strong> כאשר נדרש על פי חוק או צו שיפוטי</li>
             </ul>
           </section>
 
@@ -192,10 +192,10 @@ export default function Privacy() {
               אנו נוקטים באמצעי אבטחה סבירים כדי להגן על המידע שלך:
             </p>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>הצפנה</strong> - האתר שלנו משתמש בתעודת SSL (HTTPS) להצפנת נתונים</li>
-              <li><strong>גישה מוגבלת</strong> - רק בעלי תפקידים מורשים יכולים לגשת למידע האישי</li>
-              <li><strong>עדכוני אבטחה</strong> - אנו מעדכנים באופן שוטף את המערכות שלנו</li>
-              <li><strong>גיבויים</strong> - מבוצעים גיבויים קבועים למניעת אובדן מידע</li>
+              <li><strong>הצפנה:</strong> האתר שלנו משתמש בתעודת SSL (HTTPS) להצפנת נתונים</li>
+              <li><strong>גישה מוגבלת:</strong> רק בעלי תפקידים מורשים יכולים לגשת למידע האישי</li>
+              <li><strong>עדכוני אבטחה:</strong> אנו מעדכנים באופן שוטף את המערכות שלנו</li>
+              <li><strong>גיבויים:</strong> מבוצעים גיבויים קבועים למניעת אובדן מידע</li>
             </ul>
             <p className="text-brown leading-relaxed mt-4">
               עם זאת, אף שיטת העברה או אחסון אינה מאובטחת ב-100%. אנו לא יכולים להבטיח אבטחה מוחלטת.
@@ -257,9 +257,9 @@ export default function Privacy() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">7.2 כיצד אנו משתמשים בעוגיות?</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>עוגיות חיוניות</strong> - נדרשות לתפקוד בסיסי של האתר</li>
-              <li><strong>עוגיות ניתוח</strong> - עוזרות לנו להבין כיצד משתמשים מנווטים באתר (Google Analytics)</li>
-              <li><strong>עוגיות פונקציונליות</strong> - זוכרות את ההעדפות שלך</li>
+              <li><strong>עוגיות חיוניות:</strong> נדרשות לתפקוד בסיסי של האתר</li>
+              <li><strong>עוגיות ניתוח:</strong> עוזרות לנו להבין כיצד משתמשים מנווטים באתר (Google Analytics)</li>
+              <li><strong>עוגיות פונקציונליות:</strong> זוכרות את ההעדפות שלך</li>
             </ul>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">7.3 ניהול עוגיות</h3>
@@ -303,9 +303,9 @@ export default function Privacy() {
               אנו שומרים את המידע האישי שלך כל עוד:
             </p>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>אתה לקוח פעיל</strong> - לצורך מתן שירותים שוטפים</li>
-              <li><strong>נדרש לפי חוק</strong> - לצורך תיעוד חשבונאי, דיווחי מס וכו' (בדרך כלל 7 שנים)</li>
-              <li><strong>יש צורך עסקי לגיטימי</strong> - כגון פתרון סכסוכים</li>
+              <li><strong>אתה לקוח פעיל:</strong> לצורך מתן שירותים שוטפים</li>
+              <li><strong>נדרש לפי חוק:</strong> לצורך תיעוד חשבונאי, דיווחי מס וכו' (בדרך כלל 7 שנים)</li>
+              <li><strong>יש צורך עסקי לגיטימי:</strong> כגון פתרון סכסוכים</li>
             </ul>
             <p className="text-brown leading-relaxed mt-4">
               לאחר מכן, נמחק או נאנונם את המידע.

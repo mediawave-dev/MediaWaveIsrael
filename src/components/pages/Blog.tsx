@@ -138,7 +138,7 @@ function EmptyState() {
       </div>
 
       <h2 className="text-3xl font-headline text-brown-dark mb-3">
-        בקרוב — תכנים חדשים בדרך!
+        בקרוב תכנים חדשים בדרך!
       </h2>
       <p className="text-lg text-brown-light max-w-md mx-auto leading-relaxed">
         אנחנו עובדים על תכנים מקצועיים שיעזרו לכם להבין טוב יותר את עולם הדיגיטל.

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useSpring, useTransform } from 'framer-motion'
 import { Calculator, MessageCircle, TrendingUp, Users, CreditCard, HelpCircle } from 'lucide-react'
-import { LottieIcon } from '../ui'
+
 
 // Format number with Hebrew locale
 function formatCurrency(value: number): string {
@@ -29,7 +29,7 @@ function AnimatedNumber({ value, prefix = '', suffix = '' }: { value: number; pr
   )
 }
 
-// Input field component with label, helper text, and tooltip
+// Input field component with label, helper text, tooltip, and +/- buttons
 function InputField({
   id,
   label,
@@ -56,11 +56,48 @@ function InputField({
   example: string
 }) {
   const [showTooltip, setShowTooltip] = useState(false)
+  const [rawValue, setRawValue] = useState(String(value))
+
+  // Sync rawValue when value changes externally
+  useEffect(() => {
+    setRawValue(String(value))
+  }, [value])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseFloat(e.target.value) || 0
-    const clamped = Math.min(Math.max(newValue, min), max)
-    onChange(clamped)
+    const text = e.target.value
+    setRawValue(text)
+
+    if (text === '' || text === '-') return
+
+    const parsed = parseFloat(text)
+    if (!isNaN(parsed)) {
+      const clamped = Math.min(Math.max(parsed, min), max)
+      onChange(clamped)
+    }
+  }
+
+  const handleBlur = () => {
+    const parsed = parseFloat(rawValue)
+    if (isNaN(parsed) || rawValue === '') {
+      onChange(min)
+      setRawValue(String(min))
+    } else {
+      const clamped = Math.min(Math.max(parsed, min), max)
+      onChange(clamped)
+      setRawValue(String(clamped))
+    }
+  }
+
+  const increment = () => {
+    const next = Math.min(value + step, max)
+    const rounded = Math.round(next * 100) / 100
+    onChange(rounded)
+  }
+
+  const decrement = () => {
+    const next = Math.max(value - step, min)
+    const rounded = Math.round(next * 100) / 100
+    onChange(rounded)
   }
 
   return (
@@ -93,23 +130,50 @@ function InputField({
         </div>
       </div>
 
-      {/* Input */}
-      <div className="relative">
+      {/* Input with +/- buttons */}
+      <div className="relative flex items-center">
+        {/* Decrement button (right side in LTR input) */}
+        <button
+          type="button"
+          onClick={decrement}
+          className="absolute right-1.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-lg flex items-center justify-center
+                     bg-[#38BDF8]/10 hover:bg-[#38BDF8]/25 active:bg-[#38BDF8]/40 transition-colors"
+          style={{ color: '#0EA5E9' }}
+          aria-label={`הפחת ${step}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M5 12h14" />
+          </svg>
+        </button>
+
         <input
-          type="number"
+          type="text"
+          inputMode="decimal"
           id={id}
-          value={value}
+          value={rawValue}
           onChange={handleChange}
-          min={min}
-          max={max}
-          step={step}
-          className="w-full px-4 py-3 rounded-xl border-2 border-cream-darker bg-white text-brown-dark text-lg font-medium
+          onBlur={handleBlur}
+          className="w-full px-12 py-3 rounded-xl border-2 border-cream-darker bg-white text-brown-dark text-lg font-medium text-center
                      focus:border-orange focus:ring-2 focus:ring-orange/20 focus:outline-none
-                     transition-all duration-200 [direction:ltr] text-left"
-          style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+                     transition-all duration-200 [direction:ltr]"
         />
+
+        {/* Increment button (left side in LTR input) */}
+        <button
+          type="button"
+          onClick={increment}
+          className="absolute left-1.5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-lg flex items-center justify-center
+                     bg-[#38BDF8]/10 hover:bg-[#38BDF8]/25 active:bg-[#38BDF8]/40 transition-colors"
+          style={{ color: '#0EA5E9' }}
+          aria-label={`הוסף ${step}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </button>
+
         {suffix && (
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-brown-muted text-sm pointer-events-none">
+          <span className="absolute left-12 top-1/2 -translate-y-1/2 text-brown-muted text-sm pointer-events-none">
             {suffix}
           </span>
         )}
@@ -318,8 +382,9 @@ export default function ROICalculator() {
                   href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0c2d4a] rounded-xl
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-[#38BDF8] hover:bg-[#0EA5E9] rounded-xl
                              font-medium text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  style={{ color: '#ffffff' }}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -346,7 +411,7 @@ export default function ROICalculator() {
             transition={{ delay: 0.5 }}
           >
             <span className="inline-flex items-center gap-1">
-              <LottieIcon animationPath="/animations/lightbulb.json" size={24} loop={true} playOnHover={false} className="inline-block" />
+              <img src="/animations/light,idea,create.gif" alt="" width={36} height={36} className="inline-block" />
               בשיחה קצרה נראה לך בדיוק מה לשפר באתר
             </span>
           </motion.p>
