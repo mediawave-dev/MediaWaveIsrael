@@ -51,7 +51,8 @@
       "WebFetch(domain:mediawaveisrael.pages.dev)",
       "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" log --oneline -15)",
       "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" status public/videos/)",
-      "WebFetch(domain:mediawaveisrael.com)"
+      "WebFetch(domain:mediawaveisrael.com)",
+      "Bash(npx tsc:*)"
     ]
   },
   "enabledMcpjsonServers": [
