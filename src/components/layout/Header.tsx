@@ -80,9 +80,18 @@ export default function Header() {
         <div className="container px-4 sm:px-6">
           <nav className="flex items-center justify-between gap-4">
             {/* Logo - RIGHT side (RTL), white on hero via CSS filter */}
-            <div className="transition-all duration-300">
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault()
+                navigate('/')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              className="transition-all duration-300"
+              aria-label="חזרה לדף הבית"
+            >
               <Logo variant="header" isScrolled={isScrolled || !isHomePage} />
-            </div>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
