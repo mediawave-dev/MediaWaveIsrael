@@ -1,71 +1,107 @@
-# Phase 3, Task 1: Create Pricing/Packages Section
+# PLAN-1: Build ROICalculator Component
 
-## Goal
-Add a 3-tier pricing section with cards for Landing Page, Branding Site, and Custom Project.
+## Task Overview
+<task_spec>
+<goal>יצירת קומפוננטת ROICalculator מלאה עם 3 שדות קלט, חישוב, count-up animation, ו-WhatsApp CTA</goal>
+<context>
+- Tech stack: React + TypeScript + Tailwind CSS + Framer Motion
+- Location: src/components/sections/ROICalculator.tsx
+- Style: מינימליסטי, נקי, תואם לשפת האתר
+- RTL: CSS logical properties
+</context>
+<dependencies>Framer Motion (already installed)</dependencies>
+</task_spec>
 
-## Context
-- No pricing section currently exists
-- Placement: Between About section and FAQ
-- Must match existing design (light background, subtle borders, warm palette)
-- Prices are suggestions — Nati must approve before going live
-- Must use frontend-design skill for visual design
+## Implementation Details
 
-## Actions
-
-### Step 1: Create Pricing Data File
-- Create `src/data/packages.ts`
-- Define TypeScript interface:
+### Component Structure
 ```typescript
-export interface Package {
-  id: string;
-  name: string;           // "דף נחיתה"
-  price: string;          // "החל מ-₪1,500"
-  description: string;    // What's included
-  features: string[];     // Bullet list of features
-  idealFor: string;       // "לעסקים שרוצים..."
-  cta: string;            // Button text
-  ctaLink: string;        // "#contact" or section id
-  popular?: boolean;      // "הכי פופולרי" badge
-}
+// ROICalculator.tsx
+// Main section with id="roi-calculator"
+// Contains: Header, InputsForm, ResultsDisplay, WhatsAppCTA
 ```
-- Populate with 3 packages from MEDIAWAVE_WORKPLAN.md section 3.2
-- Add comment: "PRICES ARE SUGGESTIONS — Nati must approve before publishing"
 
-### Step 2: Create Packages Section Component
-- Create `src/components/sections/Packages.tsx`
-- Use frontend-design skill for visual design
-- Layout: 3 cards in a row (desktop), stacked (mobile)
-- Middle card ("Branding Site") slightly elevated/highlighted as "הכי פופולרי"
-- Each card shows: name, price, feature list with checkmarks, ideal-for text, CTA button
-- CTA buttons scroll to contact section
-- RTL direction throughout
-- Entrance animations (staggered card reveal)
+### שדות קלט (3)
+| שדה | Label (Hebrew) | Type | Default | Min | Max |
+|-----|----------------|------|---------|-----|-----|
+| traffic | מבקרים באתר לחודש | number | 1000 | 1 | 1000000 |
+| conversionRate | אחוז המרה נוכחי | number (%) | 2 | 0.1 | 100 |
+| customerValue | ערך לקוח ממוצע (₪) | number | 500 | 1 | 100000 |
 
-### Step 3: Integrate into App.tsx
-- Import Packages component
-- Place between About and FAQ sections
-- Verify section flow and spacing
+### נוסחת חישוב
+```typescript
+const currentRevenue = traffic * (conversionRate / 100) * customerValue;
+const improvedRevenue = traffic * ((conversionRate * 1.2) / 100) * customerValue;
+const monthlyLoss = improvedRevenue - currentRevenue;
+const yearlyLoss = monthlyLoss * 12;
+```
 
-### Step 4: Verify
-- Desktop: 3 cards side by side, middle highlighted
-- Tablet: 3 cards or 2+1 layout
-- Mobile: Stacked single column
-- RTL: All text and alignment correct
-- CTA buttons scroll to contact
-- Build clean
+### Count-Up Animation
+- Use Framer Motion's `useSpring` + `useTransform`
+- Duration: 1.5-2 seconds
+- Easing: easeOut
+- Format: Hebrew locale with ₪ symbol (e.g., ₪120,000)
+
+### WhatsApp CTA
+```typescript
+const message = encodeURIComponent(
+  `היי, חישבתי במחשבון שלכם שאני מפסיד ₪${yearlyLoss.toLocaleString('he-IL')} בשנה.\nאשמח לשמוע איך אפשר לשפר את האתר שלי!`
+);
+const whatsappUrl = `https://wa.me/972528731808?text=${message}`;
+```
+
+### Edge Cases
+- traffic = 0 → Show validation message "הזינו מספר מבקרים"
+- conversionRate > 100 → Cap at 100
+- yearlyLoss = 0 → Show "כל הכבוד! האתר שלך מייצר מקסימום"
+- Large numbers → Format with toLocaleString('he-IL')
+
+### UI Content (Hebrew)
+```
+Section Header:
+- Badge: "מחשבון ROI"
+- Title: "כמה כסף האתר האיטי עולה לך?"
+- Subtitle: "גלה כמה לקוחות ומכירות אתה מפסיד כל חודש"
+
+Inputs Labels:
+- "מבקרים באתר לחודש"
+- "אחוז המרה נוכחי (%)"
+- "ערך לקוח ממוצע (₪)"
+
+Result:
+- "אתה מפסיד בערך"
+- "₪{yearlyLoss}" (large, animated)
+- "בשנה!"
+- Small: "(מבוסס על מחקרי Google - אתר מהיר מעלה המרות ב-20%)"
+
+CTA Button:
+- "רוצה לתקן את זה? דבר איתנו"
+- WhatsApp icon
+```
+
+### Styling Guidelines
+- Background: Light section (bg-cream or bg-white)
+- Inputs: Large, clear, with floating labels or top labels
+- Result: Centered, bold, orange/terracotta for the number
+- CTA: WhatsApp green (#25D366) or orange primary
+- Mobile-first: Stack inputs vertically on mobile, side-by-side on desktop
+- Animations: Subtle entrance with staggered fade-in
 
 ## Acceptance Criteria
-- [ ] `src/data/packages.ts` with typed data
-- [ ] `src/components/sections/Packages.tsx` renders 3 cards
-- [ ] Middle card highlighted as "הכי פופולרי"
-- [ ] Responsive layout (3-col → stacked)
-- [ ] CTA scrolls to contact section
-- [ ] RTL-correct
-- [ ] Entrance animations
-- [ ] Clean build
+- [ ] 3 input fields with proper Hebrew labels
+- [ ] Live calculation updates as user types
+- [ ] Count-up animation when result appears/changes
+- [ ] Numbers formatted with Hebrew locale (e.g., 1,000)
+- [ ] WhatsApp button opens pre-filled message
+- [ ] Edge cases handled (0, max values, etc.)
+- [ ] Responsive: works on mobile and desktop
+- [ ] RTL: all text and layout correct
+- [ ] Accessibility: proper labels, keyboard navigation
+- [ ] Matches site design (colors, fonts, spacing)
 
-## Note
-Prices in data file are PLACEHOLDERS. Must get Nati's approval before deploying.
+## Files to Create/Modify
+- **Create:** `src/components/sections/ROICalculator.tsx`
+- **Modify:** `src/components/sections/index.ts` (add export)
 
 ## Estimated Scope
-~45 minutes, new section component
+~200-250 lines of TypeScript/JSX

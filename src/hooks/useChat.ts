@@ -18,7 +18,7 @@ export interface UseChatReturn {
 
 // --- Constants ---
 
-const MAX_MESSAGES = 20
+const MAX_MESSAGES = 15
 const MAX_CONTEXT_MESSAGES = 10
 const MAX_MESSAGE_LENGTH = 1000
 

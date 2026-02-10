@@ -1,38 +1,57 @@
-# Phase 1, Task 1: Remove Testimonials from Render Flow
+# Phase 1, Task 1: Remove About Section
 
 ## Goal
-Remove the fabricated testimonials section from the live site without deleting the component code.
+להסיר את סקשן About מהאתר — כולל הקומפוננטה וה-import ב-App.tsx.
 
 ## Context
-- `src/components/sections/Testimonials.tsx` contains a carousel with 4 fake testimonials (Ron M., Dani L., Yael K., Michal A.)
-- These have colored initial avatars instead of real photos — obviously fabricated
-- Component is rendered in `src/App.tsx` in the section flow
-- Also exported from `src/components/sections/index.ts`
+- `src/components/sections/About.tsx` — סקשן "הסיפור שלנו"
+- כולל blockquote ריק ("יותר פניות, יותר מכירות")
+- כולל differentiators (3 כרטיסים) — אלו יעברו לקומפוננטה חדשה ב-Task 3
+- החלטה: המשתמש לא רוצה סקשן About כלל
 
 ## Actions
 
-### Step 1: Comment out Testimonials in App.tsx
-- Open `src/App.tsx`
-- Find the `<Testimonials />` import and component usage
-- Comment out both (add note: "Commented out until real testimonials available")
-- Do NOT delete — just comment
+### Step 1: גיבוי Differentiators Data
+לפני מחיקה, להעתיק את ה-differentiators array מ-About.tsx:
+```typescript
+const differentiators = [
+  { icon: Code2, title: 'טכנולוגיה מתקדמת', description: '...', color: 'orange' },
+  { icon: Gauge, title: 'ציון PageSpeed מושלם', description: '...', color: 'terracotta' },
+  { icon: HeartHandshake, title: 'ליווי אישי', description: '...', color: 'sage' },
+]
+```
+לשמור בצד — ישמש ב-Task 3.
 
-### Step 2: Update CONTENT.md
-- Find testimonials section in CONTENT.md
-- Update to reflect current state: section exists but is disabled
-- Add note: "Component ready at Testimonials.tsx — enable when real testimonials collected"
+### Step 2: הסרה מ-App.tsx
+- פתח `src/App.tsx`
+- מחק את `import About from './components/sections/About'`
+- מחק את `<About />` מה-render flow
+- ודא שסדר הסקשנים נשאר: Hero → Services → Portfolio → Packages → FAQ → Contact
 
-### Step 3: Verify
-- Run `npm run dev` — site loads without testimonials section
-- Run `npm run build` — no TypeScript errors
-- Visually confirm the section gap is clean (About → FAQ transition)
+### Step 3: מחיקת הקובץ
+- מחק `src/components/sections/About.tsx`
+- עדכן `src/components/sections/index.ts` אם קיים
+
+### Step 4: וידוא
+```bash
+npm run build
+npm run dev
+```
+- אין שגיאות TypeScript
+- האתר נטען ללא סקשן About
+- המעבר בין Services ל-Portfolio חלק
 
 ## Acceptance Criteria
-- [ ] Testimonials section does not render on the live site
-- [ ] Testimonials.tsx file still exists (commented out, not deleted)
-- [ ] No TypeScript/build errors
-- [ ] Smooth visual transition between About and FAQ sections
-- [ ] CONTENT.md updated
+- [ ] About.tsx נמחק
+- [ ] App.tsx לא מכיל import או שימוש ב-About
+- [ ] Differentiators data שמור בצד (לTask 3)
+- [ ] `npm run build` עובר ללא שגיאות
+- [ ] האתר נטען תקין
 
-## Estimated Scope
-~15 minutes, single file changes + verification
+## Files to Modify
+- `src/App.tsx` — הסר import ושימוש
+- `src/components/sections/About.tsx` — למחוק
+- `src/components/sections/index.ts` — עדכון אם קיים
+
+## Estimated Time
+~10 דקות

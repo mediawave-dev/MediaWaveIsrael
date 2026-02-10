@@ -1,41 +1,95 @@
-# Phase 3, Task 2: Update FAQ to Reference Packages
+# PLAN-2: Integrate ROICalculator & Reorder Sections
 
-## Goal
-Update FAQ section answers to reference the new packages section instead of repeating pricing info.
+## Task Overview
+<task_spec>
+<goal>שילוב ROICalculator בדף הבית ושינוי סדר הסקשנים לפי ההחלטות</goal>
+<context>
+- ROICalculator component created in PLAN-1
+- Current order: Hero → Services → WhyUs → Portfolio → Packages → Testimonials → FAQ → Contact
+- New order: Hero → WhyUs → ROICalculator → Services → Portfolio → Packages → Testimonials → FAQ → Contact
+</context>
+<dependencies>PLAN-1 completed (ROICalculator.tsx exists)</dependencies>
+</task_spec>
 
-## Context
-- FAQ exists at `src/components/sections/FAQ.tsx` with 13 Q&A items
-- Some FAQ answers discuss pricing/packages vaguely
-- Now that a packages section exists, FAQs should point there
-- Must not change FAQ structure or design — only content adjustments
+## Implementation Details
 
-## Actions
+### New Section Order in App.tsx
+```typescript
+// Before (current):
+<Hero />
+<Services />
+<WhyUs />
+<Portfolio />
+<Packages />
+<Testimonials />
+<FAQ />
+<Contact />
 
-### Step 1: Audit Current FAQ Content
-- Read FAQ.tsx and identify all pricing-related Q&As
-- Specifically look for: "מה כולל חבילת הפיתוח?" and "יש תשלומים חודשיים?"
-- Note which answers need updating
+// After (new):
+<Hero />
+<WhyUs />
+<ROICalculator />  // ← NEW
+<Services />
+<Portfolio />
+<Packages />
+<Testimonials />
+<FAQ />
+<Contact />
+```
 
-### Step 2: Update FAQ Answers
-- For pricing-related questions, update answers to reference packages section:
-  - Example: "ראו את החבילות שלנו למעלה" or "לפירוט מלא ראו את סעיף החבילות"
-- Don't remove the FAQ items — just update answers to avoid duplication
-- Keep same tone and length
-- Verify RTL accordion display is correct
+### Rationale for Order
+1. **Hero** — First impression
+2. **WhyUs** — Why choose MediaWave (differentiators)
+3. **ROICalculator** — Now they see WHY, show them what they're LOSING
+4. **Services** — What we offer to fix it
+5. **Portfolio** — Proof we can do it
+6. **Packages** — Pricing
+7. **Testimonials** — Social proof (when available)
+8. **FAQ** — Answer remaining questions
+9. **Contact** — Final CTA
 
-### Step 3: Verify
-- FAQ renders correctly
-- Updated answers reference packages section
-- Accordion open/close works
-- RTL alignment correct
-- Build clean
+### Files to Modify
+
+#### 1. src/components/sections/index.ts
+Add export for ROICalculator:
+```typescript
+export { default as ROICalculator } from './ROICalculator'
+```
+
+#### 2. src/App.tsx
+- Import ROICalculator from sections
+- Reorder sections as specified above
+
+### Navigation Update (if needed)
+Check if ROI Calculator needs a nav link. Decision: **No nav link** — it's a tool between sections, not a standalone destination.
+
+### Visual Flow Verification
+After integration, verify:
+- Smooth scroll between sections
+- No jarring visual transitions
+- ROICalculator background complements WhyUs above and Services below
+- Mobile scroll feels natural
 
 ## Acceptance Criteria
-- [ ] Pricing-related FAQ answers updated to reference packages section
-- [ ] No duplicate pricing information between sections
-- [ ] FAQ structure and design unchanged
-- [ ] RTL accordion works correctly
-- [ ] Clean build
+- [ ] ROICalculator exported from sections/index.ts
+- [ ] App.tsx imports ROICalculator
+- [ ] Sections in correct order: Hero → WhyUs → ROICalculator → Services → ...
+- [ ] Page loads without errors
+- [ ] Scroll flow is smooth between sections
+- [ ] Mobile layout works correctly
+- [ ] Build passes: `npm run build`
+
+## Verification Commands
+```bash
+npm run build
+npm run dev
+# Then visit http://localhost:5173 and test:
+# 1. Section order is correct
+# 2. ROICalculator appears after WhyUs
+# 3. Calculator functionality works
+# 4. WhatsApp button works
+# 5. Mobile responsive
+```
 
 ## Estimated Scope
-~15 minutes, content updates only
+~10 minutes, simple integration

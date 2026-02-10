@@ -1,45 +1,101 @@
-# Phase 4, Task 2: Add Differentiator Points
+# Phase 4, Task 2: Info Card + Section Polish + Mobile
 
 ## Goal
-Add 3 key differentiating points that set MediaWave apart from competitors.
+Upgrade the info card with micro-interactions, enhance section decorations, and ensure mobile experience is impressive.
 
 ## Context
-- Placement: In "About Us" section or as separate small section
-- 3 points: Advanced Technology, Perfect PageSpeed, Personal Support
-- Design: 3 icons in a row with short text, similar to services section style
+- Info card currently: Static glassmorphism box
+- Tags: Basic staggered fade-in
+- Features: Simple list with bullets
+- CTA: Spring hover (already good)
+- Section header: Good but could be more dramatic
 
 ## Actions
 
-### Step 1: Determine Placement
-- Read About.tsx to see if differentiators fit naturally
-- If About section is too long → create separate mini-section
-- If About has room → integrate as subsection
+### Step 1: Info Card Enhancements
+In `FeaturedProject` component, upgrade the info card:
 
-### Step 2: Create Differentiators Content
-- Use content from MEDIAWAVE_WORKPLAN.md section 4.2:
-  1. **טכנולוגיה מתקדמת**: "אנחנו לא משתמשים בתבניות מוכנות. כל אתר נבנה מאפס עם הטכנולוגיות המתקדמות ביותר."
-  2. **ציון PageSpeed מושלם**: "האתרים שלנו משיגים ציוני ביצועים של 95-100 — כי מהירות זה לא רק חוויית משתמש, זה גם SEO."
-  3. **ליווי אישי**: "אנחנו operation קטן ובכוונה. אתם מדברים ישירות עם המפתח, בלי middlemen."
+**Entrance Animation:**
+- Current: Slide in from left with fade
+- New: Slide + slight rotation + scale (feels more dynamic)
 
-### Step 3: Design & Implement
-- Use frontend-design skill
-- 3 cards/icons in a row (desktop), stacked (mobile)
-- Each with: Lucide icon, short heading, 1-2 line description
-- Subtle entrance animation
-- Consistent with site's warm design language
+**Tags Upgrade:**
+- Add hover effect: Slight scale + glow + bounce
+- Consider "pill" style with gradient border on hover
+- Stagger should feel like typewriter reveal
 
-### Step 4: Verify
-- Renders correctly in context
-- Responsive layout
-- RTL correct
+**Features List:**
+- Animated checkmark icons instead of static bullets
+- Each feature slides in with spring physics
+- Checkmark draws itself (SVG path animation)
+
+**Badge (אתר תדמית):**
+- Add subtle shimmer animation (like "new" badges)
+- Gradient border that animates
+
+### Step 2: Section Header Upgrade
+- Make the underline decoration more prominent
+- Consider animated gradient or glow effect
+- Add floating decorative element near title
+
+### Step 3: Background Decorations
+Current: 2 parallax blur blobs
+
+Upgrade options (choose 1-2):
+- Add connecting curved line between browser and info card
+- Floating dots that drift slowly
+- Subtle grain texture overlay
+- Geometric shapes at section edges
+
+### Step 4: Mobile Experience
+- Verify all animations work on touch devices
+- Card should still feel premium without hover
+- Consider tap-to-reveal effects for features
+- Ensure text is readable, spacing is comfortable
+- Test on 375px width (iPhone SE)
+
+### Step 5: Bottom CTA Enhancement
+- Current: Good spring hover
+- Add: Animated arrow or icon
+- Consider: Pulse effect to draw attention
+
+### Step 6: Verify
+- Desktop: All micro-interactions smooth
+- Mobile: Premium feel maintained
+- Tablet: Layout transitions well
+- Reduced motion: Graceful fallback
 - Build clean
 
 ## Acceptance Criteria
-- [ ] 3 differentiator points visible
-- [ ] Icons + headings + descriptions
-- [ ] Responsive (3-col → stacked)
-- [ ] Consistent design language
+- [ ] Info card entrance more dynamic
+- [ ] Tags have engaging hover effect
+- [ ] Features have animated checkmarks
+- [ ] Badge has shimmer effect
+- [ ] Section header more prominent
+- [ ] At least 1 new decorative element added
+- [ ] Mobile experience verified
+- [ ] Reduced motion fallbacks
 - [ ] Clean build
 
+## Technical Notes
+```tsx
+// Checkmark draw animation
+<motion.path
+  d="M5 13l4 4L19 7"
+  initial={{ pathLength: 0 }}
+  animate={{ pathLength: 1 }}
+  transition={{ duration: 0.4, delay: 0.2 }}
+/>
+
+// Shimmer effect (CSS)
+background: linear-gradient(
+  90deg,
+  transparent,
+  rgba(255,255,255,0.3),
+  transparent
+);
+animation: shimmer 2s infinite;
+```
+
 ## Estimated Scope
-~30 minutes, design + implementation
+~45 minutes

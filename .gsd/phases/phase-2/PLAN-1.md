@@ -1,62 +1,74 @@
-# Phase 2, Task 1: Create Data-Driven Portfolio Infrastructure
+# Phase 2, Task 1: Optimize Hero Poster
 
 ## Goal
-Create a project data file and refactor Portfolio.tsx to read from it, enabling easy addition of future projects.
+להמיר את hero-poster.jpg (1.86 MB) ל-WebP קל (~100 KB) לשיפור ביצועים במובייל.
 
 ## Context
-- Portfolio.tsx already exists with a basic implementation showing yaelevy.co.il
-- Need to extract hardcoded data into a structured data file
-- The workplan defines a specific project card structure
-- Must support responsive grid: 1 project=centered, 2+=2-col, 4+=3-col
+- `public/images/hero-poster.jpg` — 1.86 MB (כבד מדי!)
+- משמש כ-fallback למובייל במקום הוידאו
+- Hero.tsx כבר מצביע לקובץ הזה
+- צריך לשמור על איכות ויזואלית טובה
 
 ## Actions
 
-### Step 1: Create Portfolio Data File
-- Create `src/data/projects.ts`
-- Define TypeScript interface:
-```typescript
-export interface Project {
-  id: string;
-  title: string;           // "יעל לוי — טיפול רגשי ואישי"
-  type: string;             // "אתר תדמית"
-  description: string;      // 2-3 line description
-  url: string;              // "https://www.yaelevy.co.il"
-  image: string;            // Desktop screenshot path
-  imageMobile?: string;     // Mobile screenshot path (optional)
-  tags: string[];           // ["WordPress", "עיצוב מותאם", "רספונסיבי", "SEO"]
-  featured: boolean;        // Show prominently
-  selfLink?: boolean;       // If true, button scrolls to top instead of external link
-}
+### Step 1: המרה ל-WebP
+השתמש ב-squoosh.app או כלי דומה:
+
+**אפשרות א: squoosh.app (מומלץ)**
+1. פתח https://squoosh.app
+2. העלה את `public/images/hero-poster.jpg`
+3. בחר WebP format
+4. Quality: 75-80
+5. Resize אם רוחב > 1920px
+6. הורד ושמור ל-`public/images/hero-poster.webp`
+
+**אפשרות ב: PowerShell עם ImageMagick**
+```powershell
+magick convert public/images/hero-poster.jpg -quality 80 -resize "1920>" public/images/hero-poster.webp
 ```
-- Populate with yaelevy.co.il data from MEDIAWAVE_WORKPLAN.md
-- Use existing `yaelevy-screenshot.png` asset
 
-### Step 2: Refactor Portfolio.tsx to Use Data
-- Import projects from `src/data/projects.ts`
-- Replace hardcoded content with data-driven rendering
-- Keep existing animations and visual style
-- Add responsive grid logic:
-  - 1 project → single centered card (max-width constraint)
-  - 2-3 projects → 2-column grid on desktop, 1-column mobile
-  - 4+ projects → 3-column grid on desktop
-- Each project card shows: image (browser mockup), title, type badge, description, tech tags, CTA button
+**יעד:** < 150 KB עם איכות טובה
 
-### Step 3: Verify
-- Run `npm run dev` — portfolio renders with yaelevy.co.il data
-- Check desktop layout (centered single card)
-- Check mobile layout (full-width card)
-- Run `npm run build` — clean build
-- Temporarily add a second project to data → verify 2-column grid works
-- Revert to single project
+### Step 2: עדכון Hero.tsx
+פתח `src/components/sections/Hero.tsx` והחלף:
+
+**שורה ~79 (Mobile background):**
+```tsx
+backgroundImage: 'url(/images/hero-poster.webp)',
+```
+
+**שורה ~91 (Video poster):**
+```tsx
+poster="/images/hero-poster.webp"
+```
+
+### Step 3: שמירת גיבוי
+```powershell
+Rename-Item "public\images\hero-poster.jpg" "hero-poster-original.jpg"
+```
+
+### Step 4: וידוא
+```bash
+npm run build
+npm run dev
+```
+- תמונת הפוסטר נטענת נכון בדסקטופ ומובייל
+- איכות ויזואלית טובה
+- גודל קובץ < 150 KB
 
 ## Acceptance Criteria
-- [ ] `src/data/projects.ts` exists with typed interface
-- [ ] Portfolio.tsx reads from data file
-- [ ] yaelevy.co.il renders with all fields (image, title, type, description, tags, button)
-- [ ] External link opens in new tab
-- [ ] Responsive grid logic works (1→centered, 2→2-col, 4→3-col)
-- [ ] Existing animations preserved
-- [ ] Clean build, no TypeScript errors
+- [ ] `hero-poster.webp` קיים ב-public/images/
+- [ ] גודל קובץ < 150 KB
+- [ ] Hero.tsx מעודכן לשימוש ב-webp
+- [ ] Mobile fallback עובד
+- [ ] Video poster fallback עובד
+- [ ] איכות ויזואלית לא נפגעה משמעותית
+- [ ] `npm run build` עובר
 
-## Estimated Scope
-~45 minutes, moderate refactor with data extraction
+## Files to Modify
+- `public/images/hero-poster.webp` — **חדש**
+- `public/images/hero-poster.jpg` → `hero-poster-original.jpg` — **rename**
+- `src/components/sections/Hero.tsx` — עדכון נתיבים
+
+## Estimated Time
+~10 דקות

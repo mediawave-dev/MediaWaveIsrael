@@ -39,7 +39,19 @@
       "Bash(npm run dev:*)",
       "Bash(gh repo view:*)",
       "Bash(git stash:*)",
-      "WebFetch(domain:lottie.host)"
+      "WebFetch(domain:lottie.host)",
+      "Bash(del \"g:\\\\Web-Dev\\\\MediaWaveIsrael\\\\src\\\\components\\\\sections\\\\About.tsx\")",
+      "WebFetch(domain:www.pexels.com)",
+      "Bash(ffprobe:*)",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__new_page",
+      "Bash(if not exist \"g:\\\\Web-Dev\\\\MediaWaveIsrael\\\\.gsd\\\\phases\\\\phase-5\" mkdir \"g:\\\\Web-Dev\\\\MediaWaveIsrael\\\\.gsd\\\\phases\\\\phase-5\")",
+      "WebFetch(domain:mediawaveisrael.pages.dev)",
+      "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" log --oneline -15)",
+      "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" status public/videos/)",
+      "WebFetch(domain:mediawaveisrael.com)"
     ]
   },
   "enabledMcpjsonServers": [
