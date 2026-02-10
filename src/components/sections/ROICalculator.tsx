@@ -299,6 +299,7 @@ export default function ROICalculator() {
               onChange={setTraffic}
               min={1}
               max={1000000}
+              step={50}
               icon={Users}
               helperText="כמה אנשים נכנסים לאתר שלך בחודש ממוצע?"
               example="דוגמה: 1,000 מבקרים"
@@ -310,7 +311,7 @@ export default function ROICalculator() {
               onChange={setConversionRate}
               min={0.1}
               max={100}
-              step={0.1}
+              step={5}
               icon={TrendingUp}
               suffix="%"
               helperText="מתוך 100 גולשים, כמה באמת קונים או משאירים פרטים?"
