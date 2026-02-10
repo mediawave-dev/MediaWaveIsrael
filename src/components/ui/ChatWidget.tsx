@@ -21,6 +21,31 @@ function TypingIndicator() {
   )
 }
 
+// --- URL linkification for bot messages ---
+
+const URL_REGEX = /(https?:\/\/[^\s)<>]+)/g
+
+function linkifyContent(text: string) {
+  const parts = text.split(URL_REGEX)
+  if (parts.length === 1) return text
+
+  return parts.map((part, i) =>
+    URL_REGEX.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline text-orange-dark hover:text-orange transition-colors"
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  )
+}
+
 // --- Message Bubble ---
 
 function MessageBubble({ message }: { message: ChatMessage }) {
@@ -40,7 +65,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             : 'bg-cream-dark text-brown rounded-2xl rounded-tr-sm'
         }`}
       >
-        {message.content}
+        {isUser ? message.content : linkifyContent(message.content)}
       </div>
     </motion.div>
   )

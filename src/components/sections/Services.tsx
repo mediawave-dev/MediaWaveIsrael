@@ -144,7 +144,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
   return (
     <motion.div
-      className="relative group rounded-2xl overflow-hidden"
+      className="relative group rounded-2xl overflow-hidden h-full"
       style={{
         background: 'rgba(255, 255, 255, 0.55)',
         backdropFilter: 'blur(12px)',
@@ -169,33 +169,31 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       />
 
       {/* Card content */}
-      <div className="p-5 md:p-6 text-center">
-        {/* Icon or Lottie Animation - Centered */}
-        {hasLottie ? (
-          <div
-            className={`mx-auto mb-5 transition-transform duration-300 group-hover:scale-105 ${
-              service.id === 'landing' ? 'w-56 h-56' : 'w-32 h-32'
-            }`}
-          >
-            <LottieIcon
-              animationPath={service.lottieAnimation}
-              size={service.id === 'landing' ? 224 : 128}
-              playOnHover={true}
-              loop={true}
-            />
-          </div>
-        ) : IconComponent ? (
-          <div
-            className="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
-            style={{
-              background:
-                'linear-gradient(135deg, rgba(125, 211, 252, 0.15) 0%, rgba(125, 211, 252, 0.05) 100%)',
-              border: '1px solid rgba(125, 211, 252, 0.12)',
-            }}
-          >
-            <IconComponent size={28} color="#38BDF8" strokeWidth={1.5} />
-          </div>
-        ) : null}
+      <div className="p-5 md:p-6 text-center flex flex-col h-full">
+        {/* Icon or Lottie Animation - Fixed height container */}
+        <div className="h-32 flex items-center justify-center mb-5">
+          {hasLottie ? (
+            <div className="w-32 h-32 transition-transform duration-300 group-hover:scale-105">
+              <LottieIcon
+                animationPath={service.lottieAnimation}
+                size={128}
+                playOnHover={true}
+                loop={true}
+              />
+            </div>
+          ) : IconComponent ? (
+            <div
+              className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+              style={{
+                background:
+                  'linear-gradient(135deg, rgba(125, 211, 252, 0.15) 0%, rgba(125, 211, 252, 0.05) 100%)',
+                border: '1px solid rgba(125, 211, 252, 0.12)',
+              }}
+            >
+              <IconComponent size={28} color="#38BDF8" strokeWidth={1.5} />
+            </div>
+          ) : null}
+        </div>
 
         {/* Title */}
         <h3
@@ -206,13 +204,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         </h3>
 
         {/* Description - single sentence */}
-        <p className="text-base leading-relaxed mb-4" style={{ color: '#6A6A6A' }}>
+        <p className="text-base leading-relaxed mb-4 flex-grow" style={{ color: '#6A6A6A' }}>
           {service.description}
         </p>
 
-        {/* Tags - Centered */}
+        {/* Tags - Centered, pushed to bottom */}
         {hasTags && (
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-2 mt-auto">
             {service.tags!.map((tag, tagIndex) => (
               <span
                 key={tag}
