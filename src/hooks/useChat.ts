@@ -28,7 +28,7 @@ const WELCOME_MESSAGE: ChatMessage = {
   content: 'אהלן! אני העוזר של MediaWave. איך אפשר לעזור?',
 }
 
-const LIMIT_MESSAGE = 'תודה על השיחה! לשיחה מעמיקה יותר, צרו קשר בוואטסאפ 052-8731808'
+const LIMIT_MESSAGE = 'תודה על השיחה! לשיחה מעמיקה יותר, לחצו כאן: https://wa.me/972528731808'
 
 // --- Helpers ---
 
@@ -46,7 +46,7 @@ function getErrorMessage(status: number, serverMsg?: string): string {
     case 503:
       return 'שירות הצ׳אט אינו זמין כרגע. נסו שוב מאוחר יותר.'
     default:
-      return 'אופס, משהו השתבש. נסו שוב בעוד רגע, או צרו קשר ישירות בוואטסאפ 052-8731808.'
+      return 'אופס, משהו השתבש. נסו שוב בעוד רגע, או צרו קשר ישירות בוואטסאפ https://wa.me/972528731808.'
   }
 }
 
@@ -118,7 +118,7 @@ export function useChat(): UseChatReturn {
       const errorContent =
         err instanceof Error && err.message !== 'Failed to fetch'
           ? err.message
-          : 'בעיית חיבור. בדקו את האינטרנט ונסו שוב, או צרו קשר בוואטסאפ 052-8731808.'
+          : 'בעיית חיבור. בדקו את האינטרנט ונסו שוב, או צרו קשר בוואטסאפ https://wa.me/972528731808.'
 
       setMessages((prev) => [
         ...prev,
