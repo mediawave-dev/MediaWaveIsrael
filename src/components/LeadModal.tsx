@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Input } from './ui/Input'
 import { Button } from './ui/Button'
 import { X, User, Phone } from 'lucide-react'
+import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 
 // Same endpoint as Contact form
 const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
@@ -11,6 +12,7 @@ export default function LeadModal() {
     const [isVisible, setIsVisible] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [success, setSuccess] = useState(false)
+    const [errorMsg, setErrorMsg] = useState('')
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -25,10 +27,10 @@ export default function LeadModal() {
         const hasClosed = sessionStorage.getItem('leadModalClosed')
         if (hasClosed) return
 
-        // Show after 15 seconds
+        // Show after 60 seconds
         const timer = setTimeout(() => {
             setIsVisible(true)
-        }, 15000)
+        }, 60000)
 
         return () => clearTimeout(timer)
     }, [])
@@ -42,21 +44,34 @@ export default function LeadModal() {
         e.preventDefault()
         if (isSubmitting) return
 
+        setErrorMsg('')
+
+        // Validation
+        if (!isValidName(formData.name)) {
+            setErrorMsg(validationErrors.name)
+            return
+        }
+
+        if (!isValidPhone(formData.phone)) {
+            setErrorMsg(validationErrors.phone)
+            return
+        }
+
         setIsSubmitting(true)
 
         try {
             if (endpoint) {
                 // Send to Google Sheets
                 // Note: Sending phone in message as fallback, and as separate field
-                const message = `New Lead from Popup. Phone: ${formData.phone}`
+                const message = `New Lead from Popup. Phone: ${formData.phone.trim()}`
 
                 await fetch(endpoint, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: new URLSearchParams({
-                        fullName: formData.name,
-                        email: 'popup@lead.com', // Placeholder or empty if script allows
-                        phone: formData.phone, // Send phone if script supports it
+                        fullName: formData.name.trim(),
+                        email: 'popup@lead.com', // Placeholder for script compatibility
+                        phone: formData.phone.trim(),
                         message: message,
                         page: window.location.href,
                         userAgent: navigator.userAgent,
@@ -73,8 +88,8 @@ export default function LeadModal() {
                 setIsVisible(false)
             }, 3000)
 
-        } catch (error) {
-            console.error('Error submitting lead form:', error)
+        } catch {
+            setErrorMsg('משהו השתבש בשליחה. נסו שוב.')
         } finally {
             setIsSubmitting(false)
         }
@@ -153,6 +168,12 @@ export default function LeadModal() {
                                             אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
                                         </label>
                                     </div>
+
+                                    {errorMsg && (
+                                        <div role="alert" aria-live="assertive" className="bg-coral/10 border border-coral/30 p-3 rounded text-coral text-sm text-right">
+                                            {errorMsg}
+                                        </div>
+                                    )}
 
                                     <Button
                                         type="submit"

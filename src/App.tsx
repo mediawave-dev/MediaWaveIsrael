@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
 import { Hero, Services, WhyUs, ROICalculator, Portfolio, Packages, Testimonials, FAQ, Contact } from './components/sections'
 import { Terms, Privacy, NotFound, Blog, BlogPost } from './components/pages'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import LeadModal from './components/LeadModal'
 
 // Home page with all sections
@@ -40,17 +41,19 @@ function HomePage() {
 
 function App() {
   return (
-    <Layout>
-      <LeadModal />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Layout>
+    <ErrorBoundary>
+      <Layout>
+        <LeadModal />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Layout>
+    </ErrorBoundary>
   )
 }
 

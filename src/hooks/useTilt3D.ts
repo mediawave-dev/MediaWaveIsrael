@@ -39,7 +39,7 @@ export function useTilt3D<T extends HTMLElement = HTMLDivElement>(
     springStrength = 0.1,
   } = options
 
-  const ref = useRef<T>(null!)
+  const ref = useRef<T>(null)
   const prefersReducedMotion = useReducedMotion()
   const [isHovering, setIsHovering] = useState(false)
   const [tilt, setTilt] = useState<TiltState>({ rotateX: 0, rotateY: 0, scale: 1 })

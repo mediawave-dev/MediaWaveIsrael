@@ -4,6 +4,8 @@ import Header from './Header'
 import Footer from './Footer'
 import AccessibilityWidget from '../ui/AccessibilityWidget'
 import ChatWidget from '../ui/ChatWidget'
+import CookieConsent from '../ui/CookieConsent'
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
 
 interface LayoutProps {
   children: ReactNode
@@ -48,6 +50,9 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* AI Chat widget — bottom-right, lowest position */}
       <ChatWidget onOpenChange={handleChatOpenChange} />
+
+      {/* Cookie consent banner */}
+      <CookieConsent />
     </div>
   )
 }
@@ -57,7 +62,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
     <AnimatePresence>
       {!isChatOpen && (
         <motion.a
-          href="https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A"
+          href={WHATSAPP_URLS.general}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-12 sm:h-14 bg-[#25D366] rounded-full shadow-lg flex items-center gap-2 px-3 sm:px-4"

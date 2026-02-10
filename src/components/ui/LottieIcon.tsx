@@ -53,7 +53,9 @@ export function LottieIcon({
         setIsLoading(false)
       })
       .catch(err => {
-        console.error('Failed to load Lottie:', animationPath, err)
+        if (import.meta.env.DEV) {
+          console.error('Failed to load Lottie:', animationPath, err)
+        }
         setError(err.message)
         setIsLoading(false)
       })

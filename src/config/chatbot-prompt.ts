@@ -31,8 +31,17 @@ export const CHATBOT_SYSTEM_PROMPT = `אתה הנציג הדיגיטלי של Me
 - If asked who built you: "אני נבניתי על ידי MediaWave עם טכנולוגיית AI של Claude"
 - Don't fabricate info not provided here`
 
-// Model and limits
-export const CHATBOT_MODEL = 'claude-haiku-4-5-20251001'
-export const MAX_TOKENS = 500
-export const MAX_CONTEXT_MESSAGES = 10
-export const MAX_MESSAGES_PER_CONVERSATION = 20
+// Model and limits - single source of truth
+export const CHATBOT_CONFIG = {
+  model: 'claude-haiku-4-5-20251001',
+  maxTokens: 500,
+  maxContextMessages: 10,
+  maxMessagesPerConversation: 15,
+  maxMessageLength: 1000,
+} as const
+
+// Legacy exports for backwards compatibility
+export const CHATBOT_MODEL = CHATBOT_CONFIG.model
+export const MAX_TOKENS = CHATBOT_CONFIG.maxTokens
+export const MAX_CONTEXT_MESSAGES = CHATBOT_CONFIG.maxContextMessages
+export const MAX_MESSAGES_PER_CONVERSATION = CHATBOT_CONFIG.maxMessagesPerConversation

@@ -1,14 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Logo } from '../ui'
-
-const quickLinks = [
-  { label: 'דף הבית', href: '#top' },
-  { label: 'מחשבון הפסדים', href: '#roi-calculator' },
-  { label: 'שירותים', href: '#services' },
-  { label: 'שאלות נפוצות', href: '#faq' },
-  { label: 'הבלוג', href: '/blog' },
-  { label: 'צור קשר', href: '#contact' },
-]
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
+import { footerLinks } from '../../config/navigation'
 
 const currentYear = new Date().getFullYear()
 
@@ -64,7 +57,7 @@ export default function Footer() {
               קישורים מהירים
             </h4>
             <nav className="flex flex-col gap-2.5">
-              {quickLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -103,7 +96,7 @@ export default function Footer() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8"
+                href={WHATSAPP_URLS.footer}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"

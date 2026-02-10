@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { testimonials } from '../../data/testimonials'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 // Color palette for testimonial cards (from site design system)
 const cardColors = ['#F5A623', '#E07B54', '#8BB4A0', '#F28B82']
@@ -10,6 +11,7 @@ function getColor(index: number): string {
 }
 
 export default function Testimonials() {
+  const prefersReducedMotion = useReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
@@ -19,8 +21,14 @@ export default function Testimonials() {
   const color = getColor(activeIndex)
   const active = testimonials[activeIndex]
 
-  // Auto-rotate testimonials
+  // Auto-rotate testimonials (respect reduced motion preference)
   useEffect(() => {
+    // Disable auto-play if user prefers reduced motion
+    if (prefersReducedMotion) {
+      setIsAutoPlaying(false)
+      return
+    }
+
     if (!isAutoPlaying) return
 
     const interval = setInterval(() => {
@@ -28,7 +36,7 @@ export default function Testimonials() {
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying])
+  }, [isAutoPlaying, prefersReducedMotion])
 
   return (
     <section

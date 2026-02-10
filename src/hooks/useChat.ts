@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { CHATBOT_CONFIG } from '../config/chatbot-prompt'
 
 // --- Types ---
 
@@ -16,11 +17,13 @@ export interface UseChatReturn {
   resetConversation: () => void
 }
 
-// --- Constants ---
+// --- Constants (from unified config) ---
 
-const MAX_MESSAGES = 15
-const MAX_CONTEXT_MESSAGES = 10
-const MAX_MESSAGE_LENGTH = 1000
+const {
+  maxMessagesPerConversation: MAX_MESSAGES,
+  maxContextMessages: MAX_CONTEXT_MESSAGES,
+  maxMessageLength: MAX_MESSAGE_LENGTH,
+} = CHATBOT_CONFIG
 
 const WELCOME_MESSAGE: ChatMessage = {
   id: 'welcome',
@@ -32,9 +35,15 @@ const LIMIT_MESSAGE = 'תודה על השיחה! לשיחה מעמיקה יות�
 
 // --- Helpers ---
 
-/** Strip HTML tags to prevent XSS */
+/** Escape HTML entities to prevent XSS */
 function sanitize(text: string): string {
-  return text.replace(/[<>]/g, '').trim()
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .trim()
 }
 
 function getErrorMessage(status: number, serverMsg?: string): string {

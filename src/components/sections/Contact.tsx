@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Input, Textarea } from '../ui/Input'
 import { Button } from '../ui/Button'
+import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
 
 // Contact info from CONTENT.md
 const contactInfo = {
@@ -26,6 +28,22 @@ export default function Contact() {
     setSuccessMsg('')
     setErrorMsg('')
 
+    // Validation
+    if (!isValidName(formData.name)) {
+      setErrorMsg(validationErrors.name)
+      return
+    }
+
+    if (!isValidEmail(formData.email)) {
+      setErrorMsg(validationErrors.email)
+      return
+    }
+
+    if (!isValidMessage(formData.message)) {
+      setErrorMsg(validationErrors.message)
+      return
+    }
+
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
 
     if (!endpoint) {
@@ -39,9 +57,9 @@ export default function Contact() {
         method: 'POST',
         mode: 'no-cors',
         body: new URLSearchParams({
-          fullName: formData.name,
-          email: formData.email,
-          message: formData.message,
+          fullName: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
           page: window.location.href,
           userAgent: navigator.userAgent,
         }),
@@ -196,7 +214,7 @@ export default function Contact() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A"
+                href={WHATSAPP_URLS.contact}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"

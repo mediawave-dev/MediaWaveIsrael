@@ -6,8 +6,6 @@ const logoImage = '/images/logo-mediawave-removebg-preview.png'
 interface LogoProps {
   /** Size variant */
   variant?: 'header' | 'footer' | 'mobile'
-  /** Show text below logo icon */
-  showText?: boolean
   /** Custom className */
   className?: string
   /** Whether header is scrolled (for size reduction) */
@@ -20,12 +18,9 @@ interface LogoProps {
  */
 export default function Logo({
   variant = 'header',
-  // showText kept for API compatibility but not used - new logo includes text
-  showText: _showText,
   className = '',
   isScrolled = false,
 }: LogoProps) {
-  void _showText // Suppress unused variable warning - kept for API compatibility
   // Size configurations - larger mobile sizes for readability
   const sizes = {
     header: {

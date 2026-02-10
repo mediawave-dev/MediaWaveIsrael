@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
-
-// All navigation links - plain text style
-const navLinks = [
-  { label: 'שירותים', href: '#services' },
-  { label: 'שאלות נפוצות', href: '#faq' },
-  { label: 'הבלוג', href: '/blog' },
-]
+import { headerLinks } from '../../config/navigation'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -86,7 +80,7 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((link, index) => (
+              {headerLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
@@ -223,7 +217,7 @@ export default function Header() {
 
                 {/* Navigation Links */}
                 <nav className="flex flex-col gap-5">
-                  {navLinks.map((link, index) => (
+                  {headerLinks.map((link, index) => (
                     <motion.a
                       key={link.href}
                       href={link.href}

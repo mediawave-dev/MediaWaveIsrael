@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, useSpring, useTransform } from 'framer-motion'
 import { Calculator, MessageCircle, TrendingUp, Users, CreditCard, HelpCircle } from 'lucide-react'
+import { getWhatsAppUrlWithROI } from '../../utils/whatsapp'
 
 
 // Format number with Hebrew locale
@@ -219,13 +220,8 @@ export default function ROICalculator() {
     calculateROI()
   }, [calculateROI])
 
-  // Generate WhatsApp message
-  const getWhatsAppUrl = () => {
-    const message = encodeURIComponent(
-      `היי, חישבתי במחשבון שלכם שאני מפסיד ₪${formatCurrency(yearlyLoss)} בשנה.\nאשמח לשמוע איך אפשר לשפר את האתר שלי!`
-    )
-    return `https://wa.me/972528731808?text=${message}`
-  }
+  // Generate WhatsApp URL with ROI calculation
+  const whatsAppUrl = getWhatsAppUrlWithROI(yearlyLoss)
 
   // Check if inputs are valid
   const isValidInput = traffic > 0 && conversionRate > 0 && customerValue > 0
@@ -379,7 +375,7 @@ export default function ROICalculator() {
 
                 {/* CTA Button */}
                 <motion.a
-                  href={getWhatsAppUrl()}
+                  href={whatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 px-8 py-4 bg-[#38BDF8] hover:bg-[#0EA5E9] rounded-xl
