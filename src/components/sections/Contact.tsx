@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Input, Textarea } from '../ui/Input'
 import { Button } from '../ui/Button'
+import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 
@@ -83,7 +84,7 @@ export default function Contact() {
       <div className="container max-w-5xl">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <motion.h2
+          <m.h2
             className="text-4xl md:text-5xl font-headline mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -91,23 +92,39 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
           >
             דברו איתנו
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          {/* Contact animation */}
+          <m.div
+            className="flex justify-center mb-4"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <LottieIcon
+              animationPath="/animations/12 Talk with us/Topictalk_icon.json"
+              size={120}
+              playOnHover={true}
+              loop={true}
+            />
+          </m.div>
+
+          <m.p
             className="text-2xl text-brown-light"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם
-          </motion.p>
+          </m.p>
         </div>
 
         {/* Two columns */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Form */}
-          <motion.div
+          <m.div
             className="order-2 lg:order-1"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -169,10 +186,10 @@ export default function Contact() {
                 </Button>
               </form>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Contact Info */}
-          <motion.div
+          <m.div
             className="order-1 lg:order-2"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -235,7 +252,7 @@ export default function Contact() {
                 אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים
               </p>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
