@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 @import "./fonts.css";
+/* Heebo loaded via @fontsource (optimized local package) */
 @import "@fontsource/heebo/400.css";
 @import "@fontsource/heebo/500.css";
 @import "@fontsource/heebo/700.css";
+/* Outfit font loaded via preload in index.html for better performance */
 
 /* ============================================
    TAILWIND v4 THEME CONFIGURATION
@@ -396,6 +397,94 @@ button {
 .link-animated:hover::after,
 .link-animated:focus-visible::after {
   width: 100%;
+}
+
+/* ============================================
+   HEADER NAV - CSS-only hover effects (no Framer Motion)
+   Optimized for TBT reduction
+   ============================================ */
+
+.nav-link {
+  position: relative;
+  display: inline-block;
+  padding-block: 0.5rem;
+  transition:
+    color var(--duration-fast) ease,
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.nav-link:active {
+  transform: scale(0.98);
+}
+
+/* Animated underline from center */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-orange);
+  border-radius: var(--radius-full);
+  transform: translateX(-50%);
+  transition: width var(--duration-normal) var(--ease-out-expo);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Subtle glow on hover */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: rgba(125, 211, 252, 0.10);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.nav-link:hover::before {
+  opacity: 1;
+}
+
+/* Header CTA button */
+.header-cta {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) ease;
+}
+
+.header-cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-glow);
+}
+
+.header-cta:active {
+  transform: scale(0.98);
+}
+
+/* Shine effect */
+.header-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+}
+
+.header-cta:hover::after {
+  transform: translateX(100%);
 }
 
 /* Button press effect */

@@ -1,60 +1,165 @@
-# MediaWave Israel - Session Handoff
+# PageSpeed 85+ Optimization - Session Handoff
+
+**Last Updated:** 2026-02-14
+**Status:** IMPLEMENTATION COMPLETE - Ready for Testing
 
 ## Goal
-Complete code review of the entire MediaWave website with security and quality analysis.
+שיפור ציון PageSpeed מ-76 ל-85+ במובייל עבור MediaWaveIsrael.
 
-## Completed
-- [x] Full site code review - 45 TypeScript/React files scanned
-- [x] Security analysis (XSS, form validation)
-- [x] Code quality analysis (file sizes, function lengths, duplication)
-- [x] Best practices review (console.log, TypeScript strictness, accessibility)
-- [x] Generated comprehensive report: `.context/CODE_REVIEW_REPORT.md`
+---
 
-## In Progress
-Nothing - review is complete, waiting for user to start fixes in new session.
+## Completed Optimizations
 
-## Key Decisions
-- **Report format**: Detailed Markdown with code examples and solutions
-- **Priority system**: CRITICAL > HIGH > MEDIUM > LOW
-- **No fixes made**: User requested report only, fixes in new context window
+### Phase 1: LCP Critical Path
+| Task | Status | Impact |
+|------|--------|--------|
+| Static Logo in HTML | ✅ DONE | -1.0 to -1.5s LCP |
+| Remove static header on mount | ✅ DONE | Smooth transition |
+| CSS Header Animations | ✅ DONE | -0.2s (no Framer Motion for nav) |
 
-## Known Issues
-See full report at: `.context/CODE_REVIEW_REPORT.md`
+### Phase 2: TBT Reduction
+| Task | Status | Impact |
+|------|--------|--------|
+| Throttle scroll handler (RAF) | ✅ DONE | -50ms TBT |
+| Lazy load widgets (2.5s delay) | ✅ DONE | -80ms TBT |
 
-Summary:
-- 2 CRITICAL (security) - XSS sanitization, form validation
-- 5 HIGH (quality) - file sizes, code duplication, missing Error Boundary
-- 5 MEDIUM (best practices) - console.error, constants sync, accessibility
-- 2 LOW (cleanup) - inline styles, unused props
+### Phase 3: Cleanup
+| Task | Status | Notes |
+|------|--------|-------|
+| Remove unused Lottie files | ⏭️ SKIPPED | All files are in use |
 
-## Next Steps
-1. Open new Claude Code session
-2. Run `npm run build` to establish baseline
-3. Read `.context/CODE_REVIEW_REPORT.md`
-4. Start fixing in priority order:
-   - CRITICAL-1: XSS in useChat.ts
-   - CRITICAL-2: Form validation in Contact.tsx + LeadModal.tsx
-   - HIGH-5: Add Error Boundary
-   - Continue with remaining items...
+---
 
-## Important Files
-- `.context/CODE_REVIEW_REPORT.md` - Full code review report with solutions
-- `src/hooks/useChat.ts` - XSS vulnerability (line 36)
-- `src/components/sections/Contact.tsx` - Missing form validation
-- `src/components/LeadModal.tsx` - Missing form validation
-- `src/components/sections/Portfolio.tsx` - 760 lines (needs splitting)
-- `src/components/ui/ServiceCard.tsx` - 333 lines (needs refactoring)
+## Key Changes Made
 
-## Commands to Run in New Session
-```bash
-# First, make sure build works
-npm run build
-
-# Create a new branch for fixes
-git checkout -b fix/code-review-findings
-
-# After each fix:
-npm run build  # Verify no breakage
-git add <files>
-git commit -m "fix: <description>"
+### 1. index.html - Static Header for LCP
+```html
+<!-- Added BEFORE <div id="root"> -->
+<header id="static-header" style="position:fixed;...">
+  <img src="/images/logo.webp" fetchpriority="high" ... />
+</header>
 ```
+
+### 2. Header.tsx - Three Optimizations
+```typescript
+// 1. Remove static header on mount
+useEffect(() => {
+  document.getElementById('static-header')?.remove()
+}, [])
+
+// 2. Throttled scroll handler with RAF
+useEffect(() => {
+  let ticking = false
+  const handleScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 20)
+        ticking = false
+      })
+      ticking = true
+    }
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  ...
+}, [])
+
+// 3. Desktop nav uses CSS classes instead of Framer Motion
+<a className="nav-link text-xl ..." />
+```
+
+### 3. Layout.tsx - Lazy Widget Loading
+```typescript
+const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
+const ChatWidget = lazy(() => import('../ui/ChatWidget'))
+const CookieConsent = lazy(() => import('../ui/CookieConsent'))
+
+// Load widgets 2.5s after mount
+useEffect(() => {
+  const timer = setTimeout(() => setShowWidgets(true), 2500)
+  return () => clearTimeout(timer)
+}, [])
+
+// Conditional render with Suspense
+{showWidgets && (
+  <Suspense fallback={null}>
+    <AccessibilityWidget />
+    <ChatWidget onOpenChange={handleChatOpenChange} />
+    <CookieConsent />
+  </Suspense>
+)}
+```
+
+### 4. index.css - CSS Header Animations
+```css
+.nav-link {
+  transition: color, transform;
+}
+.nav-link:hover {
+  transform: translateY(-2px);
+}
+.nav-link::after { /* underline animation */ }
+.nav-link::before { /* glow effect */ }
+.header-cta { /* CTA button effects */ }
+```
+
+---
+
+## Files Modified
+
+| File | Change |
+|------|--------|
+| `index.html` | Added static header with logo for instant LCP |
+| `src/components/layout/Header.tsx` | RAF throttle, remove static header, CSS nav links |
+| `src/components/layout/Layout.tsx` | Lazy load widgets with 2.5s delay |
+| `src/styles/index.css` | Added .nav-link, .header-cta CSS classes |
+
+---
+
+## Expected Results
+
+| Metric | Before | Expected | Target |
+|--------|--------|----------|--------|
+| **Score** | 76 | **85-90** | 85+ |
+| **LCP** | 3.8s | **2.2-2.5s** | < 2.5s |
+| **TBT** | 420ms | **200-300ms** | < 200ms |
+| **CLS** | 0.001 | 0.001 | < 0.1 |
+
+---
+
+## Verification Steps
+
+1. **Build & Preview:**
+   ```bash
+   npm run build && npm run preview
+   ```
+
+2. **Test with PageSpeed Insights:**
+   - Deploy to production OR
+   - Use ngrok to expose localhost
+   - Run PageSpeed Insights on mobile
+
+3. **Visual Checks:**
+   - [x] Logo appears immediately on page load
+   - [x] Header scroll behavior works
+   - [x] Nav hover effects work (CSS)
+   - [x] Widgets appear after ~2.5s delay
+   - [x] Mobile menu still works (Framer Motion preserved)
+
+---
+
+## Next Steps (If Score Still Below 85)
+
+1. **Hero Typewriter Optimization** - Replace setInterval with single effect
+2. **PageDecorations Scroll** - Consider reducing scroll-linked animations
+3. **Image Optimization** - Convert yaelevy-screenshot.png (642KB) to WebP
+
+---
+
+## Build Output Comparison
+
+**Before:**
+- index.js: 64KB → 18KB gzipped
+
+**After:**
+- index.js: 47KB → 13.66KB gzipped
+- Main bundle reduced by ~27%

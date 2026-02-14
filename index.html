@@ -48,12 +48,20 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Preconnect for performance -->
+    <!-- Preconnect for Google Fonts (Outfit only - Heebo uses @fontsource) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Google Fonts - Heebo for Hebrew, Poppins for English -->
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Preload logo for faster LCP (this is the LCP element) -->
+    <link rel="preload" href="/images/logo.webp" as="image" type="image/webp" fetchpriority="high" />
+
+    <!-- Preload hero poster image -->
+    <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" />
+
+    <!-- Preload critical Outfit font weights for faster LCP -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" /></noscript>
 
     <!-- Structured Data - LocalBusiness -->
     <script type="application/ld+json">
@@ -185,6 +193,20 @@
       </svg>
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     </div>
+
+    <!-- Static header for instant LCP - removed once React mounts -->
+    <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;">
+      <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
+        <img
+          src="/images/logo.webp"
+          alt="MediaWave Israel"
+          width="320"
+          height="144"
+          fetchpriority="high"
+          style="height:8rem;width:auto;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0,0,0,0.5));"
+        />
+      </div>
+    </header>
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

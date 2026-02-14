@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
 import { headerLinks } from '../../config/navigation'
@@ -13,11 +13,27 @@ export default function Header() {
   // Check if we're on the home page
   const isHomePage = location.pathname === '/'
 
+  // Remove static header from HTML once React mounts (LCP optimization)
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+    const staticHeader = document.getElementById('static-header')
+    if (staticHeader) {
+      staticHeader.remove()
     }
-    window.addEventListener('scroll', handleScroll)
+  }, [])
+
+  // Throttled scroll handler using requestAnimationFrame
+  useEffect(() => {
+    let ticking = false
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -87,54 +103,28 @@ export default function Header() {
               <Logo variant="header" isScrolled={isScrolled || !isHomePage} />
             </a>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - CSS-only animations for better TBT */}
             <div className="hidden md:flex items-center gap-8">
-              {headerLinks.map((link, index) => (
-                <motion.a
+              {headerLinks.map((link) => (
+                <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`group relative text-xl ${isScrolled || !isHomePage ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'} transition-colors duration-300 py-2`}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                  className={`nav-link text-xl ${isScrolled || !isHomePage ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'}`}
                 >
                   {link.label}
-                  {/* Animated underline - expands from center */}
-                  <motion.span
-                    className="absolute -bottom-1 left-1/2 h-0.5 bg-orange rounded-full"
-                    initial={{ width: 0, x: '-50%' }}
-                    whileHover={{ width: '100%' }}
-                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                  {/* Subtle glow on hover */}
-                  <motion.span
-                    className="absolute inset-0 -z-10 rounded-lg"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1, backgroundColor: 'rgba(212, 165, 116, 0.10)' }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </motion.a>
+                </a>
               ))}
 
-              {/* CTA Button */}
-              <motion.a
+              {/* CTA Button - CSS-only hover */}
+              <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="relative overflow-hidden bg-orange text-xl font-semibold py-3 px-7 rounded-full shadow-sm transition-all duration-300 hover:shadow-glow hover:bg-orange-dark hover:-translate-y-0.5 group"
+                className="header-cta bg-orange text-xl font-semibold py-3 px-7 rounded-full shadow-sm hover:bg-orange-dark"
                 style={{ color: '#1e3a5f' }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
               >
-                {/* Shine effect */}
-                <span className="absolute inset-0 bg-gradient-to-l from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-                <span className="relative">בואו נדבר</span>
-              </motion.a>
+                בואו נדבר
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -146,7 +136,7 @@ export default function Header() {
             >
               <div className="relative w-6 h-5">
                 {/* Hamburger lines with smooth morph to X */}
-                <motion.span
+                <m.span
                   className="absolute right-0 h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
@@ -156,7 +146,7 @@ export default function Header() {
                   }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 />
-                <motion.span
+                <m.span
                   className="absolute right-0 top-[10px] h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
@@ -165,7 +155,7 @@ export default function Header() {
                   }}
                   transition={{ duration: 0.2 }}
                 />
-                <motion.span
+                <m.span
                   className="absolute right-0 h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
                   animate={{
@@ -186,7 +176,7 @@ export default function Header() {
         {isMobileMenuOpen && (
           <>
             {/* Backdrop */}
-            <motion.div
+            <m.div
               className="fixed inset-0 bg-brown-dark/20 backdrop-blur-sm z-40 md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -195,7 +185,7 @@ export default function Header() {
             />
 
             {/* Mobile Menu Panel - slides from right (RTL) */}
-            <motion.div
+            <m.div
               className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-cream z-50 md:hidden shadow-lg"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -227,7 +217,7 @@ export default function Header() {
                 {/* Navigation Links */}
                 <nav className="flex flex-col gap-5">
                   {headerLinks.map((link, index) => (
-                    <motion.a
+                    <m.a
                       key={link.href}
                       href={link.href}
                       className="text-2xl text-brown hover:text-orange transition-colors duration-300 min-h-11 flex items-center"
@@ -240,11 +230,11 @@ export default function Header() {
                       transition={{ delay: index * 0.1 + 0.2 }}
                     >
                       {link.label}
-                    </motion.a>
+                    </m.a>
                   ))}
 
                   {/* CTA Link - same style with arrow */}
-                  <motion.a
+                  <m.a
                     href="#contact"
                     className="text-2xl text-orange font-semibold hover:text-orange-dark transition-colors duration-300 min-h-11 flex items-center gap-2 group"
                     onClick={(e) => {
@@ -256,14 +246,14 @@ export default function Header() {
                     transition={{ delay: 0.4 }}
                   >
                     בואו נדבר
-                    <motion.span
+                    <m.span
                       className="inline-block"
                       animate={{ x: [0, -4, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       ←
-                    </motion.span>
-                  </motion.a>
+                    </m.span>
+                  </m.a>
                 </nav>
 
                 {/* Contact info - pushed to bottom */}
@@ -272,7 +262,7 @@ export default function Header() {
                   <p>mediawaveisrael@gmail.com</p>
                 </div>
               </div>
-            </motion.div>
+            </m.div>
           </>
         )}
       </AnimatePresence>
