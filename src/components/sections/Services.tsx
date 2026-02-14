@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import type { LucideIcon } from 'lucide-react'
 import { LottieIcon } from '../ui'
 
@@ -47,7 +47,7 @@ export default function Services() {
     >
       {/* Animated decorative background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <motion.div
+        <m.div
           className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
           style={{
             background: 'radial-gradient(circle, rgba(125, 211, 252, 0.2) 0%, transparent 70%)',
@@ -56,7 +56,7 @@ export default function Services() {
           animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <motion.div
+        <m.div
           className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full"
           style={{
             background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%)',
@@ -70,7 +70,7 @@ export default function Services() {
       <div className="container relative max-w-5xl">
         {/* Header */}
         <div className="mb-14 md:mb-16 text-center">
-          <motion.span
+          <m.span
             className="block text-base font-semibold tracking-widest uppercase mb-4"
             style={{ color: '#38BDF8' }}
             initial={{ opacity: 0, y: 10 }}
@@ -78,9 +78,9 @@ export default function Services() {
             viewport={{ once: true }}
           >
             השירותים שלנו
-          </motion.span>
+          </m.span>
 
-          <motion.h2
+          <m.h2
             className="text-4xl md:text-5xl font-headline leading-tight text-brown-dark mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -88,9 +88,9 @@ export default function Services() {
             transition={{ delay: 0.1 }}
           >
             מה אנחנו עושים
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -98,24 +98,24 @@ export default function Services() {
             transition={{ delay: 0.2 }}
           >
             מהרעיון הראשוני ועד להשקה, אנחנו מלווים אתכם בכל שלב.
-          </motion.p>
+          </m.p>
         </div>
 
         {/* Simple 3-column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
+            <ServiceCard key={service.id} service={service} index={index} isFeatured={index === 1} />
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <motion.div
+        <m.div
           className="mt-14 md:mt-20 text-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <motion.a
+          <m.a
             href="#contact"
             className="inline-flex items-center gap-3 text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 bg-orange hover:bg-orange-dark"
             style={{ color: '#1e3a5f' }}
@@ -123,41 +123,43 @@ export default function Services() {
             whileTap={{ scale: 0.98 }}
           >
             <span>התחל פרויקט</span>
-            <motion.span
+            <m.span
               animate={{ x: [0, -4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               ←
-            </motion.span>
-          </motion.a>
-        </motion.div>
+            </m.span>
+          </m.a>
+        </m.div>
       </div>
     </section>
   )
 }
 
 // Glassmorphism service card
-function ServiceCard({ service, index }: { service: Service; index: number }) {
+function ServiceCard({ service, index, isFeatured = false }: { service: Service; index: number; isFeatured?: boolean }) {
   const IconComponent = service.icon
   const hasTags = service.tags && service.tags.length > 0
   const hasLottie = !!service.lottieAnimation
 
   return (
-    <motion.div
+    <m.div
       className="relative group rounded-2xl overflow-hidden h-full"
       style={{
         background: 'rgba(255, 255, 255, 0.55)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         border: '1px solid rgba(255, 255, 255, 0.6)',
-        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+        boxShadow: isFeatured
+          ? '0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+          : '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
       }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{
-        y: -8,
+        y: isFeatured ? -12 : -8,
         boxShadow:
           '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(125, 211, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
@@ -170,13 +172,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
       {/* Card content */}
       <div className="p-5 md:p-6 text-center flex flex-col h-full">
-        {/* Icon or Lottie Animation - Fixed height container */}
-        <div className="h-32 flex items-center justify-center mb-5">
+        {/* Icon or Lottie Animation - Featured gets larger container */}
+        <div className={`${isFeatured ? 'h-48' : 'h-32'} flex items-center justify-center mb-5`}>
           {hasLottie ? (
-            <div className="w-32 h-32 transition-transform duration-300 group-hover:scale-105">
+            <div className={`${isFeatured ? 'w-48 h-48' : 'w-32 h-32'} transition-transform duration-300 group-hover:scale-105`}>
               <LottieIcon
                 animationPath={service.lottieAnimation}
-                size={128}
+                size={isFeatured ? 192 : 128}
                 playOnHover={true}
                 loop={true}
               />
@@ -237,6 +239,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           background: 'linear-gradient(135deg, rgba(125, 211, 252, 0.05) 0%, transparent 60%)',
         }}
       />
-    </motion.div>
+    </m.div>
   )
 }
