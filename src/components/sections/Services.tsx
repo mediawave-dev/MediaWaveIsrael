@@ -144,7 +144,7 @@ function ServiceCard({ service, index, isFeatured = false }: { service: Service;
 
   return (
     <m.div
-      className="relative group rounded-2xl overflow-hidden h-full"
+      className="relative group rounded-2xl overflow-visible h-full"
       style={{
         background: 'rgba(255, 255, 255, 0.55)',
         backdropFilter: 'blur(12px)',
@@ -172,13 +172,16 @@ function ServiceCard({ service, index, isFeatured = false }: { service: Service;
 
       {/* Card content */}
       <div className="p-5 md:p-6 text-center flex flex-col h-full">
-        {/* Icon or Lottie Animation - Featured gets larger container */}
-        <div className={`${isFeatured ? 'h-48' : 'h-32'} flex items-center justify-center mb-5`}>
+        {/* Icon or Lottie Animation - same container for all, featured scales up visually */}
+        <div className="h-32 flex items-center justify-center mb-5">
           {hasLottie ? (
-            <div className={`${isFeatured ? 'w-48 h-48' : 'w-32 h-32'} transition-transform duration-300 group-hover:scale-105`}>
+            <div
+              className="w-32 h-32 transition-transform duration-300 group-hover:scale-105"
+              style={isFeatured ? { transform: 'scale(1.5)' } : undefined}
+            >
               <LottieIcon
                 animationPath={service.lottieAnimation}
-                size={isFeatured ? 192 : 128}
+                size={128}
                 playOnHover={true}
                 loop={true}
               />
