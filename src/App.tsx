@@ -1,40 +1,74 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
-import { Hero, Services, WhyUs, ROICalculator, Portfolio, Packages, Testimonials, FAQ, Contact } from './components/sections'
-import { Terms, Privacy, NotFound, Blog, BlogPost } from './components/pages'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import LeadModal from './components/LeadModal'
+import { MotionProvider } from './components/MotionProvider'
 
-// Home page with all sections
+// Above-fold: load immediately
+import { Hero } from './components/sections'
+
+// Below-fold: lazy load for better initial performance
+const WhyUs = lazy(() => import('./components/sections/WhyUs'))
+const Services = lazy(() => import('./components/sections/Services'))
+const Portfolio = lazy(() => import('./components/sections/Portfolio'))
+const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
+const Testimonials = lazy(() => import('./components/sections/Testimonials'))
+const ROICalculator = lazy(() => import('./components/sections/ROICalculator'))
+const FAQ = lazy(() => import('./components/sections/FAQ'))
+const Contact = lazy(() => import('./components/sections/Contact'))
+
+// Pages: lazy load (rarely accessed)
+const Terms = lazy(() => import('./components/pages/Terms'))
+const Privacy = lazy(() => import('./components/pages/Privacy'))
+const Blog = lazy(() => import('./components/pages/Blog'))
+const BlogPost = lazy(() => import('./components/pages/BlogPost'))
+const NotFound = lazy(() => import('./components/pages/NotFound'))
+
+// Minimal fallback - just reserves space, specific heights for CLS prevention
+const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
+  <div style={{ minHeight: height }} aria-hidden="true" />
+)
+
+// Home page with all sections - each in separate Suspense for progressive rendering
 function HomePage() {
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section - loads immediately (above fold, LCP critical) */}
       <Hero />
 
-      {/* Why Us Section - show differentiators first */}
-      <WhyUs />
+      {/* Below-fold sections - each in separate Suspense for progressive rendering */}
+      <Suspense fallback={<SectionFallback height="400px" />}>
+        <WhyUs />
+      </Suspense>
 
-      {/* Services Section - what we offer */}
-      <Services />
+      <Suspense fallback={<SectionFallback height="600px" />}>
+        <Services />
+      </Suspense>
 
-      {/* Portfolio Section */}
-      <Portfolio />
+      <Suspense fallback={<SectionFallback height="500px" />}>
+        <Portfolio />
+      </Suspense>
 
-      {/* Packages / Pricing Section */}
-      <Packages />
+      <Suspense fallback={<SectionFallback height="500px" />}>
+        <HowWeWork />
+      </Suspense>
 
-      {/* Testimonials — renders only when real data exists in data/testimonials.ts */}
-      <Testimonials />
+      <Suspense fallback={<SectionFallback height="400px" />}>
+        <Testimonials />
+      </Suspense>
 
-      {/* ROI Calculator - show what they're losing */}
-      <ROICalculator />
+      <Suspense fallback={<SectionFallback height="450px" />}>
+        <ROICalculator />
+      </Suspense>
 
-      {/* FAQ Section - after calculator, before contact */}
-      <FAQ />
+      <Suspense fallback={<SectionFallback height="400px" />}>
+        <FAQ />
+      </Suspense>
 
-      {/* Contact Section */}
-      <Contact />
+      <Suspense fallback={<SectionFallback height="500px" />}>
+        <Contact />
+      </Suspense>
     </>
   )
 }
@@ -42,17 +76,19 @@ function HomePage() {
 function App() {
   return (
     <ErrorBoundary>
-      <Layout>
-        <LeadModal />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
+      <MotionProvider>
+        <Layout>
+          <LeadModal />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/blog" element={<Suspense fallback={<SectionFallback />}><Blog /></Suspense>} />
+            <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
+            <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
+            <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
+            <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
+          </Routes>
+        </Layout>
+      </MotionProvider>
     </ErrorBoundary>
   )
 }
