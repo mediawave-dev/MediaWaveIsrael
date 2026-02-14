@@ -124,21 +124,12 @@ function StepCard({ step, index }: { step: Step; index: number }) {
 
         {/* Lottie Animation */}
         <div className="relative z-10 mb-4 md:mb-6 flex justify-center">
-          <div className="relative">
-            {/* Glow ring behind animation */}
-            <div className="absolute inset-0 rounded-2xl
-              bg-gradient-to-br from-sky-100 to-cyan-50
-              scale-110 opacity-60 group-hover:scale-125 group-hover:opacity-80
-              transition-all duration-500
-            " />
-            <LottieIcon
-              animationPath={step.animationPath}
-              size={100}
-              className="relative z-10"
-              playOnHover={true}
-              loop={true}
-            />
-          </div>
+          <LottieIcon
+            animationPath={step.animationPath}
+            size={160}
+            playOnHover={true}
+            loop={true}
+          />
         </div>
 
         {/* Content */}

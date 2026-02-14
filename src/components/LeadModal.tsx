@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { Input } from './ui/Input'
 import { Button } from './ui/Button'
+import { LottieIcon } from './ui/LottieIcon'
 import { X, User, Phone } from 'lucide-react'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 
@@ -100,7 +101,7 @@ export default function LeadModal() {
             {isVisible && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     {/* Backdrop */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -109,7 +110,7 @@ export default function LeadModal() {
                     />
 
                     {/* Modal Card */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -136,9 +137,19 @@ export default function LeadModal() {
                             </div>
                         ) : (
                             <div className="text-center relative z-10">
-                                <h3 className="text-xl md:text-2xl font-bold text-brown-dark mb-6">
+                                <h3 className="text-xl md:text-2xl font-bold text-brown-dark mb-2">
                                     השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!
                                 </h3>
+
+                                {/* Lead animation */}
+                                <div className="flex justify-center mb-4">
+                                    <LottieIcon
+                                        animationPath="/animations/13 Leave Details/contact us.json"
+                                        size={100}
+                                        playOnHover={false}
+                                        loop={true}
+                                    />
+                                </div>
 
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <Input
@@ -186,7 +197,7 @@ export default function LeadModal() {
                                 </form>
                             </div>
                         )}
-                    </motion.div>
+                    </m.div>
                 </div>
             )}
         </AnimatePresence>
