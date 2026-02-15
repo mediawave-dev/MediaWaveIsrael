@@ -4,7 +4,7 @@ import Header from './Header'
 import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 
-// Lazy load widgets to reduce initial TBT - they load 2.5s after mount
+// Lazy load widgets to reduce initial TBT - they load 1.5s after mount
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
 const ChatWidget = lazy(() => import('../ui/ChatWidget'))
 const CookieConsent = lazy(() => import('../ui/CookieConsent'))
@@ -23,7 +23,7 @@ export default function Layout({ children }: LayoutProps) {
 
   // Defer widget loading to reduce initial TBT
   useEffect(() => {
-    const timer = setTimeout(() => setShowWidgets(true), 4000)
+    const timer = setTimeout(() => setShowWidgets(true), 1500)
     return () => clearTimeout(timer)
   }, [])
 
@@ -48,7 +48,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />
 
-      {/* Widgets lazy-loaded 2.5s after mount to reduce initial TBT */}
+      {/* Widgets lazy-loaded 1.5s after mount to reduce initial TBT */}
       {showWidgets && (
         <Suspense fallback={null}>
           {/* Accessibility widget */}
