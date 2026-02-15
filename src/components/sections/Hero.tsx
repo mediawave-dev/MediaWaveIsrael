@@ -121,7 +121,7 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.1 }}
           >
-            <span className="block text-white mb-2 md:mb-4">החזון שלכם</span>
+            <span className="block text-white mb-2 md:mb-4">העסק שלכם</span>
             <span
               className="inline-block text-white"
               style={{ borderBottom: '3px solid #7DD3FC', paddingBottom: '8px' }}
