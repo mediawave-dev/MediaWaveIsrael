@@ -252,33 +252,6 @@ function FeaturedProject({ project }: { project: Project }) {
             whileHover={{ y: -4, boxShadow: '0 25px 50px -12px rgba(74, 74, 74, 0.15)' }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           >
-            {/* Project type badge with shimmer */}
-            <motion.span
-              className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-4 py-2 rounded-full mb-6 relative overflow-hidden"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, type: 'spring', stiffness: 400 }}
-            >
-              <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-pulse" />
-              {project.type}
-              {/* Shimmer effect */}
-              <motion.span
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                }}
-                initial={{ x: '-100%' }}
-                animate={{ x: '200%' }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatDelay: 3,
-                  ease: 'linear',
-                }}
-              />
-            </motion.span>
-
             {/* Project title */}
             <motion.h3
               className="text-3xl md:text-4xl font-english font-semibold text-brown-dark mb-4"
@@ -495,11 +468,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
       {/* Content */}
       <div className="p-6">
-        <span className="inline-flex items-center gap-1.5 bg-terracotta/10 text-terracotta text-xs font-semibold px-3 py-1 rounded-full mb-3">
-          <span className="w-1 h-1 bg-terracotta rounded-full" />
-          {project.type}
-        </span>
-
         <h3 className="text-xl font-english font-semibold text-brown-dark mb-2">
           {project.title}
         </h3>

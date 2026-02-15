@@ -9,7 +9,6 @@ export interface NavLink {
 
 export const navigation: NavLink[] = [
   { label: 'דף הבית', href: '#top', showInFooter: true },
-  { label: 'מחשבון הפסדים', href: '#roi-calculator', showInFooter: true },
   { label: 'שירותים', href: '#services', showInHeader: true, showInFooter: true },
   { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInFooter: true },
   { label: 'הבלוג', href: '/blog', showInHeader: true, showInFooter: true },

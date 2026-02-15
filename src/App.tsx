@@ -14,7 +14,6 @@ const Services = lazy(() => import('./components/sections/Services'))
 const Portfolio = lazy(() => import('./components/sections/Portfolio'))
 const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
-const ROICalculator = lazy(() => import('./components/sections/ROICalculator'))
 const FAQ = lazy(() => import('./components/sections/FAQ'))
 const Contact = lazy(() => import('./components/sections/Contact'))
 
@@ -58,11 +57,7 @@ function HomePage() {
         <Testimonials />
       </Suspense>
 
-      <Suspense fallback={<SectionFallback height="450px" />}>
-        <ROICalculator />
-      </Suspense>
-
-      <Suspense fallback={<SectionFallback height="400px" />}>
+<Suspense fallback={<SectionFallback height="400px" />}>
         <FAQ />
       </Suspense>
 
