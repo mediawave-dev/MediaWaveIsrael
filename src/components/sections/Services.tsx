@@ -39,7 +39,8 @@ const services: Service[] = [
     id: 'chatbots',
     title: 'צ׳אטבוטים חכמים',
     description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
-    videoAnimation: '/animations/14%20chatbot/Live%20chatbot.webm',
+    lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
+    lottieSize: 160,
     tags: ['AI', 'WhatsApp', '24/7'],
   },
 ]
