@@ -28,10 +28,10 @@ export default function LeadModal() {
         const hasClosed = sessionStorage.getItem('leadModalClosed')
         if (hasClosed) return
 
-        // Show after 60 seconds
+        // Show after 35 seconds
         const timer = setTimeout(() => {
             setIsVisible(true)
-        }, 60000)
+        }, 35000)
 
         return () => clearTimeout(timer)
     }, [])
