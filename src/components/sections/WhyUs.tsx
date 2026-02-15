@@ -20,8 +20,8 @@ const differentiators: Differentiator[] = [
   },
   {
     lottieAnimation: '/animations/5%20performance/Internet%20speed%20test.json',
-    title: 'ביצועים מעולים',
-    description: 'ציון גבוה ב-Google PageSpeed כי מהירות משפיעה ישירות על הדירוג שלכם.',
+    title: 'מותאם לבינה מלאכותית',
+    description: 'האתר שלכם מותאם גם למנועי AI כמו ChatGPT ו-Perplexity, לא רק לגוגל. כך לקוחות חדשים מוצאים אתכם בכל מקום.',
     color: 'terracotta',
   },
   {
