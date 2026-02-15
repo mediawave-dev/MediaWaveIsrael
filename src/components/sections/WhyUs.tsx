@@ -19,7 +19,7 @@ const differentiators: Differentiator[] = [
     color: 'orange',
   },
   {
-    lottieAnimation: '/animations/5%20performance/Internet%20speed%20test.json',
+    lottieAnimation: '/animations/AI/AI%20animation.json',
     title: 'מותאם לבינה מלאכותית',
     description: 'האתר שלכם מותאם גם למנועי AI כמו ChatGPT ו-Perplexity, לא רק לגוגל. כך לקוחות חדשים מוצאים אתכם בכל מקום.',
     color: 'terracotta',
