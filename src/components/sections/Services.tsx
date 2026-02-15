@@ -9,6 +9,7 @@ interface Service {
   icon?: LucideIcon
   lottieAnimation?: string
   lottieSize?: number
+  videoAnimation?: string
   tags?: string[]
 }
 
@@ -38,8 +39,7 @@ const services: Service[] = [
     id: 'chatbots',
     title: 'צ׳אטבוטים חכמים',
     description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
-    // lottieAnimation: '/animations/chatbot/Live%20chatbot.json',
-    // lottieSize: 180,
+    videoAnimation: '/animations/14%20chatbot/Live%20chatbot.webm',
     tags: ['AI', 'WhatsApp', '24/7'],
   },
 ]
@@ -150,6 +150,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   const IconComponent = service.icon
   const hasTags = service.tags && service.tags.length > 0
   const hasLottie = !!service.lottieAnimation
+  const hasVideo = !!service.videoAnimation
 
   return (
     <m.div
@@ -181,7 +182,20 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       <div className="p-5 md:p-6 text-center flex flex-col h-full">
         {/* Icon / Lottie - same container for all */}
         <div className="h-32 flex items-center justify-center mb-5 overflow-visible">
-          {hasLottie ? (
+          {hasVideo ? (
+            <div className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 w-32 h-32">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+                className="w-full h-full object-contain"
+              >
+                <source src={service.videoAnimation} type="video/webm" />
+              </video>
+            </div>
+          ) : hasLottie ? (
             <div
               className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
               style={{ width: service.lottieSize ?? 128, height: service.lottieSize ?? 128 }}
