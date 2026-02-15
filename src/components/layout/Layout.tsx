@@ -1,10 +1,10 @@
-import { ReactNode, useState, useCallback, useEffect, lazy, Suspense } from 'react'
+import { ReactNode, useState, useCallback, lazy, Suspense } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 
-// Lazy load widgets to reduce initial TBT - they load 1.5s after mount
+// Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
 const ChatWidget = lazy(() => import('../ui/ChatWidget'))
 const CookieConsent = lazy(() => import('../ui/CookieConsent'))
@@ -15,16 +15,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [showWidgets, setShowWidgets] = useState(false)
 
   const handleChatOpenChange = useCallback((open: boolean) => {
     setIsChatOpen(open)
-  }, [])
-
-  // Defer widget loading to reduce initial TBT
-  useEffect(() => {
-    const timer = setTimeout(() => setShowWidgets(true), 1500)
-    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -48,19 +41,17 @@ export default function Layout({ children }: LayoutProps) {
       {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />
 
-      {/* Widgets lazy-loaded 1.5s after mount to reduce initial TBT */}
-      {showWidgets && (
-        <Suspense fallback={null}>
-          {/* Accessibility widget */}
-          <AccessibilityWidget />
+      {/* Widgets */}
+      <Suspense fallback={null}>
+        {/* Accessibility widget */}
+        <AccessibilityWidget />
 
-          {/* AI Chat widget — bottom-right, lowest position */}
-          <ChatWidget onOpenChange={handleChatOpenChange} />
+        {/* AI Chat widget — bottom-right, lowest position */}
+        <ChatWidget onOpenChange={handleChatOpenChange} />
 
-          {/* Cookie consent banner */}
-          <CookieConsent />
-        </Suspense>
-      )}
+        {/* Cookie consent banner */}
+        <CookieConsent />
+      </Suspense>
     </div>
   )
 }
