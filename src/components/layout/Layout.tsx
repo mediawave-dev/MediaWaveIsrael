@@ -23,7 +23,7 @@ export default function Layout({ children }: LayoutProps) {
 
   // Defer widget loading to reduce initial TBT
   useEffect(() => {
-    const timer = setTimeout(() => setShowWidgets(true), 2500)
+    const timer = setTimeout(() => setShowWidgets(true), 4000)
     return () => clearTimeout(timer)
   }, [])
 

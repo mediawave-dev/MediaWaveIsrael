@@ -51,13 +51,11 @@ const containerVariants = {
 const cardVariants = {
   hidden: {
     opacity: 0,
-    y: 40,
-    scale: 0.95,
+    transform: 'translateY(40px) scale(0.95)',
   },
   visible: {
     opacity: 1,
-    y: 0,
-    scale: 1,
+    transform: 'translateY(0px) scale(1)',
     transition: {
       type: 'spring' as const,
       damping: 20,
@@ -238,8 +236,8 @@ export default function HowWeWork() {
         {/* Section header */}
         <m.div
           className="text-center mb-12 md:mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(30px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
@@ -280,8 +278,8 @@ export default function HowWeWork() {
         {/* Bottom CTA suggestion */}
         <m.div
           className="text-center mt-12 md:mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(20px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.5 }}
         >

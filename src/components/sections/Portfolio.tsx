@@ -113,8 +113,8 @@ function FeaturedProject({ project }: { project: Project }) {
     <motion.div
       ref={cardRef}
       className="relative"
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, transform: 'translateY(60px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
     >
@@ -282,8 +282,8 @@ function FeaturedProject({ project }: { project: Project }) {
             {/* Project title */}
             <motion.h3
               className="text-3xl md:text-4xl font-english font-semibold text-brown-dark mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, transform: 'translateY(20px)' }}
+              whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
               viewport={{ once: true }}
               transition={{ delay: 0.6, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
@@ -293,8 +293,8 @@ function FeaturedProject({ project }: { project: Project }) {
             {/* Description */}
             <motion.p
               className="text-lg text-brown-light leading-relaxed mb-6"
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, transform: 'translateY(15px)' }}
+              whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
               viewport={{ once: true }}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
@@ -382,8 +382,8 @@ function FeaturedProject({ project }: { project: Project }) {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, transform: 'translateY(10px)' }}
+                whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
                 viewport={{ once: true }}
               >
                 <span>אתם כבר כאן</span>
@@ -404,8 +404,8 @@ function FeaturedProject({ project }: { project: Project }) {
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, transform: 'translateY(10px)' }}
+                whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
                 viewport={{ once: true }}
               >
                 <span>צפה באתר</span>
@@ -458,8 +458,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <motion.div
       className="group relative bg-white rounded-2xl shadow-md overflow-hidden border border-cream-darker/30"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, transform: 'translateY(40px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.12, ease: 'easeOut' }}
       whileHover={{ y: -6, boxShadow: '0 20px 40px -10px rgba(74, 74, 74, 0.12)' }}
@@ -677,8 +677,8 @@ export default function Portfolio() {
 
           <motion.p
             className="text-lg md:text-xl text-brown-light leading-relaxed mt-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
           >
@@ -703,8 +703,8 @@ export default function Portfolio() {
         {/* Bottom CTA */}
         <motion.div
           className="mt-12 md:mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(20px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3, ease: 'easeOut' }}
         >
@@ -747,8 +747,8 @@ export default function Portfolio() {
           <motion.path
             d="M0,30 C480,70 960,10 1440,40 L1440,80 L0,80 Z"
             fill="var(--color-cream-dark)"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           />

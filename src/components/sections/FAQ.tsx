@@ -72,8 +72,8 @@ export default function FAQ() {
         <div className="text-center mb-16">
           <motion.h2
             className="text-4xl md:text-5xl font-headline mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
@@ -81,8 +81,8 @@ export default function FAQ() {
           </motion.h2>
           <motion.p
             className="text-brown-light text-2xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
@@ -96,8 +96,8 @@ export default function FAQ() {
             <motion.div
               key={index}
               className="bg-white rounded-lg overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, transform: 'translateY(20px)' }}
+              whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
             >

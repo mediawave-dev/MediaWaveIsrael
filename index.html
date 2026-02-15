@@ -56,7 +56,10 @@
     <link rel="preload" href="/images/logo.webp" as="image" type="image/webp" fetchpriority="high" />
 
     <!-- Preload hero poster image -->
-    <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
+
+    <!-- Preload hero video for desktop -->
+    <link rel="preload" href="/videos/hero-bg.mp4" as="video" type="video/mp4" media="(min-width: 768px)" />
 
     <!-- Preload critical Outfit font weights for faster LCP -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />
@@ -185,24 +188,25 @@
     </script>
   </head>
   <body>
-    <!-- Page loading indicator -->
-    <div id="page-loader" style="position:fixed;inset:0;background:#FDFBF7;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s ease;">
+    <!-- Page loading indicator - uses pointer-events:none to avoid CLS -->
+    <div id="page-loader" style="position:fixed;inset:0;background:#FDFBF7;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="animation:spin 1s linear infinite;">
-        <circle cx="12" cy="12" r="10" stroke="#D4A574" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
-        <path d="M12 2a10 10 0 0 1 10 10" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
       </svg>
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     </div>
 
-    <!-- Static header for instant LCP - removed once React mounts -->
-    <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;">
+    <!-- Static header for instant LCP - dimensions match React header exactly -->
+    <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;" aria-hidden="true">
       <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
         <img
           src="/images/logo.webp"
-          alt="MediaWave Israel"
+          alt=""
           width="320"
           height="144"
           fetchpriority="high"
+          decoding="async"
           style="height:8rem;width:auto;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0,0,0,0.5));"
         />
       </div>
@@ -211,17 +215,23 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Remove loader once app mounts -->
+    <!-- Remove loader once app mounts - fast removal to reduce CLS -->
     <script>
-      window.addEventListener('load', function() {
+      // Remove loader as early as possible
+      function removeLoader() {
         var loader = document.getElementById('page-loader');
         if (loader) {
-          setTimeout(function() {
-            loader.style.opacity = '0';
-            setTimeout(function() { loader.remove(); }, 300);
-          }, 100);
+          loader.style.opacity = '0';
+          loader.style.pointerEvents = 'none';
+          setTimeout(function() { loader.remove(); }, 400);
         }
-      });
+      }
+      // Try to remove on DOMContentLoaded (earlier than load)
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', removeLoader);
+      } else {
+        removeLoader();
+      }
     </script>
 
     <!-- Noscript fallback -->

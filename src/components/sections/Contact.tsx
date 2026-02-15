@@ -86,8 +86,8 @@ export default function Contact() {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <m.h2
             className="text-4xl md:text-5xl font-headline mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
@@ -112,8 +112,8 @@ export default function Contact() {
 
           <m.p
             className="text-2xl text-brown-light"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
@@ -126,8 +126,8 @@ export default function Contact() {
           {/* Form */}
           <m.div
             className="order-2 lg:order-1"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(30px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
@@ -191,8 +191,8 @@ export default function Contact() {
           {/* Contact Info */}
           <m.div
             className="order-1 lg:order-2"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(30px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >

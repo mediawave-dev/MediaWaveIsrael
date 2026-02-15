@@ -245,8 +245,8 @@ export default function ROICalculator() {
         {/* Header */}
         <motion.div
           className="text-center mb-10 md:mb-14"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(20px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
@@ -273,8 +273,8 @@ export default function ROICalculator() {
         {/* Calculator Card */}
         <motion.div
           className="bg-white rounded-2xl shadow-lg border border-cream-darker p-6 md:p-10"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(30px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >

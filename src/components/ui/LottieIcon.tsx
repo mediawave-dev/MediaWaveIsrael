@@ -21,6 +21,7 @@ interface LottieIconProps {
 
 /**
  * LottieIcon - Lottie animation component with hover interaction
+ * Only fetches animation data when the element is visible in viewport
  */
 export function LottieIcon({
   animationPath,
@@ -32,13 +33,36 @@ export function LottieIcon({
   speed = 1,
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [loadedData, setLoadedData] = useState<object | null>(animationData || null)
   const [isLoading, setIsLoading] = useState(!animationData && !!animationPath)
   const [error, setError] = useState<string | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
-  // Load animation from URL
+  // Observe visibility - only load when in viewport
   useEffect(() => {
-    if (!animationPath || animationData) return
+    if (!containerRef.current || animationData) {
+      setIsVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '200px' }
+    )
+
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [animationData])
+
+  // Load animation from URL - only when visible
+  useEffect(() => {
+    if (!animationPath || animationData || !isVisible) return
 
     setIsLoading(true)
     setError(null)
@@ -59,7 +83,7 @@ export function LottieIcon({
         setError(err.message)
         setIsLoading(false)
       })
-  }, [animationPath, animationData])
+  }, [animationPath, animationData, isVisible])
 
   // Set animation speed
   useEffect(() => {
@@ -76,9 +100,10 @@ export function LottieIcon({
   }
 
   // Loading state
-  if (isLoading) {
+  if (isLoading || !isVisible) {
     return (
       <div
+        ref={containerRef}
         className={`animate-pulse bg-sky-100 rounded-xl ${className}`}
         style={{ width: size, height: size }}
       />
@@ -89,6 +114,7 @@ export function LottieIcon({
   if (error || !loadedData) {
     return (
       <div
+        ref={containerRef}
         className={`flex items-center justify-center bg-sky-50 rounded-xl text-sky-300 ${className}`}
         style={{ width: size, height: size, fontSize: size * 0.4 }}
       >
@@ -99,6 +125,7 @@ export function LottieIcon({
 
   return (
     <div
+      ref={containerRef}
       className={className}
       style={{ width: size, height: size }}
       onMouseEnter={handleMouseEnter}

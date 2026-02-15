@@ -25,9 +25,9 @@ const Blog = lazy(() => import('./components/pages/Blog'))
 const BlogPost = lazy(() => import('./components/pages/BlogPost'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
 
-// Minimal fallback - just reserves space, specific heights for CLS prevention
+// Minimal fallback - reserves space with CSS containment for CLS prevention
 const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
-  <div style={{ minHeight: height }} aria-hidden="true" />
+  <div style={{ minHeight: height, contain: 'layout' }} aria-hidden="true" />
 )
 
 // Home page with all sections - each in separate Suspense for progressive rendering

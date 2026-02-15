@@ -59,12 +59,15 @@ export default function WhyUs() {
       {/* ===== LAYER 1: Video Background ===== */}
 
       {/* Mobile: poster image */}
-      <div
-        className="absolute inset-0 md:hidden bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(/images/whyus-poster.webp)',
-          zIndex: 0,
-        }}
+      <img
+        src="/images/whyus-poster.webp"
+        alt=""
+        width="750"
+        height="500"
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover md:hidden"
+        style={{ zIndex: 0 }}
       />
 
       {/* Desktop: video (if motion allowed) */}
@@ -108,8 +111,8 @@ export default function WhyUs() {
         {/* Header */}
         <motion.div
           className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(20px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl md:text-4xl font-headline mb-3">
@@ -130,8 +133,8 @@ export default function WhyUs() {
               <motion.div
                 key={item.title}
                 className={`bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, transform: 'translateY(20px)' }}
+                whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(74, 74, 74, 0.08)' }}

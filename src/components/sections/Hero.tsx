@@ -72,13 +72,16 @@ export default function Hero() {
     >
       {/* ===== LAYER 1: Video Background (z-0) ===== */}
 
-      {/* Mobile: poster image as background */}
-      <div
-        className="absolute inset-0 md:hidden bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(/images/hero-poster.webp)',
-          zIndex: 0,
-        }}
+      {/* Mobile: poster image for fast LCP */}
+      <img
+        src="/images/hero-poster.webp"
+        alt=""
+        width="750"
+        height="1334"
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover md:hidden"
+        style={{ zIndex: 0 }}
       />
 
       {/* Desktop: video background */}
@@ -114,8 +117,8 @@ export default function Hero() {
           <motion.h1
             className="text-6xl md:text-[11rem] lg:text-[14rem] font-body leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, transform: 'translateY(30px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.1 }}
           >
             <span className="block text-white mb-2 md:mb-4">החזון שלכם</span>
@@ -147,8 +150,8 @@ export default function Hero() {
           <motion.p
             className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             עיצוב ופיתוח אתרים מקצועיים לעסקים קטנים ובינוניים.
@@ -160,8 +163,8 @@ export default function Hero() {
           {/* CTA Buttons */}
           <motion.div
             className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-16 px-2 md:px-0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
             <motion.a

@@ -82,8 +82,8 @@ export default function Services() {
           <m.span
             className="block text-base font-semibold tracking-widest uppercase mb-4"
             style={{ color: '#38BDF8' }}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(10px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
           >
             השירותים שלנו
@@ -91,8 +91,8 @@ export default function Services() {
 
           <m.h2
             className="text-4xl md:text-5xl font-headline leading-tight text-brown-dark mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
@@ -101,8 +101,8 @@ export default function Services() {
 
           <m.p
             className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto"
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: 'translateY(15px)' }}
+            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
@@ -120,8 +120,8 @@ export default function Services() {
         {/* Bottom CTA */}
         <m.div
           className="mt-14 md:mt-20 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: 'translateY(30px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
         >
           <m.a
@@ -161,8 +161,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         border: '1px solid rgba(255, 255, 255, 0.6)',
         boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
       }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, transform: 'translateY(30px)' }}
+      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{
