@@ -144,7 +144,7 @@ export default function LeadModal() {
                                 {/* Lead animation */}
                                 <div className="flex justify-center mb-4">
                                     <LottieIcon
-                                        animationPath="/animations/13 Leave Details/contact us.json"
+                                        animationPath="/animations/13%20Leave%20Details/contact%20us.json"
                                         size={100}
                                         playOnHover={false}
                                         loop={true}

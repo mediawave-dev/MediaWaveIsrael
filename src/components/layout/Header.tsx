@@ -89,7 +89,7 @@ export default function Header() {
       >
         <div className="container px-4 sm:px-6">
           <nav className="flex items-center justify-between gap-4">
-            {/* Logo - RIGHT side (RTL), white on hero via CSS filter */}
+            {/* Logo */}
             <a
               href="/"
               onClick={(e) => {
@@ -103,7 +103,7 @@ export default function Header() {
               <Logo variant="header" isScrolled={isScrolled || !isHomePage} />
             </a>
 
-            {/* Desktop Navigation - CSS-only animations for better TBT */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {headerLinks.map((link) => (
                 <a
@@ -116,7 +116,7 @@ export default function Header() {
                 </a>
               ))}
 
-              {/* CTA Button - CSS-only hover */}
+              {/* CTA Button */}
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
@@ -135,7 +135,6 @@ export default function Header() {
               aria-expanded={isMobileMenuOpen}
             >
               <div className="relative w-6 h-5">
-                {/* Hamburger lines with smooth morph to X */}
                 <m.span
                   className="absolute right-0 h-0.5 bg-white rounded-full transition-colors duration-300"
                   initial={false}
