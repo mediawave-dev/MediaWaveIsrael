@@ -8,6 +8,7 @@ interface Service {
   description: string
   icon?: LucideIcon
   lottieAnimation?: string
+  lottieSize?: number
   tags?: string[]
 }
 
@@ -32,6 +33,14 @@ const services: Service[] = [
     description: 'קידום אורגני שבאמת עובד, עם מחקר מילות מפתח, תוכן ממוקד ומבנה טכני נכון.',
     lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
     tags: ['Google', 'תוכן ממוקד'],
+  },
+  {
+    id: 'chatbots',
+    title: 'צ׳אטבוטים חכמים',
+    description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
+    lottieAnimation: '/animations/chatbot/Live%20chatbot.json',
+    lottieSize: 180,
+    tags: ['AI', 'WhatsApp', '24/7'],
   },
 ]
 
@@ -67,7 +76,7 @@ export default function Services() {
         />
       </div>
 
-      <div className="container relative max-w-5xl">
+      <div className="container relative max-w-6xl">
         {/* Header */}
         <div className="mb-14 md:mb-16 text-center">
           <m.span
@@ -101,10 +110,10 @@ export default function Services() {
           </m.p>
         </div>
 
-        {/* Simple 3-column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* 4-column Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} isFeatured={index === 1} />
+            <ServiceCard key={service.id} service={service} index={index} />
           ))}
         </div>
 
@@ -137,7 +146,7 @@ export default function Services() {
 }
 
 // Glassmorphism service card
-function ServiceCard({ service, index, isFeatured = false }: { service: Service; index: number; isFeatured?: boolean }) {
+function ServiceCard({ service, index }: { service: Service; index: number }) {
   const IconComponent = service.icon
   const hasTags = service.tags && service.tags.length > 0
   const hasLottie = !!service.lottieAnimation
@@ -150,16 +159,14 @@ function ServiceCard({ service, index, isFeatured = false }: { service: Service;
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         border: '1px solid rgba(255, 255, 255, 0.6)',
-        boxShadow: isFeatured
-          ? '0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-          : '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
       }}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       whileHover={{
-        y: isFeatured ? -12 : -8,
+        y: -8,
         boxShadow:
           '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(125, 211, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
@@ -172,16 +179,16 @@ function ServiceCard({ service, index, isFeatured = false }: { service: Service;
 
       {/* Card content */}
       <div className="p-5 md:p-6 text-center flex flex-col h-full">
-        {/* Icon or Lottie Animation - same container for all, featured scales up visually */}
-        <div className="h-32 flex items-center justify-center mb-5">
+        {/* Icon / Lottie - same container for all */}
+        <div className="h-32 flex items-center justify-center mb-5 overflow-visible">
           {hasLottie ? (
             <div
-              className="w-32 h-32 transition-transform duration-300 group-hover:scale-105"
-              style={isFeatured ? { transform: 'scale(1.5)' } : undefined}
+              className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+              style={{ width: service.lottieSize ?? 128, height: service.lottieSize ?? 128 }}
             >
               <LottieIcon
                 animationPath={service.lottieAnimation}
-                size={128}
+                size={service.lottieSize ?? 128}
                 playOnHover={true}
                 loop={true}
               />
