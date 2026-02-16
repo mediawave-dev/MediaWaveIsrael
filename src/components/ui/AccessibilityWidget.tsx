@@ -119,12 +119,12 @@ export default function AccessibilityWidget() {
 
   // Animation variants
   const panelVariants = {
-    hidden: { x: '-100%', opacity: 0 },
-    visible: { x: '0%', opacity: 1 },
+    hidden: { opacity: 0, scale: 0.95, y: -8 },
+    visible: { opacity: 1, scale: 1, y: 0 },
   }
 
   return (
-    <div className="fixed top-1/2 -translate-y-1/2 left-0 z-50 flex items-start">
+    <div className="absolute top-20 left-2 z-40">
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
@@ -134,7 +134,7 @@ export default function AccessibilityWidget() {
             role="dialog"
             aria-label="הגדרות נגישות"
             aria-modal="true"
-            className="bg-white/95 backdrop-blur-md shadow-2xl border-r border-y border-cream-darker rounded-r-2xl p-6 w-72 h-auto max-h-[80vh] overflow-y-auto"
+            className="fixed top-16 left-2 bg-white/95 backdrop-blur-md shadow-2xl border border-cream-darker rounded-2xl p-6 w-72 max-h-[80vh] overflow-y-auto z-50"
             variants={panelVariants}
             initial="hidden"
             animate="visible"
@@ -233,26 +233,18 @@ export default function AccessibilityWidget() {
         )}
       </AnimatePresence>
 
-      {/* Trigger Tab (Left Edge) */}
-      <motion.button
-        ref={buttonRef}
-        onClick={handleToggle}
-        className={`
-          relative z-40
-          flex items-center justify-center
-          w-10 h-12
-          bg-white/90 backdrop-blur-sm
-          border-y border-r border-cream-darker
-          rounded-r-xl shadow-md
-          text-brown hover:text-orange hover:w-12
-          transition-all duration-300 ease-out
-          ${isOpen ? 'translate-x-0 opacity-0 pointer-events-none' : 'translate-x-0 opacity-100'}
-        `}
-        aria-label="פתח תפריט נגישות"
-        aria-expanded={isOpen}
-      >
-        <AccessibilityIcon className="w-6 h-6" />
-      </motion.button>
+      {/* Trigger Icon */}
+      {!isOpen && (
+        <button
+          ref={buttonRef}
+          onClick={handleToggle}
+          className="w-8 h-8 rounded-full bg-white/80 border border-cream-darker shadow-sm flex items-center justify-center text-brown-muted hover:text-orange hover:bg-white transition-colors"
+          aria-label="פתח תפריט נגישות"
+          aria-expanded={isOpen}
+        >
+          <AccessibilityIcon className="w-4 h-4" />
+        </button>
+      )}
     </div>
   )
 }
