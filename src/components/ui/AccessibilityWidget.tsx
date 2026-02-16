@@ -124,7 +124,7 @@ export default function AccessibilityWidget() {
   }
 
   return (
-    <div className="absolute top-20 left-2 z-40">
+    <div className="absolute left-0 z-[51]" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 120px)' }}>
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
@@ -233,16 +233,16 @@ export default function AccessibilityWidget() {
         )}
       </AnimatePresence>
 
-      {/* Trigger Icon */}
+      {/* Trigger — half-circle tab flush to left edge */}
       {!isOpen && (
         <button
           ref={buttonRef}
           onClick={handleToggle}
-          className="w-[30px] h-[30px] md:w-8 md:h-8 rounded-full bg-white/80 border border-cream-darker shadow-sm flex items-center justify-center text-brown-muted hover:text-orange hover:bg-white transition-colors"
+          className="w-7 h-11 rounded-r-full bg-white/90 border border-l-0 border-cream-darker shadow-md flex items-center justify-center text-brown hover:text-orange hover:bg-white transition-colors"
           aria-label="פתח תפריט נגישות"
           aria-expanded={isOpen}
         >
-          <AccessibilityIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          <AccessibilityIcon className="w-4 h-4 mr-0.5" />
         </button>
       )}
     </div>
