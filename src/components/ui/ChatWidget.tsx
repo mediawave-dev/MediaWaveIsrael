@@ -228,7 +228,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             role="dialog"
             aria-label="צ'אט עם MediaWave"
             aria-modal="true"
-            className="fixed z-50 bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            className="fixed z-50 inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-full sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             style={{
               background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
               border: '1px solid rgba(226, 232, 240, 0.6)',
