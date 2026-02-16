@@ -124,7 +124,7 @@ export default function AccessibilityWidget() {
   }
 
   return (
-    <div className="absolute top-20 left-2 z-40">
+    <div className="fixed bottom-20 left-2 z-40 md:absolute md:bottom-auto md:top-20">
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
@@ -238,11 +238,11 @@ export default function AccessibilityWidget() {
         <button
           ref={buttonRef}
           onClick={handleToggle}
-          className="w-8 h-8 rounded-full bg-white/80 border border-cream-darker shadow-sm flex items-center justify-center text-brown-muted hover:text-orange hover:bg-white transition-colors"
+          className="w-[30px] h-[30px] md:w-8 md:h-8 rounded-full bg-white/80 border border-cream-darker shadow-sm flex items-center justify-center text-brown-muted hover:text-orange hover:bg-white transition-colors"
           aria-label="פתח תפריט נגישות"
           aria-expanded={isOpen}
         >
-          <AccessibilityIcon className="w-4 h-4" />
+          <AccessibilityIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
         </button>
       )}
     </div>
