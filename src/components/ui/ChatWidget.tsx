@@ -80,6 +80,7 @@ interface ChatWidgetProps {
 export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null)
   const { messages, isLoading, isLimitReached, sendMessage, resetConversation } = useChat()
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -95,6 +96,27 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [])
+
+  // Track visual viewport height for mobile keyboard
+  useEffect(() => {
+    if (!isOpen) return
+
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const updateHeight = () => {
+      setViewportHeight(vv.height)
+      scrollToBottom()
+    }
+
+    updateHeight()
+    vv.addEventListener('resize', updateHeight)
+    vv.addEventListener('scroll', updateHeight)
+    return () => {
+      vv.removeEventListener('resize', updateHeight)
+      vv.removeEventListener('scroll', updateHeight)
+    }
+  }, [isOpen, scrollToBottom])
 
   useEffect(() => {
     scrollToBottom()
@@ -228,10 +250,13 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             role="dialog"
             aria-label="צ'אט עם MediaWave"
             aria-modal="true"
-            className="fixed z-50 inset-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-full sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            className="fixed z-50 inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             style={{
               background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
               border: '1px solid rgba(226, 232, 240, 0.6)',
+              ...(viewportHeight && window.innerWidth < 640
+                ? { height: `${viewportHeight}px` }
+                : {}),
             }}
             initial={{ opacity: 0, y: 40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
