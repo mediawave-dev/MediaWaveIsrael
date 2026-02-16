@@ -124,7 +124,7 @@ export default function AccessibilityWidget() {
   }
 
   return (
-    <div className="fixed bottom-20 left-2 z-40 md:absolute md:bottom-auto md:top-20">
+    <div className="absolute top-20 left-2 z-40">
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
