@@ -11,7 +11,6 @@ import { Hero } from './components/sections'
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
 const Services = lazy(() => import('./components/sections/Services'))
-const Portfolio = lazy(() => import('./components/sections/Portfolio'))
 const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
 const FAQ = lazy(() => import('./components/sections/FAQ'))
@@ -43,10 +42,6 @@ function HomePage() {
 
       <Suspense fallback={<SectionFallback height="600px" />}>
         <Services />
-      </Suspense>
-
-      <Suspense fallback={<SectionFallback height="500px" />}>
-        <Portfolio />
       </Suspense>
 
       <Suspense fallback={<SectionFallback height="500px" />}>
