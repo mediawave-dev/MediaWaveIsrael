@@ -124,7 +124,9 @@ export default function AccessibilityWidget() {
   }
 
   return (
-    <div className="absolute left-0 z-[51]" style={{ top: 'calc(env(safe-area-inset-top, 0px) + 120px)' }}>
+    <div className="absolute left-0 z-[51]" data-accessibility-widget style={{ top: '350px' }}>
+      {/* Desktop override */}
+      <style>{`@media(min-width:768px){[data-accessibility-widget]{top:120px!important}}`}</style>
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
