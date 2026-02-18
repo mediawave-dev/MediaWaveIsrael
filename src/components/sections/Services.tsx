@@ -17,9 +17,9 @@ const services: Service[] = [
   {
     id: 'websites',
     title: 'בניית אתרים',
-    description: 'אנחנו בוחרים את הטכנולוגיה הנכונה לעסק שלכם, בין אם זה React, Next.js או WordPress.',
+    description: 'כל אתר נבנה מאפס בקוד, עם הטכנולוגיות המתקדמות בשוק. מהיר, מאובטח, וללא תלות בשום פלטפורמה.',
     lottieAnimation: '/animations/1/web-design.json',
-    tags: ['React', 'Next.js', 'WordPress'],
+    tags: ['React', 'Next.js', 'Tailwind CSS'],
   },
   {
     id: 'landing',
