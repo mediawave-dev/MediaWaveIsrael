@@ -10,6 +10,7 @@ interface Service {
   lottieAnimation?: string
   lottieSize?: number
   videoAnimation?: string
+  tags?: string[]
 }
 
 const services: Service[] = [
