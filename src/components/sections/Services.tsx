@@ -10,7 +10,6 @@ interface Service {
   lottieAnimation?: string
   lottieSize?: number
   videoAnimation?: string
-  tags?: string[]
 }
 
 const services: Service[] = [
@@ -26,14 +25,12 @@ const services: Service[] = [
     title: 'דפי נחיתה',
     description: 'דף ממוקד המרה עם WhatsApp וטפסים חכמים.',
     lottieAnimation: '/animations/3%20landing%20page/Contact%20us.json',
-    tags: ['עיצוב ממיר', 'Mobile-First'],
   },
   {
     id: 'seo',
     title: 'קידום אורגני',
     description: 'קידום אורגני שבאמת עובד, עם מחקר מילות מפתח, תוכן ממוקד ומבנה טכני נכון.',
     lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
-    tags: ['Google', 'תוכן ממוקד'],
   },
   {
     id: 'chatbots',
@@ -41,7 +38,6 @@ const services: Service[] = [
     description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
     lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
     lottieSize: 160,
-    tags: ['AI', 'WhatsApp', '24/7'],
   },
 ]
 
@@ -149,7 +145,6 @@ export default function Services() {
 // Glassmorphism service card
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const IconComponent = service.icon
-  const hasTags = service.tags && service.tags.length > 0
   const hasLottie = !!service.lottieAnimation
   const hasVideo = !!service.videoAnimation
 
@@ -235,26 +230,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           {service.description}
         </p>
 
-        {/* Tags - Centered, pushed to bottom */}
-        {hasTags && (
-          <div className="flex flex-wrap justify-center gap-2 mt-auto">
-            {service.tags!.map((tag, tagIndex) => (
-              <span
-                key={tag}
-                className={`inline-block rounded-full text-sm transition-transform duration-300 group-hover:scale-105${/[a-zA-Z]/.test(tag) ? ' font-english' : ''}`}
-                style={{
-                  background: 'rgba(125, 211, 252, 0.12)',
-                  color: '#0EA5E9',
-                  padding: '3px 10px',
-                  border: '1px solid rgba(125, 211, 252, 0.25)',
-                  transitionDelay: `${tagIndex * 100}ms`,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Subtle hover gradient overlay */}

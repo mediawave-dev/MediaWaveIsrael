@@ -205,29 +205,6 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator - hidden on mobile when sticky CTA is visible */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 z-[2] hidden md:flex"
-        initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={prefersReducedMotion ? { duration: 0 } : { delay: 1.2 }}
-        aria-label="גלול למטה לתוכן נוסף"
-        role="img"
-      >
-        <span className="text-xs text-white/60">גלול למטה</span>
-        <motion.div
-          className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2"
-          animate={prefersReducedMotion ? {} : { y: [0, 5, 0] }}
-          transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity }}
-        >
-          <motion.div
-            className="w-1.5 h-1.5 bg-orange rounded-full"
-            animate={prefersReducedMotion ? {} : { y: [0, 12, 0], opacity: [1, 0.5, 1] }}
-            transition={prefersReducedMotion ? {} : { duration: 1.5, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
-
     </section>
   )
 }
