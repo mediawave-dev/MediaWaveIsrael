@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  envPrefix: ['VITE_', 'SANITY_STUDIO_'],
+  resolve: {
+    dedupe: ['react', 'react-dom', 'styled-components'],
+  },
   build: {
     rollupOptions: {
       output: {
@@ -15,6 +19,8 @@ export default defineConfig({
           // Split React core
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
+          // Sanity Studio (lazy-loaded)
+          'sanity-studio': ['sanity'],
         },
       },
     },

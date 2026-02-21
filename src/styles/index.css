@@ -1,5 +1,12 @@
 @import "tailwindcss";
 @import "./fonts.css";
+
+/* Sanity Studio full viewport */
+[data-ui="Sanity"] {
+  height: 100vh !important;
+  max-height: 100dvh !important;
+}
+
 /* Heebo loaded via @fontsource (optimized local package) */
 @import "@fontsource/heebo/400.css";
 @import "@fontsource/heebo/500.css";
