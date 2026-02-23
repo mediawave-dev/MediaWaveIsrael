@@ -8,6 +8,7 @@ import { WHATSAPP_URLS } from '../../utils/whatsapp'
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
 const ChatWidget = lazy(() => import('../ui/ChatWidget'))
 const CookieConsent = lazy(() => import('../ui/CookieConsent'))
+const PreviewBanner = lazy(() => import('../ui/PreviewBanner'))
 
 interface LayoutProps {
   children: ReactNode
@@ -22,6 +23,11 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="min-h-screen flex flex-col bg-cream relative">
+      {/* Preview mode banner */}
+      <Suspense fallback={null}>
+        <PreviewBanner />
+      </Suspense>
+
       {/* Skip to content - Accessibility */}
       <a
         href="#main-content"
