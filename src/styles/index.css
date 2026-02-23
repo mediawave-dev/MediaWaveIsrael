@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./fonts.css";
+@import "./prose-hebrew.css";
 
 /* Sanity Studio full viewport */
 [data-ui="Sanity"] {
@@ -1040,84 +1041,4 @@ html.disable-animations [data-floating] {
   outline-offset: 2px;
 }
 
-/* ============================================
-   BLOG PROSE STYLES (Hebrew)
-   Typography for blog post content
-   ============================================ */
-
-.prose-hebrew {
-  font-family: var(--font-body);
-  font-size: 1.125rem;
-  line-height: 1.75;
-  color: var(--color-brown);
-}
-
-.prose-hebrew h2 {
-  font-size: 1.75rem;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.prose-hebrew h3 {
-  font-size: 1.375rem;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.prose-hebrew p {
-  margin-bottom: 1.25rem;
-}
-
-.prose-hebrew ul,
-.prose-hebrew ol {
-  margin-bottom: 1.25rem;
-  padding-inline-start: 1.5rem;
-}
-
-.prose-hebrew li {
-  margin-bottom: 0.5rem;
-}
-
-.prose-hebrew ul li {
-  list-style-type: disc;
-}
-
-.prose-hebrew ol li {
-  list-style-type: decimal;
-}
-
-.prose-hebrew strong {
-  font-weight: 700;
-  color: var(--color-brown-dark);
-}
-
-.prose-hebrew a {
-  color: var(--color-orange-dark);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.prose-hebrew a:hover {
-  color: var(--color-orange);
-}
-
-.prose-hebrew blockquote {
-  border-inline-start: 4px solid var(--color-orange);
-  padding-inline-start: 1.25rem;
-  margin-block: 1.5rem;
-  color: var(--color-brown-light);
-  font-style: normal;
-}
-
-.prose-hebrew img {
-  border-radius: var(--radius-lg);
-  margin-block: 1.5rem;
-  max-width: 100%;
-  height: auto;
-}
-
-.prose-hebrew hr {
-  border: none;
-  border-top: 1px solid var(--color-cream-darker);
-  margin-block: 2rem;
-}
+/* Prose Hebrew styles moved to prose-hebrew.css */

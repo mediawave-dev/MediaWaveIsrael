@@ -1,20 +1,22 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { PortableText, type PortableTextBlock } from '@portabletext/react'
 import SectionSkeleton from '../ui/SectionSkeleton'
-import { useSanityQuery } from '../../sanity/hooks'
-import { FAQ_QUERY } from '../../sanity/queries'
-import { portableTextComponents } from '../../sanity/PortableTextComponents'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getFaqs } from '../../directus/queries'
+import { mapFaq } from '../../directus/mappers'
+import { HtmlContent } from '../../directus/HtmlContent'
+import type { DirectusFaq } from '../../directus/types'
 
-interface SanityFaq {
+interface Faq {
   _id: string
   question: string
-  answer: PortableTextBlock[]
+  answer: string
 }
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const { data, loading } = useSanityQuery<SanityFaq[]>(FAQ_QUERY)
+  const { data: raw, loading } = useDirectusQuery<DirectusFaq[]>(getFaqs)
+  const data: Faq[] = (raw ?? []).map(mapFaq)
 
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
@@ -24,7 +26,7 @@ export default function FAQ() {
     return <SectionSkeleton lines={3} />
   }
 
-  if (!data || data.length === 0) return null
+  if (data.length === 0) return null
 
   return (
     <section
@@ -98,7 +100,7 @@ export default function FAQ() {
                   >
                     <div className="px-5 pb-5">
                       <div className="font-body text-brown-light text-xl leading-relaxed border-t border-cream-darker pt-4">
-                        <PortableText value={item.answer} components={portableTextComponents} />
+                        <HtmlContent html={item.answer} className="prose-hebrew" />
                       </div>
                     </div>
                   </motion.div>

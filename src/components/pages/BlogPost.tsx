@@ -1,20 +1,21 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
-import { PortableText, type PortableTextBlock } from '@portabletext/react'
 import SectionSkeleton from '../ui/SectionSkeleton'
-import { useSanityQuery } from '../../sanity/hooks'
-import { BLOG_POST_BY_SLUG_QUERY } from '../../sanity/queries'
-import { portableTextComponents } from '../../sanity/PortableTextComponents'
-import { urlFor } from '../../sanity/imageUrl'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getBlogPostBySlug } from '../../directus/queries'
+import { mapBlogPost } from '../../directus/mappers'
+import { assetUrl } from '../../directus/imageUrl'
+import { HtmlContent } from '../../directus/HtmlContent'
+import type { DirectusBlogPost } from '../../directus/types'
 
-interface SanityBlogPost {
+interface BlogPost {
   _id: string
   title: string
-  slug: { current: string }
+  slug: string
   excerpt: string
-  content: PortableTextBlock[]
-  featuredImage?: { asset: { _ref: string }; alt?: string }
+  content: string
+  featuredImage?: string | null
   author: string
   tags: string[]
   publishedAt: string
@@ -30,10 +31,10 @@ function formatDate(iso: string): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
-  const { data: post, loading, error } = useSanityQuery<SanityBlogPost | null>(
-    BLOG_POST_BY_SLUG_QUERY,
-    { slug }
+  const { data: rawPosts, loading, error } = useDirectusQuery<DirectusBlogPost[]>(
+    () => getBlogPostBySlug(slug!), [slug]
   )
+  const post: BlogPost | null = rawPosts?.[0] ? mapBlogPost(rawPosts[0]) : null
 
   if (loading) {
     return (
@@ -94,11 +95,11 @@ export default function BlogPost() {
           </h1>
 
           {/* Featured image */}
-          {post.featuredImage?.asset && (
+          {post.featuredImage && (
             <div className="rounded-xl overflow-hidden mb-6">
               <img
-                src={urlFor(post.featuredImage).width(700).auto('format').url()}
-                alt={post.featuredImage.alt ?? post.title}
+                src={assetUrl(post.featuredImage, { width: 700, format: 'webp' })}
+                alt={post.title}
                 loading="lazy"
                 className="w-full"
               />
@@ -120,12 +121,11 @@ export default function BlogPost() {
 
         {/* Content */}
         <motion.div
-          className="prose-hebrew"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <PortableText value={post.content} components={portableTextComponents} />
+          <HtmlContent html={post.content} className="prose-hebrew" />
         </motion.div>
 
         {/* Footer CTA */}

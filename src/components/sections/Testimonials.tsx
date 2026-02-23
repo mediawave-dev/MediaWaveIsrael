@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { useSanityQuery } from '../../sanity/hooks'
-import { TESTIMONIALS_QUERY } from '../../sanity/queries'
-import { urlFor } from '../../sanity/imageUrl'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getTestimonials } from '../../directus/queries'
+import { mapTestimonial } from '../../directus/mappers'
+import { assetUrl } from '../../directus/imageUrl'
+import type { DirectusTestimonial } from '../../directus/types'
 
-interface SanityTestimonial {
+interface Testimonial {
   _id: string
   name: string
   business: string
   quote: string
-  image?: { asset: { _ref: string } }
+  image?: string | null
   rating?: number
   url?: string
 }
@@ -26,9 +28,9 @@ export default function Testimonials() {
   const prefersReducedMotion = useReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const { data, loading } = useSanityQuery<SanityTestimonial[]>(TESTIMONIALS_QUERY)
+  const { data: raw, loading } = useDirectusQuery<DirectusTestimonial[]>(getTestimonials)
 
-  const testimonials = data ?? []
+  const testimonials: Testimonial[] = (raw ?? []).map(mapTestimonial)
 
   // Auto-rotate testimonials (respect reduced motion preference)
   useEffect(() => {
@@ -52,9 +54,9 @@ export default function Testimonials() {
   const color = getColor(activeIndex)
   const active = testimonials[activeIndex]
 
-  const getImageUrl = (img?: { asset: { _ref: string } }) => {
-    if (!img?.asset) return undefined
-    return urlFor(img).width(112).height(112).url()
+  const getImageUrl = (img?: string | null) => {
+    if (!img) return undefined
+    return assetUrl(img, { width: 112, height: 112, format: 'webp' })
   }
 
   return (
@@ -210,7 +212,7 @@ export default function Testimonials() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
                   >
-                    {active.image?.asset ? (
+                    {active.image ? (
                       <img
                         src={getImageUrl(active.image)}
                         alt={active.name}
@@ -326,7 +328,7 @@ export default function Testimonials() {
                 )}
 
                 <div className="relative z-10">
-                  {testimonial.image?.asset ? (
+                  {testimonial.image ? (
                     <img
                       src={getImageUrl(testimonial.image)}
                       alt={testimonial.name}

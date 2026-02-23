@@ -5,16 +5,10 @@ import { Button } from '../ui/Button'
 import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
-import { useSanityQuery } from '../../sanity/hooks'
-import { SITE_SETTINGS_QUERY } from '../../sanity/queries'
-
-interface SiteSettings {
-  phone?: string
-  email?: string
-  whatsappNumber?: string
-  instagramUrl?: string
-  responseTime?: string
-}
+import { useDirectusQuery } from '../../directus/hooks'
+import { getSiteSettings } from '../../directus/queries'
+import { mapSiteSettings } from '../../directus/mappers'
+import type { DirectusSiteSettings } from '../../directus/types'
 
 // Fallback contact info
 const fallbackContact = {
@@ -32,7 +26,8 @@ export default function Contact() {
   const [successMsg, setSuccessMsg] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
 
-  const { data: settings } = useSanityQuery<SiteSettings>(SITE_SETTINGS_QUERY)
+  const { data: rawSettings } = useDirectusQuery<DirectusSiteSettings>(getSiteSettings)
+  const settings = rawSettings ? mapSiteSettings(rawSettings) : null
 
   const contactEmail = settings?.email ?? fallbackContact.email
   const contactPhone = settings?.phone ?? fallbackContact.phone

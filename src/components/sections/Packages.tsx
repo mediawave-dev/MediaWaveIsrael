@@ -2,10 +2,12 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Check, Star } from 'lucide-react'
 import SectionSkeleton from '../ui/SectionSkeleton'
-import { useSanityQuery } from '../../sanity/hooks'
-import { PACKAGES_QUERY } from '../../sanity/queries'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getPackages } from '../../directus/queries'
+import { mapPackage } from '../../directus/mappers'
+import type { DirectusPackage } from '../../directus/types'
 
-interface SanityPackage {
+interface PackageItem {
   _id: string
   name: string
   price: string
@@ -17,7 +19,7 @@ interface SanityPackage {
   popular?: boolean
 }
 
-const fallbackPackages: SanityPackage[] = [
+const fallbackPackages: PackageItem[] = [
   { _id: 'landing', name: 'דף נחיתה', price: 'החל מ-₪1,500', description: 'נוכחות דיגיטלית מהירה ואפקטיבית', features: ['עמוד אחד רספונסיבי', 'עיצוב מותאם אישית', 'טופס יצירת קשר', 'אופטימיזציית מהירות', 'SEO בסיסי'], idealFor: 'לעסקים שרוצים נוכחות דיגיטלית מהירה', cta: 'בואו נדבר', ctaLink: '#contact' },
   { _id: 'business', name: 'אתר תדמית', price: 'החל מ-₪3,500', description: 'אתר מקצועי ומרשים לעסק שלך', features: ['עד 5 עמודים', 'עיצוב מותאם אישית', 'רספונסיבי מלא', 'SEO מובנה', 'אינטגרציית Google Analytics', 'טופס יצירת קשר מתקדם', 'ליווי עד להשקה'], idealFor: 'לעסקים שרוצים אתר מקצועי ומרשים', cta: 'בואו נדבר', ctaLink: '#contact', popular: true },
   { _id: 'custom', name: 'פרויקט מותאם', price: 'לפי הצעת מחיר', description: 'פתרון מותאם לצרכים ייחודיים', features: ['אתר מורכב / חנות / אפליקציה', 'פיצ׳רים מתקדמים (צ׳אטבוט AI, אינטגרציות, CMS)', 'עיצוב פרימיום', 'תמיכה שוטפת'], idealFor: 'לעסקים עם צרכים ייחודיים ושאפתניים', cta: 'בואו נדבר', ctaLink: '#contact' },
@@ -49,7 +51,7 @@ const cardVariants = {
 
 // --- Package Card ---
 
-function PackageCard({ pkg }: { pkg: SanityPackage }) {
+function PackageCard({ pkg }: { pkg: PackageItem }) {
   return (
     <motion.div
       variants={cardVariants}
@@ -132,7 +134,8 @@ function PackageCard({ pkg }: { pkg: SanityPackage }) {
 
 export default function Packages() {
   const sectionRef = useRef<HTMLElement>(null)
-  const { data, loading, error } = useSanityQuery<SanityPackage[]>(PACKAGES_QUERY)
+  const { data: raw, loading, error } = useDirectusQuery<DirectusPackage[]>(getPackages)
+  const data = raw?.map(mapPackage) ?? null
 
   const packages = data && data.length > 0 ? data : (error ? fallbackPackages : null)
 

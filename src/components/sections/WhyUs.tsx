@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { LottieIcon } from '../ui'
 import SectionSkeleton from '../ui/SectionSkeleton'
-import { useSanityQuery } from '../../sanity/hooks'
-import { WHY_US_QUERY } from '../../sanity/queries'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getWhyUs } from '../../directus/queries'
+import { mapWhyUs } from '../../directus/mappers'
+import type { DirectusWhyUs } from '../../directus/types'
 
-interface SanityWhyUs {
+interface WhyUsItem {
   _id: string
   title: string
   description: string
@@ -13,7 +15,7 @@ interface SanityWhyUs {
   color: 'orange' | 'terracotta' | 'sage'
 }
 
-const fallbackDifferentiators: SanityWhyUs[] = [
+const fallbackDifferentiators: WhyUsItem[] = [
   {
     _id: 'tech',
     lottieAnimation: '/animations/2/computer%20technician.json',
@@ -37,14 +39,15 @@ const fallbackDifferentiators: SanityWhyUs[] = [
   },
 ]
 
-const colorMap = {
+const colorMap: Record<string, { border: string }> = {
   orange: { border: 'border-orange/20' },
   terracotta: { border: 'border-terracotta/20' },
   sage: { border: 'border-sage/20' },
 }
 
 export default function WhyUs() {
-  const { data, loading, error } = useSanityQuery<SanityWhyUs[]>(WHY_US_QUERY)
+  const { data: raw, loading, error } = useDirectusQuery<DirectusWhyUs[]>(getWhyUs)
+  const data = raw?.map(mapWhyUs) ?? null
 
   const differentiators = data && data.length > 0 ? data : (error ? fallbackDifferentiators : null)
 

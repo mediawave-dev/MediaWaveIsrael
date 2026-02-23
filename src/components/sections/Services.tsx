@@ -1,10 +1,12 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui'
 import SectionSkeleton from '../ui/SectionSkeleton'
-import { useSanityQuery } from '../../sanity/hooks'
-import { SERVICES_QUERY } from '../../sanity/queries'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getServices } from '../../directus/queries'
+import { mapService } from '../../directus/mappers'
+import type { DirectusService } from '../../directus/types'
 
-interface SanityService {
+interface ServiceItem {
   _id: string
   title: string
   description: string
@@ -13,7 +15,7 @@ interface SanityService {
   tags?: string[]
 }
 
-const fallbackServices: SanityService[] = [
+const fallbackServices: ServiceItem[] = [
   {
     _id: 'websites',
     title: 'בניית אתרים',
@@ -43,7 +45,8 @@ const fallbackServices: SanityService[] = [
 ]
 
 export default function Services() {
-  const { data, loading, error } = useSanityQuery<SanityService[]>(SERVICES_QUERY)
+  const { data: raw, loading, error } = useDirectusQuery<DirectusService[]>(getServices)
+  const data = raw?.map(mapService) ?? null
 
   const services = data && data.length > 0 ? data : (error ? fallbackServices : null)
 
@@ -154,7 +157,7 @@ export default function Services() {
 }
 
 // Glassmorphism service card
-function ServiceCard({ service, index }: { service: SanityService; index: number }) {
+function ServiceCard({ service, index }: { service: ServiceItem; index: number }) {
   const hasLottie = !!service.lottieAnimation
 
   return (
