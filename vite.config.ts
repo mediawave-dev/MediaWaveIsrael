@@ -19,6 +19,8 @@ export default defineConfig({
           // Split React core
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
+          // Directus SDK
+          'directus-sdk': ['@directus/sdk'],
           // Sanity client libs (small, used on public pages)
           'sanity-client': ['@sanity/client', '@sanity/image-url', '@portabletext/react'],
           // Sanity Studio (large, lazy-loaded only on /studio route)
