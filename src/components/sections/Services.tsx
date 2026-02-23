@@ -1,40 +1,40 @@
 import { m } from 'framer-motion'
-import type { LucideIcon } from 'lucide-react'
 import { LottieIcon } from '../ui'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useSanityQuery } from '../../sanity/hooks'
+import { SERVICES_QUERY } from '../../sanity/queries'
 
-interface Service {
-  id: string
+interface SanityService {
+  _id: string
   title: string
   description: string
-  icon?: LucideIcon
   lottieAnimation?: string
   lottieSize?: number
-  videoAnimation?: string
   tags?: string[]
 }
 
-const services: Service[] = [
+const fallbackServices: SanityService[] = [
   {
-    id: 'websites',
+    _id: 'websites',
     title: 'בניית אתרים',
     description: 'כל אתר נבנה מאפס בקוד, עם הטכנולוגיות המתקדמות בשוק. מהיר, מאובטח, וללא תלות בשום פלטפורמה.',
     lottieAnimation: '/animations/1/web-design.json',
     tags: ['React', 'Next.js', 'Tailwind CSS'],
   },
   {
-    id: 'landing',
+    _id: 'landing',
     title: 'דפי נחיתה',
     description: 'דף ממוקד המרה עם WhatsApp וטפסים חכמים.',
     lottieAnimation: '/animations/3%20landing%20page/Contact%20us.json',
   },
   {
-    id: 'seo',
+    _id: 'seo',
     title: 'קידום אורגני',
     description: 'קידום אורגני שבאמת עובד, עם מחקר מילות מפתח, תוכן ממוקד ומבנה טכני נכון.',
     lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
   },
   {
-    id: 'chatbots',
+    _id: 'chatbots',
     title: 'צ׳אטבוטים חכמים',
     description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
     lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
@@ -43,6 +43,16 @@ const services: Service[] = [
 ]
 
 export default function Services() {
+  const { data, loading, error } = useSanityQuery<SanityService[]>(SERVICES_QUERY)
+
+  const services = data && data.length > 0 ? data : (error ? fallbackServices : null)
+
+  if (loading && !services) {
+    return <SectionSkeleton lines={4} />
+  }
+
+  if (!services || services.length === 0) return null
+
   return (
     <section
       id="services"
@@ -111,7 +121,7 @@ export default function Services() {
         {/* 4-column Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
+            <ServiceCard key={service._id} service={service} index={index} />
           ))}
         </div>
 
@@ -144,10 +154,8 @@ export default function Services() {
 }
 
 // Glassmorphism service card
-function ServiceCard({ service, index }: { service: Service; index: number }) {
-  const IconComponent = service.icon
+function ServiceCard({ service, index }: { service: SanityService; index: number }) {
   const hasLottie = !!service.lottieAnimation
-  const hasVideo = !!service.videoAnimation
 
   return (
     <m.div
@@ -179,20 +187,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       <div className="p-5 md:p-6 text-center flex flex-col h-full">
         {/* Icon / Lottie - same container for all */}
         <div className="h-32 flex items-center justify-center mb-5 overflow-visible">
-          {hasVideo ? (
-            <div className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105 w-32 h-32">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-hidden="true"
-                className="w-full h-full object-contain"
-              >
-                <source src={service.videoAnimation} type="video/webm" />
-              </video>
-            </div>
-          ) : hasLottie ? (
+          {hasLottie ? (
             <div
               className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
               style={{ width: service.lottieSize ?? 128, height: service.lottieSize ?? 128 }}
@@ -203,17 +198,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
                 playOnHover={true}
                 loop={true}
               />
-            </div>
-          ) : IconComponent ? (
-            <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
-              style={{
-                background:
-                  'linear-gradient(135deg, rgba(125, 211, 252, 0.15) 0%, rgba(125, 211, 252, 0.05) 100%)',
-                border: '1px solid rgba(125, 211, 252, 0.12)',
-              }}
-            >
-              <IconComponent size={28} color="#38BDF8" strokeWidth={1.5} />
             </div>
           ) : null}
         </div>

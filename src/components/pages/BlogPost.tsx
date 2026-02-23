@@ -1,7 +1,24 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
-import { blogPosts } from '../../data/blog-posts'
+import { PortableText, type PortableTextBlock } from '@portabletext/react'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useSanityQuery } from '../../sanity/hooks'
+import { BLOG_POST_BY_SLUG_QUERY } from '../../sanity/queries'
+import { portableTextComponents } from '../../sanity/PortableTextComponents'
+import { urlFor } from '../../sanity/imageUrl'
+
+interface SanityBlogPost {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  content: PortableTextBlock[]
+  featuredImage?: { asset: { _ref: string }; alt?: string }
+  author: string
+  tags: string[]
+  publishedAt: string
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('he-IL', {
@@ -13,10 +30,22 @@ function formatDate(iso: string): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
+  const { data: post, loading, error } = useSanityQuery<SanityBlogPost | null>(
+    BLOG_POST_BY_SLUG_QUERY,
+    { slug }
+  )
 
-  const post = blogPosts.find((p) => p.slug === slug && p.published)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-cream pt-32 pb-20">
+        <div className="container max-w-[700px]">
+          <SectionSkeleton lines={1} />
+        </div>
+      </div>
+    )
+  }
 
-  if (!post) {
+  if (!post || error) {
     return <Navigate to="/blog" replace />
   }
 
@@ -47,7 +76,7 @@ export default function BlogPost() {
           transition={{ duration: 0.6 }}
         >
           {/* Tags */}
-          {post.tags.length > 0 && (
+          {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-5">
               {post.tags.map((tag) => (
                 <span
@@ -64,6 +93,18 @@ export default function BlogPost() {
             {post.title}
           </h1>
 
+          {/* Featured image */}
+          {post.featuredImage?.asset && (
+            <div className="rounded-xl overflow-hidden mb-6">
+              <img
+                src={urlFor(post.featuredImage).width(700).auto('format').url()}
+                alt={post.featuredImage.alt ?? post.title}
+                loading="lazy"
+                className="w-full"
+              />
+            </div>
+          )}
+
           {/* Meta */}
           <div className="flex items-center gap-5 text-sm text-brown-muted border-b border-cream-darker pb-6">
             <div className="flex items-center gap-1.5">
@@ -72,7 +113,7 @@ export default function BlogPost() {
             </div>
             <div className="flex items-center gap-1.5">
               <Calendar size={14} />
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             </div>
           </div>
         </motion.header>
@@ -83,8 +124,9 @@ export default function BlogPost() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        >
+          <PortableText value={post.content} components={portableTextComponents} />
+        </motion.div>
 
         {/* Footer CTA */}
         <motion.div

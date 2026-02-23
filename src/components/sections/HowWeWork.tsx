@@ -1,38 +1,22 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui/LottieIcon'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useSanityQuery } from '../../sanity/hooks'
+import { HOW_WE_WORK_QUERY } from '../../sanity/queries'
 
-interface Step {
-  number: string
+interface SanityStep {
+  _id: string
+  stepNumber: string
   title: string
   description: string
   animationPath: string
 }
 
-const steps: Step[] = [
-  {
-    number: '01',
-    title: 'שיחת היכרות',
-    description: 'מבינים את העסק, היעדים והקהל שלכם',
-    animationPath: '/animations/8 call/Call Center Support Lottie Animation.json',
-  },
-  {
-    number: '02',
-    title: 'אפיון ועיצוב',
-    description: 'מתכננים מבנה, עיצוב ו-UX מותאם אישית',
-    animationPath: '/animations/10 design/Web Design Illustration.json',
-  },
-  {
-    number: '03',
-    title: 'פיתוח ובנייה',
-    description: 'בונים עם הטכנולוגיה המתאימה, מהיר ומאובטח',
-    animationPath: '/animations/9 build/website build.json',
-  },
-  {
-    number: '04',
-    title: 'השקה וליווי',
-    description: 'משיקים, עוקבים אחרי ביצועים ומלווים לאורך זמן',
-    animationPath: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json',
-  },
+const fallbackSteps: SanityStep[] = [
+  { _id: '01', stepNumber: '01', title: 'שיחת היכרות', description: 'מבינים את העסק, היעדים והקהל שלכם', animationPath: '/animations/8 call/Call Center Support Lottie Animation.json' },
+  { _id: '02', stepNumber: '02', title: 'אפיון ועיצוב', description: 'מתכננים מבנה, עיצוב ו-UX מותאם אישית', animationPath: '/animations/10 design/Web Design Illustration.json' },
+  { _id: '03', stepNumber: '03', title: 'פיתוח ובנייה', description: 'בונים עם הטכנולוגיה המתאימה, מהיר ומאובטח', animationPath: '/animations/9 build/website build.json' },
+  { _id: '04', stepNumber: '04', title: 'השקה וליווי', description: 'משיקים, עוקבים אחרי ביצועים ומלווים לאורך זמן', animationPath: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json' },
 ]
 
 // Stagger container animation
@@ -80,7 +64,7 @@ const numberVariants = {
   },
 }
 
-function StepCard({ step, index }: { step: Step; index: number }) {
+function StepCard({ step, index }: { step: SanityStep; index: number }) {
   return (
     <m.article
       className="relative group"
@@ -107,7 +91,7 @@ function StepCard({ step, index }: { step: Step; index: number }) {
             opacity-30 group-hover:opacity-50
             transition-opacity duration-500
           ">
-            {step.number}
+            {step.stepNumber}
           </span>
         </m.div>
 
@@ -172,20 +156,10 @@ function ConnectingLine({ position }: { position: number }) {
       viewport={{ once: true }}
       transition={{ delay: 0.5 + position * 0.15 }}
     >
-      {/* Dashed line with gradient */}
-      <svg
-        className="w-16 h-4 overflow-visible"
-        viewBox="0 0 64 4"
-      >
+      <svg className="w-16 h-4 overflow-visible" viewBox="0 0 64 4">
         <m.line
-          x1="0"
-          y1="2"
-          x2="64"
-          y2="2"
-          stroke="url(#lineGradient)"
-          strokeWidth="2"
-          strokeDasharray="6 4"
-          strokeLinecap="round"
+          x1="0" y1="2" x2="64" y2="2"
+          stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="6 4" strokeLinecap="round"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
           viewport={{ once: true }}
@@ -199,11 +173,8 @@ function ConnectingLine({ position }: { position: number }) {
           </linearGradient>
         </defs>
       </svg>
-
-      {/* Arrow head */}
       <m.div
-        className="w-2 h-2 border-t-2 border-l-2 border-cyan-400
-          rotate-[135deg] -mr-1"
+        className="w-2 h-2 border-t-2 border-l-2 border-cyan-400 rotate-[135deg] -mr-1"
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
@@ -214,6 +185,16 @@ function ConnectingLine({ position }: { position: number }) {
 }
 
 export default function HowWeWork() {
+  const { data, loading, error } = useSanityQuery<SanityStep[]>(HOW_WE_WORK_QUERY)
+
+  const steps = data && data.length > 0 ? data : (error ? fallbackSteps : null)
+
+  if (loading && !steps) {
+    return <SectionSkeleton lines={4} />
+  }
+
+  if (!steps || steps.length === 0) return null
+
   return (
     <section
       id="process"
@@ -222,14 +203,8 @@ export default function HowWeWork() {
     >
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-10 w-64 h-64
-          bg-gradient-to-br from-sky-100/40 to-cyan-50/30
-          rounded-full blur-3xl"
-        />
-        <div className="absolute bottom-20 left-10 w-80 h-80
-          bg-gradient-to-tr from-teal-100/30 to-sky-50/20
-          rounded-full blur-3xl"
-        />
+        <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-sky-100/40 to-cyan-50/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-teal-100/30 to-sky-50/20 rounded-full blur-3xl" />
       </div>
 
       <div className="container relative z-10">
@@ -241,10 +216,7 @@ export default function HowWeWork() {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <h2
-            id="how-we-work-title"
-            className="text-3xl md:text-4xl lg:text-5xl font-headline font-bold text-brown-dark mb-4"
-          >
+          <h2 id="how-we-work-title" className="text-3xl md:text-4xl lg:text-5xl font-headline font-bold text-brown-dark mb-4">
             איך אנחנו עובדים
           </h2>
           <p className="text-lg md:text-xl text-brown-light max-w-2xl mx-auto">
@@ -254,14 +226,12 @@ export default function HowWeWork() {
 
         {/* Steps grid with connecting lines */}
         <div className="relative">
-          {/* Desktop connecting lines */}
           <div className="hidden lg:block absolute inset-0 pointer-events-none">
             {[0, 1, 2].map((i) => (
               <ConnectingLine key={i} position={i} />
             ))}
           </div>
 
-          {/* Cards grid */}
           <m.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
             variants={containerVariants}
@@ -270,7 +240,7 @@ export default function HowWeWork() {
             viewport={{ once: true, margin: '-80px' }}
           >
             {steps.map((step, index) => (
-              <StepCard key={step.number} step={step} index={index} />
+              <StepCard key={step._id} step={step} index={index} />
             ))}
           </m.div>
         </div>
@@ -287,9 +257,7 @@ export default function HowWeWork() {
             מוכנים להתחיל?
             <a
               href="#contact"
-              className="text-sky-500 hover:text-sky-600 font-medium mx-1
-                underline underline-offset-4 decoration-sky-300 hover:decoration-sky-500
-                transition-colors duration-300"
+              className="text-sky-500 hover:text-sky-600 font-medium mx-1 underline underline-offset-4 decoration-sky-300 hover:decoration-sky-500 transition-colors duration-300"
             >
               דברו איתנו
             </a>

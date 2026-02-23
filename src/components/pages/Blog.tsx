@@ -1,9 +1,21 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
-import { blogPosts } from '../../data/blog-posts'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useSanityQuery } from '../../sanity/hooks'
+import { BLOG_POSTS_QUERY } from '../../sanity/queries'
+import { urlFor } from '../../sanity/imageUrl'
 
-const publishedPosts = blogPosts.filter((p) => p.published)
+interface SanityBlogPost {
+  _id: string
+  title: string
+  slug: { current: string }
+  excerpt: string
+  featuredImage?: { asset: { _ref: string }; alt?: string }
+  author: string
+  tags: string[]
+  publishedAt: string
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('he-IL', {
@@ -14,6 +26,10 @@ function formatDate(iso: string): string {
 }
 
 export default function Blog() {
+  const { data, loading } = useSanityQuery<SanityBlogPost[]>(BLOG_POSTS_QUERY)
+
+  const posts = data ?? []
+
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
       <div className="container max-w-4xl">
@@ -37,25 +53,40 @@ export default function Blog() {
           </p>
         </motion.div>
 
+        {/* Loading state */}
+        {loading && <SectionSkeleton lines={3} showHeader={false} />}
+
         {/* Posts grid or empty state */}
-        {publishedPosts.length === 0 ? (
+        {!loading && posts.length === 0 ? (
           <EmptyState />
-        ) : (
+        ) : !loading ? (
           <div className="grid gap-8">
-            {publishedPosts.map((post, index) => (
+            {posts.map((post, index) => (
               <motion.article
-                key={post.slug}
+                key={post._id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
-                  to={`/blog/${post.slug}`}
+                  to={`/blog/${post.slug.current}`}
                   className="group block bg-white rounded-2xl overflow-hidden border border-cream-darker/30 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
+                  {/* Featured image */}
+                  {post.featuredImage?.asset && (
+                    <div className="aspect-[2/1] overflow-hidden">
+                      <img
+                        src={urlFor(post.featuredImage).width(800).height(400).auto('format').url()}
+                        alt={post.featuredImage.alt ?? post.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+
                   <div className="p-6 md:p-8">
                     {/* Tags */}
-                    {post.tags.length > 0 && (
+                    {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.map((tag) => (
                           <span
@@ -82,7 +113,7 @@ export default function Blog() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-brown-muted">
                         <Calendar size={14} />
-                        <time dateTime={post.date}>{formatDate(post.date)}</time>
+                        <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
                       </div>
 
                       <span className="inline-flex items-center gap-1.5 text-orange font-semibold text-sm group-hover:gap-2.5 transition-all duration-200">
@@ -95,7 +126,7 @@ export default function Blog() {
               </motion.article>
             ))}
           </div>
-        )}
+        ) : null}
 
         {/* Back to home */}
         <motion.div

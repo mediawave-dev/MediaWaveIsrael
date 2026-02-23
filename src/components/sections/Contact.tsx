@@ -5,9 +5,19 @@ import { Button } from '../ui/Button'
 import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
+import { useSanityQuery } from '../../sanity/hooks'
+import { SITE_SETTINGS_QUERY } from '../../sanity/queries'
 
-// Contact info from CONTENT.md
-const contactInfo = {
+interface SiteSettings {
+  phone?: string
+  email?: string
+  whatsappNumber?: string
+  instagramUrl?: string
+  responseTime?: string
+}
+
+// Fallback contact info
+const fallbackContact = {
   email: 'mediawaveisrael@gmail.com',
   phone: '052-8731808',
 }
@@ -21,6 +31,13 @@ export default function Contact() {
   })
   const [successMsg, setSuccessMsg] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+
+  const { data: settings } = useSanityQuery<SiteSettings>(SITE_SETTINGS_QUERY)
+
+  const contactEmail = settings?.email ?? fallbackContact.email
+  const contactPhone = settings?.phone ?? fallbackContact.phone
+  const instagramUrl = settings?.instagramUrl ?? 'https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr'
+  const responseTime = settings?.responseTime ?? 'אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -199,7 +216,7 @@ export default function Contact() {
             <div className="space-y-8">
               {/* Phone */}
               <a
-                href={`tel:${contactInfo.phone.replace(/-/g, '')}`}
+                href={`tel:${contactPhone.replace(/-/g, '')}`}
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
               >
                 <div className="w-12 h-12 rounded-lg bg-orange/10 flex items-center justify-center">
@@ -208,14 +225,14 @@ export default function Contact() {
                 <div>
                   <p className="text-base text-brown-muted">טלפון</p>
                   <p className="text-xl font-semibold text-brown-dark group-hover:text-orange transition-colors font-english" dir="ltr">
-                    {contactInfo.phone}
+                    {contactPhone}
                   </p>
                 </div>
               </a>
 
               {/* Email */}
               <a
-                href={`mailto:${contactInfo.email}`}
+                href={`mailto:${contactEmail}`}
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
               >
                 <div className="w-12 h-12 rounded-lg bg-terracotta/10 flex items-center justify-center">
@@ -224,7 +241,7 @@ export default function Contact() {
                 <div>
                   <p className="text-base text-brown-muted">אימייל</p>
                   <p className="text-xl font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english" dir="ltr">
-                    {contactInfo.email}
+                    {contactEmail}
                   </p>
                 </div>
               </a>
@@ -249,7 +266,7 @@ export default function Contact() {
 
               {/* Instagram */}
               <a
-                href="https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr"
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
@@ -267,7 +284,7 @@ export default function Contact() {
 
               {/* Note */}
               <p className="text-base text-brown-muted p-4 bg-cream-dark rounded-lg">
-                אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים
+                {responseTime}
               </p>
             </div>
           </m.div>
