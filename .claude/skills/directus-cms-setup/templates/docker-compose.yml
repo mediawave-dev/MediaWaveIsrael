@@ -1,3 +1,6 @@
+# Directus CMS Docker Compose Template
+# Replace {{ADMIN_EMAIL}} and {{CORS_ORIGIN}} for the target project
+
 services:
   directus:
     image: directus/directus:11
@@ -9,7 +12,7 @@ services:
       - ./directus/extensions:/directus/extensions
     environment:
       SECRET: ${DIRECTUS_SECRET:-change-me-to-a-random-string}
-      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@mediawave.co.il}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@example.com}
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-admin123}
       ADMIN_TOKEN: ${DIRECTUS_ADMIN_TOKEN:-directus-admin-token}
       DB_CLIENT: sqlite3

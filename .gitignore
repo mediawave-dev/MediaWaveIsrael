@@ -18,7 +18,8 @@ dist-ssr
 .env.production
 
 # Directus
-directus/database/
+directus/database/*
+!directus/database/data.db
 directus/uploads/
 
 # Editor directories and files
