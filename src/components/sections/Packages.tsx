@@ -1,9 +1,31 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Check, Star } from 'lucide-react'
-import { packages, type Package } from '../../data/packages'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getPackages } from '../../directus/queries'
+import { mapPackage } from '../../directus/mappers'
+import type { DirectusPackage } from '../../directus/types'
 
-// --- Animation variants (RTL: horizontal enters from right = negative x) ---
+interface PackageItem {
+  _id: string
+  name: string
+  price: string
+  description: string
+  features: string[]
+  idealFor: string
+  cta: string
+  ctaLink: string
+  popular?: boolean
+}
+
+const fallbackPackages: PackageItem[] = [
+  { _id: 'landing', name: 'דף נחיתה', price: 'החל מ-₪1,500', description: 'נוכחות דיגיטלית מהירה ואפקטיבית', features: ['עמוד אחד רספונסיבי', 'עיצוב מותאם אישית', 'טופס יצירת קשר', 'אופטימיזציית מהירות', 'SEO בסיסי'], idealFor: 'לעסקים שרוצים נוכחות דיגיטלית מהירה', cta: 'בואו נדבר', ctaLink: '#contact' },
+  { _id: 'business', name: 'אתר תדמית', price: 'החל מ-₪3,500', description: 'אתר מקצועי ומרשים לעסק שלך', features: ['עד 5 עמודים', 'עיצוב מותאם אישית', 'רספונסיבי מלא', 'SEO מובנה', 'אינטגרציית Google Analytics', 'טופס יצירת קשר מתקדם', 'ליווי עד להשקה'], idealFor: 'לעסקים שרוצים אתר מקצועי ומרשים', cta: 'בואו נדבר', ctaLink: '#contact', popular: true },
+  { _id: 'custom', name: 'פרויקט מותאם', price: 'לפי הצעת מחיר', description: 'פתרון מותאם לצרכים ייחודיים', features: ['אתר מורכב / חנות / אפליקציה', 'פיצ׳רים מתקדמים (צ׳אטבוט AI, אינטגרציות, CMS)', 'עיצוב פרימיום', 'תמיכה שוטפת'], idealFor: 'לעסקים עם צרכים ייחודיים ושאפתניים', cta: 'בואו נדבר', ctaLink: '#contact' },
+]
+
+// --- Animation variants ---
 
 const containerVariants = {
   hidden: {},
@@ -29,7 +51,7 @@ const cardVariants = {
 
 // --- Package Card ---
 
-function PackageCard({ pkg }: { pkg: Package }) {
+function PackageCard({ pkg }: { pkg: PackageItem }) {
   return (
     <motion.div
       variants={cardVariants}
@@ -62,52 +84,32 @@ function PackageCard({ pkg }: { pkg: Package }) {
 
       {/* Header */}
       <div className={`mb-6 ${pkg.popular ? 'pt-2' : ''}`}>
-        <h3 className="text-2xl font-headline font-bold text-brown-dark mb-2">
-          {pkg.name}
-        </h3>
-        <p className="text-brown-light text-sm leading-relaxed">
-          {pkg.description}
-        </p>
+        <h3 className="text-2xl font-headline font-bold text-brown-dark mb-2">{pkg.name}</h3>
+        <p className="text-brown-light text-sm leading-relaxed">{pkg.description}</p>
       </div>
 
       {/* Price */}
       <div className="mb-8">
-        <span className="text-3xl md:text-4xl font-headline font-bold text-brown-dark">
-          {pkg.price}
-        </span>
+        <span className="text-3xl md:text-4xl font-headline font-bold text-brown-dark">{pkg.price}</span>
       </div>
 
       {/* Divider */}
-      <div
-        className={`h-px mb-6 ${
-          pkg.popular ? 'bg-orange/20' : 'bg-cream-darker'
-        }`}
-      />
+      <div className={`h-px mb-6 ${pkg.popular ? 'bg-orange/20' : 'bg-cream-darker'}`} />
 
       {/* Features */}
       <ul className="space-y-3 mb-8 flex-1">
         {pkg.features.map((feature) => (
           <li key={feature} className="flex items-start gap-3">
-            <span
-              className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
-                pkg.popular
-                  ? 'bg-orange/15 text-orange'
-                  : 'bg-sage/20 text-sage-dark'
-              }`}
-            >
+            <span className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${pkg.popular ? 'bg-orange/15 text-orange' : 'bg-sage/20 text-sage-dark'}`}>
               <Check size={12} strokeWidth={3} />
             </span>
-            <span className="text-brown-light text-sm leading-relaxed">
-              {feature}
-            </span>
+            <span className="text-brown-light text-sm leading-relaxed">{feature}</span>
           </li>
         ))}
       </ul>
 
       {/* Ideal for */}
-      <p className="text-xs text-brown-muted mb-6">
-        {pkg.idealFor}
-      </p>
+      <p className="text-xs text-brown-muted mb-6">{pkg.idealFor}</p>
 
       {/* CTA */}
       <motion.a
@@ -132,6 +134,10 @@ function PackageCard({ pkg }: { pkg: Package }) {
 
 export default function Packages() {
   const sectionRef = useRef<HTMLElement>(null)
+  const { data: raw, loading, error } = useDirectusQuery<DirectusPackage[]>(getPackages)
+  const data = raw?.map(mapPackage) ?? null
+
+  const packages = data && data.length > 0 ? data : (error ? fallbackPackages : null)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -139,6 +145,12 @@ export default function Packages() {
   })
 
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -50])
+
+  if (loading && !packages) {
+    return <SectionSkeleton lines={3} />
+  }
+
+  if (!packages || packages.length === 0) return null
 
   return (
     <section
@@ -148,15 +160,12 @@ export default function Packages() {
       className="relative py-16 md:py-24 bg-cream overflow-hidden"
     >
       {/* Background decoration — parallax glow */}
-      <motion.div
-        className="absolute top-1/3 left-[8%] w-72 h-72 pointer-events-none"
-        style={{ y: bgY }}
-      >
+      <motion.div className="absolute top-1/3 left-[8%] w-72 h-72 pointer-events-none" style={{ y: bgY }}>
         <div className="w-full h-full rounded-full bg-orange/6 blur-3xl" />
       </motion.div>
 
       <div className="container relative">
-        {/* Section Header (RTL: enters from right = negative x) */}
+        {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
           <motion.span
             className="inline-flex items-center gap-2 bg-orange/10 text-orange text-sm font-semibold px-5 py-2.5 rounded-full mb-6"
@@ -199,7 +208,7 @@ export default function Packages() {
           viewport={{ once: true, margin: '-80px' }}
         >
           {packages.map((pkg) => (
-            <PackageCard key={pkg.id} pkg={pkg} />
+            <PackageCard key={pkg._id} pkg={pkg} />
           ))}
         </motion.div>
 

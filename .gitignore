@@ -17,6 +17,11 @@ dist-ssr
 .env.local
 .env.production
 
+# Directus
+directus/database/*
+!directus/database/data.db
+directus/uploads/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

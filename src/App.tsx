@@ -24,6 +24,9 @@ const Blog = lazy(() => import('./components/pages/Blog'))
 const BlogPost = lazy(() => import('./components/pages/BlogPost'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
 
+// Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
+const StudioPage = lazy(() => import('./pages/StudioPage'))
+
 // Minimal fallback - reserves space with CSS containment for CLS prevention
 const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
   <div style={{ minHeight: height, contain: 'layout' }} aria-hidden="true" />
@@ -73,17 +76,29 @@ function App() {
   return (
     <ErrorBoundary>
       <MotionProvider>
-        <Layout>
-          <LeadModal />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/blog" element={<Suspense fallback={<SectionFallback />}><Blog /></Suspense>} />
-            <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
-            <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
-            <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
-            <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
-          </Routes>
-        </Layout>
+        <Routes>
+          {/* Sanity Studio — full viewport, NO Layout wrapper */}
+          <Route path="/studio/*" element={
+            <Suspense fallback={<div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>טוען Studio...</div>}>
+              <StudioPage />
+            </Suspense>
+          } />
+
+          {/* All other routes — wrapped in Layout */}
+          <Route path="*" element={
+            <Layout>
+              <LeadModal />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/blog" element={<Suspense fallback={<SectionFallback />}><Blog /></Suspense>} />
+                <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
+                <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
+                <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
+                <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
+              </Routes>
+            </Layout>
+          } />
+        </Routes>
       </MotionProvider>
     </ErrorBoundary>
   )

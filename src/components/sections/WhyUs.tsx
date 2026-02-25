@@ -1,30 +1,37 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import type { LucideIcon } from 'lucide-react'
 import { LottieIcon } from '../ui'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getWhyUs } from '../../directus/queries'
+import { mapWhyUs } from '../../directus/mappers'
+import type { DirectusWhyUs } from '../../directus/types'
 
-interface Differentiator {
-  icon?: LucideIcon
-  lottieAnimation?: string
+interface WhyUsItem {
+  _id: string
   title: string
   description: string
+  lottieAnimation?: string
   color: 'orange' | 'terracotta' | 'sage'
 }
 
-const differentiators: Differentiator[] = [
+const fallbackDifferentiators: WhyUsItem[] = [
   {
+    _id: 'tech',
     lottieAnimation: '/animations/2/computer%20technician.json',
     title: 'טכנולוגיה מתקדמת',
     description: 'עובדים עם React, Next.js ו-Astro לביצועים מעולים ותחזוקה קלה.',
     color: 'orange',
   },
   {
+    _id: 'ai',
     lottieAnimation: '/animations/AI/AI%20animation.json',
     title: 'מותאם לבינה מלאכותית',
     description: 'האתר שלכם מותאם גם למנועי AI כמו ChatGPT ו-Perplexity, לא רק לגוגל. כך לקוחות חדשים מוצאים אתכם בכל מקום.',
     color: 'terracotta',
   },
   {
+    _id: 'personal',
     lottieAnimation: '/animations/6%20personal/contact%20us.json',
     title: 'ליווי אישי',
     description: 'מדברים ישירות עם המפתח, בלי middlemen.',
@@ -32,13 +39,18 @@ const differentiators: Differentiator[] = [
   },
 ]
 
-const colorMap = {
-  orange: { bg: 'bg-orange/10', text: 'text-orange', border: 'border-orange/20' },
-  terracotta: { bg: 'bg-terracotta/10', text: 'text-terracotta', border: 'border-terracotta/20' },
-  sage: { bg: 'bg-sage/10', text: 'text-sage-dark', border: 'border-sage/20' },
+const colorMap: Record<string, { border: string }> = {
+  orange: { border: 'border-orange/20' },
+  terracotta: { border: 'border-terracotta/20' },
+  sage: { border: 'border-sage/20' },
 }
 
 export default function WhyUs() {
+  const { data: raw, loading, error } = useDirectusQuery<DirectusWhyUs[]>(getWhyUs)
+  const data = raw?.map(mapWhyUs) ?? null
+
+  const differentiators = data && data.length > 0 ? data : (error ? fallbackDifferentiators : null)
+
   // Detect reduced motion preference
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
@@ -49,6 +61,12 @@ export default function WhyUs() {
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
+
+  if (loading && !differentiators) {
+    return <SectionSkeleton lines={3} />
+  }
+
+  if (!differentiators || differentiators.length === 0) return null
 
   return (
     <section
@@ -126,12 +144,11 @@ export default function WhyUs() {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {differentiators.map((item, index) => {
-            const Icon = item.icon
-            const colors = colorMap[item.color]
+            const colors = colorMap[item.color] ?? colorMap.orange
             const hasLottie = !!item.lottieAnimation
             return (
               <motion.div
-                key={item.title}
+                key={item._id}
                 className={`bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
                 initial={{ opacity: 0, transform: 'translateY(20px)' }}
                 whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -147,10 +164,6 @@ export default function WhyUs() {
                       playOnHover={true}
                       loop={true}
                     />
-                  </div>
-                ) : Icon ? (
-                  <div className={`w-14 h-14 mx-auto rounded-lg ${colors.bg} flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110`}>
-                    <Icon size={28} className={colors.text} strokeWidth={1.5} />
                   </div>
                 ) : null}
                 <h3 className="font-headline font-bold text-brown-dark text-xl mb-2">

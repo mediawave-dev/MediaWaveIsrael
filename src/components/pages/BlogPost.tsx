@@ -1,8 +1,26 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
-import { blogPosts } from '../../data/blog-posts'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getBlogPostBySlug } from '../../directus/queries'
+import { mapBlogPost } from '../../directus/mappers'
+import { assetUrl } from '../../directus/imageUrl'
+import { HtmlContent } from '../../directus/HtmlContent'
+import type { DirectusBlogPost } from '../../directus/types'
 import SEO from '../SEO'
+
+interface BlogPost {
+  _id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  featuredImage?: string | null
+  author: string
+  tags: string[]
+  publishedAt: string
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('he-IL', {
@@ -14,10 +32,22 @@ function formatDate(iso: string): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
+  const { data: rawPosts, loading, error } = useDirectusQuery<DirectusBlogPost[]>(
+    () => getBlogPostBySlug(slug!), [slug]
+  )
+  const post: BlogPost | null = rawPosts?.[0] ? mapBlogPost(rawPosts[0]) : null
 
-  const post = blogPosts.find((p) => p.slug === slug && p.published)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-cream pt-32 pb-20">
+        <div className="container max-w-[700px]">
+          <SectionSkeleton lines={1} />
+        </div>
+      </div>
+    )
+  }
 
-  if (!post) {
+  if (!post || error) {
     return <Navigate to="/blog" replace />
   }
 
@@ -29,7 +59,7 @@ export default function BlogPost() {
         canonical={`/blog/${post.slug}`}
         ogType="article"
         article={{
-          publishedTime: post.date,
+          publishedTime: post.publishedAt,
           author: post.author,
           tags: post.tags,
         }}
@@ -40,8 +70,8 @@ export default function BlogPost() {
         '@type': 'BlogPosting',
         headline: post.title,
         description: post.excerpt,
-        datePublished: post.date,
-        dateModified: post.date,
+        datePublished: post.publishedAt,
+        dateModified: post.publishedAt,
         author: {
           '@type': 'Organization',
           name: post.author,
@@ -85,7 +115,7 @@ export default function BlogPost() {
           transition={{ duration: 0.6 }}
         >
           {/* Tags */}
-          {post.tags.length > 0 && (
+          {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-5">
               {post.tags.map((tag) => (
                 <span
@@ -102,6 +132,18 @@ export default function BlogPost() {
             {post.title}
           </h1>
 
+          {/* Featured image */}
+          {post.featuredImage && (
+            <div className="rounded-xl overflow-hidden mb-6">
+              <img
+                src={assetUrl(post.featuredImage, { width: 700, format: 'webp' })}
+                alt={post.title}
+                loading="lazy"
+                className="w-full"
+              />
+            </div>
+          )}
+
           {/* Meta */}
           <div className="flex items-center gap-5 text-sm text-brown-muted border-b border-cream-darker pb-6">
             <div className="flex items-center gap-1.5">
@@ -110,19 +152,19 @@ export default function BlogPost() {
             </div>
             <div className="flex items-center gap-1.5">
               <Calendar size={14} />
-              <time dateTime={post.date}>{formatDate(post.date)}</time>
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             </div>
           </div>
         </motion.header>
 
         {/* Content */}
         <motion.div
-          className="prose-hebrew"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        >
+          <HtmlContent html={post.content} className="prose-hebrew" />
+        </motion.div>
 
         {/* Footer CTA */}
         <motion.div

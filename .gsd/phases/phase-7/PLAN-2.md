@@ -1,56 +1,114 @@
-# Phase 7, Task 2: Performance Optimization & Lighthouse Audit
+# Phase 7 / Task 2 — Client Guide & Environment Documentation
 
 ## Goal
-Achieve Lighthouse 90+ in all categories (Performance, Accessibility, Best Practices, SEO).
+Create Hebrew client guide for Sanity Studio usage and document all environment variables.
 
-## Context
-- Site uses multiple custom fonts (potential render-blocking)
-- Rich animations (potential performance impact)
-- Images need WebP/lazy loading verification
-- Multiple floating elements may cause CLS
+## Steps
 
-## Actions
+### 1. Create Hebrew client guide
+Create `docs/sanity-guide.rtl.md`:
 
-### Step 1: Run Lighthouse Baseline
-- Build production version: `npm run build`
-- Serve locally: `npm run preview`
-- Run Lighthouse audit (all categories)
-- Document current scores
+Guide structure (all in Hebrew):
+```markdown
+# מדריך ניהול תוכן — MediaWave Studio
 
-### Step 2: Fix Performance Issues
-- Verify font-display: swap on all @font-face
-- Verify image lazy loading (except header logo)
-- Check for CLS (Cumulative Layout Shift) — especially floating buttons
-- Optimize any large bundles (check Vite build output)
-- Verify no render-blocking resources
+## כניסה ל-Studio
+- גש לכתובת: [domain]/studio
+- היכנס עם פרטי המשתמש שקיבלת
 
-### Step 3: Fix Accessibility Issues
-- Verify all ARIA labels on interactive elements
-- Check color contrast ratios
-- Verify heading hierarchy (h1 → h2 → h3)
-- Check focus-visible outlines
-- Verify 44px touch targets
+## ניווט בתפריט
+- **תוכן האתר**: שירותים, חבילות, למה אנחנו, איך עובדים, שאלות נפוצות
+- **בלוג ופורטפוליו**: פוסטים, פרויקטים, המלצות
+- **הגדרות אתר**: פרטי קשר, לוגו, רשתות חברתיות
 
-### Step 4: Sitemap & Robots
-- Verify sitemap generation (may need vite-plugin-sitemap)
-- Verify robots.txt exists and allows crawling
-- Create Google Search Console submission instructions for Nati
+## הוספת פוסט חדש בבלוג
+1. לחץ על "בלוג ופורטפוליו" > "פוסטים בבלוג"
+2. לחץ על כפתור "+" (הוספה)
+3. מלא: כותרת, תקציר, תוכן, תמונה ראשית, תגיות
+4. סמן "מפורסם" כש-ready
+5. לחץ "Publish" (פרסם)
 
-### Step 5: Re-run Lighthouse
-- Fix any remaining issues
-- Target: 90+ in all 4 categories
-- Document final scores
+## עריכת שירות
+1. לחץ על "תוכן האתר" > "שירותים"
+2. בחר את השירות לעריכה
+3. ערוך שדות רצויים
+4. לחץ "Publish"
+
+## העלאת תמונות
+- גרור תמונה לשדה התמונה
+- ניתן לחתוך ולהגדיר נקודת מוקד (hotspot)
+- פורמטים נתמכים: JPG, PNG, WebP
+
+## שינוי סדר פריטים
+- גרור את הפריט למיקום הרצוי ברשימה
+- סדר נשמר אוטומטית
+
+## עדכון פרטי קשר
+1. לחץ על "הגדרות אתר"
+2. ערוך: טלפון, אימייל, WhatsApp, אינסטגרם
+3. לחץ "Publish"
+
+## תצוגה מקדימה
+- הוסף ?preview=true לכתובת האתר
+- תראה גם תוכן בטיוטה (לא מפורסם)
+
+## שאלות נפוצות
+- **מתי שינויים נכנסים לתוקף?** מיידית לאחר לחיצה על Publish
+- **מה קורה אם אני טועה?** ניתן לחזור לגרסה קודמת בהיסטוריה
+- **צריך עזרה?** פנה ל-MediaWave בווטסאפ 052-8731808
+```
+
+### 2. Update .env.example with full documentation
+Update `.env.example`:
+```bash
+# === MediaWave Site ===
+VITE_CONTACT_ENDPOINT=        # Contact form submission endpoint
+
+# === Sanity CMS ===
+SANITY_STUDIO_PROJECT_ID=     # Sanity project ID (from manage.sanity.io)
+SANITY_STUDIO_DATASET=production  # Sanity dataset name
+
+# Client-side Sanity access (duplicated for Vite env)
+VITE_SANITY_PROJECT_ID=       # Same as SANITY_STUDIO_PROJECT_ID
+VITE_SANITY_DATASET=production
+
+# Preview mode (dev/staging only — DO NOT set in production)
+VITE_SANITY_PREVIEW_TOKEN=    # Read-only Sanity token for draft preview
+
+# Migration only (never deploy)
+SANITY_WRITE_TOKEN=           # Write token for migration scripts
+```
+
+### 3. Update project README or create deployment checklist
+Create `docs/deployment-checklist.md`:
+```markdown
+# Deployment Checklist
+
+## First-time Setup
+1. Create Sanity project at manage.sanity.io
+2. Note the Project ID
+3. Create dataset "production"
+4. Add CORS origins:
+   - https://your-domain.pages.dev (with credentials)
+   - http://localhost:5173 (for dev)
+5. Create API tokens:
+   - Viewer token (for preview)
+   - Editor token (for migration)
+6. Set environment variables in Cloudflare Pages
+7. Run migration script
+8. Create siteSettings document in Studio
+9. Deploy
+
+## After Deploy
+- Verify /studio loads correctly
+- Verify all sections show content
+- Test editing in Studio
+- Share Studio URL + credentials with client
+```
 
 ## Acceptance Criteria
-- [ ] Lighthouse Performance: 90+
-- [ ] Lighthouse Accessibility: 90+
-- [ ] Lighthouse Best Practices: 90+
-- [ ] Lighthouse SEO: 90+
-- [ ] Font loading doesn't block render
-- [ ] Images lazy loaded (except logo)
-- [ ] No CLS issues
-- [ ] Sitemap and robots.txt present
-- [ ] Clean build
-
-## Estimated Scope
-~45 minutes, audit + fixes
+- [ ] Hebrew client guide created at `docs/sanity-guide.rtl.md`
+- [ ] Guide covers: login, navigation, CRUD operations, image upload, ordering, preview
+- [ ] `.env.example` documents all variables with descriptions
+- [ ] Deployment checklist created
+- [ ] All documentation in Hebrew where client-facing

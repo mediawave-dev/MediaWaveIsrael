@@ -1,50 +1,54 @@
-# Phase 7, Task 1: Meta Tags, OG Tags & Structured Data
+# Phase 7 / Task 1 — Performance Check & Bundle Optimization
 
 ## Goal
-Add comprehensive SEO metadata to all pages.
+Ensure Sanity integration doesn't degrade performance. Optimize bundle splitting.
 
-## Context
-- index.html may already have some meta tags (needs audit)
-- Need: title, meta description, og:title, og:description, og:image per page
-- Need JSON-LD structured data: LocalBusiness, WebSite, FAQPage
-- React SPA — may need react-helmet or manual head management
+## Steps
 
-## Actions
+### 1. Analyze build output
+Run `npm run build` and check:
+- Main chunk size (should stay under 50KB gzipped)
+- Sanity Studio chunk (separate, loaded only on /studio route)
+- Total bundle size comparison with pre-Sanity build
 
-### Step 1: Audit Current Meta Tags
-- Read index.html for existing meta/OG tags
-- Check if react-helmet or similar is installed
-- Identify gaps
+### 2. Optimize chunk splitting
+Update `vite.config.ts` manualChunks:
+```typescript
+manualChunks: {
+  'framer-motion': ['framer-motion'],
+  'lottie': ['lottie-react'],
+  'react-vendor': ['react', 'react-dom'],
+  'router': ['react-router-dom'],
+  'sanity-client': ['@sanity/client', '@sanity/image-url', '@portabletext/react'],
+  'sanity-studio': ['sanity'],
+}
+```
 
-### Step 2: Add/Update Meta Tags
-- Homepage: "MediaWave — פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם"
-- Blog pages (if exist): Dynamic meta per post
-- About, Terms, Privacy pages: Appropriate titles
+Ensure `sanity-studio` chunk only loads on `/studio` route (lazy import).
 
-### Step 3: Create OG Image
-- Design 1200x630 OG image with MediaWave logo on site gradient
-- Save to public/ directory
-- Reference in og:image tags
+### 3. Check lazy loading
+Verify Studio page uses `React.lazy()`:
+- Network tab should NOT load sanity-studio chunk on homepage
+- Only load on `/studio` navigation
 
-### Step 4: Add JSON-LD Structured Data
-- `LocalBusiness`: name, phone (052-8731808), email, service type
-- `WebSite`: name, URL
-- `FAQPage`: Convert existing FAQ data to structured format
-- Add as script tags in index.html or via component
+### 4. Add SPA redirect for Cloudflare Pages
+Create `public/_redirects`:
+```
+/*  /index.html  200
+```
 
-### Step 5: Verify
-- Google Rich Results Test with page URL
-- Facebook Sharing Debugger for OG tags
-- Build clean
-- No duplicate or conflicting meta tags
+This ensures `/studio/*` routes work correctly on Cloudflare Pages.
+
+### 5. Lighthouse check
+If possible, run build + preview and check:
+- Performance score
+- LCP (should not be affected — Hero is still immediate)
+- TBT (Sanity queries are async, shouldn't block)
+- CLS (loading states should prevent layout shift)
 
 ## Acceptance Criteria
-- [ ] All pages have title + meta description
-- [ ] OG tags (title, description, image) present
-- [ ] JSON-LD for LocalBusiness, WebSite, FAQPage
-- [ ] OG image created and referenced
-- [ ] No conflicting/duplicate meta tags
-- [ ] Clean build
-
-## Estimated Scope
-~30 minutes, meta tag additions
+- [ ] Main bundle under 50KB gzipped (excluding Sanity Studio)
+- [ ] Sanity Studio in separate chunk, lazy-loaded
+- [ ] `_redirects` file in public/ for Cloudflare Pages SPA
+- [ ] `npm run build` succeeds with clean output
+- [ ] No increase in LCP or TBT from Sanity integration

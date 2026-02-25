@@ -1,35 +1,33 @@
-# GSD State — MediaWave Mega-Upgrade
+# GSD State — Sanity CMS Integration
 
 ## Current Position
-**Phase:** 5 — Social Proof & Polish
-**Stage:** Pending
-**Task:** Ready for Discussion
+- **Phase**: ALL PHASES COMPLETE
+- **Status**: DONE
+- **Last Action**: Phase 7 completed (2026-02-23)
 
-## Progress
-[■■■■■□] 83% (5/6 phases)
+## Key Decisions
+- **CMS**: Sanity v3 (headless CMS)
+- **Studio**: Embedded in same project at `/studio` route (lazy-loaded)
+- **Data Fetching**: Client-side runtime via GROQ + @sanity/client (CDN cached)
+- **Preview**: Draft preview via `?preview=true` with previewDrafts perspective
+- **Content Scope**: ALL 10 content types managed through Sanity
+- **Language**: Hebrew-first with RTL support
+- **Migration**: Node.js scripts with @sanity/client transactions
+- **Deploy**: Cloudflare Pages (existing) with `_redirects` for SPA routing
 
-## Recent Decisions
-- 2026-02-08: **Phase 4 Complete** ✅ — Portfolio Upgrade implemented
-- 2026-02-08: Created useTilt3D hook with spring physics
-- 2026-02-08: Browser mockup 3D tilt + inner parallax + shine effect
-- 2026-02-08: AnimatedCheckmark SVG component with path drawing
-- 2026-02-08: 4 floating decorative dots added
-- 2026-02-08: Service descriptions updated to short & punchy style
-- 2026-02-08: **Phase 6 Complete** ✅ — AI Chatbot implemented
-- 2026-02-08: **Phase 3 Complete** ✅ — ROI Calculator implemented
-- 2026-02-08: **Phase 2 Complete** ✅
-- 2026-02-08: **Phase 1 Complete** ✅
+## Phase Plan Summary
+| Phase | Tasks | Status |
+|-------|-------|--------|
+| 1. Setup | PLAN-1, PLAN-2 | ✅ COMPLETE |
+| 2. Schemas | PLAN-1, PLAN-2 | ✅ COMPLETE |
+| 3. Studio | PLAN-1 | ✅ COMPLETE |
+| 4. Migration | PLAN-1, PLAN-2 | ✅ COMPLETE |
+| 5. Frontend | PLAN-1, PLAN-2, PLAN-3 | ✅ COMPLETE |
+| 6. Preview | PLAN-1 | ✅ COMPLETE |
+| 7. Polish | PLAN-1, PLAN-2 | ✅ COMPLETE |
 
 ## Blockers
-None
+None — project is complete.
 
 ## Next Action
-`gsd discuss 5` — Discuss Phase 5 requirements (Social Proof & Polish)
-
-## Phase Completion
-- [x] Phase 1: Content Surgery ✅
-- [x] Phase 2: Hero Video & WhyUs Enhancement ✅
-- [x] Phase 3: ROI Calculator ✅
-- [x] Phase 4: Portfolio Upgrade ✅
-- [ ] Phase 5: Social Proof & Polish
-- [x] Phase 6: AI Chatbot ✅
+Deploy to production. See `docs/deployment-checklist.md`.

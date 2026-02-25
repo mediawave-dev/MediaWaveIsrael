@@ -1,10 +1,24 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
-import { blogPosts } from '../../data/blog-posts'
+import SectionSkeleton from '../ui/SectionSkeleton'
+import { useDirectusQuery } from '../../directus/hooks'
+import { getBlogPosts } from '../../directus/queries'
+import { mapBlogPost } from '../../directus/mappers'
+import { assetUrl } from '../../directus/imageUrl'
+import type { DirectusBlogPost } from '../../directus/types'
 import SEO from '../SEO'
 
-const publishedPosts = blogPosts.filter((p) => p.published)
+interface BlogPost {
+  _id: string
+  title: string
+  slug: string
+  excerpt: string
+  featuredImage?: string | null
+  author: string
+  tags: string[]
+  publishedAt: string
+}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('he-IL', {
@@ -15,6 +29,10 @@ function formatDate(iso: string): string {
 }
 
 export default function Blog() {
+  const { data: raw, loading } = useDirectusQuery<DirectusBlogPost[]>(getBlogPosts)
+
+  const posts: BlogPost[] = (raw ?? []).map(mapBlogPost)
+
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
       <SEO
@@ -43,14 +61,17 @@ export default function Blog() {
           </p>
         </motion.div>
 
+        {/* Loading state */}
+        {loading && <SectionSkeleton lines={3} showHeader={false} />}
+
         {/* Posts grid or empty state */}
-        {publishedPosts.length === 0 ? (
+        {!loading && posts.length === 0 ? (
           <EmptyState />
-        ) : (
+        ) : !loading ? (
           <div className="grid gap-8">
-            {publishedPosts.map((post, index) => (
+            {posts.map((post, index) => (
               <motion.article
-                key={post.slug}
+                key={post._id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -59,9 +80,21 @@ export default function Blog() {
                   to={`/blog/${post.slug}`}
                   className="group block bg-white rounded-2xl overflow-hidden border border-cream-darker/30 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
+                  {/* Featured image */}
+                  {post.featuredImage && (
+                    <div className="aspect-[2/1] overflow-hidden">
+                      <img
+                        src={assetUrl(post.featuredImage, { width: 800, height: 400, format: 'webp' })}
+                        alt={post.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+
                   <div className="p-6 md:p-8">
                     {/* Tags */}
-                    {post.tags.length > 0 && (
+                    {post.tags && post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.map((tag) => (
                           <span
@@ -88,7 +121,7 @@ export default function Blog() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-sm text-brown-muted">
                         <Calendar size={14} />
-                        <time dateTime={post.date}>{formatDate(post.date)}</time>
+                        <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
                       </div>
 
                       <span className="inline-flex items-center gap-1.5 text-orange font-semibold text-sm group-hover:gap-2.5 transition-all duration-200">
@@ -101,7 +134,7 @@ export default function Blog() {
               </motion.article>
             ))}
           </div>
-        )}
+        ) : null}
 
         {/* Back to home */}
         <motion.div

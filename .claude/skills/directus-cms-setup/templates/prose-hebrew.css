@@ -1,0 +1,68 @@
+/* Hebrew Rich Text Styles
+   Apply to HtmlContent wrapper: <HtmlContent className="prose-hebrew" html={...} />
+   Import in main styles: @import './prose-hebrew.css';
+*/
+
+.prose-hebrew {
+  direction: rtl;
+  text-align: right;
+  line-height: 1.8;
+}
+
+.prose-hebrew p {
+  margin-bottom: 1em;
+}
+
+.prose-hebrew a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-hebrew a:hover {
+  opacity: 0.8;
+}
+
+.prose-hebrew ul,
+.prose-hebrew ol {
+  padding-inline-start: 1.5em;
+  margin-bottom: 1em;
+}
+
+.prose-hebrew li {
+  margin-bottom: 0.25em;
+}
+
+.prose-hebrew blockquote {
+  border-inline-start: 4px solid currentColor;
+  padding-inline-start: 1em;
+  opacity: 0.85;
+  margin: 1em 0;
+}
+
+.prose-hebrew h2,
+.prose-hebrew h3,
+.prose-hebrew h4 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-hebrew img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+.prose-hebrew code {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.prose-hebrew pre {
+  direction: ltr;
+  unicode-bidi: embed;
+  overflow-x: auto;
+  padding: 1em;
+  border-radius: 8px;
+  margin: 1em 0;
+}
