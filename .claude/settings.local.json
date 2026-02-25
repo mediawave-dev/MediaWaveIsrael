@@ -52,7 +52,9 @@
       "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" log --oneline -15)",
       "Bash(git -C \"G:\\\\Web-Dev\\\\MediaWaveIsrael\" status public/videos/)",
       "WebFetch(domain:mediawaveisrael.com)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(grep -c \"img\\\\|image\" \"/c/Users/MoriaLevy/OneDrive/Desktop/WebDevelopment/MediaWaveIsrael/src/components/sections/\"*.tsx)",
+      "Bash(node scripts/generate-seo.mjs)"
     ]
   },
   "enabledMcpjsonServers": [

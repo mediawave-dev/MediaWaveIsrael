@@ -1,8 +1,14 @@
 import { motion } from 'framer-motion'
+import SEO from '../SEO'
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
+      <SEO
+        title="404 — העמוד לא נמצא"
+        description="העמוד שחיפשתם לא קיים או שהוסר. חזרו לדף הבית של MediaWave Israel."
+        noindex
+      />
       <div className="text-center max-w-md">
         {/* Animated 404 */}
         <motion.div

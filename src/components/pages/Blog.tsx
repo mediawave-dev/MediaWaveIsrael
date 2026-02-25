@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
 import { blogPosts } from '../../data/blog-posts'
+import SEO from '../SEO'
 
 const publishedPosts = blogPosts.filter((p) => p.published)
 
@@ -16,6 +17,11 @@ function formatDate(iso: string): string {
 export default function Blog() {
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
+      <SEO
+        title="בלוג — טיפים ומדריכים לעסקים"
+        description="טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי. איך לבנות נוכחות דיגיטלית חזקה לעסק שלכם."
+        canonical="/blog"
+      />
       <div className="container max-w-4xl">
         {/* Header */}
         <motion.div

@@ -4,6 +4,7 @@ import { Layout } from './components/layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import LeadModal from './components/LeadModal'
 import { MotionProvider } from './components/MotionProvider'
+import SEO from './components/SEO'
 
 // Above-fold: load immediately
 import { Hero } from './components/sections'
@@ -32,6 +33,11 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
 function HomePage() {
   return (
     <>
+      <SEO
+        title="MediaWave — פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם"
+        description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים קטנים ובינוניים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה."
+        canonical="/"
+      />
       {/* Hero Section - loads immediately (above fold, LCP critical) */}
       <Hero />
 

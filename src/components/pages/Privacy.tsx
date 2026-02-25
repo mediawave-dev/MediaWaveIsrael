@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import SEO from '../SEO'
 
 export default function Privacy() {
   const navigate = useNavigate()
@@ -16,6 +17,11 @@ export default function Privacy() {
 
   return (
     <main className="min-h-screen bg-cream pt-32 pb-16">
+      <SEO
+        title="מדיניות פרטיות"
+        description="מדיניות הפרטיות של MediaWave Israel — כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם."
+        canonical="/privacy"
+      />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
         <motion.div

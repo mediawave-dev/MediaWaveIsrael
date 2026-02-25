@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import SEO from '../SEO'
 
 export default function Terms() {
   const navigate = useNavigate()
@@ -16,6 +17,11 @@ export default function Terms() {
 
   return (
     <main className="min-h-screen bg-cream pt-32 pb-16">
+      <SEO
+        title="תקנון שימוש"
+        description="תקנון השימוש של MediaWave Israel — תנאי שימוש באתר ושירותי פיתוח אתרים."
+        canonical="/terms"
+      />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
         <motion.div

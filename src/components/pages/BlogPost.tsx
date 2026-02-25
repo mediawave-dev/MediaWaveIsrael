@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
 import { blogPosts } from '../../data/blog-posts'
+import SEO from '../SEO'
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('he-IL', {
@@ -22,6 +23,43 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
+      <SEO
+        title={post.title}
+        description={post.excerpt}
+        canonical={`/blog/${post.slug}`}
+        ogType="article"
+        article={{
+          publishedTime: post.date,
+          author: post.author,
+          tags: post.tags,
+        }}
+      />
+      {/* BlogPosting structured data */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.excerpt,
+        datePublished: post.date,
+        dateModified: post.date,
+        author: {
+          '@type': 'Organization',
+          name: post.author,
+          url: 'https://mediawaveisrael.com',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'MediaWave Israel',
+          url: 'https://mediawaveisrael.com',
+          logo: { '@type': 'ImageObject', url: 'https://mediawaveisrael.com/images/logo.webp' },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `https://mediawaveisrael.com/blog/${post.slug}`,
+        },
+        inLanguage: 'he',
+        keywords: post.tags.join(', '),
+      }) }} />
       <article className="container max-w-[700px]">
         {/* Back link */}
         <motion.div
