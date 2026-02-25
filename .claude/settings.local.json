@@ -54,7 +54,8 @@
       "WebFetch(domain:mediawaveisrael.com)",
       "Bash(npx tsc:*)",
       "Bash(grep -c \"img\\\\|image\" \"/c/Users/MoriaLevy/OneDrive/Desktop/WebDevelopment/MediaWaveIsrael/src/components/sections/\"*.tsx)",
-      "Bash(node scripts/generate-seo.mjs)"
+      "Bash(node scripts/generate-seo.mjs)",
+      "Bash(git checkout --theirs package-lock.json)"
     ]
   },
   "enabledMcpjsonServers": [
