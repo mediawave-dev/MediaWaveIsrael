@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 
 const SITE_URL = 'https://mediawaveisrael.com'
 const SITE_NAME = 'MediaWave Israel'
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.svg`
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
 
 interface SEOProps {
   title: string

@@ -1,51 +1,51 @@
-# Roadmap — Sanity CMS Integration
+# Roadmap — Directus CMS Migration
 
-## Phase 1: Sanity Project Setup ✅ COMPLETE
-**Goal**: Install Sanity v3, configure in existing Vite project, embed Studio at /studio
-**Tasks**: PLAN-1 (dependencies + config), PLAN-2 (embed Studio + Vite config)
+## Phase 1: Infrastructure Setup
+**Goal**: Docker Compose + dependencies + npm scripts + directory structure
+**Tasks**: PLAN-1 (docker + dirs + gitignore + deps + scripts)
 **Dependencies**: None
+**Requirements**: R1, R2, R3, R23
 
-## Phase 2: Content Schemas ✅ COMPLETE
-**Goal**: Define all 10 content type schemas with Hebrew labels
-**Tasks**: PLAN-1 (service, package, faq, blogPost, blockContent), PLAN-2 (project, testimonial, siteSettings, whyUs, howWeWork)
+## Phase 2: SDK Integration Layer
+**Goal**: Create src/directus/ with client, types, hooks, queries, imageUrl, HtmlContent, mappers
+**Tasks**: PLAN-1 (client + types + hooks), PLAN-2 (queries + imageUrl + HtmlContent + mappers + index)
 **Dependencies**: Phase 1
+**Requirements**: R7-R14, R24
 
-## Phase 3: Studio Customization ✅ COMPLETE
-**Goal**: Custom desk structure, Hebrew UI, singleton pattern
-**Tasks**: PLAN-1 (desk structure + Hebrew locale + singleton)
+## Phase 3: Seed Script
+**Goal**: Create seed script that populates Directus with all content data
+**Tasks**: PLAN-1 (seed script with all 10 collections)
+**Dependencies**: Phase 1
+**Requirements**: R4, R5, R6, R15, R16
+
+## Phase 4: Component Migration — Simple Sections
+**Goal**: Migrate 5 simple components (Services, WhyUs, HowWeWork, Packages, Contact)
+**Tasks**: PLAN-1 (Services + WhyUs + HowWeWork), PLAN-2 (Packages + Contact)
 **Dependencies**: Phase 2
+**Requirements**: R17
 
-## Phase 4: Data Migration ✅ COMPLETE
-**Goal**: Migrate all existing hardcoded content to Sanity
-**Tasks**: PLAN-1 (static content: services, packages, FAQ, etc.), PLAN-2 (blog posts + portfolio with images)
-**Dependencies**: Phase 2 + Manual step (Sanity project creation + write token)
+## Phase 5: Component Migration — Complex Sections
+**Goal**: Migrate 4 complex components (Testimonials, FAQ, Blog, BlogPost)
+**Tasks**: PLAN-1 (Testimonials + FAQ), PLAN-2 (Blog + BlogPost)
+**Dependencies**: Phase 2
+**Requirements**: R18, R19, R20
 
-## Phase 5: Frontend Integration ✅ COMPLETE
-**Goal**: Replace hardcoded data with Sanity GROQ queries
-**Tasks**: PLAN-1 (hook + queries + Portable Text), PLAN-2 (homepage sections), PLAN-3 (blog + portfolio)
-**Dependencies**: Phase 4
-
-## Phase 6: Live Preview ✅ COMPLETE
-**Goal**: Real-time preview of draft content
-**Tasks**: PLAN-1 (preview mode + banner + context)
-**Dependencies**: Phase 5
-
-## Phase 7: Polish, Test & Deploy ✅ COMPLETE
-**Goal**: Performance check, deployment config, Hebrew client guide
-**Tasks**: PLAN-1 (bundle optimization + Cloudflare config), PLAN-2 (client guide + env docs)
-**Dependencies**: Phase 6
+## Phase 6: Build Config & Verification
+**Goal**: Update vite config, env vars, verify everything works
+**Tasks**: PLAN-1 (vite config + env + final verification)
+**Dependencies**: Phase 4, Phase 5
+**Requirements**: R21, R22, R25, R26, R27
 
 ---
 
 ## Progress Tracker
 | Phase | Status | Tasks |
 |-------|--------|-------|
-| 1. Setup | ✅ Complete | 2/2 |
-| 2. Schemas | ✅ Complete | 2/2 |
-| 3. Studio | ✅ Complete | 1/1 |
-| 4. Migration | ✅ Complete | 2/2 |
-| 5. Frontend | ✅ Complete | 3/3 |
-| 6. Preview | ✅ Complete | 1/1 |
-| 7. Polish | ✅ Complete | 2/2 |
+| 1. Infrastructure | PENDING | 0/1 |
+| 2. SDK Layer | PENDING | 0/2 |
+| 3. Seed Script | PENDING | 0/1 |
+| 4. Simple Components | PENDING | 0/2 |
+| 5. Complex Components | PENDING | 0/2 |
+| 6. Build & Verify | PENDING | 0/1 |
 
-**Total**: 13/13 tasks complete — PROJECT DONE
+**Total**: 0/9 tasks complete

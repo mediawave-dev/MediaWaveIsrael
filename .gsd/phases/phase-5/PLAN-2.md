@@ -1,71 +1,101 @@
-# Phase 5, Task 2: Chatbot Frontend — Floating Widget UI
+# Phase 5 / Task 2 — Migrate Blog + BlogPost
 
 ## Goal
-Build the floating chat widget UI component with RTL support and full interaction design.
+Switch Blog listing and BlogPost detail page from Sanity to Directus. Most complex — both use urlFor() AND PortableText.
 
 ## Context
-- Must use frontend-design skill for all visual work
-- Position: Bottom-left corner (RTL site)
-- Closed state: Circle button with chat icon + tooltip
-- Open state: Chat panel ~350px wide x ~500px tall (mobile: fullscreen)
-- RTL throughout — bot messages right-aligned, user messages left-aligned
+Project: `G:/Web-Dev/MediaWaveIsrael`. Testimonials and FAQ migrated (Task 1). prose-hebrew.css created. Blog/BlogPost are the final components.
 
-## Actions
+## Important
+- Blog: Replace urlFor() for featured images
+- BlogPost: Replace BOTH urlFor() AND PortableText
+- BlogPost slug: Sanity slug.current -> Directus plain string
+- getBlogPostBySlug returns array with limit:1 — take first item
+- Pass [slug] as deps to useDirectusQuery for re-fetching
 
-### Step 1: Activate frontend-design Skill
-- Use for all visual decisions
-- Direction: Professional, matches site's warm aesthetic
+## Steps
 
-### Step 2: Create ChatWidget Component
-- Create `src/components/ui/ChatWidget.tsx`
-- **Closed state**:
-  - Circular button with chat icon (Lucide `MessageCircle`)
-  - Primary color from design system
-  - Tooltip: "שאלו אותי" on hover
-  - Subtle pulse animation to draw attention
-- **Open state**:
-  - Slide-up animation (Framer Motion)
-  - Header: Dark gradient, MediaWave logo small, close X button
-  - Messages area: Scrollable, RTL direction
-  - Bot messages: Light colored bubble, right-aligned
-  - User messages: Darker bubble, left-aligned
-  - "Typing" indicator: 3 animated dots
-  - Input area: Text field + send button, placeholder "הקלידו הודעה..."
-- **Auto welcome**: "שלום! אני הנציג הדיגיטלי של MediaWave. איך אפשר לעזור?"
+### 1. Update `src/components/pages/Blog.tsx`
+Read file first. Replace:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { BLOG_POSTS_QUERY } from '../../sanity/queries'
+- import { urlFor } from '../../sanity/imageUrl'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getBlogPosts } from '../../directus/queries'
++ import { mapBlogPost } from '../../directus/mappers'
++ import { assetUrl } from '../../directus/imageUrl'
++ import type { DirectusBlogPost } from '../../directus/types'
+```
 
-### Step 3: Keyboard & Interaction
-- Enter = send message
-- Shift+Enter = new line
-- Empty message = send button disabled
-- Auto-scroll to latest message
-- Focus trapped in widget when open (accessibility)
+Query:
+```diff
+- const { data: posts } = useSanityQuery<...>(BLOG_POSTS_QUERY)
++ const { data: raw } = useDirectusQuery<DirectusBlogPost[]>(getBlogPosts)
++ const posts = raw?.map(mapBlogPost) ?? null
+```
 
-### Step 4: Mobile Responsiveness
-- Mobile: Widget opens as near-fullscreen panel
-- Proper viewport handling (keyboard doesn't overlap)
-- Touch-friendly: 44px minimum tap targets
+Images:
+```diff
+- src={urlFor(post.featuredImage).width(600).height(400).url()}
++ src={assetUrl(post.featuredImage, { width: 600, height: 400, format: 'webp' })}
+```
 
-### Step 5: Integrate into Layout
-- Add to `Layout.tsx` (always rendered)
-- z-index above all other floating elements
-- No overlap with WhatsApp button or scroll-to-top
+Slug links:
+```diff
+- to={`/blog/${post.slug.current}`}
++ to={`/blog/${post.slug}`}
+```
 
-### Step 6: Verify
-- Desktop: Open/close smooth, messages render correctly
-- Mobile: Fullscreen mode works, keyboard handling
-- RTL: All text and bubbles aligned correctly
-- Accessibility: Keyboard navigation, ARIA labels
-- Build clean
+### 2. Update `src/components/pages/BlogPost.tsx`
+Read file first. Most complex migration:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { BLOG_POST_BY_SLUG_QUERY } from '../../sanity/queries'
+- import { urlFor } from '../../sanity/imageUrl'
+- import { PortableText } from '@portabletext/react'
+- import { portableTextComponents } from '../../sanity/PortableTextComponents'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getBlogPostBySlug } from '../../directus/queries'
++ import { mapBlogPost } from '../../directus/mappers'
++ import { assetUrl } from '../../directus/imageUrl'
++ import { HtmlContent } from '../../directus/HtmlContent'
++ import type { DirectusBlogPost } from '../../directus/types'
+```
+
+Query with slug (pass [slug] as deps for re-fetching):
+```diff
+- const { data: post } = useSanityQuery<BlogPost>(BLOG_POST_BY_SLUG_QUERY, { slug })
++ const { data: rawPosts } = useDirectusQuery<DirectusBlogPost[]>(
++   () => getBlogPostBySlug(slug!), [slug]
++ )
++ const post = rawPosts?.[0] ? mapBlogPost(rawPosts[0]) : null
+```
+
+Content rendering:
+```diff
+- <PortableText value={post.content} components={portableTextComponents} />
++ <HtmlContent html={post.content} className="prose-hebrew" />
+```
+
+Featured image:
+```diff
+- src={urlFor(post.featuredImage).width(1200).height(600).url()}
++ src={assetUrl(post.featuredImage, { width: 1200, height: 600, format: 'webp' })}
+```
+
+### 3. Verify build
+```bash
+npm run build
+```
 
 ## Acceptance Criteria
-- [ ] Floating button visible on all pages
-- [ ] Open/close animation smooth
-- [ ] Message bubbles RTL-correct
-- [ ] Typing indicator animates
-- [ ] Keyboard shortcuts work (Enter/Shift+Enter)
-- [ ] Mobile fullscreen mode
-- [ ] Accessible (ARIA, focus trap, keyboard nav)
-- [ ] Clean build
-
-## Estimated Scope
-~60 minutes, complex UI component
+- [ ] Blog.tsx uses useDirectusQuery + assetUrl (no urlFor, no GROQ)
+- [ ] BlogPost.tsx uses useDirectusQuery + HtmlContent + assetUrl
+- [ ] BlogPost re-fetches when slug param changes (deps: [slug])
+- [ ] Slugs work without `.current`
+- [ ] Featured images via assetUrl
+- [ ] Content via HtmlContent with prose-hebrew class
+- [ ] Both handle empty/error states
+- [ ] No Sanity imports in these 2 files
+- [ ] `npm run build` succeeds

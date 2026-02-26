@@ -10,19 +10,36 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
 import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
 import { createServer } from 'http'
 import puppeteer from 'puppeteer'
 
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const ROOT = resolve(__dirname, '..')
 const DIST = resolve('dist')
 const PORT = 4173
 
-// Routes to prerender (static pages only — blog posts are dynamic from CMS)
-const ROUTES = [
-  '/',
-  '/blog',
-  '/terms',
-  '/privacy',
-]
+/** Parse blog post slugs from blog-posts.ts (same pattern as generate-seo.mjs) */
+function parseBlogSlugs() {
+  const source = readFileSync(resolve(ROOT, 'src/data/blog-posts.ts'), 'utf-8')
+  const slugs = []
+  const regex = /slug:\s*'([^']+)'[\s\S]*?published:\s*(true|false)/g
+  let match
+  while ((match = regex.exec(source)) !== null) {
+    if (match[2] === 'true') {
+      slugs.push(match[1])
+    }
+  }
+  return slugs
+}
+
+// Static routes
+const STATIC_ROUTES = ['/', '/blog', '/terms', '/privacy']
+
+// Dynamic routes from blog posts
+const blogSlugs = parseBlogSlugs().map(s => `/blog/${s}`)
+
+const ROUTES = [...STATIC_ROUTES, ...blogSlugs]
 
 /** Serve dist/ as a static file server */
 function startServer() {

@@ -1,86 +1,21 @@
-# Phase 1 Context — Content Surgery
-
-## Goal
-קיצור טקסטים ב-30-40%, הסרת חזרתיות, ושינויי מבנה מהותיים.
-
----
+# Phase 1 Context — Infrastructure Setup
 
 ## Decisions
+- **Docker**: Directus v11 official image with SQLite (zero-config DB, no Postgres needed)
+- **Volumes**: database/ and uploads/ mounted as local dirs (gitignored), extensions/ tracked
+- **CORS**: Allow http://localhost:5173 (Vite dev server)
+- **Admin auth**: Static admin token via env var (for seed script), email/password for UI
+- **npm scripts**: directus:up (docker compose up -d), directus:down (docker compose down), directus:seed (tsx scripts/seed-directus.ts)
+- **Dependencies**: @directus/sdk, dompurify, @types/dompurify (devDep)
+- **Package manager**: npm (existing project uses npm)
 
-### 1. סקשן About — להסיר לחלוטין
-**החלטה:** מוחקים את סקשן "הסיפור שלנו" (About.tsx)
-**סיבה:** המשתמש לא רוצה לחשוף פרטים אישיים, והתוכן גנרי מדי
-**פעולה:** להסיר את הקומפוננטה מ-App.tsx
-
-### 2. שירותים — מ-6 ל-3 קוביות
-**החלטה:** להשאיר 3 קטגוריות בלבד:
-1. **אתרים** — פיתוח אתרים מותאמים אישית
-2. **דפי נחיתה** — עיצוב דפי נחיתה ממירים
-3. **SEO** — קידום אורגני
-
-**שירותים שמתבטלים/מתמזגים:**
-- "אתרי תדמית לעסקים" → מתמזג עם "אתרים"
-- "ליווי ותמיכה שוטפת" → מוזכר בקיצור תחת "אתרים"
-- "אופטימיזציה למובייל" → זה default, לא צריך להזכיר
-
-**פעולה:** לשכתב את Services.tsx עם 3 קוביות בלבד, כל אחת משפט אחד
-
-### 3. Differentiators — להעביר לסקשן נפרד
-**החלטה:** 3 הכרטיסים מ-About (טכנולוגיה מתקדמת / PageSpeed / ליווי אישי) יעברו לסקשן "למה אנחנו" חדש מתחת לשירותים
-**סיבה:** זה התוכן הכי טוב באתר — צריך להשאיר
-**פעולה:** ליצור קומפוננטה חדשה WhyUs.tsx
-
-### 4. PageSpeed — ציון כללי
-**החלטה:** לכתוב "ציון גבוה ב-Google PageSpeed" במקום מספר ספציפי
-**סיבה:** המשתמש לא בדק את הציונים בפרויקטים שלו
-**פעולה:** לשנות את הטקסט ב-differentiators
-
-### 5. CTAs — מיפוי ייחודי
-**החלטה:** כל CTA באתר יהיה שונה
-
-| סקשן | CTA חדש |
-|------|---------|
-| Hero | "בואו נדבר על הפרויקט שלכם" ← נשאר |
-| Services | "לשירותים שלנו" (מפנה ל-services) ← לשנות ל-"התחל פרויקט" |
-| Portfolio | "צפה בעבודות" |
-| Contact | כותרת "דברו איתנו" (במקום "בואו נדבר") |
-
-### 6. Blockquote ריק — להסיר
-**החלטה:** להסיר את "יותר פניות, יותר מכירות, יותר הצלחה"
-**סיבה:** אין ייחוס — פוגע באמינות
-**פעולה:** יוסר כחלק מהסרת About
-
----
-
-## Out of Scope (לפאזות אחרות)
-
-- Hero video — Phase 2
-- ROI Calculator — Phase 3
-- PageSpeed Tool — Phase 4
-- Portfolio Before/After — Phase 5
-- AI Chatbot — Phase 7
-
----
+## Out of Scope
+- Production deployment (V2 — will use static export or free tier hosting)
+- Directus extensions development
+- Admin panel Hebrew locale configuration (done manually in UI)
 
 ## Edge Cases
-
-- **אם Services נראה ריק אחרי הקיצור** → להוסיף tags קטנים (React, WordPress, SEO)
-- **אם WhyUs נראה כפול** → לוודא עיצוב שונה מ-Services
-
----
-
-## Files to Modify
-
-| קובץ | שינוי |
-|------|-------|
-| `src/App.tsx` | להסיר import של About |
-| `src/components/sections/About.tsx` | למחוק הקובץ (אחרי גיבוי) |
-| `src/components/sections/Services.tsx` | לשכתב ל-3 קוביות |
-| `src/components/sections/WhyUs.tsx` | **חדש** — 3 differentiators |
-| `src/components/sections/Contact.tsx` | לשנות כותרת מ"בואו נדבר" ל"דברו איתנו" |
-| `CONTENT.md` | לעדכן עם התוכן החדש |
-
----
-
-## Ready for Planning
-Run: `gsd plan 1`
+- Docker Desktop must be running on Windows before `directus:up`
+- SQLite file locked when Directus container running — don't access directly
+- Port 8055 must be available (check for conflicts)
+- First startup takes longer (creates DB schema)

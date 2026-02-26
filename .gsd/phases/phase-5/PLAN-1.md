@@ -1,67 +1,91 @@
-# Phase 5, Task 1: Chatbot Backend — API Endpoint
+# Phase 5 / Task 1 — Migrate Testimonials + FAQ
 
 ## Goal
-Create a serverless API endpoint that proxies requests to Claude Haiku API.
+Switch Testimonials and FAQ from Sanity to Directus. Medium complexity: Testimonials uses urlFor() for images, FAQ uses PortableText for answers.
 
 ## Context
-- Site hosted on Cloudflare Pages — can use Cloudflare Workers or Pages Functions
-- Model: Claude Haiku 4.5 (claude-haiku-4-5-20251001)
-- API key stored as environment variable (never in code)
-- Rate limiting: 20 messages/conversation max, 5 conversations/min/IP
-- Max tokens per response: 500
+Project: `G:/Web-Dev/MediaWaveIsrael`. Simple sections migrated (Phase 4). These components need image URL and rich text changes.
 
-## Actions
+## Important
+- Testimonials: Replace `urlFor(image)` with `assetUrl(fileId)`
+- FAQ: Replace `<PortableText value={answer} />` with `<HtmlContent html={answer} />`
+- Create prose-hebrew.css with styles from PortableTextComponents.tsx
 
-### Step 1: Determine API Route Strategy
-- Check if Cloudflare Pages Functions are configured
-- If yes → create `functions/api/chat.ts`
-- If no → create Cloudflare Worker separately
-- Alternative: Vite API route with serverless adapter
+## Steps
 
-### Step 2: Create System Prompt Config
-- Create `src/config/chatbot-prompt.ts`
-- Contains the full system prompt from MEDIAWAVE_WORKPLAN.md (section 5.2)
-- Export as a constant string
-- Includes: company info, services, packages, contact details, behavior guidelines
-- All in Hebrew with English fallback instruction
+### 1. Update `src/components/sections/Testimonials.tsx`
+Read file first. Replace:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { TESTIMONIALS_QUERY } from '../../sanity/queries'
+- import { urlFor } from '../../sanity/imageUrl'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getTestimonials } from '../../directus/queries'
++ import { mapTestimonial } from '../../directus/mappers'
++ import { assetUrl } from '../../directus/imageUrl'
++ import type { DirectusTestimonial } from '../../directus/types'
+```
 
-### Step 3: Create API Endpoint
-- Endpoint: POST `/api/chat`
-- Request body: `{ messages: Array<{role: string, content: string}> }`
-- Server-side:
-  - Validate request (max 10 messages in context)
-  - Prepend system prompt
-  - Call Anthropic Messages API with Claude Haiku
-  - Return response
-- Error handling: rate limit errors, API errors, timeout
-- CORS headers for same-origin
-- Input sanitization (prevent injection)
+Image in template:
+```diff
+- src={urlFor(testimonial.image).width(80).height(80).url()}
++ src={assetUrl(testimonial.image, { width: 80, height: 80, format: 'webp' })}
+```
 
-### Step 4: Environment Setup
-- Document required env var: `ANTHROPIC_API_KEY`
-- Add to `.env.example` (without actual key)
-- Add `.env` to `.gitignore` (verify)
+### 2. Update `src/components/sections/FAQ.tsx`
+Read file first. Replace:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { FAQ_QUERY } from '../../sanity/queries'
+- import { PortableText } from '@portabletext/react'
+- import { portableTextComponents } from '../../sanity/PortableTextComponents'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getFaqs } from '../../directus/queries'
++ import { mapFaq } from '../../directus/mappers'
++ import { HtmlContent } from '../../directus/HtmlContent'
++ import type { DirectusFaq } from '../../directus/types'
+```
 
-### Step 5: Verify
-- Test endpoint with curl/httpie
-- Verify Hebrew response
-- Verify rate limiting works
-- Verify error responses are user-friendly
-- Run build — no errors
+Answer rendering:
+```diff
+- <PortableText value={item.answer} components={portableTextComponents} />
++ <HtmlContent html={item.answer} className="prose-hebrew" />
+```
+
+### 3. Create `src/styles/prose-hebrew.css`
+Styles matching PortableTextComponents.tsx:
+```css
+.prose-hebrew h2 { @apply text-2xl md:text-3xl font-headline text-brown-dark mt-8 mb-4; }
+.prose-hebrew h3 { @apply text-xl md:text-2xl font-headline text-brown-dark mt-6 mb-3; }
+.prose-hebrew h4 { @apply text-lg md:text-xl font-headline text-brown-dark mt-5 mb-2; }
+.prose-hebrew p { @apply text-brown-light leading-relaxed mb-4; }
+.prose-hebrew blockquote { @apply border-r-4 border-orange pr-4 my-6 text-brown-light italic; }
+.prose-hebrew ul { @apply list-disc list-inside space-y-2 mb-4 text-brown-light mr-4; }
+.prose-hebrew ol { @apply list-decimal list-inside space-y-2 mb-4 text-brown-light mr-4; }
+.prose-hebrew li { @apply leading-relaxed; }
+.prose-hebrew strong { @apply font-bold text-brown-dark; }
+.prose-hebrew em { @apply text-orange not-italic; }
+.prose-hebrew a { @apply text-orange hover:text-orange-dark underline underline-offset-2 transition-colors; }
+.prose-hebrew img { @apply rounded-lg w-full; }
+.prose-hebrew figcaption { @apply text-sm text-brown-muted mt-2 text-center; }
+```
+
+### 4. Import prose-hebrew.css in main styles
+Read `src/styles/index.css`, add:
+```css
+@import './prose-hebrew.css';
+```
+
+### 5. Verify build
+```bash
+npm run build
+```
 
 ## Acceptance Criteria
-- [ ] API endpoint responds to POST /api/chat
-- [ ] Uses Claude Haiku 4.5 model
-- [ ] System prompt loaded from config file
-- [ ] API key from environment variable (not hardcoded)
-- [ ] Rate limiting functional
-- [ ] Input validation (max messages, content length)
-- [ ] Error responses in Hebrew
-- [ ] No secrets in code or git
-
-## Dependencies
-- Anthropic API key (user must provide)
-- Cloudflare Worker/Pages Functions access
-
-## Estimated Scope
-~45 minutes, backend setup
+- [ ] Testimonials.tsx uses useDirectusQuery + assetUrl (no urlFor)
+- [ ] FAQ.tsx uses useDirectusQuery + HtmlContent (no PortableText)
+- [ ] prose-hebrew.css created with all styles from PortableTextComponents.tsx
+- [ ] prose-hebrew.css imported in main styles
+- [ ] Both keep fallback data
+- [ ] No Sanity imports in these 2 files
+- [ ] `npm run build` succeeds

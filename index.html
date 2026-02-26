@@ -16,7 +16,7 @@
     <!-- Theme & Mobile -->
     <meta name="theme-color" content="#FDFBF7" />
     <meta name="msapplication-TileColor" content="#D4A574" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MediaWave" />
 
@@ -25,7 +25,7 @@
     <meta property="og:url" content="https://mediawaveisrael.com/" />
     <meta property="og:title" content="MediaWave — פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם" />
     <meta property="og:description" content="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO." />
-    <meta property="og:image" content="https://mediawaveisrael.com/og-image.svg" />
+    <meta property="og:image" content="https://mediawaveisrael.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="he_IL" />
@@ -36,7 +36,7 @@
     <meta property="twitter:url" content="https://mediawaveisrael.com/" />
     <meta property="twitter:title" content="MediaWave — פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם" />
     <meta property="twitter:description" content="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO." />
-    <meta property="twitter:image" content="https://mediawaveisrael.com/og-image.svg" />
+    <meta property="twitter:image" content="https://mediawaveisrael.com/og-image.png" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://mediawaveisrael.com/" />
@@ -61,8 +61,8 @@
     <!-- Preload hero poster image -->
     <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
 
-    <!-- Preload hero video for desktop -->
-    <link rel="preload" href="/videos/hero-bg.mp4" as="video" type="video/mp4" media="(min-width: 768px)" />
+    <!-- Prefetch hero video for desktop (preload doesn't support as="video") -->
+    <link rel="prefetch" href="/videos/hero-bg.mp4" as="fetch" type="video/mp4" media="(min-width: 768px)" />
 
     <!-- Preload critical Outfit font weights for faster LCP -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />
@@ -85,7 +85,7 @@
       },
       "openingHours": "Su-Th 09:00-18:00",
       "priceRange": "$$",
-      "image": "https://mediawaveisrael.com/og-image.svg",
+      "image": "https://mediawaveisrael.com/og-image.png",
       "sameAs": ["https://wa.me/972528731808"],
       "serviceType": ["Web Development", "Landing Page Design", "SEO Optimization"],
       "areaServed": {

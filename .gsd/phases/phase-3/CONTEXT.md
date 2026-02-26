@@ -1,93 +1,20 @@
-# Phase 3 Context — ROI Calculator
-
-## Goal
-מחשבון אינטראקטיבי "כמה כסף מפסידים" — מבדל מהמתחרים + lead magnet
-
----
+# Phase 3 Context — Seed Script
 
 ## Decisions
-
-### שדות קלט (3)
-| שדה | תיאור | סוג | ברירת מחדל |
-|-----|--------|-----|-------------|
-| תנועה | מבקרים באתר לחודש | number | 1000 |
-| המרה | אחוז המרה נוכחי | percentage | 2% |
-| עלות לקוח | ערך לקוח ממוצע בשקלים | currency | 500 |
-
-### נוסחת חישוב
-```
-הכנסה_נוכחית = תנועה × המרה × עלות_לקוח
-הכנסה_עם_אתר_מהיר = תנועה × (המרה × 1.2) × עלות_לקוח  // הנחה: 20% עלייה בהמרה
-הפסד_חודשי = הכנסה_עם_אתר_מהיר - הכנסה_נוכחית
-הפסד_שנתי = הפסד_חודשי × 12
-```
-
-**הסבר:** אתר מהיר מעלה המרה ב-20% (מבוסס מחקרי Google). ההפרש = מה שמפסידים.
-
-### מיקום בדף
-**אחרי WhyUs, לפני Services** — הגיוני: קודם רואים למה MediaWave, אז מבינים כמה מפסידים, ואז רואים שירותים.
-
-סדר הסקשנים:
-1. Hero
-2. WhyUs
-3. **ROICalculator** ← חדש
-4. Services
-5. Contact
-
-### עיצוב
-- **סגנון:** מינימליסטי, נקי, תואם לשפת האתר
-- **קלטים:** Sliders או inputs גדולים עם labels ברורים
-- **תוצאה:** בולטת במרכז עם count-up animation
-
-### אנימציית תוצאה
-**Count-up דרמטי:**
-- המספר עולה מ-0 לסכום הסופי
-- Framer Motion או react-countup
-- משך: 1.5-2 שניות
-- Easing: easeOut
-
-### Lead Capture
-- **מתי:** אחרי הצגת התוצאה
-- **מה:** כפתור WhatsApp עם הודעה מוכנה
-- **פורמט הודעה:**
-  ```
-  היי, חישבתי במחשבון שלכם שאני מפסיד ₪{הפסד_שנתי} בשנה.
-  אשמח לשמוע איך אפשר לשפר את האתר שלי!
-  ```
-
-### שמירת נתונים
-- **לא נשמר ל-Supabase** — פשטות
-- רק WhatsApp redirect עם הנתונים
-
----
+- **Script location**: scripts/seed-directus.ts (run with tsx)
+- **Data sources**: Existing fallback data in components + scripts/migrate-to-sanity.ts
+- **Schema creation**: Use Directus SDK admin API to create collections and fields programmatically
+- **FAQ answers**: Convert Sanity PortableText text blocks to HTML `<p>` tags
+- **Idempotent**: Check if collection exists before creating, use upsert for items
+- **Admin token**: Use static token from DIRECTUS_ADMIN_TOKEN env var
+- **Images**: No image upload in seed — use placeholder file IDs or skip image fields
 
 ## Out of Scope
-- **A/B testing** — לא בפאזה הזו
-- **שמירה ל-DB** — WhatsApp בלבד
-- **גרפים/charts** — count-up בלבד
-- **השוואה למתחרים** — אולי ב-Phase 6
-
----
+- Image migration from Sanity CDN to Directus (manually upload later via admin)
+- Blog post content migration (create sample posts in admin later)
 
 ## Edge Cases
-- **תנועה = 0** → הודעה "הזן מספר גדול מאפס"
-- **המרה > 100%** → max limit ב-input
-- **עלות לקוח שלילית** → min=0
-- **הפסד = 0** → "כל הכבוד! האתר שלך מייצר מקסימום"
-- **מספרים גדולים מאוד** → format עם פסיקים (1,000,000)
-
----
-
-## Technical Notes
-- קומפוננטה: `src/components/sections/ROICalculator.tsx`
-- סגנון: Tailwind CSS (תואם לשאר האתר)
-- אנימציה: Framer Motion (כבר בפרויקט)
-- RTL: CSS logical properties
-- Mobile-first: מגיב לכל המסכים
-
----
-
-## Open Questions (for planning)
-- [ ] האם להשתמש ב-react-countup או לבנות custom עם Framer Motion?
-- [ ] האם לשים אייקונים ליד הקלטים?
-- [ ] האם להוסיף tooltip להסבר הנוסחה?
+- Directus must be running (`npm run directus:up`) before seed
+- Collection creation order matters: create collections first, then insert items
+- sort field: Directus has built-in sort — set sort_field in collection meta
+- JSON fields need proper type: 'json' in schema, arrays stored as JSON

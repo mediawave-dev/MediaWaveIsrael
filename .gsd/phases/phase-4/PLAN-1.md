@@ -1,64 +1,66 @@
-# Phase 4, Task 1: Browser Mockup Upgrade + 3D Tilt Effect
+# Phase 4 / Task 1 — Migrate Services + WhyUs + HowWeWork
 
 ## Goal
-Transform the browser mockup from flat to premium 3D with tilt-on-hover effect.
+Switch 3 simple section components from Sanity to Directus data source.
 
 ## Context
-- Current: Flat browser frame with basic shadow
-- Target: 3D perspective with tilt effect that responds to mouse position
-- Use Framer Motion for smooth 60fps animations
-- Must respect `prefers-reduced-motion`
+Project: `G:/Web-Dev/MediaWaveIsrael`. SDK layer in `src/directus/` (Phase 2). Components currently import from `../../sanity/hooks` and `../../sanity/queries`.
 
-## Actions
+## Important
+- DO NOT change visual design, animations, or layout
+- Keep fallback data arrays in components
+- Only change data-fetching imports and hook calls
 
-### Step 1: Activate frontend-design Skill
-- Use for all visual decisions
-- Direction: Premium, tactile, "this is what we build"
+## Steps
 
-### Step 2: Create useTilt3D Hook
-- Create `src/hooks/useTilt3D.ts`
-- Track mouse position relative to element
-- Calculate rotateX and rotateY based on cursor position
-- Smooth spring physics (not linear)
-- Return: `{ ref, style, onMouseMove, onMouseLeave }`
-- Add reduced motion check — return static style if reduced motion
+### 1. Update `src/components/sections/Services.tsx`
+Read file first. Replace:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { SERVICES_QUERY } from '../../sanity/queries'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getServices } from '../../directus/queries'
++ import { mapService } from '../../directus/mappers'
++ import type { DirectusService } from '../../directus/types'
 
-### Step 3: Upgrade Browser Mockup
-In `FeaturedProject` component:
-- Add perspective container (`perspective: 1000px`)
-- Apply 3D tilt to browser frame on hover
-- Max rotation: ±8 degrees (subtle, not nauseating)
-- Add subtle reflection/shine effect that moves with tilt
-- Enhance shadow to respond to tilt direction
-- Browser dots: Add subtle glow animation on hover
+- const { data, loading, error } = useSanityQuery<SanityService[]>(SERVICES_QUERY)
++ const { data: raw, loading, error } = useDirectusQuery<DirectusService[]>(getServices)
++ const data = raw?.map(mapService) ?? null
+```
+Keep: `const displayData = data ?? fallbackServices`
 
-### Step 4: Screenshot Enhancement
-- Add inner parallax: screenshot moves slightly opposite to tilt
-- This creates depth illusion
-- Smooth transition when mouse leaves
-
-### Step 5: Verify
-- Desktop: Tilt responds smoothly to mouse
-- Mobile: No tilt (no hover), still looks good static
-- Reduced motion: Static, no tilt
-- Build clean
-- 60fps performance (check with DevTools)
-
-## Acceptance Criteria
-- [ ] useTilt3D hook created and exported
-- [ ] Browser mockup tilts smoothly on hover
-- [ ] Inner screenshot has subtle counter-parallax
-- [ ] Reduced motion respected
-- [ ] No jank, 60fps animation
-- [ ] Mobile fallback (static)
-- [ ] Clean build
-
-## Technical Notes
-```tsx
-// Example tilt calculation
-const rotateX = (mouseY - centerY) / height * 8  // Max ±8deg
-const rotateY = (mouseX - centerX) / width * -8  // Inverted for natural feel
+### 2. Update `src/components/sections/WhyUs.tsx`
+Read file first. Same pattern:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { WHY_US_QUERY } from '../../sanity/queries'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getWhyUs } from '../../directus/queries'
++ import { mapWhyUs } from '../../directus/mappers'
++ import type { DirectusWhyUs } from '../../directus/types'
 ```
 
-## Estimated Scope
-~30 minutes
+### 3. Update `src/components/sections/HowWeWork.tsx`
+Read file first. Same pattern:
+```diff
+- import { useSanityQuery } from '../../sanity/hooks'
+- import { HOW_WE_WORK_QUERY } from '../../sanity/queries'
++ import { useDirectusQuery } from '../../directus/hooks'
++ import { getHowWeWork } from '../../directus/queries'
++ import { mapHowWeWork } from '../../directus/mappers'
++ import type { DirectusHowWeWork } from '../../directus/types'
+```
+
+### 4. Verify build
+```bash
+npm run build
+```
+
+## Acceptance Criteria
+- [ ] Services.tsx uses useDirectusQuery + getServices + mapService
+- [ ] WhyUs.tsx uses useDirectusQuery + getWhyUs + mapWhyUs
+- [ ] HowWeWork.tsx uses useDirectusQuery + getHowWeWork + mapHowWeWork
+- [ ] All 3 keep fallback data arrays
+- [ ] No visual changes
+- [ ] No Sanity imports remain in these 3 files
+- [ ] `npm run build` succeeds
