@@ -154,10 +154,10 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            MediaWave Israel — סטודיו לפיתוח אתרים ודפי נחיתה לעסקים בישראל.
+            עיצוב ופיתוח אתרים מקצועיים לעסקים קטנים ובינוניים.
             <br className="hidden md:block" />
             <span className="md:hidden"> </span>
-            עיצוב מותאם אישית, ביצועים גבוהים וליווי צמוד מהרעיון ועד ההשקה.
+            עם גישה אישית וליווי צמוד בכל שלב.
           </motion.p>
 
           {/* CTA Buttons */}

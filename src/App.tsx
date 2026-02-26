@@ -23,10 +23,6 @@ const Privacy = lazy(() => import('./components/pages/Privacy'))
 const Blog = lazy(() => import('./components/pages/Blog'))
 const BlogPost = lazy(() => import('./components/pages/BlogPost'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
-const ServicesPage = lazy(() => import('./components/pages/ServicesPage'))
-const LandingPagesService = lazy(() => import('./components/pages/LandingPagesService'))
-const BusinessWebsitesService = lazy(() => import('./components/pages/BusinessWebsitesService'))
-const About = lazy(() => import('./components/pages/About'))
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
@@ -98,10 +94,6 @@ function App() {
                 <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
                 <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
                 <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
-                <Route path="/services" element={<Suspense fallback={<SectionFallback />}><ServicesPage /></Suspense>} />
-                <Route path="/services/landing-pages" element={<Suspense fallback={<SectionFallback />}><LandingPagesService /></Suspense>} />
-                <Route path="/services/business-websites" element={<Suspense fallback={<SectionFallback />}><BusinessWebsitesService /></Suspense>} />
-                <Route path="/about" element={<Suspense fallback={<SectionFallback />}><About /></Suspense>} />
                 <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
               </Routes>
             </Layout>

@@ -34,16 +34,7 @@ function parseBlogSlugs() {
 }
 
 // Static routes
-const STATIC_ROUTES = [
-  '/',
-  '/blog',
-  '/terms',
-  '/privacy',
-  '/services',
-  '/services/landing-pages',
-  '/services/business-websites',
-  '/about',
-]
+const STATIC_ROUTES = ['/', '/blog', '/terms', '/privacy']
 
 // Dynamic routes from blog posts
 const blogSlugs = parseBlogSlugs().map(s => `/blog/${s}`)

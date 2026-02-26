@@ -63,10 +63,6 @@ function generateSitemap(posts) {
   const staticPages = [
     { loc: '/', lastmod: today, changefreq: 'weekly', priority: '1.0' },
     { loc: '/blog', lastmod: today, changefreq: 'weekly', priority: '0.8' },
-    { loc: '/services', lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: '/services/landing-pages', lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: '/services/business-websites', lastmod: today, changefreq: 'monthly', priority: '0.8' },
-    { loc: '/about', lastmod: today, changefreq: 'monthly', priority: '0.6' },
     { loc: '/terms', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
     { loc: '/privacy', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
   ]
