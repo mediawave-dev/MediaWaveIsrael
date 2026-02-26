@@ -58,6 +58,7 @@ export default function BlogPost() {
         description={post.excerpt}
         canonical={`/blog/${post.slug}`}
         ogType="article"
+        ogImage={post.featuredImage ? assetUrl(post.featuredImage, { width: 1200, format: 'webp' }) : undefined}
         article={{
           publishedTime: post.publishedAt,
           author: post.author,
@@ -70,6 +71,9 @@ export default function BlogPost() {
         '@type': 'BlogPosting',
         headline: post.title,
         description: post.excerpt,
+        image: post.featuredImage
+          ? assetUrl(post.featuredImage, { width: 1200 })
+          : 'https://mediawaveisrael.com/og-image.png',
         datePublished: post.publishedAt,
         dateModified: post.publishedAt,
         author: {
@@ -89,6 +93,16 @@ export default function BlogPost() {
         },
         inLanguage: 'he',
         keywords: post.tags.join(', '),
+      }) }} />
+      {/* BreadcrumbList */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawaveisrael.com/' },
+          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawaveisrael.com/blog' },
+          { '@type': 'ListItem', position: 3, name: post.title, item: `https://mediawaveisrael.com/blog/${post.slug}` },
+        ],
       }) }} />
       <article className="container max-w-[700px]">
         {/* Back link */}

@@ -40,6 +40,14 @@ export default function Blog() {
         description="טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי. איך לבנות נוכחות דיגיטלית חזקה לעסק שלכם."
         canonical="/blog"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawaveisrael.com/' },
+          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawaveisrael.com/blog' },
+        ],
+      }) }} />
       <div className="container max-w-4xl">
         {/* Header */}
         <motion.div

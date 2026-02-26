@@ -45,6 +45,19 @@ export default function FAQ() {
 
   if (!data || data.length === 0) return null
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: data.map(item => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer.replace(/<[^>]*>/g, ''),
+      },
+    })),
+  }
+
   return (
     <section
       id="faq"
@@ -145,6 +158,7 @@ export default function FAQ() {
           </a>
         </motion.div>
       </div>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </section>
   )
 }
