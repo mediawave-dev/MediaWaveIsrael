@@ -1,51 +1,51 @@
-# Roadmap — Directus CMS Migration
+# Roadmap — SEO & GEO Upgrade
 
-## Phase 1: Infrastructure Setup
-**Goal**: Docker Compose + dependencies + npm scripts + directory structure
-**Tasks**: PLAN-1 (docker + dirs + gitignore + deps + scripts)
+## Phase 1: Technical SEO Fixes
+**Goal**: Fix critical SEO issues — OG image, robots.txt, blog pre-rendering
+**Tasks**: PLAN-1 (OG image + robots.txt), PLAN-2 (blog pre-rendering + sitemap sync)
 **Dependencies**: None
-**Requirements**: R1, R2, R3, R23
+**Requirements**: R1, R2, R3, R6
 
-## Phase 2: SDK Integration Layer
-**Goal**: Create src/directus/ with client, types, hooks, queries, imageUrl, HtmlContent, mappers
-**Tasks**: PLAN-1 (client + types + hooks), PLAN-2 (queries + imageUrl + HtmlContent + mappers + index)
-**Dependencies**: Phase 1
-**Requirements**: R7-R14, R24
+## Phase 2: Schema & Structured Data
+**Goal**: Fix FAQ schema sync, blog structured data, add BreadcrumbList
+**Tasks**: PLAN-1 (dynamic FAQ schema + blog SEO fixes)
+**Dependencies**: None
+**Requirements**: R4, R5
 
-## Phase 3: Seed Script
-**Goal**: Create seed script that populates Directus with all content data
-**Tasks**: PLAN-1 (seed script with all 10 collections)
-**Dependencies**: Phase 1
-**Requirements**: R4, R5, R6, R15, R16
+## Phase 3: Services Pages
+**Goal**: Create /services hub + /services/landing-pages + /services/business-websites
+**Tasks**: PLAN-1 (Services hub + routing), PLAN-2 (landing-pages + business-websites pages)
+**Dependencies**: Phase 2 (for consistent schema patterns)
+**Requirements**: R7, R8, R9
 
-## Phase 4: Component Migration — Simple Sections
-**Goal**: Migrate 5 simple components (Services, WhyUs, HowWeWork, Packages, Contact)
-**Tasks**: PLAN-1 (Services + WhyUs + HowWeWork), PLAN-2 (Packages + Contact)
+## Phase 4: About Page + E-E-A-T
+**Goal**: Create /about page with trust signals and company story
+**Tasks**: PLAN-1 (About page with structured data)
 **Dependencies**: Phase 2
-**Requirements**: R17
+**Requirements**: R10
 
-## Phase 5: Component Migration — Complex Sections
-**Goal**: Migrate 4 complex components (Testimonials, FAQ, Blog, BlogPost)
-**Tasks**: PLAN-1 (Testimonials + FAQ), PLAN-2 (Blog + BlogPost)
-**Dependencies**: Phase 2
-**Requirements**: R18, R19, R20
+## Phase 5: GEO & AI Optimization
+**Goal**: Answer capsules, entity consistency, AI bot access, GSC setup
+**Tasks**: PLAN-1 (GEO content + entity sync + GSC verification file)
+**Dependencies**: Phase 3, Phase 4
+**Requirements**: R11, R12, R13
 
-## Phase 6: Build Config & Verification
-**Goal**: Update vite config, env vars, verify everything works
-**Tasks**: PLAN-1 (vite config + env + final verification)
-**Dependencies**: Phase 4, Phase 5
-**Requirements**: R21, R22, R25, R26, R27
+## Phase 6: Build, Pre-render & Verify
+**Goal**: Update pre-render + sitemap for all new pages, final build verification
+**Tasks**: PLAN-1 (prerender + sitemap + build + full verification)
+**Dependencies**: Phase 5
+**Requirements**: R6
 
 ---
 
 ## Progress Tracker
 | Phase | Status | Tasks |
 |-------|--------|-------|
-| 1. Infrastructure | PENDING | 0/1 |
-| 2. SDK Layer | PENDING | 0/2 |
-| 3. Seed Script | PENDING | 0/1 |
-| 4. Simple Components | PENDING | 0/2 |
-| 5. Complex Components | PENDING | 0/2 |
-| 6. Build & Verify | PENDING | 0/1 |
+| 1. Technical SEO Fixes | COMPLETE | 2/2 |
+| 2. Schema & Structured Data | COMPLETE | 1/1 |
+| 3. Services Pages | COMPLETE | 2/2 |
+| 4. About Page + E-E-A-T | COMPLETE | 1/1 |
+| 5. GEO & AI Optimization | COMPLETE | 1/1 |
+| 6. Build & Verify | COMPLETE | 1/1 |
 
-**Total**: 0/9 tasks complete
+**Total**: 8/8 tasks complete

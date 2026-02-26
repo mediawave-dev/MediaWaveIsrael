@@ -1,21 +1,25 @@
-# GSD State — Directus CMS Migration
+# GSD State — SEO & GEO Upgrade
 
 ## Current Position
-- **Phase**: 1 - Infrastructure Setup
-- **Status**: PLANNED — Ready for execution
-- **Last Action**: All 6 phases planned with 9 atomic tasks (2026-02-23)
+- **Phase**: ALL COMPLETE
+- **Status**: DONE — All 6 phases executed successfully
+- **Last Action**: Phase 6 build + verify (2026-02-26)
 
 ## Key Decisions
-- **CMS**: Directus v11 (self-hosted, Docker + SQLite)
-- **Hosting**: Local only (completely free)
-- **Rich Text**: WYSIWYG HTML (replaces Sanity PortableText)
-- **Coexistence**: Sanity stays at /studio, independent
-- **Data**: Seed from existing fallbacks + keep fallbacks in components
-- **Naming**: snake_case in Directus, mappers convert to camelCase for components
+- **OG Image**: PNG 1200x630 generated via Puppeteer
+- **Pre-rendering**: All 10 pages (8 static + 2 blog posts)
+- **New Pages**: /services, /services/landing-pages, /services/business-websites, /about
+- **Schema**: Dynamic FAQ JSON-LD in component, blog image + breadcrumbs
+- **GEO**: Answer capsules on all content pages, entity consistency
+- **AI Bots**: GPTBot, PerplexityBot, ClaudeBot allowed in robots.txt
 
 ## Blockers
 None.
 
-## Next Action
-`.\gsd-chain-directus.ps1` — Run overnight chain execution (all 6 phases).
-Or `gsd execute 1` — Start phase 1 interactively.
+## Completed Phases
+1. **Phase 1**: Technical SEO — OG image PNG, robots.txt, blog pre-rendering
+2. **Phase 2**: Schema — Dynamic FAQ, blog image/ogImage, BreadcrumbList
+3. **Phase 3**: Services Pages — /services hub, /services/landing-pages, /services/business-websites
+4. **Phase 4**: About Page — E-E-A-T signals, trust counters, tech stack, Organization schema
+5. **Phase 5**: GEO — Entity consistency, GSC placeholder, answer capsules
+6. **Phase 6**: Build & Verify — Sitemap (10 URLs), pre-render (10 pages), zero errors
