@@ -12,6 +12,7 @@ export const navigation: NavLink[] = [
   { label: 'שירותים', href: '#services', showInHeader: true, showInFooter: true },
   { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInFooter: true },
   { label: 'הבלוג', href: '/blog', showInHeader: true, showInFooter: true },
+  { label: 'אודות', href: '/about', showInFooter: true },
   { label: 'צור קשר', href: '#contact', showInFooter: true },
 ]
 
