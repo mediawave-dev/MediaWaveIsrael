@@ -4,7 +4,7 @@ import { Input, Textarea } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
-import { WHATSAPP_URLS } from '../../utils/whatsapp'
+import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
 
 export default function Contact() {
@@ -47,8 +47,12 @@ export default function Contact() {
 
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
 
+    // No endpoint configured — hand the message off to WhatsApp prefilled.
+    // Never pretend the form "sent" data that has nowhere to go.
     if (!endpoint) {
-      setErrorMsg('חסר קישור לשליחה')
+      const waMessage = `היי, אני ${formData.name.trim()}.\n${formData.message.trim()}\n(אימייל לחזרה: ${formData.email.trim()})`
+      window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
+      setSuccessMsg('פתחנו לכם וואטסאפ עם ההודעה מוכנה — רק ללחוץ על שלח 😊')
       return
     }
 
@@ -69,7 +73,7 @@ export default function Contact() {
       setSuccessMsg('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם')
       setFormData({ name: '', email: '', message: '' })
     } catch {
-      setErrorMsg('משהו השתבש בשליחה. נסו שוב.')
+      setErrorMsg('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')
     } finally {
       setIsSubmitting(false)
     }
@@ -139,7 +143,10 @@ export default function Contact() {
                   name="name"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) => {
+                    setErrorMsg('')
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
+                  }}
                 />
 
                 <Input
@@ -150,7 +157,10 @@ export default function Contact() {
                   dir="ltr"
                   className="text-left"
                   value={formData.email}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                  onChange={(e) => {
+                    setErrorMsg('')
+                    setFormData((prev) => ({ ...prev, email: e.target.value }))
+                  }}
                 />
 
                 <Textarea
@@ -159,7 +169,10 @@ export default function Contact() {
                   rows={5}
                   required
                   value={formData.message}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
+                  onChange={(e) => {
+                    setErrorMsg('')
+                    setFormData((prev) => ({ ...prev, message: e.target.value }))
+                  }}
                 />
 
                 {successMsg && (
@@ -170,7 +183,15 @@ export default function Contact() {
 
                 {errorMsg && (
                   <div role="alert" aria-live="assertive" className="bg-coral/10 border border-coral/30 p-4 rounded text-coral text-sm">
-                    {errorMsg}
+                    {errorMsg}{' '}
+                    <a
+                      href={WHATSAPP_URLS.contact}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline font-semibold"
+                    >
+                      לוואטסאפ
+                    </a>
                   </div>
                 )}
 

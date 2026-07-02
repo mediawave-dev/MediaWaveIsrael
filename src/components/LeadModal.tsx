@@ -5,6 +5,7 @@ import { Button } from './ui/Button'
 import { LottieIcon } from './ui/LottieIcon'
 import { X, User, Phone } from 'lucide-react'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
+import { getWhatsAppUrl, WHATSAPP_URLS } from '../utils/whatsapp'
 
 // Same endpoint as Contact form
 const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
@@ -13,6 +14,7 @@ export default function LeadModal() {
     const [isVisible, setIsVisible] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [success, setSuccess] = useState(false)
+    const [waHandoff, setWaHandoff] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
     const [formData, setFormData] = useState({
         name: '',
@@ -58,27 +60,35 @@ export default function LeadModal() {
             return
         }
 
+        // No endpoint configured — hand the lead off to WhatsApp with the details
+        // prefilled. Never show a fake "received" state for data that went nowhere.
+        if (!endpoint) {
+            const waMessage = `היי, אני ${formData.name.trim()} ואשמח לשיחת ייעוץ ללא עלות.\nטלפון: ${formData.phone.trim()}`
+            window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
+            setWaHandoff(true)
+            setSuccess(true)
+            setTimeout(() => {
+                setIsVisible(false)
+            }, 4000)
+            return
+        }
+
         setIsSubmitting(true)
 
         try {
-            if (endpoint) {
-                // Send to Google Sheets
-                // Note: Sending phone in message as fallback, and as separate field
-                const message = `New Lead from Popup. Phone: ${formData.phone.trim()}`
+            const message = `New Lead from Popup. Phone: ${formData.phone.trim()}`
 
-                await fetch(endpoint, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: new URLSearchParams({
-                        fullName: formData.name.trim(),
-                        email: 'popup@lead.com', // Placeholder for script compatibility
-                        phone: formData.phone.trim(),
-                        message: message,
-                        page: window.location.href,
-                        userAgent: navigator.userAgent,
-                    }),
-                })
-            }
+            await fetch(endpoint, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: new URLSearchParams({
+                    fullName: formData.name.trim(),
+                    phone: formData.phone.trim(),
+                    message: message,
+                    page: window.location.href,
+                    userAgent: navigator.userAgent,
+                }),
+            })
 
             // Mark as submitted permanently
             localStorage.setItem('leadModalSubmitted', 'true')
@@ -90,7 +100,7 @@ export default function LeadModal() {
             }, 3000)
 
         } catch {
-            setErrorMsg('משהו השתבש בשליחה. נסו שוב.')
+            setErrorMsg('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')
         } finally {
             setIsSubmitting(false)
         }
@@ -133,7 +143,11 @@ export default function LeadModal() {
                                     <span className="text-2xl text-sage-dark">✓</span>
                                 </div>
                                 <h3 className="text-2xl font-bold text-brown-dark mb-2">תודה!</h3>
-                                <p className="text-brown">הפרטים התקבלו, נחזור אליכם בהקדם.</p>
+                                <p className="text-brown">
+                                    {waHandoff
+                                        ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה — רק ללחוץ על שלח 😊'
+                                        : 'הפרטים התקבלו, נחזור אליכם בהקדם.'}
+                                </p>
                             </div>
                         ) : (
                             <div className="text-center relative z-10">
@@ -182,7 +196,15 @@ export default function LeadModal() {
 
                                     {errorMsg && (
                                         <div role="alert" aria-live="assertive" className="bg-coral/10 border border-coral/30 p-3 rounded text-coral text-sm text-right">
-                                            {errorMsg}
+                                            {errorMsg}{' '}
+                                            <a
+                                                href={WHATSAPP_URLS.general}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="underline font-semibold"
+                                            >
+                                                לוואטסאפ
+                                            </a>
                                         </div>
                                     )}
 
