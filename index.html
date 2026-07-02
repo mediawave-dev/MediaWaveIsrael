@@ -14,8 +14,8 @@
     <meta name="language" content="Hebrew" />
 
     <!-- Theme & Mobile -->
-    <meta name="theme-color" content="#FDFBF7" />
-    <meta name="msapplication-TileColor" content="#D4A574" />
+    <meta name="theme-color" content="#F8FAFC" />
+    <meta name="msapplication-TileColor" content="#38BDF8" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MediaWave" />
@@ -56,7 +56,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Preload logo for faster LCP (this is the LCP element) -->
-    <link rel="preload" href="/images/logo.webp" as="image" type="image/webp" fetchpriority="high" />
+    <link rel="preload" href="/images/logo-white.webp" as="image" type="image/webp" fetchpriority="high" />
 
     <!-- Preload hero poster image -->
     <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
@@ -135,7 +135,7 @@
   </head>
   <body>
     <!-- Page loading indicator - uses pointer-events:none to avoid CLS -->
-    <div id="page-loader" style="position:fixed;inset:0;background:#FDFBF7;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
+    <div id="page-loader" style="position:fixed;inset:0;background:#F8FAFC;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="animation:spin 1s linear infinite;">
         <circle cx="12" cy="12" r="10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
         <path d="M12 2a10 10 0 0 1 10 10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
@@ -147,13 +147,13 @@
     <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;" aria-hidden="true">
       <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
         <img
-          src="/images/logo.webp"
+          src="/images/logo-white.webp"
           alt=""
-          width="320"
-          height="144"
+          width="500"
+          height="500"
           fetchpriority="high"
           decoding="async"
-          style="height:8rem;width:auto;object-fit:contain;filter:brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0,0,0,0.5));"
+          style="height:8rem;width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.5));"
         />
       </div>
     </header>

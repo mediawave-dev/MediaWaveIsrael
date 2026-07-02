@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 
-// New logo from public folder - transparent background
-const logoImage = '/images/logo-mediawave-removebg-preview.png'
+// Optimized logo assets - transparent background
+// White variant is a real asset (no CSS filter) for dark backgrounds (header, footer)
+const logoImage = '/images/logo.webp'
+const logoImageWhite = '/images/logo-white.webp'
 
 interface LogoProps {
   /** Size variant */
@@ -62,14 +64,14 @@ export default function Logo({
           }}
         />
 
-        {/* Logo image - white in header, original colors elsewhere */}
+        {/* Logo image - white on dark backgrounds (header/footer), original colors elsewhere */}
         <motion.img
-          src={logoImage}
+          src={variant === 'mobile' ? logoImage : logoImageWhite}
           alt="MediaWave Israel - בניית אתרים מקצועית"
           className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
           style={{
             filter: variant === 'header'
-              ? 'brightness(0) invert(1) drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5))'
+              ? 'drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5))'
               : 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
           }}
           loading={variant === 'header' ? 'eager' : 'lazy'}
