@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 interface ButtonProps {
   children: React.ReactNode
@@ -69,7 +69,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <motion.button
+      <m.button
         ref={ref}
         {...props}
         className={`
@@ -95,7 +95,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {/* Ripple effect on click */}
         <AnimatePresence>
           {isPressed && variant === 'primary' && (
-            <motion.span
+            <m.span
               className="absolute inset-0 bg-white/30 rounded-full"
               initial={{ scale: 0, opacity: 1 }}
               animate={{ scale: 2.5, opacity: 0 }}
@@ -108,7 +108,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         {/* Shine effect */}
         {variant === 'primary' && (
-          <motion.span
+          <m.span
             className="absolute inset-0 bg-linear-to-l from-transparent via-white/20 to-transparent -translate-x-full"
             animate={{ x: ['calc(-100%)', 'calc(200%)'] }}
             transition={{
@@ -122,7 +122,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         {/* Glow effect for primary */}
         {variant === 'primary' && !disabled && (
-          <motion.div
+          <m.div
             className="absolute inset-0 rounded-full pointer-events-none opacity-0 group-hover:opacity-100"
             whileHover={{ opacity: 1 }}
             style={{
@@ -136,14 +136,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Loading spinner */}
           <AnimatePresence mode="wait">
             {isLoading ? (
-              <motion.span
+              <m.span
                 key="loading"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <motion.svg
+                <m.svg
                   className="w-5 h-5"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -165,18 +165,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     strokeWidth="3"
                     strokeLinecap="round"
                   />
-                </motion.svg>
+                </m.svg>
                 {loadingText || children}
-              </motion.span>
+              </m.span>
             ) : showSuccess ? (
-              <motion.span
+              <m.span
                 key="success"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 className="flex items-center gap-2"
               >
-                <motion.svg
+                <m.svg
                   className="w-5 h-5"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -184,7 +184,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <motion.path
+                  <m.path
                     d="M5 12l5 5L20 7"
                     stroke="currentColor"
                     strokeWidth="3"
@@ -194,11 +194,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 0.3 }}
                   />
-                </motion.svg>
+                </m.svg>
                 נשלח בהצלחה!
-              </motion.span>
+              </m.span>
             ) : (
-              <motion.span
+              <m.span
                 key="content"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -207,26 +207,26 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               >
                 {children}
                 {icon && (
-                  <motion.span
+                  <m.span
                     animate={{ x: [0, -4, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     {icon}
-                  </motion.span>
+                  </m.span>
                 )}
-              </motion.span>
+              </m.span>
             )}
           </AnimatePresence>
         </span>
 
         {/* Bottom line accent */}
-        <motion.span
+        <m.span
           className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/30 origin-right"
           initial={{ scaleX: 0 }}
           whileHover={{ scaleX: 1 }}
           transition={{ duration: 0.3 }}
         />
-      </motion.button>
+      </m.button>
     )
   }
 )

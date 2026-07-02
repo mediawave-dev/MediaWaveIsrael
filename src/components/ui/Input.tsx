@@ -1,5 +1,5 @@
 import { useState, useId, forwardRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -24,7 +24,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const isFloating = isFocused || hasValue
 
     return (
-      <motion.div
+      <m.div
         className="relative"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -34,7 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {/* Glow effect on focus */}
         <AnimatePresence>
           {isFocused && (
-            <motion.div
+            <m.div
               className="absolute inset-0 rounded-2xl pointer-events-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -87,7 +87,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         />
 
         {/* Floating label */}
-        <motion.label
+        <m.label
           htmlFor={inputId}
           className={`
             absolute pointer-events-none
@@ -103,10 +103,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
           {label}
-        </motion.label>
+        </m.label>
 
         {/* Decorative corner accent */}
-        <motion.div
+        <m.div
           className="absolute bottom-2 left-2 w-4 h-4 pointer-events-none"
           initial={{ opacity: 0, scale: 0 }}
           animate={{
@@ -123,12 +123,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               strokeLinecap="round"
             />
           </svg>
-        </motion.div>
+        </m.div>
 
         {/* Error message */}
         <AnimatePresence>
           {error && (
-            <motion.p
+            <m.p
               role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}
@@ -137,10 +137,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               transition={{ duration: 0.2 }}
             >
               {error}
-            </motion.p>
+            </m.p>
           )}
         </AnimatePresence>
-      </motion.div>
+      </m.div>
     )
   }
 )
@@ -158,7 +158,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const isFloating = isFocused || hasValue
 
     return (
-      <motion.div
+      <m.div
         className="relative"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -168,7 +168,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {/* Glow effect on focus */}
         <AnimatePresence>
           {isFocused && (
-            <motion.div
+            <m.div
               className="absolute inset-0 rounded-2xl pointer-events-none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -213,7 +213,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         />
 
         {/* Floating label */}
-        <motion.label
+        <m.label
           htmlFor={textareaId}
           className={`
             absolute right-5 pointer-events-none
@@ -228,10 +228,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           transition={{ duration: 0.2, ease: 'easeOut' }}
         >
           {label}
-        </motion.label>
+        </m.label>
 
         {/* Decorative corner accent */}
-        <motion.div
+        <m.div
           className="absolute bottom-2 left-2 w-4 h-4 pointer-events-none"
           initial={{ opacity: 0, scale: 0 }}
           animate={{
@@ -248,12 +248,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               strokeLinecap="round"
             />
           </svg>
-        </motion.div>
+        </m.div>
 
         {/* Error message */}
         <AnimatePresence>
           {error && (
-            <motion.p
+            <m.p
               role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}
@@ -262,10 +262,10 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               transition={{ duration: 0.2 }}
             >
               {error}
-            </motion.p>
+            </m.p>
           )}
         </AnimatePresence>
-      </motion.div>
+      </m.div>
     )
   }
 )

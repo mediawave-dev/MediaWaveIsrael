@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { m, useScroll, useTransform } from 'framer-motion'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 
 // Words to cycle through with typewriter effect
 const typewriterWords = ['אתרים', 'דפי נחיתה', "צ'אטבוטים"]
@@ -20,6 +21,22 @@ export default function Hero() {
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
+
+  // Mount the background video only on desktop, and only once the browser is
+  // idle — the poster (identical first frame) covers the gap. Mobile never
+  // downloads the 2.8MB video (display:none alone does NOT prevent the fetch).
+  const isDesktop = useMediaQuery('(min-width: 768px)')
+  const [videoReady, setVideoReady] = useState(false)
+
+  useEffect(() => {
+    if (!isDesktop) return
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setVideoReady(true), { timeout: 1500 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const timer = setTimeout(() => setVideoReady(true), 300)
+    return () => clearTimeout(timer)
+  }, [isDesktop])
 
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -72,7 +89,8 @@ export default function Hero() {
     >
       {/* ===== LAYER 1: Video Background (z-0) ===== */}
 
-      {/* Mobile: poster image for fast LCP */}
+      {/* Poster image — instant LCP on all devices, stays as the desktop
+          backdrop until the video mounts (identical first frame, no flash) */}
       <img
         src="/images/hero-poster.webp"
         alt=""
@@ -80,23 +98,25 @@ export default function Hero() {
         height="1334"
         fetchPriority="high"
         decoding="async"
-        className="absolute inset-0 w-full h-full object-cover md:hidden"
+        className="absolute inset-0 w-full h-full object-cover"
         style={{ zIndex: 0 }}
       />
 
-      {/* Desktop: video background */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden="true"
-        poster="/images/hero-poster.webp"
-        className="absolute inset-0 w-full h-full object-cover hidden md:block"
-        style={{ zIndex: 0 }}
-      >
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {/* Desktop: video background, mounted after idle */}
+      {isDesktop && videoReady && !prefersReducedMotion && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          poster="/images/hero-poster.webp"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 0 }}
+        >
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
+      )}
 
       {/* ===== LAYER 2: Gradient Overlay (z-[1]) ===== */}
       <div
@@ -108,13 +128,13 @@ export default function Hero() {
       />
 
       {/* ===== LAYER 3: Content (z-[2]) ===== */}
-      <motion.div
+      <m.div
         className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-48 md:pb-32"
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline */}
-          <motion.h1
+          <m.h1
             className="text-6xl md:text-[11rem] lg:text-[14rem] font-body leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
             initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, transform: 'translateY(30px)' }}
@@ -128,10 +148,10 @@ export default function Hero() {
             >
               המומחיות שלנו
             </span>
-          </motion.h1>
+          </m.h1>
 
           {/* Typewriter Section */}
-          <motion.div
+          <m.div
             className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-4 min-h-[1.4em]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
             initial={{ opacity: 0 }}
@@ -144,10 +164,10 @@ export default function Hero() {
               <span className="animate-pulse">|</span>
             </span>
             <span> מקצועיים</span>
-          </motion.div>
+          </m.div>
 
           {/* Subtitle */}
-          <motion.p
+          <m.p
             className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
@@ -158,16 +178,16 @@ export default function Hero() {
             <br className="hidden md:block" />
             <span className="md:hidden"> </span>
             עם גישה אישית וליווי צמוד בכל שלב.
-          </motion.p>
+          </m.p>
 
           {/* CTA Buttons */}
-          <motion.div
+          <m.div
             className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-16 px-2 md:px-0"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <motion.a
+            <m.a
               href="#contact"
               className="group relative overflow-hidden bg-orange hover:bg-orange-dark text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               style={{ color: '#1e3a5f' }}
@@ -175,35 +195,35 @@ export default function Hero() {
               whileTap={{ scale: 0.98 }}
             >
               {/* Shine effect */}
-              <motion.span
+              <m.span
                 className="absolute inset-0 bg-gradient-to-l from-transparent via-white/30 to-transparent -translate-x-full"
-                animate={{ x: ['calc(-100%)', 'calc(200%)'] }}
+                animate={prefersReducedMotion ? undefined : { x: ['calc(-100%)', 'calc(200%)'] }}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               />
               <span className="relative z-10 flex items-center justify-center gap-2">
                 בואו נדבר על הפרויקט שלכם
-                <motion.span
-                  animate={{ x: [0, -4, 0] }}
+                <m.span
+                  animate={prefersReducedMotion ? undefined : { x: [0, -4, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
                   ←
-                </motion.span>
+                </m.span>
               </span>
-            </motion.a>
+            </m.a>
 
-            <motion.a
+            <m.a
               href="#services"
               className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
               לשירותים שלנו
-            </motion.a>
-          </motion.div>
+            </m.a>
+          </m.div>
 
 
         </div>
-      </motion.div>
+      </m.div>
 
     </section>
   )

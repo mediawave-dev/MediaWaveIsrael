@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import SEO from '../SEO'
 
@@ -24,7 +24,7 @@ export default function Terms() {
       />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -39,10 +39,10 @@ export default function Terms() {
             </svg>
             חזרה לעמוד הבית
           </button>
-        </motion.div>
+        </m.div>
 
         {/* Header */}
-        <motion.header
+        <m.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -54,10 +54,10 @@ export default function Terms() {
           <p className="text-brown-light">
             <strong>עודכן לאחרונה:</strong> ינואר 2026
           </p>
-        </motion.header>
+        </m.header>
 
         {/* Content */}
-        <motion.article
+        <m.article
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -365,7 +365,7 @@ export default function Terms() {
           <div className="mt-12 pt-6 border-t border-cream-darker text-brown-muted text-sm">
             <p><strong>תאריך עדכון אחרון:</strong> ינואר 2026</p>
           </div>
-        </motion.article>
+        </m.article>
       </div>
     </main>
   )

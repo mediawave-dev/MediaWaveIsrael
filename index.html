@@ -61,8 +61,9 @@
     <!-- Preload hero poster image -->
     <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
 
-    <!-- Prefetch hero video for desktop (preload doesn't support as="video") -->
-    <link rel="prefetch" href="/videos/hero-bg.mp4" as="fetch" type="video/mp4" media="(min-width: 768px)" />
+    <!-- Preload the Hebrew fonts used above the fold (stable public/fonts URLs) -->
+    <link rel="preload" href="/fonts/EFT_Betaamango.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/EFT_OffSet-Bold.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Preload critical Outfit font weights for faster LCP -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />

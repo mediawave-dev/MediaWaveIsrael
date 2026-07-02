@@ -1,9 +1,8 @@
 /**
  * Custom Hebrew Fonts - MediaWave Israel
  *
- * Font files are in:
- * - src/fonts/BAPlatforma-Regular.otf (headlines)
- * - src/fonts/OS-Luizi-FFC-v1/ (body text)
+ * Font files live in public/fonts/ as woff2 (stable URLs so index.html
+ * can preload them). Original TTF/OTF sources are kept in src/fonts/.
  */
 
 /* ============================================
@@ -13,7 +12,7 @@
 
 @font-face {
   font-family: 'EFT Betaamango';
-  src: url('../fonts/EFT_Betaamango-Free.ttf') format('truetype');
+  src: url('/fonts/EFT_Betaamango.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -22,7 +21,7 @@
 /* For bold usage, use regular weight (single weight font) */
 @font-face {
   font-family: 'EFT Betaamango';
-  src: url('../fonts/EFT_Betaamango-Free.ttf') format('truetype');
+  src: url('/fonts/EFT_Betaamango.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -35,7 +34,7 @@
 
 @font-face {
   font-family: 'BA Platforma';
-  src: url('../fonts/BAPlatforma-Regular.otf') format('opentype');
+  src: url('/fonts/BAPlatforma-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -47,7 +46,7 @@
 
 @font-face {
   font-family: 'EFT OffSet';
-  src: url('../fonts/EFT_OffSet-Bold.ttf') format('truetype');
+  src: url('/fonts/EFT_OffSet-Bold.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

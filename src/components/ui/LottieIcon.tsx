@@ -1,6 +1,7 @@
 import Lottie from 'lottie-react'
 import { useRef, useState, useEffect } from 'react'
 import type { LottieRefCurrentProps } from 'lottie-react'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 interface LottieIconProps {
   /** URL path to animation JSON file */
@@ -38,6 +39,7 @@ export function LottieIcon({
   const [isLoading, setIsLoading] = useState(!animationData && !!animationPath)
   const [error, setError] = useState<string | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
 
   // Observe visibility - only load when in viewport
   useEffect(() => {
@@ -92,6 +94,33 @@ export function LottieIcon({
     }
   }, [speed, loadedData])
 
+  // Pause when scrolled out of view, resume when back — a dozen looping
+  // Lotties running offscreen is the biggest CPU cost on the home page
+  useEffect(() => {
+    if (!containerRef.current || !loadedData || prefersReducedMotion) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          lottieRef.current?.play()
+        } else {
+          lottieRef.current?.pause()
+        }
+      },
+      { rootMargin: '100px' }
+    )
+
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [loadedData, prefersReducedMotion])
+
+  // Reduced motion: freeze on the first frame (still visible, not animating)
+  useEffect(() => {
+    if (prefersReducedMotion && lottieRef.current && loadedData) {
+      lottieRef.current.goToAndStop(0, true)
+    }
+  }, [prefersReducedMotion, loadedData])
+
   // Hover handlers
   const handleMouseEnter = () => {
     if (playOnHover && lottieRef.current) {
@@ -133,8 +162,8 @@ export function LottieIcon({
       <Lottie
         lottieRef={lottieRef}
         animationData={loadedData}
-        loop={loop}
-        autoplay={true}
+        loop={loop && !prefersReducedMotion}
+        autoplay={!prefersReducedMotion}
         style={{ width: '100%', height: '100%' }}
       />
     </div>

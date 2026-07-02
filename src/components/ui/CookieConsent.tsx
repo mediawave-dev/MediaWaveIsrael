@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 
 const CONSENT_KEY = 'mw_cookie_consent'
 
@@ -44,7 +44,7 @@ export default function CookieConsent() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
+        <m.div
           role="dialog"
           aria-label="הודעת עוגיות"
           aria-live="polite"
@@ -83,7 +83,7 @@ export default function CookieConsent() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

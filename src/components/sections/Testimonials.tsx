@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { testimonials } from '../../data/testimonials'
 
@@ -29,7 +29,7 @@ export default function Testimonials() {
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, prefersReducedMotion, testimonials.length])
+  }, [isAutoPlaying, prefersReducedMotion])
 
   // Don't render if no testimonials collected yet
   if (testimonials.length === 0) return null
@@ -48,7 +48,7 @@ export default function Testimonials() {
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Giant quote mark */}
-        <motion.div
+        <m.div
           className="absolute -top-20 -right-20 text-[400px] font-headline leading-none select-none"
           style={{ color: 'rgba(245, 166, 35, 0.05)' }}
           initial={{ opacity: 0, scale: 0.8 }}
@@ -57,16 +57,16 @@ export default function Testimonials() {
           transition={{ duration: 1 }}
         >
           &ldquo;
-        </motion.div>
+        </m.div>
 
         {/* Floating shapes */}
-        <motion.div
+        <m.div
           className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%)' }}
           animate={{ y: [0, -20, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <motion.div
+        <m.div
           className="absolute bottom-1/4 right-20 w-40 h-40 rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(139,180,160,0.1) 0%, transparent 70%)' }}
           animate={{ y: [0, 15, 0], scale: [1, 1.05, 1] }}
@@ -77,14 +77,14 @@ export default function Testimonials() {
       <div className="container relative">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <motion.div
+          <m.div
             className="flex items-center justify-center gap-3 mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
           >
             {[...Array(5)].map((_, i) => (
-              <motion.svg
+              <m.svg
                 key={i}
                 width="20"
                 height="20"
@@ -96,11 +96,11 @@ export default function Testimonials() {
                 transition={{ delay: i * 0.1, duration: 0.4 }}
               >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              </motion.svg>
+              </m.svg>
             ))}
-          </motion.div>
+          </m.div>
 
-          <motion.h2
+          <m.h2
             className="text-5xl md:text-6xl font-headline text-brown-dark mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -108,9 +108,9 @@ export default function Testimonials() {
             transition={{ delay: 0.2 }}
           >
             מה אומרים עלינו
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             className="text-brown-light text-2xl max-w-md mx-auto"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -118,13 +118,13 @@ export default function Testimonials() {
             transition={{ delay: 0.3 }}
           >
             לקוחות מרוצים מספרים על החוויה שלהם
-          </motion.p>
+          </m.p>
         </div>
 
         {/* Featured Testimonial - Large card */}
         <div className="max-w-4xl mx-auto mb-12">
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={activeIndex}
               className="relative"
               initial={{ opacity: 0, transform: 'translateY(30px) scale(0.95)' }}
@@ -145,7 +145,7 @@ export default function Testimonials() {
                 />
 
                 {/* Quote icon */}
-                <motion.div
+                <m.div
                   className="absolute top-6 right-6 md:top-8 md:right-8"
                   initial={{ scale: 0, rotate: -45 }}
                   animate={{ scale: 1, rotate: 0 }}
@@ -154,7 +154,7 @@ export default function Testimonials() {
                   <svg width="48" height="48" viewBox="0 0 24 24" fill={color} className="opacity-20">
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                   </svg>
-                </motion.div>
+                </m.div>
 
                 {/* Content */}
                 <div className="relative z-10">
@@ -162,7 +162,7 @@ export default function Testimonials() {
                   {active.rating && (
                     <div className="flex gap-1 mb-6">
                       {[...Array(active.rating)].map((_, i) => (
-                        <motion.svg
+                        <m.svg
                           key={i}
                           width="24" height="24" viewBox="0 0 24 24" fill={color}
                           initial={{ opacity: 0, scale: 0 }}
@@ -170,23 +170,23 @@ export default function Testimonials() {
                           transition={{ delay: 0.1 + i * 0.05 }}
                         >
                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                        </motion.svg>
+                        </m.svg>
                       ))}
                     </div>
                   )}
 
                   {/* Quote */}
-                  <motion.p
+                  <m.p
                     className="text-xl md:text-2xl lg:text-3xl font-headline text-brown-dark leading-relaxed mb-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
                     &ldquo;{active.quote}&rdquo;
-                  </motion.p>
+                  </m.p>
 
                   {/* Author */}
-                  <motion.div
+                  <m.div
                     className="flex items-center gap-4"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -224,11 +224,11 @@ export default function Testimonials() {
                         </a>
                       )}
                     </div>
-                  </motion.div>
+                  </m.div>
                 </div>
 
                 {/* Decorative line */}
-                <motion.div
+                <m.div
                   className="absolute bottom-0 left-0 right-0 h-1"
                   style={{ backgroundColor: color }}
                   initial={{ scaleX: 0 }}
@@ -236,7 +236,7 @@ export default function Testimonials() {
                   transition={{ duration: 5, ease: 'linear' }}
                 />
               </div>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
 
@@ -253,17 +253,16 @@ export default function Testimonials() {
                 className="relative group"
                 aria-label={`עבור לביקורת ${index + 1}`}
               >
-                <motion.div
+                <m.div
                   className="w-3 h-3 rounded-full transition-all duration-300"
                   style={{ backgroundColor: activeIndex === index ? getColor(index) : '#D4D4D4' }}
                   whileHover={{ scale: 1.3 }}
                   whileTap={{ scale: 0.9 }}
                 />
                 {activeIndex === index && (
-                  <motion.div
+                  <m.div
                     className="absolute inset-0 rounded-full"
                     style={{ backgroundColor: getColor(index) }}
-                    layoutId="activeDot"
                     initial={false}
                     animate={{ scale: [1, 1.5, 1] }}
                     transition={{ duration: 0.5 }}
@@ -276,7 +275,7 @@ export default function Testimonials() {
 
         {/* Mini cards grid */}
         {testimonials.length > 1 && (
-          <motion.div
+          <m.div
             className="grid grid-cols-2 md:grid-cols-4 gap-4"
             initial={{ opacity: 0, transform: 'translateY(30px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -284,7 +283,7 @@ export default function Testimonials() {
             transition={{ delay: 0.4 }}
           >
             {testimonials.map((testimonial, index) => (
-              <motion.button
+              <m.button
                 key={testimonial.id}
                 onClick={() => {
                   setActiveIndex(index)
@@ -299,10 +298,9 @@ export default function Testimonials() {
                 whileTap={{ scale: 0.98 }}
               >
                 {activeIndex === index && (
-                  <motion.div
+                  <m.div
                     className="absolute inset-0 rounded-xl"
                     style={{ border: `2px solid ${getColor(index)}` }}
-                    layoutId="activeCard"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -342,9 +340,9 @@ export default function Testimonials() {
                     </div>
                   )}
                 </div>
-              </motion.button>
+              </m.button>
             ))}
-          </motion.div>
+          </m.div>
         )}
       </div>
     </section>

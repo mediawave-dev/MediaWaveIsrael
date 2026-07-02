@@ -4,6 +4,7 @@ import { Layout } from './components/layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import LeadModal from './components/LeadModal'
 import { MotionProvider } from './components/MotionProvider'
+import ScrollToTop from './components/ScrollToTop'
 import SEO from './components/SEO'
 
 // Above-fold: load immediately
@@ -76,6 +77,7 @@ function App() {
   return (
     <ErrorBoundary>
       <MotionProvider>
+        <ScrollToTop />
         <Routes>
           {/* Sanity Studio — full viewport, NO Layout wrapper */}
           <Route path="/studio/*" element={

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 
 // Optimized logo assets - transparent background
 // White variant is a real asset (no CSS filter) for dark backgrounds (header, footer)
@@ -41,7 +41,7 @@ export default function Logo({
   const sizeConfig = sizes[variant]
 
   return (
-    <motion.a
+    <m.a
       href="#"
       className={`group flex items-center relative ${className}`}
       whileHover={{ scale: 1.02 }}
@@ -51,11 +51,11 @@ export default function Logo({
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
       {/* Logo image with glow effect on hover */}
-      <motion.div
+      <m.div
         className={`relative ${sizeConfig.container} transition-all duration-500 ${variant === 'header' && isScrolled ? 'scale-[2.5] origin-right translate-y-2' : ''}`}
       >
         {/* Glow effect behind logo */}
-        <motion.div
+        <m.div
           className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{
             background: 'radial-gradient(circle, rgba(125, 211, 252, 0.35) 0%, transparent 70%)',
@@ -65,7 +65,7 @@ export default function Logo({
         />
 
         {/* Logo image - white on dark backgrounds (header/footer), original colors elsewhere */}
-        <motion.img
+        <m.img
           src={variant === 'mobile' ? logoImage : logoImageWhite}
           alt="MediaWave Israel - בניית אתרים מקצועית"
           className={`${sizeConfig.container} w-auto object-contain relative z-10 transition-all duration-500`}
@@ -79,14 +79,14 @@ export default function Logo({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         />
-      </motion.div>
+      </m.div>
 
       {/* Decorative blob behind on hover */}
-      <motion.div
+      <m.div
         className="absolute -z-10 w-16 h-16 bg-orange/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{ left: '-8px', top: '-8px' }}
       />
-    </motion.a>
+    </m.a>
   )
 }
 
@@ -158,13 +158,13 @@ export function LogoText({
   }
 
   return (
-    <motion.a
+    <m.a
       href="#"
       className={`font-english-display ${sizeClasses[size]} text-brown-dark hover:text-orange transition-colors duration-300 ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
       MediaWave
-    </motion.a>
+    </m.a>
   )
 }

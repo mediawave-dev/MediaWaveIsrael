@@ -1,5 +1,7 @@
-import { m } from 'framer-motion'
+import { useRef } from 'react'
+import { m, useInView } from 'framer-motion'
 import { LottieIcon } from '../ui'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 interface ServiceItem {
   _id: string
@@ -40,8 +42,16 @@ const services: ServiceItem[] = [
 ]
 
 export default function Services() {
+  // Animate the blurred orbs only while the section is actually on screen
+  // (blur(60px) repaints offscreen are pure CPU waste on mobile)
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { margin: '200px' })
+  const prefersReducedMotion = useReducedMotion()
+  const orbsActive = isInView && !prefersReducedMotion
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       aria-label="שירותים"
       className="relative py-14 md:py-28 overflow-hidden"
@@ -57,7 +67,7 @@ export default function Services() {
             background: 'radial-gradient(circle, rgba(125, 211, 252, 0.2) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
-          animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
+          animate={orbsActive ? { y: [0, -20, 0], scale: [1, 1.05, 1] } : undefined}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <m.div
@@ -66,7 +76,7 @@ export default function Services() {
             background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
-          animate={{ y: [0, 20, 0], scale: [1, 1.08, 1] }}
+          animate={orbsActive ? { y: [0, 20, 0], scale: [1, 1.08, 1] } : undefined}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
@@ -128,7 +138,7 @@ export default function Services() {
           >
             <span>התחל פרויקט</span>
             <m.span
-              animate={{ x: [0, -4, 0] }}
+              animate={prefersReducedMotion ? undefined : { x: [0, -4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               ←

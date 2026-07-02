@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useAccessibility, type TextSize } from '../../hooks/useAccessibility'
 
 // Accessibility icon (universal symbol)
@@ -130,7 +130,7 @@ export default function AccessibilityWidget() {
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
-          <motion.div
+          <m.div
             ref={panelRef}
             id="accessibility-panel"
             role="dialog"
@@ -231,7 +231,7 @@ export default function AccessibilityWidget() {
             >
               איפוס הגדרות
             </button>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 

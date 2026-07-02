@@ -1,4 +1,3 @@
-export { default as ServiceCard } from './ServiceCard'
 export { Input, Textarea } from './Input'
 export { Button } from './Button'
 export { default as Logo, LogoIcon, LogoText } from './Logo'

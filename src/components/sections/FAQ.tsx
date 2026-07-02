@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { HtmlContent } from '../HtmlContent'
 
 interface Faq {
@@ -53,7 +53,7 @@ export default function FAQ() {
       <div className="container max-w-3xl">
         {/* Header */}
         <div className="text-center mb-10 md:mb-14">
-          <motion.h2
+          <m.h2
             className="text-4xl md:text-5xl font-headline mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -61,8 +61,8 @@ export default function FAQ() {
             transition={{ duration: 0.6 }}
           >
             שאלות נפוצות
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             className="text-brown-light text-lg md:text-xl"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -70,13 +70,13 @@ export default function FAQ() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             כל מה שרציתם לדעת על תהליך בניית האתר
-          </motion.p>
+          </m.p>
         </div>
 
         {/* FAQ List */}
         <div className="space-y-3">
           {faqs.map((item, index) => (
-            <motion.div
+            <m.div
               key={item._id}
               className="bg-white rounded-lg overflow-hidden"
               initial={{ opacity: 0, transform: 'translateY(20px)' }}
@@ -93,7 +93,7 @@ export default function FAQ() {
                 <span className="font-headline font-semibold text-brown-dark text-lg md:text-xl">
                   {item.question}
                 </span>
-                <motion.span
+                <m.span
                   className="text-orange flex-shrink-0"
                   animate={{ rotate: openIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -101,13 +101,13 @@ export default function FAQ() {
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
-                </motion.span>
+                </m.span>
               </button>
 
               {/* Answer */}
               <AnimatePresence initial={false}>
                 {openIndex === index && (
-                  <motion.div
+                  <m.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -119,15 +119,15 @@ export default function FAQ() {
                         <HtmlContent html={item.answer} className="prose-hebrew" />
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
         {/* CTA */}
-        <motion.div
+        <m.div
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -142,7 +142,7 @@ export default function FAQ() {
           >
             צרו קשר
           </a>
-        </motion.div>
+        </m.div>
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
     </section>

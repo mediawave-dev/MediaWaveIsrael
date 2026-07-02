@@ -1,5 +1,5 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
 import { HtmlContent } from '../HtmlContent'
 import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
@@ -101,7 +101,7 @@ export default function BlogPost() {
       }) }} />
       <article className="container max-w-[700px]">
         {/* Back link */}
-        <motion.div
+        <m.div
           className="mb-8"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -114,10 +114,10 @@ export default function BlogPost() {
             <ArrowRight size={16} />
             חזרה לבלוג
           </Link>
-        </motion.div>
+        </m.div>
 
         {/* Header */}
-        <motion.header
+        <m.header
           className="mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -164,19 +164,19 @@ export default function BlogPost() {
               <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             </div>
           </div>
-        </motion.header>
+        </m.header>
 
         {/* Content */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <HtmlContent html={post.content} className="prose-hebrew" />
-        </motion.div>
+        </m.div>
 
         {/* Footer CTA */}
-        <motion.div
+        <m.div
           className="mt-16 pt-10 border-t border-cream-darker text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -201,7 +201,7 @@ export default function BlogPost() {
               צרו קשר
             </a>
           </div>
-        </motion.div>
+        </m.div>
       </article>
     </div>
   )

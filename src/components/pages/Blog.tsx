@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
 import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
 import SEO from '../SEO'
@@ -54,7 +54,7 @@ export default function Blog() {
       }) }} />
       <div className="container max-w-4xl">
         {/* Header */}
-        <motion.div
+        <m.div
           className="mb-14 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,7 +71,7 @@ export default function Blog() {
           <p className="text-lg text-brown-light max-w-xl mx-auto leading-relaxed">
             טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Posts grid or empty state */}
         {posts.length === 0 ? (
@@ -79,7 +79,7 @@ export default function Blog() {
         ) : (
           <div className="grid gap-8">
             {posts.map((post, index) => (
-              <motion.article
+              <m.article
                 key={post._id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -140,13 +140,13 @@ export default function Blog() {
                     </div>
                   </div>
                 </Link>
-              </motion.article>
+              </m.article>
             ))}
           </div>
         )}
 
         {/* Back to home */}
-        <motion.div
+        <m.div
           className="mt-14 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -159,7 +159,7 @@ export default function Blog() {
             <ArrowLeft size={18} className="rotate-180" />
             חזרה לדף הבית
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   )
@@ -167,7 +167,7 @@ export default function Blog() {
 
 function EmptyState() {
   return (
-    <motion.div
+    <m.div
       className="text-center py-20"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -176,13 +176,13 @@ function EmptyState() {
       {/* Decorative illustration */}
       <div className="relative w-32 h-32 mx-auto mb-8">
         <div className="absolute inset-0 rounded-full bg-orange/10 blur-2xl" />
-        <motion.div
+        <m.div
           className="relative w-full h-full rounded-full bg-cream-dark flex items-center justify-center"
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
           <BookOpen size={48} className="text-orange/60" />
-        </motion.div>
+        </m.div>
       </div>
 
       <h2 className="text-3xl font-headline text-brown-dark mb-3">
@@ -192,6 +192,6 @@ function EmptyState() {
         אנחנו עובדים על תכנים מקצועיים שיעזרו לכם להבין טוב יותר את עולם הדיגיטל.
         חזרו בקרוב!
       </p>
-    </motion.div>
+    </m.div>
   )
 }

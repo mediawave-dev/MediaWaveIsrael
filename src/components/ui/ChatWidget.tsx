@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { X, Send, RotateCcw } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
 import { LottieIcon } from './index'
@@ -10,7 +10,7 @@ function TypingIndicator() {
   return (
     <div className="flex items-center gap-1.5 px-4 py-3 bg-cream-dark rounded-2xl rounded-tr-sm w-fit">
       {[0, 1, 2].map((i) => (
-        <motion.span
+        <m.span
           key={i}
           className="w-2 h-2 rounded-full bg-brown-muted"
           animate={{ y: [0, -6, 0], opacity: [0.4, 1, 0.4] }}
@@ -52,7 +52,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === 'user'
 
   return (
-    <motion.div
+    <m.div
       className={`flex ${isUser ? 'justify-start' : 'justify-end'}`}
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -67,7 +67,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       >
         {isUser ? message.content : linkifyContent(message.content)}
       </div>
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -204,7 +204,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
       {/* --- Trigger Button --- */}
       <AnimatePresence>
         {!isOpen && (
-          <motion.div
+          <m.div
             className="floating-cta fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -212,15 +212,15 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           >
             {/* Tooltip */}
-            <motion.span
+            <m.span
               className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-brown-dark text-white text-xs px-3 py-1.5 rounded-lg opacity-0 pointer-events-none"
               whileHover={{ opacity: 1 }}
             >
               צ'אטבוט
               <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-brown-dark" />
-            </motion.span>
+            </m.span>
 
-            <motion.button
+            <m.button
               onClick={() => setIsOpen(true)}
               className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
@@ -237,15 +237,15 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                   playOnHover={false}
                 />
               </div>
-            </motion.button>
-          </motion.div>
+            </m.button>
+          </m.div>
         )}
       </AnimatePresence>
 
       {/* --- Chat Panel --- */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             ref={panelRef}
             role="dialog"
             aria-label="צ'אט עם MediaWave"
@@ -336,7 +336,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                   aria-label="הקלידו הודעה"
                   disabled={isLoading || isLimitReached}
                 />
-                <motion.button
+                <m.button
                   onClick={handleSend}
                   disabled={!canSend}
                   className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-orange text-brown-dark disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange"
@@ -345,10 +345,10 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                   aria-label="שלח הודעה"
                 >
                   <Send size={18} className="rotate-180" />
-                </motion.button>
+                </m.button>
               </div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

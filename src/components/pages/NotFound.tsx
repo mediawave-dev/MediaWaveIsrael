@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import SEO from '../SEO'
 
 export default function NotFound() {
@@ -11,7 +11,7 @@ export default function NotFound() {
       />
       <div className="text-center max-w-md">
         {/* Animated 404 */}
-        <motion.div
+        <m.div
           className="relative mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,14 +28,14 @@ export default function NotFound() {
           </h1>
 
           {/* Decorative curved line */}
-          <motion.svg
+          <m.svg
             className="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 h-8"
             viewBox="0 0 160 32"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <motion.path
+            <m.path
               d="M10 16 Q40 4 80 16 T150 16"
               fill="none"
               stroke="var(--color-orange)"
@@ -46,11 +46,11 @@ export default function NotFound() {
               animate={{ pathLength: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
             />
-          </motion.svg>
-        </motion.div>
+          </m.svg>
+        </m.div>
 
         {/* Message */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -65,22 +65,22 @@ export default function NotFound() {
           </p>
 
           {/* CTA Button */}
-          <motion.a
+          <m.a
             href="/"
             className="inline-flex items-center gap-2 bg-orange font-semibold py-4 px-8 rounded-full shadow-md hover:shadow-glow hover:bg-orange-dark transition-all duration-300"
             style={{ color: '#FFFFFF' }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <motion.span
+            <m.span
               animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
               →
-            </motion.span>
+            </m.span>
             <span>חזרה לדף הבית</span>
-          </motion.a>
-        </motion.div>
+          </m.a>
+        </m.div>
 
         {/* Floating decorative dots */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -90,7 +90,7 @@ export default function NotFound() {
             { top: '60%', left: '20%', size: 10, delay: 1 },
             { top: '70%', right: '25%', size: 5, delay: 1.5 },
           ].map((dot, i) => (
-            <motion.div
+            <m.div
               key={i}
               className="absolute rounded-full bg-orange/30"
               style={{
@@ -115,7 +115,7 @@ export default function NotFound() {
         </div>
 
         {/* Contact info */}
-        <motion.p
+        <m.p
           className="mt-12 text-sm text-brown-muted"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -125,7 +125,7 @@ export default function NotFound() {
           <a href="tel:052-8731808" className="text-orange hover:underline" dir="ltr">
             052-8731808
           </a>
-        </motion.p>
+        </m.p>
       </div>
     </div>
   )
