@@ -21,6 +21,7 @@ const Contact = lazy(() => import('./components/sections/Contact'))
 // Pages: lazy load (rarely accessed)
 const Terms = lazy(() => import('./components/pages/Terms'))
 const Privacy = lazy(() => import('./components/pages/Privacy'))
+const Accessibility = lazy(() => import('./components/pages/Accessibility'))
 const Blog = lazy(() => import('./components/pages/Blog'))
 const BlogPost = lazy(() => import('./components/pages/BlogPost'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
@@ -96,6 +97,7 @@ function App() {
                 <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
                 <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
                 <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
+                <Route path="/accessibility" element={<Suspense fallback={<SectionFallback />}><Accessibility /></Suspense>} />
                 <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
               </Routes>
             </Layout>

@@ -171,6 +171,18 @@ export default function Footer() {
             >
               מדיניות פרטיות
             </a>
+            <span style={{ color: '#444' }}>|</span>
+            <a
+              href="/accessibility"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-200"
+              style={{ color: '#666' }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
+            >
+              הצהרת נגישות
+            </a>
           </div>
         </div>
       </div>

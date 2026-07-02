@@ -65,6 +65,7 @@ function generateSitemap(posts) {
     { loc: '/blog', lastmod: today, changefreq: 'weekly', priority: '0.8' },
     { loc: '/terms', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
     { loc: '/privacy', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
+    { loc: '/accessibility', lastmod: '2026-07-02', changefreq: 'yearly', priority: '0.3' },
   ]
 
   const postPages = posts.map((p) => ({
