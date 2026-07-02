@@ -114,10 +114,12 @@ export function LottieIcon({
     return () => observer.disconnect()
   }, [loadedData, prefersReducedMotion])
 
-  // Reduced motion: freeze on the first frame (still visible, not animating)
+  // Reduced motion: freeze on the LAST frame — draw-on animations are empty
+  // at frame 0, while the final frame always shows the complete artwork
   useEffect(() => {
     if (prefersReducedMotion && lottieRef.current && loadedData) {
-      lottieRef.current.goToAndStop(0, true)
+      const totalFrames = lottieRef.current.getDuration(true)
+      lottieRef.current.goToAndStop(Math.max(0, (totalFrames ?? 1) - 1), true)
     }
   }, [prefersReducedMotion, loadedData])
 
