@@ -7,8 +7,29 @@ Design inspiration: https://microsoft.ai/about/
 ## Tech Stack
 - React 18.3.1 + Vite 6.0.5
 - Tailwind CSS v4.1.18
-- Framer Motion 12.26.2 (animations)
+- Framer Motion 12.26.2 (animations) — via `LazyMotion strict`: **always import `m`, never `motion`**
 - TypeScript 5.6.2
+- Deployed on **Cloudflare Pages** (functions/ = Pages Functions, e.g. /api/chat)
+
+## ⚠️ STATUS UPDATE — July 2026 (overrides stale sections below)
+- **CMS: NONE.** Directus was fully removed (July 2026). All content is static:
+  section data lives inside each component, blog in `src/data/blog-posts.ts`,
+  contact details in `src/data/site.ts`. A new CMS may be added later.
+  Sanity exists ONLY for the lazy `/studio` route (not used for public content).
+- **Palette remap:** the CSS variable NAMES are legacy (`--color-orange`, `--color-cream`,
+  `--color-brown`) but their VALUES are the current light-blue theme:
+  orange=#7DD3FC (sky), orange-dark=#38BDF8, cream=#F8FAFC, terracotta/sage=cyan/teal tints.
+  The "warm watercolor" palette documented below is HISTORICAL — do not restore it.
+- **Deleted components** (do not reference): ServiceCard, ConnectingLine, PageDecorations,
+  SectionSkeleton, Packages section. Services renders its own inline card.
+- **Home sections (actual):** Hero, WhyUs, Services, HowWeWork, Testimonials (hidden until
+  real testimonials are added to `src/data/testimonials.ts`), FAQ, Contact.
+- **Pages:** /, /blog, /blog/:slug, /terms, /privacy, /accessibility, /studio, 404.
+- **Build:** `npm run build` = generate-seo → tsc → vite → puppeteer prerender (7 pages).
+- **Forms:** no endpoint configured yet — Contact + LeadModal hand the lead off to
+  WhatsApp with a prefilled message (honest fallback). Real endpoint = future task.
+- **Perf guardrails:** hero/whyus videos mount desktop-only after idle/in-view;
+  Lotties pause offscreen; infinite framer loops gate on prefers-reduced-motion.
 
 ---
 
