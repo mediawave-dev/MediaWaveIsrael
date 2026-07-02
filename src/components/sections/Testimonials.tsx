@@ -110,8 +110,10 @@ export default function Testimonials() {
             מה אומרים עלינו
           </m.h2>
 
+          <div className="section-title-accent" aria-hidden="true" />
+
           <m.p
-            className="text-brown-light text-2xl max-w-md mx-auto"
+            className="text-brown-light text-2xl max-w-md mx-auto mt-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}

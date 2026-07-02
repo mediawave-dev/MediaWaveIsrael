@@ -68,7 +68,7 @@ export default function NotFound() {
           <m.a
             href="/"
             className="inline-flex items-center gap-2 bg-orange font-semibold py-4 px-8 rounded-full shadow-md hover:shadow-glow hover:bg-orange-dark transition-all duration-300"
-            style={{ color: '#FFFFFF' }}
+            style={{ color: '#1e3a5f' }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

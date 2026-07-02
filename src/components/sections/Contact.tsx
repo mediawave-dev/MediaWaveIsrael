@@ -98,9 +98,11 @@ export default function Contact() {
             דברו איתנו
           </m.h2>
 
+          <div className="section-title-accent" aria-hidden="true" />
+
           {/* Contact animation */}
           <m.div
-            className="flex justify-center mb-4"
+            className="flex justify-center mb-4 mt-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -135,7 +137,13 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bg-white rounded-lg p-8 shadow-lg">
+            <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-cream-darker/50 overflow-hidden">
+              {/* Brand accent line */}
+              <div
+                className="absolute top-0 inset-x-0 h-1"
+                style={{ background: 'linear-gradient(90deg, #7DD3FC, #67E8F9, #5EEAD4)' }}
+                aria-hidden="true"
+              />
               <form onSubmit={handleSubmit} className="space-y-6">
                 <Input
                   label="שם מלא"

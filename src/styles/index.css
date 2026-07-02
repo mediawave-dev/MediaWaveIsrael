@@ -1057,3 +1057,23 @@ html.disable-animations [data-floating] {
     bottom: 5.25rem !important;
   }
 }
+
+/* ============================================
+   SECTION POLISH UTILITIES
+   ============================================ */
+
+/* Anchored sections land below the fixed header */
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+/* Short brand-gradient bar under section titles — one consistent
+   visual signature across all home sections */
+.section-title-accent {
+  width: 48px;
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #7DD3FC, #5EEAD4);
+  margin-inline: auto;
+  margin-top: 0.875rem;
+}

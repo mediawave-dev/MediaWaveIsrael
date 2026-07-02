@@ -104,8 +104,10 @@ export default function Services() {
             מה אנחנו עושים
           </m.h2>
 
+          <div className="section-title-accent" aria-hidden="true" />
+
           <m.p
-            className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto"
+            className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto mt-4"
             initial={{ opacity: 0, transform: 'translateY(15px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}

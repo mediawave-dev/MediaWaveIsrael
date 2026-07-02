@@ -130,10 +130,11 @@ export default function WhyUs() {
           whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-headline mb-3">
+          <h2 className="text-4xl md:text-5xl font-headline mb-3">
             למה לעבוד איתנו?
           </h2>
-          <p className="text-lg text-brown-light">
+          <div className="section-title-accent" aria-hidden="true" />
+          <p className="text-lg text-brown-light mt-4">
             שלושה דברים שמבדילים אותנו
           </p>
         </m.div>

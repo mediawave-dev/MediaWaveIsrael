@@ -62,8 +62,9 @@ export default function FAQ() {
           >
             שאלות נפוצות
           </m.h2>
+          <div className="section-title-accent" aria-hidden="true" />
           <m.p
-            className="text-brown-light text-lg md:text-xl"
+            className="text-brown-light text-lg md:text-xl mt-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
             viewport={{ once: true }}
@@ -78,7 +79,7 @@ export default function FAQ() {
           {faqs.map((item, index) => (
             <m.div
               key={item._id}
-              className="bg-white rounded-lg overflow-hidden"
+              className="bg-white rounded-xl overflow-hidden border border-cream-darker/60 hover:border-orange-light transition-colors duration-300"
               initial={{ opacity: 0, transform: 'translateY(20px)' }}
               whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
               viewport={{ once: true }}
@@ -137,8 +138,8 @@ export default function FAQ() {
           <p className="text-brown-light text-xl md:text-2xl mb-4">עדיין יש שאלות?</p>
           <a
             href="#contact"
-            className="inline-block bg-orange text-xl px-10 py-4 rounded-full font-semibold hover:bg-orange-dark transition-colors"
-            style={{ color: '#FFFFFF' }}
+            className="inline-block bg-orange text-xl px-10 py-4 rounded-full font-semibold hover:bg-orange-dark transition-all duration-300 shadow-md hover:shadow-glow"
+            style={{ color: '#1e3a5f' }}
           >
             צרו קשר
           </a>

@@ -196,7 +196,7 @@ export default function BlogPost() {
             <a
               href="/#contact"
               className="inline-flex items-center justify-center gap-2 bg-orange font-semibold px-6 py-3 rounded-full shadow-sm hover:shadow-glow hover:bg-orange-dark transition-all duration-300"
-              style={{ color: '#FFFFFF' }}
+              style={{ color: '#1e3a5f' }}
             >
               צרו קשר
             </a>
