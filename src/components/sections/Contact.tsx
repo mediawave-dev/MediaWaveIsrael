@@ -5,16 +5,7 @@ import { Button } from '../ui/Button'
 import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getSiteSettings } from '../../directus/queries'
-import { mapSiteSettings } from '../../directus/mappers'
-import type { DirectusSiteSettings } from '../../directus/types'
-
-// Fallback contact info
-const fallbackContact = {
-  email: 'mediawaveisrael@gmail.com',
-  phone: '052-8731808',
-}
+import { SITE_CONTACT } from '../../data/site'
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,13 +17,10 @@ export default function Contact() {
   const [successMsg, setSuccessMsg] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
 
-  const { data: rawSettings } = useDirectusQuery<DirectusSiteSettings>(getSiteSettings)
-  const settings = rawSettings ? mapSiteSettings(rawSettings) : null
-
-  const contactEmail = settings?.email ?? fallbackContact.email
-  const contactPhone = settings?.phone ?? fallbackContact.phone
-  const instagramUrl = settings?.instagramUrl ?? 'https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr'
-  const responseTime = settings?.responseTime ?? 'אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים'
+  const contactEmail = SITE_CONTACT.email
+  const contactPhone = SITE_CONTACT.phone
+  const instagramUrl = SITE_CONTACT.instagramUrl
+  const responseTime = SITE_CONTACT.responseTime
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

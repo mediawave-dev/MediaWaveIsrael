@@ -1,10 +1,5 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui/LottieIcon'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getHowWeWork } from '../../directus/queries'
-import { mapHowWeWork } from '../../directus/mappers'
-import type { DirectusHowWeWork } from '../../directus/types'
 
 interface StepItem {
   _id: string
@@ -14,7 +9,7 @@ interface StepItem {
   animationPath?: string
 }
 
-const fallbackSteps: StepItem[] = [
+const steps: StepItem[] = [
   { _id: '01', stepNumber: '01', title: 'שיחת היכרות', description: 'מבינים את העסק, היעדים והקהל שלכם', animationPath: '/animations/8 call/Call Center Support Lottie Animation.json' },
   { _id: '02', stepNumber: '02', title: 'אפיון ועיצוב', description: 'מתכננים מבנה, עיצוב ו-UX מותאם אישית', animationPath: '/animations/10 design/Web Design Illustration.json' },
   { _id: '03', stepNumber: '03', title: 'פיתוח ובנייה', description: 'בונים עם הטכנולוגיה המתאימה, מהיר ומאובטח', animationPath: '/animations/9 build/website build.json' },
@@ -187,17 +182,6 @@ function ConnectingLine({ position }: { position: number }) {
 }
 
 export default function HowWeWork() {
-  const { data: raw, loading, error } = useDirectusQuery<DirectusHowWeWork[]>(getHowWeWork)
-  const data = raw?.map(mapHowWeWork) ?? null
-
-  const steps = data && data.length > 0 ? data : (error ? fallbackSteps : null)
-
-  if (loading && !steps) {
-    return <SectionSkeleton lines={4} />
-  }
-
-  if (!steps || steps.length === 0) return null
-
   return (
     <section
       id="process"

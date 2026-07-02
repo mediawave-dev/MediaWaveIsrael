@@ -1,8 +1,6 @@
 export { default as ServiceCard } from './ServiceCard'
 export { Input, Textarea } from './Input'
 export { Button } from './Button'
-export { default as ConnectingLine, FloatingBlob, FloatingDot, GrainOverlay, curvePaths, linePresets } from './ConnectingLine'
-export { default as PageDecorations } from './PageDecorations'
 export { default as Logo, LogoIcon, LogoText } from './Logo'
 export { default as AccessibilityWidget } from './AccessibilityWidget'
 export { LottieIcon } from './LottieIcon'

@@ -1,13 +1,8 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowRight, User } from 'lucide-react'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getBlogPostBySlug } from '../../directus/queries'
-import { mapBlogPost } from '../../directus/mappers'
-import { assetUrl } from '../../directus/imageUrl'
-import { HtmlContent } from '../../directus/HtmlContent'
-import type { DirectusBlogPost } from '../../directus/types'
+import { HtmlContent } from '../HtmlContent'
+import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
 import SEO from '../SEO'
 
 interface BlogPost {
@@ -32,22 +27,22 @@ function formatDate(iso: string): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
-  const { data: rawPosts, loading, error } = useDirectusQuery<DirectusBlogPost[]>(
-    () => getBlogPostBySlug(slug!), [slug]
-  )
-  const post: BlogPost | null = rawPosts?.[0] ? mapBlogPost(rawPosts[0]) : null
+  const found = staticBlogPosts.find((p) => p.slug === slug && p.published)
+  const post: BlogPost | null = found
+    ? {
+        _id: found.slug,
+        title: found.title,
+        slug: found.slug,
+        excerpt: found.excerpt,
+        content: found.content,
+        featuredImage: found.image || null,
+        author: found.author,
+        tags: found.tags,
+        publishedAt: found.date,
+      }
+    : null
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-cream pt-32 pb-20">
-        <div className="container max-w-[700px]">
-          <SectionSkeleton lines={1} />
-        </div>
-      </div>
-    )
-  }
-
-  if (!post || error) {
+  if (!post) {
     return <Navigate to="/blog" replace />
   }
 
@@ -58,7 +53,7 @@ export default function BlogPost() {
         description={post.excerpt}
         canonical={`/blog/${post.slug}`}
         ogType="article"
-        ogImage={post.featuredImage ? assetUrl(post.featuredImage, { width: 1200, format: 'webp' }) : undefined}
+        ogImage={post.featuredImage ?? undefined}
         article={{
           publishedTime: post.publishedAt,
           author: post.author,
@@ -72,7 +67,7 @@ export default function BlogPost() {
         headline: post.title,
         description: post.excerpt,
         image: post.featuredImage
-          ? assetUrl(post.featuredImage, { width: 1200 })
+          ? `https://mediawaveisrael.com${post.featuredImage}`
           : 'https://mediawaveisrael.com/og-image.png',
         datePublished: post.publishedAt,
         dateModified: post.publishedAt,
@@ -150,7 +145,7 @@ export default function BlogPost() {
           {post.featuredImage && (
             <div className="rounded-xl overflow-hidden mb-6">
               <img
-                src={assetUrl(post.featuredImage, { width: 700, format: 'webp' })}
+                src={post.featuredImage}
                 alt={post.title}
                 loading="lazy"
                 className="w-full"

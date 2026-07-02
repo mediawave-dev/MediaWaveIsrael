@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getBlogPosts } from '../../directus/queries'
-import { mapBlogPost } from '../../directus/mappers'
-import { assetUrl } from '../../directus/imageUrl'
-import type { DirectusBlogPost } from '../../directus/types'
+import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
 import SEO from '../SEO'
 
 interface BlogPost {
@@ -28,11 +23,20 @@ function formatDate(iso: string): string {
   })
 }
 
+const posts: BlogPost[] = staticBlogPosts
+  .filter((p) => p.published)
+  .map((p) => ({
+    _id: p.slug,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    featuredImage: p.image || null,
+    author: p.author,
+    tags: p.tags,
+    publishedAt: p.date,
+  }))
+
 export default function Blog() {
-  const { data: raw, loading } = useDirectusQuery<DirectusBlogPost[]>(getBlogPosts)
-
-  const posts: BlogPost[] = (raw ?? []).map(mapBlogPost)
-
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
       <SEO
@@ -69,13 +73,10 @@ export default function Blog() {
           </p>
         </motion.div>
 
-        {/* Loading state */}
-        {loading && <SectionSkeleton lines={3} showHeader={false} />}
-
         {/* Posts grid or empty state */}
-        {!loading && posts.length === 0 ? (
+        {posts.length === 0 ? (
           <EmptyState />
-        ) : !loading ? (
+        ) : (
           <div className="grid gap-8">
             {posts.map((post, index) => (
               <motion.article
@@ -92,7 +93,7 @@ export default function Blog() {
                   {post.featuredImage && (
                     <div className="aspect-[2/1] overflow-hidden">
                       <img
-                        src={assetUrl(post.featuredImage, { width: 800, height: 400, format: 'webp' })}
+                        src={post.featuredImage}
                         alt={post.title}
                         loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -142,7 +143,7 @@ export default function Blog() {
               </motion.article>
             ))}
           </div>
-        ) : null}
+        )}
 
         {/* Back to home */}
         <motion.div

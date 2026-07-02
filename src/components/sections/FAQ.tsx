@@ -1,11 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getFaqs } from '../../directus/queries'
-import { mapFaq } from '../../directus/mappers'
-import { HtmlContent } from '../../directus/HtmlContent'
-import type { DirectusFaq } from '../../directus/types'
+import { HtmlContent } from '../HtmlContent'
 
 interface Faq {
   _id: string
@@ -13,7 +8,7 @@ interface Faq {
   answer: string
 }
 
-const fallbackFaqs: Faq[] = [
+const faqs: Faq[] = [
   { _id: 'faq-1', question: 'מה כולל חבילת הפיתוח הבסיסית?', answer: 'כולל עד 5 עמודים, עיצוב רספונסיבי, אופטימיזציה למובייל, אינטגרציה עם WhatsApp, וטופס יצירת קשר. זמן אספקה: 2-3 שבועות.' },
   { _id: 'faq-2', question: 'האם תומכים בתחזוקה שוטפת?', answer: 'כן, אנו מציעים חבילות תחזוקה חודשיות הכוללות עדכונים, גיבויים, ותמיכה טכנית. ניתן לבחור חבילה מותאמת אישית.' },
   { _id: 'faq-3', question: 'כמה זמן לוקח לבנות אתר?', answer: 'אתר בסיסי: 2-3 שבועות. אתר מורכב: 4-6 שבועות. התהליך תלוי במורכבות ובזמינות התכנים מהלקוח.' },
@@ -31,24 +26,15 @@ const fallbackFaqs: Faq[] = [
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const { data: raw, loading, error } = useDirectusQuery<DirectusFaq[]>(getFaqs)
-  const mapped: Faq[] = (raw ?? []).map(mapFaq)
-  const data = mapped.length > 0 ? mapped : (error ? fallbackFaqs : null)
 
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
   }
 
-  if (loading) {
-    return <SectionSkeleton lines={3} />
-  }
-
-  if (!data || data.length === 0) return null
-
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: data.map(item => ({
+    mainEntity: faqs.map(item => ({
       '@type': 'Question',
       name: item.question,
       acceptedAnswer: {
@@ -89,7 +75,7 @@ export default function FAQ() {
 
         {/* FAQ List */}
         <div className="space-y-3">
-          {data.map((item, index) => (
+          {faqs.map((item, index) => (
             <motion.div
               key={item._id}
               className="bg-white rounded-lg overflow-hidden"

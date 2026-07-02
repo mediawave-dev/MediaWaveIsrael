@@ -11,13 +11,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "migrate": "tsx scripts/migrate-to-sanity.ts",
-    "migrate:blog": "tsx scripts/migrate-blog.ts",
-    "directus:up": "docker compose up -d",
-    "directus:down": "docker compose down",
-    "directus:seed": "tsx scripts/seed-directus.ts"
+    "migrate:blog": "tsx scripts/migrate-blog.ts"
   },
   "dependencies": {
-    "@directus/sdk": "^21.1.0",
     "@fontsource/heebo": "^5.2.8",
     "@portabletext/react": "^6.0.2",
     "@sanity/client": "^7.15.0",

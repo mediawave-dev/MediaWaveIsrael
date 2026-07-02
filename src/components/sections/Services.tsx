@@ -1,10 +1,5 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getServices } from '../../directus/queries'
-import { mapService } from '../../directus/mappers'
-import type { DirectusService } from '../../directus/types'
 
 interface ServiceItem {
   _id: string
@@ -15,7 +10,7 @@ interface ServiceItem {
   tags?: string[]
 }
 
-const fallbackServices: ServiceItem[] = [
+const services: ServiceItem[] = [
   {
     _id: 'websites',
     title: 'בניית אתרים',
@@ -45,17 +40,6 @@ const fallbackServices: ServiceItem[] = [
 ]
 
 export default function Services() {
-  const { data: raw, loading, error } = useDirectusQuery<DirectusService[]>(getServices)
-  const data = raw?.map(mapService) ?? null
-
-  const services = data && data.length > 0 ? data : (error ? fallbackServices : null)
-
-  if (loading && !services) {
-    return <SectionSkeleton lines={4} />
-  }
-
-  if (!services || services.length === 0) return null
-
   return (
     <section
       id="services"

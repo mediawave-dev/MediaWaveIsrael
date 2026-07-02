@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { LottieIcon } from '../ui'
-import SectionSkeleton from '../ui/SectionSkeleton'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getWhyUs } from '../../directus/queries'
-import { mapWhyUs } from '../../directus/mappers'
-import type { DirectusWhyUs } from '../../directus/types'
 
 interface WhyUsItem {
   _id: string
@@ -15,7 +10,7 @@ interface WhyUsItem {
   color: 'orange' | 'terracotta' | 'sage'
 }
 
-const fallbackDifferentiators: WhyUsItem[] = [
+const differentiators: WhyUsItem[] = [
   {
     _id: 'tech',
     lottieAnimation: '/animations/2/computer%20technician.json',
@@ -46,11 +41,6 @@ const colorMap: Record<string, { border: string }> = {
 }
 
 export default function WhyUs() {
-  const { data: raw, loading, error } = useDirectusQuery<DirectusWhyUs[]>(getWhyUs)
-  const data = raw?.map(mapWhyUs) ?? null
-
-  const differentiators = data && data.length > 0 ? data : (error ? fallbackDifferentiators : null)
-
   // Detect reduced motion preference
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
@@ -61,12 +51,6 @@ export default function WhyUs() {
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
-
-  if (loading && !differentiators) {
-    return <SectionSkeleton lines={3} />
-  }
-
-  if (!differentiators || differentiators.length === 0) return null
 
   return (
     <section

@@ -1,21 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { useDirectusQuery } from '../../directus/hooks'
-import { getTestimonials } from '../../directus/queries'
-import { mapTestimonial } from '../../directus/mappers'
-import { assetUrl } from '../../directus/imageUrl'
-import type { DirectusTestimonial } from '../../directus/types'
-
-interface Testimonial {
-  _id: string
-  name: string
-  business: string
-  quote: string
-  image?: string | null
-  rating?: number
-  url?: string
-}
+import { testimonials } from '../../data/testimonials'
 
 // Color palette for testimonial cards (from site design system)
 const cardColors = ['#F5A623', '#E07B54', '#8BB4A0', '#F28B82']
@@ -28,9 +14,6 @@ export default function Testimonials() {
   const prefersReducedMotion = useReducedMotion()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const { data: raw, loading } = useDirectusQuery<DirectusTestimonial[]>(getTestimonials)
-
-  const testimonials: Testimonial[] = (raw ?? []).map(mapTestimonial)
 
   // Auto-rotate testimonials (respect reduced motion preference)
   useEffect(() => {
@@ -48,16 +31,13 @@ export default function Testimonials() {
     return () => clearInterval(interval)
   }, [isAutoPlaying, prefersReducedMotion, testimonials.length])
 
-  // Don't render if loading or no testimonials
-  if (loading || testimonials.length === 0) return null
+  // Don't render if no testimonials collected yet
+  if (testimonials.length === 0) return null
 
   const color = getColor(activeIndex)
   const active = testimonials[activeIndex]
 
-  const getImageUrl = (img?: string | null) => {
-    if (!img) return undefined
-    return assetUrl(img, { width: 112, height: 112, format: 'webp' })
-  }
+  const getImageUrl = (img?: string | null) => img ?? undefined
 
   return (
     <section
@@ -265,7 +245,7 @@ export default function Testimonials() {
           <div className="flex justify-center gap-3 mb-16">
             {testimonials.map((testimonial, index) => (
               <button
-                key={testimonial._id}
+                key={testimonial.id}
                 onClick={() => {
                   setActiveIndex(index)
                   setIsAutoPlaying(false)
@@ -305,7 +285,7 @@ export default function Testimonials() {
           >
             {testimonials.map((testimonial, index) => (
               <motion.button
-                key={testimonial._id}
+                key={testimonial.id}
                 onClick={() => {
                   setActiveIndex(index)
                   setIsAutoPlaying(false)
