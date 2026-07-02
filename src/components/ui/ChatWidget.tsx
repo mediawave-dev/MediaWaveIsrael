@@ -110,8 +110,8 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
     }
 
     updateHeight()
-    vv.addEventListener('resize', updateHeight)
-    vv.addEventListener('scroll', updateHeight)
+    vv.addEventListener('resize', updateHeight, { passive: true })
+    vv.addEventListener('scroll', updateHeight, { passive: true })
     return () => {
       vv.removeEventListener('resize', updateHeight)
       vv.removeEventListener('scroll', updateHeight)
@@ -205,7 +205,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
       <AnimatePresence>
         {!isOpen && (
           <motion.div
-            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
+            className="floating-cta fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}

@@ -79,10 +79,10 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
       ">
         {/* Large gradient number */}
         <m.div
-          className="absolute -top-2 -right-2 md:-top-4 md:-right-4 select-none pointer-events-none"
+          className="absolute -top-1 -right-1 md:-top-4 md:-right-4 select-none pointer-events-none"
           variants={numberVariants}
         >
-          <span className="text-6xl md:text-8xl font-headline font-black
+          <span className="text-5xl md:text-8xl font-headline font-black
             bg-gradient-to-br from-sky-300 via-cyan-400 to-teal-400
             bg-clip-text text-transparent
             opacity-30 group-hover:opacity-50

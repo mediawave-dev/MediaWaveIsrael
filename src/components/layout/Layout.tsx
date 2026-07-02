@@ -70,7 +70,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           href={WHATSAPP_URLS.general}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#25D366]/90 rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4 backdrop-blur-sm"
+          className="floating-cta fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#25D366]/90 rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4 backdrop-blur-sm"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}

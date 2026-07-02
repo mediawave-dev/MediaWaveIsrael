@@ -72,13 +72,13 @@ export default function NotFound() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span>חזרה לדף הבית</span>
             <motion.span
-              animate={{ x: [0, -4, 0] }}
+              animate={{ x: [0, 4, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
-              ←
+              →
             </motion.span>
+            <span>חזרה לדף הבית</span>
           </motion.a>
         </motion.div>
 

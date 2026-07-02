@@ -29,7 +29,7 @@ const differentiators: WhyUsItem[] = [
     _id: 'personal',
     lottieAnimation: '/animations/6%20personal/contact%20us.json',
     title: 'ליווי אישי',
-    description: 'מדברים ישירות עם המפתח, בלי middlemen.',
+    description: 'מדברים ישירות עם המפתח, בלי מתווכים.',
     color: 'sage',
   },
 ]
@@ -81,7 +81,7 @@ export default function WhyUs() {
           playsInline
           aria-hidden="true"
           poster="/images/whyus-poster.webp"
-          className="absolute inset-0 w-full h-full object-cover hidden md:block opacity-40"
+          className="absolute inset-0 w-full h-full object-cover hidden md:block opacity-30"
           style={{ zIndex: 0 }}
         >
           <source src="/videos/whyus-bg.mp4" type="video/mp4" />
@@ -104,7 +104,7 @@ export default function WhyUs() {
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          background: 'linear-gradient(to bottom, rgba(253, 251, 247, 0.85) 0%, rgba(245, 240, 232, 0.9) 100%)',
+          background: 'linear-gradient(to bottom, rgba(253, 251, 247, 0.9) 0%, rgba(245, 240, 232, 0.94) 100%)',
         }}
       />
 

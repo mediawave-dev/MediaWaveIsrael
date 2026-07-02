@@ -1042,3 +1042,18 @@ html.disable-animations [data-floating] {
 }
 
 /* Prose Hebrew styles moved to prose-hebrew.css */
+/* ============================================
+   FLOATING CTA + COOKIE BANNER COEXISTENCE
+   While the cookie banner is open (body.mw-consent-open),
+   lift the floating WhatsApp/chat buttons above it on mobile
+   so nothing is ever hidden behind the banner.
+   ============================================ */
+.floating-cta {
+  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 639px) {
+  body.mw-consent-open .floating-cta {
+    bottom: 5.25rem !important;
+  }
+}

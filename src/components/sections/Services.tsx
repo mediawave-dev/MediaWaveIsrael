@@ -44,7 +44,7 @@ export default function Services() {
     <section
       id="services"
       aria-label="שירותים"
-      className="relative py-20 md:py-28 overflow-hidden"
+      className="relative py-14 md:py-28 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ecfeff 100%)',
       }}
@@ -73,7 +73,7 @@ export default function Services() {
 
       <div className="container relative max-w-6xl">
         {/* Header */}
-        <div className="mb-14 md:mb-16 text-center">
+        <div className="mb-10 md:mb-16 text-center">
           <m.span
             className="block text-base font-semibold tracking-widest uppercase mb-4"
             style={{ color: '#38BDF8' }}
@@ -106,7 +106,7 @@ export default function Services() {
         </div>
 
         {/* 4-column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {services.map((service, index) => (
             <ServiceCard key={service._id} service={service} index={index} />
           ))}
@@ -114,7 +114,7 @@ export default function Services() {
 
         {/* Bottom CTA */}
         <m.div
-          className="mt-14 md:mt-20 text-center"
+          className="mt-10 md:mt-20 text-center"
           initial={{ opacity: 0, transform: 'translateY(30px)' }}
           whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
           viewport={{ once: true }}
@@ -171,12 +171,12 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
       />
 
       {/* Card content */}
-      <div className="p-5 md:p-6 text-center flex flex-col h-full">
+      <div className="p-4 md:p-6 text-center flex flex-col h-full">
         {/* Icon / Lottie - same container for all */}
-        <div className="h-32 flex items-center justify-center mb-5 overflow-visible">
+        <div className="h-24 md:h-32 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
           {hasLottie ? (
             <div
-              className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+              className="flex items-center justify-center transition-transform duration-300 scale-75 md:scale-100 md:group-hover:scale-105"
               style={{ width: service.lottieSize ?? 128, height: service.lottieSize ?? 128 }}
             >
               <LottieIcon
