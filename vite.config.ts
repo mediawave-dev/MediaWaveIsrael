@@ -12,17 +12,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        // NOTE: object-form manualChunks for 'sanity' forced the 4MB Studio
+        // chunk into the ENTRY's static imports (downloaded on every page).
+        // Sanity packages are now left to Rollup — they naturally live only
+        // behind the lazy /studio route. Only truly-eager libs are pinned.
         manualChunks: {
-          // Split heavy animation libs from main bundle for parallel loading
           'framer-motion': ['framer-motion'],
           'lottie': ['lottie-react'],
-          // Split React core
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
-          // Sanity client libs (small, used on public pages)
-          'sanity-client': ['@sanity/client', '@sanity/image-url', '@portabletext/react'],
-          // Sanity Studio (large, lazy-loaded only on /studio route)
-          'sanity-studio': ['sanity'],
         },
       },
     },

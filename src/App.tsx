@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import LeadModal from './components/LeadModal'
 import { MotionProvider } from './components/MotionProvider'
 import ScrollToTop from './components/ScrollToTop'
 import SEO from './components/SEO'
@@ -28,6 +27,10 @@ const NotFound = lazy(() => import('./components/pages/NotFound'))
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
+
+// Lead modal appears only after 35s — no reason for it (and lottie-react)
+// to sit in the critical bundle
+const LeadModal = lazy(() => import('./components/LeadModal'))
 
 // Minimal fallback - reserves space with CSS containment for CLS prevention
 const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
@@ -90,7 +93,9 @@ function App() {
           {/* All other routes — wrapped in Layout */}
           <Route path="*" element={
             <Layout>
-              <LeadModal />
+              <Suspense fallback={null}>
+                <LeadModal />
+              </Suspense>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/blog" element={<Suspense fallback={<SectionFallback />}><Blog /></Suspense>} />

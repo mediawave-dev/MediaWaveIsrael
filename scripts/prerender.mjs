@@ -122,6 +122,11 @@ async function prerender() {
     // Remove the page loader (already rendered, not needed in static HTML)
     html = html.replace(/<div id="page-loader"[\s\S]*?<\/div>\s*/, '')
 
+    // Remove modulepreload links Vite injected at RUNTIME while prerendering
+    // (as="script"). Baking them into the HTML forces every visitor to
+    // download all lazy section chunks at high priority before first paint.
+    html = html.replace(/<link rel="modulepreload" as="script"[^>]*>\s*/g, '')
+
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
 
