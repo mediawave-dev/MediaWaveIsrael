@@ -294,6 +294,32 @@ button {
   mix-blend-mode: overlay;
 }
 
+/* Cheap hover shadow (DESIGN-UPGRADE §4.5) — the shadow is pre-painted on
+   a pseudo-element and only its OPACITY animates (S-tier compositor work),
+   instead of animating box-shadow itself (repaints every frame on the CPU).
+   NOTE: the element carrying .card-glow must not clip children
+   (overflow-hidden would cut the pseudo's shadow). */
+.card-glow {
+  position: relative;
+}
+
+.card-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--hover-shadow, 0 20px 40px rgba(0, 0, 0, 0.10), 0 4px 12px rgba(125, 211, 252, 0.12));
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-brand);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.card-glow:hover::after,
+.card-glow:focus-within::after {
+  opacity: 1;
+}
+
 /* Technology marquee strip (Hero → WhyUs) */
 .marquee-strip {
   background: var(--color-cream);

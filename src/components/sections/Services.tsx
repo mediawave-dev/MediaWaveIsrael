@@ -162,7 +162,7 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
 
   return (
     <m.div
-      className="relative group rounded-2xl overflow-visible h-full"
+      className="card-glow relative group rounded-2xl overflow-visible h-full"
       style={{
         background: 'rgba(255, 255, 255, 0.55)',
         backdropFilter: 'blur(12px)',
@@ -174,11 +174,7 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
       whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{
-        y: -8,
-        boxShadow:
-          '0 20px 40px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(125, 211, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
-      }}
+      whileHover={{ y: -8 }}
     >
       {/* Blue accent top border */}
       <div

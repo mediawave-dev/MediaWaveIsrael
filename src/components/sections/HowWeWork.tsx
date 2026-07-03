@@ -64,16 +64,17 @@ const numberVariants = {
 function StepCard({ step, index }: { step: StepItem; index: number }) {
   return (
     <m.article
-      className="relative group"
+      className="card-glow relative group rounded-3xl"
+      style={{ '--hover-shadow': '0 16px 48px rgba(125, 211, 252, 0.20)' } as React.CSSProperties}
       variants={cardVariants}
     >
-      {/* Glassmorphism card */}
+      {/* Glassmorphism card — hover shadow lives on the parent's .card-glow
+          pseudo (this div clips children with overflow-hidden) */}
       <div className="relative overflow-hidden rounded-3xl p-6 md:p-8
         bg-white/70 backdrop-blur-xl
         border border-white/50
         shadow-[0_8px_32px_rgba(125,211,252,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]
-        transition-all duration-500
-        hover:shadow-[0_16px_48px_rgba(125,211,252,0.20),inset_0_1px_0_rgba(255,255,255,0.9)]
+        transition-[transform,background-color] duration-500
         hover:bg-white/80
         hover:-translate-y-2
       ">

@@ -155,12 +155,13 @@ export default function WhyUs() {
             return (
               <m.div
                 key={item._id}
-                className={`bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
+                className={`card-glow bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
+                style={{ '--hover-shadow': '0 8px 24px rgba(74, 74, 74, 0.08)' } as React.CSSProperties}
                 initial={{ opacity: 0, transform: 'translateY(20px)' }}
                 whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4, boxShadow: '0 8px 24px rgba(74, 74, 74, 0.08)' }}
+                whileHover={{ y: -4 }}
               >
                 {hasLottie ? (
                   <div className="w-28 h-28 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
