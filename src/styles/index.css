@@ -280,6 +280,20 @@ button {
   font-style: italic;
 }
 
+/* Global film grain — cheapest signal against "flat AI look".
+   Static compositor layer; sits above page content (z-1) but below
+   the fixed header/widgets (z-30+). */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url('/images/grain.png');
+  background-repeat: repeat;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
 /* Logo - white filter on hero (all screen sizes) */
 .logo-hero-white {
   filter: brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
