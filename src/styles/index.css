@@ -131,8 +131,19 @@
      TRANSITIONS
      ----------------------------- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* -----------------------------
+     WAVE-LAB TOKENS (DESIGN-UPGRADE §3.2)
+     ----------------------------- */
+  /* Spec font for numbers/labels — system mono with tabular digits.
+     Hebrew glyphs fall through to Heebo (mono fonts have no Hebrew). */
+  --font-spec: ui-monospace, 'Cascadia Mono', 'Consolas', 'Courier New', 'Heebo', monospace;
+  /* One giant statement word (§4.9) */
+  --text-giant: clamp(4rem, 12vw, 11rem);
+  --grain-opacity: 0.05;
 
   --duration-fast: 150ms;
   --duration-normal: 300ms;
@@ -278,6 +289,13 @@ button {
 .text-emphasis {
   color: var(--color-orange);
   font-weight: 600;
+}
+
+/* Spec-sheet identity for numbers & labels (DESIGN-UPGRADE §3.1) —
+   tabular digits so counters don't jitter, mono for the "code" feel */
+.font-mono-spec {
+  font-family: var(--font-spec);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Container */
