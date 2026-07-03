@@ -294,6 +294,100 @@ button {
   mix-blend-mode: overlay;
 }
 
+/* Technology marquee strip (Hero → WhyUs) */
+.marquee-strip {
+  background: var(--color-cream);
+  padding-block: 1.1rem;
+  overflow: hidden;
+}
+
+.marquee {
+  overflow: hidden;
+  direction: ltr;
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeMove 32s linear infinite;
+}
+
+/* RTL feel: content flows to the right */
+@keyframes marqueeMove {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.marquee:hover .marquee-track,
+.marquee-strip[data-paused] .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline-end: 2.75rem;
+  font-size: 0.875rem;
+  color: var(--color-brown-light);
+  white-space: nowrap;
+}
+
+.marquee-dot {
+  color: var(--color-orange-dark);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Wave dividers — signature section separators */
+.wave-divider {
+  line-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.wave-drift {
+  animation: waveDrift 16s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.wave-drift-running {
+  animation-play-state: running;
+}
+
+@keyframes waveDrift {
+  from {
+    transform: translateX(-18px);
+  }
+
+  to {
+    transform: translateX(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-drift {
+    animation: none;
+  }
+}
+
 /* Logo - white filter on hero (all screen sizes) */
 .logo-hero-white {
   filter: brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));

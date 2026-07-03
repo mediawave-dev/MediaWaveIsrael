@@ -8,6 +8,8 @@ import SEO from './components/SEO'
 
 // Above-fold: load immediately
 import { Hero } from './components/sections'
+import Marquee from './components/ui/Marquee'
+import { WaveDivider } from './components/ui/WaveDivider'
 
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
@@ -49,6 +51,9 @@ function HomePage() {
       {/* Hero Section - loads immediately (above fold, LCP critical) */}
       <Hero />
 
+      {/* Technology marquee strip (DESIGN-UPGRADE §4.2) */}
+      <Marquee />
+
       {/* Below-fold sections - each in separate Suspense for progressive rendering */}
       <Suspense fallback={<SectionFallback height="400px" />}>
         <WhyUs />
@@ -66,13 +71,22 @@ function HomePage() {
         <Testimonials />
       </Suspense>
 
-<Suspense fallback={<SectionFallback height="400px" />}>
+      {/* Wave hand-off: HowWeWork (cream) → FAQ (cream-dark) */}
+      <WaveDivider variant="c" fill="#F1F5F9" />
+
+      <Suspense fallback={<SectionFallback height="400px" />}>
         <FAQ />
       </Suspense>
+
+      {/* Wave hand-off: FAQ (cream-dark) → Contact (cream) */}
+      <WaveDivider variant="a" fill="#F8FAFC" bg="#F1F5F9" />
 
       <Suspense fallback={<SectionFallback height="500px" />}>
         <Contact />
       </Suspense>
+
+      {/* Wave hand-off: Contact (cream) → Footer (dark) */}
+      <WaveDivider variant="b" fill="#1a1a1a" bg="#F8FAFC" drift />
     </>
   )
 }

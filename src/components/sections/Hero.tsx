@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { m, useScroll, useTransform } from 'framer-motion'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { WaveDivider } from '../ui/WaveDivider'
 
 // Words to cycle through with typewriter effect
 const typewriterWords = ['אתרים', 'דפי נחיתה', "צ'אטבוטים"]
@@ -225,6 +226,13 @@ export default function Hero() {
         </div>
       </m.div>
 
+      {/* Signature wave hand-off into the next section (drift layer = depth) */}
+      <WaveDivider
+        variant="a"
+        fill="#F8FAFC"
+        drift
+        className="absolute bottom-0 inset-x-0 z-[2]"
+      />
     </section>
   )
 }

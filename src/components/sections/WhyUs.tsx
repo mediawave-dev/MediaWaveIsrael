@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
-import { LottieIcon } from '../ui'
+import { LottieIcon, WaveDivider } from '../ui'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 
 interface WhyUsItem {
@@ -119,6 +119,14 @@ export default function WhyUs() {
           zIndex: 1,
           background: 'linear-gradient(to bottom, rgba(253, 251, 247, 0.9) 0%, rgba(245, 240, 232, 0.94) 100%)',
         }}
+      />
+
+      {/* Wave hand-off from the marquee strip above (same cream) */}
+      <WaveDivider
+        variant="b"
+        flip
+        fill="#F8FAFC"
+        className="absolute top-0 inset-x-0 z-[1]"
       />
 
       {/* ===== LAYER 3: Content ===== */}

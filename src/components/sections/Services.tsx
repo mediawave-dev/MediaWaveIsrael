@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { m, useInView } from 'framer-motion'
-import { LottieIcon } from '../ui'
+import { LottieIcon, WaveDivider } from '../ui'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 interface ServiceItem {
@@ -80,6 +80,10 @@ export default function Services() {
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
+
+      {/* Wave hand-offs: from WhyUs above, into the next section below */}
+      <WaveDivider variant="c" flip fill="#F5F0E8" className="absolute top-0 inset-x-0" />
+      <WaveDivider variant="b" fill="#F8FAFC" className="absolute bottom-0 inset-x-0" />
 
       <div className="container relative max-w-6xl">
         {/* Header */}
