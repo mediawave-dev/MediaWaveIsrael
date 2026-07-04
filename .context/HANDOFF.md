@@ -37,6 +37,13 @@
 - [x] אתר הדמו הישן: "עסק לפיתוח אתרים!" בסגנון 2003 (פלאש, ספר אורחים, אקספלורר)
 - [x] Lighthouse אחרי הסבב: דסקטופ 97, מובייל 75 (הכי טוב עד כה)
 
+## סבב משוב נתי 2 (04/07/2026) — הושלם
+- [x] מדיניות מושן אמביינטית: useAmbientMotion (ווידג'ט = כיבוי מוחלט; דגל מערכת = האטה בלבד לגלים/מרקי, ומכבה רק וידאו/כניסות/מגנטי). לוטי, מכונת כתיבה, אורבים, לופים = תמיד חיים
+- [x] הוסרו מהאתר: LoadTimeBadge + פס הסטטיסטיקות של ProofBand (הקבצים נמחקו; בהיסטוריית git)
+- [x] הסליידר נשמר בסקשן חדש BeforeAfterShowcase.tsx ("לפני ואחרי", נייבי, id=before-after)
+- [x] מרקי הואץ ל-22s; הצהרת הנגישות עודכנה לנוסח מדויק
+- [x] אומת: תחת reduce הגלים/מרקי/מכונת-כתיבה זזים; עם הווידג'ט הכל קופא; אפס שגיאות בכל הרוחבים
+
 ## Important Files
 - `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND)
 - `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, LoadTimeBadge, BeforeAfterSlider, MagneticButton, GiantWord, GrainOverlay
