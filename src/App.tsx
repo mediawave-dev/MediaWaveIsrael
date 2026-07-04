@@ -15,7 +15,7 @@ import { GiantWord } from './components/ui/GiantWord'
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
 const Services = lazy(() => import('./components/sections/Services'))
-const ProofBand = lazy(() => import('./components/sections/ProofBand'))
+const BeforeAfterShowcase = lazy(() => import('./components/sections/BeforeAfterShowcase'))
 const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
 const FAQ = lazy(() => import('./components/sections/FAQ'))
@@ -65,9 +65,9 @@ function HomePage() {
         <Services />
       </Suspense>
 
-      {/* The dark trust anchor — measured numbers only (DESIGN-UPGRADE §4.3) */}
+      {/* Interactive before/after on the single dark band */}
       <Suspense fallback={<SectionFallback height="400px" />}>
-        <ProofBand />
+        <BeforeAfterShowcase />
       </Suspense>
 
       <Suspense fallback={<SectionFallback height="500px" />}>
