@@ -365,7 +365,8 @@ button {
   cursor: default;
 }
 
-.giant-word:hover {
+.giant-word:hover,
+.giant-word-filled {
   color: #38BDF8;
 }
 
@@ -406,14 +407,15 @@ button {
   animation: marqueeMove 32s linear infinite;
 }
 
-/* RTL feel: content flows to the right */
+/* Right-to-left flow: items enter from the right and travel left,
+   one after another, on an endless loop */
 @keyframes marqueeMove {
   from {
-    transform: translateX(-50%);
+    transform: translateX(0);
   }
 
   to {
-    transform: translateX(0);
+    transform: translateX(-50%);
   }
 }
 
@@ -448,34 +450,76 @@ button {
   }
 }
 
-/* Wave dividers — signature section separators */
+/* Wave dividers — LIVING section separators. Each layer slides one full
+   period (1440 svg units = 100% of the element width) on a seamless
+   linear loop; layers move at different speeds and opposite directions
+   so the water reads as depth. Transform-only, paused offscreen. */
 .wave-divider {
   line-height: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
-.wave-drift {
-  animation: waveDrift 16s ease-in-out infinite alternate;
+.wave-layer {
   animation-play-state: paused;
+  will-change: transform;
 }
 
-.wave-drift-running {
+.wave-running {
   animation-play-state: running;
 }
 
-@keyframes waveDrift {
+.wave-slide-front {
+  animation: waveSlideL 18s linear infinite;
+}
+
+.wave-slide-back {
+  animation: waveSlideR 30s linear infinite;
+}
+
+.wave-slide-mid {
+  animation: waveSlideL 42s linear infinite;
+}
+
+@keyframes waveSlideL {
   from {
-    transform: translateX(-18px);
+    transform: translateX(0);
   }
 
   to {
-    transform: translateX(18px);
+    transform: translateX(-1440px);
+  }
+}
+
+@keyframes waveSlideR {
+  from {
+    transform: translateX(-1440px);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* The hero headline's wave underline sways gently after drawing on */
+.wave-underline-sway {
+  animation: underlineSway 7s ease-in-out infinite alternate;
+}
+
+@keyframes underlineSway {
+  from {
+    transform: translateX(-6px);
+  }
+
+  to {
+    transform: translateX(6px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wave-drift {
+
+  .wave-layer,
+  .wave-underline-sway {
     animation: none;
   }
 }

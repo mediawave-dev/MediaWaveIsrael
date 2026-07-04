@@ -12,7 +12,7 @@ import { EASE_BRAND } from '../../config/motion'
 function WaveUnderline({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
   return (
     <svg
-      className="absolute inset-x-0 -bottom-1 md:-bottom-2 w-full"
+      className={`absolute inset-x-0 -bottom-1 md:-bottom-2 w-full ${prefersReducedMotion ? '' : 'wave-underline-sway'}`}
       height="16"
       viewBox="0 0 300 16"
       preserveAspectRatio="none"
@@ -160,7 +160,7 @@ export default function Hero() {
 
       {/* ===== LAYER 3: Content (z-[2]) ===== */}
       <m.div
-        className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-32 md:pb-24"
+        className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-44 md:pb-14"
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
@@ -261,11 +261,11 @@ export default function Hero() {
         </div>
       </m.div>
 
-      {/* Signature wave hand-off into the next section (drift layer = depth) */}
+      {/* Signature wave hand-off into the next section (3 living layers) */}
       <WaveDivider
         variant="a"
         fill="#F8FAFC"
-        drift
+        layers={3}
         className="absolute bottom-0 inset-x-0 z-[2]"
       />
     </section>

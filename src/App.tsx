@@ -46,7 +46,7 @@ function HomePage() {
   return (
     <>
       <SEO
-        title="MediaWave — פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם"
+        title="MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם"
         description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים קטנים ובינוניים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה."
         canonical="/"
       />
@@ -97,7 +97,7 @@ function HomePage() {
       </Suspense>
 
       {/* Wave hand-off: Contact (cream) → Footer (dark) */}
-      <WaveDivider variant="b" fill="#1a1a1a" bg="#F8FAFC" drift />
+      <WaveDivider variant="b" fill="#1a1a1a" bg="#F8FAFC" layers={3} />
     </>
   )
 }

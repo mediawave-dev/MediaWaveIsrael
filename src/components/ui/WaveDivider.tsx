@@ -1,48 +1,92 @@
 import { useRef } from 'react'
 import { useInView } from 'framer-motion'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
 
 /**
- * WaveDivider — the signature organic section separator (DESIGN-UPGRADE §4.6).
- * Asymmetric, logo-inspired wave paths (NOT generic getwaves arcs).
+ * WaveDivider — living, animated section separators (the brand signature).
  *
- * The path fills the BOTTOM of the box with `fill` (= the NEXT section's
- * color) and leaves the top transparent. Use `flip` to mirror vertically
- * when the divider sits at the TOP of a section instead.
+ * Every divider is real moving water: 2-3 stacked wave layers sliding
+ * horizontally at different speeds and opposite directions. The wave tiles
+ * are PERIODIC (the end slope mirrors the start slope), so translating a
+ * doubled path by exactly one period loops seamlessly — pure transform,
+ * compositor-only.
  *
- * `drift` adds a second, slower wave layer translating ±18px — the loop is
- * paused offscreen (useInView) and disabled under prefers-reduced-motion.
+ * Layers pause offscreen (useInView) and freeze under prefers-reduced-motion
+ * (CSS), where the stacked layers still read as a static organic wave.
  */
 
 type WaveVariant = 'a' | 'b' | 'c'
 
-// Wavy top edge, solid bottom. viewBox 0 0 1440 100, drawn to y=101 to
-// avoid subpixel seams when stretched with preserveAspectRatio="none".
-const PATHS: Record<WaveVariant, string> = {
-  // asymmetric single crest, rising toward the right (RTL reading start)
-  a: 'M0,56 C180,88 340,20 560,44 C780,68 1000,14 1180,42 C1290,58 1380,40 1440,52 L1440,101 L0,101 Z',
-  // double crest with a deep drop — the most "logo-like" silhouette
-  b: 'M0,36 C140,72 320,84 520,58 C700,34 820,10 1020,30 C1200,48 1320,76 1440,40 L1440,101 L0,101 Z',
-  // one long gentle swell
-  c: 'M0,70 C260,28 520,88 800,52 C1040,22 1260,66 1440,44 L1440,101 L0,101 Z',
+const PERIOD = 1440
+
+interface WaveTile {
+  y0: number
+  // cubic segments: [c1x, c1y, c2x, c2y, x, y]
+  segs: number[][]
 }
 
-// Drift layers extend past the viewBox so the ±18px loop never shows a gap
-const DRIFT_PATHS: Record<WaveVariant, string> = {
-  a: 'M-40,48 C200,16 420,76 660,50 C900,26 1120,72 1300,44 C1380,32 1440,52 1480,44 L1480,101 L-40,101 Z',
-  b: 'M-40,60 C160,28 360,16 580,42 C800,66 960,80 1140,54 C1300,32 1400,44 1480,60 L1480,101 L-40,101 Z',
-  c: 'M-40,40 C240,80 540,24 840,60 C1100,88 1300,36 1480,64 L1480,101 L-40,101 Z',
+// Each tile wraps smoothly: the last control point mirrors the first
+// departure vector, so slope(0) === slope(1440) and the loop has no seam.
+const TILES: Record<WaveVariant, WaveTile> = {
+  a: {
+    y0: 55,
+    segs: [
+      [120, 35, 240, 28, 380, 34],
+      [520, 40, 600, 74, 740, 72],
+      [880, 70, 960, 44, 1100, 44],
+      [1240, 44, 1320, 75, 1440, 55],
+    ],
+  },
+  b: {
+    y0: 45,
+    segs: [
+      [100, 65, 200, 78, 330, 70],
+      [470, 61, 540, 25, 690, 22],
+      [840, 19, 900, 55, 1030, 60],
+      [1170, 65, 1340, 25, 1440, 45],
+    ],
+  },
+  c: {
+    y0: 60,
+    segs: [
+      [180, 30, 320, 24, 520, 40],
+      [720, 56, 860, 80, 1060, 68],
+      [1200, 60, 1260, 90, 1440, 60],
+    ],
+  },
 }
+
+/** Two periods of the tile, closed to the bottom (y=101 avoids seams) */
+function buildWavePath(tile: WaveTile, periods = 2): string {
+  let d = `M0,${tile.y0}`
+  for (let p = 0; p < periods; p++) {
+    const off = p * PERIOD
+    for (const [c1x, c1y, c2x, c2y, x, y] of tile.segs) {
+      d += ` C${c1x + off},${c1y} ${c2x + off},${c2y} ${x + off},${y}`
+    }
+  }
+  d += ` L${periods * PERIOD},101 L0,101 Z`
+  return d
+}
+
+const PATHS: Record<WaveVariant, string> = {
+  a: buildWavePath(TILES.a),
+  b: buildWavePath(TILES.b),
+  c: buildWavePath(TILES.c),
+}
+
+// back layer uses a DIFFERENT silhouette so crests peek organically
+const BACK_OF: Record<WaveVariant, WaveVariant> = { a: 'c', b: 'a', c: 'b' }
+const MID_OF: Record<WaveVariant, WaveVariant> = { a: 'b', b: 'c', c: 'a' }
 
 interface WaveDividerProps {
-  /** Which wave silhouette to draw */
+  /** Which wave silhouette leads (front layer) */
   variant?: WaveVariant
   /** Fill color = the color of the section the wave "hands over" to */
   fill: string
   /** Mirror vertically (wave sits at the top of a section) */
   flip?: boolean
-  /** Second wave layer with a slow horizontal drift */
-  drift?: boolean
+  /** 3 layers = extra depth for the dramatic boundaries */
+  layers?: 2 | 3
   /** Solid background behind the transparent part (for in-flow dividers) */
   bg?: string
   /** Positioning classes, e.g. "absolute bottom-0 inset-x-0 z-[2]" */
@@ -54,15 +98,14 @@ export function WaveDivider({
   variant = 'a',
   fill,
   flip = false,
-  drift = false,
+  layers = 2,
   bg,
   className = '',
-  height = 'clamp(28px, 6vw, 96px)',
+  height = 'clamp(32px, 6.5vw, 104px)',
 }: WaveDividerProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { margin: '100px' })
-  const prefersReducedMotion = useReducedMotion()
-  const driftRunning = drift && inView && !prefersReducedMotion
+  const inView = useInView(ref, { margin: '120px' })
+  const run = inView ? ' wave-running' : ''
 
   return (
     <div
@@ -74,20 +117,26 @@ export function WaveDivider({
       <svg
         width="100%"
         height="100%"
-        viewBox="0 0 1440 100"
+        viewBox={`0 0 ${PERIOD} 100`}
         preserveAspectRatio="none"
         focusable="false"
         style={{ display: 'block', transform: flip ? 'scaleY(-1)' : undefined }}
       >
-        {drift && (
+        <path
+          d={PATHS[BACK_OF[variant]]}
+          fill={fill}
+          opacity={0.3}
+          className={`wave-layer wave-slide-back${run}`}
+        />
+        {layers === 3 && (
           <path
-            d={DRIFT_PATHS[variant]}
+            d={PATHS[MID_OF[variant]]}
             fill={fill}
-            opacity={0.4}
-            className={driftRunning ? 'wave-drift wave-drift-running' : 'wave-drift'}
+            opacity={0.5}
+            className={`wave-layer wave-slide-mid${run}`}
           />
         )}
-        <path d={PATHS[variant]} fill={fill} />
+        <path d={PATHS[variant]} fill={fill} className={`wave-layer wave-slide-front${run}`} />
       </svg>
     </div>
   )
