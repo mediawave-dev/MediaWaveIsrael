@@ -141,7 +141,7 @@ export default function WhyUs() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-5xl font-headline mb-3">
-            למה לעבוד איתנו?
+            למה לעבוד <span style={{ color: '#0284C7' }}>איתנו?</span>
           </h2>
           <div className="section-title-accent" aria-hidden="true" />
           <p className="text-lg text-brown-light mt-4">

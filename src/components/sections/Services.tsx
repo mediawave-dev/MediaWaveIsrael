@@ -105,7 +105,7 @@ export default function Services() {
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
-            מה אנחנו עושים
+            מה אנחנו <span style={{ color: '#0284C7' }}>עושים</span>
           </m.h2>
 
           <div className="section-title-accent" aria-hidden="true" />
@@ -181,6 +181,15 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
         className="absolute top-0 inset-x-0 h-[3px] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-right"
         style={{ background: 'linear-gradient(90deg, #BAE6FD, #BAE6FD)' }}
       />
+
+      {/* Spec-sheet numbering (DESIGN-UPGRADE §4.5) */}
+      <span
+        className="absolute top-3 right-4 font-mono-spec text-sm select-none"
+        style={{ color: '#0284C7' }}
+        aria-hidden="true"
+      >
+        {String(index + 1).padStart(2, '0')}·
+      </span>
 
       {/* Card content */}
       <div className="p-4 md:p-6 text-center flex flex-col h-full">

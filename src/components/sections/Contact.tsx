@@ -95,7 +95,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            דברו איתנו
+            דברו <span style={{ color: '#0284C7' }}>איתנו</span>
           </m.h2>
 
           <div className="section-title-accent" aria-hidden="true" />

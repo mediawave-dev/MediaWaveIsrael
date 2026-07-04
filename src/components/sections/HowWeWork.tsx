@@ -205,7 +205,7 @@ export default function HowWeWork() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <h2 id="how-we-work-title" className="text-4xl md:text-5xl font-headline font-bold text-brown-dark mb-4">
-            איך אנחנו עובדים
+            איך אנחנו <span style={{ color: '#0284C7' }}>עובדים</span>
           </h2>
           <div className="section-title-accent" aria-hidden="true" />
           <p className="text-lg md:text-xl text-brown-light max-w-2xl mx-auto mt-4">

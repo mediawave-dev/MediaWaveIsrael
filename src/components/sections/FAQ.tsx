@@ -60,7 +60,7 @@ export default function FAQ() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            שאלות נפוצות
+            שאלות <span style={{ color: '#0284C7' }}>נפוצות</span>
           </m.h2>
           <div className="section-title-accent" aria-hidden="true" />
           <m.p
