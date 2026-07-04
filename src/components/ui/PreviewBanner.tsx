@@ -11,7 +11,7 @@ export default function PreviewBanner() {
       className="fixed top-0 inset-x-0 z-[9999] bg-amber-400 text-amber-950 text-sm font-medium py-2 px-4 flex items-center justify-center gap-3 shadow-md"
     >
       <span>
-        מצב תצוגה מקדימה — התוכן שמוצג כולל טיוטות שלא פורסמו
+        מצב תצוגה מקדימה: התוכן שמוצג כולל טיוטות שלא פורסמו
       </span>
       <button
         onClick={exitPreview}

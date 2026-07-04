@@ -202,7 +202,7 @@ export default function HowWeWork() {
           </h2>
           <div className="section-title-accent" aria-hidden="true" />
           <p className="text-lg md:text-xl text-brown-light max-w-2xl mx-auto mt-4">
-            מהרעיון ועד ההשקה — תהליך פשוט וברור
+            מהרעיון ועד ההשקה: תהליך פשוט וברור
           </p>
         </m.div>
 

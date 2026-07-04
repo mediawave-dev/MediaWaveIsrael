@@ -53,7 +53,7 @@ export default function Contact() {
     if (!endpoint) {
       const waMessage = `היי, אני ${formData.name.trim()}.\n${formData.message.trim()}\n(אימייל לחזרה: ${formData.email.trim()})`
       window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
-      setSuccessMsg('פתחנו לכם וואטסאפ עם ההודעה מוכנה — רק ללחוץ על שלח 😊')
+      setSuccessMsg('פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊')
       return
     }
 

@@ -20,7 +20,7 @@ export default function Accessibility() {
     <main className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="הצהרת נגישות"
-        description="הצהרת הנגישות של MediaWave Israel — התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות."
+        description="הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות."
         canonical="/accessibility"
       />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
@@ -95,8 +95,8 @@ export default function Accessibility() {
             </p>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li>ניווט מלא באמצעות מקלדת, כולל קישור "דלג לתוכן הראשי"</li>
-              <li>תמיכה בקוראי מסך — תגיות ARIA ומבנה כותרות תקין</li>
-              <li>כיבוד העדפת המערכת להפחתת תנועה (prefers-reduced-motion) — אנימציות נעצרות אוטומטית</li>
+              <li>תמיכה בקוראי מסך: תגיות ARIA ומבנה כותרות תקין</li>
+              <li>כיבוד העדפת המערכת להפחתת תנועה (prefers-reduced-motion), כך שאנימציות נעצרות אוטומטית</li>
               <li>סימון פוקוס ברור בכל הרכיבים האינטראקטיביים</li>
               <li>אזורי לחיצה בגודל מספק במובייל</li>
               <li>טקסט חלופי לתמונות וניגודיות צבעים תקינה</li>
@@ -110,7 +110,7 @@ export default function Accessibility() {
             </h2>
             <p className="text-brown leading-relaxed mb-4">
               אנו פועלים באופן שוטף לשיפור נגישות האתר. ייתכן שיתגלו רכיבים או עמודים שטרם הונגשו
-              במלואם. אם נתקלתם בקושי או בבעיה — נשמח שתפנו אלינו ונטפל בכך בהקדם האפשרי.
+              במלואם. אם נתקלתם בקושי או בבעיה, נשמח שתפנו אלינו ונטפל בכך בהקדם האפשרי.
             </p>
           </section>
 

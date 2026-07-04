@@ -19,7 +19,7 @@ export default function Privacy() {
     <main className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="מדיניות פרטיות"
-        description="מדיניות הפרטיות של MediaWave Israel — כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם."
+        description="מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם."
         canonical="/privacy"
       />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">

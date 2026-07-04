@@ -95,7 +95,7 @@ export function BeforeAfterSlider({
       className={`before-after relative select-none overflow-hidden rounded-2xl ${className}`}
       style={{ '--pos': '50%', touchAction: 'pan-y' } as React.CSSProperties}
       role="slider"
-      aria-label="השוואת לפני ואחרי — הדגמה"
+      aria-label="השוואת לפני ואחרי (הדגמה)"
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={50}
@@ -107,7 +107,7 @@ export function BeforeAfterSlider({
       {/* AFTER — full layer underneath */}
       <img
         src={afterSrc}
-        alt="האתר החדש — העיצוב הנוכחי של MediaWave"
+        alt="האתר החדש: העיצוב הנוכחי של MediaWave"
         width={1200}
         height={750}
         loading="lazy"
@@ -119,7 +119,7 @@ export function BeforeAfterSlider({
       {/* BEFORE — clipped to the right portion (RTL reveal) */}
       <img
         src={beforeSrc}
-        alt="אתר בסגנון מיושן — הדגמה בלבד"
+        alt="אתר בסגנון מיושן, הדגמה בלבד"
         width={1200}
         height={750}
         loading="lazy"

@@ -145,7 +145,7 @@ export default function LeadModal() {
                                 <h3 className="text-2xl font-bold text-brown-dark mb-2">תודה!</h3>
                                 <p className="text-brown">
                                     {waHandoff
-                                        ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה — רק ללחוץ על שלח 😊'
+                                        ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊'
                                         : 'הפרטים התקבלו, נחזור אליכם בהקדם.'}
                                 </p>
                             </div>

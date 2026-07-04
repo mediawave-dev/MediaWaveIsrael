@@ -19,7 +19,7 @@ export default function Terms() {
     <main className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="תקנון שימוש"
-        description="תקנון השימוש של MediaWave Israel — תנאי שימוש באתר ושירותי פיתוח אתרים."
+        description="תקנון השימוש של MediaWave Israel: תנאי שימוש באתר ושירותי פיתוח אתרים."
         canonical="/terms"
       />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">

@@ -114,7 +114,7 @@ export default function ProofBand() {
           <div className="section-title-accent" aria-hidden="true" />
           <p className="text-lg md:text-xl text-white/70 mt-4">
             {/* [קופי: נתי] */}
-            לא מבטיחים מהירות — מודדים אותה, על האתר הזה ממש.
+            לא מבטיחים מהירות. מודדים אותה, על האתר הזה ממש.
           </p>
         </m.div>
 
@@ -154,7 +154,7 @@ export default function ProofBand() {
         >
           <p className="text-center text-white/80 text-base md:text-lg mb-4">
             {/* [קופי: נתי] */}
-            גררו את הידית — ככה מרגישה קפיצת דור באתר
+            גררו את הידית וראו איך מרגישה קפיצת דור באתר
           </p>
           <BeforeAfterSlider
             beforeSrc="/images/demo-before.webp"
@@ -163,7 +163,7 @@ export default function ProofBand() {
           />
           <p className="text-center text-white/45 text-xs md:text-sm mt-3">
             {/* [קופי: נתי] */}
-            הדגמה להמחשה בלבד — לא אתר של לקוח
+            הדגמה להמחשה בלבד, לא אתר של לקוח
           </p>
         </m.div>
 

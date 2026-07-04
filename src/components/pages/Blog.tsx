@@ -40,7 +40,7 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
       <SEO
-        title="בלוג — טיפים ומדריכים לעסקים"
+        title="בלוג | טיפים ומדריכים לעסקים"
         description="טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי. איך לבנות נוכחות דיגיטלית חזקה לעסק שלכם."
         canonical="/blog"
       />
