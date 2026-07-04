@@ -44,9 +44,12 @@
 - [x] מרקי הואץ ל-22s; הצהרת הנגישות עודכנה לנוסח מדויק
 - [x] אומת: תחת reduce הגלים/מרקי/מכונת-כתיבה זזים; עם הווידג'ט הכל קופא; אפס שגיאות בכל הרוחבים
 
+## סבב משוב נתי 3 (04/07/2026) — הושלם
+- [x] תוקן טקסט מפוקסל: הגריין הגלובלי עם mix-blend-mode ביטל ClearType בכל הדף. הוחלף באריח רעש אלפא (grain-alpha.png) בקומפוזיציה רגילה, סקופ לפוטר ולסקשן לפני/אחרי בלבד, מאחורי התוכן. GrainOverlay + grain.png נמחקו
+
 ## Important Files
-- `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND)
-- `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, LoadTimeBadge, BeforeAfterSlider, MagneticButton, GiantWord, GrainOverlay
-- `src/components/sections/ProofBand.tsx` — המספרים המדודים (לעדכן עם כל מדידה)
+- `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND); `src/hooks/useReducedMotion.ts` — גם useAmbientMotion
+- `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, BeforeAfterSlider, MagneticButton, GiantWord (נמחקו: LoadTimeBadge, GrainOverlay)
+- `src/components/sections/BeforeAfterShowcase.tsx` — הסקשן הכהה עם הסליידר (החליף את ProofBand שנמחק)
 - `scripts/design-verify.mjs` — שער ויזואלי רב-פעמי; `scripts/generate-demo-images.mjs` — נכסי הסליידר
-- צילומים ודוחות: `g:\tmp\mediawave-audit\wave-lab\{before,phase1,phase2,phase3,final}\`
+- צילומים ודוחות: `g:\tmp\mediawave-audit\wave-lab\{before,phase1,phase2,phase3,final,motion,ambient}\`
