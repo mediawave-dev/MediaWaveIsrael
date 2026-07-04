@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { m, useInView, animate } from 'framer-motion'
 import { WaveDivider } from '../ui/WaveDivider'
+import { BeforeAfterSlider } from '../ui/BeforeAfterSlider'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { EASE_BRAND } from '../../config/motion'
 
@@ -141,6 +142,29 @@ export default function ProofBand() {
             <p className="text-sm md:text-base text-white/70">שנות ניסיון</p>
           </div>
         </div>
+
+        {/* Interactive before/after — self-made DEMO, never a fake client (§4.4) */}
+        <m.div
+          className="mt-12 md:mt-16 max-w-3xl mx-auto"
+          initial={{ opacity: 0, transform: 'translateY(24px)' }}
+          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.7, ease: EASE_BRAND }}
+        >
+          <p className="text-center text-white/80 text-base md:text-lg mb-4">
+            {/* [קופי: נתי] */}
+            גררו את הידית — ככה מרגישה קפיצת דור באתר
+          </p>
+          <BeforeAfterSlider
+            beforeSrc="/images/demo-before.webp"
+            afterSrc="/images/demo-after.webp"
+            className="border border-white/15 shadow-2xl"
+          />
+          <p className="text-center text-white/45 text-xs md:text-sm mt-3">
+            {/* [קופי: נתי] */}
+            הדגמה להמחשה בלבד — לא אתר של לקוח
+          </p>
+        </m.div>
 
         <m.p
           className="text-center mt-10 text-sm text-white/50"
