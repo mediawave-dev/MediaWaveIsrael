@@ -1,5 +1,7 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui/LottieIcon'
+import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { EASE_BRAND } from '../../config/motion'
 
 interface StepItem {
   _id: string
@@ -140,49 +142,40 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
   )
 }
 
-// Connecting line between cards (desktop only)
-function ConnectingLine({ position }: { position: number }) {
+// ONE process wave drawn across all four steps (DESIGN-UPGRADE §4.7) —
+// continues the site's wave language; draws from the RIGHT (step 01, RTL)
+function ProcessWave({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
   return (
-    <m.div
-      className="hidden lg:flex absolute top-1/2 -translate-y-1/2 items-center justify-center z-0"
-      style={{
-        left: `${25 * position + 25}%`,
-        width: '0%',
-      }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.5 + position * 0.15 }}
+    <div
+      className="hidden lg:block absolute inset-x-6 top-1/2 -translate-y-1/2 pointer-events-none"
+      aria-hidden="true"
     >
-      <svg className="w-16 h-4 overflow-visible" viewBox="0 0 64 4">
-        <m.line
-          x1="0" y1="2" x2="64" y2="2"
-          stroke="url(#lineGradient)" strokeWidth="2" strokeDasharray="6 4" strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 + position * 0.15 }}
-        />
+      <svg width="100%" height="40" viewBox="0 0 1200 40" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="processWaveGrad" x1="100%" y1="0%" x2="0%" y2="0%">
             <stop offset="0%" stopColor="#7DD3FC" />
             <stop offset="50%" stopColor="#67E8F9" />
             <stop offset="100%" stopColor="#5EEAD4" />
           </linearGradient>
         </defs>
+        <m.path
+          d="M1200,20 C1120,2 1030,38 940,20 C850,2 760,38 670,20 C580,2 490,38 400,20 C310,2 220,38 130,20 C85,11 40,26 0,20"
+          fill="none"
+          stroke="url(#processWaveGrad)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          initial={prefersReducedMotion ? { pathLength: 1 } : { pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.8, ease: EASE_BRAND }}
+        />
       </svg>
-      <m.div
-        className="w-2 h-2 border-t-2 border-l-2 border-cyan-400 rotate-[135deg] -mr-1"
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.9 + position * 0.15 }}
-      />
-    </m.div>
+    </div>
   )
 }
 
 export default function HowWeWork() {
+  const prefersReducedMotion = useReducedMotion()
   return (
     <section
       id="process"
@@ -213,13 +206,9 @@ export default function HowWeWork() {
           </p>
         </m.div>
 
-        {/* Steps grid with connecting lines */}
+        {/* Steps grid with the single process wave behind the cards */}
         <div className="relative">
-          <div className="hidden lg:block absolute inset-0 pointer-events-none">
-            {[0, 1, 2].map((i) => (
-              <ConnectingLine key={i} position={i} />
-            ))}
-          </div>
+          <ProcessWave prefersReducedMotion={prefersReducedMotion} />
 
           <m.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"

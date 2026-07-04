@@ -226,11 +226,11 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
 
       </div>
 
-      {/* Subtle hover gradient overlay */}
+      {/* Hover tint wipe — clip-path reveal from the right (RTL), §4.5 */}
       <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        className="wipe-overlay absolute inset-0 rounded-2xl pointer-events-none"
         style={{
-          background: 'linear-gradient(135deg, rgba(125, 211, 252, 0.05) 0%, transparent 60%)',
+          background: 'linear-gradient(225deg, rgba(125, 211, 252, 0.14) 0%, rgba(125, 211, 252, 0.03) 55%, transparent 80%)',
         }}
       />
     </m.div>

@@ -325,6 +325,23 @@ button {
   opacity: 1;
 }
 
+/* Hover tint wipe (Services cards) — clip-path is compositor-cheap.
+   Reveals from the RIGHT edge (RTL reading direction). */
+.wipe-overlay {
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.5s var(--ease-brand);
+}
+
+.group:hover .wipe-overlay {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe-overlay {
+    transition: none;
+  }
+}
+
 /* Technology marquee strip (Hero → WhyUs) */
 .marquee-strip {
   background: var(--color-cream);
