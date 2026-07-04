@@ -186,6 +186,7 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
       <span
         className="absolute top-3 right-4 font-mono-spec text-sm select-none"
         style={{ color: '#0284C7' }}
+        dir="ltr"
         aria-hidden="true"
       >
         {String(index + 1).padStart(2, '0')}·
