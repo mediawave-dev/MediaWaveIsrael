@@ -4,6 +4,7 @@ import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { WaveDivider } from '../ui/WaveDivider'
 import { StaggeredWords } from '../ui/StaggeredWords'
 import { LoadTimeBadge } from '../ui/LoadTimeBadge'
+import { MagneticButton } from '../ui/MagneticButton'
 import { EASE_BRAND } from '../../config/motion'
 
 /** Signature wave underline — draws on from the RIGHT (RTL) instead of the
@@ -217,9 +218,10 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
+            <MagneticButton className="w-full md:w-auto">
             <m.a
               href="#contact"
-              className="group relative overflow-hidden bg-orange hover:bg-orange-dark text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="group relative block overflow-hidden bg-orange hover:bg-orange-dark text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               style={{ color: '#1e3a5f' }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -240,6 +242,7 @@ export default function Hero() {
                 </m.span>
               </span>
             </m.a>
+            </MagneticButton>
 
             <m.a
               href="#services"

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
+import { MagneticButton } from '../ui/MagneticButton'
 import { headerLinks } from '../../config/navigation'
 
 export default function Header() {
@@ -116,15 +117,17 @@ export default function Header() {
                 </a>
               ))}
 
-              {/* CTA Button */}
-              <a
-                href="#contact"
-                onClick={(e) => handleNavClick(e, '#contact')}
-                className="header-cta whitespace-nowrap bg-orange text-lg lg:text-xl font-semibold py-2.5 px-5 lg:py-3 lg:px-7 rounded-full shadow-sm hover:bg-orange-dark"
-                style={{ color: '#1e3a5f' }}
-              >
-                בואו נדבר
-              </a>
+              {/* CTA Button — magnetic on fine pointers (§4.8) */}
+              <MagneticButton>
+                <a
+                  href="#contact"
+                  onClick={(e) => handleNavClick(e, '#contact')}
+                  className="header-cta whitespace-nowrap bg-orange text-lg lg:text-xl font-semibold py-2.5 px-5 lg:py-3 lg:px-7 rounded-full shadow-sm hover:bg-orange-dark"
+                  style={{ color: '#1e3a5f' }}
+                >
+                  בואו נדבר
+                </a>
+              </MagneticButton>
             </div>
 
             {/* Mobile Menu Button */}
