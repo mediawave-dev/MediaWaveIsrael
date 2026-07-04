@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react'
 import { useRef, useState, useEffect } from 'react'
 import type { LottieRefCurrentProps } from 'lottie-react'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 interface LottieIconProps {
   /** URL path to animation JSON file */
@@ -39,7 +39,9 @@ export function LottieIcon({
   const [isLoading, setIsLoading] = useState(!animationData && !!animationPath)
   const [error, setError] = useState<string | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const prefersReducedMotion = useReducedMotion()
+  // Lotties are brand ambient motion: they loop everywhere (mobile has no
+  // hover!) and stop only via the site's accessibility widget
+  const ambient = useAmbientMotion()
 
   // Observe visibility - only load when in viewport
   useEffect(() => {
@@ -97,7 +99,7 @@ export function LottieIcon({
   // Pause when scrolled out of view, resume when back — a dozen looping
   // Lotties running offscreen is the biggest CPU cost on the home page
   useEffect(() => {
-    if (!containerRef.current || !loadedData || prefersReducedMotion) return
+    if (!containerRef.current || !loadedData || !ambient) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -112,16 +114,17 @@ export function LottieIcon({
 
     observer.observe(containerRef.current)
     return () => observer.disconnect()
-  }, [loadedData, prefersReducedMotion])
+  }, [loadedData, ambient])
 
-  // Reduced motion: freeze on the LAST frame — draw-on animations are empty
-  // at frame 0, while the final frame always shows the complete artwork
+  // Animations disabled (a11y widget): freeze on the LAST frame — draw-on
+  // animations are empty at frame 0, while the final frame always shows
+  // the complete artwork
   useEffect(() => {
-    if (prefersReducedMotion && lottieRef.current && loadedData) {
+    if (!ambient && lottieRef.current && loadedData) {
       const totalFrames = lottieRef.current.getDuration(true)
       lottieRef.current.goToAndStop(Math.max(0, (totalFrames ?? 1) - 1), true)
     }
-  }, [prefersReducedMotion, loadedData])
+  }, [ambient, loadedData])
 
   // Hover handlers
   const handleMouseEnter = () => {
@@ -164,8 +167,8 @@ export function LottieIcon({
       <Lottie
         lottieRef={lottieRef}
         animationData={loadedData}
-        loop={loop && !prefersReducedMotion}
-        autoplay={!prefersReducedMotion}
+        loop={loop && ambient}
+        autoplay={ambient}
         style={{ width: '100%', height: '100%' }}
       />
     </div>

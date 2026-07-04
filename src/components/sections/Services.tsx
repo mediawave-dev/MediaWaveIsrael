@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { m, useInView } from 'framer-motion'
 import { LottieIcon, WaveDivider } from '../ui'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 interface ServiceItem {
   _id: string
@@ -46,8 +46,8 @@ export default function Services() {
   // (blur(60px) repaints offscreen are pure CPU waste on mobile)
   const sectionRef = useRef<HTMLElement>(null)
   const isInView = useInView(sectionRef, { margin: '200px' })
-  const prefersReducedMotion = useReducedMotion()
-  const orbsActive = isInView && !prefersReducedMotion
+  const ambient = useAmbientMotion()
+  const orbsActive = isInView && ambient
 
   return (
     <section
@@ -144,7 +144,7 @@ export default function Services() {
           >
             <span>התחל פרויקט</span>
             <m.span
-              animate={prefersReducedMotion ? undefined : { x: [0, -4, 0] }}
+              animate={ambient ? { x: [0, -4, 0] } : undefined}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               ←

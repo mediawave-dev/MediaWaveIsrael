@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { m, useScroll, useTransform } from 'framer-motion'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { WaveDivider } from '../ui/WaveDivider'
 import { StaggeredWords } from '../ui/StaggeredWords'
-import { LoadTimeBadge } from '../ui/LoadTimeBadge'
 import { MagneticButton } from '../ui/MagneticButton'
 import { EASE_BRAND } from '../../config/motion'
 
@@ -41,8 +41,10 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
-  // Detect reduced motion preference
+  // Detect reduced motion preference (heavy motion only: video, entrances)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  // Ambient brand motion (typewriter, loops) — off only via the a11y widget
+  const ambient = useAmbientMotion()
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -77,10 +79,10 @@ export default function Hero() {
 
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
 
-  // Typewriter effect - disabled when reduced motion is preferred
+  // Typewriter effect — brand ambient motion: runs unless the user turned
+  // animations off in the site's accessibility widget
   useEffect(() => {
-    // If reduced motion is preferred, show full first word without animation
-    if (prefersReducedMotion) {
+    if (!ambient) {
       setDisplayText(typewriterWords[0])
       return
     }
@@ -109,7 +111,7 @@ export default function Hero() {
     }, typeSpeed)
 
     return () => clearTimeout(timeout)
-  }, [displayText, isDeleting, currentWordIndex, prefersReducedMotion])
+  }, [displayText, isDeleting, currentWordIndex, ambient])
 
   return (
     <section
@@ -177,7 +179,7 @@ export default function Hero() {
             />
             <span className="relative inline-block text-white pb-2">
               <StaggeredWords text="המומחיות שלנו" delay={0.3} />
-              <WaveUnderline prefersReducedMotion={prefersReducedMotion} />
+              <WaveUnderline prefersReducedMotion={!ambient} />
             </span>
           </h1>
 
@@ -229,13 +231,13 @@ export default function Hero() {
               {/* Shine effect */}
               <m.span
                 className="absolute inset-0 bg-gradient-to-l from-transparent via-white/30 to-transparent -translate-x-full"
-                animate={prefersReducedMotion ? undefined : { x: ['calc(-100%)', 'calc(200%)'] }}
+                animate={ambient ? { x: ['calc(-100%)', 'calc(200%)'] } : undefined}
                 transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               />
               <span className="relative z-10 flex items-center justify-center gap-2">
                 בואו נדבר על הפרויקט שלכם
                 <m.span
-                  animate={prefersReducedMotion ? undefined : { x: [0, -4, 0] }}
+                  animate={ambient ? { x: [0, -4, 0] } : undefined}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 >
                   ←
@@ -253,9 +255,6 @@ export default function Hero() {
               לשירותים שלנו
             </m.a>
           </m.div>
-
-          {/* The un-fakeable proof: this visit's real LCP (DESIGN-UPGRADE §5.1) */}
-          <LoadTimeBadge className="-mt-4 mb-6 md:mb-0" />
 
 
         </div>

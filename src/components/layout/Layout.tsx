@@ -4,7 +4,7 @@ import Header from './Header'
 import Footer from './Footer'
 import GrainOverlay from '../ui/GrainOverlay'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
@@ -68,7 +68,7 @@ export default function Layout({ children }: LayoutProps) {
 }
 
 function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
-  const prefersReducedMotion = useReducedMotion()
+  const ambient = useAmbientMotion()
   return (
     <AnimatePresence>
       {!isChatOpen && (
@@ -88,7 +88,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           {/* Gentle breathing glow */}
           <m.span
             className="absolute inset-0 rounded-full bg-[#25D366]"
-            animate={prefersReducedMotion ? undefined : { scale: [1, 1.2, 1], opacity: [0, 0.15, 0] }}
+            animate={ambient ? { scale: [1, 1.2, 1], opacity: [0, 0.15, 0] } : undefined}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           />
           <svg className="relative z-10 w-5 h-5" viewBox="0 0 24 24" fill="white">

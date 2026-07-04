@@ -404,7 +404,7 @@ button {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marqueeMove 32s linear infinite;
+  animation: marqueeMove 22s linear infinite;
 }
 
 /* Right-to-left flow: items enter from the right and travel left,
@@ -444,11 +444,6 @@ button {
   font-weight: 700;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}
 
 /* Wave dividers — LIVING section separators. Each layer slides one full
    period (1440 svg units = 100% of the element width) on a seamless
@@ -516,9 +511,40 @@ button {
   }
 }
 
+/* Brand ambient motion under OS reduced-motion: SLOWED, not frozen.
+   These !important rules re-enable the wave/marquee loops that the global
+   reduce block above kills; the accessibility widget's
+   html.disable-animations (higher specificity) still stops everything. */
 @media (prefers-reduced-motion: reduce) {
+  .wave-slide-front {
+    animation: waveSlideL 30s linear infinite !important;
+  }
 
-  .wave-layer,
+  .wave-slide-back {
+    animation: waveSlideR 50s linear infinite !important;
+  }
+
+  .wave-slide-mid {
+    animation: waveSlideL 70s linear infinite !important;
+  }
+
+  .wave-layer {
+    animation-play-state: paused !important;
+  }
+
+  .wave-layer.wave-running {
+    animation-play-state: running !important;
+  }
+
+  .marquee-track {
+    animation: marqueeMove 36s linear infinite !important;
+  }
+
+  .marquee:hover .marquee-track,
+  .marquee-strip[data-paused] .marquee-track {
+    animation-play-state: paused !important;
+  }
+
   .wave-underline-sway {
     animation: none;
   }

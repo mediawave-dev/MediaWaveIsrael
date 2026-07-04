@@ -1,6 +1,33 @@
 import { useState, useEffect } from 'react'
 
 /**
+ * Ambient/brand motion (waves, marquee, looping icons, typewriter) is part
+ * of the site's identity and keeps running even when the OS reports
+ * prefers-reduced-motion (many Windows machines have "animation effects"
+ * off for performance, not vestibular reasons). The ONE absolute off
+ * switch is the site's own accessibility widget, which sets
+ * html.disable-animations.
+ *
+ * Heavy/large motion (background videos, big entrance translates,
+ * magnetic pull) still honors the OS flag via useReducedMotion below.
+ */
+export function useAmbientMotion(): boolean {
+  const [enabled, setEnabled] = useState(true)
+
+  useEffect(() => {
+    const html = document.documentElement
+    const update = () => setEnabled(!html.classList.contains('disable-animations'))
+    update()
+
+    const observer = new MutationObserver(update)
+    observer.observe(html, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+
+  return enabled
+}
+
+/**
  * Hook to detect user's reduced motion preference
  * Respects prefers-reduced-motion media query for accessibility
  */
