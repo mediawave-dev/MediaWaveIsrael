@@ -28,6 +28,15 @@
 4. ליטושים שנצפו ולא טופלו (מתועדים): ריווח מובייל HowWeWork→FAQ, רשימת קשר דלילה במובייל, ווידג'ט צף מכסה כותרת ב-320, `<a>` מקונן ב-Header/Logo (קדם-קיים), אזהרת fetchPriority (React 18)
 5. git push — הכל מקומי בלבד (לפי ההוראה)
 
+## סבב משוב נתי (04/07/2026) — הושלם
+- [x] גלים חיים: WaveDivider = 2-3 שכבות גל תקופתיות בלולאת transform חלקה (בלי תפרים), בכל הגבולות; מושהה מחוץ למסך; סטטי ב-reduced-motion
+- [x] מרקי טכנולוגיות זורם מימין לשמאל; קו הכותרת בהירו מתנדנד עדין אחרי הציור
+- [x] ריווח הירו מההדר (md:pt-44); הוסר הקו התכלת בראש הפוטר
+- [x] מילת הענק מתמלאת בגלילה במובייל (pointer:coarse + in-view)
+- [x] כל המקפים הארוכים הוסרו מטקסטים מוצגים (23 החלפות)
+- [x] אתר הדמו הישן: "עסק לפיתוח אתרים!" בסגנון 2003 (פלאש, ספר אורחים, אקספלורר)
+- [x] Lighthouse אחרי הסבב: דסקטופ 97, מובייל 75 (הכי טוב עד כה)
+
 ## Important Files
 - `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND)
 - `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, LoadTimeBadge, BeforeAfterSlider, MagneticButton, GiantWord, GrainOverlay
