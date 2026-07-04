@@ -10,6 +10,7 @@ import SEO from './components/SEO'
 import { Hero } from './components/sections'
 import Marquee from './components/ui/Marquee'
 import { WaveDivider } from './components/ui/WaveDivider'
+import { GiantWord } from './components/ui/GiantWord'
 
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
@@ -86,6 +87,10 @@ function HomePage() {
 
       {/* Wave hand-off: FAQ (cream-dark) → Contact (cream) */}
       <WaveDivider variant="a" fill="#F8FAFC" bg="#F1F5F9" />
+
+      {/* Typographic confidence statement (DESIGN-UPGRADE §4.9)
+          [קופי: נתי — מילת הענק] */}
+      <GiantWord word="מתחילים?" />
 
       <Suspense fallback={<SectionFallback height="500px" />}>
         <Contact />

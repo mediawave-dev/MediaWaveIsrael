@@ -325,6 +325,32 @@ button {
   opacity: 1;
 }
 
+/* Giant statement word (DESIGN-UPGRADE §4.9) — outline type, fills on
+   hover. Pure CSS, no JS, no animation loop. */
+.giant-word-strip {
+  overflow: hidden;
+  text-align: center;
+  line-height: 0;
+  padding-block: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.giant-word {
+  display: inline-block;
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: var(--text-giant);
+  line-height: 1.1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(56, 189, 248, 0.75);
+  transition: color 0.6s var(--ease-brand);
+  cursor: default;
+}
+
+.giant-word:hover {
+  color: #38BDF8;
+}
+
 /* Hover tint wipe (Services cards) — clip-path is compositor-cheap.
    Reveals from the RIGHT edge (RTL reading direction). */
 .wipe-overlay {
