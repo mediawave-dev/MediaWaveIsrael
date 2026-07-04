@@ -2,7 +2,6 @@ import { ReactNode, useState, useCallback, lazy, Suspense } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
-import GrainOverlay from '../ui/GrainOverlay'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
@@ -45,9 +44,6 @@ export default function Layout({ children }: LayoutProps) {
       </main>
 
       <Footer />
-
-      {/* Global film grain (DESIGN-UPGRADE §3.3) */}
-      <GrainOverlay />
 
       {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />

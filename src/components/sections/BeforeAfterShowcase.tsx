@@ -16,7 +16,7 @@ export default function BeforeAfterShowcase() {
     <section
       id="before-after"
       aria-label="לפני ואחרי"
-      className="relative overflow-hidden py-16 md:py-24"
+      className="grain-surface relative overflow-hidden py-16 md:py-24"
       style={{ background: '#1E293B' }}
     >
       {/* Subtle cyan mesh on the navy */}

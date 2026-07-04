@@ -143,7 +143,6 @@
   --font-spec: ui-monospace, 'Cascadia Mono', 'Consolas', 'Courier New', 'Heebo', monospace;
   /* One giant statement word (§4.9) */
   --text-giant: clamp(4rem, 12vw, 11rem);
-  --grain-opacity: 0.05;
 
   --duration-fast: 150ms;
   --duration-normal: 300ms;
@@ -285,18 +284,23 @@ button {
   font-style: italic;
 }
 
-/* Global film grain — cheapest signal against "flat AI look".
-   Static compositor layer; sits above page content (z-1) but below
-   the fixed header/widgets (z-30+). */
-.grain-overlay {
-  position: fixed;
+/* Film grain, scoped to dark decorative surfaces and painted BEHIND the
+   content. The old global fixed overlay used mix-blend-mode above the
+   whole page, which disabled Windows subpixel text antialiasing
+   (ClearType) and made every caption look fuzzy. This version is a
+   pre-baked ALPHA noise tile composited normally: zero effect on text. */
+.grain-surface {
+  position: relative;
+}
+
+.grain-surface::before {
+  content: '';
+  position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  z-index: 1;
-  background-image: url('/images/grain.png');
+  background-image: url('/images/grain-alpha.png');
   background-repeat: repeat;
-  opacity: var(--grain-opacity);
-  mix-blend-mode: overlay;
 }
 
 /* Cheap hover shadow (DESIGN-UPGRADE §4.5) — the shadow is pre-painted on
