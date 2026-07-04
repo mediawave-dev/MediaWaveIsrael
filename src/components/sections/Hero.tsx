@@ -2,6 +2,35 @@ import { useState, useEffect, useRef } from 'react'
 import { m, useScroll, useTransform } from 'framer-motion'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { WaveDivider } from '../ui/WaveDivider'
+import { StaggeredWords } from '../ui/StaggeredWords'
+import { LoadTimeBadge } from '../ui/LoadTimeBadge'
+import { EASE_BRAND } from '../../config/motion'
+
+/** Signature wave underline — draws on from the RIGHT (RTL) instead of the
+    old static border-bottom */
+function WaveUnderline({ prefersReducedMotion }: { prefersReducedMotion: boolean }) {
+  return (
+    <svg
+      className="absolute inset-x-0 -bottom-1 md:-bottom-2 w-full"
+      height="16"
+      viewBox="0 0 300 16"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      style={{ overflow: 'visible', height: '0.14em', minHeight: 10 }}
+    >
+      <m.path
+        d="M298,11 C285,14 260,5 225,9 C180,14 150,4 110,9 C70,14 40,3 2,8"
+        fill="none"
+        stroke="#7DD3FC"
+        strokeWidth="4"
+        strokeLinecap="round"
+        initial={prefersReducedMotion ? { pathLength: 1 } : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.1, delay: 0.75, ease: EASE_BRAND }}
+      />
+    </svg>
+  )
+}
 
 // Words to cycle through with typewriter effect
 const typewriterWords = ['אתרים', 'דפי נחיתה', "צ'אטבוטים"]
@@ -134,22 +163,22 @@ export default function Hero() {
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
-          {/* Main Headline */}
-          <m.h1
-            className="text-6xl md:text-[11rem] lg:text-[14rem] font-body leading-none mb-4 md:mb-8"
+          {/* Main Headline — kinetic word-by-word reveal (DESIGN-UPGRADE §4.1).
+              Split by WORDS only; splitting Hebrew letters breaks glyphs. */}
+          <h1
+            className="text-[2.4rem] sm:text-[3.4rem] md:text-[5.5rem] lg:text-[6.5rem] font-body leading-none mb-4 md:mb-8"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, transform: 'translateY(30px)' }}
-            animate={{ opacity: 1, transform: 'translateY(0px)' }}
-            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.1 }}
           >
-            <span className="block text-white mb-2 md:mb-4">העסק שלכם</span>
-            <span
-              className="inline-block text-white"
-              style={{ borderBottom: '3px solid #7DD3FC', paddingBottom: '8px' }}
-            >
-              המומחיות שלנו
+            <StaggeredWords
+              text="העסק שלכם"
+              delay={0.1}
+              className="block text-white mb-2 md:mb-4"
+            />
+            <span className="relative inline-block text-white pb-2">
+              <StaggeredWords text="המומחיות שלנו" delay={0.3} />
+              <WaveUnderline prefersReducedMotion={prefersReducedMotion} />
             </span>
-          </m.h1>
+          </h1>
 
           {/* Typewriter Section */}
           <m.div
@@ -221,6 +250,9 @@ export default function Hero() {
               לשירותים שלנו
             </m.a>
           </m.div>
+
+          {/* The un-fakeable proof: this visit's real LCP (DESIGN-UPGRADE §5.1) */}
+          <LoadTimeBadge className="-mt-4 mb-6 md:mb-0" />
 
 
         </div>

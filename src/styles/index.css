@@ -169,65 +169,70 @@
 
 /* ============================================
    BASE STYLES
+   Wrapped in @layer base so Tailwind utilities (in @layer utilities)
+   can override them. Unlayered element selectors BEAT all layered
+   utilities in the cascade — that bug silently capped every heading
+   at 2rem and painted every link sky regardless of text-* classes.
    ============================================ */
 
-html {
-  direction: rtl;
-  scroll-behavior: smooth;
-  font-size: 18px;
-  /* Increased base size for small font */
-}
+@layer base {
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+    /* Base 18px, scaled by the accessibility widget (all rem sizes follow) */
+    font-size: calc(18px * var(--accessibility-text-scale, 1));
+  }
 
-body {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  background-color: var(--color-cream);
-  color: var(--color-brown);
-  line-height: 1.6;
-  font-synthesis: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background-color: var(--color-cream);
+    color: var(--color-brown);
+    line-height: 1.6;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Headlines - BA Platforma */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-headline);
-  font-weight: 700;
-  line-height: var(--leading-tight);
-  color: var(--color-brown-dark);
-  font-synthesis: none;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    color: var(--color-brown-dark);
+    font-synthesis: none;
+  }
 
-h1 {
-  font-size: 2rem;
-}
+  h1 {
+    font-size: 2rem;
+  }
 
-h2 {
-  font-size: 1.75rem;
-}
+  h2 {
+    font-size: 1.75rem;
+  }
 
-h3 {
-  font-size: 1.5rem;
-}
+  h3 {
+    font-size: 1.5rem;
+  }
 
-h4 {
-  font-size: 1.25rem;
-}
+  h4 {
+    font-size: 1.25rem;
+  }
 
-/* Links */
-a {
-  color: var(--color-orange);
-  text-decoration: none;
-  transition: color var(--duration-fast) ease;
-}
+  /* Links */
+  a {
+    color: var(--color-orange);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
 
-a:hover {
-  color: var(--color-orange-dark);
+  a:hover {
+    color: var(--color-orange-dark);
+  }
 }
 
 /* Selection */
@@ -846,26 +851,28 @@ section[id] {
   }
 
   /* Improved text readability on mobile */
-  body {
-    font-size: 1rem;
-    line-height: 1.7;
-  }
+  @layer base {
+    body {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
 
-  /* Readable heading sizes on mobile */
-  h1 {
-    font-size: 2rem;
-  }
+    /* Readable heading DEFAULTS on mobile (utilities still win) */
+    h1 {
+      font-size: 2rem;
+    }
 
-  h2 {
-    font-size: 1.75rem;
-  }
+    h2 {
+      font-size: 1.75rem;
+    }
 
-  h3 {
-    font-size: 1.5rem;
-  }
+    h3 {
+      font-size: 1.5rem;
+    }
 
-  h4 {
-    font-size: 1.25rem;
+    h4 {
+      font-size: 1.25rem;
+    }
   }
 
   /* Stack elements on mobile */
@@ -1044,27 +1051,10 @@ textarea {
   --accessibility-text-scale: 1;
 }
 
-/* Apply text scaling to body and headings */
-html.high-contrast body,
-html:not(.high-contrast) body {
-  font-size: calc(1rem * var(--accessibility-text-scale));
-}
-
-html h1 {
-  font-size: calc(2rem * var(--accessibility-text-scale));
-}
-
-html h2 {
-  font-size: calc(1.75rem * var(--accessibility-text-scale));
-}
-
-html h3 {
-  font-size: calc(1.5rem * var(--accessibility-text-scale));
-}
-
-html h4 {
-  font-size: calc(1.25rem * var(--accessibility-text-scale));
-}
+/* Text scaling is applied at the ROOT (see @layer base html rule):
+   scaling the root font-size scales every rem-based size on the site —
+   including Tailwind text utilities — instead of hard-overriding h1-h4
+   (which also silenced every heading size utility in the app). */
 
 /* High Contrast Mode (user-toggled) */
 html.high-contrast {
