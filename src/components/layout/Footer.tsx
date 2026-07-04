@@ -30,9 +30,6 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-[#1a1a1a] overflow-hidden">
-      {/* Top gold border */}
-      <div className="absolute top-0 inset-x-0 h-px bg-[#7DD3FC]" />
-
       {/* Main footer content */}
       <div className="max-w-[1100px] mx-auto px-6 pt-14 pb-5 md:pt-16">
         {/* ROW 1 — 3 columns on desktop, stacked on mobile */}
