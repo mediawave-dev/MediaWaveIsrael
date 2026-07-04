@@ -83,7 +83,7 @@ export default function Services() {
 
       {/* Wave hand-offs: from WhyUs above, into the next section below */}
       <WaveDivider variant="c" flip fill="#F1F5F9" className="absolute top-0 inset-x-0" />
-      <WaveDivider variant="b" fill="#F8FAFC" className="absolute bottom-0 inset-x-0" />
+      <WaveDivider variant="b" fill="#1E293B" className="absolute bottom-0 inset-x-0" />
 
       <div className="container relative max-w-6xl">
         {/* Header */}

@@ -14,6 +14,7 @@ import { WaveDivider } from './components/ui/WaveDivider'
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
 const Services = lazy(() => import('./components/sections/Services'))
+const ProofBand = lazy(() => import('./components/sections/ProofBand'))
 const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
 const FAQ = lazy(() => import('./components/sections/FAQ'))
@@ -61,6 +62,11 @@ function HomePage() {
 
       <Suspense fallback={<SectionFallback height="600px" />}>
         <Services />
+      </Suspense>
+
+      {/* The dark trust anchor — measured numbers only (DESIGN-UPGRADE §4.3) */}
+      <Suspense fallback={<SectionFallback height="400px" />}>
+        <ProofBand />
       </Suspense>
 
       <Suspense fallback={<SectionFallback height="500px" />}>
