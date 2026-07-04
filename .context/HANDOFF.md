@@ -1,38 +1,36 @@
 # HANDOFF — MediaWave Israel
 
 ## Goal
-ליטוש האתר לרמת פרודקשן: הסרת Directus מוחלטת, תיקון באגי פרודקשן, מובייל, ביצועים, עיצוב פרימיום — ריצת לילה אוטונומית (02-03/07/2026).
+מימוש DESIGN-UPGRADE "מעבדת הגלים" — ריצה אוטונומית מלאה (03-04/07/2026), branch: `design/wave-lab` (מעל feature/production-polish).
 
-## Completed (branch: feature/production-polish, 9 commits)
-- [x] 3b35ce2 — הסרת Directus מלאה: כל הסקשנים סטטיים, נמחקו src/directus, docker-compose, seeds, @directus/sdk. קוד מת נמחק (Packages, ServiceCard, ConnectingLine, PageDecorations, SectionSkeleton)
-- [x] 3d3ae83 — לוגו: תיקון preload 404 של logo.webp, נוצרו logo.webp (30KB) + logo-white.webp (15KB), פוטר קריא, og-image 214→50KB, נמחקו 20.5MB מדיה מתה
-- [x] 8062d5d — טפסים כנים: LeadModal/Contact פותחים וואטסאפ עם הודעה מוכנה כשאין endpoint (לא עוד הצלחה מזויפת + נעילת localStorage)
-- [x] 4424f58 — מובייל: באנר עוגיות קומפקטי (כפתורים צפים מורמים מעליו), דחיסות Services/FAQ, "בלי מתווכים" (bidi), ScrollToTop לראוטים, חץ 404, WhyUs overlay
-- [x] 0648d40 — ביצועים: וידאו עצל (מובייל לא מוריד 3.3MB), Lottie pause מחוץ למסך, motion→m בכל 15 הקבצים, פונטים woff2 (225→88KB) + preload
-- [x] 4a58066 — דף הצהרת נגישות /accessibility (ת"י 5568) + ראוט/פוטר/sitemap/prerender
-- [x] 3042b1b — תיקון מלבן לבן ב-Lottie של בניית אתרים (רק ה-fill, הציור נשמר)
-- [x] 18171ce — עיצוב: פס מבטא אחיד לכותרות, קונטרסט CTA (לבן→נייבי על תכלת), FAQ/טופס מעודנים, scroll-margin
-- [x] 6162ee3 — **התיקון הקריטי**: צ'אנק Sanity Studio של 1.26MB נשלח לכל מבקר (manualChunks) + modulepreload שנאפו ב-prerender + LeadModal eager. Lighthouse: דסקטופ 54→99, מובייל 56→74, תעבורה 1.8MB→538KB
-- [x] עדכון CLAUDE.md (סטטוס אמיתי: אין CMS, פלטה, קומפוננטות שנמחקו)
+## Completed (branch: design/wave-lab, ~15 קומיטים)
+- [x] **Phase 1** — טוקנים (`--font-spec`, `--text-giant`, `--ease-brand`) + `src/config/motion.ts`; GrainOverlay גלובלי (`public/images/grain.png` 6KB); WaveDivider (3 וריאנטים א-סימטריים, flip/drift/bg, מושהה מחוץ למסך) פרוס בין כל הסקשנים; Marquee טכנולוגיות CSS-בלבד; צללי hover ל-pseudo+opacity
+- [x] **Phase 2** — StaggeredWords (פיצול מילים בלבד!) + גל draw-on מתחת ל"המומחיות שלנו"; LoadTimeBadge (LCP אמיתי של המבקר + "בדקו בעצמכם"); ProofBand כהה עם קאונט-אפ (מספרים מדודים בלבד: 97/100, 1.0s, 0.53MB + סלוטים data-pending); מספור מפרט 01· + מילת מפתח צבועה בכל כותרת
+- [x] **Phase 3** — BeforeAfterSlider (אפס תלויות, clip-path+CSS var, תמונות דמו עם תווית "הדגמה"); Services hover wipe; HowWeWork קו גלי אחד נמשך; MagneticButton על 3 CTA; מילת הענק "מתחילים?"
+- [x] **Phase 4 חלקי** — View Transitions לבלוג (220ms, feature-detected). סמן מותאם/פליגראונד/Lenis — לא (מתועד ב-DECISIONS)
+- [x] **תיקון יסוד: קסקדת CSS** — כללי base לא-ממושכבים דרסו את כל ה-utilities של Tailwind v4. הועברו ל-`@layer base`; סקיילינג נגישות עבר לשורש. בעקבות זה: גדלי הירו/כותרות אמיתיים לראשונה
+- [x] תיקוני אודיט: אימייל נחתך ב-320, ניווט נשבר ב-768, bidi אינסטגרם, אימייל פוטר, ניגודיות קופירייט, גוון WhyUs חם→קר
 
 ## Key Decisions
-- **Directus הוסר לגמרי** (החלטת נתי) — CMS חדש ייבחר בעתיד; `src/data/site.ts` = מקור יחיד לפרטי קשר
-- **טופס ללא endpoint** = handoff לוואטסאפ (החלטת נתי: endpoint אמיתי בהמשך)
-- **הפלטה**: שמות המשתנים legacy (orange=תכלת #7DD3FC) — מתועד ב-CLAUDE.md
-- puppeteer headless מדמה prefers-reduced-motion:reduce — לכן וידאו לא נראה בצילומים אוטומטיים (עובד אצל משתמשים אמיתיים, אומת עם emulateMediaFeatures)
+ראה `DECISIONS.rtl.md` (18 החלטות מתועדות). עיקריות: מונו מערכתי במקום קניית פונט; sky-600 למילות מפתח על רקע בהיר (WCAG); מספרים מדודים בלבד ב-ProofBand; סמן מותאם הושמט.
+
+## Quality Gates (כולם ירוקים בסוף כל Phase)
+- tsc + eslint נקיים (3 אזהרות ישנות בקבצי sanity — לא קשורות)
+- build מלא + prerender 7 עמודים
+- Lighthouse: דסקטופ 97 (שער ≥95), מובייל 71-73 (שער ≥70; baseline היה 69)
+- צילומי 320/390/768/1440 + blog/accessibility/404: אפס שגיאות קונסול/רשת/גלילה אופקית
+- רגרסיית אנימציות (typewriter, וידאו, Lotties, אקורדיון, תפריט, מרקי, קאונט-אפ, סליידר, גל כותרת) + reduced-motion סטטי וקריא
 
 ## Known Issues / Next Steps
-1. **git push** — ה-branch מקומי בלבד; main מקדים את origin ב-8 קומיטים עוד מקודם. צריך: merge + push + Cloudflare Pages preview
-2. **endpoint לטפסים** — Cloudflare Function /api/contact + Resend (מומלץ) או Web3Forms
-3. **Testimonials** — הסקשן מוסתר עד שנתי יוסיף המלצות אמיתיות ל-src/data/testimonials.ts
-4. **SANITY_WRITE_TOKEN ב-.env** — מומלץ לרוטט (sanity.io/manage)
-5. נוסח דף הנגישות ממתין לאישור נתי (כבר בקומיט — קל לתקן)
-6. מובייל Lighthouse 74 בסימולציית slow-4G ללא דחיסה; בפרודקשן (Brotli של Cloudflare) יהיה גבוה משמעותית
+1. **ProofBand** — לעדכן ציונים אם ה-final run שונה; להזין מספרי לקוחות אמיתיים ל-data-pending
+2. **רישיון EFT Betaamango/OffSet** — עדיין פתוח (לא הוחלף פונט בריצה זו)
+3. **טבלת קופי לאישור נתי** — בדוח הסיום; כל מחרוזת חדשה מסומנת `[קופי: נתי]` בקוד
+4. ליטושים שנצפו ולא טופלו (מתועדים): ריווח מובייל HowWeWork→FAQ, רשימת קשר דלילה במובייל, ווידג'ט צף מכסה כותרת ב-320, `<a>` מקונן ב-Header/Logo (קדם-קיים), אזהרת fetchPriority (React 18)
+5. git push — הכל מקומי בלבד (לפי ההוראה)
 
 ## Important Files
-- `src/data/site.ts` — פרטי קשר (מקור יחיד)
-- `src/data/blog-posts.ts` — תוכן הבלוג + מזין sitemap/prerender/feed
-- `src/hooks/useMediaQuery.ts` — חדש; גם useReducedMotion בשימוש נרחב
-- `scripts/prerender.mjs` — כולל ניקוי modulepreload של runtime
-- `vite.config.ts` — אסור להחזיר sanity ל-manualChunks (גורם לצ'אנק eager!)
-- צילומי לפני/אחרי: `g:\tmp\mediawave-audit\` (baseline, mid, final, verify) + דוחות Lighthouse
+- `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND)
+- `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, LoadTimeBadge, BeforeAfterSlider, MagneticButton, GiantWord, GrainOverlay
+- `src/components/sections/ProofBand.tsx` — המספרים המדודים (לעדכן עם כל מדידה)
+- `scripts/design-verify.mjs` — שער ויזואלי רב-פעמי; `scripts/generate-demo-images.mjs` — נכסי הסליידר
+- צילומים ודוחות: `g:\tmp\mediawave-audit\wave-lab\{before,phase1,phase2,phase3,final}\`

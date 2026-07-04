@@ -24,12 +24,13 @@ interface Stat {
   label: string
 }
 
-// Measured 03/07/2026, Lighthouse 12.8.2, desktop preset, production build.
+// Measured 04/07/2026, Lighthouse 12.8.2, desktop preset, production build
+// (g:/tmp/mediawave-audit/wave-lab/final/lh-desktop.json).
 // Update alongside the final Lighthouse run of each design iteration.
 const STATS: Stat[] = [
   { value: 97, decimals: 0, suffix: '/100', label: 'ציון Lighthouse (דסקטופ)' }, // [קופי: נתי]
-  { value: 1.0, decimals: 1, suffix: 's', label: 'שניות עד התוכן הראשי (LCP)' }, // [קופי: נתי]
-  { value: 0.53, decimals: 2, suffix: 'MB', label: 'משקל העמוד כולו' }, // [קופי: נתי]
+  { value: 1.1, decimals: 1, suffix: 's', label: 'שניות עד התוכן הראשי (LCP)' }, // [קופי: נתי]
+  { value: 0.62, decimals: 2, suffix: 'MB', label: 'משקל העמוד כולו' }, // [קופי: נתי]
 ]
 
 const PAGESPEED_URL = 'https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fmediawaveisrael.com%2F'
