@@ -116,7 +116,7 @@ export default function Footer() {
                 onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
               >
                 <MailIcon />
-                <span dir="ltr" className="break-all font-english">mediawaveisrael@gmail.com</span>
+                <span dir="ltr" className="whitespace-nowrap font-english">mediawaveisrael@gmail.com</span>
               </a>
 
               {/* Instagram */}
@@ -142,7 +142,7 @@ export default function Footer() {
           style={{ borderTop: '1px solid #333' }}
         >
           {/* Left side in RTL = copyright */}
-          <p className="text-xs font-english" style={{ color: '#666' }}>
+          <p className="text-xs font-english" style={{ color: '#8a8a8a' }}>
             © {currentYear} MediaWave Israel
           </p>
 

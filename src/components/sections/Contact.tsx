@@ -247,12 +247,12 @@ export default function Contact() {
                 href={`mailto:${contactEmail}`}
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
               >
-                <div className="w-12 h-12 rounded-lg bg-terracotta/10 flex items-center justify-center">
+                <div className="w-12 h-12 shrink-0 rounded-lg bg-terracotta/10 flex items-center justify-center">
                   <EmailIcon className="w-5 h-5 text-terracotta" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="text-base text-brown-muted">אימייל</p>
-                  <p className="text-xl font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english" dir="ltr">
+                  <p className="text-base sm:text-xl font-semibold text-brown-dark group-hover:text-terracotta transition-colors font-english break-all" dir="ltr">
                     {contactEmail}
                   </p>
                 </div>
@@ -288,7 +288,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-base text-brown-muted">אינסטגרם</p>
-                  <p className="text-xl font-semibold text-brown-dark group-hover:text-orange transition-colors font-english">
+                  <p className="text-xl font-semibold text-brown-dark group-hover:text-orange transition-colors font-english" dir="ltr">
                     @mediawaveisrael
                   </p>
                 </div>

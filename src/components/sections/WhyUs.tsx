@@ -112,12 +112,14 @@ export default function WhyUs() {
         </video>
       )}
 
-      {/* ===== LAYER 2: Light Overlay (cream gradient for readability) ===== */}
+      {/* ===== LAYER 2: Light Overlay (cool slate gradient for readability —
+           matches the current light-blue palette; the old warm cream tint
+           was a leftover from the historical watercolor palette) ===== */}
       <div
         className="absolute inset-0"
         style={{
           zIndex: 1,
-          background: 'linear-gradient(to bottom, rgba(253, 251, 247, 0.9) 0%, rgba(245, 240, 232, 0.94) 100%)',
+          background: 'linear-gradient(to bottom, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.94) 100%)',
         }}
       />
 

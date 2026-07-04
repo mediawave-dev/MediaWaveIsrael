@@ -103,14 +103,14 @@ export default function Header() {
               <Logo variant="header" isScrolled={isScrolled || !isHomePage} />
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            {/* Desktop Navigation — compact at md so it never wraps at 768 */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-8">
               {headerLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`nav-link text-xl ${isScrolled || !isHomePage ? 'text-cream hover:text-orange' : 'text-brown hover:text-orange'}`}
+                  className="nav-link whitespace-nowrap text-lg lg:text-xl text-orange hover:text-orange-dark"
                 >
                   {link.label}
                 </a>
@@ -120,7 +120,7 @@ export default function Header() {
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="header-cta bg-orange text-xl font-semibold py-3 px-7 rounded-full shadow-sm hover:bg-orange-dark"
+                className="header-cta whitespace-nowrap bg-orange text-lg lg:text-xl font-semibold py-2.5 px-5 lg:py-3 lg:px-7 rounded-full shadow-sm hover:bg-orange-dark"
                 style={{ color: '#1e3a5f' }}
               >
                 בואו נדבר
