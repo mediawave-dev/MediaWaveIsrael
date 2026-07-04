@@ -160,14 +160,14 @@ export default function Hero() {
 
       {/* ===== LAYER 3: Content (z-[2]) ===== */}
       <m.div
-        className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-48 md:pb-32"
+        className="relative z-[2] container px-4 sm:px-6 pt-40 pb-12 md:pt-32 md:pb-24"
         style={{ opacity }}
       >
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Headline — kinetic word-by-word reveal (DESIGN-UPGRADE §4.1).
               Split by WORDS only; splitting Hebrew letters breaks glyphs. */}
           <h1
-            className="text-[2.4rem] sm:text-[3.4rem] md:text-[5.5rem] lg:text-[6.5rem] font-body leading-none mb-4 md:mb-8"
+            className="text-[2.4rem] sm:text-[3.4rem] md:text-[5rem] lg:text-[6rem] font-body leading-none mb-4 md:mb-6"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
           >
             <StaggeredWords
@@ -199,7 +199,7 @@ export default function Hero() {
 
           {/* Subtitle */}
           <m.p
-            className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-10 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
+            className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -213,7 +213,7 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <m.div
-            className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-16 px-2 md:px-0"
+            className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-6 px-2 md:px-0"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
