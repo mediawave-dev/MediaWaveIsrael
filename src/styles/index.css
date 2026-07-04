@@ -325,6 +325,24 @@ button {
   opacity: 1;
 }
 
+/* View Transitions (blog navigation) — quick cross-fade, feature-detected
+   by the browser itself; reduced-motion opts out entirely */
+@supports (view-transition-name: root) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: var(--ease-brand);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
+  }
+}
+
 /* Giant statement word (DESIGN-UPGRADE §4.9) — outline type, fills on
    hover. Pure CSS, no JS, no animation loop. */
 .giant-word-strip {

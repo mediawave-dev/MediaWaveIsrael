@@ -86,6 +86,7 @@ export default function Blog() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link
+                  viewTransition
                   to={`/blog/${post.slug}`}
                   className="group block bg-white rounded-2xl overflow-hidden border border-cream-darker/30 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >

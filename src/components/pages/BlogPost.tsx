@@ -108,6 +108,7 @@ export default function BlogPost() {
           transition={{ duration: 0.4 }}
         >
           <Link
+            viewTransition
             to="/blog"
             className="inline-flex items-center gap-2 text-brown-light hover:text-orange transition-colors text-sm"
           >
@@ -187,6 +188,7 @@ export default function BlogPost() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
+              viewTransition
               to="/blog"
               className="inline-flex items-center gap-2 text-orange font-semibold hover:text-orange-dark transition-colors"
             >
