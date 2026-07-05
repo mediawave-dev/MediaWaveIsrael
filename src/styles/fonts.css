@@ -28,19 +28,6 @@
 }
 
 /* ============================================
-   BA PLATFORMA - Secondary Headlines (backup)
-   Only Regular weight available
-   ============================================ */
-
-@font-face {
-  font-family: 'BA Platforma';
-  src: url('/fonts/BAPlatforma-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ============================================
    EFT OFFSET BOLD - Body Text
    ============================================ */
 
@@ -52,7 +39,4 @@
   font-display: swap;
 }
 
-/* ============================================
-   PLAYFAIR DISPLAY - English Text
-   Loaded via Google Fonts @import in index.css
-   ============================================ */
+/* Latin text uses Outfit, preloaded from index.html (no Google Fonts import). */

@@ -136,10 +136,10 @@
   /* -----------------------------
      TRANSITIONS
      ----------------------------- */
+  /* One signature easing family. Bounce/elastic curves (out-back, spring)
+     were removed on purpose — do not reintroduce them. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   /* -----------------------------
      WAVE-LAB TOKENS (DESIGN-UPGRADE §3.2)
@@ -289,23 +289,18 @@ button {
   font-family: var(--font-body);
 }
 
-/* English font utilities - Playfair Display Italic for English text only */
+/* English/Latin font utilities (Outfit). No italics: the old synthetic
+   italic was dead anyway (font-synthesis: none). */
 .font-english {
   font-family: var(--font-english);
-  /* Playfair Display */
-  font-style: italic;
 }
 
 .font-english-display {
   font-family: var(--font-english-display);
-  /* Playfair Display */
-  font-style: italic;
 }
 
 .font-english-body {
   font-family: var(--font-english-body);
-  /* Playfair Display */
-  font-style: italic;
 }
 
 /* Film grain, scoped to dark decorative surfaces and painted BEHIND the
@@ -583,12 +578,6 @@ button {
   filter: brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.7));
 }
 
-/* Text emphasis without italics (for Hebrew) */
-.text-emphasis {
-  color: var(--color-orange);
-  font-weight: 600;
-}
-
 /* Spec-sheet identity for numbers & labels (DESIGN-UPGRADE §3.1) —
    tabular digits so counters don't jitter, mono for the "code" feel */
 .font-mono-spec {
@@ -627,10 +616,6 @@ section[id] {
 }
 
 /* Gradients */
-.bg-gradient-warm {
-  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #EFF6FF 100%);
-}
-
 .bg-gradient-hero {
   background:
     radial-gradient(ellipse at 30% 20%, rgba(125, 211, 252, 0.12) 0%, transparent 50%),
@@ -653,10 +638,6 @@ section[id] {
 
 .watercolor-terracotta {
   background: rgba(6, 182, 212, 0.12);
-}
-
-.watercolor-sage {
-  background: rgba(20, 184, 166, 0.10);
 }
 
 /* ============================================
@@ -687,12 +668,6 @@ section[id] {
     animation: none !important;
   }
 
-  /* Keep essential UI feedback but make it instant */
-  .hover-lift:hover,
-  .hover-scale:hover {
-    transform: none;
-  }
-
   /* Disable background animations */
   .animate-blob,
   .animate-pulse,
@@ -704,29 +679,6 @@ section[id] {
 /* ============================================
    ENHANCED MICRO-INTERACTIONS
    ============================================ */
-
-/* Interactive link underline animation */
-.link-animated {
-  position: relative;
-  display: inline-block;
-}
-
-.link-animated::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  right: 0;
-  width: 0;
-  height: 2px;
-  background: var(--color-orange);
-  border-radius: var(--radius-full);
-  transition: width var(--duration-normal) var(--ease-out-expo);
-}
-
-.link-animated:hover::after,
-.link-animated:focus-visible::after {
-  width: 100%;
-}
 
 /* ============================================
    HEADER NAV - CSS-only hover effects (no Framer Motion)
@@ -850,164 +802,6 @@ section[id] {
   opacity: 0;
 }
 
-/* Button press effect */
-.press-effect {
-  transition: transform var(--duration-fast) var(--ease-out-expo);
-}
-
-.press-effect:active {
-  transform: scale(0.97);
-}
-
-/* Card hover lift */
-.card-hover {
-  transition:
-    transform var(--duration-normal) var(--ease-out-expo),
-    box-shadow var(--duration-normal) ease;
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Focus ring animation */
-.focus-ring-animated:focus-visible {
-  outline: none;
-  box-shadow:
-    0 0 0 2px var(--color-cream),
-    0 0 0 4px var(--color-orange);
-  transition: box-shadow var(--duration-fast) ease;
-}
-
-/* Text reveal on scroll (CSS-only fallback) */
-.text-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: textReveal 0.6s var(--ease-out-expo) forwards;
-  animation-play-state: paused;
-}
-
-.text-reveal.is-visible {
-  animation-play-state: running;
-}
-
-@keyframes textReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Stagger children animation helper */
-.stagger-children>* {
-  opacity: 0;
-  transform: translateY(15px);
-}
-
-.stagger-children.is-visible>*:nth-child(1) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.1s forwards;
-}
-
-.stagger-children.is-visible>*:nth-child(2) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.2s forwards;
-}
-
-.stagger-children.is-visible>*:nth-child(3) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.3s forwards;
-}
-
-.stagger-children.is-visible>*:nth-child(4) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.4s forwards;
-}
-
-.stagger-children.is-visible>*:nth-child(5) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.5s forwards;
-}
-
-.stagger-children.is-visible>*:nth-child(6) {
-  animation: staggerIn 0.5s var(--ease-out-expo) 0.6s forwards;
-}
-
-@keyframes staggerIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Smooth color transitions for interactive elements */
-.color-transition {
-  transition:
-    color var(--duration-fast) ease,
-    background-color var(--duration-fast) ease,
-    border-color var(--duration-fast) ease;
-}
-
-/* Icon bounce on hover */
-.icon-bounce:hover svg,
-.icon-bounce:hover .icon {
-  animation: iconBounce 0.4s var(--ease-out-back);
-}
-
-@keyframes iconBounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-/* Magnetic hover effect helper class */
-.magnetic-hover {
-  transition: transform var(--duration-fast) var(--ease-out-expo);
-}
-
-/* Glow pulse for important CTAs */
-.glow-pulse {
-  animation: glowPulse 2s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
-  }
-
-  50% {
-    box-shadow: 0 0 30px rgba(125, 211, 252, 0.5);
-  }
-}
-
-/* Loading shimmer effect */
-.shimmer {
-  position: relative;
-  overflow: hidden;
-}
-
-.shimmer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-      transparent,
-      rgba(255, 255, 255, 0.4),
-      transparent);
-  transform: translateX(-100%);
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
 /* ============================================
    RESPONSIVE IMPROVEMENTS
    ============================================ */
@@ -1068,21 +862,6 @@ section[id] {
     }
   }
 
-  /* Stack elements on mobile */
-  .mobile-stack {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  /* Full width buttons on mobile */
-  .mobile-full-width {
-    width: 100%;
-  }
-
-  /* Hide decorative elements on mobile for performance */
-  .hide-mobile {
-    display: none !important;
-  }
 }
 
 /* Tablet adjustments */
@@ -1091,10 +870,6 @@ section[id] {
     padding-inline: clamp(1.5rem, 4vw, 3rem);
   }
 
-  /* Two-column layouts may need adjustment */
-  .tablet-single-col {
-    grid-template-columns: 1fr !important;
-  }
 }
 
 /* Large desktop */
@@ -1198,35 +973,6 @@ section[id] {
     content: " (" attr(href) ")";
     font-size: 10pt;
   }
-}
-
-/* Focus visible polyfill for older browsers */
-.js-focus-visible :focus:not(.focus-visible) {
-  outline: none;
-}
-
-/* Safe area insets for notched devices */
-@supports (padding: max(0px)) {
-  .safe-area-padding {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-}
-
-/* ============================================
-   TAP FEEDBACK FOR TOUCH DEVICES
-   Ensures responsive feel on mobile
-   ============================================ */
-
-.tap-feedback {
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 50ms ease-out, opacity 50ms ease-out;
-}
-
-.tap-feedback:active {
-  transform: scale(0.97);
-  opacity: 0.9;
 }
 
 /* Ensure inputs don't trigger iOS zoom (minimum 16px) */
