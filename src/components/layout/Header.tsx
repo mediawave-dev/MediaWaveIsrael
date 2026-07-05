@@ -261,7 +261,7 @@ export default function Header() {
 
                 {/* Contact info - pushed to bottom */}
                 <div className="mt-auto text-brown-light text-sm font-english space-y-1">
-                  <p>052-8731808</p>
+                  <p className="font-mono-spec">052-8731808</p>
                   <p>mediawaveisrael@gmail.com</p>
                 </div>
               </div>

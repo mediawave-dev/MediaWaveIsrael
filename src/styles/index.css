@@ -197,6 +197,8 @@
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Focus rings and :active states are the tap feedback */
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1,
@@ -210,6 +212,8 @@
     line-height: var(--leading-tight);
     color: var(--color-brown-dark);
     font-synthesis: none;
+    /* Even line lengths on multi-line Hebrew headings */
+    text-wrap: balance;
   }
 
   h1 {
@@ -702,22 +706,23 @@ section[id] {
   transform: scale(0.98);
 }
 
-/* Animated underline from center */
+/* Animated underline from center — scaleX instead of width so the loop
+   stays on the compositor (width is a layout property) */
 .nav-link::after {
   content: '';
   position: absolute;
   bottom: -4px;
-  left: 50%;
-  width: 0;
+  left: 0;
+  width: 100%;
   height: 2px;
   background: var(--color-orange);
   border-radius: var(--radius-full);
-  transform: translateX(-50%);
-  transition: width var(--duration-normal) var(--ease-out-expo);
+  transform: scaleX(0);
+  transition: transform var(--duration-normal) var(--ease-out-expo);
 }
 
 .nav-link:hover::after {
-  width: 100%;
+  transform: scaleX(1);
 }
 
 /* Subtle glow on hover */
@@ -1171,6 +1176,18 @@ html.disable-animations [data-floating] {
 /* Anchored sections land below the fixed header */
 section[id] {
   scroll-margin-top: 90px;
+}
+
+/* Footer link system — frost-tinted mist (never flat gray on a colored
+   dark surface); hover lifts to pastel. Literal hover value on purpose:
+   high-contrast mode darkens --color-orange, unreadable on the dark footer. */
+.footer-link {
+  color: rgba(248, 250, 252, 0.68);
+  transition: color var(--duration-fast) ease;
+}
+
+.footer-link:hover {
+  color: #7DD3FC;
 }
 
 /* Short brand-gradient bar under section titles — one consistent

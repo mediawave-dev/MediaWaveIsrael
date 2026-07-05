@@ -236,7 +236,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-base text-brown-muted">טלפון</p>
-                  <p className="text-xl font-semibold text-brown-dark group-hover:text-sky-ink transition-colors font-english" dir="ltr">
+                  <p className="text-xl font-semibold text-brown-dark group-hover:text-sky-ink transition-colors font-mono-spec" dir="ltr">
                     {contactPhone}
                   </p>
                 </div>

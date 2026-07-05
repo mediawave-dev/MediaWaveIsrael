@@ -39,7 +39,7 @@ export default function Footer() {
             <div className="flex justify-center md:justify-start mb-4">
               <Logo variant="footer" />
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: '#A6A6A6' }}>
+            <p className="text-sm leading-relaxed text-cream/70">
               בונים נוכחות דיגיטלית מנצחת לעסקים
             </p>
           </div>
@@ -81,13 +81,10 @@ export default function Footer() {
               {/* Phone */}
               <a
                 href="tel:052-8731808"
-                className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#ABABAB' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
+                className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
               >
                 <PhoneIcon />
-                <span dir="ltr" className="font-english">052-8731808</span>
+                <span dir="ltr" className="font-mono-spec">052-8731808</span>
               </a>
 
               {/* WhatsApp */}
@@ -95,10 +92,7 @@ export default function Footer() {
                 href={WHATSAPP_URLS.footer}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#ABABAB' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
+                className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
               >
                 <WhatsAppIcon />
                 <span className="font-english">WhatsApp</span>
@@ -107,10 +101,7 @@ export default function Footer() {
               {/* Email */}
               <a
                 href="mailto:mediawaveisrael@gmail.com"
-                className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#ABABAB' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
+                className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
               >
                 <MailIcon />
                 <span dir="ltr" className="whitespace-nowrap font-english">mediawaveisrael@gmail.com</span>
@@ -121,10 +112,7 @@ export default function Footer() {
                 href="https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#ABABAB' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
+                className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
               >
                 <InstagramIcon />
                 <span className="font-english">Instagram</span>
@@ -139,20 +127,17 @@ export default function Footer() {
           style={{ borderTop: '1px solid #333' }}
         >
           {/* Left side in RTL = copyright */}
-          <p className="text-xs font-english" style={{ color: '#9A9A9A' }}>
+          <p className="text-xs font-english text-cream/60">
             © {currentYear} MediaWave Israel
           </p>
 
           {/* Right side in RTL = legal links */}
-          <div className="flex items-center gap-3 text-xs" style={{ color: '#9A9A9A' }}>
+          <div className="flex items-center gap-3 text-xs text-cream/60">
             <a
               href="/terms"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors duration-200"
-              style={{ color: '#9A9A9A' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
+              className="footer-link"
             >
               תקנון שימוש
             </a>
@@ -161,10 +146,7 @@ export default function Footer() {
               href="/privacy"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors duration-200"
-              style={{ color: '#9A9A9A' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
+              className="footer-link"
             >
               מדיניות פרטיות
             </a>
@@ -173,10 +155,7 @@ export default function Footer() {
               href="/accessibility"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors duration-200"
-              style={{ color: '#9A9A9A' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
+              className="footer-link"
             >
               הצהרת נגישות
             </a>
