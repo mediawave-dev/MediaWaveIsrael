@@ -22,6 +22,11 @@ directus/database/*
 !directus/database/data.db
 directus/uploads/
 
+# impeccable working files (machine-local; design.json + live/config.json ARE tracked)
+.impeccable/critique/
+.impeccable/live/sessions/
+.impeccable/config.local.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

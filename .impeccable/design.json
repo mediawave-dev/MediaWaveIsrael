@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-05T12:00:00+03:00",
+  "title": "Design System: MediaWave Israel",
+  "extensions": {
+    "colorMeta": {
+      "sky-pastel": { "role": "primary", "displayName": "Sky Pastel", "canonical": "#7DD3FC", "tonalRamp": ["#082F49", "#0C4A6E", "#075985", "#0369A1", "#0284C7", "#38BDF8", "#7DD3FC", "#E0F2FE"] },
+      "sky-ink": { "role": "primary", "displayName": "Sky Ink (readable accent)", "canonical": "#0369A1", "tonalRamp": ["#082F49", "#0C4A6E", "#075985", "#0369A1", "#0284C7", "#0EA5E9", "#38BDF8", "#BAE6FD"] },
+      "teal-tint": { "role": "secondary", "displayName": "Teal Tint", "canonical": "#99F6E4", "tonalRamp": ["#042F2E", "#115E59", "#0F766E", "#0D9488", "#14B8A6", "#5EEAD4", "#99F6E4", "#F0FDFA"] },
+      "frost": { "role": "neutral", "displayName": "Frost (cool paper)", "canonical": "#F8FAFC", "tonalRamp": ["#0F172A", "#1E293B", "#334155", "#64748B", "#94A3B8", "#CBD5E1", "#E2E8F0", "#F8FAFC"] },
+      "ink": { "role": "neutral", "displayName": "Ink (warm gray text)", "canonical": "#4A4A4A", "tonalRamp": ["#1A1A1A", "#2A2A2A", "#4A4A4A", "#6A6A6A", "#8A8A8A", "#B0B0B0", "#D6D6D6", "#F5F5F5"] },
+      "navy-surface": { "role": "neutral", "displayName": "Navy Surface (dark sections only)", "canonical": "#1E293B", "tonalRamp": ["#020617", "#0F172A", "#1E293B", "#334155", "#475569", "#64748B", "#94A3B8", "#CBD5E1"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only, word-by-word reveal; Hebrew via EFT Betaamango." },
+      "body": { "displayName": "Body", "purpose": "Hebrew body text at 18px root; scales with the accessibility widget." },
+      "label": { "displayName": "Spec Mono", "purpose": "Numbers, counters, tech marquee; tabular-nums so digits never jitter." }
+    },
+    "shadows": [
+      { "name": "shadow-sm", "value": "0 2px 8px rgba(74,74,74,0.06)", "purpose": "Chips and small controls." },
+      { "name": "shadow-card", "value": "0 4px 20px rgba(74,74,74,0.08), 0 0 0 1px rgba(74,74,74,0.03)", "purpose": "Cards at rest." },
+      { "name": "shadow-lg", "value": "0 8px 32px rgba(74,74,74,0.10)", "purpose": "Modals and popovers." },
+      { "name": "shadow-glow", "value": "0 0 24px rgba(125,211,252,0.30)", "purpose": "Sky glow on hovered CTAs only." }
+    ],
+    "motion": [
+      { "name": "ease-brand", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "THE signature easing (EASE_BRAND in src/config/motion.ts); every framer transition imports it." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Color/opacity state changes." },
+      { "name": "duration-normal", "value": "300ms", "purpose": "Hover underlines, lifts." },
+      { "name": "duration-slow", "value": "500-800ms", "purpose": "Entrances, the header-CTA tide (600ms)." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "640px" },
+      { "name": "tablet", "value": "1024px" },
+      { "name": "wide", "value": "1440px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Pill CTA: sky-pastel fill, deep-navy text, deepens to sky-deep on hover.",
+      "html": "<button class=\"ds-btn-primary\">בואו נדבר</button>",
+      "css": ".ds-btn-primary { background: var(--color-orange, #7DD3FC); color: #1E3A5F; font-weight: 600; font-size: 1.25rem; padding: 16px 40px; border: none; border-radius: 50px; transition: background-color 0.3s cubic-bezier(0.16,1,0.3,1), transform 0.3s cubic-bezier(0.16,1,0.3,1); } .ds-btn-primary:hover { background: var(--color-orange-dark, #38BDF8); transform: scale(1.02); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #F8FAFC, 0 0 0 4px #7DD3FC; } .ds-btn-primary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "White pill with frost border; border and text turn accent on hover.",
+      "html": "<button class=\"ds-btn-secondary\">לבלוג שלנו</button>",
+      "css": ".ds-btn-secondary { background: #FFFFFF; color: #2A2A2A; font-weight: 600; font-size: 1.25rem; padding: 16px 40px; border: 2px solid #E2E8F0; border-radius: 50px; transition: border-color 0.3s, color 0.3s; } .ds-btn-secondary:hover { border-color: #7DD3FC; color: #0369A1; }"
+    },
+    {
+      "name": "Header CTA (The Tide)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Signature contained hover: a two-layer wavy tide rises inside the pill.",
+      "html": "<button class=\"ds-header-cta\">בואו נדבר</button>",
+      "css": ".ds-header-cta { position: relative; overflow: hidden; isolation: isolate; background: #7DD3FC; color: #1E3A5F; font-weight: 600; padding: 12px 28px; border: none; border-radius: 50px; transition: transform 0.15s cubic-bezier(0.16,1,0.3,1), box-shadow 0.15s ease; } .ds-header-cta::before { content: ''; position: absolute; left: -15%; right: -15%; bottom: -20%; height: 130%; z-index: -1; background: #38BDF8; border-radius: 48% 52% 0 0 / 90% 70% 0 0; transform: translateY(88%); transition: transform 0.6s cubic-bezier(0.33,1,0.68,1); } .ds-header-cta:hover::before { transform: translateY(-12%); } .ds-header-cta::after { content: ''; position: absolute; left: -25%; right: -25%; bottom: -20%; height: 130%; z-index: -2; background: #BAE6FD; border-radius: 55% 45% 0 0 / 70% 95% 0 0; transform: translateY(88%); opacity: 0.9; transition: transform 0.5s cubic-bezier(0.33,1,0.68,1), opacity 0.4s ease 0.3s; } .ds-header-cta:hover::after { transform: translateY(-12%); opacity: 0; } .ds-header-cta:hover { transform: translateY(-2px); box-shadow: 0 0 24px rgba(125,211,252,0.30); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "White 24px-radius card with ring-in-shadow; hover glow animates opacity only.",
+      "html": "<div class=\"ds-card\"><h3>פיתוח אתרים</h3><p>אתר מהיר, נגיש ומדויק לעסק שלך.</p></div>",
+      "css": ".ds-card { position: relative; background: #FFFFFF; border-radius: 24px; padding: 2rem; box-shadow: 0 4px 20px rgba(74,74,74,0.08), 0 0 0 1px rgba(74,74,74,0.03); direction: rtl; text-align: right; } .ds-card h3 { color: #2A2A2A; font-weight: 700; font-size: 1.375rem; margin: 0 0 .5rem; } .ds-card p { color: #4A4A4A; line-height: 1.7; margin: 0; } .ds-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 20px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(125,211,252,0.12); opacity: 0; transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1); pointer-events: none; z-index: -1; } .ds-card:hover::after { opacity: 1; }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "card",
+      "description": "RTL text field: frost border, accent focus glow; email/tel flip to LTR.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"איך קוראים לך?\" />",
+      "css": ".ds-input { background: #FFFFFF; color: #2A2A2A; border: 2px solid #E2E8F0; border-radius: 12px; padding: 12px 16px; font-size: 1rem; direction: rtl; text-align: right; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-input::placeholder { color: #6A6A6A; } .ds-input:focus { outline: none; border-color: #7DD3FC; box-shadow: 0 0 0 3px rgba(125,211,252,0.25); }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Header link on dark surface: hover-only center-out underline + sky halo.",
+      "html": "<nav class=\"ds-nav\" dir=\"rtl\"><a class=\"ds-nav-link\" href=\"#\">שירותים</a><a class=\"ds-nav-link\" href=\"#\">בלוג</a><a class=\"ds-nav-link\" href=\"#\">צור קשר</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 1.5rem; background: #2A2A2A; padding: 14px 22px; border-radius: 16px; } .ds-nav-link { position: relative; color: #7DD3FC; text-decoration: none; font-weight: 500; padding: 8px 4px; transition: color 0.15s ease, transform 0.15s cubic-bezier(0.16,1,0.3,1); } .ds-nav-link:hover { transform: translateY(-2px); } .ds-nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 2px; background: #7DD3FC; border-radius: 50px; transform: translateX(-50%); transition: width 0.3s cubic-bezier(0.16,1,0.3,1); } .ds-nav-link:hover::after { width: 100%; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "מעבדת הגלים (The Wave Lab)",
+    "overview": "A cool, coastal-light Hebrew RTL interface where water is the organizing metaphor: living wave dividers flow between sections, the hero draws a swaying wave underline, the header CTA fills with a rising tide on hover. Precise (spec-mono numbers, one signature easing) yet alive (ambient loops that never freeze). The site is the portfolio of a web studio, so craft IS the message: fast, readable, honest.",
+    "keyCharacteristics": [
+      "Hebrew-first RTL; animations enter from the right; words never letter-split",
+      "One accent family (sky), one easing (EASE_BRAND), one wave motif",
+      "Frost-white surfaces with rare, deliberate navy statement sections",
+      "Ambient motion always alive; accessibility switch is the only full stop",
+      "AA contrast is a build gate, not an aspiration"
+    ],
+    "rules": [
+      { "name": "The Sky-Ink Rule", "body": "Pastel sky (#7DD3FC) is a fill color. The moment it becomes text on a light surface it is a contrast bug; use sky-ink (#0369A1/#075985) instead.", "section": "colors" },
+      { "name": "The Legacy-Name Rule", "body": "CSS variable names (--color-orange/cream/brown) are legacy slots holding the current sky/frost/ink values. Never 'fix' a name back to its warm value.", "section": "colors" },
+      { "name": "The One-Accent Rule", "body": "Sky is the only accent. Navy (#1E293B) may carry a section as a surface; it may never appear as an accent.", "section": "colors" },
+      { "name": "The Word-Split Rule", "body": "Hebrew headlines animate by words only; letter-splitting breaks glyph shaping. No letter-spacing, no italic, no em-dashes in displayed Hebrew.", "section": "typography" },
+      { "name": "The Root-Scale Rule", "body": "Accessibility text scaling multiplies the root font-size; components stay rem-based so everything scales together.", "section": "typography" },
+      { "name": "The Opacity-Shadow Rule", "body": "Hover elevation = pre-painted pseudo-element shadow with opacity transition. Animating box-shadow itself is a performance bug.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use sky-ink (#0369A1/#075985) for every link and accent-colored text on light surfaces",
+      "Do run the axe-core contrast gate (0 violations) after any color or surface change",
+      "Do import m from framer-motion (LazyMotion strict) and take easing only from src/config/motion.ts",
+      "Do gate every new infinite loop on useReducedMotion/useAmbientMotion and pause it offscreen",
+      "Do split Hebrew headline animations by words; keep line-height >= 1.6",
+      "Do keep hover effects clipped inside the element",
+      "Do label demo content as demo and show only verifiable numbers"
+    ],
+    "donts": [
+      "Don't restore the warm watercolor palette; legacy token names keep their cool values",
+      "Don't set pastel sky (#7DD3FC) as text on a light background",
+      "Don't use navy as an accent; it is a surface color only",
+      "Don't add static underlines to UI links (hover-only; exceptions: blog prose, chat URLs)",
+      "Don't use magnetic hovers, mix-blend-mode over text, letter-spacing or italics on Hebrew, or em-dashes in displayed copy",
+      "Don't persist accessibility-widget settings across visits",
+      "Don't ship uniform fade-ins, purple gradients, glassmorphism-by-default, hero-metric templates, or fake social proof"
+    ]
+  }
+}
