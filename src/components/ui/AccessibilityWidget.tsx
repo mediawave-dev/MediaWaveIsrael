@@ -146,7 +146,7 @@ export default function AccessibilityWidget() {
             {/* Header */}
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-cream-darker">
               <h2 className="text-xl font-bold text-brown-dark flex items-center gap-2">
-                <AccessibilityIcon className="w-5 h-5 text-orange" />
+                <AccessibilityIcon className="w-5 h-5 text-sky-ink" />
                 נגישות
               </h2>
               <button

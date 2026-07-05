@@ -70,14 +70,14 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
       style={{ '--hover-shadow': '0 16px 48px rgba(125, 211, 252, 0.20)' } as React.CSSProperties}
       variants={cardVariants}
     >
-      {/* Glassmorphism card — hover shadow lives on the parent's .card-glow
-          pseudo (this div clips children with overflow-hidden) */}
+      {/* Solid system card (glass removed: nothing to blur on a light bg and
+          backdrop-filter x4 costs mobile GPU) — hover shadow lives on the
+          parent's .card-glow pseudo (this div clips children) */}
       <div className="relative overflow-hidden rounded-3xl p-6 md:p-8
-        bg-white/70 backdrop-blur-xl
-        border border-white/50
-        shadow-[0_8px_32px_rgba(125,211,252,0.12),inset_0_1px_0_rgba(255,255,255,0.8)]
-        transition-[transform,background-color] duration-500
-        hover:bg-white/80
+        bg-white
+        border border-cream-darker/60
+        shadow-[0_8px_32px_rgba(125,211,252,0.12)]
+        transition-transform duration-500
         hover:-translate-y-2
       ">
         {/* Large gradient number */}
@@ -85,12 +85,13 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
           className="absolute -top-1 -right-1 md:-top-4 md:-right-4 select-none pointer-events-none"
           variants={numberVariants}
         >
-          <span className="text-5xl md:text-8xl font-headline font-black
-            bg-gradient-to-br from-sky-300 via-cyan-400 to-teal-400
-            bg-clip-text text-transparent
-            opacity-30 group-hover:opacity-50
+          <span
+            className="text-5xl md:text-8xl font-headline font-black text-transparent
+            opacity-40 group-hover:opacity-70
             transition-opacity duration-500
-          ">
+          "
+            style={{ WebkitTextStroke: '1.5px rgba(56, 189, 248, 0.65)' }}
+          >
             {step.stepNumber}
           </span>
         </m.div>

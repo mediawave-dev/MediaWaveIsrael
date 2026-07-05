@@ -62,13 +62,13 @@ export default function Testimonials() {
         {/* Floating shapes */}
         <m.div
           className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(245,166,35,0.1) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(125,211,252,0.12) 0%, transparent 70%)' }}
           animate={{ y: [0, -20, 0], scale: [1, 1.1, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <m.div
           className="absolute bottom-1/4 right-20 w-40 h-40 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(139,180,160,0.1) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(153,246,228,0.12) 0%, transparent 70%)' }}
           animate={{ y: [0, 15, 0], scale: [1, 1.05, 1] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />

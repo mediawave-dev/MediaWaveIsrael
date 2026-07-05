@@ -19,7 +19,7 @@ export const portableTextComponents: PortableTextComponents = {
       </h4>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-r-4 border-orange pr-4 my-6 text-brown-light italic">
+      <blockquote className="border-r-4 border-orange pr-4 my-6 text-brown-light">
         {children}
       </blockquote>
     ),

@@ -95,7 +95,7 @@ export default function FAQ() {
                   {item.question}
                 </span>
                 <m.span
-                  className="text-orange flex-shrink-0"
+                  className="text-sky-ink flex-shrink-0"
                   animate={{ rotate: openIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                 >

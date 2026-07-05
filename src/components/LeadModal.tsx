@@ -132,7 +132,7 @@ export default function LeadModal() {
                         {/* Close Button */}
                         <button
                             onClick={handleClose}
-                            className="absolute top-2 left-2 sm:top-4 sm:left-4 p-1 text-brown-muted hover:text-orange transition-colors z-10"
+                            className="absolute top-2 left-2 sm:top-4 sm:left-4 p-1 text-brown-muted hover:text-sky-ink transition-colors z-10"
                         >
                             <X size={20} />
                         </button>
