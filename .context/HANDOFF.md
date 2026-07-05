@@ -57,6 +57,14 @@
 - [x] טאגליין: "עיצוב ופיתוח אתרים מקצועיים לעסקים" (הירו, meta, JSON-LD x2, App.tsx, CONTENT.md)
 - [x] אימות: `.gsd/temp/verify-a11y-round.mjs` — ‏11/11 (כולל: אפס drift ב-CTA, איפוס מלא אחרי reload, אפס קווים תחתונים בפוטר ב-HC, אפס שגיאות קונסול). צילומים: `g:\tmp\mediawave-audit\wave-lab\a11y-round\`
 
+## סבב משוב נתי 5 (05/07/2026) — הושלם (החלטות 32-36)
+- [x] תמונת ה"אחרי" בסליידר רונדרה מחדש מהבילד העדכני (טאגליין קצר). `scripts/generate-demo-images.mjs`
+- [x] **ניגודיות כלל-אתרית: טוקן `--color-sky-ink`/`-strong`.** השורש לכל תלונות "לא קריא" היה כלל בסיס גלובלי `a{color:#7DD3FC}` + עשרות text-orange = תכלת פסטל (1.6:1) על בהיר. הוחלף בכחול-שמיים עמוק (#0369A1, 5.9:1) בכל הטקסטים על משטח בהיר: בלוג, משפטיים, נגישות, 404, עוגיות, המלצות, צ'אט, תפריט מובייל, HowWeWork
+- [x] **הכפתור "רגיל" בווידג'ט קריא** — צ'יפ כהה + טקסט לבן; מתגי off ל-gray-400
+- [x] HC: קישורי הניווט בהדר נאלצים ללבן (הדר תמיד כהה); כל bg-orange CTA מקבל טקסט לבן
+- [x] **אכיפה חדשה: `.gsd/temp/contrast-audit.mjs` (axe-core) = 0 הפרות** על 7 עמודים + מצבי ווידג'ט/HC/צ'אט/תפריט. הרץ בכל סבב עתידי כשער
+- [x] אימות: axe 0/0, verify-a11y-round 11/11, tsc+eslint נקיים, build+prerender 7 עמודים. צילומי הווידג'ט: `widget-default-regil.png`
+
 ## Important Files
 - `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND); `src/hooks/useReducedMotion.ts` — גם useAmbientMotion
 - `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, BeforeAfterSlider, MagneticButton, GiantWord (נמחקו: LoadTimeBadge, GrainOverlay)
