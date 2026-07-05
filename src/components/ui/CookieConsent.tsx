@@ -70,7 +70,7 @@ export default function CookieConsent() {
               <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <button
                   onClick={() => handleConsent(true)}
-                  className="px-4 py-2 sm:flex-1 text-sm font-medium bg-orange text-brown-dark rounded-lg hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2"
+                  className="px-4 py-2 sm:flex-1 text-sm font-medium bg-orange text-brown-dark rounded-lg hover:bg-orange-dark transition-colors"
                 >
                   אישור
                 </button>

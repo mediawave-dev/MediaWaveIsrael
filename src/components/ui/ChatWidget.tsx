@@ -222,7 +222,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
             <m.button
               onClick={() => setIsOpen(true)}
-              className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 overflow-hidden"
+              className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
@@ -339,7 +339,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                 <m.button
                   onClick={handleSend}
                   disabled={!canSend}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-orange text-brown-dark disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-dark transition-colors focus-visible:ring-2 focus-visible:ring-orange"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-orange text-brown-dark disabled:opacity-40 disabled:cursor-not-allowed hover:bg-orange-dark transition-colors"
                   whileHover={canSend ? { scale: 1.05 } : {}}
                   whileTap={canSend ? { scale: 0.95 } : {}}
                   aria-label="שלח הודעה"

@@ -248,10 +248,26 @@
   color: var(--color-brown-dark);
 }
 
-/* Focus visible for accessibility */
+/* Focus visible for accessibility — two-mode ring, always readable:
+   sky-ink on light surfaces (5.9:1 on white), pastel sky on dark surfaces
+   (8.6:1 on navy). The old pastel-everywhere ring was 1.6:1 on white —
+   effectively invisible to keyboard users. */
+:root {
+  --focus-ring: var(--color-sky-ink);
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-orange);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+/* Dark-surface contexts flip the ring to pastel. Literal value on purpose:
+   high-contrast mode darkens --color-orange, which would vanish on navy. */
+header,
+footer,
+#hero,
+#before-after {
+  --focus-ring: #7DD3FC;
 }
 
 /* Remove default button styles */
@@ -1381,7 +1397,7 @@ html.disable-animations [data-floating] {
 }
 
 .text-size-btn:focus-visible {
-  outline: 2px solid var(--color-orange);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 

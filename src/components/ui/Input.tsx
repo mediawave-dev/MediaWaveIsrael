@@ -40,7 +40,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{
-                boxShadow: '0 0 20px rgba(212, 165, 116, 0.18), 0 0 40px rgba(212, 165, 116, 0.10)',
+                boxShadow: '0 0 20px rgba(125, 211, 252, 0.22), 0 0 40px rgba(125, 211, 252, 0.12)',
               }}
             />
           )}
@@ -48,7 +48,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         {/* Optional Icon */}
         {icon && (
-          <div className={`absolute top-1/2 -translate-y-1/2 right-4 text-brown-muted transition-colors duration-300 ${isFocused ? 'text-orange' : ''}`}>
+          <div className={`absolute top-1/2 -translate-y-1/2 right-4 text-brown-muted transition-colors duration-300 ${isFocused ? 'text-sky-ink' : ''}`}>
             {icon}
           </div>
         )}
@@ -61,7 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           aria-required={props.required || undefined}
           className={`
             peer w-full py-4 pt-6 bg-white border-2 rounded-2xl
-            outline-none transition-all duration-300
+            transition-[border-color] duration-300
             text-brown-dark placeholder-transparent text-base
             ${icon ? 'px-12' : 'px-5'}
             ${error
@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             absolute pointer-events-none
             transition-colors duration-200
             ${icon ? 'right-12' : 'right-5'}
-            ${error ? 'text-red-500' : isFocused ? 'text-orange' : 'text-brown-muted'}
+            ${error ? 'text-red-500' : isFocused ? 'text-sky-ink' : 'text-brown-muted'}
           `}
           animate={{
             top: isFloating ? '0.5rem' : '1.1rem',
@@ -174,7 +174,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{
-                boxShadow: '0 0 20px rgba(212, 165, 116, 0.18), 0 0 40px rgba(212, 165, 116, 0.10)',
+                boxShadow: '0 0 20px rgba(125, 211, 252, 0.22), 0 0 40px rgba(125, 211, 252, 0.12)',
               }}
             />
           )}
@@ -188,7 +188,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-required={props.required || undefined}
           className={`
             peer w-full px-5 py-4 pt-6 bg-white border-2 rounded-2xl
-            outline-none transition-all duration-300 resize-none
+            transition-[border-color] duration-300 resize-none
             text-brown-dark placeholder-transparent text-base
             ${error
               ? 'border-red-400 focus:border-red-500'
@@ -218,7 +218,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           className={`
             absolute right-5 pointer-events-none
             transition-colors duration-200
-            ${error ? 'text-red-500' : isFocused ? 'text-orange' : 'text-brown-muted'}
+            ${error ? 'text-red-500' : isFocused ? 'text-sky-ink' : 'text-brown-muted'}
           `}
           animate={{
             top: isFloating ? '0.5rem' : '1.1rem',

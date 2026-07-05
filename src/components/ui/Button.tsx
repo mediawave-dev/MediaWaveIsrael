@@ -74,8 +74,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         className={`
           relative overflow-hidden font-semibold rounded-full
-          transition-all duration-300 outline-none
-          focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2
+          transition-[transform,background-color,box-shadow,opacity] duration-300
           disabled:opacity-50 disabled:cursor-not-allowed
           active:scale-[0.97] active:opacity-90
           ${sizeStyles[size]}
