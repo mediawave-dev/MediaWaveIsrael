@@ -1,5 +1,6 @@
 import { forwardRef, useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 interface ButtonProps {
   children: React.ReactNode
@@ -31,6 +32,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const [isPressed, setIsPressed] = useState(false)
     const [showSuccess, setShowSuccess] = useState(false)
+    // Ambient micro-loops (shine sweep, icon nudge) stop only via the a11y widget
+    const ambient = useAmbientMotion()
 
     // Size styles
     const sizeStyles = {
@@ -109,7 +112,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {variant === 'primary' && (
           <m.span
             className="absolute inset-0 bg-linear-to-l from-transparent via-white/20 to-transparent -translate-x-full"
-            animate={{ x: ['calc(-100%)', 'calc(200%)'] }}
+            animate={ambient ? { x: ['calc(-100%)', 'calc(200%)'] } : undefined}
             transition={{
               duration: 2,
               repeat: Infinity,
@@ -207,7 +210,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 {children}
                 {icon && (
                   <m.span
-                    animate={{ x: [0, -4, 0] }}
+                    animate={ambient ? { x: [0, -4, 0] } : undefined}
                     transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     {icon}

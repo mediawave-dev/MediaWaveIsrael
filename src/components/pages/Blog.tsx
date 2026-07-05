@@ -3,6 +3,7 @@ import { m } from 'framer-motion'
 import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
 import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
 import SEO from '../SEO'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 interface BlogPost {
   _id: string
@@ -167,6 +168,8 @@ export default function Blog() {
 }
 
 function EmptyState() {
+  // Ambient float stops only via the a11y widget
+  const ambient = useAmbientMotion()
   return (
     <m.div
       className="text-center py-20"
@@ -179,7 +182,7 @@ function EmptyState() {
         <div className="absolute inset-0 rounded-full bg-orange/10 blur-2xl" />
         <m.div
           className="relative w-full h-full rounded-full bg-cream-dark flex items-center justify-center"
-          animate={{ y: [0, -8, 0] }}
+          animate={ambient ? { y: [0, -8, 0] } : undefined}
           transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
           <BookOpen size={48} className="text-orange/60" />

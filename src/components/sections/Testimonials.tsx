@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
-import { useReducedMotion } from '../../hooks/useReducedMotion'
+import { useReducedMotion, useAmbientMotion } from '../../hooks/useReducedMotion'
 import { testimonials } from '../../data/testimonials'
 
-// Color palette for testimonial cards (from site design system)
-const cardColors = ['#F5A623', '#E07B54', '#8BB4A0', '#F28B82']
+// Color palette for testimonial cards — sky family only (the old warm
+// watercolor values are historical; never restore them)
+const cardColors = ['#38BDF8', '#5EEAD4', '#7DD3FC', '#67E8F9']
 
 function getColor(index: number): string {
   return cardColors[index % cardColors.length]
@@ -12,12 +13,13 @@ function getColor(index: number): string {
 
 export default function Testimonials() {
   const prefersReducedMotion = useReducedMotion()
+  const ambient = useAmbientMotion()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
-  // Auto-rotate testimonials (respect reduced motion preference)
+  // Auto-rotate testimonials (respect OS reduced motion AND the a11y widget)
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || !ambient) {
       setIsAutoPlaying(false)
       return
     }
@@ -29,7 +31,7 @@ export default function Testimonials() {
     }, 5000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, prefersReducedMotion])
+  }, [isAutoPlaying, prefersReducedMotion, ambient])
 
   // Don't render if no testimonials collected yet
   if (testimonials.length === 0) return null
@@ -63,13 +65,13 @@ export default function Testimonials() {
         <m.div
           className="absolute top-1/4 left-10 w-32 h-32 rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(125,211,252,0.12) 0%, transparent 70%)' }}
-          animate={{ y: [0, -20, 0], scale: [1, 1.1, 1] }}
+          animate={ambient ? { y: [0, -20, 0], scale: [1, 1.1, 1] } : undefined}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <m.div
           className="absolute bottom-1/4 right-20 w-40 h-40 rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(153,246,228,0.12) 0%, transparent 70%)' }}
-          animate={{ y: [0, 15, 0], scale: [1, 1.05, 1] }}
+          animate={ambient ? { y: [0, 15, 0], scale: [1, 1.05, 1] } : undefined}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>

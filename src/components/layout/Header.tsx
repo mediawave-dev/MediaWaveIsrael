@@ -3,10 +3,13 @@ import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
 import { headerLinks } from '../../config/navigation'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // Ambient micro-loops (menu CTA arrow) stop only via the a11y widget
+  const ambient = useAmbientMotion()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -248,7 +251,7 @@ export default function Header() {
                     בואו נדבר
                     <m.span
                       className="inline-block"
-                      animate={{ x: [0, -4, 0] }}
+                      animate={ambient ? { x: [0, -4, 0] } : undefined}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       ←

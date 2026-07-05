@@ -1,7 +1,10 @@
 import { m } from 'framer-motion'
 import SEO from '../SEO'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 export default function NotFound() {
+  // Ambient micro-loops (arrow nudge, floating dots) stop only via the a11y widget
+  const ambient = useAmbientMotion()
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <SEO
@@ -73,7 +76,7 @@ export default function NotFound() {
             whileTap={{ scale: 0.98 }}
           >
             <m.span
-              animate={{ x: [0, 4, 0] }}
+              animate={ambient ? { x: [0, 4, 0] } : undefined}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             >
               →
@@ -100,10 +103,10 @@ export default function NotFound() {
                 left: dot.left,
                 right: dot.right,
               }}
-              animate={{
+              animate={ambient ? {
                 y: [0, -15, 0],
                 opacity: [0.3, 0.6, 0.3],
-              }}
+              } : undefined}
               transition={{
                 duration: 4,
                 repeat: Infinity,
