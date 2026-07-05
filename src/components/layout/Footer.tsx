@@ -37,7 +37,9 @@ export default function Footer() {
           {/* Column 1 — Logo + Tagline (rightmost in RTL) */}
           <div>
             <div className="flex justify-center md:justify-start mb-4">
-              <Logo variant="footer" />
+              <a href="/" aria-label="חזרה לדף הבית">
+                <Logo variant="footer" />
+              </a>
             </div>
             <p className="text-sm leading-relaxed text-cream/70">
               בונים נוכחות דיגיטלית מנצחת לעסקים

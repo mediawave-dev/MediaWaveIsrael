@@ -41,8 +41,9 @@ export default function Logo({
   const sizeConfig = sizes[variant]
 
   return (
-    <m.a
-      href="#"
+    // Plain container on purpose: the parent (Header/Footer) supplies the
+    // real link. The old inner <a href="#"> nested anchors — invalid HTML.
+    <m.div
       className={`group flex items-center relative ${className}`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
@@ -86,7 +87,7 @@ export default function Logo({
         className="absolute -z-10 w-16 h-16 bg-orange/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{ left: '-8px', top: '-8px' }}
       />
-    </m.a>
+    </m.div>
   )
 }
 
