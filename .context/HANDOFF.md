@@ -71,3 +71,9 @@
 - `src/components/sections/BeforeAfterShowcase.tsx` — הסקשן הכהה עם הסליידר (החליף את ProofBand שנמחק)
 - `scripts/design-verify.mjs` — שער ויזואלי רב-פעמי; `scripts/generate-demo-images.mjs` — נכסי הסליידר
 - צילומים ודוחות: `g:\tmp\mediawave-audit\wave-lab\{before,phase1,phase2,phase3,final,motion,ambient}\`
+
+## סשן impeccable (05/07/2026) — התקנה + init + ביקורת (אפס שינויי קוד)
+- [x] **impeccable v3.9.1 הותקן גלובלית**: `C:\Users\User\.claude\skills\impeccable\` דרך `npx impeccable@latest skills install -y --providers=claude --scope=global --no-hooks`. עדכון עתידי: אותה פקודה בדיוק (מרעננת אם יש גרסה חדשה). בלי hooks בכוונה — אפשר להדליק פר-פרויקט עם `/impeccable hooks on`
+- [x] **`/impeccable init` הורץ**: נוצרו `PRODUCT.md` + `DESIGN.md` (מקודדים את 9 החוקים הנעולים + Legacy-Name Rule) + `.impeccable/design.json` + `.impeccable/live/config.json`; מצביע Design Context נוסף ל-CLAUDE.md; ראיון המשתמש דולג בהיתר (כל תשובה נגזרה מתיעוד הריפו) — נתי מוזמן לערוך
+- [x] **ביקורת מלאה — `IMPECCABLE-AUDIT.rtl.md`**: ‏audit ‏16/20, ‏critique ‏30/40, ‏AI-slop: עובר. ‏P1: ‏eyebrow עברי עם tracking + ‎#38BDF8 על בהיר (Services.tsx:92), ‏MagneticButton שנשאר בהירו+Contact, ‏glow חום ישן ב-Button.tsx:129. דיטקטור: 39 ממצאים (`g:\tmp\impeccable-detect.json`); צילומים: `g:\tmp\mediawave-audit\wave-lab\impeccable-audit\`
+- [ ] **ממתין להחלטת נתי**: אילו ממצאים ליישם (שום דבר לא יושם); אימות חי של מתג-האנימציות מול לולאות framer (P2-9)
