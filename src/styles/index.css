@@ -212,7 +212,13 @@
     line-height: var(--leading-tight);
     color: var(--color-brown-dark);
     font-synthesis: none;
-    /* Even line lengths on multi-line Hebrew headings */
+  }
+
+  /* Even line lengths on multi-line Hebrew section headings. Scoped to
+     h2/h3 on purpose: balance on the hero h1 (dozens of word-reveal spans)
+     costs ~100ms of first-paint layout for zero visual gain. */
+  h2,
+  h3 {
     text-wrap: balance;
   }
 
