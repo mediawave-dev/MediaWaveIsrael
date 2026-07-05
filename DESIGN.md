@@ -135,6 +135,9 @@ reserved for statement *surfaces* - never as an accent color.
   secondary text (small sizes only where AA still passes).
 - **Navy Surface** (#1E293B, high #334155): the dark statement sections
   (before/after showcase, chat header) and grain-textured footers.
+- **Frost Mist** (rgba(248,250,252,0.60-0.70)): secondary text and links on
+  dark surfaces (footer). Never flat gray (#9A9A9A-style) on a colored dark
+  surface - it reads washed out; mist is the frost neutral at alpha.
 
 ### Named Rules
 **The Sky-Ink Rule.** Pastel sky (#7DD3FC) is a fill color. The moment it
@@ -252,7 +255,10 @@ matches the adjacent section's solid color so seams are invisible.
 
 ### Giant Word (signature)
 One outline-stroke statement word (2px sky stroke, transparent fill) that
-fills sky on hover (desktop) or when scrolled to center (mobile).
+fills sky on hover (desktop) or when scrolled to center (mobile). The same
+outline-stroke voice marks the HowWeWork step-number watermarks (1.5px sky
+stroke) - outline type is the site's "big decorative number/word" identity;
+gradient text is banned.
 
 ## 6. Do's and Don'ts
 
@@ -269,6 +275,9 @@ fills sky on hover (desktop) or when scrolled to center (mobile).
   keep body copy at <= 75ch.
 - **Do** keep hover effects clipped inside the element (The Tide is the
   reference implementation).
+- **Do** rely on the global two-mode focus ring (`--focus-ring`): sky-ink on
+  light surfaces, pastel on dark ones (header/footer/#hero/#before-after).
+  Never suppress it with outline-none.
 - **Do** label demo content as demo ("הדגמה") and show only verifiable
   numbers.
 
