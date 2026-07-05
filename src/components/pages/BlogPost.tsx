@@ -110,7 +110,7 @@ export default function BlogPost() {
           <Link
             viewTransition
             to="/blog"
-            className="inline-flex items-center gap-2 text-brown-light hover:text-orange transition-colors text-sm"
+            className="inline-flex items-center gap-2 text-brown-light hover:text-sky-ink transition-colors text-sm"
           >
             <ArrowRight size={16} />
             חזרה לבלוג
@@ -130,7 +130,7 @@ export default function BlogPost() {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="bg-terracotta/10 text-terracotta text-xs font-semibold px-3 py-1.5 rounded-full"
+                  className="bg-terracotta/10 text-sky-ink text-xs font-semibold px-3 py-1.5 rounded-full"
                 >
                   {tag}
                 </span>
@@ -190,7 +190,7 @@ export default function BlogPost() {
             <Link
               viewTransition
               to="/blog"
-              className="inline-flex items-center gap-2 text-orange font-semibold hover:text-orange-dark transition-colors"
+              className="inline-flex items-center gap-2 text-sky-ink font-semibold hover:text-sky-ink-strong transition-colors"
             >
               <ArrowRight size={18} />
               עוד מהבלוג

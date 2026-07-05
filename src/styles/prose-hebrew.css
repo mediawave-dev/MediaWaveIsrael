@@ -56,19 +56,19 @@
 }
 
 .prose-hebrew em {
-  color: var(--color-orange);
+  color: var(--color-sky-ink);
   font-style: normal;
 }
 
 .prose-hebrew a {
-  color: var(--color-orange-dark);
+  color: var(--color-sky-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color var(--duration-fast) ease;
 }
 
 .prose-hebrew a:hover {
-  color: var(--color-orange);
+  color: var(--color-sky-ink-strong);
 }
 
 .prose-hebrew blockquote {

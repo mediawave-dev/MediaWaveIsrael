@@ -36,7 +36,7 @@ function linkifyContent(text: string) {
         href={part}
         target="_blank"
         rel="noopener noreferrer"
-        className="underline text-orange-dark hover:text-orange transition-colors"
+        className="underline text-sky-ink hover:text-sky-ink-strong transition-colors"
       >
         {part}
       </a>
@@ -281,7 +281,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                 </div>
                 <div>
                   <p className="text-white text-sm font-semibold font-english">MediaWave</p>
-                  <p className="text-white/50 text-xs">עוזר אוטומטי</p>
+                  <p className="text-white/70 text-xs">עוזר אוטומטי</p>
                 </div>
               </div>
               <div className="flex items-center gap-1">

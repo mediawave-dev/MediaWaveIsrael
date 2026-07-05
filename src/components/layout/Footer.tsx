@@ -39,7 +39,7 @@ export default function Footer() {
             <div className="flex justify-center md:justify-start mb-4">
               <Logo variant="footer" />
             </div>
-            <p className="text-sm leading-relaxed" style={{ color: '#888' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#A6A6A6' }}>
               בונים נוכחות דיגיטלית מנצחת לעסקים
             </p>
           </div>
@@ -59,9 +59,9 @@ export default function Footer() {
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className="text-sm transition-colors duration-200 w-fit mx-auto md:mx-0"
-                  style={{ color: '#999' }}
+                  style={{ color: '#ABABAB' }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
                 >
                   {link.label}
                 </a>
@@ -82,9 +82,9 @@ export default function Footer() {
               <a
                 href="tel:052-8731808"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#999' }}
+                style={{ color: '#ABABAB' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
               >
                 <PhoneIcon />
                 <span dir="ltr" className="font-english">052-8731808</span>
@@ -96,9 +96,9 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#999' }}
+                style={{ color: '#ABABAB' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
               >
                 <WhatsAppIcon />
                 <span className="font-english">WhatsApp</span>
@@ -108,9 +108,9 @@ export default function Footer() {
               <a
                 href="mailto:mediawaveisrael@gmail.com"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#999' }}
+                style={{ color: '#ABABAB' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
               >
                 <MailIcon />
                 <span dir="ltr" className="whitespace-nowrap font-english">mediawaveisrael@gmail.com</span>
@@ -122,9 +122,9 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm transition-colors duration-200 justify-center md:justify-start"
-                style={{ color: '#999' }}
+                style={{ color: '#ABABAB' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
               >
                 <InstagramIcon />
                 <span className="font-english">Instagram</span>
@@ -139,20 +139,20 @@ export default function Footer() {
           style={{ borderTop: '1px solid #333' }}
         >
           {/* Left side in RTL = copyright */}
-          <p className="text-xs font-english" style={{ color: '#8a8a8a' }}>
+          <p className="text-xs font-english" style={{ color: '#9A9A9A' }}>
             © {currentYear} MediaWave Israel
           </p>
 
           {/* Right side in RTL = legal links */}
-          <div className="flex items-center gap-3 text-xs" style={{ color: '#666' }}>
+          <div className="flex items-center gap-3 text-xs" style={{ color: '#9A9A9A' }}>
             <a
               href="/terms"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors duration-200"
-              style={{ color: '#666' }}
+              style={{ color: '#9A9A9A' }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
             >
               תקנון שימוש
             </a>
@@ -162,9 +162,9 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors duration-200"
-              style={{ color: '#666' }}
+              style={{ color: '#9A9A9A' }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
             >
               מדיניות פרטיות
             </a>
@@ -174,9 +174,9 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors duration-200"
-              style={{ color: '#666' }}
+              style={{ color: '#9A9A9A' }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#666')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#9A9A9A')}
             >
               הצהרת נגישות
             </a>

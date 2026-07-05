@@ -122,7 +122,7 @@ export default function NotFound() {
           transition={{ delay: 0.8 }}
         >
           צריכים עזרה? התקשרו אלינו:{' '}
-          <a href="tel:052-8731808" className="text-orange hover:underline" dir="ltr">
+          <a href="tel:052-8731808" className="text-sky-ink hover:underline" dir="ltr">
             052-8731808
           </a>
         </m.p>

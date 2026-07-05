@@ -33,6 +33,12 @@
   --color-orange: #7DD3FC;
   --color-orange-light: #BAE6FD;
   --color-orange-dark: #38BDF8;
+
+  /* Sky "ink" - the SAME sky family, deep enough for AA text (>=4.5:1)
+     on light surfaces (white .. #EAF8FC). Pastel sky (#7DD3FC) is for
+     fills and dark surfaces ONLY. #0369A1 = 5.9:1 on white. */
+  --color-sky-ink: #0369A1;
+  --color-sky-ink-strong: #075985;
   --color-terracotta: #67E8F9;
   --color-coral: #A5F3FC;
   --color-sage: #99F6E4;
@@ -222,15 +228,17 @@
     font-size: 1.25rem;
   }
 
-  /* Links */
+  /* Links — default must be readable on light surfaces (WCAG AA).
+     Pastel sky (1.6:1 on white) is only allowed via explicit classes
+     on dark surfaces. */
   a {
-    color: var(--color-orange);
+    color: var(--color-sky-ink);
     text-decoration: none;
     transition: color var(--duration-fast) ease;
   }
 
   a:hover {
-    color: var(--color-orange-dark);
+    color: var(--color-sky-ink-strong);
   }
 }
 
@@ -1121,6 +1129,8 @@ section[id] {
     --color-orange: #0369A1;
     --color-brown: #1A1A1A;
     --color-brown-light: #333333;
+    --color-sky-ink: #075985;
+    --color-sky-ink-strong: #0C4A6E;
   }
 
   .card,
@@ -1239,6 +1249,8 @@ html.high-contrast {
   --color-orange: #0369A1;
   --color-orange-light: #0284C7;
   --color-orange-dark: #075985;
+  --color-sky-ink: #075985;
+  --color-sky-ink-strong: #0C4A6E;
 }
 
 html.high-contrast .card,
@@ -1252,11 +1264,22 @@ html.high-contrast [role="button"] {
   border: 2px solid currentColor;
 }
 
-/* The header pill hardcodes dark-navy text for its pastel-sky fill;
-   over the deep-sky high-contrast fill it must flip to white.
-   (!important is needed to beat the inline style.) */
-html.high-contrast .header-cta {
+/* Accent-filled CTAs hardcode dark-navy text for the pastel-sky fill;
+   over the deep-sky high-contrast fill every one of them must flip to
+   white. [class~="bg-orange"] matches the exact utility (NOT bg-orange/10),
+   and !important beats the inline styles. */
+html.high-contrast [class~="bg-orange"],
+html.high-contrast [class~="bg-orange"] * {
   color: #FFFFFF !important;
+}
+
+/* The header sits on a dark surface in every state (transparent over the
+   dark hero, or brown-dark when scrolled). HC mode turns the accent DARK
+   for light backgrounds, which would make dark-on-dark nav links — so on
+   the header specifically, force nav links back to white. */
+html.high-contrast header .nav-link,
+html.high-contrast header .nav-link:hover {
+  color: #FFFFFF;
 }
 
 /* Disable Animations (user-toggled) */

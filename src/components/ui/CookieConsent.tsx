@@ -61,7 +61,7 @@ export default function CookieConsent() {
                 האתר משתמש בעוגיות לשיפור החוויה.{' '}
                 <a
                   href="/privacy"
-                  className="text-orange hover:underline whitespace-nowrap"
+                  className="text-sky-ink hover:underline whitespace-nowrap"
                 >
                   מדיניות פרטיות
                 </a>

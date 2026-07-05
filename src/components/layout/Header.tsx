@@ -200,7 +200,7 @@ export default function Header() {
                 {/* Close button */}
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="absolute top-5 left-5 w-11 h-11 flex items-center justify-center text-brown hover:text-orange transition-colors"
+                  className="absolute top-5 left-5 w-11 h-11 flex items-center justify-center text-brown hover:text-sky-ink transition-colors"
                   aria-label="סגור תפריט"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -220,7 +220,7 @@ export default function Header() {
                     <m.a
                       key={link.href}
                       href={link.href}
-                      className="text-2xl text-brown hover:text-orange transition-colors duration-300 min-h-11 flex items-center"
+                      className="text-2xl text-brown hover:text-sky-ink transition-colors duration-300 min-h-11 flex items-center"
                       onClick={(e) => {
                         handleNavClick(e, link.href)
                         setIsMobileMenuOpen(false)
@@ -236,7 +236,7 @@ export default function Header() {
                   {/* CTA Link - same style with arrow */}
                   <m.a
                     href="#contact"
-                    className="text-2xl text-orange font-semibold hover:text-orange-dark transition-colors duration-300 min-h-11 flex items-center gap-2 group"
+                    className="text-2xl text-sky-ink font-semibold hover:text-sky-ink-strong transition-colors duration-300 min-h-11 flex items-center gap-2 group"
                     onClick={(e) => {
                       handleNavClick(e, '#contact')
                       setIsMobileMenuOpen(false)

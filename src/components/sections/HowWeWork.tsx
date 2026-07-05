@@ -235,7 +235,7 @@ export default function HowWeWork() {
             מוכנים להתחיל?
             <a
               href="#contact"
-              className="text-[#0284C7] hover:text-[#0369A1] font-medium mx-1 hover:underline underline-offset-4 transition-colors duration-300"
+              className="text-sky-ink hover:text-sky-ink-strong font-medium mx-1 hover:underline underline-offset-4 transition-colors duration-300"
             >
               דברו איתנו
             </a>

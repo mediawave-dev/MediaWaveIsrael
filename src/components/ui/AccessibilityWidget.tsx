@@ -195,7 +195,7 @@ export default function AccessibilityWidget() {
               >
                 <span className="text-sm font-medium">ניגודיות גבוהה</span>
                 <div className={`w-10 h-6 rounded-full relative transition-colors ${
-                  settings.highContrast ? 'bg-orange' : 'bg-gray-300'
+                  settings.highContrast ? 'bg-orange' : 'bg-gray-400'
                 }`}>
                   <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
                     settings.highContrast ? 'left-1' : 'right-1'
@@ -215,7 +215,7 @@ export default function AccessibilityWidget() {
               >
                 <span className="text-sm font-medium">ללא אנימציות</span>
                 <div className={`w-10 h-6 rounded-full relative transition-colors ${
-                  settings.disableAnimations ? 'bg-orange' : 'bg-gray-300'
+                  settings.disableAnimations ? 'bg-orange' : 'bg-gray-400'
                 }`}>
                   <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${
                     settings.disableAnimations ? 'left-1' : 'right-1'

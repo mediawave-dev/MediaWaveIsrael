@@ -32,7 +32,7 @@ export default function Terms() {
         >
           <button
             onClick={handleBackClick}
-            className="inline-flex items-center gap-2 text-brown hover:text-orange transition-colors py-2 cursor-pointer"
+            className="inline-flex items-center gap-2 text-brown hover:text-sky-ink transition-colors py-2 cursor-pointer"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="rtl-flip">
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -336,13 +336,13 @@ export default function Terms() {
               <div className="space-y-2 text-brown">
                 <p className="flex items-center gap-2">
                   <span>📧</span>
-                  <a href="mailto:mediawaveisrael@gmail.com" className="hover:text-orange transition-colors" dir="ltr">
+                  <a href="mailto:mediawaveisrael@gmail.com" className="hover:text-sky-ink-strong transition-colors" dir="ltr">
                     mediawaveisrael@gmail.com
                   </a>
                 </p>
                 <p className="flex items-center gap-2">
                   <span>📱</span>
-                  <a href="tel:052-8731808" className="hover:text-orange transition-colors" dir="ltr">
+                  <a href="tel:052-8731808" className="hover:text-sky-ink-strong transition-colors" dir="ltr">
                     052-8731808
                   </a>
                 </p>
@@ -352,7 +352,7 @@ export default function Terms() {
                     href="https://wa.me/972528731808"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-orange transition-colors"
+                    className="hover:text-sky-ink-strong transition-colors"
                   >
                     WhatsApp
                   </a>

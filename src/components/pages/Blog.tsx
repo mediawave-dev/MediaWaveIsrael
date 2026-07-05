@@ -60,7 +60,7 @@ export default function Blog() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-flex items-center gap-2 bg-terracotta/10 text-terracotta text-sm font-semibold px-5 py-2.5 rounded-full mb-6">
+          <span className="inline-flex items-center gap-2 bg-terracotta/10 text-sky-ink text-sm font-semibold px-5 py-2.5 rounded-full mb-6">
             <BookOpen size={16} />
             הבלוג שלנו
           </span>
@@ -118,7 +118,7 @@ export default function Blog() {
                     )}
 
                     {/* Title */}
-                    <h2 className="text-2xl md:text-3xl font-headline text-brown-dark mb-3 group-hover:text-orange transition-colors duration-200">
+                    <h2 className="text-2xl md:text-3xl font-headline text-brown-dark mb-3 group-hover:text-sky-ink transition-colors duration-200">
                       {post.title}
                     </h2>
 
@@ -134,7 +134,7 @@ export default function Blog() {
                         <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
                       </div>
 
-                      <span className="inline-flex items-center gap-1.5 text-orange font-semibold text-sm group-hover:gap-2.5 transition-all duration-200">
+                      <span className="inline-flex items-center gap-1.5 text-sky-ink font-semibold text-sm group-hover:gap-2.5 transition-all duration-200">
                         קראו עוד
                         <ArrowLeft size={16} />
                       </span>
@@ -155,7 +155,7 @@ export default function Blog() {
         >
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-brown-light hover:text-orange transition-colors"
+            className="inline-flex items-center gap-2 text-brown-light hover:text-sky-ink transition-colors"
           >
             <ArrowLeft size={18} className="rotate-180" />
             חזרה לדף הבית

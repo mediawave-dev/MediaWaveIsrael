@@ -33,7 +33,7 @@ export default function Accessibility() {
         >
           <button
             onClick={handleBackClick}
-            className="inline-flex items-center gap-2 text-brown hover:text-orange transition-colors py-2 cursor-pointer"
+            className="inline-flex items-center gap-2 text-brown hover:text-sky-ink transition-colors py-2 cursor-pointer"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="rtl-flip">
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -125,13 +125,13 @@ export default function Accessibility() {
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li>
                 <strong>טלפון:</strong>{' '}
-                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-orange hover:underline" dir="ltr">
+                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-sky-ink hover:underline" dir="ltr">
                   {SITE_CONTACT.phone}
                 </a>
               </li>
               <li>
                 <strong>דוא"ל:</strong>{' '}
-                <a href={`mailto:${SITE_CONTACT.email}`} className="text-orange hover:underline" dir="ltr">
+                <a href={`mailto:${SITE_CONTACT.email}`} className="text-sky-ink hover:underline" dir="ltr">
                   {SITE_CONTACT.email}
                 </a>
               </li>

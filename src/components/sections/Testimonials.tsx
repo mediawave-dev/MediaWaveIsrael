@@ -220,7 +220,7 @@ export default function Testimonials() {
                           href={active.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-orange text-sm hover:underline"
+                          className="text-sky-ink text-sm hover:underline"
                         >
                           {active.url}
                         </a>
