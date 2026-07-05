@@ -760,36 +760,70 @@ section[id] {
   opacity: 1;
 }
 
-/* Header CTA button */
+/* Header CTA button — hover = a deeper-sky tide rising inside the pill.
+   Fully self-contained: only this element changes, neighbors never move. */
 .header-cta {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   transition:
     transform var(--duration-fast) var(--ease-out-expo),
     box-shadow var(--duration-fast) ease;
 }
 
 .header-cta:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-glow);
 }
 
 .header-cta:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.97);
 }
 
-/* Shine effect */
+/* Main tide — an asymmetric wavy crest sweeps up and fills the pill.
+   Height stays close to the pill's (110%) so the crest spends most of
+   the duration inside the visible area — taller layers cross too fast. */
+.header-cta::before {
+  content: '';
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: -20%; /* extends below so the -12% end-lift never exposes the base */
+  height: 130%;
+  z-index: -1;
+  background: var(--color-orange-dark);
+  border-radius: 48% 52% 0 0 / 90% 70% 0 0;
+  transform: translateY(88%);
+  /* cubic-out (not expo): slow enough for the crest to actually read */
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.header-cta:hover::before {
+  /* -12%: the rounded crest corners must clear the pill's top edge */
+  transform: translateY(-12%);
+}
+
+/* Foam — a lighter swell that leads the tide, then dissolves under it */
 .header-cta::after {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.7s ease;
+  left: -25%;
+  right: -25%;
+  bottom: -20%;
+  height: 130%;
+  z-index: -2;
+  background: var(--color-orange-light);
+  border-radius: 55% 45% 0 0 / 70% 95% 0 0;
+  transform: translateY(88%);
+  opacity: 0.9;
+  transition:
+    transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 0.4s ease 0.3s;
 }
 
 .header-cta:hover::after {
-  transform: translateX(100%);
+  transform: translateY(-12%);
+  opacity: 0;
 }
 
 /* Button press effect */
@@ -1081,8 +1115,8 @@ section[id] {
   }
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
+/* High contrast mode support ("high" is not a valid value — "more" is) */
+@media (prefers-contrast: more) {
   :root {
     --color-orange: #0369A1;
     --color-brown: #1A1A1A;
@@ -1191,7 +1225,10 @@ textarea {
    including Tailwind text utilities — instead of hard-overriding h1-h4
    (which also silenced every heading size utility in the app). */
 
-/* High Contrast Mode (user-toggled) */
+/* High Contrast Mode (user-toggled)
+   Accents stay in the site's sky family — just deep enough for AA on
+   white — instead of an off-brand royal blue. No blanket link underline:
+   the owner's call (see DECISIONS.rtl.md); links keep color + context. */
 html.high-contrast {
   --color-cream: #FFFFFF;
   --color-cream-dark: #F0F0F0;
@@ -1199,9 +1236,9 @@ html.high-contrast {
   --color-brown: #000000;
   --color-brown-light: #1A1A1A;
   --color-brown-dark: #000000;
-  --color-orange: #0055AA;
-  --color-orange-light: #0066CC;
-  --color-orange-dark: #003377;
+  --color-orange: #0369A1;
+  --color-orange-light: #0284C7;
+  --color-orange-dark: #075985;
 }
 
 html.high-contrast .card,
@@ -1210,13 +1247,16 @@ html.high-contrast [class*="bg-cream"] {
   border: 2px solid #000000;
 }
 
-html.high-contrast a {
-  text-decoration: underline;
-}
-
 html.high-contrast button,
 html.high-contrast [role="button"] {
   border: 2px solid currentColor;
+}
+
+/* The header pill hardcodes dark-navy text for its pastel-sky fill;
+   over the deep-sky high-contrast fill it must flip to white.
+   (!important is needed to beat the inline style.) */
+html.high-contrast .header-cta {
+  color: #FFFFFF !important;
 }
 
 /* Disable Animations (user-toggled) */
@@ -1307,10 +1347,14 @@ html.disable-animations [data-floating] {
   background: var(--color-cream-darker);
 }
 
-.text-size-btn[data-active="true"] {
-  background: var(--color-orange);
-  color: white;
-  border-color: var(--color-orange-dark);
+/* Selected state — un-layered on purpose so it always beats the
+   un-layered base rule above (utilities lose to it). Dark chip + white
+   text stays readable in normal AND high-contrast palettes.
+   (The widget sets aria-pressed; the old data-active hook was dead.) */
+.text-size-btn[aria-pressed="true"] {
+  background: var(--color-brown-dark);
+  color: #FFFFFF;
+  border-color: var(--color-brown-dark);
 }
 
 .text-size-btn:focus-visible {

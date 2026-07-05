@@ -201,7 +201,7 @@ export default function LeadModal() {
                                                 href={WHATSAPP_URLS.general}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="underline font-semibold"
+                                                className="hover:underline font-semibold"
                                             >
                                                 לוואטסאפ
                                             </a>

@@ -197,7 +197,7 @@ export default function Contact() {
                       href={WHATSAPP_URLS.contact}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline font-semibold"
+                      className="hover:underline font-semibold"
                     >
                       לוואטסאפ
                     </a>

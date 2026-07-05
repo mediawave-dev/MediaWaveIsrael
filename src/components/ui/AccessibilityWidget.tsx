@@ -170,7 +170,7 @@ export default function AccessibilityWidget() {
                     onClick={() => setTextSize(size)}
                     className={`text-size-btn flex-1 py-2 text-sm rounded-lg border transition-all ${
                       settings.textSize === size
-                        ? 'bg-orange text-white border-orange shadow-md'
+                        ? 'shadow-md'
                         : 'bg-cream text-brown border-cream-darker hover:border-orange/50'
                     }`}
                     aria-pressed={settings.textSize === size}

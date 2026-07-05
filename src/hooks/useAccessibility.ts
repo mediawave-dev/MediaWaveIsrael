@@ -10,7 +10,9 @@ export interface AccessibilitySettings {
 }
 
 // Constants
-const STORAGE_KEY = 'mediawave-accessibility'
+// Legacy key from when settings persisted between visits — purged on mount
+// so returning visitors always start from the defaults.
+const LEGACY_STORAGE_KEY = 'mediawave-accessibility'
 
 const TEXT_SCALES: Record<TextSize, number> = {
   'normal': 1,
@@ -22,25 +24,6 @@ const DEFAULT_SETTINGS: AccessibilitySettings = {
   textSize: 'normal',
   highContrast: false,
   disableAnimations: false,
-}
-
-// Helper to safely get from localStorage
-function getStoredSettings(): AccessibilitySettings {
-  if (typeof window === 'undefined') return DEFAULT_SETTINGS
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (!stored) return DEFAULT_SETTINGS
-
-    const parsed = JSON.parse(stored)
-    return {
-      textSize: parsed.textSize || DEFAULT_SETTINGS.textSize,
-      highContrast: Boolean(parsed.highContrast),
-      disableAnimations: Boolean(parsed.disableAnimations),
-    }
-  } catch {
-    return DEFAULT_SETTINGS
-  }
 }
 
 // Apply settings to DOM
@@ -60,28 +43,29 @@ function applySettings(settings: AccessibilitySettings): void {
 }
 
 /**
- * Hook for managing accessibility settings
- * Persists to localStorage and applies to DOM
+ * Hook for managing accessibility settings.
+ *
+ * Settings apply for the current visit only and are NEVER persisted:
+ * every page load starts from the defaults (normal text, contrast off,
+ * animations on). This is deliberate — see DECISIONS.rtl.md.
  */
 export function useAccessibility() {
   const [settings, setSettings] = useState<AccessibilitySettings>(DEFAULT_SETTINGS)
-  const [isInitialized, setIsInitialized] = useState(false)
 
-  // Initialize from localStorage on mount
+  // Purge the legacy persisted value so returning visitors aren't
+  // stuck with settings they toggled on a previous visit.
   useEffect(() => {
-    const stored = getStoredSettings()
-    setSettings(stored)
-    applySettings(stored)
-    setIsInitialized(true)
+    try {
+      localStorage.removeItem(LEGACY_STORAGE_KEY)
+    } catch {
+      // Storage unavailable (private mode) — nothing to purge
+    }
   }, [])
 
-  // Persist and apply whenever settings change (after initialization)
+  // Apply to DOM whenever settings change (in-memory only)
   useEffect(() => {
-    if (!isInitialized) return
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
     applySettings(settings)
-  }, [settings, isInitialized])
+  }, [settings])
 
   // Setters
   const setTextSize = useCallback((textSize: TextSize) => {
@@ -106,7 +90,6 @@ export function useAccessibility() {
     toggleHighContrast,
     toggleAnimations,
     reset,
-    isInitialized,
   }
 }
 

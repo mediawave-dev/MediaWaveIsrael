@@ -47,6 +47,16 @@
 ## סבב משוב נתי 3 (04/07/2026) — הושלם
 - [x] תוקן טקסט מפוקסל: הגריין הגלובלי עם mix-blend-mode ביטל ClearType בכל הדף. הוחלף באריח רעש אלפא (grain-alpha.png) בקומפוזיציה רגילה, סקופ לפוטר ולסקשן לפני/אחרי בלבד, מאחורי התוכן. GrainOverlay + grain.png נמחקו
 
+## סבב משוב נתי 4 (05/07/2026) — הושלם (החלטות 26-31)
+רקע: "חוסר ההלימה בצבעים" + "קו מתחת לכל מילה" התבררו כמצב ניגודיות-גבוהה שנשאר דלוק בווידג'ט מביקור קודם (localStorage). הצ'אט בוט תקין — אזעקת שווא.
+- [x] הגדרות נגישות לא נשמרות יותר: כל טעינה = טקסט רגיל + ניגודיות כבויה + אנימציות. המפתח הישן נמחק בכניסה (useAccessibility.ts)
+- [x] ניגודיות גבוהה: פלטה במשפחת התכלת (#0369A1/#0284C7/#075985 במקום רויאל #0055AA), בלי קו תחתון גורף, header-cta לבן; prefers-contrast תוקן ל-more
+- [x] ווידג'ט: הכפתור הנבחר קריא — צ'יפ כהה/לבן דרך `.text-size-btn[aria-pressed="true"]` (un-layered; utilities מפסידים שם). כלל data-active המת נמחק
+- [x] "בואו נדבר": MagneticButton הוסר; hover חדש = גאות תכלת דו-שכבתית מוכלת (pseudo, transform בלבד, 600ms cubic-out, 130%/88%→-12%). אפס הזזה אופקית — מאומת
+- [x] קווים תחתונים סטטיים → hover בלבד (HowWeWork + Contact/LeadModal); הקישור ב-HowWeWork יושר ל-#0284C7. חריגים: prose בבלוג, URLs בצ'אט
+- [x] טאגליין: "עיצוב ופיתוח אתרים מקצועיים לעסקים" (הירו, meta, JSON-LD x2, App.tsx, CONTENT.md)
+- [x] אימות: `.gsd/temp/verify-a11y-round.mjs` — ‏11/11 (כולל: אפס drift ב-CTA, איפוס מלא אחרי reload, אפס קווים תחתונים בפוטר ב-HC, אפס שגיאות קונסול). צילומים: `g:\tmp\mediawave-audit\wave-lab\a11y-round\`
+
 ## Important Files
 - `src/config/motion.ts` — easing חתימה אחד (EASE_BRAND); `src/hooks/useReducedMotion.ts` — גם useAmbientMotion
 - `src/components/ui/` — WaveDivider, Marquee, StaggeredWords, BeforeAfterSlider, MagneticButton, GiantWord (נמחקו: LoadTimeBadge, GrainOverlay)

@@ -207,7 +207,7 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            עיצוב ופיתוח אתרים מקצועיים לעסקים קטנים ובינוניים.
+            עיצוב ופיתוח אתרים מקצועיים לעסקים.
             <br className="hidden md:block" />
             <span className="md:hidden"> </span>
             עם גישה אישית וליווי צמוד בכל שלב.
