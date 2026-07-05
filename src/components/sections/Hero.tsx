@@ -4,7 +4,6 @@ import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { WaveDivider } from '../ui/WaveDivider'
 import { StaggeredWords } from '../ui/StaggeredWords'
-import { MagneticButton } from '../ui/MagneticButton'
 import { EASE_BRAND } from '../../config/motion'
 
 /** Signature wave underline — draws on from the RIGHT (RTL) instead of the
@@ -220,7 +219,6 @@ export default function Hero() {
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <MagneticButton className="w-full md:w-auto">
             <m.a
               href="#contact"
               className="group relative block overflow-hidden bg-orange hover:bg-orange-dark text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black"
@@ -244,7 +242,6 @@ export default function Hero() {
                 </m.span>
               </span>
             </m.a>
-            </MagneticButton>
 
             <m.a
               href="#services"

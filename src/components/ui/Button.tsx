@@ -126,7 +126,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             className="absolute inset-0 rounded-full pointer-events-none opacity-0 group-hover:opacity-100"
             whileHover={{ opacity: 1 }}
             style={{
-              boxShadow: '0 0 30px rgba(212, 165, 116, 0.45)',
+              boxShadow: '0 0 30px rgba(125, 211, 252, 0.45)',
             }}
           />
         )}

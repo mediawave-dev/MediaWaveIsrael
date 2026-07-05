@@ -88,16 +88,6 @@ export default function Services() {
       <div className="container relative max-w-6xl">
         {/* Header */}
         <div className="mb-10 md:mb-16 text-center">
-          <m.span
-            className="block text-base font-semibold tracking-widest uppercase mb-4"
-            style={{ color: '#38BDF8' }}
-            initial={{ opacity: 0, transform: 'translateY(10px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-          >
-            השירותים שלנו
-          </m.span>
-
           <m.h2
             className="text-4xl md:text-5xl font-headline leading-tight text-brown-dark mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}

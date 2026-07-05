@@ -3,7 +3,6 @@ import { m } from 'framer-motion'
 import { Input, Textarea } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { LottieIcon } from '../ui/LottieIcon'
-import { MagneticButton } from '../ui/MagneticButton'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
@@ -204,18 +203,16 @@ export default function Contact() {
                   </div>
                 )}
 
-                <MagneticButton className="block w-full" strength={5}>
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    size="lg"
-                    className="w-full"
-                    isLoading={isSubmitting}
-                    loadingText="שולח..."
-                  >
-                    שליחת הודעה
-                  </Button>
-                </MagneticButton>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  className="w-full"
+                  isLoading={isSubmitting}
+                  loadingText="שולח..."
+                >
+                  שליחת הודעה
+                </Button>
               </form>
             </div>
           </m.div>
