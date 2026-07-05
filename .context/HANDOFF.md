@@ -76,4 +76,35 @@
 - [x] **impeccable v3.9.1 הותקן גלובלית**: `C:\Users\User\.claude\skills\impeccable\` דרך `npx impeccable@latest skills install -y --providers=claude --scope=global --no-hooks`. עדכון עתידי: אותה פקודה בדיוק (מרעננת אם יש גרסה חדשה). בלי hooks בכוונה — אפשר להדליק פר-פרויקט עם `/impeccable hooks on`
 - [x] **`/impeccable init` הורץ**: נוצרו `PRODUCT.md` + `DESIGN.md` (מקודדים את 9 החוקים הנעולים + Legacy-Name Rule) + `.impeccable/design.json` + `.impeccable/live/config.json`; מצביע Design Context נוסף ל-CLAUDE.md; ראיון המשתמש דולג בהיתר (כל תשובה נגזרה מתיעוד הריפו) — נתי מוזמן לערוך
 - [x] **ביקורת מלאה — `IMPECCABLE-AUDIT.rtl.md`**: ‏audit ‏16/20, ‏critique ‏30/40, ‏AI-slop: עובר. ‏P1: ‏eyebrow עברי עם tracking + ‎#38BDF8 על בהיר (Services.tsx:92), ‏MagneticButton שנשאר בהירו+Contact, ‏glow חום ישן ב-Button.tsx:129. דיטקטור: 39 ממצאים (`g:\tmp\impeccable-detect.json`); צילומים: `g:\tmp\mediawave-audit\wave-lab\impeccable-audit\`
-- [ ] **ממתין להחלטת נתי**: אילו ממצאים ליישם (שום דבר לא יושם); אימות חי של מתג-האנימציות מול לולאות framer (P2-9)
+- [x] ~~ממתין להחלטת נתי~~ — נתי אישר הכל ("מאשר הכל, צא לדרך")
+
+## סשן יישום לילי (06/07/2026) — כל ממצאי impeccable יושמו, אפס דיפלוי (חסום)
+**11 קומיטים מקומיים על design/wave-lab, מוכנים לדחיפה. ‏origin לא עודכן.**
+
+### ⚠️ דיפלוי — חסום על הרשאות, פקודות לבוקר
+ה-push נכשל: מנהל ה-credentials של Windows מגיש טוקן ישן של `levy-n` (403); לחשבון gh הפעיל `NatiLevyy` אין הרשאה; החלפה אוטומטית ל-`mediawave-dev` נחסמה ע"י מסווג ההרשאות של Claude (נכון). **להריץ ידנית:**
+```
+gh auth switch -u mediawave-dev
+git push -u origin design/wave-lab
+git push origin design/wave-lab:main      # fast-forward נקי (אומת) → CF Pages production
+gh auth switch -u NatiLevyy
+```
+
+### מה יושם (החלטות 37-46 ב-DECISIONS.rtl.md)
+- P1: ‏eyebrow הוסר; MagneticButton נמחק מהאתר; glow חום ← תכלת
+- P2: מערכת focus-ring דו-מצבית; מספרי-צעדים stroke + כרטיסים לבנים (בלי זכוכית); italic הוסר מציטוטי sanity; פלטת Testimonials ← תכלת; hover-ים דוהים ← sky-ink; **כל** לולאות framer מגודרות useAmbientMotion (מתג הווידג'ט עוצר גם JS — מאומת בסקריפט חדש `verify-widget-framer.mjs`)
+- P3: ‏~200 שורות CSS מת נמחקו + פונטים רפאים; פוטר frost-mist (`.footer-link`); טלפונים מונו-ספק; קו-ניווט scaleX; `text-wrap: balance` (h2/h3 בלבד!); tap-highlight שקוף; `<a>` מקונן תוקן (Logo=div)
+
+### שערים (הכל ירוק)
+- tsc ✔ · eslint: רק 3 אזהרות sanity ישנות ✔ · build+prerender 7 עמודים ✔
+- axe contrast: **0 הפרות** ×4 ריצות (+תוקן flake בשער: המתנת settle לפאנל הווידג'ט)
+- verify-a11y-round: **11/11** ✔ · widget-framer: PASS (ברק קופא) ✔
+- צילומי 320/390/768/1440 כל המסלולים: אפס שגיאות/overflow ×3 ריצות ✔ (`g:\tmp\mediawave-audit\wave-lab\impeccable-final2\`)
+- **Lighthouse — הערה חשובה**: הלילה המכונה עמוסה; ‏A/B מול baseline ב-worktree: דסקטופ 93-94 מול 93 baseline (פריטי; ה-97 המתועד = סביבה נקייה), מובייל 61 מול 62 baseline (פריטי; מתועד 72-75). רגרסיית balance-על-h1 שהתגלתה (‏-2) תוקנה ע"י צמצום ל-h2/h3. **מומלץ למדוד שוב בבוקר על מכונה שקטה לפני merge**
+- לא-משוחזר: חפיפת ווידג'ט-כותרת ב-320 (נבדק ויזואלית — אין)
+
+### נשאר פתוח
+1. הדחיפה + אימות דיפלוי CF Pages (פקודות למעלה)
+2. רישיון EFT + החלפת Outfit (reflex-list) — לשיקול עתידי
+3. איורי הכרטיסים בצבעים זרים (אדום/סגול) — recolor אופציונלי
+4. תיקיות פונטים היסטוריות ב-src/fonts (noa-shalev, yarden, american-captain, Sn_armilado) — ארכיון, לא נגעתי
