@@ -67,24 +67,24 @@ export default function BlogPost() {
         headline: post.title,
         description: post.excerpt,
         image: post.featuredImage
-          ? `https://mediawaveisrael.com${post.featuredImage}`
-          : 'https://mediawaveisrael.com/og-image.png',
+          ? `https://mediawave.co.il${post.featuredImage}`
+          : 'https://mediawave.co.il/og-image.png',
         datePublished: post.publishedAt,
         dateModified: post.publishedAt,
         author: {
           '@type': 'Organization',
           name: post.author,
-          url: 'https://mediawaveisrael.com',
+          url: 'https://mediawave.co.il',
         },
         publisher: {
           '@type': 'Organization',
           name: 'MediaWave Israel',
-          url: 'https://mediawaveisrael.com',
-          logo: { '@type': 'ImageObject', url: 'https://mediawaveisrael.com/images/logo.webp' },
+          url: 'https://mediawave.co.il',
+          logo: { '@type': 'ImageObject', url: 'https://mediawave.co.il/images/logo.webp' },
         },
         mainEntityOfPage: {
           '@type': 'WebPage',
-          '@id': `https://mediawaveisrael.com/blog/${post.slug}`,
+          '@id': `https://mediawave.co.il/blog/${post.slug}`,
         },
         inLanguage: 'he',
         keywords: post.tags.join(', '),
@@ -94,9 +94,9 @@ export default function BlogPost() {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawaveisrael.com/' },
-          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawaveisrael.com/blog' },
-          { '@type': 'ListItem', position: 3, name: post.title, item: `https://mediawaveisrael.com/blog/${post.slug}` },
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawave.co.il/blog' },
+          { '@type': 'ListItem', position: 3, name: post.title, item: `https://mediawave.co.il/blog/${post.slug}` },
         ],
       }) }} />
       <article className="container max-w-[700px]">

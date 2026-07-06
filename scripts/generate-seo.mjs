@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
-const SITE_URL = 'https://mediawaveisrael.com'
+const SITE_URL = 'https://mediawave.co.il'
 
 // Parse blog posts from TypeScript source
 function parseBlogPosts() {

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 
-const SITE_URL = 'https://mediawaveisrael.com'
+const SITE_URL = 'https://mediawave.co.il'
 const SITE_NAME = 'MediaWave Israel'
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
 

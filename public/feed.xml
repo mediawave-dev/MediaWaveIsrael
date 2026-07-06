@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MediaWave Israel — בלוג</title>
-    <link>https://mediawaveisrael.com/blog</link>
+    <link>https://mediawave.co.il/blog</link>
     <description>טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי</description>
     <language>he</language>
-    <lastBuildDate>Sun, 05 Jul 2026 07:24:27 GMT</lastBuildDate>
-    <atom:link href="https://mediawaveisrael.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Mon, 06 Jul 2026 09:44:57 GMT</lastBuildDate>
+    <atom:link href="https://mediawave.co.il/feed.xml" rel="self" type="application/rss+xml"/>
 
     <item>
       <title>למה לעסק שלכם חייב להיות אתר ב-2026</title>
-      <link>https://mediawaveisrael.com/blog/why-your-business-needs-a-website-2026</link>
-      <guid isPermaLink="true">https://mediawaveisrael.com/blog/why-your-business-needs-a-website-2026</guid>
+      <link>https://mediawave.co.il/blog/why-your-business-needs-a-website-2026</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/why-your-business-needs-a-website-2026</guid>
       <pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate>
       <description>כשהלקוח הבא שלכם מחפש שירות, הוא פותח את גוגל, לא את ספר הטלפונים. בואו נדבר תכלס על למה אתר הוא כבר לא אופציה.</description>
       <author>mediawaveisrael@gmail.com (MediaWave)</author>
@@ -22,8 +22,8 @@
 
     <item>
       <title>מה זה PageSpeed ולמה זה קריטי לאתר שלכם</title>
-      <link>https://mediawaveisrael.com/blog/what-is-pagespeed-and-why-it-matters</link>
-      <guid isPermaLink="true">https://mediawaveisrael.com/blog/what-is-pagespeed-and-why-it-matters</guid>
+      <link>https://mediawave.co.il/blog/what-is-pagespeed-and-why-it-matters</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/what-is-pagespeed-and-why-it-matters</guid>
       <pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate>
       <description>האתר שלכם יפה. אבל אם הוא נטען ב-8 שניות, אף אחד לא יראה את זה. מדריך פשוט לציוני מהירות ומה הם אומרים על האתר שלכם.</description>
       <author>mediawaveisrael@gmail.com (MediaWave)</author>

@@ -14,4 +14,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://mediawaveisrael.com/sitemap.xml
+Sitemap: https://mediawave.co.il/sitemap.xml

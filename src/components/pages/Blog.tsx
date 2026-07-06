@@ -49,8 +49,8 @@ export default function Blog() {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawaveisrael.com/' },
-          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawaveisrael.com/blog' },
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+          { '@type': 'ListItem', position: 2, name: 'בלוג', item: 'https://mediawave.co.il/blog' },
         ],
       }) }} />
       <div className="container max-w-4xl">
