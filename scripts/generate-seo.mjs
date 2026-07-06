@@ -56,6 +56,12 @@ function parseBlogPosts() {
     .map((p) => ({ ...p, tags: tagsMap.get(p.slug) || [] }))
 }
 
+/** Parse slug values from a simple data file (services / portfolio examples) */
+function parseSlugs(relPath) {
+  const source = readFileSync(resolve(__dirname, '..', relPath), 'utf-8')
+  return [...source.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+}
+
 // Generate sitemap.xml
 function generateSitemap(posts) {
   const today = new Date().toISOString().split('T')[0]
@@ -75,7 +81,21 @@ function generateSitemap(posts) {
     priority: '0.7',
   }))
 
-  const allPages = [...staticPages, ...postPages]
+  // Service + portfolio pages, parsed from their data files
+  const servicePages = parseSlugs('src/data/services.ts').map((slug) => ({
+    loc: `/services/${slug}`,
+    lastmod: today,
+    changefreq: 'monthly',
+    priority: '0.8',
+  }))
+  const portfolioPages = parseSlugs('src/data/portfolio-examples.ts').map((slug) => ({
+    loc: `/portfolio/${slug}`,
+    lastmod: today,
+    changefreq: 'monthly',
+    priority: '0.6',
+  }))
+
+  const allPages = [...staticPages, ...servicePages, ...portfolioPages, ...postPages]
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

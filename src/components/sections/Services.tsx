@@ -1,45 +1,9 @@
 import { useRef } from 'react'
 import { m, useInView } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { LottieIcon, WaveDivider } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
-
-interface ServiceItem {
-  _id: string
-  title: string
-  description: string
-  lottieAnimation?: string
-  lottieSize?: number
-  tags?: string[]
-}
-
-const services: ServiceItem[] = [
-  {
-    _id: 'websites',
-    title: 'בניית אתרים',
-    description: 'כל אתר נבנה מאפס בקוד, עם הטכנולוגיות המתקדמות בשוק. מהיר, מאובטח, וללא תלות בשום פלטפורמה.',
-    lottieAnimation: '/animations/1/web-design.json',
-    tags: ['React', 'Next.js', 'Tailwind CSS'],
-  },
-  {
-    _id: 'landing',
-    title: 'דפי נחיתה',
-    description: 'דף ממוקד המרה עם WhatsApp וטפסים חכמים.',
-    lottieAnimation: '/animations/3%20landing%20page/Contact%20us.json',
-  },
-  {
-    _id: 'seo',
-    title: 'קידום אורגני',
-    description: 'קידום אורגני שבאמת עובד, עם מחקר מילות מפתח, תוכן ממוקד ומבנה טכני נכון.',
-    lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
-  },
-  {
-    _id: 'chatbots',
-    title: 'צ׳אטבוטים חכמים',
-    description: 'צ׳אטבוטים מבוססי AI מהדור האחרון. אוטומציה של שירות לקוחות, תמיכה 24/7, ואיסוף לידים – הכל בלי להוסיף כוח אדם.',
-    lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
-    lottieSize: 160,
-  },
-]
+import { servicesData, type ServicePageData } from '../../data/services'
 
 export default function Services() {
   // Animate the blurred orbs only while the section is actually on screen
@@ -111,10 +75,10 @@ export default function Services() {
           </m.p>
         </div>
 
-        {/* 4-column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          {services.map((service, index) => (
-            <ServiceCard key={service._id} service={service} index={index} />
+        {/* 6 services, 3-column grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {servicesData.map((service, index) => (
+            <ServiceCard key={service.id} service={service} index={index} />
           ))}
         </div>
 
@@ -146,19 +110,16 @@ export default function Services() {
   )
 }
 
-// Glassmorphism service card
-function ServiceCard({ service, index }: { service: ServiceItem; index: number }) {
+// Solid system card (glass removed — decision 41; blur x6 was mobile GPU waste)
+function ServiceCard({ service, index }: { service: ServicePageData; index: number }) {
   const hasLottie = !!service.lottieAnimation
 
   return (
     <m.div
-      className="card-glow relative group rounded-2xl overflow-visible h-full"
+      className="card-glow relative group rounded-2xl overflow-visible h-full bg-white"
       style={{
-        background: 'rgba(255, 255, 255, 0.55)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.6)',
-        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+        border: '1px solid rgba(125, 211, 252, 0.2)',
+        boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03)',
       }}
       initial={{ opacity: 0, transform: 'translateY(30px)' }}
       whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
@@ -211,9 +172,18 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
 
         {/* Description - single sentence */}
         <p className="text-base leading-relaxed mb-4 flex-grow" style={{ color: '#6A6A6A' }}>
-          {service.description}
+          {service.shortDescription}
         </p>
 
+        {/* Read more — hover-only underline, sky-ink for AA on white */}
+        <Link
+          to={`/services/${service.slug}`}
+          className="relative z-10 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-sky-ink hover:text-sky-ink-strong transition-colors group/link"
+          aria-label={`קראו עוד על ${service.title}`}
+        >
+          <span className="group-hover/link:underline underline-offset-4">קראו עוד</span>
+          <span aria-hidden="true">←</span>
+        </Link>
       </div>
 
       {/* Hover tint wipe — clip-path reveal from the right (RTL), §4.5 */}

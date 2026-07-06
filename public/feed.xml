@@ -5,7 +5,7 @@
     <link>https://mediawave.co.il/blog</link>
     <description>טיפים, מדריכים ותובנות מעולם הפיתוח והעיצוב הדיגיטלי</description>
     <language>he</language>
-    <lastBuildDate>Mon, 06 Jul 2026 09:44:57 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 06 Jul 2026 11:56:31 GMT</lastBuildDate>
     <atom:link href="https://mediawave.co.il/feed.xml" rel="self" type="application/rss+xml"/>
 
     <item>
@@ -30,6 +30,90 @@
       <category>ביצועים</category>
       <category>SEO</category>
       <category>מדריך טכני</category>
+    </item>
+
+    <item>
+      <title>איך בוחרים מפתח אתרים? 7 דברים שחייבים לבדוק לפני שסוגרים</title>
+      <link>https://mediawave.co.il/blog/how-to-choose-web-developer-israel</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/how-to-choose-web-developer-israel</guid>
+      <pubDate>Tue, 10 Mar 2026 00:00:00 GMT</pubDate>
+      <description>לא כל מי שיודע לבנות אתר באמת יודע לבנות אתר טוב. הנה הדברים שאתם חייבים לשאול לפני שסוגרים עם מפתח.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>בניית אתרים</category>
+      <category>טיפים</category>
+      <category>עסקים קטנים</category>
+    </item>
+
+    <item>
+      <title>דף נחיתה לעסק קטן: מה חייב להיות בו כדי שיביא לקוחות</title>
+      <link>https://mediawave.co.il/blog/landing-page-guide-for-small-business</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/landing-page-guide-for-small-business</guid>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 GMT</pubDate>
+      <description>דף נחיתה טוב הוא לא עמוד עם טופס. הוא כלי מכירות שעובד בשבילכם 24/7. הנה מה שחייב להיות בו.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>דפי נחיתה</category>
+      <category>שיווק דיגיטלי</category>
+      <category>עסקים קטנים</category>
+    </item>
+
+    <item>
+      <title>קידום אורגני לעסקים קטנים: מדריך פשוט למי שרוצה להופיע בגוגל</title>
+      <link>https://mediawave.co.il/blog/seo-basics-for-small-business-2026</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/seo-basics-for-small-business-2026</guid>
+      <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
+      <description>SEO נשמע מסובך, אבל העקרונות הבסיסיים הם פשוטים. מדריך תכליתי לקידום אורגני שגם מי שלא מבין בטכנולוגיה יכול ליישם.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>קידום אורגני</category>
+      <category>SEO</category>
+      <category>עסקים קטנים</category>
+    </item>
+
+    <item>
+      <title>צ׳אטבוט לעסק: איך בוט חכם יכול לחסוך לכם שעות עבודה</title>
+      <link>https://mediawave.co.il/blog/chatbot-for-business-whatsapp-website</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/chatbot-for-business-whatsapp-website</guid>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
+      <description>צ׳אטבוט זה לא רק לחברות גדולות. גם עסק קטן יכול להפעיל בוט שעונה ללקוחות, אוסף לידים ונותן שירות 24/7.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>צ׳אטבוטים</category>
+      <category>אוטומציה</category>
+      <category>שירות לקוחות</category>
+    </item>
+
+    <item>
+      <title>5 טעויות נפוצות באתרי עסקים קטנים (ואיך לתקן אותן)</title>
+      <link>https://mediawave.co.il/blog/common-website-mistakes-small-business</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/common-website-mistakes-small-business</guid>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 GMT</pubDate>
+      <description>יש אתרים שעובדים ויש אתרים שסתם קיימים. ההבדל בין השניים הוא לא תמיד עניין של תקציב. לפעמים זה טעויות קטנות שקל לתקן.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>בניית אתרים</category>
+      <category>טיפים</category>
+      <category>טעויות נפוצות</category>
+    </item>
+
+    <item>
+      <title>מה זה אתר רספונסיבי ולמה העסק שלכם חייב אחד</title>
+      <link>https://mediawave.co.il/blog/what-is-responsive-website-2026</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/what-is-responsive-website-2026</guid>
+      <pubDate>Wed, 25 Mar 2026 00:00:00 GMT</pubDate>
+      <description>אם פעם נכנסתם לאתר מהטלפון והייתם צריכים לזום כדי לקרוא את הטקסט, זה אומר שהאתר לא רספונסיבי. הנה למה זה חשוב.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>בניית אתרים</category>
+      <category>מובייל</category>
+      <category>עיצוב רספונסיבי</category>
+    </item>
+
+    <item>
+      <title>איך להגדיל את כמות הפניות מהאתר: 7 טיפים שעובדים</title>
+      <link>https://mediawave.co.il/blog/increase-website-leads-tips</link>
+      <guid isPermaLink="true">https://mediawave.co.il/blog/increase-website-leads-tips</guid>
+      <pubDate>Sat, 28 Mar 2026 00:00:00 GMT</pubDate>
+      <description>יש לכם אתר, יש כניסות, אבל הטלפון לא מצלצל. הבעיה היא לרוב לא שאין תנועה. הבעיה היא שהאתר לא הופך מבקרים לפניות.</description>
+      <author>mediawaveisrael@gmail.com (MediaWave)</author>
+      <category>שיווק דיגיטלי</category>
+      <category>לידים</category>
+      <category>עסקים קטנים</category>
     </item>
   </channel>
 </rss>

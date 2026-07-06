@@ -33,13 +33,21 @@ function parseBlogSlugs() {
   return slugs
 }
 
+/** Parse slug values from a simple data file (services / portfolio examples) */
+function parseDataSlugs(relPath) {
+  const source = readFileSync(resolve(ROOT, relPath), 'utf-8')
+  return [...source.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
+}
+
 // Static routes
 const STATIC_ROUTES = ['/', '/blog', '/terms', '/privacy', '/accessibility']
 
-// Dynamic routes from blog posts
+// Dynamic routes from data files
 const blogSlugs = parseBlogSlugs().map(s => `/blog/${s}`)
+const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
+const portfolioRoutes = parseDataSlugs('src/data/portfolio-examples.ts').map(s => `/portfolio/${s}`)
 
-const ROUTES = [...STATIC_ROUTES, ...blogSlugs]
+const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogSlugs]
 
 /** Serve dist/ as a static file server */
 function startServer() {

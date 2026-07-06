@@ -30,6 +30,8 @@ const VIEWPORTS = [
 const ROUTES = [
   { name: 'home', path: '/', sections: true },
   { name: 'blog', path: '/blog' },
+  { name: 'service-memory', path: '/services/memory-videos' },
+  { name: 'portfolio-memory', path: '/portfolio/memory-videos' },
   { name: 'accessibility', path: '/accessibility' },
   { name: '404', path: '/this-page-does-not-exist' },
 ]
@@ -83,6 +85,18 @@ for (const vp of VIEWPORTS) {
       }
       await page.evaluate(() => window.scrollTo(0, 0))
       await new Promise((r) => setTimeout(r, 400))
+    } else {
+      // Scroll through every other route too, so whileInView reveals fire
+      // before the full-page capture — otherwise below-fold content shows
+      // as blank (opacity 0) and screenshots lie about the page.
+      await page.evaluate(async () => {
+        for (let y = 0; y <= document.body.scrollHeight; y += 500) {
+          window.scrollTo(0, y)
+          await new Promise((r) => setTimeout(r, 250))
+        }
+        window.scrollTo(0, 0)
+      })
+      await new Promise((r) => setTimeout(r, 500))
     }
 
     await page.screenshot({ path: `${outDir}/${vp.name}-${route.name}-full.png`, fullPage: true })
