@@ -1,0 +1,44 @@
+﻿You are executing GSD phase 1 for the Directus CMS Migration project.
+Working directory: G:/Web-Dev/MediaWaveIsrael
+
+STEP-BY-STEP INSTRUCTIONS:
+
+1. READ CONTEXT:
+   - Read G:/Web-Dev/MediaWaveIsrael/.gsd/PROJECT.md (tech stack section)
+   - Read G:/Web-Dev/MediaWaveIsrael/.gsd/phases/phase-1/CONTEXT.md
+   - If phase 1 depends on previous phases, read relevant SUMMARY.md files
+
+2. EXECUTE TASKS SEQUENTIALLY:
+   For each PLAN file in G:/Web-Dev/MediaWaveIsrael/.gsd/phases/phase-1/ (PLAN-1.md, PLAN-2.md, etc.):
+   a. Read the PLAN file completely
+   b. Execute ALL steps exactly as described
+   c. Read every file BEFORE editing it (mandatory — use Read tool first)
+   d. Verify against acceptance criteria in the plan
+   e. Run: npm run build (must pass with zero errors)
+   f. Stage and commit changes:
+      git add [specific files] && git commit -m "feat(phase-1): description
+
+      Co-Authored-By: Claude <noreply@anthropic.com>"
+
+3. AFTER ALL TASKS COMPLETE:
+   a. Create G:/Web-Dev/MediaWaveIsrael/.gsd/phases/phase-1/SUMMARY.md:
+      # Phase 1 Complete
+      ## What Was Built
+      - [list deliverables]
+      ## Files Created/Modified
+      - [list files]
+      ## Issues
+      - None (or list issues)
+
+   b. Update G:/Web-Dev/MediaWaveIsrael/.gsd/STATE.md to show:
+      - **Phase**: 2
+      - **Status**: NOT STARTED
+      - **Last Action**: Phase 1 complete - [brief description]
+
+CRITICAL RULES:
+- Use Windows-compatible commands (cmd /c mkdir, not mkdir -p)
+- Read files BEFORE writing or editing them
+- Run npm run build after each task — fix any errors before continuing
+- Do NOT skip any steps in the PLAN files
+- Do NOT modify files outside the plan scope
+- Commit after each task (not at the end)

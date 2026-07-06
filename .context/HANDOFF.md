@@ -3,6 +3,15 @@
 ## Goal
 מימוש DESIGN-UPGRADE "מעבדת הגלים" — ריצה אוטונומית מלאה (03-04/07/2026), branch: `design/wave-lab` (מעל feature/production-polish).
 
+## עדכון אחרון (06/07/2026) — impeccable + שילוב תוכן + דיפלוי חי
+- **דומיין פרודקשן: mediawave.co.il** (חי). ‏mediawaveisrael.com היה שגוי בכל ה-SEO — תוקן (canonical/OG/JSON-LD/sitemap/feed/og-image). פתוח: www.* מחזיר 522 (לחבר ב-CF Pages), Google Search Console.
+- **דיפלוי:** push ל-main דרך חשבון `mediawave-dev` בלבד (החשבון של נתי מקבל 403). ‏CF Pages בונה מ-git תוך ~3-4 דק'. אין wrangler מקומי מחובר.
+- **impeccable יושם במלואו** (החלטות 37-46 ב-DECISIONS): eyebrow הוסר, MagneticButton נמחק, glow חם→תכלת, focus-ring דו-מצבי, מספרי-צעדים stroke, כרטיסים בלי זכוכית, כל לולאות framer מגודרות, ‎~200 שורות CSS מת נמחקו. דוח: `IMPECCABLE-AUDIT.rtl.md`.
+- **תוכן ממוריה שולב** (bundle) בעיצוב wave-lab: 9 מאמרי בלוג (היו 2), 6 שירותים (נוספו עריכת וידאו + סרטוני זיכרונות), עמודי `/services/:slug` + `/portfolio/memory-videos` עם וידאו לקוח אמיתי (9.7MB). גריד הבית 4→6 כרטיסים לבנים. **21 עמודי prerender**.
+- **סרטוני זיכרונות:** אייקון SVG סטטי (`/animations/photo edit.svg`) + כפתור CTA בולט "ראו דוגמה לפרויקט" (sky-ink, אייקון play) בכרטיס — השירות היחיד עם דוגמת עבודה אמיתית.
+- **שערים אחרי כל שינוי:** axe 0 הפרות (הורחב ל-11 עמודים), mobile-smooth 10/10 (סקריפט חדש `.gsd/temp/verify-mobile-smooth.mjs`), design-verify PASS (סורק כל מסלול לפני צילום), tsc/build 21 עמודים.
+- **פתוח:** portfolioLink רק ל-memory-videos; שאר השירותים בלי דוגמאות (חסר תוכן). Lighthouse לא נמדד מחדש בסבב זה (מכונה עמוסה — למדוד בבוקר). לוגו ירוק חדש ב-Downloads — לא שולב (המתנה להחלטה).
+
 ## Completed (branch: design/wave-lab, ~15 קומיטים)
 - [x] **Phase 1** — טוקנים (`--font-spec`, `--text-giant`, `--ease-brand`) + `src/config/motion.ts`; GrainOverlay גלובלי (`public/images/grain.png` 6KB); WaveDivider (3 וריאנטים א-סימטריים, flip/drift/bg, מושהה מחוץ למסך) פרוס בין כל הסקשנים; Marquee טכנולוגיות CSS-בלבד; צללי hover ל-pseudo+opacity
 - [x] **Phase 2** — StaggeredWords (פיצול מילים בלבד!) + גל draw-on מתחת ל"המומחיות שלנו"; LoadTimeBadge (LCP אמיתי של המבקר + "בדקו בעצמכם"); ProofBand כהה עם קאונט-אפ (מספרים מדודים בלבד: 97/100, 1.0s, 0.53MB + סלוטים data-pending); מספור מפרט 01· + מילת מפתח צבועה בכל כותרת

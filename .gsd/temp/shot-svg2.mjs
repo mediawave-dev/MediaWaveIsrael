@@ -1,0 +1,16 @@
+import puppeteer from 'puppeteer'
+const b = await puppeteer.launch({ headless: 'new' })
+const p = await b.newPage()
+await p.setViewport({ width: 1440, height: 900 })
+await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }])
+await p.goto('http://localhost:4173/', { waitUntil: 'networkidle0', timeout: 60000 })
+await p.evaluate(()=>{const els=[...document.querySelectorAll('h3')];const m=els.find(e=>e.textContent.includes('סרטוני זיכרונות'));m?.scrollIntoView({block:'center'})})
+await new Promise(r=>setTimeout(r,1500))
+await p.screenshot({ path: 'g:/tmp/mediawave-audit/wave-lab/svg-icon/home-grid-bottom.png' })
+// mobile 320
+await p.setViewport({ width: 320, height: 900, isMobile: true, hasTouch: true })
+await p.goto('http://localhost:4173/services/memory-videos', { waitUntil: 'networkidle0', timeout: 60000 })
+await new Promise(r=>setTimeout(r,1500))
+await p.screenshot({ path: 'g:/tmp/mediawave-audit/wave-lab/svg-icon/service-320.png', clip:{x:0,y:60,width:320,height:400} })
+await b.close()
+console.log('done')
