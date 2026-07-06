@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { m, useInView } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { PlayCircle } from 'lucide-react'
 import { LottieIcon, WaveDivider } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { servicesData, type ServicePageData } from '../../data/services'
@@ -112,7 +113,9 @@ export default function Services() {
 
 // Solid system card (glass removed — decision 41; blur x6 was mobile GPU waste)
 function ServiceCard({ service, index }: { service: ServicePageData; index: number }) {
-  const hasLottie = !!service.lottieAnimation
+  const hasImage = !!service.imageIcon
+  const hasLottie = !hasImage && !!service.lottieAnimation
+  const iconSize = service.lottieSize ?? 128
 
   return (
     <m.div
@@ -145,16 +148,26 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
 
       {/* Card content */}
       <div className="p-4 md:p-6 text-center flex flex-col h-full">
-        {/* Icon / Lottie - same container for all */}
+        {/* Icon - Lottie or static SVG, same container for all */}
         <div className="h-24 md:h-32 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
-          {hasLottie ? (
+          {hasImage ? (
+            <img
+              src={service.imageIcon}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              className="object-contain transition-transform duration-300 scale-75 md:scale-100 md:group-hover:scale-105"
+              style={{ width: iconSize, height: iconSize }}
+            />
+          ) : hasLottie ? (
             <div
               className="flex items-center justify-center transition-transform duration-300 scale-75 md:scale-100 md:group-hover:scale-105"
-              style={{ width: service.lottieSize ?? 128, height: service.lottieSize ?? 128 }}
+              style={{ width: iconSize, height: iconSize }}
             >
               <LottieIcon
                 animationPath={service.lottieAnimation}
-                size={service.lottieSize ?? 128}
+                size={iconSize}
                 playOnHover={true}
                 loop={true}
               />
@@ -175,15 +188,32 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
           {service.shortDescription}
         </p>
 
-        {/* Read more — hover-only underline, sky-ink for AA on white */}
-        <Link
-          to={`/services/${service.slug}`}
-          className="relative z-10 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-sky-ink hover:text-sky-ink-strong transition-colors group/link"
-          aria-label={`קראו עוד על ${service.title}`}
-        >
-          <span className="group-hover/link:underline underline-offset-4">קראו עוד</span>
-          <span aria-hidden="true">←</span>
-        </Link>
+        {/* Actions — pinned to the bottom so cards align */}
+        <div className="mt-auto flex flex-col items-center gap-3">
+          {/* Portfolio example — only where a real work sample exists (memory
+              videos). The strongest trust signal on the card, so it leads. */}
+          {service.portfolioLink && (
+            <Link
+              to={service.portfolioLink}
+              className="relative z-10 inline-flex items-center justify-center gap-2 text-sm font-semibold py-2.5 px-6 rounded-full text-white transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5"
+              style={{ background: 'var(--color-sky-ink)' }}
+              aria-label={`ראו דוגמה לפרויקט: ${service.title}`}
+            >
+              <PlayCircle size={16} aria-hidden="true" />
+              ראו דוגמה לפרויקט
+            </Link>
+          )}
+
+          {/* Read more — hover-only underline, sky-ink for AA on white */}
+          <Link
+            to={`/services/${service.slug}`}
+            className="relative z-10 inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-sky-ink hover:text-sky-ink-strong transition-colors group/link"
+            aria-label={`קראו עוד על ${service.title}`}
+          >
+            <span className="group-hover/link:underline underline-offset-4">קראו עוד</span>
+            <span aria-hidden="true">←</span>
+          </Link>
+        </div>
       </div>
 
       {/* Hover tint wipe — clip-path reveal from the right (RTL), §4.5 */}

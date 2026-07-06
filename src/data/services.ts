@@ -8,6 +8,8 @@ export interface ServicePageData {
   heroSubtitle: string
   lottieAnimation?: string
   lottieSize?: number
+  /** Static SVG/PNG icon (takes precedence over lottieAnimation when set) */
+  imageIcon?: string
   tags?: string[]
   portfolioLink?: string
   sections: {
@@ -302,7 +304,7 @@ export const servicesData: ServicePageData[] = [
       'הנפשת תמונות ישנות לסרטוני וידאו מרגשים באמצעות בינה מלאכותית. מתנה מושלמת לימי הולדת, חתונות ואירועים משפחתיים.',
     heroSubtitle: 'תמונות ישנות שחוזרות לחיים, סרטוני זיכרונות מרגשים לכל אירוע',
     portfolioLink: '/portfolio/memory-videos',
-    lottieAnimation: '/animations/AI/AI%20animation.json',
+    imageIcon: '/animations/photo%20edit.svg',
     lottieSize: 140,
     sections: [
       {

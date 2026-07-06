@@ -96,8 +96,25 @@ export default function ServicePage() {
             <span className="text-brown-dark font-medium">{service.title}</span>
           </m.nav>
 
-          {/* Lottie Animation */}
-          {service.lottieAnimation && (
+          {/* Icon - static SVG takes precedence over Lottie */}
+          {service.imageIcon ? (
+            <m.div
+              className="flex justify-center mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <img
+                src={service.imageIcon}
+                alt=""
+                aria-hidden="true"
+                width={service.lottieSize ?? 150}
+                height={service.lottieSize ?? 150}
+                className="object-contain"
+                style={{ width: service.lottieSize ?? 150, height: service.lottieSize ?? 150 }}
+              />
+            </m.div>
+          ) : service.lottieAnimation ? (
             <m.div
               className="flex justify-center mb-6"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -110,7 +127,7 @@ export default function ServicePage() {
                 loop
               />
             </m.div>
-          )}
+          ) : null}
 
           <m.h1
             className="text-4xl md:text-5xl lg:text-6xl font-headline leading-tight text-brown-dark mb-6"
