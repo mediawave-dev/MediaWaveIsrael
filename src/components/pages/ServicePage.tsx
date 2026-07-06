@@ -15,6 +15,9 @@ export default function ServicePage() {
     return <Navigate to="/404" replace />
   }
 
+  // Hero icon is larger than the home-grid card icon (more room, focal point)
+  const heroIconSize = service.lottieSize ? service.lottieSize + 40 : 200
+
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -108,10 +111,10 @@ export default function ServicePage() {
                 src={service.imageIcon}
                 alt=""
                 aria-hidden="true"
-                width={service.lottieSize ?? 150}
-                height={service.lottieSize ?? 150}
+                width={heroIconSize}
+                height={heroIconSize}
                 className="object-contain"
-                style={{ width: service.lottieSize ?? 150, height: service.lottieSize ?? 150 }}
+                style={{ width: heroIconSize, height: heroIconSize }}
               />
             </m.div>
           ) : service.lottieAnimation ? (
@@ -123,7 +126,7 @@ export default function ServicePage() {
             >
               <LottieIcon
                 animationPath={service.lottieAnimation}
-                size={service.lottieSize ?? 150}
+                size={heroIconSize}
                 loop
               />
             </m.div>

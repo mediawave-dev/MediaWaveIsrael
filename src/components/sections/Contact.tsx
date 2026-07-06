@@ -110,7 +110,8 @@ export default function Contact() {
           >
             <LottieIcon
               animationPath="/animations/12 Talk with us/Topictalk_icon.json"
-              size={120}
+              size={180}
+              className="scale-[0.78] md:scale-100"
               playOnHover={true}
               loop={true}
             />

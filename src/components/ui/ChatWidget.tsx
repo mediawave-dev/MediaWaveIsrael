@@ -232,7 +232,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               <div className="relative z-10">
                 <LottieIcon
                   animationPath="/animations/7%20chatbot/chatbot_header.json"
-                  size={48}
+                  size={56}
                   loop={true}
                   playOnHover={false}
                 />
@@ -271,10 +271,10 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               }}
             >
               <div className="flex items-center gap-2.5">
-                <div className="w-12 h-12 rounded-full bg-orange/20 flex items-center justify-center overflow-hidden">
+                <div className="w-14 h-14 rounded-full bg-orange/20 flex items-center justify-center overflow-hidden">
                   <LottieIcon
                     animationPath="/animations/7%20chatbot/chatbot_header.json"
-                    size={44}
+                    size={52}
                     loop={true}
                     playOnHover={false}
                   />

@@ -109,7 +109,7 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
         <div className="relative z-10 mb-4 md:mb-6 flex justify-center">
           <LottieIcon
             animationPath={step.animationPath}
-            size={160}
+            size={210}
             playOnHover={true}
             loop={true}
           />

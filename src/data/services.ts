@@ -203,7 +203,7 @@ export const servicesData: ServicePageData[] = [
       'פיתוח צ׳אטבוטים חכמים מבוססי בינה מלאכותית לעסקים. שירות לקוחות אוטומטי 24/7, איסוף לידים ומענה על שאלות נפוצות.',
     heroSubtitle: 'בוטים חכמים שעובדים 24/7 בשבילכם, שירות לקוחות, לידים ותמיכה בלי הפסקה',
     lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
-    lottieSize: 160,
+    lottieSize: 200,
     sections: [
       {
         heading: 'למה העסק שלכם צריך צ׳אטבוט?',
@@ -260,7 +260,7 @@ export const servicesData: ServicePageData[] = [
       'עריכת וידאו מקצועית והמרת קלטות VHS ומדיה ישנה לפורמט דיגיטלי. שימור זיכרונות ועריכת חומרי גלם לסרטונים מוכנים.',
     heroSubtitle: 'עריכה מקצועית של סרטונים והמרת קלטות ומדיה ישנה לפורמט דיגיטלי',
     lottieAnimation: '/animations/10%20design/Web%20Design%20Illustration.json',
-    lottieSize: 140,
+    lottieSize: 180,
     sections: [
       {
         heading: 'עריכת וידאו מקצועית',
@@ -305,7 +305,7 @@ export const servicesData: ServicePageData[] = [
     heroSubtitle: 'תמונות ישנות שחוזרות לחיים, סרטוני זיכרונות מרגשים לכל אירוע',
     portfolioLink: '/portfolio/memory-videos',
     imageIcon: '/animations/photo%20edit.svg',
-    lottieSize: 140,
+    lottieSize: 180,
     sections: [
       {
         heading: 'איך זה עובד?',

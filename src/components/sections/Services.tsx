@@ -115,7 +115,7 @@ export default function Services() {
 function ServiceCard({ service, index }: { service: ServicePageData; index: number }) {
   const hasImage = !!service.imageIcon
   const hasLottie = !hasImage && !!service.lottieAnimation
-  const iconSize = service.lottieSize ?? 128
+  const iconSize = service.lottieSize ?? 180
 
   return (
     <m.div
@@ -149,7 +149,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
       {/* Card content */}
       <div className="p-4 md:p-6 text-center flex flex-col h-full">
         {/* Icon - Lottie or static SVG, same container for all */}
-        <div className="h-24 md:h-32 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
+        <div className="h-36 md:h-48 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
           {hasImage ? (
             <img
               src={service.imageIcon}
@@ -157,12 +157,12 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
               aria-hidden="true"
               loading="lazy"
               decoding="async"
-              className="object-contain transition-transform duration-300 scale-75 md:scale-100 md:group-hover:scale-105"
+              className="object-contain transition-transform duration-300 scale-[0.72] md:scale-100 md:group-hover:scale-105"
               style={{ width: iconSize, height: iconSize }}
             />
           ) : hasLottie ? (
             <div
-              className="flex items-center justify-center transition-transform duration-300 scale-75 md:scale-100 md:group-hover:scale-105"
+              className="flex items-center justify-center transition-transform duration-300 scale-[0.72] md:scale-100 md:group-hover:scale-105"
               style={{ width: iconSize, height: iconSize }}
             >
               <LottieIcon

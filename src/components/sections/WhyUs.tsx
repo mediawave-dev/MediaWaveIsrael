@@ -166,10 +166,10 @@ export default function WhyUs() {
                 whileHover={{ y: -4 }}
               >
                 {hasLottie ? (
-                  <div className="w-28 h-28 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
+                  <div className="w-40 h-40 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
                     <LottieIcon
                       animationPath={item.lottieAnimation}
-                      size={112}
+                      size={160}
                       playOnHover={true}
                       loop={true}
                     />
