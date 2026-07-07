@@ -4,8 +4,8 @@
   "description": "בניית אתרים ודפי נחיתה מקצועיים לעסקים",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FDFBF7",
-  "theme_color": "#D4A574",
+  "background_color": "#F8FAFC",
+  "theme_color": "#38BDF8",
   "orientation": "portrait-primary",
   "lang": "he",
   "dir": "rtl",
@@ -14,7 +14,7 @@
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/favicon-32x32.png",

@@ -16,7 +16,7 @@ export default function ServicePage() {
   }
 
   // Hero icon is larger than the home-grid card icon (more room, focal point)
-  const heroIconSize = service.lottieSize ? service.lottieSize + 40 : 200
+  const heroIconSize = service.lottieSize ? service.lottieSize + 60 : 240
 
   const faqSchema = {
     '@context': 'https://schema.org',

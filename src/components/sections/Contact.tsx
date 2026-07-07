@@ -6,8 +6,11 @@ import { LottieIcon } from '../ui/LottieIcon'
 import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
+import { useRevealFactory } from '../../config/reveal'
 
 export default function Contact() {
+  // Two columns enter from opposite framing: form rises, info slides from left
+  const reveal = useRevealFactory()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -110,8 +113,8 @@ export default function Contact() {
           >
             <LottieIcon
               animationPath="/animations/12 Talk with us/Topictalk_icon.json"
-              size={180}
-              className="scale-[0.78] md:scale-100"
+              size={216}
+              className="scale-[0.84] md:scale-100"
               playOnHover={true}
               loop={true}
             />
@@ -133,10 +136,7 @@ export default function Contact() {
           {/* Form */}
           <m.div
             className="order-2 lg:order-1"
-            initial={{ opacity: 0, transform: 'translateY(30px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            {...reveal('maskRise', 0, { distance: 30 })}
           >
             <div className="relative bg-white rounded-2xl p-8 shadow-lg border border-cream-darker/50 overflow-hidden">
               {/* Brand accent line */}
@@ -221,10 +221,7 @@ export default function Contact() {
           {/* Contact Info */}
           <m.div
             className="order-1 lg:order-2"
-            initial={{ opacity: 0, transform: 'translateY(30px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            {...reveal('slideInLeft', 0.1)}
           >
             <div className="space-y-8">
               {/* Phone */}

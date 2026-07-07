@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { HtmlContent } from '../HtmlContent'
+import { useRevealFactory } from '../../config/reveal'
 
 interface Faq {
   _id: string
@@ -26,6 +27,8 @@ const faqs: Faq[] = [
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  // Header slides in from the left; rows assemble from the reading edge (right)
+  const reveal = useRevealFactory()
 
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index)
@@ -55,20 +58,14 @@ export default function FAQ() {
         <div className="text-center mb-10 md:mb-14">
           <m.h2
             className="text-4xl md:text-5xl font-headline mb-4"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            {...reveal('slideInLeft')}
           >
             שאלות <span style={{ color: '#0284C7' }}>נפוצות</span>
           </m.h2>
           <div className="section-title-accent" aria-hidden="true" />
           <m.p
             className="text-brown-light text-lg md:text-xl mt-4"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            {...reveal('slideInLeft', 0.1)}
           >
             כל מה שרציתם לדעת על תהליך בניית האתר
           </m.p>
@@ -80,10 +77,7 @@ export default function FAQ() {
             <m.div
               key={item._id}
               className="bg-white rounded-xl overflow-hidden border border-cream-darker/60 hover:border-orange-light transition-colors duration-300"
-              initial={{ opacity: 0, transform: 'translateY(20px)' }}
-              whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
+              {...reveal('slideInRight')}
             >
               {/* Question */}
               <button

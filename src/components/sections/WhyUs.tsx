@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import { LottieIcon, WaveDivider } from '../ui'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useRevealFactory } from '../../config/reveal'
 
 interface WhyUsItem {
   _id: string
@@ -42,6 +43,9 @@ const colorMap: Record<string, { border: string }> = {
 }
 
 export default function WhyUs() {
+  // Curated entrance: content slides in from the reading edge (RTL right)
+  const reveal = useRevealFactory()
+
   // Detect reduced motion preference
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
@@ -134,12 +138,7 @@ export default function WhyUs() {
       {/* ===== LAYER 3: Content ===== */}
       <div className="relative z-2 container max-w-5xl">
         {/* Header */}
-        <m.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, transform: 'translateY(20px)' }}
-          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true }}
-        >
+        <m.div className="text-center mb-12" {...reveal('slideInRight')}>
           <h2 className="text-4xl md:text-5xl font-headline mb-3">
             למה לעבוד <span style={{ color: '#0284C7' }}>איתנו?</span>
           </h2>
@@ -159,17 +158,14 @@ export default function WhyUs() {
                 key={item._id}
                 className={`card-glow bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
                 style={{ '--hover-shadow': '0 8px 24px rgba(74, 74, 74, 0.08)' } as React.CSSProperties}
-                initial={{ opacity: 0, transform: 'translateY(20px)' }}
-                whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                {...reveal('slideInRight', index * 0.1)}
                 whileHover={{ y: -4 }}
               >
                 {hasLottie ? (
-                  <div className="w-40 h-40 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
+                  <div className="w-48 h-48 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
                     <LottieIcon
                       animationPath={item.lottieAnimation}
-                      size={160}
+                      size={192}
                       playOnHover={true}
                       loop={true}
                     />

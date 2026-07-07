@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useReducedMotion, useAmbientMotion } from '../../hooks/useReducedMotion'
+import { useRevealFactory } from '../../config/reveal'
 import { testimonials } from '../../data/testimonials'
 
 // Color palette for testimonial cards — sky family only (the old warm
@@ -14,6 +15,8 @@ function getColor(index: number): string {
 export default function Testimonials() {
   const prefersReducedMotion = useReducedMotion()
   const ambient = useAmbientMotion()
+  // Header text tilts in gently (stars keep their spin, carousel untouched)
+  const reveal = useRevealFactory()
   const [activeIndex, setActiveIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
@@ -104,10 +107,7 @@ export default function Testimonials() {
 
           <m.h2
             className="text-5xl md:text-6xl font-headline text-brown-dark mb-4"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            {...reveal('rotateSubtle', 0.2)}
           >
             מה אומרים עלינו
           </m.h2>
@@ -116,10 +116,7 @@ export default function Testimonials() {
 
           <m.p
             className="text-brown-light text-2xl max-w-md mx-auto mt-4"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            {...reveal('rotateSubtle', 0.3)}
           >
             לקוחות מרוצים מספרים על החוויה שלהם
           </m.p>

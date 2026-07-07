@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { PlayCircle } from 'lucide-react'
 import { LottieIcon, WaveDivider } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { useReveal, useRevealFactory } from '../../config/reveal'
 import { servicesData, type ServicePageData } from '../../data/services'
 
 export default function Services() {
@@ -13,6 +14,8 @@ export default function Services() {
   const isInView = useInView(sectionRef, { margin: '200px' })
   const ambient = useAmbientMotion()
   const orbsActive = isInView && ambient
+  // Header stays restrained (fadeUp); the tiles pop to scale (see ServiceCard)
+  const reveal = useRevealFactory()
 
   return (
     <section
@@ -55,10 +58,7 @@ export default function Services() {
         <div className="mb-10 md:mb-16 text-center">
           <m.h2
             className="text-4xl md:text-5xl font-headline leading-tight text-brown-dark mb-4"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            {...reveal('fadeUp', 0.1)}
           >
             מה אנחנו <span style={{ color: '#0284C7' }}>עושים</span>
           </m.h2>
@@ -67,10 +67,7 @@ export default function Services() {
 
           <m.p
             className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto mt-4"
-            initial={{ opacity: 0, transform: 'translateY(15px)' }}
-            whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            {...reveal('fadeUp', 0.2)}
           >
             מהרעיון הראשוני ועד להשקה, אנחנו מלווים אתכם בכל שלב.
           </m.p>
@@ -86,9 +83,7 @@ export default function Services() {
         {/* Bottom CTA */}
         <m.div
           className="mt-10 md:mt-20 text-center"
-          initial={{ opacity: 0, transform: 'translateY(30px)' }}
-          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true }}
+          {...reveal('fadeUp', 0, { distance: 30 })}
         >
           <m.a
             href="#contact"
@@ -115,7 +110,8 @@ export default function Services() {
 function ServiceCard({ service, index }: { service: ServicePageData; index: number }) {
   const hasImage = !!service.imageIcon
   const hasLottie = !hasImage && !!service.lottieAnimation
-  const iconSize = service.lottieSize ?? 180
+  // ~20% larger than the data value, keeping each icon's own proportion
+  const iconSize = Math.round((service.lottieSize ?? 180) * 1.2)
 
   return (
     <m.div
@@ -124,10 +120,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
         border: '1px solid rgba(125, 211, 252, 0.2)',
         boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03)',
       }}
-      initial={{ opacity: 0, transform: 'translateY(30px)' }}
-      whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      {...useReveal('scaleIn', index * 0.1)}
       whileHover={{ y: -8 }}
     >
       {/* Blue accent top border */}
@@ -149,7 +142,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
       {/* Card content */}
       <div className="p-4 md:p-6 text-center flex flex-col h-full">
         {/* Icon - Lottie or static SVG, same container for all */}
-        <div className="h-36 md:h-48 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
+        <div className="h-44 md:h-56 flex items-center justify-center mb-3 md:mb-5 overflow-visible">
           {hasImage ? (
             <img
               src={service.imageIcon}
@@ -157,12 +150,12 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
               aria-hidden="true"
               loading="lazy"
               decoding="async"
-              className="object-contain transition-transform duration-300 scale-[0.72] md:scale-100 md:group-hover:scale-105"
+              className="object-contain transition-transform duration-300 scale-[0.8] md:scale-100 md:group-hover:scale-105"
               style={{ width: iconSize, height: iconSize }}
             />
           ) : hasLottie ? (
             <div
-              className="flex items-center justify-center transition-transform duration-300 scale-[0.72] md:scale-100 md:group-hover:scale-105"
+              className="flex items-center justify-center transition-transform duration-300 scale-[0.8] md:scale-100 md:group-hover:scale-105"
               style={{ width: iconSize, height: iconSize }}
             >
               <LottieIcon

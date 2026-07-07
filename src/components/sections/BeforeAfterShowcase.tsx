@@ -1,7 +1,7 @@
 import { m } from 'framer-motion'
 import { WaveDivider } from '../ui/WaveDivider'
 import { BeforeAfterSlider } from '../ui/BeforeAfterSlider'
-import { EASE_BRAND } from '../../config/motion'
+import { useRevealFactory } from '../../config/reveal'
 
 /**
  * BeforeAfterShowcase — the interactive before/after on the single dark
@@ -12,6 +12,10 @@ import { EASE_BRAND } from '../../config/motion'
  * vs. this site's live hero), clearly labeled. Never a fake client.
  */
 export default function BeforeAfterShowcase() {
+  // On the dark band: heading slides in cleanly, slider wipes in from the right.
+  // (No blur on Hebrew text — it reads as broken during the reveal.)
+  const reveal = useRevealFactory()
+
   return (
     <section
       id="before-after"
@@ -30,13 +34,7 @@ export default function BeforeAfterShowcase() {
       />
 
       <div className="container relative max-w-3xl">
-        <m.div
-          className="text-center mb-8 md:mb-10"
-          initial={{ opacity: 0, transform: 'translateY(20px)' }}
-          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: EASE_BRAND }}
-        >
+        <m.div className="text-center mb-8 md:mb-10" {...reveal('slideInRight')}>
           <h2 className="text-4xl md:text-5xl font-headline text-white mb-4">
             {/* [קופי: נתי] */}
             לפני <span style={{ color: '#7DD3FC' }}>ואחרי</span>
@@ -48,12 +46,7 @@ export default function BeforeAfterShowcase() {
           </p>
         </m.div>
 
-        <m.div
-          initial={{ opacity: 0, transform: 'translateY(24px)' }}
-          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, delay: 0.1, ease: EASE_BRAND }}
-        >
+        <m.div {...reveal('scaleIn', 0.1, { from: 0.96 })}>
           <BeforeAfterSlider
             beforeSrc="/images/demo-before.webp"
             afterSrc="/images/demo-after.webp"

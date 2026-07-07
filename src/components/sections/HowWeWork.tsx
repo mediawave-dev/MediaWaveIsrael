@@ -1,5 +1,6 @@
 import { m } from 'framer-motion'
 import { LottieIcon } from '../ui/LottieIcon'
+import { Reveal } from '../ui/Reveal'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { EASE_BRAND } from '../../config/motion'
 
@@ -109,7 +110,7 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
         <div className="relative z-10 mb-4 md:mb-6 flex justify-center">
           <LottieIcon
             animationPath={step.animationPath}
-            size={210}
+            size={252}
             playOnHover={true}
             loop={true}
           />
@@ -190,14 +191,8 @@ export default function HowWeWork() {
       </div>
 
       <div className="container relative z-10">
-        {/* Section header */}
-        <m.div
-          className="text-center mb-12 md:mb-16"
-          initial={{ opacity: 0, transform: 'translateY(30px)' }}
-          whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
+        {/* Section header — rises from a mask (distinct from the blur band above) */}
+        <Reveal variant="maskRise" className="text-center mb-12 md:mb-16">
           <h2 id="how-we-work-title" className="text-4xl md:text-5xl font-headline font-bold text-brown-dark mb-4">
             איך אנחנו <span style={{ color: '#0284C7' }}>עובדים</span>
           </h2>
@@ -205,7 +200,7 @@ export default function HowWeWork() {
           <p className="text-lg md:text-xl text-brown-light max-w-2xl mx-auto mt-4">
             מהרעיון ועד ההשקה: תהליך פשוט וברור
           </p>
-        </m.div>
+        </Reveal>
 
         {/* Steps grid with the single process wave behind the cards */}
         <div className="relative">
