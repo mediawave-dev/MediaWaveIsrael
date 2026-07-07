@@ -85,7 +85,7 @@ export default function FAQ() {
                 className="w-full text-right p-4 md:p-5 flex items-center justify-between gap-4 hover:bg-cream-dark/30 transition-colors"
                 aria-expanded={openIndex === index}
               >
-                <span className="font-headline font-semibold text-brown-dark text-lg md:text-xl">
+                <span className="font-body font-semibold text-brown-dark text-lg md:text-xl">
                   {item.question}
                 </span>
                 <m.span

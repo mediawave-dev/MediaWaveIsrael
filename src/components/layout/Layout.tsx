@@ -1,11 +1,9 @@
 import { ReactNode, useState, useCallback, lazy, Suspense } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
-import { useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
-import { useThemeColor } from '../../hooks/useThemeColor'
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
@@ -19,10 +17,6 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const { pathname } = useLocation()
-
-  // Shift the browser address-bar color per section (homepage only)
-  useThemeColor(pathname === '/')
 
   const handleChatOpenChange = useCallback((open: boolean) => {
     setIsChatOpen(open)
