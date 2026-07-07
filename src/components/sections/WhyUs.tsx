@@ -16,15 +16,15 @@ const differentiators: WhyUsItem[] = [
   {
     _id: 'tech',
     lottieAnimation: '/animations/2/computer%20technician.json',
-    title: 'טכנולוגיה מתקדמת',
-    description: 'עובדים עם React, Next.js ו-Astro לביצועים מעולים ותחזוקה קלה.',
+    title: 'אתר מהיר שלא נתקע',
+    description: 'נטען כמעט מיד ועובד חלק בכל טלפון ומחשב.',
     color: 'orange',
   },
   {
     _id: 'ai',
     lottieAnimation: '/animations/AI/AI%20animation.json',
-    title: 'מותאם לבינה מלאכותית',
-    description: 'האתר שלכם מותאם גם למנועי AI כמו ChatGPT ו-Perplexity, לא רק לגוגל. כך לקוחות חדשים מוצאים אתכם בכל מקום.',
+    title: 'שימצאו אתכם, גם ב-AI',
+    description: 'היום מחפשים לא רק בגוגל, גם אצל צ\'אטבוטים. בונים אתר שיופיע בשני המקומות.',
     color: 'terracotta',
   },
   {

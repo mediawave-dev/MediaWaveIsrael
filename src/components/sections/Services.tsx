@@ -69,7 +69,7 @@ export default function Services() {
             className="text-lg md:text-xl text-brown-light leading-relaxed max-w-lg mx-auto mt-4"
             {...reveal('fadeUp', 0.2)}
           >
-            מהרעיון הראשוני ועד להשקה, אנחנו מלווים אתכם בכל שלב.
+            מהרעיון ועד להשקה, אנחנו מלווים אתכם בכל שלב.
           </m.p>
         </div>
 

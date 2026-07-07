@@ -14,8 +14,8 @@ interface StepItem {
 
 const steps: StepItem[] = [
   { _id: '01', stepNumber: '01', title: 'שיחת היכרות', description: 'מבינים את העסק, היעדים והקהל שלכם', animationPath: '/animations/8 call/Call Center Support Lottie Animation.json' },
-  { _id: '02', stepNumber: '02', title: 'אפיון ועיצוב', description: 'מתכננים מבנה, עיצוב ו-UX מותאם אישית', animationPath: '/animations/10 design/Web Design Illustration.json' },
-  { _id: '03', stepNumber: '03', title: 'פיתוח ובנייה', description: 'בונים עם הטכנולוגיה המתאימה, מהיר ומאובטח', animationPath: '/animations/9 build/website build.json' },
+  { _id: '02', stepNumber: '02', title: 'תכנון ועיצוב', description: 'מתכננים איך האתר ייראה ואיך יהיה נוח לגלוש בו', animationPath: '/animations/10 design/Web Design Illustration.json' },
+  { _id: '03', stepNumber: '03', title: 'פיתוח ובנייה', description: 'בונים אתר מהיר ובטוח, מוכן לעבודה', animationPath: '/animations/9 build/website build.json' },
   { _id: '04', stepNumber: '04', title: 'השקה וליווי', description: 'משיקים, עוקבים אחרי ביצועים ומלווים לאורך זמן', animationPath: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json' },
 ]
 
