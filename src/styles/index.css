@@ -186,6 +186,14 @@
     scroll-behavior: smooth;
     /* Base 18px, scaled by the accessibility widget (all rem sizes follow) */
     font-size: calc(18px * var(--accessibility-text-scale, 1));
+    /* Overscroll rubber-band reveals brand dark surfaces (navy up top where
+       the header/hero live, footer black at the bottom) instead of a white
+       flash. Setting any html background also stops the body bg from
+       propagating to the canvas — which is exactly the point. */
+    background: linear-gradient(180deg, #1E293B 0%, #1E293B 50%, #1a1a1a 50%, #1a1a1a 100%);
+    /* Brand scrollbar — soft-sky thumb on a transparent track; inherits into
+       every inner scroll area (chat, mobile menu) */
+    scrollbar-color: #BAE6FD transparent;
   }
 
   body {
@@ -252,10 +260,10 @@
   }
 }
 
-/* Selection */
+/* Selection — sky wash only, no color override: text keeps its own ink on
+   light surfaces and stays white on the dark hero/footer, readable on both */
 ::selection {
-  background-color: rgba(125, 211, 252, 0.2);
-  color: var(--color-brown-dark);
+  background-color: rgba(125, 211, 252, 0.35);
 }
 
 /* Focus visible for accessibility — two-mode ring, always readable:
@@ -935,6 +943,10 @@ section[id] {
     --color-sky-ink-strong: #0C4A6E;
   }
 
+  html {
+    scrollbar-color: #0369A1 transparent;
+  }
+
   .card,
   .bg-white {
     border: 2px solid var(--color-brown);
@@ -991,6 +1003,8 @@ input,
 select,
 textarea {
   font-size: 1rem; /* 16px minimum */
+  /* Text cursor in the brand ink — tiny detail, reads as intent */
+  caret-color: var(--color-sky-ink);
 }
 
 /* ============================================
@@ -1024,6 +1038,7 @@ html.high-contrast {
   --color-orange-dark: #075985;
   --color-sky-ink: #075985;
   --color-sky-ink-strong: #0C4A6E;
+  scrollbar-color: #0369A1 transparent;
 }
 
 html.high-contrast .card,

@@ -27,6 +27,10 @@ directus/uploads/
 .impeccable/live/sessions/
 .impeccable/config.local.json
 
+# local visual-audit output (scripts/screenshot-audit.mjs, design-verify)
+screenshots-audit/
+screenshots-after/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

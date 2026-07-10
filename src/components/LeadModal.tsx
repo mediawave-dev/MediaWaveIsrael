@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { Input } from './ui/Input'
 import { Button } from './ui/Button'
@@ -42,6 +42,52 @@ export default function LeadModal() {
         setIsVisible(false)
         sessionStorage.setItem('leadModalClosed', 'true')
     }
+
+    // Dialog behavior (same pattern as ChatWidget): Escape closes, Tab stays
+    // inside, focus enters the card and returns to where the visitor was
+    const cardRef = useRef<HTMLDivElement>(null)
+    const closeButtonRef = useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (!isVisible) return
+
+        const previouslyFocused = document.activeElement as HTMLElement | null
+        closeButtonRef.current?.focus()
+
+        const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsVisible(false)
+                sessionStorage.setItem('leadModalClosed', 'true')
+                return
+            }
+
+            if (e.key !== 'Tab' || !cardRef.current) return
+
+            const focusable = cardRef.current.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), input:not([disabled])'
+            )
+            if (focusable.length === 0) return
+            const first = focusable[0]
+            const last = focusable[focusable.length - 1]
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault()
+                last.focus()
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault()
+                first.focus()
+            } else if (!cardRef.current.contains(document.activeElement)) {
+                e.preventDefault()
+                first.focus()
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+            previouslyFocused?.focus?.()
+        }
+    }, [isVisible])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -121,6 +167,10 @@ export default function LeadModal() {
 
                     {/* Modal Card */}
                     <m.div
+                        ref={cardRef}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="lead-modal-title"
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -131,10 +181,12 @@ export default function LeadModal() {
 
                         {/* Close Button */}
                         <button
+                            ref={closeButtonRef}
                             onClick={handleClose}
+                            aria-label="סגירת החלון"
                             className="absolute top-2 left-2 sm:top-4 sm:left-4 p-1 text-brown-muted hover:text-sky-ink transition-colors z-10"
                         >
-                            <X size={20} />
+                            <X size={20} aria-hidden="true" />
                         </button>
 
                         {success ? (
@@ -142,7 +194,7 @@ export default function LeadModal() {
                                 <div className="w-16 h-16 bg-sage/20 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span className="text-2xl text-sage-dark">✓</span>
                                 </div>
-                                <h3 className="text-2xl font-bold text-brown-dark mb-2">תודה!</h3>
+                                <h3 id="lead-modal-title" className="text-2xl font-bold text-brown-dark mb-2">תודה!</h3>
                                 <p className="text-brown">
                                     {waHandoff
                                         ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊'
@@ -151,7 +203,7 @@ export default function LeadModal() {
                             </div>
                         ) : (
                             <div className="text-center relative z-10">
-                                <h3 className="text-xl md:text-2xl font-bold text-brown-dark mb-2">
+                                <h3 id="lead-modal-title" className="text-xl md:text-2xl font-bold text-brown-dark mb-2">
                                     השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!
                                 </h3>
 

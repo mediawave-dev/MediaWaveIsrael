@@ -1,8 +1,12 @@
+import { useRef } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { m } from 'framer-motion'
-import { Calendar, ArrowRight, User } from 'lucide-react'
+import { Calendar, ArrowRight, User, Clock } from 'lucide-react'
 import { HtmlContent } from '../HtmlContent'
+import { ReadingProgress } from '../ui/ReadingProgress'
+import { ShareRow } from '../ui/ShareRow'
 import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
+import { countWords, estimateReadingMinutes, formatReadingTime, getRelatedPosts } from '../../utils/blog'
 import SEO from '../SEO'
 
 interface BlogPost {
@@ -27,6 +31,7 @@ function formatDate(iso: string): string {
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
+  const articleRef = useRef<HTMLElement>(null)
   const found = staticBlogPosts.find((p) => p.slug === slug && p.published)
   const post: BlogPost | null = found
     ? {
@@ -46,8 +51,12 @@ export default function BlogPost() {
     return <Navigate to="/blog" replace />
   }
 
+  const readingMinutes = estimateReadingMinutes(post.content)
+  const relatedPosts = getRelatedPosts(post.slug, staticBlogPosts)
+
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
+      <ReadingProgress target={articleRef} />
       <SEO
         title={post.title}
         description={post.excerpt}
@@ -88,6 +97,8 @@ export default function BlogPost() {
         },
         inLanguage: 'he',
         keywords: post.tags.join(', '),
+        wordCount: countWords(post.content),
+        timeRequired: `PT${readingMinutes}M`,
       }) }} />
       {/* BreadcrumbList */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -99,7 +110,7 @@ export default function BlogPost() {
           { '@type': 'ListItem', position: 3, name: post.title, item: `https://mediawave.co.il/blog/${post.slug}` },
         ],
       }) }} />
-      <article className="container max-w-[700px]">
+      <article ref={articleRef} className="container max-w-[700px]">
         {/* Back link */}
         <m.div
           className="mb-8"
@@ -142,20 +153,24 @@ export default function BlogPost() {
             {post.title}
           </h1>
 
-          {/* Featured image */}
+          {/* Featured image — explicit dimensions so the text below never
+              shifts when the image arrives */}
           {post.featuredImage && (
-            <div className="rounded-xl overflow-hidden mb-6">
+            <div className="rounded-xl overflow-hidden mb-6 aspect-[2/1] bg-cream-dark">
               <img
                 src={post.featuredImage}
                 alt={post.title}
+                width={1200}
+                height={600}
                 loading="lazy"
-                className="w-full"
+                decoding="async"
+                className="w-full h-full object-cover"
               />
             </div>
           )}
 
           {/* Meta */}
-          <div className="flex items-center gap-5 text-sm text-brown-muted border-b border-cream-darker pb-6">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-brown-muted border-b border-cream-darker pb-6">
             <div className="flex items-center gap-1.5">
               <User size={14} />
               <span>{post.author}</span>
@@ -163,6 +178,10 @@ export default function BlogPost() {
             <div className="flex items-center gap-1.5">
               <Calendar size={14} />
               <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Clock size={14} />
+              <span>{formatReadingTime(readingMinutes)}</span>
             </div>
           </div>
         </m.header>
@@ -175,6 +194,60 @@ export default function BlogPost() {
         >
           <HtmlContent html={post.content} className="prose-hebrew" />
         </m.div>
+
+        {/* Share */}
+        <m.div
+          className="mt-12 pt-8 border-t border-cream-darker"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <ShareRow title={post.title} path={`/blog/${post.slug}`} />
+        </m.div>
+
+        {/* Related posts */}
+        {relatedPosts.length > 0 && (
+          <m.aside
+            aria-label="מאמרים נוספים"
+            className="mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35 }}
+          >
+            <h2 className="text-2xl font-headline text-brown-dark mb-6">
+              כדאי לקרוא גם
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {relatedPosts.map((related) => (
+                <Link
+                  key={related.slug}
+                  viewTransition
+                  to={`/blog/${related.slug}`}
+                  className="group block bg-white rounded-xl border border-cream-darker/60 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  {related.tags[0] && (
+                    <span className="inline-block bg-cream-dark text-brown-muted text-xs px-3 py-1 rounded-full mb-3">
+                      {related.tags[0]}
+                    </span>
+                  )}
+                  <h3 className="text-lg font-headline leading-snug text-brown-dark group-hover:text-sky-ink transition-colors duration-200 mb-3">
+                    {related.title}
+                  </h3>
+                  <div className="flex items-center gap-4 text-xs text-brown-muted">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={12} />
+                      <time dateTime={related.date}>{formatDate(related.date)}</time>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={12} />
+                      {formatReadingTime(estimateReadingMinutes(related.content))}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </m.aside>
+        )}
 
         {/* Footer CTA */}
         <m.div

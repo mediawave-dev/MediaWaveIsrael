@@ -30,6 +30,8 @@
 
 .prose-hebrew p {
   margin-bottom: 1.25rem;
+  /* Fewer single-word orphan lines in long Hebrew paragraphs */
+  text-wrap: pretty;
 }
 
 .prose-hebrew ul,

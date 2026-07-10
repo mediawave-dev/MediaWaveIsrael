@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { m } from 'framer-motion'
-import { Calendar, ArrowLeft, BookOpen } from 'lucide-react'
+import { Calendar, Clock, ArrowLeft, BookOpen } from 'lucide-react'
 import { blogPosts as staticBlogPosts } from '../../data/blog-posts'
+import { estimateReadingMinutes, formatReadingTime } from '../../utils/blog'
 import SEO from '../SEO'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
@@ -14,6 +15,7 @@ interface BlogPost {
   author: string
   tags: string[]
   publishedAt: string
+  readingMinutes: number
 }
 
 function formatDate(iso: string): string {
@@ -35,6 +37,7 @@ const posts: BlogPost[] = staticBlogPosts
     author: p.author,
     tags: p.tags,
     publishedAt: p.date,
+    readingMinutes: estimateReadingMinutes(p.content),
   }))
 
 export default function Blog() {
@@ -93,11 +96,14 @@ export default function Blog() {
                 >
                   {/* Featured image */}
                   {post.featuredImage && (
-                    <div className="aspect-[2/1] overflow-hidden">
+                    <div className="aspect-[2/1] overflow-hidden bg-cream-dark">
                       <img
                         src={post.featuredImage}
                         alt={post.title}
+                        width={1200}
+                        height={600}
                         loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
@@ -130,9 +136,15 @@ export default function Blog() {
 
                     {/* Meta row */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-brown-muted">
-                        <Calendar size={14} />
-                        <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                      <div className="flex items-center gap-4 text-sm text-brown-muted">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar size={14} />
+                          <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Clock size={14} />
+                          {formatReadingTime(post.readingMinutes)}
+                        </span>
                       </div>
 
                       <span className="inline-flex items-center gap-1.5 text-sky-ink font-semibold text-sm group-hover:gap-2.5 transition-all duration-200">

@@ -1,4 +1,5 @@
 import { m } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import SEO from '../SEO'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
@@ -8,7 +9,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <SEO
-        title="404 — העמוד לא נמצא"
+        title="העמוד לא נמצא (404)"
         description="העמוד שחיפשתם לא קיים או שהוסר. חזרו לדף הבית של MediaWave Israel."
         noindex
       />
@@ -25,8 +26,15 @@ export default function NotFound() {
             <div className="w-48 h-48 rounded-full bg-orange/10 blur-3xl" />
           </div>
 
-          {/* 404 number */}
-          <h1 className="relative text-[120px] md:text-[180px] font-headline text-orange/20 leading-none select-none">
+          {/* 404 number — the site's outline-stroke statement voice
+              (same identity as the giant word and the process numbers) */}
+          <h1
+            className="relative text-[120px] md:text-[180px] font-headline leading-none select-none"
+            style={{
+              color: 'transparent',
+              WebkitTextStroke: '2px rgba(56, 189, 248, 0.6)',
+            }}
+          >
             404
           </h1>
 
@@ -59,12 +67,12 @@ export default function NotFound() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <h2 className="text-3xl md:text-4xl font-headline text-brown-dark mb-4">
-            העמוד לא נמצא
+            הדף הזה נסחף עם הגל
           </h2>
           <p className="text-lg text-brown-light mb-8 leading-relaxed">
-            מצטערים, העמוד שחיפשתם לא קיים או שהוסר.
+            העמוד שחיפשתם לא קיים, או שהכתובת השתנתה.
             <br />
-            אולי תרצו לחזור לדף הבית?
+            בואו נחזיר אתכם למסלול.
           </p>
 
           {/* CTA Button */}
@@ -83,6 +91,19 @@ export default function NotFound() {
             </m.span>
             <span>חזרה לדף הבית</span>
           </m.a>
+
+          {/* Quick escapes */}
+          <nav aria-label="קישורים מהירים" className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+            <Link to="/blog" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
+              הבלוג
+            </Link>
+            <a href="/#services" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
+              השירותים שלנו
+            </a>
+            <a href="/#contact" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
+              יצירת קשר
+            </a>
+          </nav>
         </m.div>
 
         {/* Floating decorative dots */}

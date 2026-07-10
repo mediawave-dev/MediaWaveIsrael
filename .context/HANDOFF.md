@@ -3,6 +3,19 @@
 ## Goal
 מימוש DESIGN-UPGRADE "מעבדת הגלים" — ריצה אוטונומית מלאה (03-04/07/2026), branch: `design/wave-lab` (מעל feature/production-polish).
 
+## עדכון אחרון (10/07/2026) — סבב "ליגת על" אוטונומי, branch: `design/premium-league`
+בראנצ' חדש מעל design/wave-lab. **לא נדחף / לא מוזג — ממתין להחלטת נתי על דיפלוי.**
+- **חוויית מאמר פרימיום** (BlogPost): פס התקדמות קריאה scroll-linked (ReadingProgress.tsx, גרדיאנט sky→teal, נטען מימין ב-RTL, z-60 מעל ההדר), זמן קריאה בעברית תקינה (utils/blog.ts: formatReadingTime — "דקת קריאה"/"X דקות קריאה"), "כדאי לקרוא גם" (2 מאמרים לפי חפיפת תגיות, getRelatedPosts), שורת שיתוף (ShareRow.tsx: וואטסאפ / העתקת קישור עם אישור אינליין / Web Share API), wordCount+timeRequired ב-BlogPosting schema. זמן קריאה גם בכרטיסי /blog.
+- **ליטושי CSS רוחביים**: ::selection חזק יותר (0.35, בלי דריסת צבע — עובד גם על משטחים כהים), scrollbar-color ממותג (#BAE6FD, מתכהה ב-high-contrast וב-prefers-contrast), caret-color ב-inputs, רקע html גרדיאנט כהה (overscroll מציג נייבי/שחור במקום הבזק לבן), text-wrap:pretty בפרוזה.
+- **פוטר**: קישורים מהירים עברו מ-#ABABAB אפור-שטוח + JS hovers ל-.footer-link (frost-mist) — תיקון הפרת The-Mist-Rule; border-top/מפרידים ל-rgba frost.
+- **נגישות מודאלים**: תפריט מובייל + LeadModal — Escape סוגר, role=dialog+aria-modal, מלכודת Tab, פוקוס נכנס וחוזר (דפוס זהה ל-ChatWidget הקיים).
+- **404**: מספר בקו-מתאר sky (זהות ה-outline של האתר), קופי גלי ("הדף הזה נסחף עם הגל"), קישורים מהירים, תוקן em-dash בכותרת SEO.
+- **SEO**: og:image:alt + twitter:image:alt ב-SEO.tsx.
+- **חתימת קונסול** בפרודקשן בלבד (main.tsx, console.info ממותג + קישור וואטסאפ) — חריגה מודעת מכלל "no console.log".
+- **כלי חדש**: scripts/screenshot-audit.mjs (צילומי דסקטופ+מובייל של עמודי מפתח; פלט ל-screenshots-audit/ — ב-gitignore).
+- **שערים**: tsc נקי, eslint נקי על כל הקבצים שהשתנו, build+prerender מלא, design-verify, צילומי לפני/אחרי.
+- **לא נגעתי**: שינויי .gsd/* בעץ העבודה (קדם-קיימים, לא שלי), קבצי junk לא-מנוהלים בשורש.
+
 ## עדכון אחרון (06/07/2026) — impeccable + שילוב תוכן + דיפלוי חי
 - **דומיין פרודקשן: mediawave.co.il** (חי). ‏mediawaveisrael.com היה שגוי בכל ה-SEO — תוקן (canonical/OG/JSON-LD/sitemap/feed/og-image). פתוח: www.* מחזיר 522 (לחבר ב-CF Pages), Google Search Console.
 - **דיפלוי:** push ל-main דרך חשבון `mediawave-dev` בלבד (החשבון של נתי מקבל 403). ‏CF Pages בונה מ-git תוך ~3-4 דק'. אין wrangler מקומי מחובר.

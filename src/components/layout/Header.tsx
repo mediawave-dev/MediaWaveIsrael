@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
@@ -82,6 +82,52 @@ export default function Header() {
     }
   }, [isMobileMenuOpen])
 
+  // Menu dialog behavior: Escape closes, Tab stays inside the panel,
+  // focus lands on the close button and returns to the burger afterwards
+  const menuPanelRef = useRef<HTMLDivElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const burgerRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return
+
+    const burger = burgerRef.current
+    closeButtonRef.current?.focus()
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileMenuOpen(false)
+        return
+      }
+      if (e.key !== 'Tab' || !menuPanelRef.current) return
+
+      const focusables = menuPanelRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled])'
+      )
+      if (focusables.length === 0) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      const active = document.activeElement
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      } else if (!menuPanelRef.current.contains(active)) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      burger?.focus()
+    }
+  }, [isMobileMenuOpen])
+
   return (
     <>
       <header
@@ -133,10 +179,12 @@ export default function Header() {
 
             {/* Mobile Menu Button */}
             <button
+              ref={burgerRef}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden relative w-11 h-11 flex items-center justify-center"
               aria-label={isMobileMenuOpen ? 'סגור תפריט' : 'פתח תפריט'}
               aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <div className="relative w-6 h-5">
                 <m.span
@@ -189,6 +237,11 @@ export default function Header() {
 
             {/* Mobile Menu Panel - slides from right (RTL) */}
             <m.div
+              ref={menuPanelRef}
+              id="mobile-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-label="תפריט ניווט"
               className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-cream z-50 md:hidden shadow-lg"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -202,6 +255,7 @@ export default function Header() {
               <div className="relative h-full flex flex-col p-6 pt-20">
                 {/* Close button */}
                 <button
+                  ref={closeButtonRef}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="absolute top-5 left-5 w-11 h-11 flex items-center justify-center text-brown hover:text-sky-ink transition-colors"
                   aria-label="סגור תפריט"

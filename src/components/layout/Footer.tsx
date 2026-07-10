@@ -60,10 +60,7 @@ export default function Footer() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="text-sm transition-colors duration-200 w-fit mx-auto md:mx-0"
-                  style={{ color: '#ABABAB' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#7DD3FC')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#ABABAB')}
+                  className="footer-link text-sm w-fit mx-auto md:mx-0"
                 >
                   {link.label}
                 </a>
@@ -126,7 +123,7 @@ export default function Footer() {
         {/* ROW 2 — Bottom bar */}
         <div
           className="mt-10 pt-5 flex flex-col-reverse md:flex-row justify-between items-center gap-3"
-          style={{ borderTop: '1px solid #333' }}
+          style={{ borderTop: '1px solid rgba(248, 250, 252, 0.12)' }}
         >
           {/* Left side in RTL = copyright */}
           <p className="text-xs font-english text-cream/60">
@@ -143,7 +140,7 @@ export default function Footer() {
             >
               תקנון שימוש
             </a>
-            <span style={{ color: '#444' }}>|</span>
+            <span style={{ color: 'rgba(248, 250, 252, 0.25)' }} aria-hidden="true">|</span>
             <a
               href="/privacy"
               target="_blank"
@@ -152,7 +149,7 @@ export default function Footer() {
             >
               מדיניות פרטיות
             </a>
-            <span style={{ color: '#444' }}>|</span>
+            <span style={{ color: 'rgba(248, 250, 252, 0.25)' }} aria-hidden="true">|</span>
             <a
               href="/accessibility"
               target="_blank"
