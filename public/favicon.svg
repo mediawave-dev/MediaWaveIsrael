@@ -1,17 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="MediaWave">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="MediaWave">
   <defs>
-    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#38BDF8"/>
-      <stop offset="1" stop-color="#0369A1"/>
+    <linearGradient id="mwft" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
     </linearGradient>
   </defs>
-  <!-- Brand tile -->
-  <rect x="1" y="1" width="30" height="30" rx="7" fill="url(#tile)"/>
-  <!-- Three flowing wave crests from the MediaWave logo, thick->thin,
-       spaced 5u so they stay distinct at 16px; round caps for a soft ribbon -->
-  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 13 Q 16 6 26 8"  stroke-width="2.6"/>
-    <path d="M6 18 Q 16 11 26 13" stroke-width="2.3"/>
-    <path d="M6 23 Q 16 16 26 18" stroke-width="2"/>
+  <rect width="120" height="120" rx="27" fill="url(#mwft)"/>
+  <g transform="translate(2 30) scale(1.06)" fill="#FFFFFF">
+    <path d="M13.17 96.17 C34.15 75.86 75.56 52.68 110 69 C76.44 57.32 37.85 82.14 18.83 101.83 C15.06 105.6 9.4 99.94 13.17 96.17 Z"/>
+    <path d="M10.18 87.59 C24.23 60.74 61.63 37.18 104 53 C62.37 40.82 27.77 65.26 15.82 90.41 C13.94 94.17 8.3 91.35 10.18 87.59 Z"/>
+    <path d="M9.65 76.16 C20.37 47.41 49.64 21.57 96 37 C50.36 24.43 23.63 50.59 14.35 77.84 C13.23 80.98 8.52 79.3 9.65 76.16 Z"/>
+    <path d="M10.07 64.48 C18.6 33.84 45.67 7.87 84 23 C46.33 10.13 21.4 36.16 13.93 65.52 C13.25 68.09 9.38 67.06 10.07 64.48 Z"/>
   </g>
 </svg>

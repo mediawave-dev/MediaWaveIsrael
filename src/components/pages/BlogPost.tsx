@@ -80,7 +80,7 @@ export default function BlogPost() {
           '@type': 'Organization',
           name: 'MediaWave Israel',
           url: 'https://mediawave.co.il',
-          logo: { '@type': 'ImageObject', url: 'https://mediawave.co.il/images/logo.webp' },
+          logo: { '@type': 'ImageObject', url: 'https://mediawave.co.il/logo.png' },
         },
         mainEntityOfPage: {
           '@type': 'WebPage',

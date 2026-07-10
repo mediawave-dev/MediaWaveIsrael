@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediaWave — חבילת לוגו חדשה</title>
+<style>
+  :root{
+    --navy:#1E293B; --navy-deep:#0F172A; --frost:#F8FAFC; --line:#E2E8F0;
+    --sky:#7DD3FC; --sky-ink:#0369A1; --ink:#2A2A2A; --ink-soft:#64748B;
+  }
+  *{box-sizing:border-box; margin:0}
+  body{font-family:'Segoe UI', Heebo, sans-serif; background:var(--navy-deep); color:var(--frost); padding:48px clamp(16px,5vw,72px); line-height:1.7}
+  h1{font-size:clamp(1.8rem,4vw,3rem); margin-bottom:4px}
+  h1 span{color:var(--sky)}
+  .sub{color:#94A3B8; margin-bottom:48px; font-size:1.05rem}
+  h2{font-size:1.5rem; margin:56px 0 8px; display:flex; align-items:center; gap:12px}
+  h2::after{content:""; flex:1; height:1px; background:#334155}
+  .note{color:#94A3B8; font-size:.92rem; margin-bottom:20px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:20px}
+  .cell{border-radius:16px; padding:36px 28px; display:flex; flex-direction:column; align-items:center; gap:18px; min-height:200px; justify-content:center}
+  .cell.dark{background:var(--navy)}
+  .cell.light{background:var(--frost)}
+  .cell img{width:100%; max-width:420px; height:auto}
+  .cell .cap{font:12px ui-monospace,Consolas,monospace; direction:ltr}
+  .cell.dark .cap{color:#94A3B8}
+  .cell.light .cap{color:var(--ink-soft)}
+  .sizes{display:flex; align-items:flex-end; gap:28px; flex-wrap:wrap; background:var(--navy); border-radius:16px; padding:32px}
+  .sizes.light{background:var(--frost)}
+  .sizes figure{display:flex; flex-direction:column; align-items:center; gap:10px}
+  .sizes figcaption{font:11px ui-monospace,monospace; color:#94A3B8; direction:ltr}
+  .sizes.light figcaption{color:var(--ink-soft)}
+  .rules{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-top:20px}
+  .rule{background:var(--navy); border:1px solid #334155; border-radius:12px; padding:20px 22px; font-size:.95rem}
+  .rule b{color:var(--sky); display:block; margin-bottom:6px}
+  .rule.no b{color:#FCA5A5}
+  code{background:#334155; border-radius:6px; padding:1px 8px; font-size:.85em; direction:ltr; display:inline-block}
+  footer{margin-top:64px; color:#64748B; font-size:.85rem; border-top:1px solid #334155; padding-top:20px}
+</style>
+</head>
+<body>
+
+<h1>Media<span>Wave</span> — חבילת לוגו חדשה</h1>
+<p class="sub">שתי משפחות סימן · וקטור טהור (הכיתוב הומר לנתיבים — אפס תלות בפונטים) · פלטת ה-Sky של האתר · נגיש (title+desc) · מוכן לכל גודל</p>
+
+<h2>הקונספט הראשי — "The Crest"</h2>
+<p class="note">אבולוציה נאמנה של הלוגו המקורי: מניפת חמישה סרטי גל מחודדים (עבה בבסיס, דק בקצה) שנבנו מתמטית — כל סרט הוא נתיב סגור עם שתי שפות bezier, לא stroke אחיד. גרדיאנט זורם לאורך התנועה.</p>
+<div class="grid">
+  <div class="cell dark"><img src="./mediawave-crest-horizontal-dark.svg" alt=""><span class="cap">crest-horizontal-dark.svg</span></div>
+  <div class="cell light"><img src="./mediawave-crest-horizontal-light.svg" alt=""><span class="cap">crest-horizontal-light.svg</span></div>
+  <div class="cell dark"><img src="./mediawave-crest-horizontal-dark-animated.svg" alt=""><span class="cap">crest-horizontal-dark-animated.svg — נטען עם אנימציית כניסה</span></div>
+  <div class="cell dark"><img src="./mediawave-crest-horizontal-mono-white.svg" alt=""><span class="cap">crest-horizontal-mono-white.svg — לצילומים/וידאו</span></div>
+  <div class="cell light"><img src="./mediawave-crest-horizontal-mono-ink-light.svg" alt=""><span class="cap">crest-horizontal-mono-ink-light.svg — הדפסה בצבע אחד</span></div>
+  <div class="cell dark" style="max-width:100%"><img src="./mediawave-crest-stacked-dark.svg" alt="" style="max-width:260px"><span class="cap">crest-stacked-dark.svg — פרופיל/ריבוע</span></div>
+  <div class="cell light"><img src="./mediawave-crest-stacked-light.svg" alt="" style="max-width:260px"><span class="cap">crest-stacked-light.svg</span></div>
+  <div class="cell dark"><img src="./mediawave-crest-mark-dark.svg" alt="" style="max-width:170px"><span class="cap">crest-mark-dark.svg — הסימן לבדו</span></div>
+  <div class="cell light"><img src="./mediawave-crest-mark-light.svg" alt="" style="max-width:170px"><span class="cap">crest-mark-light.svg</span></div>
+</div>
+
+<h2>אייקונים — טסט ההישרדות</h2>
+<p class="note">ה-favicon הוא גרסה ייעודית: שלושה סרטים בלבד, בעובי כפול — כדי ששום דבר לא ייעלם ב-16px.</p>
+<div class="sizes">
+  <figure><img src="./mediawave-crest-apptile.svg" width="160" alt=""><figcaption>apptile @160</figcaption></figure>
+  <figure><img src="./mediawave-crest-apptile.svg" width="96" alt=""><figcaption>96</figcaption></figure>
+  <figure><img src="./mediawave-crest-favicon.svg" width="64" alt=""><figcaption>favicon @64</figcaption></figure>
+  <figure><img src="./mediawave-crest-favicon.svg" width="32" alt=""><figcaption>32</figcaption></figure>
+  <figure><img src="./mediawave-crest-favicon.svg" width="16" alt=""><figcaption>16</figcaption></figure>
+</div>
+
+<h2>קונספט חלופי — "The Swell"</h2>
+<p class="note">גל שובר: שלושה־ארבעה סרטים מתעגלים קדימה עם פסגה לבנה ושובלי תאוצה — יותר "תנועה", פחות "מניפה". אותה שפה, אנרגיה אחרת.</p>
+<div class="grid">
+  <div class="cell dark"><img src="./mediawave-swell-horizontal-dark.svg" alt=""><span class="cap">swell-horizontal-dark.svg</span></div>
+  <div class="cell light"><img src="./mediawave-swell-horizontal-light.svg" alt=""><span class="cap">swell-horizontal-light.svg</span></div>
+  <div class="cell dark"><img src="./mediawave-swell-mark-dark.svg" alt="" style="max-width:170px"><span class="cap">swell-mark-dark.svg</span></div>
+  <div class="cell light"><img src="./mediawave-swell-mark-light.svg" alt="" style="max-width:170px"><span class="cap">swell-mark-light.svg</span></div>
+</div>
+
+<h2>כיוון נועז — "The Curl"</h2>
+<p class="note">אם רוצים ריברנד אמיתי: שלושה סרטים נוזליים שמתפתלים סביב מרכז משותף לכדי גל שובר. הקריאוּת הכי טובה בגדלים קטנים מבין השלושה — אבל זו כבר סטייה מה-DNA של המניפה המקורית. סימן בלבד בשלב זה.</p>
+<div class="grid">
+  <div class="cell dark"><img src="./mediawave-curl-mark-dark.svg" alt="" style="max-width:190px"><span class="cap">curl-mark-dark.svg</span></div>
+  <div class="cell light"><img src="./mediawave-curl-mark-light.svg" alt="" style="max-width:190px"><span class="cap">curl-mark-light.svg</span></div>
+</div>
+
+<h2>הנחיות שימוש</h2>
+<div class="rules">
+  <div class="rule"><b>מרווח נשימה</b>סביב הלוגו שומרים ריק בגובה האות M לפחות, מכל צד.</div>
+  <div class="rule"><b>גודל מינימלי</b>לוקאפ אופקי: רוחב 140px ומעלה. מתחת לזה עוברים ל-mark בלבד. favicon: הקובץ הייעודי בלבד.</div>
+  <div class="rule"><b>רקעים</b>על כהה: קבצי dark (כיתוב frost + sky-pastel). על בהיר: קבצי light (כיתוב ink + sky-ink). אין להניח dark על בהיר ולהפך.</div>
+  <div class="rule"><b>צבע אחד</b>להדפסה/חריטה: mono-white או mono-ink בלבד — בלי להמציא צבעים.</div>
+  <div class="rule no"><b>לא עושים</b>לא מותחים, לא מסובבים, לא מוסיפים צל, לא משנים את יחס הסימן/כיתוב, לא צובעים מחוץ למשפחת ה-sky.</div>
+  <div class="rule"><b>ייצוא PNG</b><code>npx svgexport in.svg out.png 2x</code> או ב-Figma/Inkscape. ל-favicon.ico: לייצא 16/32/48 ולארוז.</div>
+</div>
+
+<footer>MediaWave brand package · SVG בלבד, ללא פונטים משובצים (הכיתוב = נתיבים) · נוצר ביולי 2026</footer>
+</body>
+</html>

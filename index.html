@@ -42,12 +42,12 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://mediawave.co.il/" />
 
-    <!-- Favicons (?v=2 busts the browser's sticky favicon cache after the
-         waves redesign — bump this whenever the icon art changes) -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=2" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=2" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
+    <!-- Favicons (?v=3 busts the browser's sticky favicon cache after the
+         Swell logo redesign — bump this whenever the icon art changes) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=3" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=3" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- RSS Feed -->
@@ -57,8 +57,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Preload logo for faster LCP (this is the LCP element) -->
-    <link rel="preload" href="/images/logo-white.webp" as="image" type="image/webp" fetchpriority="high" />
+    <!-- Preload logo for faster LCP (this is the LCP element) — inline SVG lockup -->
+    <link rel="preload" href="/logo-lockup-white.svg" as="image" type="image/svg+xml" fetchpriority="high" />
 
     <!-- Preload hero poster image -->
     <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
@@ -108,7 +108,7 @@
       "@type": "Organization",
       "name": "MediaWave Israel",
       "url": "https://mediawave.co.il",
-      "logo": "https://mediawave.co.il/og-image.png",
+      "logo": "https://mediawave.co.il/logo.png",
       "email": "mediawaveisrael@gmail.com",
       "contactPoint": {
         "@type": "ContactPoint",
@@ -146,18 +146,26 @@
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     </div>
 
-    <!-- Static header for instant LCP - dimensions match React header exactly -->
+    <!-- Static header for instant LCP - dimensions match React header exactly
+         (h-10 mobile / h-14 desktop, same as Logo variant="header" not scrolled) -->
     <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;" aria-hidden="true">
       <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
         <img
-          src="/images/logo-white.webp"
+          src="/logo-lockup-white.svg"
           alt=""
-          width="500"
-          height="500"
+          width="742"
+          height="168"
           fetchpriority="high"
           decoding="async"
-          style="height:8rem;width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.5));"
+          class="static-logo"
+          style="width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.4));"
         />
+        <style>
+          .static-logo { height: 2.5rem; }
+          @media (min-width: 640px) { .static-logo { height: 2.75rem; } }
+          @media (min-width: 768px) { .static-logo { height: 3.25rem; } }
+          @media (min-width: 1024px) { .static-logo { height: 3.5rem; } }
+        </style>
       </div>
     </header>
 

@@ -1,101 +1,61 @@
 /**
- * Generate OG image (1200x630 PNG) using Puppeteer
+ * Generate the social share image (og-image.png, 1200x630) with Puppeteer.
+ * Premium navy surface + the white Swell lockup + Hebrew tagline, on the
+ * current sky palette (replaces the old warm-watercolor version).
  * Run: node scripts/generate-og-image.mjs
  */
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { readFileSync } from 'fs'
 import puppeteer from 'puppeteer'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const OUTPUT = resolve(__dirname, '..', 'public', 'og-image.png')
+const PUBLIC = resolve(__dirname, '..', 'public')
+const OUTPUT = resolve(PUBLIC, 'og-image.png')
+const LOCKUP = readFileSync(resolve(PUBLIC, 'logo-lockup-white.svg'), 'utf8')
 
 const HTML = `<!DOCTYPE html>
-<html>
+<html dir="rtl">
 <head>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    width: 1200px;
-    height: 630px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #8B6F47 0%, #D4A574 50%, #C4956A 100%);
-    font-family: 'Segoe UI', Arial, sans-serif;
-    direction: rtl;
-    overflow: hidden;
-    position: relative;
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: 'Heebo', 'Segoe UI', sans-serif; direction: rtl;
+    background:
+      radial-gradient(60% 90% at 22% 18%, rgba(56,189,248,0.20) 0%, rgba(56,189,248,0) 60%),
+      radial-gradient(50% 80% at 82% 88%, rgba(103,232,249,0.16) 0%, rgba(103,232,249,0) 62%),
+      linear-gradient(135deg, #0F172A 0%, #1E293B 55%, #0F1F33 100%);
   }
-  /* Decorative wave */
-  .wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    opacity: 0.15;
-  }
-  .wave svg { width: 100%; height: 100%; }
-  /* Decorative circles */
-  .circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.1);
-  }
-  .circle-1 { width: 300px; height: 300px; top: -80px; right: -60px; }
-  .circle-2 { width: 200px; height: 200px; bottom: -40px; left: -30px; }
-  .circle-3 { width: 150px; height: 150px; top: 50%; left: 15%; border-color: rgba(255,255,255,0.06); }
-  /* Content */
-  .content {
-    text-align: center;
-    z-index: 1;
-    padding: 0 80px;
-  }
-  .brand {
-    font-size: 72px;
-    font-weight: 700;
-    color: #FFFFFF;
-    letter-spacing: 2px;
-    margin-bottom: 16px;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  }
+  /* soft ambient wave band across the base */
+  .waves { position: absolute; left: 0; right: 0; bottom: 0; height: 240px; opacity: 0.5; }
+  .waves svg { width: 100%; height: 100%; }
+  .lockup { width: 760px; z-index: 2; filter: drop-shadow(0 10px 40px rgba(0,0,0,0.35)); }
+  .lockup svg { width: 100%; height: auto; display: block; }
   .tagline {
-    font-size: 32px;
-    color: rgba(255,255,255,0.9);
-    font-weight: 400;
-    margin-bottom: 32px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
-  }
-  .divider {
-    width: 80px;
-    height: 3px;
-    background: rgba(255,255,255,0.5);
-    margin: 0 auto 28px;
-    border-radius: 2px;
+    z-index: 2; margin-top: 40px; font-size: 40px; font-weight: 500;
+    color: #BAE6FD; letter-spacing: 0.5px;
   }
   .url {
-    font-size: 22px;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 1px;
+    z-index: 2; margin-top: 22px; font-size: 24px; font-weight: 400;
+    color: rgba(248,250,252,0.62); font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;
   }
+  .topbar { position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, #38BDF8, #7DD3FC, #67E8F9); }
 </style>
 </head>
 <body>
-  <div class="circle circle-1"></div>
-  <div class="circle circle-2"></div>
-  <div class="circle circle-3"></div>
-  <div class="wave">
-    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,60 C200,100 400,20 600,60 C800,100 1000,20 1200,60 L1200,120 L0,120Z" fill="rgba(255,255,255,0.3)"/>
-      <path d="M0,80 C300,40 500,100 800,60 C1000,30 1100,80 1200,70 L1200,120 L0,120Z" fill="rgba(255,255,255,0.2)"/>
+  <div class="topbar"></div>
+  <div class="waves">
+    <svg viewBox="0 0 1200 240" preserveAspectRatio="none">
+      <path d="M0,150 C220,90 420,190 640,140 C860,92 1010,170 1200,120 L1200,240 L0,240Z" fill="rgba(56,189,248,0.10)"/>
+      <path d="M0,180 C260,130 480,210 760,160 C980,122 1090,185 1200,158 L1200,240 L0,240Z" fill="rgba(125,211,252,0.10)"/>
     </svg>
   </div>
-  <div class="content">
-    <div class="brand">MediaWave Israel</div>
-    <div class="tagline">פיתוח אתרים מותאם אישית</div>
-    <div class="divider"></div>
-    <div class="url">mediawave.co.il</div>
-  </div>
+  <div class="lockup">${LOCKUP}</div>
+  <div class="tagline">פיתוח אתרים שמביא לקוחות</div>
+  <div class="url">mediawave.co.il</div>
 </body>
 </html>`
 
@@ -103,11 +63,11 @@ async function generate() {
   console.log('Generating OG image (1200x630)...')
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
   const page = await browser.newPage()
-  await page.setViewport({ width: 1200, height: 630 })
-  await page.setContent(HTML, { waitUntil: 'networkidle0' })
+  await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 })
+  await page.setContent(HTML, { waitUntil: 'load' })
   await page.screenshot({ path: OUTPUT, type: 'png' })
   await browser.close()
   console.log(`  → ${OUTPUT}`)
 }
 
-generate().catch(err => { console.error(err); process.exit(1) })
+generate().catch((err) => { console.error(err); process.exit(1) })

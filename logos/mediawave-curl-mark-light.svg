@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="mw-mark" role="img" aria-labelledby="mw-t-l mw-d-l">
+  <title id="mw-t-l">MediaWave</title>
+  <desc id="mw-d-l">Three tapered liquid ribbons sweeping from one origin and curling into a breaking wave crest.</desc>
+  <defs>
+    <linearGradient id="mwA-l" gradientUnits="userSpaceOnUse" x1="16.81" y1="66.81" x2="89.75" y2="17.56"><stop offset="0" stop-color="#075985"/><stop offset="1" stop-color="#0369A1"/></linearGradient>
+    <linearGradient id="mwB-l" gradientUnits="userSpaceOnUse" x1="39.05" y1="67.37" x2="65.64" y2="26.59"><stop offset="0" stop-color="#0369A1"/><stop offset="1" stop-color="#0284C7"/></linearGradient>
+    <linearGradient id="mwC-l" gradientUnits="userSpaceOnUse" x1="53.33" y1="62.8" x2="61.47" y2="38.84"><stop offset="0" stop-color="#0284C7"/><stop offset="1" stop-color="#0369A1"/></linearGradient>
+  </defs>
+  <g>
+    <path class="mw-ribbon mw-ribbon--a" fill="url(#mwA-l)" d="M8 70.31C13.84 83.26 25.15 94.57 37.57 100.17C49.99 105.49 65 106.11 77.3 102.02C89.41 97.76 100.16 88.64 106.11 77.85C111.85 67.1 113.46 54 110.67 42.65C107.78 31.46 100.59 21.42 91.34 15.32Q87.29 15.81 88.17 19.8C96.06 25.83 101.18 34.24 102.85 44.32C104.61 54.24 102.69 63.82 96.98 72.48C91.49 81.1 83.65 86.79 73.44 89.31C63.42 91.99 53.88 90.86 44.54 85.7C35.2 80.82 29.01 73.59 25.61 63.3C20.94 51.56 3.33 58.57 8 70.31Z"/>
+    <path class="mw-ribbon mw-ribbon--b" fill="url(#mwB-l)" d="M33.88 71.29C39.97 78.58 49.56 83.59 58.55 84.4C67.48 84.99 77.01 81.73 83.39 76.12C89.59 70.42 93.5 61.91 93.8 53.92C93.95 46.01 90.72 37.93 85.47 32.57C80.19 27.34 72.72 24.36 65.67 24.47Q63.31 26.55 65.61 28.71C71.71 29.02 77.12 31.66 81.19 36.53C85.27 41.26 87.08 47 86.32 53.44C85.7 59.81 82.79 65.07 77.46 69.03C72.3 73.08 66.49 74.58 59.79 73.41C53.14 72.45 48.06 69.27 44.22 63.46C39 56.57 28.66 64.4 33.88 71.29Z"/>
+    <path class="mw-ribbon mw-ribbon--c" fill="url(#mwC-l)" d="M50.79 66.2C55.2 69.14 61.22 70.32 66.07 69.35C70.87 68.26 75.46 64.98 77.9 61.09C80.22 57.16 80.92 52.04 79.84 47.92C78.68 43.86 75.71 40.18 72.25 38.29C68.78 36.48 64.48 36.15 61.01 37.28Q59.76 39.34 61.92 40.39C64.78 39.68 67.56 40.14 70.14 41.88C72.72 43.53 74.31 45.9 74.82 49.08C75.42 52.21 74.78 55.01 72.73 57.66C70.81 60.35 68.3 61.82 64.83 62.16C61.42 62.63 58.59 61.8 55.86 59.41C51.34 56.02 46.26 62.82 50.79 66.2Z"/>
+  </g>
+</svg>

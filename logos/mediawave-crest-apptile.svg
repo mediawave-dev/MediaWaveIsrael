@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="mwa-t mwa-d">
+  <title id="mwa-t">MediaWave app icon</title>
+  <desc id="mwa-d">White wave ribbons on a sky gradient tile</desc>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="120" height="120" rx="27" fill="url(#tile)"/>
+  <g transform="translate(10 8) scale(0.84)"><g fill="#FFFFFF">
+      <path class="rb rb0" d="M12.65 95.58 C44.23 98.03 80.96 88.09 108.93 67.3 C110.36 66.28 108.5 63.68 107.07 64.7 C79.04 83.91 43.77 91.97 13.35 88.42 C9.41 88.04 8.71 95.2 12.65 95.58 Z"/>
+      <path class="rb rb1" d="M13.89 87.1 C43.43 87.6 78.03 73.75 103.94 51.11 C105.15 50.08 103.28 47.86 102.06 48.89 C75.97 70.25 42.57 82.4 14.11 80.9 C10.7 80.78 10.49 86.98 13.89 87.1 Z"/>
+      <path class="rb rb2" d="M16.21 78.69 C42.67 76.21 73.08 58.42 94.92 35.92 C95.93 34.91 94.09 33.07 93.08 34.08 C70.92 55.58 41.33 71.79 15.79 73.31 C12.83 73.54 13.25 78.92 16.21 78.69 Z"/>
+      <path class="rb rb3" d="M19.51 70.24 C41.85 64.78 66.12 45.07 80.94 23.67 C81.67 22.64 79.8 21.3 79.06 22.33 C63.88 42.93 40.15 61.22 18.49 65.76 C16.02 66.32 17.04 70.8 19.51 70.24 Z"/>
+      <path class="rb rb4" d="M23.74 61.8 C41.03 54.34 57.14 32.69 64.9 15.43 C65.37 14.43 63.56 13.58 63.1 14.57 C54.86 31.31 38.97 51.66 22.26 58.2 C20.27 59.01 21.76 62.62 23.74 61.8 Z"/>
+    </g></g>
+</svg>

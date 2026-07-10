@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="MediaWave">
+  <defs>
+    <linearGradient id="ftile" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="27" fill="url(#ftile)"/>
+  <g transform="translate(11 6) scale(0.84)" fill="#FFFFFF">
+    <path d="M12.2 100.24 C44.52 101.97 82.22 90.8 110.14 68.99 C113.43 66.64 109.16 60.65 105.86 63.01 C77.78 81.2 43.48 88.03 13.8 83.76 C4.73 82.88 3.14 99.36 12.2 100.24 Z"/>
+    <path d="M16.48 82.19 C43.55 79.08 74.49 60.28 96.11 37.11 C98.44 34.79 94.21 30.56 91.89 32.89 C69.51 53.72 40.45 68.92 15.52 69.81 C8.71 70.33 9.67 82.72 16.48 82.19 Z"/>
+    <path d="M24.71 64.15 C42.36 56.07 58.62 33.59 66.08 15.98 C67.16 13.69 63 11.73 61.92 14.02 C53.38 30.41 37.64 49.93 21.29 55.85 C16.73 57.73 20.15 66.03 24.71 64.15 Z"/>
+  </g>
+</svg>

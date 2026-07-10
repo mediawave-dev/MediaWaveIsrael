@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="mw-title-l mw-desc-l">
+  <title id="mw-title-l">MediaWave wave mark</title>
+  <desc id="mw-desc-l">Four tapered wave ribbons sweep from lower left to upper right, lightening from deep ink to pastel sky at the crest spray, with fine trailing motion lines.</desc>
+  <defs>
+    <linearGradient id="mw-swell-l" gradientUnits="userSpaceOnUse" x1="16" y1="99" x2="110" y2="69">
+      <stop offset="0" stop-color="#075985"/>
+      <stop offset="1" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <g class="mw-trails" fill="none" stroke="#0369A1" stroke-opacity="0.4" stroke-width="1.6" stroke-linecap="round">
+    <path class="mw-trail mw-trail-a" d="M54.66 62.79 C67.22 57.66 81.26 55.32 95.62 57.9"/>
+    <path class="mw-trail mw-trail-b" d="M42.29 49.59 C53.69 43.14 67.58 39.69 83.47 41.44"/>
+  </g>
+  <g class="mw-r0"><path d="M13.17 96.17 C34.15 75.86 75.56 52.68 110 69 C76.44 57.32 37.85 82.14 18.83 101.83 C15.06 105.6 9.4 99.94 13.17 96.17 Z" fill="url(#mw-swell-l)"/></g>
+  <g class="mw-r1"><path d="M10.18 87.59 C24.23 60.74 61.63 37.18 104 53 C62.37 40.82 27.77 65.26 15.82 90.41 C13.94 94.17 8.3 91.35 10.18 87.59 Z" fill="#075985"/></g>
+  <g class="mw-r2"><path d="M9.65 76.16 C20.37 47.41 49.64 21.57 96 37 C50.36 24.43 23.63 50.59 14.35 77.84 C13.23 80.98 8.52 79.3 9.65 76.16 Z" fill="#0284C7"/></g>
+  <g class="mw-r3">
+    <path d="M10.07 64.48 C18.6 33.84 45.67 7.87 84 23 C46.33 10.13 21.4 36.16 13.93 65.52 C13.25 68.09 9.38 67.06 10.07 64.48 Z" fill="#0369A1"/>
+    </g>
+</svg>
