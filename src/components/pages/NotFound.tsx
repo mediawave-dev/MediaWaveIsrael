@@ -1,6 +1,7 @@
 import { m } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SEO from '../SEO'
+import { SwellMark } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 export default function NotFound() {
@@ -14,12 +15,22 @@ export default function NotFound() {
         noindex
       />
       <div className="text-center max-w-md">
+        {/* Brand mark — the wave the lost page "drifted with" */}
+        <m.div
+          className="flex justify-center mb-6"
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <SwellMark tone="onLight" className="w-20 h-20 md:w-24 md:h-24" title="MediaWave" />
+        </m.div>
+
         {/* Animated 404 */}
         <m.div
           className="relative mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
         >
           {/* Watercolor blob background */}
           <div className="absolute inset-0 flex items-center justify-center">

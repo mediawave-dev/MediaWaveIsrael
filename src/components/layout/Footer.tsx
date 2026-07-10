@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Logo } from '../ui'
+import { Logo, SwellMark } from '../ui'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { footerLinks } from '../../config/navigation'
 
@@ -30,6 +30,15 @@ export default function Footer() {
 
   return (
     <footer className="grain-surface relative bg-[#1a1a1a] overflow-hidden">
+      {/* Oversized wave watermark — a quiet brand flourish bleeding off the
+          bottom-left corner (behind content, decorative only) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute -bottom-16 -left-16 w-90 md:w-115 opacity-[0.06] rotate-[-8deg]"
+      >
+        <SwellMark tone="onDark" title="" className="w-full h-auto" />
+      </div>
+
       {/* Main footer content */}
       <div className="relative max-w-[1100px] mx-auto px-6 pt-14 pb-5 md:pt-16">
         {/* ROW 1 — 3 columns on desktop, stacked on mobile */}

@@ -137,13 +137,32 @@
 
   </head>
   <body>
-    <!-- Page loading indicator - uses pointer-events:none to avoid CLS -->
+    <!-- Page loading indicator - the MediaWave mark (brand moment on first paint) -->
     <div id="page-loader" style="position:fixed;inset:0;background:#F8FAFC;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="animation:spin 1s linear infinite;">
-        <circle cx="12" cy="12" r="10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
-        <path d="M12 2a10 10 0 0 1 10 10" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
+      <svg id="loader-mark" width="76" height="76" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="MediaWave נטען">
+        <defs>
+          <linearGradient id="loader-tile" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
+          </linearGradient>
+        </defs>
+        <rect width="120" height="120" rx="27" fill="url(#loader-tile)"/>
+        <g transform="translate(2 30) scale(1.06)" fill="#FFFFFF">
+          <path class="lw" d="M13.17 96.17 C34.15 75.86 75.56 52.68 110 69 C76.44 57.32 37.85 82.14 18.83 101.83 C15.06 105.6 9.4 99.94 13.17 96.17 Z"/>
+          <path class="lw" d="M10.18 87.59 C24.23 60.74 61.63 37.18 104 53 C62.37 40.82 27.77 65.26 15.82 90.41 C13.94 94.17 8.3 91.35 10.18 87.59 Z"/>
+          <path class="lw" d="M9.65 76.16 C20.37 47.41 49.64 21.57 96 37 C50.36 24.43 23.63 50.59 14.35 77.84 C13.23 80.98 8.52 79.3 9.65 76.16 Z"/>
+          <path class="lw" d="M10.07 64.48 C18.6 33.84 45.67 7.87 84 23 C46.33 10.13 21.4 36.16 13.93 65.52 C13.25 68.09 9.38 67.06 10.07 64.48 Z"/>
+        </g>
       </svg>
-      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+      <style>
+        #loader-mark { animation: lw-breathe 2.2s ease-in-out infinite; }
+        @keyframes lw-breathe { 0%,100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.06); opacity: .82 } }
+        @media (prefers-reduced-motion: no-preference) {
+          .lw { opacity: 0; animation: lw-rise 1.6s ease-in-out infinite; }
+          .lw:nth-child(1){ animation-delay: 0s } .lw:nth-child(2){ animation-delay: .12s }
+          .lw:nth-child(3){ animation-delay: .24s } .lw:nth-child(4){ animation-delay: .36s }
+          @keyframes lw-rise { 0% { opacity:0; transform: translateY(6px) } 30%,70% { opacity:1; transform: translateY(0) } 100% { opacity:0; transform: translateY(-4px) } }
+        }
+      </style>
     </div>
 
     <!-- Static header for instant LCP - dimensions match React header exactly

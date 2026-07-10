@@ -30,7 +30,9 @@ const waveOff = Math.round(data.wordmark.waveOffsetX * 100) / 100 // 281.5
 const tagAdv = data.tagline.adv // 1413
 
 const markScale = 1.5
-const wmX = 178
+// wmX = wordmark start x. Mark's rightmost point is ~153 in lockup space, so
+// this sets the mark→wordmark gap (was 178 = 25u, too airy).
+const wmX = 164
 const waveX = Math.round((wmX + waveOff) * 100) / 100 // 459.5
 const tagScale = Math.round(((fullAdv * 0.88) / tagAdv) * 10000) / 10000
 const tagW = Math.round(tagAdv * tagScale * 100) / 100

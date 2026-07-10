@@ -1,6 +1,6 @@
 export { Input, Textarea } from './Input'
 export { Button } from './Button'
-export { default as Logo, LogoIcon, LogoText } from './Logo'
+export { default as Logo, LogoIcon, LogoText, SwellMark } from './Logo'
 export { default as AccessibilityWidget } from './AccessibilityWidget'
 export { LottieIcon } from './LottieIcon'
 export { WaveDivider } from './WaveDivider'
