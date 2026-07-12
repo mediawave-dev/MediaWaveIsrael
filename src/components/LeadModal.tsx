@@ -16,6 +16,9 @@ export default function LeadModal() {
     const [success, setSuccess] = useState(false)
     const [waHandoff, setWaHandoff] = useState(false)
     const [errorMsg, setErrorMsg] = useState('')
+    // Validation errors live on the failing field (aria-invalid + aria-describedby
+    // via Input); the form-level alert is only for send failures
+    const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string }>({})
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -97,14 +100,16 @@ export default function LeadModal() {
 
         // Validation
         if (!isValidName(formData.name)) {
-            setErrorMsg(validationErrors.name)
+            setFieldErrors({ name: validationErrors.name })
             return
         }
 
         if (!isValidPhone(formData.phone)) {
-            setErrorMsg(validationErrors.phone)
+            setFieldErrors({ phone: validationErrors.phone })
             return
         }
+
+        setFieldErrors({})
 
         // No endpoint configured — hand the lead off to WhatsApp with the details
         // prefilled. Never show a fake "received" state for data that went nowhere.
@@ -222,8 +227,12 @@ export default function LeadModal() {
                                         label="שם מלא"
                                         type="text"
                                         required
+                                        error={fieldErrors.name}
                                         value={formData.name}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                                        onChange={(e) => {
+                                            setFieldErrors({})
+                                            setFormData(prev => ({ ...prev, name: e.target.value }))
+                                        }}
                                         icon={<User size={18} />}
                                         className="bg-cream-dark border-cream-darker focus:border-orange text-right"
                                     />
@@ -232,8 +241,12 @@ export default function LeadModal() {
                                         label="טלפון"
                                         type="tel"
                                         required
+                                        error={fieldErrors.phone}
                                         value={formData.phone}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                                        onChange={(e) => {
+                                            setFieldErrors({})
+                                            setFormData(prev => ({ ...prev, phone: e.target.value }))
+                                        }}
                                         className="bg-cream-dark border-cream-darker focus:border-orange text-right"
                                         icon={<Phone size={18} />}
                                         dir="ltr" // Keep numbers LTR

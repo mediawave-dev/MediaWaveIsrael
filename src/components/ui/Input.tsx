@@ -59,6 +59,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
           id={inputId}
           aria-required={props.required || undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${inputId}-error` : undefined}
           className={`
             peer w-full py-4 pt-6 bg-white border-2 rounded-2xl
             transition-[border-color] duration-300
@@ -129,6 +131,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         <AnimatePresence>
           {error && (
             <m.p
+              id={`${inputId}-error`}
               role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}
@@ -186,6 +189,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
           id={textareaId}
           aria-required={props.required || undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${textareaId}-error` : undefined}
           className={`
             peer w-full px-5 py-4 pt-6 bg-white border-2 rounded-2xl
             transition-[border-color] duration-300 resize-none
@@ -254,6 +259,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         <AnimatePresence>
           {error && (
             <m.p
+              id={`${textareaId}-error`}
               role="alert"
               className="text-red-500 text-sm mt-1 mr-2"
               initial={{ opacity: 0, y: -5 }}

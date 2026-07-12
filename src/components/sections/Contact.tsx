@@ -19,6 +19,9 @@ export default function Contact() {
   })
   const [successMsg, setSuccessMsg] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+  // Validation errors live on the failing field (aria-invalid + aria-describedby
+  // via Input) — the form-level alert is only for send failures
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; message?: string }>({})
 
   const contactEmail = SITE_CONTACT.email
   const contactPhone = SITE_CONTACT.phone
@@ -34,19 +37,21 @@ export default function Contact() {
 
     // Validation
     if (!isValidName(formData.name)) {
-      setErrorMsg(validationErrors.name)
+      setFieldErrors({ name: validationErrors.name })
       return
     }
 
     if (!isValidEmail(formData.email)) {
-      setErrorMsg(validationErrors.email)
+      setFieldErrors({ email: validationErrors.email })
       return
     }
 
     if (!isValidMessage(formData.message)) {
-      setErrorMsg(validationErrors.message)
+      setFieldErrors({ message: validationErrors.message })
       return
     }
+
+    setFieldErrors({})
 
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
 
@@ -151,9 +156,11 @@ export default function Contact() {
                   type="text"
                   name="name"
                   required
+                  error={fieldErrors.name}
                   value={formData.name}
                   onChange={(e) => {
                     setErrorMsg('')
+                    setFieldErrors({})
                     setFormData((prev) => ({ ...prev, name: e.target.value }))
                   }}
                 />
@@ -165,9 +172,11 @@ export default function Contact() {
                   required
                   dir="ltr"
                   className="text-left"
+                  error={fieldErrors.email}
                   value={formData.email}
                   onChange={(e) => {
                     setErrorMsg('')
+                    setFieldErrors({})
                     setFormData((prev) => ({ ...prev, email: e.target.value }))
                   }}
                 />
@@ -177,9 +186,11 @@ export default function Contact() {
                   name="message"
                   rows={5}
                   required
+                  error={fieldErrors.message}
                   value={formData.message}
                   onChange={(e) => {
                     setErrorMsg('')
+                    setFieldErrors({})
                     setFormData((prev) => ({ ...prev, message: e.target.value }))
                   }}
                 />
