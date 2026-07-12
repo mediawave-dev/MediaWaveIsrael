@@ -8,6 +8,9 @@ export interface ServicePageData {
   heroSubtitle: string
   lottieAnimation?: string
   lottieSize?: number
+  /** Lottie renderer override — 'canvas' for vector-heavy animations whose SVG
+      renderer thrashes style/layout every frame (measured: 25-54s TBT) */
+  lottieRenderer?: 'svg' | 'canvas'
   /** Static SVG/PNG icon (takes precedence over lottieAnimation when set) */
   imageIcon?: string
   tags?: string[]
@@ -260,6 +263,10 @@ export const servicesData: ServicePageData[] = [
       'עריכת וידאו מקצועית והמרת קלטות VHS ומדיה ישנה לפורמט דיגיטלי. שימור זיכרונות ועריכת חומרי גלם לסרטונים מוכנים.',
     heroSubtitle: 'עריכה מקצועית של סרטונים והמרת קלטות ומדיה ישנה לפורמט דיגיטלי',
     lottieAnimation: '/animations/10%20design/Web%20Design%20Illustration.json',
+    // This animation has 356 vector shape paths across 12 precomps at 60fps —
+    // the SVG renderer spent 32s in Style&Layout on this page (TBT 25-54s,
+    // Lighthouse perf 37-41). Canvas draws the same artwork with zero DOM cost.
+    lottieRenderer: 'canvas',
     lottieSize: 180,
     sections: [
       {

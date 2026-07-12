@@ -32,6 +32,16 @@ export default function ServicePage() {
     })),
   }
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+      { '@type': 'ListItem', position: 2, name: 'שירותים', item: 'https://mediawave.co.il/#services' },
+      { '@type': 'ListItem', position: 3, name: service.title, item: `https://mediawave.co.il/services/${service.slug}` },
+    ],
+  }
+
   const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -62,6 +72,10 @@ export default function ServicePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       {/* Hero */}
@@ -129,6 +143,7 @@ export default function ServicePage() {
                 animationPath={service.lottieAnimation}
                 size={heroIconSize}
                 loop
+                renderer={service.lottieRenderer}
               />
             </m.div>
           ) : null}

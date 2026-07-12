@@ -1,6 +1,10 @@
 import Lottie from 'lottie-react'
 import { useRef, useState, useEffect } from 'react'
 import type { LottieRefCurrentProps } from 'lottie-react'
+// lottie-react DROPS its renderer prop (destructured and discarded), so the
+// canvas path drives lottie-web directly — same module lottie-react bundles,
+// zero added download.
+import lottie, { type AnimationItem } from 'lottie-web'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
 interface LottieIconProps {
@@ -18,6 +22,9 @@ interface LottieIconProps {
   loop?: boolean
   /** Animation speed (1 = normal) */
   speed?: number
+  /** 'canvas' for vector-heavy animations — the default SVG renderer re-lays-out
+      every shape node per frame, which measured 25-54s TBT on one 356-path file */
+  renderer?: 'svg' | 'canvas'
 }
 
 /**
@@ -32,9 +39,15 @@ export function LottieIcon({
   playOnHover = true,
   loop = true,
   speed = 1,
+  renderer = 'svg',
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const canvasContainerRef = useRef<HTMLDivElement>(null)
+  const canvasAnimRef = useRef<AnimationItem | null>(null)
+
+  // Both renderers expose the same control surface for our needs
+  const getAnim = () => lottieRef.current ?? canvasAnimRef.current
   const [loadedData, setLoadedData] = useState<object | null>(animationData || null)
   const [isLoading, setIsLoading] = useState(!animationData && !!animationPath)
   const [error, setError] = useState<string | null>(null)
@@ -89,11 +102,33 @@ export function LottieIcon({
       })
   }, [animationPath, animationData, isVisible])
 
+  // Canvas renderer path — lottie-web drives a <canvas> directly (no per-frame
+  // SVG DOM layout; measured 25-54s TBT on one 356-path animation)
+  useEffect(() => {
+    if (renderer !== 'canvas' || !loadedData || !canvasContainerRef.current) return
+
+    const anim = lottie.loadAnimation({
+      container: canvasContainerRef.current,
+      renderer: 'canvas',
+      loop: loop && ambient,
+      autoplay: ambient,
+      animationData: loadedData,
+      rendererSettings: { clearCanvas: true },
+    })
+    canvasAnimRef.current = anim
+
+    return () => {
+      anim.destroy()
+      canvasAnimRef.current = null
+    }
+  }, [renderer, loadedData, loop, ambient])
+
   // Set animation speed
   useEffect(() => {
-    if (lottieRef.current && speed !== 1) {
-      lottieRef.current.setSpeed(speed)
+    if (speed !== 1) {
+      getAnim()?.setSpeed(speed)
     }
+     
   }, [speed, loadedData])
 
   // Pause when scrolled out of view, resume when back — a dozen looping
@@ -104,9 +139,9 @@ export function LottieIcon({
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          lottieRef.current?.play()
+          getAnim()?.play()
         } else {
-          lottieRef.current?.pause()
+          getAnim()?.pause()
         }
       },
       { rootMargin: '100px' }
@@ -114,22 +149,25 @@ export function LottieIcon({
 
     observer.observe(containerRef.current)
     return () => observer.disconnect()
+     
   }, [loadedData, ambient])
 
   // Animations disabled (a11y widget): freeze on the LAST frame — draw-on
   // animations are empty at frame 0, while the final frame always shows
   // the complete artwork
   useEffect(() => {
-    if (!ambient && lottieRef.current && loadedData) {
-      const totalFrames = lottieRef.current.getDuration(true)
-      lottieRef.current.goToAndStop(Math.max(0, (totalFrames ?? 1) - 1), true)
+    const anim = getAnim()
+    if (!ambient && anim && loadedData) {
+      const totalFrames = anim.getDuration(true)
+      anim.goToAndStop(Math.max(0, (totalFrames ?? 1) - 1), true)
     }
+     
   }, [ambient, loadedData])
 
   // Hover handlers
   const handleMouseEnter = () => {
-    if (playOnHover && lottieRef.current) {
-      lottieRef.current.goToAndPlay(0)
+    if (playOnHover) {
+      getAnim()?.goToAndPlay(0)
     }
   }
 
@@ -164,13 +202,17 @@ export function LottieIcon({
       style={{ width: size, height: size }}
       onMouseEnter={handleMouseEnter}
     >
-      <Lottie
-        lottieRef={lottieRef}
-        animationData={loadedData}
-        loop={loop && ambient}
-        autoplay={ambient}
-        style={{ width: '100%', height: '100%' }}
-      />
+      {renderer === 'canvas' ? (
+        <div ref={canvasContainerRef} style={{ width: '100%', height: '100%' }} />
+      ) : (
+        <Lottie
+          lottieRef={lottieRef}
+          animationData={loadedData}
+          loop={loop && ambient}
+          autoplay={ambient}
+          style={{ width: '100%', height: '100%' }}
+        />
+      )}
     </div>
   )
 }
