@@ -55,14 +55,15 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2 — Quick Links */}
+          {/* Column 2 — Quick Links (h2: page h1 → footer headings must not
+              skip levels — Lighthouse heading-order; visual size is class-driven) */}
           <div>
-            <h4
+            <h2
               className="text-sm font-semibold mb-4"
               style={{ color: '#7DD3FC' }}
             >
               קישורים מהירים
-            </h4>
+            </h2>
             <nav className="flex flex-col gap-2.5">
               {footerLinks.map((link) => (
                 <a
@@ -79,12 +80,12 @@ export default function Footer() {
 
           {/* Column 3 — Contact */}
           <div>
-            <h4
+            <h2
               className="text-sm font-semibold mb-4"
               style={{ color: '#7DD3FC' }}
             >
               יצירת קשר
-            </h4>
+            </h2>
             <div className="flex flex-col gap-2.5">
               {/* Phone */}
               <a
