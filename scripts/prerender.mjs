@@ -49,6 +49,11 @@ const portfolioRoutes = parseDataSlugs('src/data/portfolio-examples.ts').map(s =
 
 const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogSlugs]
 
+// Any path that matches no route renders the NotFound page. Prerendering it to
+// 404.html lets Cloudflare Pages serve a real HTTP 404 for unknown URLs instead
+// of the soft-404 (200 + homepage shell) it served with the /* catch-all.
+const NOT_FOUND_ROUTE = '/__not-found__'
+
 /** Serve dist/ as a static file server */
 function startServer() {
   return new Promise((resolve) => {
@@ -97,7 +102,7 @@ async function prerender() {
   const server = await startServer()
   const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] })
 
-  for (const route of ROUTES) {
+  for (const route of [...ROUTES, NOT_FOUND_ROUTE]) {
     console.log(`  Prerendering ${route}`)
 
     const page = await browser.newPage()
@@ -141,7 +146,9 @@ async function prerender() {
     // Write the prerendered HTML
     const outPath = route === '/'
       ? resolve(DIST, 'index.html')
-      : resolve(DIST, route.slice(1), 'index.html')
+      : route === NOT_FOUND_ROUTE
+        ? resolve(DIST, '404.html')
+        : resolve(DIST, route.slice(1), 'index.html')
 
     const outDir = dirname(outPath)
     if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true })
