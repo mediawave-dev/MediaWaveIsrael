@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import SEO from '../SEO'
+import { track } from '../../utils/analytics'
 
 export default function Terms() {
   const navigate = useNavigate()
@@ -353,6 +354,7 @@ export default function Terms() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-sky-ink-strong transition-colors"
+                    onClick={() => track('whatsapp_click', { placement: 'terms_page' })}
                   >
                     WhatsApp
                   </a>

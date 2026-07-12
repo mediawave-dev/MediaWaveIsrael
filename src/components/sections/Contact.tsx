@@ -7,6 +7,7 @@ import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
 import { useRevealFactory } from '../../config/reveal'
+import { track } from '../../utils/analytics'
 
 export default function Contact() {
   // Two columns enter from opposite framing: form rises, info slides from left
@@ -59,6 +60,7 @@ export default function Contact() {
     // Never pretend the form "sent" data that has nowhere to go.
     if (!endpoint) {
       const waMessage = `היי, אני ${formData.name.trim()}.\n${formData.message.trim()}\n(אימייל לחזרה: ${formData.email.trim()})`
+      track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
       setSuccessMsg('פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊')
       return
@@ -78,6 +80,7 @@ export default function Contact() {
         }),
       })
 
+      track('form_submit', { placement: 'contact_form', mode: 'endpoint' })
       setSuccessMsg('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם')
       setFormData({ name: '', email: '', message: '' })
     } catch {
@@ -239,6 +242,7 @@ export default function Contact() {
               <a
                 href={`tel:${contactPhone.replace(/-/g, '')}`}
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
+                onClick={() => track('tel_click', { placement: 'contact_section' })}
               >
                 <div className="w-12 h-12 rounded-lg bg-orange/10 flex items-center justify-center">
                   <PhoneIcon className="w-5 h-5 text-sky-ink" />
@@ -255,6 +259,7 @@ export default function Contact() {
               <a
                 href={`mailto:${contactEmail}`}
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
+                onClick={() => track('mailto_click', { placement: 'contact_section' })}
               >
                 <div className="w-12 h-12 shrink-0 rounded-lg bg-terracotta/10 flex items-center justify-center">
                   <EmailIcon className="w-5 h-5 text-terracotta" />
@@ -273,6 +278,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
+                onClick={() => track('whatsapp_click', { placement: 'contact_section' })}
               >
                 <div className="w-12 h-12 rounded-lg bg-sage/10 flex items-center justify-center">
                   <WhatsAppIcon className="w-5 h-5 text-sage" />
@@ -291,6 +297,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-4 rounded-lg hover:bg-cream-dark transition-all active:scale-[0.98]"
+                onClick={() => track('instagram_click', { placement: 'contact_section' })}
               >
                 <div className="w-12 h-12 rounded-lg bg-orange/10 flex items-center justify-center">
                   <InstagramIcon className="w-5 h-5 text-sky-ink" />

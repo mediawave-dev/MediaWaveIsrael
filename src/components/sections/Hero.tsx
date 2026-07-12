@@ -5,6 +5,7 @@ import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { WaveDivider } from '../ui/WaveDivider'
 import { StaggeredWords } from '../ui/StaggeredWords'
 import { EASE_BRAND } from '../../config/motion'
+import { track } from '../../utils/analytics'
 
 /** Signature wave underline — draws on from the RIGHT (RTL) instead of the
     old static border-bottom */
@@ -233,6 +234,7 @@ export default function Hero() {
               style={{ color: '#1e3a5f' }}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => track('cta_click', { placement: 'hero_contact' })}
             >
               {/* Shine effect */}
               <m.span
@@ -256,6 +258,7 @@ export default function Hero() {
               className="border-2 border-white hover:bg-white hover:text-brown-dark text-white text-base md:text-2xl font-semibold py-3 px-8 md:py-4 md:px-10 rounded-full transition-all duration-300 w-full md:w-auto text-center focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => track('cta_click', { placement: 'hero_services' })}
             >
               לשירותים שלנו
             </m.a>

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
 import { headerLinks } from '../../config/navigation'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { track } from '../../utils/analytics'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -169,7 +170,7 @@ export default function Header() {
                   drift: it pushed the pill toward the neighboring link) */}
               <a
                 href="#contact"
-                onClick={(e) => handleNavClick(e, '#contact')}
+                onClick={(e) => { track('cta_click', { placement: 'header' }); handleNavClick(e, '#contact') }}
                 className="header-cta whitespace-nowrap bg-orange text-lg lg:text-xl font-semibold py-2.5 px-5 lg:py-3 lg:px-7 rounded-full shadow-sm"
                 style={{ color: '#1e3a5f' }}
               >
@@ -295,6 +296,7 @@ export default function Header() {
                     href="#contact"
                     className="text-2xl text-sky-ink font-semibold hover:text-sky-ink-strong transition-colors duration-300 min-h-11 flex items-center gap-2 group"
                     onClick={(e) => {
+                      track('cta_click', { placement: 'mobile_menu' })
                       handleNavClick(e, '#contact')
                       setIsMobileMenuOpen(false)
                     }}

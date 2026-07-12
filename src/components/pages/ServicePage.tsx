@@ -6,6 +6,7 @@ import SEO from '../SEO'
 import { LottieIcon } from '../ui/LottieIcon'
 import { WaveDivider } from '../ui/WaveDivider'
 import { getServiceBySlug, servicesData } from '../../data/services'
+import { track } from '../../utils/analytics'
 
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -312,6 +313,7 @@ export default function ServicePage() {
               href="/#contact"
               className="inline-flex items-center justify-center gap-2 text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 bg-orange hover:bg-orange-dark"
               style={{ color: '#1e3a5f' }}
+              onClick={() => track('cta_click', { placement: 'service_page' })}
             >
               צרו קשר
             </a>
@@ -324,6 +326,7 @@ export default function ServicePage() {
                 border: '1px solid rgba(125, 211, 252, 0.3)',
                 color: '#2A2A2A',
               }}
+              onClick={() => track('whatsapp_click', { placement: 'service_page' })}
             >
               שלחו הודעת WhatsApp
             </a>

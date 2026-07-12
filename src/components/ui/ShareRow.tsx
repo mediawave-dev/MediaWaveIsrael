@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Check, Link2, Share2 } from 'lucide-react'
 import { SITE_URL } from '../../data/site'
+import { track } from '../../utils/analytics'
 
 interface ShareRowProps {
   title: string
@@ -25,12 +26,14 @@ export function ShareRow({ title, path }: ShareRowProps) {
       await navigator.clipboard.writeText(url)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
+      track('share_click', { placement: 'blog_post', channel: 'copy' })
     } catch {
       // Clipboard blocked — the WhatsApp/native buttons still work
     }
   }
 
   const handleNativeShare = () => {
+    track('share_click', { placement: 'blog_post', channel: 'native' })
     navigator.share({ title, url }).catch(() => {
       // User closed the share sheet — nothing to do
     })
@@ -49,6 +52,7 @@ export function ShareRow({ title, path }: ShareRowProps) {
         rel="noopener noreferrer"
         className={buttonClass}
         aria-label={`שיתוף המאמר "${title}" בוואטסאפ`}
+        onClick={() => track('share_click', { placement: 'blog_post', channel: 'whatsapp' })}
       >
         <WhatsAppIcon />
         וואטסאפ

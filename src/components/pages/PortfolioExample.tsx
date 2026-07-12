@@ -4,6 +4,7 @@ import { ArrowRight, Play } from 'lucide-react'
 import SEO from '../SEO'
 import { WaveDivider } from '../ui/WaveDivider'
 import { getPortfolioExampleBySlug } from '../../data/portfolio-examples'
+import { track } from '../../utils/analytics'
 
 export default function PortfolioExample() {
   const { slug } = useParams<{ slug: string }>()
@@ -219,6 +220,7 @@ export default function PortfolioExample() {
               href="/#contact"
               className="inline-flex items-center justify-center gap-2 text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 bg-orange hover:bg-orange-dark"
               style={{ color: '#1e3a5f' }}
+              onClick={() => track('cta_click', { placement: 'portfolio' })}
             >
               צרו קשר
             </a>
@@ -231,6 +233,7 @@ export default function PortfolioExample() {
                 border: '1px solid rgba(125, 211, 252, 0.3)',
                 color: '#2A2A2A',
               }}
+              onClick={() => track('whatsapp_click', { placement: 'portfolio' })}
             >
               שלחו הודעת WhatsApp
             </a>

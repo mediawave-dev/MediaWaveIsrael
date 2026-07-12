@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Logo, SwellMark } from '../ui'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { footerLinks } from '../../config/navigation'
+import { track } from '../../utils/analytics'
 
 const currentYear = new Date().getFullYear()
 
@@ -91,6 +92,7 @@ export default function Footer() {
               <a
                 href="tel:052-8731808"
                 className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
+                onClick={() => track('tel_click', { placement: 'footer' })}
               >
                 <PhoneIcon />
                 <span dir="ltr" className="font-mono-spec">052-8731808</span>
@@ -102,6 +104,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
+                onClick={() => track('whatsapp_click', { placement: 'footer' })}
               >
                 <WhatsAppIcon />
                 <span className="font-english">WhatsApp</span>
@@ -111,6 +114,7 @@ export default function Footer() {
               <a
                 href="mailto:mediawaveisrael@gmail.com"
                 className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
+                onClick={() => track('mailto_click', { placement: 'footer' })}
               >
                 <MailIcon />
                 <span dir="ltr" className="whitespace-nowrap font-english">mediawaveisrael@gmail.com</span>
@@ -122,6 +126,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-link flex items-center gap-2 text-sm justify-center md:justify-start"
+                onClick={() => track('instagram_click', { placement: 'footer' })}
               >
                 <InstagramIcon />
                 <span className="font-english">Instagram</span>

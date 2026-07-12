@@ -6,6 +6,7 @@ import { LottieIcon } from './ui/LottieIcon'
 import { X, User, Phone } from 'lucide-react'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { getWhatsAppUrl, WHATSAPP_URLS } from '../utils/whatsapp'
+import { track } from '../utils/analytics'
 
 // Same endpoint as Contact form
 const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
@@ -115,6 +116,7 @@ export default function LeadModal() {
         // prefilled. Never show a fake "received" state for data that went nowhere.
         if (!endpoint) {
             const waMessage = `היי, אני ${formData.name.trim()} ואשמח לשיחת ייעוץ ללא עלות.\nטלפון: ${formData.phone.trim()}`
+            track('lead_submit', { placement: 'lead_modal', mode: 'whatsapp_fallback' })
             window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
             setWaHandoff(true)
             setSuccess(true)
@@ -143,6 +145,7 @@ export default function LeadModal() {
 
             // Mark as submitted permanently
             localStorage.setItem('leadModalSubmitted', 'true')
+            track('lead_submit', { placement: 'lead_modal', mode: 'endpoint' })
             setSuccess(true)
 
             // Close after success message shown briefly

@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import { X, Send, RotateCcw } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
 import { LottieIcon } from './index'
+import { track } from '../../utils/analytics'
 
 // --- Typing Indicator ---
 
@@ -37,6 +38,7 @@ function linkifyContent(text: string) {
         target="_blank"
         rel="noopener noreferrer"
         className="underline text-sky-ink hover:text-sky-ink-strong transition-colors"
+        onClick={() => track('chat_handoff', { placement: 'chat_message' })}
       >
         {part}
       </a>
@@ -230,7 +232,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
             <m.button
               ref={triggerRef}
-              onClick={() => setIsOpen(true)}
+              onClick={() => { setIsOpen(true); track('chat_open', { placement: 'floating' }) }}
               className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}

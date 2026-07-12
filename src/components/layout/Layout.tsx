@@ -4,6 +4,7 @@ import Header from './Header'
 import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { track } from '../../utils/analytics'
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
@@ -80,6 +81,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           aria-label="צור קשר בוואטסאפ"
+          onClick={() => track('whatsapp_click', { placement: 'floating' })}
         >
           {/* Gentle breathing glow */}
           <m.span
