@@ -5,7 +5,9 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  // .claude holds agent-skill templates (not site code, not built, not shipped);
+  // audit holds generated measurement scripts. Both were polluting `eslint .`.
+  { ignores: ['dist', '.claude', 'audit', 'CMS', 'SOCIAL'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
