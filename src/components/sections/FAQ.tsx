@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { m, AnimatePresence } from 'framer-motion'
+import { m } from 'framer-motion'
 import { HtmlContent } from '../HtmlContent'
 import { useRevealFactory } from '../../config/reveal'
 
@@ -84,6 +84,7 @@ export default function FAQ() {
                 onClick={() => toggleItem(index)}
                 className="w-full text-right p-4 md:p-5 flex items-center justify-between gap-4 hover:bg-cream-dark/30 transition-colors"
                 aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${item._id}`}
               >
                 <span className="font-body font-semibold text-brown-dark text-lg md:text-xl">
                   {item.question}
@@ -99,24 +100,24 @@ export default function FAQ() {
                 </m.span>
               </button>
 
-              {/* Answer */}
-              <AnimatePresence initial={false}>
-                {openIndex === index && (
-                  <m.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-4 md:px-5 pb-4 md:pb-5">
-                      <div className="font-body text-brown-light text-base md:text-lg leading-relaxed border-t border-cream-darker pt-4">
-                        <HtmlContent html={item.answer} className="prose-hebrew" />
-                      </div>
-                    </div>
-                  </m.div>
-                )}
-              </AnimatePresence>
+              {/* Answer — always mounted (collapsed via height) so the text exists
+                  in the prerendered HTML for crawlers and no-JS readers; the
+                  conditional-mount version shipped ZERO answer text in the initial
+                  HTML. Same pattern as ServicePage's FaqItem. */}
+              <m.div
+                id={`faq-answer-${item._id}`}
+                initial={false}
+                animate={{ height: openIndex === index ? 'auto' : 0, opacity: openIndex === index ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+                aria-hidden={openIndex !== index}
+              >
+                <div className="px-4 md:px-5 pb-4 md:pb-5">
+                  <div className="font-body text-brown-light text-base md:text-lg leading-relaxed border-t border-cream-darker pt-4">
+                    <HtmlContent html={item.answer} className="prose-hebrew" />
+                  </div>
+                </div>
+              </m.div>
             </m.div>
           ))}
         </div>
