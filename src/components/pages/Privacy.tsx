@@ -23,6 +23,14 @@ export default function Privacy() {
         description="מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם."
         canonical="/privacy"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+          { '@type': 'ListItem', position: 2, name: 'מדיניות פרטיות', item: 'https://mediawave.co.il/privacy' },
+        ],
+      }) }} />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
         <m.div

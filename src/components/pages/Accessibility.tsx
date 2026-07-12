@@ -23,6 +23,14 @@ export default function Accessibility() {
         description="הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות."
         canonical="/accessibility"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+          { '@type': 'ListItem', position: 2, name: 'הצהרת נגישות', item: 'https://mediawave.co.il/accessibility' },
+        ],
+      }) }} />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
         <m.div

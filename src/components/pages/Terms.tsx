@@ -23,6 +23,14 @@ export default function Terms() {
         description="תקנון השימוש של MediaWave Israel: תנאי שימוש באתר ושירותי פיתוח אתרים."
         canonical="/terms"
       />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'ראשי', item: 'https://mediawave.co.il/' },
+          { '@type': 'ListItem', position: 2, name: 'תקנון שימוש', item: 'https://mediawave.co.il/terms' },
+        ],
+      }) }} />
       <div className="container max-w-[900px] mx-auto px-4 sm:px-6">
         {/* Back link */}
         <m.div
