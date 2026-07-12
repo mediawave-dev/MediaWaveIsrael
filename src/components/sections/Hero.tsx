@@ -134,8 +134,11 @@ export default function Hero() {
         style={{ zIndex: 0 }}
       />
 
-      {/* Desktop: video background, mounted after idle */}
-      {isDesktop && videoReady && !prefersReducedMotion && (
+      {/* Desktop: video background, mounted after idle. Gated on BOTH the OS
+          reduced-motion signal and the site's own a11y-widget toggle — the
+          widget's "ללא אנימציות" is the WCAG 2.2.2 pause mechanism for this
+          auto-playing loop, so it must actually stop it. */}
+      {isDesktop && videoReady && !prefersReducedMotion && ambient && (
         <video
           autoPlay
           muted
@@ -190,12 +193,17 @@ export default function Hero() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <span>בניית </span>
-            <span className="text-orange font-bold">
-              {displayText}
-              <span className="animate-pulse">|</span>
+            {/* Screen readers get the complete static sentence; the typewriter
+                (half-typed words + a literal "|" cursor) is visual-only */}
+            <span className="sr-only">בניית אתרים, דפי נחיתה וצ'אטבוטים מקצועיים</span>
+            <span aria-hidden="true">
+              <span>בניית </span>
+              <span className="text-orange font-bold">
+                {displayText}
+                <span className="animate-pulse">|</span>
+              </span>
+              <span> מקצועיים</span>
             </span>
-            <span> מקצועיים</span>
           </m.div>
 
           {/* Subtitle */}

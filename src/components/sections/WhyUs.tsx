@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import { LottieIcon, WaveDivider } from '../ui'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { useRevealFactory } from '../../config/reveal'
 
 interface WhyUsItem {
@@ -45,6 +46,9 @@ const colorMap: Record<string, { border: string }> = {
 export default function WhyUs() {
   // Curated entrance: content slides in from the reading edge (RTL right)
   const reveal = useRevealFactory()
+
+  // Site a11y-widget toggle — the pause mechanism for the auto-playing loop
+  const ambient = useAmbientMotion()
 
   // Detect reduced motion preference
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
@@ -100,8 +104,9 @@ export default function WhyUs() {
         style={{ zIndex: 0 }}
       />
 
-      {/* Desktop: video, mounted only near the viewport (if motion allowed) */}
-      {isDesktop && videoNearby && !prefersReducedMotion && (
+      {/* Desktop: video, mounted only near the viewport (if motion allowed —
+          both the OS signal and the site a11y-widget toggle, WCAG 2.2.2) */}
+      {isDesktop && videoNearby && !prefersReducedMotion && ambient && (
         <video
           autoPlay
           muted
