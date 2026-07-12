@@ -86,6 +86,14 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+
+  // Close must return focus to the trigger (it re-mounts via AnimatePresence,
+  // so focus on the next tick) — keyboard users were dropped at <body>
+  const closeChat = useCallback(() => {
+    setIsOpen(false)
+    setTimeout(() => triggerRef.current?.focus(), 60)
+  }, [])
 
   // Notify parent of open state changes
   useEffect(() => {
@@ -135,7 +143,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setIsOpen(false)
+        closeChat()
         return
       }
 
@@ -158,7 +166,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen])
+  }, [isOpen, closeChat])
 
   // Send handler
   const handleSend = useCallback(() => {
@@ -221,6 +229,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             </m.span>
 
             <m.button
+              ref={triggerRef}
               onClick={() => setIsOpen(true)}
               className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
@@ -296,7 +305,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                   </button>
                 )}
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeChat}
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-orange"
                   aria-label="סגור צ'אט"
                 >

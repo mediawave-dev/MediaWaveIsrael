@@ -68,7 +68,8 @@ export default function AccessibilityWidget() {
     reset,
   } = useAccessibility()
 
-  // Close on Escape
+  // Close on Escape + Tab trap (aria-modal dialog must contain keyboard focus —
+  // same first/last cycle as LeadModal and the mobile menu)
   useEffect(() => {
     if (!isOpen) return
 
@@ -76,6 +77,23 @@ export default function AccessibilityWidget() {
       if (e.key === 'Escape') {
         setIsOpen(false)
         buttonRef.current?.focus()
+        return
+      }
+
+      if (e.key !== 'Tab' || !panelRef.current) return
+
+      const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+        'button, [tabindex]:not([tabindex="-1"])'
+      )
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last?.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first?.focus()
       }
     }
 
@@ -150,7 +168,11 @@ export default function AccessibilityWidget() {
                 נגישות
               </h2>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false)
+                  // trigger re-mounts after close — return keyboard focus to it
+                  setTimeout(() => buttonRef.current?.focus(), 60)
+                }}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-brown-light hover:bg-cream-darker hover:text-brown-dark transition-colors"
                 aria-label="סגור"
               >
