@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- Primary Meta Tags -->
+    <!-- Primary Meta Tags — title/description/canonical/OG are owned per-route by
+         SEO.tsx (react-helmet-async) and baked in at prerender. Keeping static
+         copies here made every inner page serve the HOMEPAGE description, og:title,
+         og:url and canonical FIRST — crawlers and link previews read the first
+         occurrence, so search snippets and WhatsApp previews were wrong sitewide. -->
     <title>MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם</title>
-    <meta name="title" content="MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם" />
-    <meta name="description" content="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה." />
-    <meta name="keywords" content="בניית אתרים, פיתוח אתרים, עיצוב אתרים, דפי נחיתה, אתר תדמית, SEO, אופטימיזציה, עסקים קטנים, ישראל" />
     <meta name="author" content="MediaWave Israel" />
     <meta name="robots" content="index, follow" />
-    <meta name="language" content="Hebrew" />
 
     <!-- Theme & Mobile — constant dark brand navy on the browser chrome (no
          per-section change). Owner decision: address bar stays dark always. -->
@@ -20,27 +20,6 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MediaWave" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://mediawave.co.il/" />
-    <meta property="og:title" content="MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם" />
-    <meta property="og:description" content="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO." />
-    <meta property="og:image" content="https://mediawave.co.il/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="he_IL" />
-    <meta property="og:site_name" content="MediaWave Israel" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://mediawave.co.il/" />
-    <meta property="twitter:title" content="MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם" />
-    <meta property="twitter:description" content="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO." />
-    <meta property="twitter:image" content="https://mediawave.co.il/og-image.png" />
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://mediawave.co.il/" />
 
     <!-- Favicons (?v=3 busts the browser's sticky favicon cache after the
          Swell logo redesign — bump this whenever the icon art changes) -->
