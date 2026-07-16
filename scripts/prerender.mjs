@@ -54,6 +54,26 @@ const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogS
 // of the soft-404 (200 + homepage shell) it served with the /* catch-all.
 const NOT_FOUND_ROUTE = '/__not-found__'
 
+// Above-the-fold body fonts (hashed @fontsource assets) get preloads so they
+// arrive BEFORE first paint — a late font swap both re-layouts the text
+// (measured CLS 0.127 from "Web font loaded") and re-emits a later LCP entry.
+// Hashes change per build, so the links are resolved from dist/assets here.
+import { readdirSync } from 'fs'
+function fontPreloadLinks() {
+  const wanted = [
+    /^heebo-hebrew-400-normal-.*\.woff2$/,
+    /^heebo-hebrew-700-normal-.*\.woff2$/,
+    /^outfit-latin-400-normal-.*\.woff2$/,
+    /^outfit-latin-700-normal-.*\.woff2$/,
+  ]
+  const assets = readdirSync(resolve(DIST, 'assets'))
+  return wanted
+    .map((re) => assets.find((f) => re.test(f)))
+    .filter(Boolean)
+    .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`)
+    .join('')
+}
+
 /** Serve dist/ as a static file server */
 function startServer() {
   return new Promise((resolve) => {
@@ -162,6 +182,9 @@ async function prerender() {
 
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
+
+    // Inject hashed body-font preloads next to the existing EFT preloads
+    html = html.replace('<link rel="preload" href="/fonts/EFT_Betaamango.woff2"', `${fontPreloadLinks()}<link rel="preload" href="/fonts/EFT_Betaamango.woff2"`)
 
     // Write the prerendered HTML
     const outPath = route === '/'
