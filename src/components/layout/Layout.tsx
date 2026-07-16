@@ -1,4 +1,4 @@
-import { ReactNode, useState, useCallback, lazy, Suspense } from 'react'
+import { ReactNode, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import Header from './Header'
 import Footer from './Footer'
@@ -18,6 +18,20 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
+
+  // Mount the floating widgets only when the browser is idle — lazy() alone
+  // still fetches their chunks (incl. the 80KB lottie runtime for the chat
+  // button) inside the initial-load window, which showed up as "unused JS"
+  // and main-thread cost in every trace
+  const [widgetsReady, setWidgetsReady] = useState(false)
+  useEffect(() => {
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setWidgetsReady(true), { timeout: 3000 })
+      return () => window.cancelIdleCallback(id)
+    }
+    const timer = setTimeout(() => setWidgetsReady(true), 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleChatOpenChange = useCallback((open: boolean) => {
     setIsChatOpen(open)
@@ -49,17 +63,19 @@ export default function Layout({ children }: LayoutProps) {
       {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />
 
-      {/* Widgets */}
-      <Suspense fallback={null}>
-        {/* Accessibility widget */}
-        <AccessibilityWidget />
+      {/* Widgets — mounted after idle (see widgetsReady above) */}
+      {widgetsReady && (
+        <Suspense fallback={null}>
+          {/* Accessibility widget */}
+          <AccessibilityWidget />
 
-        {/* AI Chat widget — bottom-right, lowest position */}
-        <ChatWidget onOpenChange={handleChatOpenChange} />
+          {/* AI Chat widget — bottom-right, lowest position */}
+          <ChatWidget onOpenChange={handleChatOpenChange} />
 
-        {/* Cookie consent banner */}
-        <CookieConsent />
-      </Suspense>
+          {/* Cookie consent banner */}
+          <CookieConsent />
+        </Suspense>
+      )}
     </div>
   )
 }
