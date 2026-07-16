@@ -41,3 +41,6 @@ screenshots-after/
 *.njsproj
 *.sln
 *.sw?
+
+# measurement evidence (large LH JSONs, screenshots) — local only
+audit/raw/
