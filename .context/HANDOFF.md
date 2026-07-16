@@ -16,9 +16,8 @@
 - **מקומי (שרת gzip)**: הבית 69→88, video-editing 41→76 (TBT 6160→290ms), בלוג 46→82 (CLS 0.007);
   a11y/BP/SEO = 100/100/100. smoke 12/12. צילומי לפני/אחרי זהים (חוץ מהקו-תחתי המכוון).
 - **סקיל חדש**: C:/Users/User/.claude/skills/site-gate-audit — צ'קליסט 10 השערים לכל אתר לקוח.
-- **כרגע רץ**: gate-suite נגד ה-preview (upgrade-fable-20260712.mediawaveisrael.pages.dev) —
-  G1/G2/G6/G9+axe/verifier + 63 ריצות Lighthouse. מוכן ל-merge אם ירוק.
-- **תיקון ממתין לדחיפה**: 5767381 (_redirects — /studio בלי splat החזיר 404 ב-preview).
+- **סיום הריצה (17/07)**: כל השערים ירוקים חוץ מ-perf/LCP (ראו audit/BLOCKED.md). לא מוזג לפי סעיף 5.4 — ההחלטה אצל נתי: PR מוכן בקליק, PROPOSALS #10 = תפריט ההחלטות לנקודות ה-perf האחרונות.
+- /studio תוקן סופית (asset אמיתי, אומת 200 ב-preview v3); 21 קומיטים בבראנץ, נדחף.
 - **Rollback לפרודקשן אם צריך**: git push origin 299cb88:main --force-with-lease
   (או Rollback בדשבורד CF Pages). production tip לפני הריצה: 299cb88.
 
