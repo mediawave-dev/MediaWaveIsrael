@@ -202,6 +202,15 @@ async function prerender() {
     await page.close()
   }
 
+  // /studio needs a REAL asset: Cloudflare Pages turns exact-path _redirects
+  // rewrites to /index.html into a 308 redirect to / (verified on preview),
+  // so the SPA shell is copied to studio/index.html — /studio and /studio/
+  // then serve natively and React Router takes over client-side.
+  const studioDir = resolve(DIST, 'studio')
+  if (!existsSync(studioDir)) mkdirSync(studioDir, { recursive: true })
+  writeFileSync(resolve(studioDir, 'index.html'), readFileSync(resolve(DIST, 'index.html')))
+  console.log('  Copied SPA shell to /studio/index.html')
+
   await browser.close()
   server.close()
   console.log(`\nPrerendered ${ROUTES.length} pages!`)
