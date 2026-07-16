@@ -31,7 +31,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const [isPressed, setIsPressed] = useState(false)
-    const [showSuccess, setShowSuccess] = useState(false)
     // Ambient micro-loops (shine sweep, icon nudge) stop only via the a11y widget
     const ambient = useAmbientMotion()
 
@@ -54,11 +53,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         setIsPressed(true)
         setTimeout(() => setIsPressed(false), 150)
 
-        // Show success animation for submit buttons
-        if (props.type === 'submit') {
-          setShowSuccess(true)
-          setTimeout(() => setShowSuccess(false), 1000)
-        }
+        // NOTE: no button-level "success" flash here. It used to show
+        // "נשלח בהצלחה!" on ANY submit click — including failed validation —
+        // which is a lie. Success feedback belongs to the form's real state.
 
         props.onClick?.(e)
       }
@@ -169,35 +166,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                   />
                 </m.svg>
                 {loadingText || children}
-              </m.span>
-            ) : showSuccess ? (
-              <m.span
-                key="success"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className="flex items-center gap-2"
-              >
-                <m.svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <m.path
-                    d="M5 12l5 5L20 7"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </m.svg>
-                נשלח בהצלחה!
               </m.span>
             ) : (
               <m.span

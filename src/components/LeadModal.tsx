@@ -19,7 +19,8 @@ export default function LeadModal() {
     const [errorMsg, setErrorMsg] = useState('')
     // Validation errors live on the failing field (aria-invalid + aria-describedby
     // via Input); the form-level alert is only for send failures
-    const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string }>({})
+    const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string; privacy?: string }>({})
+    const [privacyChecked, setPrivacyChecked] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -107,6 +108,13 @@ export default function LeadModal() {
 
         if (!isValidPhone(formData.phone)) {
             setFieldErrors({ phone: validationErrors.phone })
+            return
+        }
+
+        // noValidate on the form means the browser no longer enforces the
+        // required checkbox — validate it here with a Hebrew announced error
+        if (!privacyChecked) {
+            setFieldErrors({ privacy: validationErrors.privacy })
             return
         }
 
@@ -225,7 +233,7 @@ export default function LeadModal() {
                                     />
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="space-y-4">
+                                <form onSubmit={handleSubmit} noValidate className="space-y-4">
                                     <Input
                                         label="שם מלא"
                                         type="text"
@@ -255,11 +263,30 @@ export default function LeadModal() {
                                         dir="ltr" // Keep numbers LTR
                                     />
 
-                                    <div className="flex items-start gap-2 text-right text-xs text-brown-muted mt-2">
-                                        <input type="checkbox" required id="privacy" className="mt-1 accent-orange" />
-                                        <label htmlFor="privacy">
-                                            אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
-                                        </label>
+                                    <div className="text-right text-xs text-brown-muted mt-2">
+                                        <div className="flex items-start gap-2">
+                                            <input
+                                                type="checkbox"
+                                                required
+                                                id="privacy"
+                                                className="mt-1 accent-orange"
+                                                checked={privacyChecked}
+                                                aria-invalid={fieldErrors.privacy ? true : undefined}
+                                                aria-describedby={fieldErrors.privacy ? 'privacy-error' : undefined}
+                                                onChange={(e) => {
+                                                    setPrivacyChecked(e.target.checked)
+                                                    setFieldErrors({})
+                                                }}
+                                            />
+                                            <label htmlFor="privacy">
+                                                אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
+                                            </label>
+                                        </div>
+                                        {fieldErrors.privacy && (
+                                            <p id="privacy-error" role="alert" className="text-red-500 text-xs mt-1">
+                                                {fieldErrors.privacy}
+                                            </p>
+                                        )}
                                     </div>
 
                                     {errorMsg && (
@@ -270,6 +297,7 @@ export default function LeadModal() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="hover:underline font-semibold"
+                                                onClick={() => track('whatsapp_click', { placement: 'lead_modal_error_alert' })}
                                             >
                                                 לוואטסאפ
                                             </a>

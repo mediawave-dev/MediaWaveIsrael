@@ -76,7 +76,9 @@ export default function AccessibilityWidget() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsOpen(false)
-        buttonRef.current?.focus()
+        // The trigger only renders when !isOpen — a synchronous focus() hits a
+        // null ref and keyboard focus fell to <body>. Defer like the X button.
+        setTimeout(() => buttonRef.current?.focus(), 60)
         return
       }
 

@@ -1196,6 +1196,16 @@ html.disable-animations [data-floating] {
   }
 }
 
+/* Desktop: the banner is a bottom-RIGHT card (z-50) that sat exactly over the
+   chat trigger (z-40) — elementFromPoint hit the banner, so the chat was
+   mouse-unclickable until a consent choice. Lift only the right-side CTA. */
+@media (min-width: 640px) {
+  body.mw-consent-open .floating-cta.right-4,
+  body.mw-consent-open .floating-cta.sm\:right-6 {
+    bottom: 10.5rem !important;
+  }
+}
+
 /* ============================================
    SECTION POLISH UTILITIES
    ============================================ */

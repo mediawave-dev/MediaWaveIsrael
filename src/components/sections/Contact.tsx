@@ -153,7 +153,10 @@ export default function Contact() {
                 style={{ background: 'linear-gradient(90deg, #7DD3FC, #67E8F9, #5EEAD4)' }}
                 aria-hidden="true"
               />
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {/* noValidate: without it the browser intercepts empty-required
+                  submits with an English-locale bubble on a Hebrew page and the
+                  site's own announced field errors never render */}
+              <form onSubmit={handleSubmit} noValidate className="space-y-6">
                 <Input
                   label="שם מלא"
                   type="text"
@@ -212,6 +215,7 @@ export default function Contact() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:underline font-semibold"
+                      onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}
                     >
                       לוואטסאפ
                     </a>

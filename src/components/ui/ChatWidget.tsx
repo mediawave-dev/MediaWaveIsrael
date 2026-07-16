@@ -151,9 +151,13 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
       if (e.key !== 'Tab' || !panelRef.current) return
 
+      // :not([disabled]) matters: the send button is disabled while the input
+      // is empty, so it was counted as "last" but could never hold focus —
+      // Tab escaped the aria-modal dialog to the background page
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'button, textarea, [tabindex]:not([tabindex="-1"])'
+        'button:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
       )
+      if (focusable.length === 0) return
       const first = focusable[0]
       const last = focusable[focusable.length - 1]
 
@@ -161,6 +165,9 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
         e.preventDefault()
         last?.focus()
       } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first?.focus()
+      } else if (!panelRef.current.contains(document.activeElement)) {
         e.preventDefault()
         first?.focus()
       }
@@ -316,10 +323,13 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               </div>
             </div>
 
-            {/* Messages */}
+            {/* Messages — role=log + polite live region so screen readers hear
+                bot replies and error bubbles (they were announced nowhere) */}
             <div
               className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
               dir="rtl"
+              role="log"
+              aria-live="polite"
             >
               {messages.map((msg) => (
                 <MessageBubble key={msg.id} message={msg} />
