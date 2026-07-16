@@ -1,4 +1,8 @@
 # Sanity Studio is the only client-routed path with no prerendered file — serve
 # it the SPA shell. Every real route has a prerendered HTML file, and anything
 # else falls through to 404.html (real HTTP 404 instead of the old /* soft-404).
+# NOTE: the /studio/* splat does NOT match the bare /studio or /studio/ paths
+# on Cloudflare Pages — they need explicit rules (verified on preview).
+/studio /index.html 200
+/studio/ /index.html 200
 /studio/* /index.html 200
