@@ -74,3 +74,18 @@ the canonical fix ships, GSC is how you'd see indexing recover. Needs your Googl
 `src/data/testimonials.ts` is empty by design and the section stays hidden until real
 quotes exist. Two or three one-line quotes from past clients (even tape-conversion
 customers) unlock a trust section that's already built and styled.
+
+## 10. The last Lighthouse points are a product decision, not a bug — pick from a menu
+After this branch, every Lighthouse category except performance is 100 on all 21
+routes, and performance is 81–98 (was 41–75). The measured floor: even with ALL
+JavaScript removed, the page sims at LCP 2.49s — the budget is eaten by TTFB
+(~0.62s, HTML isn't edge-cached), ~140KB of brand fonts before first paint, and
+first-frame rendering. Getting perf ≥95 / LCP ≤2.0s everywhere needs one or more of:
+(a) lighter font strategy above the fold (drop Outfit and/or Betaamango from the
+critical path — brand-typography call); (b) static-first service-page hero icons with
+the Lottie animating in after load (changes the designed first impression; also the
+only fix for seo-promotion's LCP=the-animation itself); (c) edge-caching the HTML
+(Cache-Control decision — worth ~0.4-0.5s on every route); or (d) recalibrating the
+gate to what this architecture honestly supports (perf ≥85 / LCP ≤2.5s lab passes
+everywhere except seo-promotion; real headed-Chrome LCP of this build is ~1.1-1.7s).
+Full evidence: audit/BLOCKED.md.

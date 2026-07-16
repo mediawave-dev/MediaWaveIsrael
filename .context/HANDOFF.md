@@ -1,5 +1,31 @@
 # HANDOFF — MediaWave Israel
 
+## עדכון אחרון (16/07/2026) — ריצת שערים אוטונומית (Fable), branch: upgrade/fable-20260712
+ריצה מלאה לפי בריף "MediaWave Site Upgrade": baseline מדוד → תיקונים → שערים על preview.
+- **Baseline מלא של הפרודקשן** ב-audit/BASELINE.md (+ audit/raw/, לא ב-git). ממצאי ענק:
+  Cloudflare חוסם את כל סורקי ה-AI ב-403 ברמת ה-zone (PROPOSALS #1 — רק נתי יכול לפתוח);
+  canonicals כפולים שהצביעו לדף הבית מכל עמוד פנימי; תשובות FAQ לא היו ב-HTML;
+  CLS 0.50 בבלוג (fallback 50vh); TBT 25-54s ב-video-editing (לוטי 356 paths);
+  אפס מעקב המרות.
+- **16 קומיטים** על הבראנץ': SEO (canonical/OG dedup, 404 אמיתי, breadcrumbs), G1 (תשובות FAQ ב-DOM),
+  נגישות (קו תחתי לקישור בבאנר, heading-order, פוקוס בווידג'טים, aria-invalid בטפסים,
+  sr-only לטייפרייטר, וידאו נעצר מהווידג'ט), אנליטיקס first-party (track() → /api/event, 28 נקודות),
+  ופרפורמנס: mount אחרי load+150ms (paint-first), Outfit self-hosted (בלי גוגל פונטס!),
+  font-display:optional, skip לאנימציות כניסה בעמודים prerendered, fallback 120vh,
+  ווידג'טים אחרי idle, lottie-web מוצמד ל-chunk (היה נמשך לתוך StudioPage 5MB!), canvas renderer ללוטי הכבד.
+- **מקומי (שרת gzip)**: הבית 69→88, video-editing 41→76 (TBT 6160→290ms), בלוג 46→82 (CLS 0.007);
+  a11y/BP/SEO = 100/100/100. smoke 12/12. צילומי לפני/אחרי זהים (חוץ מהקו-תחתי המכוון).
+- **סקיל חדש**: C:/Users/User/.claude/skills/site-gate-audit — צ'קליסט 10 השערים לכל אתר לקוח.
+- **כרגע רץ**: gate-suite נגד ה-preview (upgrade-fable-20260712.mediawaveisrael.pages.dev) —
+  G1/G2/G6/G9+axe/verifier + 63 ריצות Lighthouse. מוכן ל-merge אם ירוק.
+- **תיקון ממתין לדחיפה**: 5767381 (_redirects — /studio בלי splat החזיר 404 ב-preview).
+- **Rollback לפרודקשן אם צריך**: git push origin 299cb88:main --force-with-lease
+  (או Rollback בדשבורד CF Pages). production tip לפני הריצה: 299cb88.
+
+---
+
+
+
 ## Goal
 מימוש DESIGN-UPGRADE "מעבדת הגלים" — ריצה אוטונומית מלאה (03-04/07/2026), branch: `design/wave-lab` (מעל feature/production-polish).
 

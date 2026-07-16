@@ -52,3 +52,24 @@
   390+1440px: identical except the intended cookie-link underline; the ⚠
   chat icon in local shots is a test-server %20-decoding artifact (verified
   fine on production).
+
+## Preview gate runs (v1-v3) and verdict — 2026-07-16/17
+- Full §6 suite vs preview v1 (7 agents, 63 LH runs + adversarial fresh-eyes
+  verifier): G1/G2/G6/G7/G9 PASS; axe 0 violations at every severity across 14
+  scans incl. open-widget states; a11y/BP 100 on 21/21; SEO 100 excluding only
+  Cloudflare's preview-noindex header.
+- The adversarial verifier found what I missed: Button flashed "נשלח בהצלחה!"
+  on ANY submit (pre-existing, dishonest — removed); chat Tab-trap leaked via
+  its disabled send button; a11y-panel Escape dropped focus to body; chat had
+  no live region; native validation bubbles appeared in the browser locale;
+  cookie banner covered the chat trigger on desktop; 9 conversion links
+  untracked. All fixed and re-verified live on v2 (7/8 spot checks; the 8th —
+  /studio — fixed in v3 by shipping studio/index.html as a real asset after
+  proving CF turns exact-path /index.html rewrites into 308s).
+- v2 re-measure: home TBT 380→116, CLS outlier 0.131→0.007, seo-promotion 81→85.
+- Verdict per §5.4: G3-perf (≥95) and G4-LCP (≤2.0s) remain RED → NOT merged,
+  production untouched, audit/BLOCKED.md written. Decisive evidence: the no-JS
+  static page sims at LCP 2.49s — the gate is unreachable without product
+  decisions (fonts/hero/TTFB) recorded in PROPOSALS.md #10.
+- Final branch state: 21 commits, tsc/eslint clean, /studio + real-404 + bots +
+  FAQ-in-HTML all verified on preview v3.
