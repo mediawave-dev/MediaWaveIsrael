@@ -12,7 +12,13 @@
 @import "@fontsource/heebo/400.css";
 @import "@fontsource/heebo/500.css";
 @import "@fontsource/heebo/700.css";
-/* Outfit font loaded via preload in index.html for better performance */
+/* Outfit self-hosted via @fontsource too — the former Google Fonts
+   media="print" onload trick held first paint ~1s (measured); same-origin
+   subsets ride the existing CSS request instead */
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+@import "@fontsource/outfit/600.css";
+@import "@fontsource/outfit/700.css";
 
 /* ============================================
    TAILWIND v4 THEME CONFIGURATION

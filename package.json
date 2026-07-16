@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@fontsource/heebo": "^5.2.8",
+    "@fontsource/outfit": "^5.2.8",
     "@portabletext/react": "^6.0.2",
     "@sanity/client": "^7.15.0",
     "@sanity/icons": "^3.7.4",

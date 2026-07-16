@@ -15,7 +15,7 @@
   src: url('/fonts/EFT_Betaamango.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 /* For bold usage, use regular weight (single weight font) */
@@ -24,7 +24,7 @@
   src: url('/fonts/EFT_Betaamango.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 /* ============================================
@@ -36,7 +36,7 @@
   src: url('/fonts/EFT_OffSet-Bold.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 /* Latin text uses Outfit, preloaded from index.html (no Google Fonts import). */

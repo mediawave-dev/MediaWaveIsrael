@@ -32,24 +32,18 @@
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="MediaWave Israel | בלוג" href="/feed.xml" />
 
-    <!-- Preconnect for Google Fonts (Outfit only - Heebo uses @fontsource) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <!-- Preload logo for faster LCP (this is the LCP element) — inline SVG lockup -->
     <link rel="preload" href="/logo-lockup-white.svg" as="image" type="image/svg+xml" fetchpriority="high" />
 
-    <!-- Preload hero poster image -->
-    <link rel="preload" href="/images/hero-poster.webp" as="image" type="image/webp" fetchpriority="high" />
-
-    <!-- Preload the Hebrew fonts used above the fold (stable public/fonts URLs) -->
+    <!-- Preload the Hebrew fonts used above the fold (stable public/fonts URLs).
+         NOTE: no hero-poster preload — the in-document <img> is discovered by the
+         preload scanner anyway, and a fetchpriority=high 66KB image was stealing
+         pre-paint bandwidth from CSS/fonts on 1.6Mbps (~330ms of FCP).
+         Outfit is now self-hosted via @fontsource (bundled into the CSS) — the
+         old Google Fonts media="print" onload trick measurably HELD first paint
+         ~1s in traces (removing it moved observed FP 1434ms -> 480ms). -->
     <link rel="preload" href="/fonts/EFT_Betaamango.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/EFT_OffSet-Bold.woff2" as="font" type="font/woff2" crossorigin />
-
-    <!-- Preload critical Outfit font weights for faster LCP -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" /></noscript>
 
     <!-- Structured Data - LocalBusiness -->
     <script type="application/ld+json">
