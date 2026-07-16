@@ -43,6 +43,12 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
   <div style={{ minHeight: height, contain: 'layout' }} aria-hidden="true" />
 )
 
+// Fallback for whole lazy PAGES: taller than any viewport, so the footer sits
+// BELOW the fold while the route chunk loads. The 50vh default put the footer
+// at mid-screen and the arriving content pushed it 4000px+ down — a measured
+// CLS of exactly 0.50 on cold blog loads (footer impact 0.5 x distance 1.0).
+const PageFallback = () => <SectionFallback height="120vh" />
+
 // Home page with all sections - each in separate Suspense for progressive rendering
 function HomePage() {
   return (
@@ -125,14 +131,14 @@ function App() {
               </Suspense>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/blog" element={<Suspense fallback={<SectionFallback />}><Blog /></Suspense>} />
-                <Route path="/blog/:slug" element={<Suspense fallback={<SectionFallback />}><BlogPost /></Suspense>} />
-                <Route path="/services/:slug" element={<Suspense fallback={<SectionFallback />}><ServicePage /></Suspense>} />
-                <Route path="/portfolio/:slug" element={<Suspense fallback={<SectionFallback />}><PortfolioExample /></Suspense>} />
-                <Route path="/terms" element={<Suspense fallback={<SectionFallback />}><Terms /></Suspense>} />
-                <Route path="/privacy" element={<Suspense fallback={<SectionFallback />}><Privacy /></Suspense>} />
-                <Route path="/accessibility" element={<Suspense fallback={<SectionFallback />}><Accessibility /></Suspense>} />
-                <Route path="*" element={<Suspense fallback={<SectionFallback />}><NotFound /></Suspense>} />
+                <Route path="/blog" element={<Suspense fallback={<PageFallback />}><Blog /></Suspense>} />
+                <Route path="/blog/:slug" element={<Suspense fallback={<PageFallback />}><BlogPost /></Suspense>} />
+                <Route path="/services/:slug" element={<Suspense fallback={<PageFallback />}><ServicePage /></Suspense>} />
+                <Route path="/portfolio/:slug" element={<Suspense fallback={<PageFallback />}><PortfolioExample /></Suspense>} />
+                <Route path="/terms" element={<Suspense fallback={<PageFallback />}><Terms /></Suspense>} />
+                <Route path="/privacy" element={<Suspense fallback={<PageFallback />}><Privacy /></Suspense>} />
+                <Route path="/accessibility" element={<Suspense fallback={<PageFallback />}><Accessibility /></Suspense>} />
+                <Route path="*" element={<Suspense fallback={<PageFallback />}><NotFound /></Suspense>} />
               </Routes>
             </Layout>
           } />
