@@ -3,6 +3,7 @@ import { m } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import SEO from '../SEO'
 import { SITE_CONTACT } from '../../data/site'
+import { track } from '../../utils/analytics'
 
 export default function Accessibility() {
   const navigate = useNavigate()
@@ -133,13 +134,13 @@ export default function Accessibility() {
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li>
                 <strong>טלפון:</strong>{' '}
-                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-sky-ink hover:underline" dir="ltr">
+                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-sky-ink hover:underline" dir="ltr" onClick={() => track('tel_click', { placement: 'accessibility_page' })}>
                   {SITE_CONTACT.phone}
                 </a>
               </li>
               <li>
                 <strong>דוא"ל:</strong>{' '}
-                <a href={`mailto:${SITE_CONTACT.email}`} className="text-sky-ink hover:underline" dir="ltr">
+                <a href={`mailto:${SITE_CONTACT.email}`} className="text-sky-ink hover:underline" dir="ltr" onClick={() => track('mailto_click', { placement: 'accessibility_page' })}>
                   {SITE_CONTACT.email}
                 </a>
               </li>

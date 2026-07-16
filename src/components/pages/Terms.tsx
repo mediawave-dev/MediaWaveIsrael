@@ -345,13 +345,13 @@ export default function Terms() {
               <div className="space-y-2 text-brown">
                 <p className="flex items-center gap-2">
                   <span>📧</span>
-                  <a href="mailto:mediawaveisrael@gmail.com" className="hover:text-sky-ink-strong transition-colors" dir="ltr">
+                  <a href="mailto:mediawaveisrael@gmail.com" className="hover:text-sky-ink-strong transition-colors" dir="ltr" onClick={() => track('mailto_click', { placement: 'terms_page' })}>
                     mediawaveisrael@gmail.com
                   </a>
                 </p>
                 <p className="flex items-center gap-2">
                   <span>📱</span>
-                  <a href="tel:052-8731808" className="hover:text-sky-ink-strong transition-colors" dir="ltr">
+                  <a href="tel:052-8731808" className="hover:text-sky-ink-strong transition-colors" dir="ltr" onClick={() => track('tel_click', { placement: 'terms_page' })}>
                     052-8731808
                   </a>
                 </p>

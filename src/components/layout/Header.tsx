@@ -147,7 +147,7 @@ export default function Header() {
                 navigate('/')
                 window.scrollTo({ top: 0, behavior: 'smooth' })
               }}
-              className="transition-all duration-300"
+              className="transition-colors duration-300"
               aria-label="חזרה לדף הבית"
             >
               <Logo variant="header" isScrolled={isScrolled || !isHomePage} />

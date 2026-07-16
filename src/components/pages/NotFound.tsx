@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SEO from '../SEO'
 import { SwellMark } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { track } from '../../utils/analytics'
 
 export default function NotFound() {
   // Ambient micro-loops (arrow nudge, floating dots) stop only via the a11y widget
@@ -157,7 +158,7 @@ export default function NotFound() {
           transition={{ delay: 0.8 }}
         >
           צריכים עזרה? התקשרו אלינו:{' '}
-          <a href="tel:052-8731808" className="text-sky-ink hover:underline" dir="ltr">
+          <a href="tel:052-8731808" className="text-sky-ink hover:underline" dir="ltr" onClick={() => track('tel_click', { placement: 'not_found' })}>
             052-8731808
           </a>
         </m.p>

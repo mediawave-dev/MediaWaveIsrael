@@ -188,7 +188,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
           {service.portfolioLink && (
             <Link
               to={service.portfolioLink}
-              className="relative z-10 inline-flex items-center justify-center gap-2 text-sm font-semibold py-2.5 px-6 rounded-full text-white transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5"
+              className="relative z-10 inline-flex items-center justify-center gap-2 text-sm font-semibold py-2.5 px-6 rounded-full text-white transition-[color,background-color,box-shadow,transform] duration-300 hover:shadow-glow hover:-translate-y-0.5"
               style={{ background: 'var(--color-sky-ink)' }}
               aria-label={`ראו דוגמה לפרויקט: ${service.title}`}
             >
