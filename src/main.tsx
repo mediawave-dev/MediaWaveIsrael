@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, startTransition } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
@@ -17,14 +17,20 @@ if (import.meta.env.PROD) {
   console.info('https://wa.me/972528731808')
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <HelmetProvider>
-      <BrowserRouter>
-        <PreviewProvider>
-          <App />
-        </PreviewProvider>
-      </BrowserRouter>
-    </HelmetProvider>
-  </StrictMode>,
-)
+// startTransition marks the initial render non-urgent so React time-slices it
+// into small tasks instead of one long block — measured TBT relief on 4x-CPU
+// mobile, with identical output (the prerendered HTML covers the screen anyway).
+const root = createRoot(document.getElementById('root')!)
+startTransition(() => {
+  root.render(
+    <StrictMode>
+      <HelmetProvider>
+        <BrowserRouter>
+          <PreviewProvider>
+            <App />
+          </PreviewProvider>
+        </BrowserRouter>
+      </HelmetProvider>
+    </StrictMode>,
+  )
+})

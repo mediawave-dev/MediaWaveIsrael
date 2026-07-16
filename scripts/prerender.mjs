@@ -140,6 +140,26 @@ async function prerender() {
     // download all lazy section chunks at high priority before first paint.
     html = html.replace(/<link rel="modulepreload" as="script"[^>]*>\s*/g, '')
 
+    // Remove the BUILD-emitted modulepreload links too (react-vendor, framer,
+    // router). They pull ~100KB of JS into the pre-paint bandwidth window at
+    // 1.6Mbps; the entry module discovers and fetches them itself right after
+    // first paint (see the paint-first loader below).
+    html = html.replace(/<link rel="modulepreload"[^>]*>\s*/g, '')
+
+    // PAINT-FIRST MOUNT: the page is fully prerendered, so the visitor gets
+    // pixels before React. With the module script in <head>, the first frame
+    // races script execution — in every trace React won (createRoot tears down
+    // and rebuilds the DOM), so FCP/LCP were chained to the whole JS graph
+    // (Lighthouse mobile LCP 4.3-4.8s). Loading the entry only AFTER the first
+    // paint makes the static HTML the recorded FCP AND LCP.
+    const entryMatch = html.match(/<script type="module" crossorigin(?:="")? src="(\/assets\/index-[^"]+)"><\/script>/)
+    if (entryMatch) {
+      const loader = `<script>(function(){var d=false;function m(){if(d)return;d=true;var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${entryMatch[1]}';document.head.appendChild(s)}if(document.readyState==='complete'){setTimeout(m,150)}else{window.addEventListener('load',function(){setTimeout(m,150)})}setTimeout(m,3500)})()</script>`
+      html = html.replace(entryMatch[0], loader)
+    } else {
+      console.warn(`    ! entry module script not found on ${route} — paint-first loader NOT applied`)
+    }
+
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
 
