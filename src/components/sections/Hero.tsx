@@ -6,6 +6,7 @@ import { WaveDivider } from '../ui/WaveDivider'
 import { StaggeredWords } from '../ui/StaggeredWords'
 import { EASE_BRAND } from '../../config/motion'
 import { track } from '../../utils/analytics'
+import { wasPrerendered } from '../../utils/prerendered'
 
 /** Signature wave underline — draws on from the RIGHT (RTL) instead of the
     old static border-bottom */
@@ -124,12 +125,16 @@ export default function Hero() {
 
       {/* Poster image — instant LCP on all devices, stays as the desktop
           backdrop until the video mounts (identical first frame, no flash) */}
+      {/* fetchPriority=low: the LCP is the headline TEXT, and this 66KB image
+          at default/high priority delayed the text-critical CSS/fonts by
+          ~330ms at 1.6Mbps. The dark gradient overlay keeps the hero legible
+          for the moment before the poster arrives. */}
       <img
         src="/images/hero-poster.webp"
         alt=""
         width="750"
         height="1334"
-        fetchPriority="high"
+        fetchPriority="low"
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ zIndex: 0 }}
@@ -175,13 +180,17 @@ export default function Hero() {
             className="text-[2.4rem] sm:text-[3.4rem] md:text-[5rem] lg:text-[6rem] font-body leading-none mb-4 md:mb-6"
             style={{ textShadow: '0 3px 15px rgba(0,0,0,0.9)' }}
           >
+            {/* On prerendered pages the headline is already on screen before
+                React mounts — replaying the reveal re-hides the LCP text for
+                ~1s (the single biggest measured LCP cost) and reads as a flash */}
             <StaggeredWords
               text="העסק שלכם"
               delay={0.1}
+              skip={wasPrerendered}
               className="block text-white mb-2 md:mb-4"
             />
             <span className="relative inline-block text-white pb-2">
-              <StaggeredWords text="המומחיות שלנו" delay={0.3} />
+              <StaggeredWords text="המומחיות שלנו" delay={0.3} skip={wasPrerendered} />
               <WaveUnderline prefersReducedMotion={!ambient} />
             </span>
           </h1>
@@ -190,7 +199,7 @@ export default function Hero() {
           <m.div
             className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-4 min-h-[1.4em]"
             style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
-            initial={{ opacity: 0 }}
+            initial={wasPrerendered ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
@@ -211,7 +220,7 @@ export default function Hero() {
           <m.p
             className="hidden md:block text-xl md:text-2xl lg:text-3xl text-white/80 mb-6 md:mb-8 max-w-2xl mx-auto px-6 md:px-0 leading-relaxed"
             style={{ textShadow: '0 2px 8px rgba(0,0,0,0.7)' }}
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            initial={wasPrerendered ? false : { opacity: 0, transform: 'translateY(20px)' }}
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
@@ -224,7 +233,7 @@ export default function Hero() {
           {/* CTA Buttons */}
           <m.div
             className="flex flex-col md:flex-row gap-3 md:gap-5 justify-center mb-8 md:mb-6 px-2 md:px-0"
-            initial={{ opacity: 0, transform: 'translateY(20px)' }}
+            initial={wasPrerendered ? false : { opacity: 0, transform: 'translateY(20px)' }}
             animate={{ opacity: 1, transform: 'translateY(0px)' }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >

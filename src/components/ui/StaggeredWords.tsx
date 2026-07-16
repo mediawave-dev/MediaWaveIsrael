@@ -18,16 +18,24 @@ interface StaggeredWordsProps {
   delay?: number
   stagger?: number
   className?: string
+  /** Render the plain sentence with no reveal — used on prerendered pages,
+      where the text is already visible before React mounts and re-hiding it
+      for the animation was the single biggest measured LCP cost */
+  skip?: boolean
 }
 
-export function StaggeredWords({ text, delay = 0, stagger = 0.08, className = '' }: StaggeredWordsProps) {
+export function StaggeredWords({ text, delay = 0, stagger = 0.08, className = '', skip = false }: StaggeredWordsProps) {
   const prefersReducedMotion = useReducedMotion()
+  const words = text.split(' ')
 
-  if (prefersReducedMotion) {
+  // skip: on prerendered pages the plain sentence is exactly what the static
+  // HTML holds (headless prerender runs with reduced-motion, so the plain
+  // branch is what got captured) — the remount must render the SAME markup,
+  // or the browser records a new LCP paint inside the JS window and
+  // Lighthouse chains LCP to the whole bundle graph.
+  if (prefersReducedMotion || skip) {
     return <span className={className}>{text}</span>
   }
-
-  const words = text.split(' ')
 
   return (
     <span className={className}>
