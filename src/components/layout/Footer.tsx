@@ -52,7 +52,7 @@ export default function Footer() {
               </a>
             </div>
             <p className="text-sm leading-relaxed text-cream/70">
-              בונים נוכחות דיגיטלית מנצחת לעסקים
+              עיצוב ופיתוח אתרים מקצועיים לעסקים
             </p>
           </div>
 
