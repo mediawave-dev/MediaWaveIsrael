@@ -10,7 +10,11 @@ export default function NotFound() {
   // Ambient micro-loops (arrow nudge, floating dots) stop only via the a11y widget
   const ambient = useAmbientMotion()
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center p-4">
+    // The header is fixed and opaque here, and on phones the content is taller
+    // than the viewport, so items-center cannot centre it: pt-24 keeps the mark
+    // out from under the header and pb-28 keeps the last line clear of the
+    // fixed WhatsApp / chat buttons (both measured at 320/390).
+    <div className="min-h-screen bg-cream flex items-center justify-center p-4 pt-24 pb-28 sm:pb-4">
       <SEO
         title="העמוד לא נמצא (404)"
         description="העמוד שחיפשתם לא קיים או שהוסר. חזרו לדף הבית של MediaWave Israel."
@@ -106,7 +110,7 @@ export default function NotFound() {
           </m.a>
 
           {/* Quick escapes */}
-          <nav aria-label="קישורים מהירים" className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+          <nav aria-label="קישורים מהירים" className="mt-4 sm:mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
             <Link to="/blog" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
               הבלוג
             </Link>
@@ -153,7 +157,7 @@ export default function NotFound() {
 
         {/* Contact info */}
         <m.p
-          className="mt-12 text-sm text-brown-muted"
+          className="mt-4 sm:mt-12 text-sm text-brown-muted"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
