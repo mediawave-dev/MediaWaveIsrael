@@ -230,7 +230,7 @@ export default function Header() {
           <>
             {/* Backdrop */}
             <m.div
-              className="fixed inset-0 bg-brown-dark/20 backdrop-blur-sm z-40 md:hidden"
+              className="fixed inset-0 bg-brown-dark/20 backdrop-blur-sm z-[55] md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
