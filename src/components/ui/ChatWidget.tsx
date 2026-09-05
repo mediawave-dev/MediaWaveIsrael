@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 're
 import { m, AnimatePresence } from 'framer-motion'
 import { X, Send, RotateCcw } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
+import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
 import { track } from '../../utils/analytics'
 
@@ -58,7 +59,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
       className={`flex ${isUser ? 'justify-start' : 'justify-end'}`}
       initial={{ opacity: 0, y: 12, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.25, ease: EASE_BRAND }}
     >
       <div
         className={`max-w-[85%] px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${

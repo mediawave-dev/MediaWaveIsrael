@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SEO from '../SEO'
 import { SwellMark } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { EASE_BRAND } from '../../config/motion'
 import { track } from '../../utils/analytics'
 
 export default function NotFound() {
@@ -21,7 +22,7 @@ export default function NotFound() {
           className="flex justify-center mb-6"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.6, ease: EASE_BRAND }}
         >
           <SwellMark tone="onLight" className="w-20 h-20 md:w-24 md:h-24" title="MediaWave" />
         </m.div>

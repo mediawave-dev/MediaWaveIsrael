@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Logo } from '../ui'
 import { headerLinks } from '../../config/navigation'
+import { EASE_BRAND } from '../../config/motion'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { track } from '../../utils/analytics'
 
@@ -196,7 +197,7 @@ export default function Header() {
                     top: isMobileMenuOpen ? 10 : 0,
                     rotate: isMobileMenuOpen ? 45 : 0,
                   }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.3, ease: EASE_BRAND }}
                 />
                 <m.span
                   className="absolute right-0 top-[10px] h-0.5 bg-white rounded-full transition-colors duration-300"
@@ -215,7 +216,7 @@ export default function Header() {
                     top: isMobileMenuOpen ? 10 : 20,
                     rotate: isMobileMenuOpen ? -45 : 0,
                   }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.3, ease: EASE_BRAND }}
                 />
               </div>
             </button>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
+import { EASE_BRAND } from '../../config/motion'
 
 const CONSENT_KEY = 'mw_cookie_consent'
 
@@ -52,7 +53,7 @@ export default function CookieConsent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.3, ease: EASE_BRAND }}
         >
           {/* Mobile: single compact row. Desktop (sm+): stacked card. */}
           <div className="bg-white rounded-xl shadow-lg border border-cream-darker/30 p-3 sm:p-4">
