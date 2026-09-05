@@ -171,7 +171,8 @@ export default function LeadModal() {
     return (
         <AnimatePresence>
             {isVisible && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                /* z-[60]: above the cookie banner (z-50) so the form is never covered */
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
                     {/* Backdrop */}
                     <m.div
                         initial={{ opacity: 0 }}

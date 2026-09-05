@@ -264,12 +264,14 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
       {/* --- Chat Panel --- */}
       <AnimatePresence>
         {isOpen && (
+          /* z-[60]: modal dialogs sit above the cookie banner (z-50), which mounts
+             later in Layout and otherwise covered the message input (measured) */
           <m.div
             ref={panelRef}
             role="dialog"
             aria-label="צ'אט עם MediaWave"
             aria-modal="true"
-            className="fixed z-50 inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            className="fixed z-[60] inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             style={{
               background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
               border: '1px solid rgba(226, 232, 240, 0.6)',

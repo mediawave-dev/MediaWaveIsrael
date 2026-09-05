@@ -237,14 +237,15 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            {/* Mobile Menu Panel - slides from right (RTL) */}
+            {/* Mobile Menu Panel - slides from right (RTL). z-[60]: above the
+                cookie banner (z-50), which mounts later and otherwise overlaps it */}
             <m.div
               ref={menuPanelRef}
               id="mobile-menu"
               role="dialog"
               aria-modal="true"
               aria-label="תפריט ניווט"
-              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-cream z-50 md:hidden shadow-lg"
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-cream z-[60] md:hidden shadow-lg"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
