@@ -143,10 +143,12 @@ export default function AccessibilityWidget() {
     visible: { opacity: 1, scale: 1, y: 0 },
   }
 
+  // top: 120px at every width. The old mobile value (15px) parked this 44px
+  // touch-target tab exactly over the burger's left half (RTL header puts the
+  // burger on the left), so a tap at the burger's centre hit this wrapper and
+  // the menu never opened (measured with elementFromPoint at 320 and 390).
   return (
-    <div className="absolute left-0 z-[51]" data-accessibility-widget style={{ top: '15px' }}>
-      {/* Desktop override */}
-      <style>{`@media(min-width:768px){[data-accessibility-widget]{top:120px!important}}`}</style>
+    <div className="absolute left-0 z-[51]" data-accessibility-widget style={{ top: '120px' }}>
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (
