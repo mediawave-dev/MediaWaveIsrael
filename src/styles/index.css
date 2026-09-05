@@ -146,6 +146,10 @@
      were removed on purpose — do not reintroduce them. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+  /* The header-CTA tide is the one deliberate exception: a gentler cubic-out
+     (not expo) so the crest is slow enough to read (DESIGN.md, "The Tide").
+     Declared here so the curve has one source, like every other easing. */
+  --ease-tide: cubic-bezier(0.33, 1, 0.68, 1);
 
   /* -----------------------------
      WAVE-LAB TOKENS (DESIGN-UPGRADE §3.2)
@@ -796,7 +800,7 @@ section[id] {
   border-radius: 48% 52% 0 0 / 90% 70% 0 0;
   transform: translateY(88%);
   /* cubic-out (not expo): slow enough for the crest to actually read */
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  transition: transform 0.6s var(--ease-tide);
 }
 
 .header-cta:hover::before {
@@ -818,7 +822,7 @@ section[id] {
   transform: translateY(88%);
   opacity: 0.9;
   transition:
-    transform 0.5s cubic-bezier(0.33, 1, 0.68, 1),
+    transform 0.5s var(--ease-tide),
     opacity 0.4s ease 0.3s;
 }
 
@@ -1187,7 +1191,7 @@ html.disable-animations [data-floating] {
    so nothing is ever hidden behind the banner.
    ============================================ */
 .floating-cta {
-  transition: bottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: bottom 0.3s var(--ease-brand);
 }
 
 @media (max-width: 639px) {
