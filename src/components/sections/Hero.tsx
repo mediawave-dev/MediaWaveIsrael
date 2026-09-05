@@ -120,21 +120,33 @@ export default function Hero() {
       id="hero"
       aria-label="ראשי"
       className="relative min-h-screen-dvh flex items-center justify-center overflow-hidden"
+      /* The hero IS a dark surface (DESIGN.md lists #hero next to header and
+         footer as the pastel-sky-on-dark contexts). Declaring it here, beneath
+         the poster and the gradient overlay, means the Sky-Ink gate resolves
+         the real backdrop of the sky accent word instead of the frost body,
+         and the moment before the poster arrives paints navy under the overlay
+         rather than a light flash. Nothing changes once the poster has loaded. */
+      style={{ background: '#1E293B' }}
     >
       {/* ===== LAYER 1: Video Background (z-0) ===== */}
 
       {/* Poster image — instant LCP on all devices, stays as the desktop
           backdrop until the video mounts (identical first frame, no flash) */}
-      {/* fetchPriority=low: the LCP is the headline TEXT, and this 66KB image
+      {/* fetchpriority=low: the LCP is the headline TEXT, and this 66KB image
           at default/high priority delayed the text-critical CSS/fonts by
           ~330ms at 1.6Mbps. The dark gradient overlay keeps the hero legible
-          for the moment before the poster arrives. */}
+          for the moment before the poster arrives.
+          Passed as the lowercase DOM attribute through a spread: React 18 does
+          not know the camelCase prop (it warned on every route), and
+          @types/react 18 does not type the lowercase form, so the spread is
+          the way to hand it to the DOM unchanged. Verified in the rendered DOM
+          and in the prerendered HTML. */}
       <img
         src="/images/hero-poster.webp"
         alt=""
         width="750"
         height="1334"
-        fetchPriority="low"
+        {...{ fetchpriority: 'low' }}
         decoding="async"
         className="absolute inset-0 w-full h-full object-cover"
         style={{ zIndex: 0 }}
