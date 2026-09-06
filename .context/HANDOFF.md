@@ -1,5 +1,15 @@
 # HANDOFF — MediaWave Israel
 
+## עדכון אחרון (06/09/2026) — ריצה לילית design-gate (Fable), branch: fix/design-gate-20260906
+**13 קומיטים מקומיים (83c9323..b61cf50), לא נדחף.** נתי אישר את 10 הראשונים ב-04:00 וביקש חוות דעת + שדרוג פרימיום; קומיטים 08123cf + 42bb70b + b61cf50 = סבב פרימיום (השלישי = תיקוני הביקורת: overflow-clip לציר ה-view(), סמן, הרמה ב-CSS) (סימן גל תחת כותרות, זרקור בכרטיסים `.spotlight-card` + `src/utils/spotlight.ts`, רדיוס/קצב אחידים, סמן מכונת כתיבה, בלי ping, וידאו WhyUs 20%). חוות הדעת המלאה בתוספת (2) של דוח הבוקר. ~~**10 קומיטים מקומיים (83c9323..b6956c4), לא נדחף. דוח בוקר מלא: `.context/OVERNIGHT_RESULT_2026-09-06.md`. ראיות: `.design-loop/night-20260906/` (gitignored).**
+- 4 משימות הפרומפט: EASE_SOURCE/LEGACY_NAME/CONSOLE_ERROR ירוקים; SKY_INK: מילת ההירו תוקנה (הצהרת משטח כהה על #hero), קישורי ההדר = false positive של הדיטקטור (ניגודיות אמיתית 6.4–9:1) — נשאר אדום בכוונה; AXE_CONTRAST = flake של באנר העוגיות באמצע fade (במנוחה 0).
+- מעבר לפרומפט (בהיתר נתי): טאב הנגישות חסם את מרכז הבורגר במובייל (P0, עבר ל-top:120px); באנר העוגיות כיסה את שדה הצ'אט (דיאלוגים ל-z-[60], backdrop תפריט z-[55]); 404 פינוי מההדר/FABs; noscript חושף את ה-prerender; טאגליין הפוטר לפי החלטה #31 (שינוי הקופי היחיד); `--ease-tide` טוקן.
+- **פתוח לנתי:** ז׳רגון טכני בעמודי /services/*; לוטי LeadModal עם "CONTACT Us"; פופאפ 35 שניות; וואטסאפ ירוק = גוון שני; אזהרת framer PopChild ref (dev בלבד, upgrade patch); שער: SKY_INK ancestor-walk, AXE timing, TOKEN_DRIFT allowlist, verify.mjs בלי scroll-prime.
+- **סקריפטים חד-פעמיים** בסקראצ׳פד של הסשן (לא בריפו): shoot-revealed.mjs (צילומים אחרי גלילה), shoot-states.mjs, pixel-diff.mjs, crop.mjs, probe-*.mjs, measure-backdrop.mjs.
+- דחיפה: `gh auth switch -u mediawave-dev` → `git push -u origin fix/design-gate-20260906` → PR/מיזוג ל-main. חזרה לאחור: `git revert` לקומיט בודד (כל קומיט עצמאי) או `git branch -f fix/design-gate-20260906 83c9323` אחרי checkout לבראנץ' אחר.
+
+---
+
 ## עדכון אחרון (16/07/2026) — ריצת שערים אוטונומית (Fable), branch: upgrade/fable-20260712
 ריצה מלאה לפי בריף "MediaWave Site Upgrade": baseline מדוד → תיקונים → שערים על preview.
 - **Baseline מלא של הפרודקשן** ב-audit/BASELINE.md (+ audit/raw/, לא ב-git). ממצאי ענק:
