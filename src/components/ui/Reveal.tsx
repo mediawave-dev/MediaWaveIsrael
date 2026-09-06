@@ -45,7 +45,7 @@ export function Reveal({
   )
 
   if (NEEDS_MASK.includes(variant)) {
-    return <div className={wrapperClassName ?? 'overflow-hidden'}>{el}</div>
+    return <div className={wrapperClassName ?? 'overflow-clip'}>{el}</div>
   }
   return el
 }

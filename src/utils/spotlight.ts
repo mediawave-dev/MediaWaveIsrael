@@ -25,6 +25,7 @@ export function installSpotlight(): () => void {
   }
 
   const onMove = (event: PointerEvent) => {
+    if (document.documentElement.classList.contains('disable-animations')) return
     const target = event.target as Element | null
     const card = target?.closest<HTMLElement>('.spotlight-card')
     if (!card) return

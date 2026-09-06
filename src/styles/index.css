@@ -1308,13 +1308,25 @@ html.disable-animations .spotlight-card::before {
   vertical-align: -0.06em;
   border-radius: 9999px;
   background: var(--color-orange);
-  animation: caret-blink 1.1s steps(2, start) infinite;
+  animation: caret-blink 1.1s step-end infinite;
 }
 
+/* Discrete on/off (a stepped opacity tween never reaches 1). */
 @keyframes caret-blink {
-  to { opacity: 0; }
+  0%, 49.9% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* The typewriter keeps typing under OS reduced-motion (decision 24: brand
+   ambient motion never freezes), so its caret keeps blinking with it. The
+   site's own switch is the full stop for both. */
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret {
+    animation-duration: 1.1s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 html.disable-animations .typewriter-caret {
-  animation: none;
+  animation: none !important;
 }

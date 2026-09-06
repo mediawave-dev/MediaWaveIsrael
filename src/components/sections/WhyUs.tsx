@@ -81,7 +81,7 @@ export default function WhyUs() {
       ref={sectionRef}
       id="why-us"
       aria-label="למה אנחנו"
-      className="relative py-16 md:py-24 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-clip"
     >
       {/* ===== LAYER 1: Video Background ===== */}
 
@@ -154,10 +154,9 @@ export default function WhyUs() {
             return (
               <m.div
                 key={item._id}
-                className="spotlight-card card-glow bg-white rounded-xl p-6 border border-cream-darker/60 shadow-sm group text-center"
+                className="spotlight-card card-glow bg-white rounded-xl p-6 border border-cream-darker/60 shadow-sm group text-center transition-transform duration-500 hover:-translate-y-[6px]"
                 style={{ '--hover-shadow': '0 8px 24px rgba(74, 74, 74, 0.08)' } as React.CSSProperties}
                 {...reveal('slideInRight', index * 0.1)}
-                whileHover={{ y: -6 }}
               >
                 {hasLottie ? (
                   <div className="w-48 h-48 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">

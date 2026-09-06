@@ -81,7 +81,7 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
         border border-cream-darker/60
         shadow-[0_8px_32px_rgba(125,211,252,0.12)]
         transition-transform duration-500
-        hover:-translate-y-1.5
+        hover:-translate-y-[6px]
       ">
         {/* Large gradient number */}
         <m.div
@@ -184,7 +184,7 @@ export default function HowWeWork() {
   return (
     <section
       id="process"
-      className="section relative overflow-hidden py-16 md:py-24"
+      className="section relative overflow-clip py-16 md:py-24"
       aria-labelledby="how-we-work-title"
     >
       {/* Background decorations */}
