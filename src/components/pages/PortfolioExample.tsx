@@ -5,6 +5,7 @@ import SEO from '../SEO'
 import { WaveDivider } from '../ui/WaveDivider'
 import { getPortfolioExampleBySlug } from '../../data/portfolio-examples'
 import { track } from '../../utils/analytics'
+import { inViewOnce } from '../../config/motion'
 
 export default function PortfolioExample() {
   const { slug } = useParams<{ slug: string }>()
@@ -132,7 +133,7 @@ export default function PortfolioExample() {
           <m.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             {example.localVideoPath ? (
               <video
@@ -175,7 +176,7 @@ export default function PortfolioExample() {
             className="text-2xl md:text-3xl font-headline text-brown-dark mb-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             על הפרויקט
           </m.h2>
@@ -183,7 +184,7 @@ export default function PortfolioExample() {
             className="text-lg text-brown-light leading-relaxed"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.1 }}
           >
             {example.description}
@@ -203,7 +204,7 @@ export default function PortfolioExample() {
             className="text-3xl md:text-4xl font-headline text-brown-dark mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             רוצים סרטון כזה?
           </m.h2>
@@ -211,7 +212,7 @@ export default function PortfolioExample() {
             className="text-lg text-brown-light mb-8"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.1 }}
           >
             שלחו לנו את התמונות ונתחיל לעבוד
@@ -221,7 +222,7 @@ export default function PortfolioExample() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.2 }}
           >
             <a
@@ -251,7 +252,7 @@ export default function PortfolioExample() {
             className="mt-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.3 }}
           >
             <Link

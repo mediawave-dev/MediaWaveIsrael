@@ -70,7 +70,9 @@ export function LottieIcon({
           observer.disconnect()
         }
       },
-      { rootMargin: '200px' }
+      // Load well ahead of the scroll: at 200px a fast phone flick arrived
+      // before the icon did, so the card visibly swapped placeholder -> art.
+      { rootMargin: '800px' }
     )
 
     observer.observe(containerRef.current)
@@ -176,7 +178,9 @@ export function LottieIcon({
     return (
       <div
         ref={containerRef}
-        className={`animate-pulse bg-sky-100 rounded-xl ${className}`}
+        // Reserve the space silently. The old pulsing sky-blue block drew the
+        // eye to a placeholder and then swapped to the illustration.
+        className={`rounded-xl ${className}`}
         style={{ width: size, height: size }}
       />
     )

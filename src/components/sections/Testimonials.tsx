@@ -3,6 +3,7 @@ import { m, AnimatePresence } from 'framer-motion'
 import { useReducedMotion, useAmbientMotion } from '../../hooks/useReducedMotion'
 import { useRevealFactory } from '../../config/reveal'
 import { testimonials } from '../../data/testimonials'
+import { inViewOnce, DURATION, EASE_BRAND } from '../../config/motion'
 
 // Color palette for testimonial cards — sky family only (the old warm
 // watercolor values are historical; never restore them)
@@ -58,7 +59,7 @@ export default function Testimonials() {
           style={{ color: 'rgba(245, 166, 35, 0.05)' }}
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          viewport={inViewOnce}
           transition={{ duration: 1 }}
         >
           &ldquo;
@@ -86,7 +87,7 @@ export default function Testimonials() {
             className="flex items-center justify-center gap-3 mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             {[...Array(5)].map((_, i) => (
               <m.svg
@@ -97,7 +98,7 @@ export default function Testimonials() {
                 style={{ fill: 'var(--color-orange)' }}
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                viewport={{ once: true }}
+                viewport={inViewOnce}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
               >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
@@ -280,8 +281,8 @@ export default function Testimonials() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4"
             initial={{ opacity: 0, transform: 'translateY(30px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            viewport={inViewOnce}
+            transition={{ delay: 0.1, duration: DURATION.reveal, ease: EASE_BRAND }}
           >
             {testimonials.map((testimonial, index) => (
               <m.button

@@ -1,5 +1,6 @@
 import { useState, useId, forwardRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
+import { inViewOnce } from '../../config/motion'
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
@@ -28,7 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         className="relative"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
+        viewport={inViewOnce}
         transition={{ duration: 0.5 }}
       >
         {/* Glow effect on focus */}
@@ -165,7 +166,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         className="relative"
         initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
+        viewport={inViewOnce}
         transition={{ duration: 0.5 }}
       >
         {/* Glow effect on focus */}

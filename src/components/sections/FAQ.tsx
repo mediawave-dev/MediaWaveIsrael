@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { m } from 'framer-motion'
 import { HtmlContent } from '../HtmlContent'
 import { useRevealFactory } from '../../config/reveal'
+import { inViewOnce, DURATION, EASE_BRAND } from '../../config/motion'
 
 interface Faq {
   _id: string
@@ -127,8 +128,8 @@ export default function FAQ() {
           className="text-center mt-12"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={inViewOnce}
+          transition={{ duration: DURATION.reveal, delay: 0.1, ease: EASE_BRAND }}
         >
           <p className="text-brown-light text-xl md:text-2xl mb-4">עדיין יש שאלות?</p>
           <a

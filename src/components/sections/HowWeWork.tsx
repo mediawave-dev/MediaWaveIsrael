@@ -2,7 +2,7 @@ import { m } from 'framer-motion'
 import { LottieIcon } from '../ui/LottieIcon'
 import { Reveal } from '../ui/Reveal'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
-import { EASE_BRAND } from '../../config/motion'
+import { DURATION, EASE_BRAND, inViewOnce } from '../../config/motion'
 
 interface StepItem {
   _id: string
@@ -27,8 +27,10 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
+      // A rhythm, not a queue: at 0.15 + 0.2 the fourth card began 0.65s after
+      // the first, so a scrolling visitor met a row still assembling itself.
+      staggerChildren: 0.06,
+      delayChildren: 0,
     },
   },
 }
@@ -36,32 +38,33 @@ const containerVariants = {
 // Card entrance animation
 const cardVariants = {
   hidden: {
+    // 14px, not 40px + scale: the travel is what reads as instability while
+    // scrolling. The spring is gone too — it has a long tail and DESIGN.md
+    // allows only the one signature easing.
     opacity: 0,
-    transform: 'translateY(40px) scale(0.95)',
+    transform: 'translateY(14px)',
   },
   visible: {
     opacity: 1,
-    transform: 'translateY(0px) scale(1)',
+    transform: 'translateY(0px)',
     transition: {
-      type: 'spring' as const,
-      damping: 20,
-      stiffness: 100,
+      duration: DURATION.reveal,
+      ease: EASE_BRAND,
     },
   },
 }
 
 // Number gradient animation
 const numberVariants = {
-  hidden: { opacity: 0, scale: 0.5, rotate: -10 },
+  // The step watermark used to spin in from scale 0.5 / -10deg on an
+  // underdamped spring — the single most eye-catching movement in the section.
+  hidden: { opacity: 0, scale: 0.94 },
   visible: {
     opacity: 1,
     scale: 1,
-    rotate: 0,
     transition: {
-      type: 'spring' as const,
-      damping: 12,
-      stiffness: 150,
-      delay: 0.1,
+      duration: DURATION.reveal,
+      ease: EASE_BRAND,
     },
   },
 }
@@ -139,7 +142,7 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
           "
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
+          viewport={inViewOnce}
           transition={{ duration: 0.6, delay: 0.3 + index * 0.1, ease: 'easeOut' }}
         />
       </div>
@@ -171,7 +174,7 @@ function ProcessWave({ prefersReducedMotion }: { prefersReducedMotion: boolean }
           strokeLinecap="round"
           initial={prefersReducedMotion ? { pathLength: 1 } : { pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={inViewOnce}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 1.8, ease: EASE_BRAND }}
         />
       </svg>
@@ -214,7 +217,7 @@ export default function HowWeWork() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
+            viewport={inViewOnce}
           >
             {steps.map((step, index) => (
               <StepCard key={step._id} step={step} index={index} />
@@ -227,8 +230,8 @@ export default function HowWeWork() {
           className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0, transform: 'translateY(20px)' }}
           whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.8, duration: 0.5 }}
+          viewport={inViewOnce}
+          transition={{ delay: 0.15, duration: DURATION.reveal, ease: EASE_BRAND }}
         >
           <p className="text-brown-muted text-sm md:text-base">
             מוכנים להתחיל?

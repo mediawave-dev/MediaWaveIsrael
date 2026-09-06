@@ -1,6 +1,7 @@
 import { forwardRef, useState } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
+import { inViewOnce } from '../../config/motion'
 
 interface ButtonProps {
   children: React.ReactNode
@@ -88,7 +89,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={inViewOnce}
         transition={{ duration: 0.4 }}
       >
         {/* Ripple effect on click */}

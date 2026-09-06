@@ -8,6 +8,7 @@ import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
 import { useRevealFactory } from '../../config/reveal'
 import { track } from '../../utils/analytics'
+import { inViewOnce } from '../../config/motion'
 
 export default function Contact() {
   // Two columns enter from opposite framing: form rises, info slides from left
@@ -103,7 +104,7 @@ export default function Contact() {
             className="text-4xl md:text-5xl font-headline mb-4"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ duration: 0.6 }}
           >
             דברו <span style={{ color: '#0284C7' }}>איתנו</span>
@@ -116,7 +117,7 @@ export default function Contact() {
             className="flex justify-center mb-4 mt-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <LottieIcon
@@ -132,7 +133,7 @@ export default function Contact() {
             className="text-2xl text-brown-light"
             initial={{ opacity: 0, transform: 'translateY(20px)' }}
             whileInView={{ opacity: 1, transform: 'translateY(0px)' }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם

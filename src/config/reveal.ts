@@ -14,16 +14,23 @@
  * transform / opacity / filter / clip-path — content is never removed from the
  * DOM. The reduced-motion path (useReveal) renders content FULLY VISIBLE and
  * UNCLIPPED, so a reveal that never fires can never ship a blank section.
+ *
+ * Stability contract (2026-09-06): a reveal must be FINISHED by the time the
+ * block reaches the screen. Every variant therefore uses the shared
+ * `inViewOnce` trigger (starts ~280px early), short durations, small distances
+ * and a capped stagger. On touch devices the transform is dropped entirely —
+ * a phone scrolls fast, and moving blocks under the thumb read as instability.
  */
 import { useReducedMotion, useAmbientMotion } from '../hooks/useReducedMotion'
-import { EASE_BRAND, DURATION, fadeUpProps } from './motion'
+import { useMediaQuery } from '../hooks/useMediaQuery'
+import { EASE_BRAND, DURATION, fadeUpProps, inViewOnce } from './motion'
 
 export interface RevealOptions {
   /** px distance for slide/rise variants */
   distance?: number
-  /** starting scale for scaleIn (e.g. 0.92) */
+  /** starting scale for scaleIn (e.g. 0.94) */
   from?: number
-  /** blur radius in px for blurIn (bounded, ≤8 recommended) */
+  /** blur radius in px for blurIn (bounded, ≤6 recommended) */
   blur?: number
   /** secondary Y offset (blurIn / rotateSubtle) */
   y?: number
@@ -33,54 +40,61 @@ export interface RevealOptions {
   deg?: number
 }
 
-const viewportOnce = { once: true as const }
+const viewportOnce = inViewOnce
+
+/**
+ * Grid stagger is a rhythm, not a queue. Call sites pass `index * 0.1`, which
+ * left the sixth card in a row still arriving half a second after the first —
+ * visible as a cascade while scrolling. Cap it.
+ */
+const capDelay = (delay: number) => Math.min(Math.max(delay, 0), 0.2)
 
 /** RTL home base: content arrives from the reading edge (visual right). */
 export const slideInRight = (delay = 0, o: RevealOptions = {}) => {
-  const d = o.distance ?? 32
+  const d = o.distance ?? 18
   return {
     initial: { opacity: 0, transform: `translateX(${d}px)` },
     whileInView: { opacity: 1, transform: 'translateX(0px)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.normal, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.reveal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
 /** Deliberate accent — the opposite framing (from the left). */
 export const slideInLeft = (delay = 0, o: RevealOptions = {}) => {
-  const d = o.distance ?? 32
+  const d = o.distance ?? 18
   return {
     initial: { opacity: 0, transform: `translateX(-${d}px)` },
     whileInView: { opacity: 1, transform: 'translateX(0px)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.normal, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.reveal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
 /** Tiles/cards pop to scale — no overshoot (EASE_BRAND, not a back curve). */
 export const scaleIn = (delay = 0, o: RevealOptions = {}) => {
-  const from = o.from ?? 0.92
+  const from = o.from ?? 0.96
   return {
     initial: { opacity: 0, transform: `scale(${from})` },
     whileInView: { opacity: 1, transform: 'scale(1)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.normal, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.reveal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
 /**
  * Focus-pull with a bounded blur. Use on IMAGES / media only — never on text:
- * blurred Hebrew type reads as broken during the ~0.9s reveal (and lazy-mounted
+ * blurred Hebrew type reads as broken during the reveal (and lazy-mounted
  * sections play it right as they appear). For text, use a transform variant.
  */
 export const blurIn = (delay = 0, o: RevealOptions = {}) => {
-  const blur = o.blur ?? 8
-  const y = o.y ?? 12
+  const blur = o.blur ?? 6
+  const y = o.y ?? 8
   return {
     initial: { opacity: 0, filter: `blur(${blur}px)`, transform: `translateY(${y}px)` },
     whileInView: { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0px)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.slow, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.normal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
@@ -99,30 +113,30 @@ export const clipWipe = (delay = 0, o: RevealOptions = {}) => {
     initial: { opacity: 1, clipPath: hidden, WebkitClipPath: hidden },
     whileInView: { opacity: 1, clipPath: shown, WebkitClipPath: shown },
     viewport: viewportOnce,
-    transition: { duration: DURATION.slow, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.normal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
-/** Rise from a mask — pair with an overflow-hidden host (Reveal adds one). */
+/** Rise from a mask — pair with a clipping host (Reveal adds one). */
 export const maskRise = (delay = 0, o: RevealOptions = {}) => {
-  const d = o.distance ?? 26
+  const d = o.distance ?? 14
   return {
     initial: { opacity: 0, transform: `translateY(${d}px)` },
     whileInView: { opacity: 1, transform: 'translateY(0px)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.normal, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.reveal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
 /** Whisper of a tilt as it rises — never elastic, ≤2°. */
 export const rotateSubtle = (delay = 0, o: RevealOptions = {}) => {
-  const deg = o.deg ?? 2
-  const y = o.y ?? 18
+  const deg = o.deg ?? 1.5
+  const y = o.y ?? 10
   return {
     initial: { opacity: 0, transform: `translateY(${y}px) rotate(${deg}deg)` },
     whileInView: { opacity: 1, transform: 'translateY(0px) rotate(0deg)' },
     viewport: viewportOnce,
-    transition: { duration: DURATION.normal, delay, ease: EASE_BRAND },
+    transition: { duration: DURATION.reveal, delay: capDelay(delay), ease: EASE_BRAND },
   }
 }
 
@@ -138,7 +152,7 @@ export type RevealVariant =
 
 /** Typed registry — keeps <Reveal variant="…"> and useReveal type-safe. */
 export const REVEAL_VARIANTS = {
-  fadeUp: (delay = 0, o: RevealOptions = {}) => fadeUpProps(delay, o.distance ?? 20),
+  fadeUp: (delay = 0, o: RevealOptions = {}) => fadeUpProps(capDelay(delay), o.distance ?? 12),
   slideInRight,
   slideInLeft,
   scaleIn,
@@ -157,6 +171,19 @@ export const REVEAL_VISIBLE = {
 }
 
 /**
+ * Touch path. A phone scrolls in fast flicks, so any block still travelling
+ * when the thumb passes it reads as the page being unstable: keep the arrival
+ * (a short crossfade, so nothing snaps) and drop the movement.
+ *
+ * It zeroes the variant's magnitudes rather than swapping in an opacity-only
+ * object. `useMediaQuery` is false on the first (prerender-safe) render and
+ * flips after mount, so a swap would leave whatever the first render set —
+ * measured: cards stuck at `translateX(18px)` with opacity already 1. Keeping
+ * the SAME animated properties means the reveal always lands them at rest.
+ */
+const TOUCH_OPTS: RevealOptions = { distance: 0, from: 1, blur: 0, y: 0, deg: 0 }
+
+/**
  * Reduced-motion fallback. Carries ONLY opacity — never filter/clip/transform —
  * so content is always fully visible and unclipped. fadeOnly=true keeps a gentle
  * crossfade (OS "reduce" pref); false is the instant, fully-visible form.
@@ -172,20 +199,26 @@ export function revealFallback(fadeOnly = true) {
 }
 
 /**
- * Reads the two reduced-motion signals ONCE and returns a plain (non-hook)
- * builder. Use this when reveals are produced inside a `.map()` — calling the
- * builder in a loop is fine (it is not a hook), whereas calling useReveal there
- * would break the Rules of Hooks.
+ * Reads the reduced-motion signals and the pointer type ONCE and returns a
+ * plain (non-hook) builder. Use this when reveals are produced inside a
+ * `.map()` — calling the builder in a loop is fine (it is not a hook), whereas
+ * calling useReveal there would break the Rules of Hooks.
  *   const reveal = useRevealFactory()
  *   items.map((it, i) => <m.div {...reveal('scaleIn', i * 0.1)} whileHover={…} />)
  */
 export function useRevealFactory() {
   const prefersReduced = useReducedMotion()
   const ambient = useAmbientMotion()
+  const isTouch = useMediaQuery('(pointer: coarse)')
 
   return (variant: RevealVariant, delay = 0, opts: RevealOptions = {}) => {
     if (!ambient) return REVEAL_VISIBLE
     if (prefersReduced) return revealFallback(true)
+    // A clip wipe has no magnitude to zero, so on touch it becomes a crossfade.
+    if (isTouch) {
+      const v = variant === 'clipWipe' ? 'fadeUp' : variant
+      return REVEAL_VARIANTS[v](0, { ...opts, ...TOUCH_OPTS })
+    }
     return REVEAL_VARIANTS[variant](delay, opts)
   }
 }
@@ -195,8 +228,8 @@ export function useRevealFactory() {
  * `m.*` element:
  *   <m.div {...useReveal('slideInRight', 0.1)} whileHover={{ y: -4 }} />
  * Self-gates on both reduced-motion signals (site kill-switch → instant visible,
- * OS prefers-reduced-motion → gentle opacity crossfade, else the variant).
- * For reveals inside a loop, use useRevealFactory() instead.
+ * OS prefers-reduced-motion → gentle opacity crossfade, touch → crossfade only,
+ * else the variant). For reveals inside a loop, use useRevealFactory() instead.
  */
 export function useReveal(variant: RevealVariant, delay = 0, opts: RevealOptions = {}) {
   return useRevealFactory()(variant, delay, opts)

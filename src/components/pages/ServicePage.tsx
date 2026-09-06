@@ -7,6 +7,7 @@ import { LottieIcon } from '../ui/LottieIcon'
 import { WaveDivider } from '../ui/WaveDivider'
 import { getServiceBySlug, servicesData } from '../../data/services'
 import { track } from '../../utils/analytics'
+import { inViewOnce } from '../../config/motion'
 
 export default function ServicePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -203,7 +204,7 @@ export default function ServicePage() {
               className="mb-12 last:mb-0"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
+              viewport={inViewOnce}
               transition={{ delay: index * 0.1 }}
             >
               <h2 className="text-2xl md:text-3xl font-headline text-brown-dark mb-4">
@@ -225,7 +226,7 @@ export default function ServicePage() {
             className="text-3xl md:text-4xl font-headline text-brown-dark mb-10 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             מה כולל השירות
           </m.h2>
@@ -241,7 +242,7 @@ export default function ServicePage() {
                 }}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={inViewOnce}
                 transition={{ delay: index * 0.05 }}
               >
                 <div
@@ -264,7 +265,7 @@ export default function ServicePage() {
             <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={inViewOnce}
               className="inline-block"
             >
               <Link
@@ -287,7 +288,7 @@ export default function ServicePage() {
             className="text-3xl md:text-4xl font-headline text-brown-dark mb-10 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             שאלות נפוצות
           </m.h2>
@@ -312,7 +313,7 @@ export default function ServicePage() {
             className="text-3xl md:text-4xl font-headline text-brown-dark mb-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
           >
             {service.cta}
           </m.h2>
@@ -321,7 +322,7 @@ export default function ServicePage() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.1 }}
           >
             <a
@@ -352,7 +353,7 @@ export default function ServicePage() {
             className="mt-8"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={inViewOnce}
             transition={{ delay: 0.2 }}
           >
             <Link
@@ -415,7 +416,7 @@ function FaqItem({
       }}
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={inViewOnce}
       transition={{ delay: index * 0.05 }}
     >
       <button
