@@ -69,14 +69,14 @@ const numberVariants = {
 function StepCard({ step, index }: { step: StepItem; index: number }) {
   return (
     <m.article
-      className="card-glow relative group rounded-3xl"
+      className="card-glow relative group rounded-xl"
       style={{ '--hover-shadow': '0 16px 48px rgba(125, 211, 252, 0.20)' } as React.CSSProperties}
       variants={cardVariants}
     >
       {/* Solid system card (glass removed: nothing to blur on a light bg and
           backdrop-filter x4 costs mobile GPU) — hover shadow lives on the
           parent's .card-glow pseudo (this div clips children) */}
-      <div className="relative overflow-hidden rounded-3xl p-6 md:p-8
+      <div className="spotlight-card relative overflow-hidden rounded-xl p-6 md:p-8
         bg-white
         border border-cream-darker/60
         shadow-[0_8px_32px_rgba(125,211,252,0.12)]
@@ -184,7 +184,7 @@ export default function HowWeWork() {
   return (
     <section
       id="process"
-      className="section relative overflow-hidden py-20 md:py-28"
+      className="section relative overflow-hidden py-16 md:py-24"
       aria-labelledby="how-we-work-title"
     >
       {/* Background decorations */}

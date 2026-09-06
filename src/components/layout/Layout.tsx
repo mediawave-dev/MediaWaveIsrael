@@ -5,6 +5,7 @@ import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { track } from '../../utils/analytics'
+import { installSpotlight } from '../../utils/spotlight'
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
@@ -18,6 +19,9 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
+
+  // Pointer-following sky glow on .spotlight-card surfaces (desktop pointers only)
+  useEffect(() => installSpotlight(), [])
 
   // Mount the floating widgets only when the browser is idle — lazy() alone
   // still fetches their chunks (incl. the 80KB lottie runtime for the chat

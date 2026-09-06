@@ -246,8 +246,6 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
             >
-              {/* Pulse ring */}
-              <span className="absolute inset-0 rounded-full bg-orange animate-ping opacity-20" />
               <div className="relative z-10">
                 <LottieIcon
                   animationPath="/animations/7%20chatbot/chatbot_header.json"

@@ -22,7 +22,7 @@ export default function Services() {
       ref={sectionRef}
       id="services"
       aria-label="שירותים"
-      className="relative py-14 md:py-28 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-hidden"
       style={{
         background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ecfeff 100%)',
       }}
@@ -115,7 +115,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
 
   return (
     <m.div
-      className="card-glow relative group rounded-2xl overflow-visible h-full bg-white"
+      className="spotlight-card card-glow relative group rounded-xl overflow-visible h-full bg-white"
       style={{
         border: '1px solid rgba(125, 211, 252, 0.2)',
         boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03)',
@@ -211,7 +211,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
 
       {/* Hover tint wipe — clip-path reveal from the right (RTL), §4.5 */}
       <div
-        className="wipe-overlay absolute inset-0 rounded-2xl pointer-events-none"
+        className="wipe-overlay absolute inset-0 rounded-xl pointer-events-none"
         style={{
           background: 'linear-gradient(225deg, rgba(125, 211, 252, 0.14) 0%, rgba(125, 211, 252, 0.03) 55%, transparent 80%)',
         }}

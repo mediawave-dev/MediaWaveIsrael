@@ -37,12 +37,6 @@ const differentiators: WhyUsItem[] = [
   },
 ]
 
-const colorMap: Record<string, { border: string }> = {
-  orange: { border: 'border-orange/20' },
-  terracotta: { border: 'border-terracotta/20' },
-  sage: { border: 'border-sage/20' },
-}
-
 export default function WhyUs() {
   // Curated entrance: content slides in from the reading edge (RTL right)
   const reveal = useRevealFactory()
@@ -87,7 +81,7 @@ export default function WhyUs() {
       ref={sectionRef}
       id="why-us"
       aria-label="למה אנחנו"
-      className="relative py-16 md:py-20 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-hidden"
     >
       {/* ===== LAYER 1: Video Background ===== */}
 
@@ -156,12 +150,11 @@ export default function WhyUs() {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {differentiators.map((item, index) => {
-            const colors = colorMap[item.color] ?? colorMap.orange
             const hasLottie = !!item.lottieAnimation
             return (
               <m.div
                 key={item._id}
-                className={`card-glow bg-white/95 backdrop-blur-sm rounded-xl p-6 border ${colors.border} shadow-sm group text-center`}
+                className="spotlight-card card-glow bg-white rounded-xl p-6 border border-cream-darker/60 shadow-sm group text-center"
                 style={{ '--hover-shadow': '0 8px 24px rgba(74, 74, 74, 0.08)' } as React.CSSProperties}
                 {...reveal('slideInRight', index * 0.1)}
                 whileHover={{ y: -4 }}

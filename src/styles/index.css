@@ -1233,11 +1233,88 @@ section[id] {
 
 /* Short brand-gradient bar under section titles — one consistent
    visual signature across all home sections */
+/* Section-title marker = the site's wave, not a generic gradient bar. Same
+   motif as the hero's WaveUnderline, drawn from the reading edge (right) as
+   the title scrolls into view (scroll-driven, no JS; static where unsupported
+   or when the accessibility switch stops animations). */
 .section-title-accent {
-  width: 48px;
-  height: 4px;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, #7DD3FC, #5EEAD4);
+  width: 72px;
+  height: 12px;
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 12'%3E%3Cpath d='M3,7.5 C12,2.5 20,2.5 28,7 C36,11.5 44,11.5 52,7 C60,2.5 66,3.5 69,5.5' fill='none' stroke='%237DD3FC' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
   margin-inline: auto;
   margin-top: 0.875rem;
+}
+
+@keyframes accent-draw {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@supports (animation-timeline: view()) {
+  .section-title-accent {
+    animation: accent-draw linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 32%;
+  }
+}
+
+html.disable-animations .section-title-accent {
+  animation: none;
+  clip-path: none;
+}
+
+/* Spotlight surfaces: a soft sky glow that follows the pointer INSIDE the card
+   (--sx/--sy are written by src/utils/spotlight.ts). Painted between the card's
+   own background and its content thanks to isolation + z-index -1, clipped to
+   the card radius, opacity-only transition. Pointer devices only; the
+   accessibility switch removes it entirely. */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    260px circle at var(--sx, 50%) var(--sy, 40%),
+    rgba(125, 211, 252, 0.28),
+    rgba(125, 211, 252, 0) 62%
+  );
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-brand);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+}
+
+html.disable-animations .spotlight-card::before {
+  display: none;
+}
+
+/* Hero typewriter caret: a drawn bar in the accent, not a "|" glyph. */
+.typewriter-caret {
+  display: inline-block;
+  width: 0.09em;
+  height: 0.9em;
+  margin-inline-start: 0.06em;
+  vertical-align: -0.06em;
+  border-radius: 9999px;
+  background: var(--color-orange);
+  animation: caret-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes caret-blink {
+  to { opacity: 0; }
+}
+
+html.disable-animations .typewriter-caret {
+  animation: none;
 }

@@ -222,7 +222,7 @@ export default function Hero() {
               <span>בניית </span>
               <span className="text-orange font-bold">
                 {displayText}
-                <span className="animate-pulse">|</span>
+                <span className="typewriter-caret" />
               </span>
               <span> מקצועיים</span>
             </span>
