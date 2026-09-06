@@ -94,7 +94,7 @@ export default function WhyUs() {
         height="500"
         loading="lazy"
         decoding="async"
-        className="absolute inset-0 w-full h-full object-cover md:opacity-30"
+        className="absolute inset-0 w-full h-full object-cover md:opacity-20"
         style={{ zIndex: 0 }}
       />
 
@@ -108,7 +108,7 @@ export default function WhyUs() {
           playsInline
           aria-hidden="true"
           poster="/images/whyus-poster.webp"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
           style={{ zIndex: 0 }}
         >
           <source src="/videos/whyus-bg.mp4" type="video/mp4" />
@@ -157,7 +157,7 @@ export default function WhyUs() {
                 className="spotlight-card card-glow bg-white rounded-xl p-6 border border-cream-darker/60 shadow-sm group text-center"
                 style={{ '--hover-shadow': '0 8px 24px rgba(74, 74, 74, 0.08)' } as React.CSSProperties}
                 {...reveal('slideInRight', index * 0.1)}
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -6 }}
               >
                 {hasLottie ? (
                   <div className="w-48 h-48 mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">

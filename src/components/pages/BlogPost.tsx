@@ -223,7 +223,7 @@ export default function BlogPost() {
                   key={related.slug}
                   viewTransition
                   to={`/blog/${related.slug}`}
-                  className="group block bg-white rounded-xl border border-cream-darker/60 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="spotlight-card group block bg-white rounded-xl border border-cream-darker/60 p-6 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
                   {related.tags[0] && (
                     <span className="inline-block bg-cream-dark text-brown-muted text-xs px-3 py-1 rounded-full mb-3">

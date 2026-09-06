@@ -121,7 +121,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
         boxShadow: '0 4px 24px rgba(0, 0, 0, 0.03)',
       }}
       {...useReveal('scaleIn', index * 0.1)}
-      whileHover={{ y: -8 }}
+      whileHover={{ y: -6 }}
     >
       {/* Blue accent top border */}
       <div

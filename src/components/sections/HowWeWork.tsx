@@ -81,7 +81,7 @@ function StepCard({ step, index }: { step: StepItem; index: number }) {
         border border-cream-darker/60
         shadow-[0_8px_32px_rgba(125,211,252,0.12)]
         transition-transform duration-500
-        hover:-translate-y-2
+        hover:-translate-y-1.5
       ">
         {/* Large gradient number */}
         <m.div

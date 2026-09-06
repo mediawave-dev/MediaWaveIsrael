@@ -92,7 +92,7 @@ export default function Blog() {
                 <Link
                   viewTransition
                   to={`/blog/${post.slug}`}
-                  className="group block bg-white rounded-2xl overflow-hidden border border-cream-darker/30 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="spotlight-card group block bg-white rounded-xl overflow-hidden border border-cream-darker/60 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
                   {/* Featured image */}
                   {post.featuredImage && (
