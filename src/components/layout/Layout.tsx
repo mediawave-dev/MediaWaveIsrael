@@ -64,7 +64,10 @@ export default function Layout({ children }: LayoutProps) {
 
       <Footer />
 
-      {/* Floating WhatsApp — left side, hidden when chat panel is open */}
+      {/* Fixed overlays live in one complementary landmark (axe "region"):
+          every child is position:fixed, so this wrapper takes no space. */}
+      <aside aria-label="כלים ופעולות מהירות">
+        {/* Floating WhatsApp — left side, hidden when chat panel is open */}
       <FloatingWhatsApp isChatOpen={isChatOpen} />
 
       {/* Widgets — mounted after idle (see widgetsReady above) */}
@@ -80,6 +83,7 @@ export default function Layout({ children }: LayoutProps) {
           <CookieConsent />
         </Suspense>
       )}
+      </aside>
     </div>
   )
 }

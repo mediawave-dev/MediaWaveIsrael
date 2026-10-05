@@ -42,11 +42,11 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Handle navigation - supports hash links (#section) and route links (/blog)
+  // Handle navigation - supports hash links (#section) and route links (/terms)
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
 
-    // Route link (e.g., /blog) — use React Router navigation
+    // Route link (e.g., /terms) — use React Router navigation
     if (href.startsWith('/')) {
       navigate(href)
       return
@@ -139,7 +139,7 @@ export default function Header() {
           }`}
       >
         <div className="container px-4 sm:px-6">
-          <nav className="flex items-center justify-between gap-4">
+          <nav aria-label="ניווט ראשי" className="flex items-center justify-between gap-4">
             {/* Logo */}
             <a
               href="/"
@@ -275,7 +275,7 @@ export default function Header() {
                 </div>
 
                 {/* Navigation Links */}
-                <nav className="flex flex-col gap-5">
+                <nav aria-label="תפריט נייד" className="flex flex-col gap-5">
                   {headerLinks.map((link, index) => (
                     <m.a
                       key={link.href}
