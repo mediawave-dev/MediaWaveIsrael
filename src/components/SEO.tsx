@@ -27,7 +27,11 @@ export default function SEO({
   article,
   noindex = false,
 }: SEOProps) {
-  const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`
+  // Idempotent: several metaTitle values in src/data already end with the site
+  // name, and blindly appending produced "… | MediaWave Israel | MediaWave
+  // Israel" on 7 pages (up to 82 chars, so Google truncated the tail). Append
+  // only when the brand is not already the title's suffix.
+  const fullTitle = title.trimEnd().endsWith(SITE_NAME) ? title.trimEnd() : `${title} | ${SITE_NAME}`
   const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : undefined
 
   return (
