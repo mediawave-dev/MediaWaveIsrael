@@ -65,7 +65,7 @@ export default function Footer() {
             >
               קישורים מהירים
             </h2>
-            <nav className="flex flex-col gap-2.5">
+            <nav className="flex flex-col gap-2.5 max-md:gap-0">
               {footerLinks.map((link) => (
                 <a
                   key={link.href}
@@ -87,7 +87,7 @@ export default function Footer() {
             >
               יצירת קשר
             </h2>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 max-md:gap-0">
               {/* Phone */}
               <a
                 href="tel:052-8731808"
@@ -141,12 +141,12 @@ export default function Footer() {
           style={{ borderTop: '1px solid rgba(248, 250, 252, 0.12)' }}
         >
           {/* Left side in RTL = copyright */}
-          <p className="text-xs font-english text-cream/60">
+          <p className="text-sm font-english text-cream/60">
             © {currentYear} MediaWave Israel
           </p>
 
           {/* Right side in RTL = legal links */}
-          <div className="flex items-center gap-3 text-xs text-cream/60">
+          <div className="flex items-center gap-3 text-sm text-cream/60">
             <a
               href="/terms"
               target="_blank"

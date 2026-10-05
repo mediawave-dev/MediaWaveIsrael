@@ -1231,6 +1231,25 @@ section[id] {
   color: #7DD3FC;
 }
 
+/* Touch targets — every footer link measured 23px tall (18px for the legal
+   row) on a 390px viewport, well under the 44px minimum. inline-flex +
+   min-height grows the tap box symmetrically around the text without moving
+   the text itself; the two link columns drop their 10px gap at the same
+   breakpoint (max-md:gap-0) so the footer keeps its rhythm instead of
+   ballooning. Pointer layouts get the 24px WCAG 2.2 AA floor only. */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  /* 24px is the WCAG 2.2 AA floor (2.5.8); these measured 23px with a mouse. */
+  min-height: 24px;
+}
+
+@media (max-width: 767px) {
+  .footer-link {
+    min-height: 44px;
+  }
+}
+
 /* Short brand-gradient bar under section titles — one consistent
    visual signature across all home sections */
 /* Section-title marker = the site's wave, not a generic gradient bar. Same
