@@ -23,6 +23,20 @@ function TypingIndicator() {
   )
 }
 
+// --- Bot message text hygiene ---
+// The prompt forbids markdown (see src/config/chatbot-prompt.ts rule 3), but the
+// bubble renders raw text in whitespace-pre-wrap, so a single slip shipped literal
+// '**' to the client. Strip the markers rather than pull in a markdown renderer.
+function stripMarkdown(text: string) {
+  return text
+    .replace(/\*\*(.+?)\*\*/gs, '$1')
+    .replace(/__(.+?)__/gs, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[ \t]*[-*•][ \t]+/gm, '')
+    .replace(/\s*—\s*/g, ', ')
+    .trim()
+}
+
 // --- URL linkification for bot messages ---
 
 const URL_REGEX = /(https?:\/\/[^\s)<>]+)/g
@@ -68,7 +82,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             : 'bg-cream-dark text-brown rounded-2xl rounded-tr-sm'
         }`}
       >
-        {isUser ? message.content : linkifyContent(message.content)}
+        {isUser ? message.content : linkifyContent(stripMarkdown(message.content))}
       </div>
     </m.div>
   )
