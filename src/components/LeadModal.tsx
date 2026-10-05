@@ -35,12 +35,33 @@ export default function LeadModal() {
         const hasClosed = sessionStorage.getItem('leadModalClosed')
         if (hasClosed) return
 
-        // Show after 35 seconds
-        const timer = setTimeout(() => {
-            setIsVisible(true)
-        }, 35000)
+        // Open on whichever comes first: reading halfway down the page, or
+        // 60s. The old flat 35s fired while most visitors were still on the
+        // hero. Scroll depth is the intent signal; the timer is the fallback
+        // for someone reading slowly without scrolling.
+        let opened = false
 
-        return () => clearTimeout(timer)
+        const open = () => {
+            if (opened) return
+            opened = true
+            setIsVisible(true)
+            cleanup()
+        }
+
+        const handleScroll = () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight
+            if (max > 0 && window.scrollY / max >= 0.5) open()
+        }
+
+        const timer = setTimeout(open, 60000)
+        window.addEventListener('scroll', handleScroll, { passive: true })
+
+        function cleanup() {
+            clearTimeout(timer)
+            window.removeEventListener('scroll', handleScroll)
+        }
+
+        return cleanup
     }, [])
 
     const handleClose = () => {
