@@ -255,12 +255,12 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             <m.button
               ref={triggerRef}
               onClick={() => { setIsOpen(true); track('chat_open', { placement: 'floating' }) }}
-              className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
             >
-              <div className="relative z-10">
+              <div className="relative z-10 scale-75 sm:scale-100">
                 <LottieIcon
                   animationPath="/animations/7%20chatbot/chatbot_header.json"
                   size={56}

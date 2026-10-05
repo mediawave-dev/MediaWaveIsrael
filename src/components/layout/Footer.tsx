@@ -41,7 +41,7 @@ export default function Footer() {
       </div>
 
       {/* Main footer content */}
-      <div className="relative max-w-[1100px] mx-auto px-6 pt-14 pb-5 md:pt-16">
+      <div className="relative max-w-[1100px] mx-auto px-6 pt-14 pb-5 max-md:pb-24 md:pt-16">
         {/* ROW 1 — 3 columns on desktop, stacked on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-10 text-center md:text-right">
           {/* Column 1 — Logo + Tagline (rightmost in RTL) */}
