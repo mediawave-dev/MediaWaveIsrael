@@ -9,7 +9,7 @@
          copies here made every inner page serve the HOMEPAGE description, og:title,
          og:url and canonical FIRST — crawlers and link previews read the first
          occurrence, so search snippets and WhatsApp previews were wrong sitewide. -->
-    <title>MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם</title>
+    <title>פיתוח אתרים ודפי נחיתה מותאמים לעסקים | MediaWave Israel</title>
     <meta name="author" content="MediaWave Israel" />
     <meta name="robots" content="index, follow" />
 
@@ -30,10 +30,12 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- RSS Feed -->
-    <link rel="alternate" type="application/rss+xml" title="MediaWave Israel | בלוג" href="/feed.xml" />
 
-    <!-- Preload logo for faster LCP (this is the LCP element) — inline SVG lockup -->
-    <link rel="preload" href="/logo-lockup-white.svg" as="image" type="image/svg+xml" fetchpriority="high" />
+    <!-- NO logo-lockup-white.svg preload. Its only consumer was the static
+         header below, and scripts/prerender.mjs strips that header from every
+         prerendered page; the React header draws the lockup as inline SVG. The
+         preload therefore fetched a file that 23 built pages never referenced,
+         and the console logged "preloaded but not used" on every load. -->
 
     <!-- Preload the Hebrew fonts used above the fold (stable public/fonts URLs).
          NOTE: no hero-poster preload — the in-document <img> is discovered by the

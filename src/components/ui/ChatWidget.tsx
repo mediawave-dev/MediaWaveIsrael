@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
-import { X, Send, RotateCcw } from 'lucide-react'
+import { X, Send, RotateCcw, MessageCircle } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
 import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
@@ -21,6 +21,20 @@ function TypingIndicator() {
       ))}
     </div>
   )
+}
+
+// --- Bot message text hygiene ---
+// The prompt forbids markdown (see src/config/chatbot-prompt.ts rule 3), but the
+// bubble renders raw text in whitespace-pre-wrap, so a single slip shipped literal
+// '**' to the client. Strip the markers rather than pull in a markdown renderer.
+function stripMarkdown(text: string) {
+  return text
+    .replace(/\*\*(.+?)\*\*/gs, '$1')
+    .replace(/__(.+?)__/gs, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[ \t]*[-*•][ \t]+/gm, '')
+    .replace(/\s*—\s*/g, ', ')
+    .trim()
 }
 
 // --- URL linkification for bot messages ---
@@ -68,7 +82,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             : 'bg-cream-dark text-brown rounded-2xl rounded-tr-sm'
         }`}
       >
-        {isUser ? message.content : linkifyContent(message.content)}
+        {isUser ? message.content : linkifyContent(stripMarkdown(message.content))}
       </div>
     </m.div>
   )
@@ -241,17 +255,18 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             <m.button
               ref={triggerRef}
               onClick={() => { setIsOpen(true); track('chat_open', { placement: 'floating' }) }}
-              className="group relative w-16 h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
+              className="group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
             >
-              <div className="relative z-10">
+              <div className="relative z-10 scale-75 sm:scale-100">
                 <LottieIcon
                   animationPath="/animations/7%20chatbot/chatbot_header.json"
                   size={56}
                   loop={true}
                   playOnHover={false}
+                  fallback={<MessageCircle size={28} className="text-brown-dark" />}
                 />
               </div>
             </m.button>
@@ -296,6 +311,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                     size={52}
                     loop={true}
                     playOnHover={false}
+                    fallback={<MessageCircle size={26} className="text-white" />}
                   />
                 </div>
                 <div>

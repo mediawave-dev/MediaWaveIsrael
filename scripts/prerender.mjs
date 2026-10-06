@@ -19,20 +19,6 @@ const ROOT = resolve(__dirname, '..')
 const DIST = resolve('dist')
 const PORT = 4173
 
-/** Parse blog post slugs from blog-posts.ts (same pattern as generate-seo.mjs) */
-function parseBlogSlugs() {
-  const source = readFileSync(resolve(ROOT, 'src/data/blog-posts.ts'), 'utf-8')
-  const slugs = []
-  const regex = /slug:\s*'([^']+)'[\s\S]*?published:\s*(true|false)/g
-  let match
-  while ((match = regex.exec(source)) !== null) {
-    if (match[2] === 'true') {
-      slugs.push(match[1])
-    }
-  }
-  return slugs
-}
-
 /** Parse slug values from a simple data file (services / portfolio examples) */
 function parseDataSlugs(relPath) {
   const source = readFileSync(resolve(ROOT, relPath), 'utf-8')
@@ -40,14 +26,13 @@ function parseDataSlugs(relPath) {
 }
 
 // Static routes
-const STATIC_ROUTES = ['/', '/blog', '/terms', '/privacy', '/accessibility']
+const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility']
 
 // Dynamic routes from data files
-const blogSlugs = parseBlogSlugs().map(s => `/blog/${s}`)
 const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
 const portfolioRoutes = parseDataSlugs('src/data/portfolio-examples.ts').map(s => `/portfolio/${s}`)
 
-const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogSlugs]
+const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes]
 
 // Any path that matches no route renders the NotFound page. Prerendering it to
 // 404.html lets Cloudflare Pages serve a real HTTP 404 for unknown URLs instead

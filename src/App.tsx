@@ -25,8 +25,6 @@ const Contact = lazy(() => import('./components/sections/Contact'))
 const Terms = lazy(() => import('./components/pages/Terms'))
 const Privacy = lazy(() => import('./components/pages/Privacy'))
 const Accessibility = lazy(() => import('./components/pages/Accessibility'))
-const Blog = lazy(() => import('./components/pages/Blog'))
-const BlogPost = lazy(() => import('./components/pages/BlogPost'))
 const ServicePage = lazy(() => import('./components/pages/ServicePage'))
 const PortfolioExample = lazy(() => import('./components/pages/PortfolioExample'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
@@ -46,7 +44,7 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
 // Fallback for whole lazy PAGES: taller than any viewport, so the footer sits
 // BELOW the fold while the route chunk loads. The 50vh default put the footer
 // at mid-screen and the arriving content pushed it 4000px+ down — a measured
-// CLS of exactly 0.50 on cold blog loads (footer impact 0.5 x distance 1.0).
+// CLS of exactly 0.50 on cold route loads (footer impact 0.5 x distance 1.0).
 const PageFallback = () => <SectionFallback height="120vh" />
 
 // Home page with all sections - each in separate Suspense for progressive rendering
@@ -54,7 +52,7 @@ function HomePage() {
   return (
     <>
       <SEO
-        title="MediaWave | פיתוח אתרים מותאם אישית | בנו את הנוכחות הדיגיטלית שלכם"
+        title="פיתוח אתרים ודפי נחיתה מותאמים לעסקים"
         description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה."
         canonical="/"
       />
@@ -131,8 +129,6 @@ function App() {
               </Suspense>
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/blog" element={<Suspense fallback={<PageFallback />}><Blog /></Suspense>} />
-                <Route path="/blog/:slug" element={<Suspense fallback={<PageFallback />}><BlogPost /></Suspense>} />
                 <Route path="/services/:slug" element={<Suspense fallback={<PageFallback />}><ServicePage /></Suspense>} />
                 <Route path="/portfolio/:slug" element={<Suspense fallback={<PageFallback />}><PortfolioExample /></Suspense>} />
                 <Route path="/terms" element={<Suspense fallback={<PageFallback />}><Terms /></Suspense>} />

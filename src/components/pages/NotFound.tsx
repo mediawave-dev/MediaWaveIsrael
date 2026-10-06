@@ -1,5 +1,4 @@
 import { m } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import SEO from '../SEO'
 import { SwellMark } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
@@ -111,9 +110,6 @@ export default function NotFound() {
 
           {/* Quick escapes */}
           <nav aria-label="קישורים מהירים" className="mt-4 sm:mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <Link to="/blog" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
-              הבלוג
-            </Link>
             <a href="/#services" className="text-sky-ink hover:text-sky-ink-strong font-semibold transition-colors min-h-11 inline-flex items-center">
               השירותים שלנו
             </a>

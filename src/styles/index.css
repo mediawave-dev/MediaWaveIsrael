@@ -1190,13 +1190,36 @@ html.disable-animations [data-floating] {
    lift the floating WhatsApp/chat buttons above it on mobile
    so nothing is ever hidden behind the banner.
    ============================================ */
+/* iOS Safari's bottom toolbar overlays the viewport and the home indicator
+   takes ~34px more. Fixed bottom UI has to clear both, or it is only usable
+   while the toolbar happens to be collapsed — reported on an iPhone, where
+   the cookie banner's buttons sat underneath the URL bar. env() is 0 on
+   every other platform, so these values are unchanged there. */
 .floating-cta {
   transition: bottom 0.3s var(--ease-brand);
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 640px) {
+  .floating-cta {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* The cookie banner sits lowest of all */
+.mw-consent-banner {
+  bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 640px) {
+  .mw-consent-banner {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 @media (max-width: 639px) {
   body.mw-consent-open .floating-cta {
-    bottom: 5.25rem !important;
+    bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
@@ -1206,7 +1229,7 @@ html.disable-animations [data-floating] {
 @media (min-width: 640px) {
   body.mw-consent-open .floating-cta.right-4,
   body.mw-consent-open .floating-cta.sm\:right-6 {
-    bottom: 10.5rem !important;
+    bottom: calc(10.5rem + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
@@ -1229,6 +1252,25 @@ section[id] {
 
 .footer-link:hover {
   color: #7DD3FC;
+}
+
+/* Touch targets — every footer link measured 23px tall (18px for the legal
+   row) on a 390px viewport, well under the 44px minimum. inline-flex +
+   min-height grows the tap box symmetrically around the text without moving
+   the text itself; the two link columns drop their 10px gap at the same
+   breakpoint (max-md:gap-0) so the footer keeps its rhythm instead of
+   ballooning. Pointer layouts get the 24px WCAG 2.2 AA floor only. */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  /* 24px is the WCAG 2.2 AA floor (2.5.8); these measured 23px with a mouse. */
+  min-height: 24px;
+}
+
+@media (max-width: 767px) {
+  .footer-link {
+    min-height: 44px;
+  }
 }
 
 /* Short brand-gradient bar under section titles — one consistent
@@ -1329,4 +1371,27 @@ html.disable-animations .spotlight-card::before {
 
 html.disable-animations .typewriter-caret {
   animation: none !important;
+}
+
+/* Before/after on phones — the two sources are 1200x750 full-page shots. In a
+   ~338px column they rendered at 0.28 scale and every word inside them was
+   illegible, which is the whole point of the section. So on narrow screens the
+   frame trades width for scale: a 4/5 box makes object-fit:cover zoom to ~2x
+   and crop the sides away, keeping the top of each page (nav + headline for
+   the new site, the cluttered masthead for the old one). Both get the SAME
+   zoom so the comparison stays fair, and share one box so the clip-path
+   reveal and the drag handle keep sharing one coordinate space. */
+@media (max-width: 767px) {
+  .before-after {
+    aspect-ratio: 4 / 5;
+  }
+
+  .before-after > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
 }

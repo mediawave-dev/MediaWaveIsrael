@@ -17,7 +17,7 @@ export default function Privacy() {
   }
 
   return (
-    <main className="min-h-screen bg-cream pt-32 pb-16">
+    <div className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="מדיניות פרטיות"
         description="מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם."
@@ -399,6 +399,6 @@ export default function Privacy() {
           </div>
         </m.article>
       </div>
-    </main>
+    </div>
   )
 }

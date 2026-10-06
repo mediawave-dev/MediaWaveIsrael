@@ -12,7 +12,7 @@ export default function Footer() {
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
 
-    // Route link (e.g., /blog) — ScrollToTop handles the scroll reset
+    // Route link (e.g., /terms) — ScrollToTop handles the scroll reset
     if (href.startsWith('/')) {
       navigate(href)
       return
@@ -41,7 +41,7 @@ export default function Footer() {
       </div>
 
       {/* Main footer content */}
-      <div className="relative max-w-[1100px] mx-auto px-6 pt-14 pb-5 md:pt-16">
+      <div className="relative max-w-[1100px] mx-auto px-6 pt-14 pb-5 max-md:pb-24 md:pt-16">
         {/* ROW 1 — 3 columns on desktop, stacked on mobile */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-10 text-center md:text-right">
           {/* Column 1 — Logo + Tagline (rightmost in RTL) */}
@@ -65,7 +65,7 @@ export default function Footer() {
             >
               קישורים מהירים
             </h2>
-            <nav className="flex flex-col gap-2.5">
+            <nav aria-label="ניווט בתחתית העמוד" className="flex flex-col gap-2.5 max-md:gap-0">
               {footerLinks.map((link) => (
                 <a
                   key={link.href}
@@ -87,7 +87,7 @@ export default function Footer() {
             >
               יצירת קשר
             </h2>
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5 max-md:gap-0">
               {/* Phone */}
               <a
                 href="tel:052-8731808"
@@ -141,12 +141,12 @@ export default function Footer() {
           style={{ borderTop: '1px solid rgba(248, 250, 252, 0.12)' }}
         >
           {/* Left side in RTL = copyright */}
-          <p className="text-xs font-english text-cream/60">
+          <p className="text-sm font-english text-cream/60">
             © {currentYear} MediaWave Israel
           </p>
 
           {/* Right side in RTL = legal links */}
-          <div className="flex items-center gap-3 text-xs text-cream/60">
+          <div className="flex items-center gap-3 text-sm text-cream/60">
             <a
               href="/terms"
               target="_blank"

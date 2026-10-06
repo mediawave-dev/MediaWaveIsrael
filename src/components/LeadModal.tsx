@@ -35,12 +35,33 @@ export default function LeadModal() {
         const hasClosed = sessionStorage.getItem('leadModalClosed')
         if (hasClosed) return
 
-        // Show after 35 seconds
-        const timer = setTimeout(() => {
-            setIsVisible(true)
-        }, 35000)
+        // Open on whichever comes first: reading halfway down the page, or
+        // 60s. The old flat 35s fired while most visitors were still on the
+        // hero. Scroll depth is the intent signal; the timer is the fallback
+        // for someone reading slowly without scrolling.
+        let opened = false
 
-        return () => clearTimeout(timer)
+        const open = () => {
+            if (opened) return
+            opened = true
+            setIsVisible(true)
+            cleanup()
+        }
+
+        const handleScroll = () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight
+            if (max > 0 && window.scrollY / max >= 0.5) open()
+        }
+
+        const timer = setTimeout(open, 60000)
+        window.addEventListener('scroll', handleScroll, { passive: true })
+
+        function cleanup() {
+            clearTimeout(timer)
+            window.removeEventListener('scroll', handleScroll)
+        }
+
+        return cleanup
     }, [])
 
     const handleClose = () => {
@@ -238,6 +259,7 @@ export default function LeadModal() {
                                     <Input
                                         label="שם מלא"
                                         type="text"
+                                        autoComplete="name"
                                         required
                                         error={fieldErrors.name}
                                         value={formData.name}
@@ -252,6 +274,7 @@ export default function LeadModal() {
                                     <Input
                                         label="טלפון"
                                         type="tel"
+                                        autoComplete="tel"
                                         required
                                         error={fieldErrors.phone}
                                         value={formData.phone}
@@ -270,7 +293,7 @@ export default function LeadModal() {
                                                 type="checkbox"
                                                 required
                                                 id="privacy"
-                                                className="mt-1 accent-orange"
+                                                className="mt-0.5 w-6 h-6 shrink-0 accent-orange cursor-pointer"
                                                 checked={privacyChecked}
                                                 aria-invalid={fieldErrors.privacy ? true : undefined}
                                                 aria-describedby={fieldErrors.privacy ? 'privacy-error' : undefined}

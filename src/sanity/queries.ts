@@ -10,14 +10,6 @@ export const FAQ_QUERY = `*[_type == "faq"] | order(orderRank) {
   _id, question, answer
 }`
 
-export const BLOG_POSTS_QUERY = `*[_type == "blogPost" && published == true] | order(publishedAt desc) {
-  _id, title, slug, excerpt, featuredImage, author, tags, publishedAt
-}`
-
-export const BLOG_POST_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current == $slug][0] {
-  _id, title, slug, excerpt, content, featuredImage, author, tags, publishedAt
-}`
-
 export const PROJECTS_QUERY = `*[_type == "project"] | order(orderRank) {
   _id, title, type, description, url, image, imageMobile, tags, features, featured, selfLink
 }`
