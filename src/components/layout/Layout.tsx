@@ -37,6 +37,35 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearTimeout(timer)
   }, [])
 
+  // iOS Safari's bottom toolbar overlays the layout viewport, and
+  // env(safe-area-inset-bottom) does NOT describe it — that inset is the home
+  // indicator and reads 0 while the toolbar is up. So anything pinned to the
+  // bottom sits behind the toolbar: the cookie banner appeared, the toolbar
+  // covered it, and its buttons could never be tapped.
+  //
+  // visualViewport reports what is actually on screen, so the gap below it is
+  // exactly the browser chrome. Published as a CSS variable, every fixed
+  // bottom element clears it with one rule. (Same API ChatWidget already uses
+  // for its panel height.) Non-iOS browsers report a gap of 0.
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const update = () => {
+      const hidden = Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
+      document.documentElement.style.setProperty('--browser-chrome-bottom', `${Math.round(hidden)}px`)
+    }
+
+    update()
+    vv.addEventListener('resize', update, { passive: true })
+    vv.addEventListener('scroll', update, { passive: true })
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      document.documentElement.style.removeProperty('--browser-chrome-bottom')
+    }
+  }, [])
+
   const handleChatOpenChange = useCallback((open: boolean) => {
     setIsChatOpen(open)
   }, [])
