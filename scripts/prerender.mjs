@@ -168,6 +168,19 @@ async function prerender() {
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
 
+    // Remove the floating overlays (WhatsApp, accessibility, chat, cookie
+    // banner). The prerender waits long enough for them to render, so they
+    // were being baked into the static HTML — but they are client-only, and
+    // main.tsx uses createRoot(), which WIPES #root and renders from scratch
+    // rather than hydrating. So the browser painted a cookie banner, React
+    // then deleted it, and it only returned after requestIdleCallback plus
+    // the banner's own 1.5s timer. On a phone that gap is several seconds and
+    // reads exactly as "the banner appears and disappears without me
+    // accepting it" — which is how it was reported, in both iOS browsers.
+    // Nothing here belongs in prerendered HTML: it is all decoration React
+    // re-renders anyway, and it is correctly outside the <main> landmark.
+    html = html.replace(/<aside aria-label="כלים ופעולות מהירות">[\s\S]*?<\/aside>\s*/, '')
+
     // Inject hashed body-font preloads next to the existing EFT preloads
     html = html.replace('<link rel="preload" href="/fonts/EFT_Betaamango.woff2"', `${fontPreloadLinks()}<link rel="preload" href="/fonts/EFT_Betaamango.woff2"`)
 

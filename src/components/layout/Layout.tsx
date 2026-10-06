@@ -100,22 +100,38 @@ export default function Layout({ children }: LayoutProps) {
       {/* Fixed overlays live in one complementary landmark (axe "region"):
           every child is position:fixed, so this wrapper takes no space. */}
       <aside aria-label="כלים ופעולות מהירות">
-        {/* Floating WhatsApp — left side, hidden when chat panel is open */}
-      <FloatingWhatsApp isChatOpen={isChatOpen} />
+          {/* Floating WhatsApp — left side, hidden when chat panel is open */}
+        <FloatingWhatsApp isChatOpen={isChatOpen} />
 
-      {/* Widgets — mounted after idle (see widgetsReady above) */}
-      {widgetsReady && (
-        <Suspense fallback={null}>
-          {/* Accessibility widget */}
-          <AccessibilityWidget />
+        {/* Widgets — mounted after idle (see widgetsReady above).
+            ONE BOUNDARY EACH, deliberately. These are three separate lazy()
+            chunks, and a single shared <Suspense fallback={null}> meant that
+            whichever chunk was still in flight blanked out the ones already on
+            screen. On a fast connection all three land together and it never
+            shows; throttled to a phone they arrive seconds apart, so the
+            widgets flashed in and out — and every blank remounted
+            CookieConsent, restarting its 1.5s timer, which is why the banner
+            appeared and vanished without ever being dismissed. Reproduced at
+            6x CPU / 1.6Mbps. Separate boundaries stop one pending chunk from
+            hiding its neighbours. */}
+        {widgetsReady && (
+          <>
+            {/* Accessibility widget */}
+            <Suspense fallback={null}>
+              <AccessibilityWidget />
+            </Suspense>
 
-          {/* AI Chat widget — bottom-right, lowest position */}
-          <ChatWidget onOpenChange={handleChatOpenChange} />
+            {/* AI Chat widget — bottom-right, lowest position */}
+            <Suspense fallback={null}>
+              <ChatWidget onOpenChange={handleChatOpenChange} />
+            </Suspense>
 
-          {/* Cookie consent banner */}
-          <CookieConsent />
-        </Suspense>
-      )}
+            {/* Cookie consent banner */}
+            <Suspense fallback={null}>
+              <CookieConsent />
+            </Suspense>
+          </>
+        )}
       </aside>
     </div>
   )
