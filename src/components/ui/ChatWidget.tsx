@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
-import { X, Send, RotateCcw } from 'lucide-react'
+import { X, Send, RotateCcw, MessageCircle } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
 import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
@@ -266,6 +266,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                   size={56}
                   loop={true}
                   playOnHover={false}
+                  fallback={<MessageCircle size={28} className="text-brown-dark" />}
                 />
               </div>
             </m.button>
@@ -310,6 +311,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
                     size={52}
                     loop={true}
                     playOnHover={false}
+                    fallback={<MessageCircle size={26} className="text-white" />}
                   />
                 </div>
                 <div>
