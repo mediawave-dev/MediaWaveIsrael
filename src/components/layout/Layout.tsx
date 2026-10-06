@@ -52,7 +52,11 @@ export default function Layout({ children }: LayoutProps) {
     if (!vv) return
 
     const update = () => {
-      const hidden = Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
+      const raw = window.innerHeight - vv.height - vv.offsetTop
+      // Clamped: pinch-zoom shrinks vv.height enormously, and an unclamped gap
+      // would push the banner and CTAs off the top of the screen. No browser
+      // toolbar is taller than ~160px, so anything beyond that is not chrome.
+      const hidden = Math.min(160, Math.max(0, raw))
       document.documentElement.style.setProperty('--browser-chrome-bottom', `${Math.round(hidden)}px`)
     }
 
