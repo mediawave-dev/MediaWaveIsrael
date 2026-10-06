@@ -245,22 +245,22 @@ export default function Header() {
               role="dialog"
               aria-modal="true"
               aria-label="תפריט ניווט"
-              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-cream z-[60] md:hidden shadow-lg"
-              initial={{ x: '100%' }}
+              className="fixed top-0 left-0 bottom-0 w-[80%] max-w-sm bg-cream z-[60] md:hidden shadow-lg"
+              initial={{ x: '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '100%' }}
+              exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             >
               {/* Decorative watercolor blobs */}
-              <div className="absolute top-20 -left-10 w-40 h-40 watercolor-blob watercolor-orange opacity-30" />
-              <div className="absolute bottom-40 right-10 w-32 h-32 watercolor-blob watercolor-terracotta opacity-20" />
+              <div className="absolute top-20 -right-10 w-40 h-40 watercolor-blob watercolor-orange opacity-30" />
+              <div className="absolute bottom-40 left-10 w-32 h-32 watercolor-blob watercolor-terracotta opacity-20" />
 
               <div className="relative h-full flex flex-col p-6 pt-20">
                 {/* Close button */}
                 <button
                   ref={closeButtonRef}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="absolute top-5 left-5 w-11 h-11 flex items-center justify-center text-brown hover:text-sky-ink transition-colors"
+                  className="absolute top-5 right-5 w-11 h-11 flex items-center justify-center text-brown hover:text-sky-ink transition-colors"
                   aria-label="סגור תפריט"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
