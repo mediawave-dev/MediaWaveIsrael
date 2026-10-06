@@ -90,62 +90,20 @@ export function BeforeAfterSlider({
   )
 
   return (
-    <>
-      {/* Phones: the two pages stacked, each one COMPLETE.
-          A 1200px-wide screenshot in a ~340px column cannot be both whole and
-          legible. Cropping to a zoomed region made the text readable but cut
-          the headline mid-word, so neither site read as a site. Stacking shows
-          both designs in full — the cluttered 2011 layout against the modern
-          one — which is the comparison this section exists to make. The drag
-          slider stays on md+ where there is width for it. */}
-      <div className="md:hidden space-y-3">
-        <figure className={`relative overflow-hidden rounded-2xl ${className}`}>
-          <img
-            src={beforeSrc}
-            alt="אתר בסגנון מיושן, הדגמה בלבד"
-            width={1200}
-            height={750}
-            loading="lazy"
-            decoding="async"
-            className="block w-full"
-            draggable={false}
-          />
-          <figcaption className="absolute top-3 right-3 rounded-full bg-black/60 text-white text-sm px-3 py-1">
-            {beforeLabel}
-          </figcaption>
-        </figure>
-
-        <figure className={`relative overflow-hidden rounded-2xl ${className}`}>
-          <img
-            src={afterSrc}
-            alt="האתר החדש: העיצוב הנוכחי של MediaWave"
-            width={1200}
-            height={750}
-            loading="lazy"
-            decoding="async"
-            className="block w-full"
-            draggable={false}
-          />
-          <figcaption className="absolute top-3 right-3 rounded-full bg-black/60 text-white text-sm px-3 py-1">
-            {afterLabel}
-          </figcaption>
-        </figure>
-      </div>
-
-      <div
-        ref={containerRef}
-        className={`before-after hidden md:block relative select-none overflow-hidden rounded-2xl ${className}`}
-        style={{ '--pos': '50%', touchAction: 'pan-y' } as React.CSSProperties}
-        role="slider"
-        aria-label="השוואת לפני ואחרי (הדגמה)"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={50}
-        tabIndex={0}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onKeyDown={onKeyDown}
-      >
+    <div
+      ref={containerRef}
+      className={`before-after relative select-none overflow-hidden rounded-2xl ${className}`}
+      style={{ '--pos': '50%', touchAction: 'pan-y' } as React.CSSProperties}
+      role="slider"
+      aria-label="השוואת לפני ואחרי (הדגמה)"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={50}
+      tabIndex={0}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onKeyDown={onKeyDown}
+    >
       {/* AFTER — full layer underneath */}
       <img
         src={afterSrc}
@@ -193,8 +151,7 @@ export function BeforeAfterSlider({
       <span className="absolute top-3 left-3 rounded-full bg-black/60 text-white text-sm px-3 py-1 pointer-events-none" aria-hidden="true">
         {afterLabel}
       </span>
-      </div>
-    </>
+    </div>
   )
 }
 

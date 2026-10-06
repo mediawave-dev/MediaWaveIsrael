@@ -40,12 +40,9 @@ export default function BeforeAfterShowcase() {
             לפני <span style={{ color: '#7DD3FC' }}>ואחרי</span>
           </h2>
           <div className="section-title-accent" aria-hidden="true" />
-          {/* There is no handle to drag on phones — the comparison is stacked
-              there — so the instruction has to change with the layout. */}
           <p className="text-lg md:text-xl text-white/70 mt-4 text-balance">
             {/* [קופי: נתי] */}
-            <span className="md:hidden">ככה מרגישה קפיצת דור באתר</span>
-            <span className="hidden md:inline">גררו את הידית וראו איך מרגישה קפיצת דור באתר</span>
+            גררו את הידית וראו איך מרגישה קפיצת דור באתר
           </p>
         </m.div>
 
