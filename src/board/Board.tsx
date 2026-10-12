@@ -8,6 +8,9 @@ import BoardIndex from './BoardIndex'
 const BoardA = lazy(() => import('./BoardA'))
 const BoardB = lazy(() => import('./BoardB'))
 const BoardC = lazy(() => import('./BoardC'))
+const IdeaBuild = lazy(() => import('./BoardIdeas').then((m) => ({ default: m.IdeaBuild })))
+const IdeaName = lazy(() => import('./BoardIdeas').then((m) => ({ default: m.IdeaName })))
+const IdeaLetter = lazy(() => import('./BoardIdeas').then((m) => ({ default: m.IdeaLetter })))
 
 export default function Board() {
   return (
@@ -16,6 +19,9 @@ export default function Board() {
         <Route path="a" element={<BoardA />} />
         <Route path="b" element={<BoardB />} />
         <Route path="c" element={<BoardC />} />
+        <Route path="i1" element={<IdeaBuild />} />
+        <Route path="i2" element={<IdeaName />} />
+        <Route path="i3" element={<IdeaLetter />} />
         <Route path="*" element={<BoardIndex />} />
       </Routes>
     </Suspense>

@@ -134,6 +134,9 @@ export function BoardNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
     { to: '/board/a', label: 'A' },
     { to: '/board/b', label: 'B' },
     { to: '/board/c', label: 'C' },
+    { to: '/board/i1', label: 'רעיון 1' },
+    { to: '/board/i2', label: 'רעיון 2' },
+    { to: '/board/i3', label: 'רעיון 3' },
   ]
   const fg = tone === 'dark' ? '#fff' : '#111'
   const bg = tone === 'dark' ? 'rgba(17,17,17,.88)' : 'rgba(255,255,255,.92)'

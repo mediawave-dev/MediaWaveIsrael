@@ -5,7 +5,7 @@
 // for the Lotties.
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { PALETTES, usePalette, PaletteSwitch, type Palette } from './palette'
 import { useScene, useMotionEngine } from '../motion/ScrollEngineProvider'
 import { SERVICES, HERO, NAV, STRIP, STATE_LABEL, HeroMedia, ServiceArt, BoardNav, useButtonMachine, useDocBackground, type BtnState, type BtnForce } from './shared'
 import './fonts.css'
@@ -13,45 +13,9 @@ import './board-b.css'
 
 type Field = 'saffron' | 'magenta' | 'green'
 
-/** Colour schemes for the same poster system (?palette=). The slot names stay; board-b.css
-    decides what colour each slot is per palette. Two-ground palettes alternate dark and paper,
-    so their acts use a different slot order (neighbours never share a ground). */
-const PALETTES = {
-  loud: { label: 'מקור', doc: '#F5B700' },
-  faded: { label: 'דהוי', doc: '#EBC56B' },
-  paper: { label: 'נייר ודיו', doc: '#F5B700' },
-  green: { label: 'ירוק עמוק', doc: '#123D30' },
-  ink: { label: 'דיו וזעפרן', doc: '#161616' },
-} as const
-type Palette = keyof typeof PALETTES
 const THREE: Field[] = ['magenta', 'green', 'saffron', 'magenta', 'green', 'saffron']
 const TWO: Field[] = ['green', 'magenta', 'green', 'magenta', 'green', 'magenta']
 const actFields = (p: Palette) => (p === 'loud' || p === 'faded' ? THREE : TWO)
-
-function usePalette(): Palette {
-  const v = new URLSearchParams(useLocation().search).get('palette')
-  return v && v in PALETTES ? (v as Palette) : 'loud'
-}
-
-/** Board chrome: switch palettes in place. Hidden with ?clean for captures. */
-function PaletteSwitch({ current }: { current: Palette }) {
-  const { search } = useLocation()
-  const params = new URLSearchParams(search)
-  if (params.has('clean')) return null
-  return (
-    <nav aria-label="צבעים" style={{ position: 'fixed', insetInlineStart: 12, bottom: 12, zIndex: 90, display: 'flex', gap: 2, padding: 4, background: 'rgba(17,17,17,.88)', borderRadius: 8, font: '600 13px/1 Heebo, sans-serif', boxShadow: '0 2px 10px rgba(0,0,0,.2)' }}>
-      {(Object.keys(PALETTES) as Palette[]).map((p) => {
-        const q = new URLSearchParams(search)
-        q.set('palette', p)
-        return (
-          <Link key={p} to={`/board/b?${q}`} style={{ color: '#fff', padding: '8px 10px', borderRadius: 6, textDecoration: 'none', background: p === current ? 'rgba(255,255,255,.2)' : 'transparent' }}>
-            {PALETTES[p].label}
-          </Link>
-        )
-      })}
-    </nav>
-  )
-}
 
 /** The poster face is only requested once something uses it, so document.fonts.ready can
     resolve before it arrives; fitting against the fallback would size every line wrong. */

@@ -101,6 +101,23 @@ export default function BoardIndex() {
           </li>
         ))}
       </ul>
+      <section style={{ maxWidth: 1400, margin: '40px auto 0' }}>
+        <h2 style={{ margin: '0 0 6px', fontSize: '1.6rem', fontWeight: 800 }}>שלושה רעיונות מבנק הרעיונות, על כיוון B</h2>
+        <p style={{ margin: '0 0 16px', color: '#4a4a4a', lineHeight: 1.7 }}>כל רעיון הוא עמוד שלם לדוגמה. ברירת המחדל היא הפלטה השקטה "נייר ודיו", ואפשר להחליף בכפתורים למטה.</p>
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+          {[
+            { to: '/board/i1', t: 'האתר נבנה מול העיניים', d: 'גוללים והאתר נבנה: שלד, טקסט, עיצוב, תמונות, טלפון, באוויר. מחליף את "איך זה עובד".' },
+            { to: '/board/i2', t: 'השם שלכם בכותרת', d: 'הגולש כותב את שם העסק שלו, והכותרת ואתר לדוגמה מתעדכנים מולו. הכפתור שולח את השם לוואטסאפ.' },
+            { to: '/board/i3', t: 'מכתב ותשובה', d: 'דף הבית נפתח במכתב חתום ממך. בסופו הגולש מרכיב תשובה בלחיצות, והיא נשלחת בוואטסאפ כמו שהיא.' },
+          ].map((x) => (
+            <li key={x.to} style={{ background: '#fff', borderRadius: 8, padding: 22, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <h3 style={{ margin: 0, fontFamily: "'MW Poster', Heebo, sans-serif", fontWeight: 700, fontSize: '2.4rem', lineHeight: 1 }}>{x.t}</h3>
+              <p style={{ margin: 0, lineHeight: 1.65 }}>{x.d}</p>
+              <Link to={x.to} style={{ marginTop: 'auto', alignSelf: 'flex-start', padding: '10px 18px', background: '#161616', color: '#fff', borderRadius: 4, fontWeight: 700, textDecoration: 'none' }}>לפתוח</Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   )
 }
