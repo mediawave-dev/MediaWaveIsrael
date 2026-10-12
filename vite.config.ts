@@ -24,6 +24,8 @@ export default defineConfig({
           // StudioPage chunk — making the chat widget pull Sanity Studio onto
           // every page (measured: a 10s compile task on /terms).
           'lottie': ['lottie-react', 'lottie-web'],
+          // The scroll engine: gsap core + its React hook + Lenis, one cacheable chunk
+          'motion-engine': ['gsap', '@gsap/react', 'lenis'],
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
         },

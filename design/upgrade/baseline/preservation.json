@@ -1,0 +1,2435 @@
+{
+  "takenAt": "2026-10-12T16:04:41.445Z",
+  "urls": {
+    "https://mediawave.co.il/": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "פיתוח אתרים ודפי נחיתה מותאמים לעסקים | MediaWave Israel",
+        "description": "שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/",
+        "hreflang": [],
+        "h1": [
+          "העסק שלכםהעסק שלכםהמומחיות שלנוהמומחיות שלנו"
+        ],
+        "h2": [
+          "למה לעבוד איתנו?",
+          "מה אנחנו עושים",
+          "לפני ואחרי",
+          "איך אנחנו עובדים",
+          "שאלות נפוצות",
+          "דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "אתר מהיר שלא נתקע",
+          "שימצאו אתכם, גם ב-AI",
+          "ליווי אישי",
+          "בניית אתרים",
+          "דפי נחיתה",
+          "קידום אורגני SEO",
+          "צ׳אטבוטים חכמים",
+          "עריכת וידאו",
+          "סרטוני זיכרונות",
+          "שיחת היכרות",
+          "תכנון ועיצוב",
+          "פיתוח ובנייה",
+          "השקה וליווי"
+        ],
+        "words": 744,
+        "links": [
+          "/",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#3d505859545c4a5c4b58544e4f5c58517d5a505c5451135e5250",
+          "/cdn-cgi/l/email-protection#e08d858489819781968589939281858ca0878d81898cce838f8d",
+          "/portfolio/memory-videos",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": true
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": true
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": true
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": true
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": true
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": true
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "imageAlts": [
+          "אתר בסגנון מיושן, הדגמה בלבד",
+          "האתר החדש: העיצוב הנוכחי של MediaWave"
+        ],
+        "jsonld": [
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [
+          {
+            "action": null,
+            "method": "get",
+            "fields": [
+              "email",
+              "message",
+              "name"
+            ],
+            "controls": [
+              {
+                "tag": "input",
+                "type": "text",
+                "name": "name",
+                "id": "input-:r5:",
+                "label": "שם מלא"
+              },
+              {
+                "tag": "input",
+                "type": "email",
+                "name": "email",
+                "id": "input-:r6:",
+                "label": "אימייל"
+              },
+              {
+                "tag": "textarea",
+                "type": "",
+                "name": "message",
+                "id": "textarea-:r7:",
+                "label": "הודעה"
+              },
+              {
+                "tag": "button",
+                "type": "submit",
+                "name": "",
+                "id": "",
+                "label": "שליחת הודעה"
+              }
+            ]
+          }
+        ],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/",
+        "mainHash": "4d3aeea4da28"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "פיתוח אתרים ודפי נחיתה מותאמים לעסקים | MediaWave Israel",
+        "description": "שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/",
+        "hreflang": [],
+        "h1": [
+          "העסק שלכםהמומחיות שלנו"
+        ],
+        "h2": [
+          "למה לעבוד איתנו?",
+          "מה אנחנו עושים",
+          "לפני ואחרי",
+          "איך אנחנו עובדים",
+          "שאלות נפוצות",
+          "דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "אתר מהיר שלא נתקע",
+          "שימצאו אתכם, גם ב-AI",
+          "ליווי אישי",
+          "בניית אתרים",
+          "דפי נחיתה",
+          "קידום אורגני SEO",
+          "צ׳אטבוטים חכמים",
+          "עריכת וידאו",
+          "סרטוני זיכרונות",
+          "שיחת היכרות",
+          "תכנון ועיצוב",
+          "פיתוח ובנייה",
+          "השקה וליווי"
+        ],
+        "words": 741,
+        "links": [
+          "/",
+          "/accessibility",
+          "/portfolio/memory-videos",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": true
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": true
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": true
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": true
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": true
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": true
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "imageAlts": [
+          "אתר בסגנון מיושן, הדגמה בלבד",
+          "האתר החדש: העיצוב הנוכחי של MediaWave"
+        ],
+        "jsonld": [
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [
+          {
+            "action": null,
+            "method": "get",
+            "fields": [
+              "email",
+              "message",
+              "name"
+            ],
+            "controls": [
+              {
+                "tag": "input",
+                "type": "text",
+                "name": "name",
+                "id": "input-:r5:",
+                "label": "שם מלא"
+              },
+              {
+                "tag": "input",
+                "type": "email",
+                "name": "email",
+                "id": "input-:r6:",
+                "label": "אימייל"
+              },
+              {
+                "tag": "textarea",
+                "type": "",
+                "name": "message",
+                "id": "textarea-:r7:",
+                "label": "הודעה"
+              },
+              {
+                "tag": "button",
+                "type": "submit",
+                "name": "",
+                "id": "",
+                "label": "שליחת הודעה"
+              }
+            ]
+          }
+        ],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/",
+        "mainHash": "c7b3ca35f987"
+      }
+    },
+    "https://mediawave.co.il/terms": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "תקנון שימוש | MediaWave Israel",
+        "description": "תקנון השימוש של MediaWave Israel: תנאי שימוש באתר ושירותי פיתוח אתרים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/terms",
+        "hreflang": [],
+        "h1": [
+          "תקנון שימוש | MediaWave Israel"
+        ],
+        "h2": [
+          "1. כללי",
+          "2. הגדרות",
+          "3. תהליך ההזמנה והתשלום",
+          "4. היקף העבודה ושינויים",
+          "5. זכויות יוצרים וקניין רוחני",
+          "6. לוחות זמנים ואספקה",
+          "7. אחסון ותחזוקה",
+          "8. אחריות והגבלת אחריות",
+          "9. ביטול והחזרים",
+          "10. סודיות ופרטיות",
+          "11. שונות",
+          "12. יצירת קשר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "3.1 הזמנת שירותים",
+          "3.2 תנאי תשלום",
+          "3.3 איחור בתשלום",
+          "3.4 מחירים",
+          "4.1 היקף עבודה מוגדר",
+          "4.2 שינויים ותיקונים",
+          "4.3 ספקת תכנים",
+          "5.1 זכויות בעיצוב ובקוד",
+          "5.2 תכנים שסופקו על ידי הלקוח",
+          "5.3 שימוש בפורטפוליו",
+          "6.1 זמני אספקה משוערים",
+          "6.2 אישורים ומשוב",
+          "7.1 אחסון שנה ראשונה",
+          "7.2 חידוש שנתי",
+          "7.3 חבילות תחזוקה",
+          "8.1 אחריות לעבודה",
+          "8.2 הגבלת אחריות",
+          "8.3 זמינות האתר",
+          "9.1 ביטול על ידי הלקוח",
+          "9.2 ביטול על ידי החברה",
+          "10.1 סודיות מידע",
+          "10.2 מדיניות פרטיות",
+          "11.1 דין וסמכות שיפוט",
+          "11.2 תקשורת",
+          "11.3 ניתוק הוראות",
+          "11.4 שינויי תקנון"
+        ],
+        "words": 800,
+        "links": [
+          "/",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#107d757479716771667579636271757c50777d71797c3e737f7d",
+          "/cdn-cgi/l/email-protection#fa979f9e939b8d9b8c9f9389889b9f96ba9d979b9396d4999597",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/terms/",
+        "mainHash": "994290aacc41"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "תקנון שימוש | MediaWave Israel",
+        "description": "תקנון השימוש של MediaWave Israel: תנאי שימוש באתר ושירותי פיתוח אתרים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/terms",
+        "hreflang": [],
+        "h1": [
+          "תקנון שימוש | MediaWave Israel"
+        ],
+        "h2": [
+          "1. כללי",
+          "2. הגדרות",
+          "3. תהליך ההזמנה והתשלום",
+          "4. היקף העבודה ושינויים",
+          "5. זכויות יוצרים וקניין רוחני",
+          "6. לוחות זמנים ואספקה",
+          "7. אחסון ותחזוקה",
+          "8. אחריות והגבלת אחריות",
+          "9. ביטול והחזרים",
+          "10. סודיות ופרטיות",
+          "11. שונות",
+          "12. יצירת קשר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "3.1 הזמנת שירותים",
+          "3.2 תנאי תשלום",
+          "3.3 איחור בתשלום",
+          "3.4 מחירים",
+          "4.1 היקף עבודה מוגדר",
+          "4.2 שינויים ותיקונים",
+          "4.3 ספקת תכנים",
+          "5.1 זכויות בעיצוב ובקוד",
+          "5.2 תכנים שסופקו על ידי הלקוח",
+          "5.3 שימוש בפורטפוליו",
+          "6.1 זמני אספקה משוערים",
+          "6.2 אישורים ומשוב",
+          "7.1 אחסון שנה ראשונה",
+          "7.2 חידוש שנתי",
+          "7.3 חבילות תחזוקה",
+          "8.1 אחריות לעבודה",
+          "8.2 הגבלת אחריות",
+          "8.3 זמינות האתר",
+          "9.1 ביטול על ידי הלקוח",
+          "9.2 ביטול על ידי החברה",
+          "10.1 סודיות מידע",
+          "10.2 מדיניות פרטיות",
+          "11.1 דין וסמכות שיפוט",
+          "11.2 תקשורת",
+          "11.3 ניתוק הוראות",
+          "11.4 שינויי תקנון"
+        ],
+        "words": 799,
+        "links": [
+          "/",
+          "/accessibility",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/terms/",
+        "mainHash": "7c8ede02bff2"
+      }
+    },
+    "https://mediawave.co.il/privacy": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "מדיניות פרטיות | MediaWave Israel",
+        "description": "מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/privacy",
+        "hreflang": [],
+        "h1": [
+          "מדיניות פרטיות | MediaWave Israel"
+        ],
+        "h2": [
+          "1. מבוא",
+          "2. איזה מידע אנו אוספים?",
+          "3. כיצד אנו משתמשים במידע?",
+          "4. שיתוף מידע עם צדדים שלישיים",
+          "5. אבטחת מידע",
+          "6. זכויותיך",
+          "7. עוגיות (Cookies)",
+          "8. קישורים לאתרים חיצוניים",
+          "9. פרטיות ילדים",
+          "10. שמירת מידע",
+          "11. העברת מידע בינלאומית",
+          "12. שינויים במדיניות הפרטיות",
+          "13. יצירת קשר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "2.1 מידע שאתה מספק לנו",
+          "2.2 מידע שנאסף אוטומטית",
+          "2.3 מידע ממקורות חיצוניים",
+          "3.1 מתן שירותים",
+          "3.2 שיפור השירותים",
+          "3.3 תקשורת שיווקית (רק באישורך)",
+          "3.4 דרישות חוקיות",
+          "4.1 ספקי שירות",
+          "4.2 דרישות חוקיות",
+          "4.3 העברת עסק",
+          "6.1 זכות עיון",
+          "6.2 זכות תיקון",
+          "6.3 זכות מחיקה",
+          "6.4 זכות להתנגד",
+          "6.5 זכות לניידות",
+          "7.1 מה הן עוגיות?",
+          "7.2 כיצד אנו משתמשים בעוגיות?",
+          "7.3 ניהול עוגיות"
+        ],
+        "words": 659,
+        "links": [
+          "/",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection",
+          "/cdn-cgi/l/email-protection#c9a4acada0a8bea8bfaca0babba8aca589aea4a8a0a5e7aaa6a4",
+          "/cdn-cgi/l/email-protection#ed808889848c9a8c9b88849e9f8c8881ad8a808c8481c38e8280",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/privacy/",
+        "mainHash": "f45aa048cf0d"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "מדיניות פרטיות | MediaWave Israel",
+        "description": "מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/privacy",
+        "hreflang": [],
+        "h1": [
+          "מדיניות פרטיות | MediaWave Israel"
+        ],
+        "h2": [
+          "1. מבוא",
+          "2. איזה מידע אנו אוספים?",
+          "3. כיצד אנו משתמשים במידע?",
+          "4. שיתוף מידע עם צדדים שלישיים",
+          "5. אבטחת מידע",
+          "6. זכויותיך",
+          "7. עוגיות (Cookies)",
+          "8. קישורים לאתרים חיצוניים",
+          "9. פרטיות ילדים",
+          "10. שמירת מידע",
+          "11. העברת מידע בינלאומית",
+          "12. שינויים במדיניות הפרטיות",
+          "13. יצירת קשר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "2.1 מידע שאתה מספק לנו",
+          "2.2 מידע שנאסף אוטומטית",
+          "2.3 מידע ממקורות חיצוניים",
+          "3.1 מתן שירותים",
+          "3.2 שיפור השירותים",
+          "3.3 תקשורת שיווקית (רק באישורך)",
+          "3.4 דרישות חוקיות",
+          "4.1 ספקי שירות",
+          "4.2 דרישות חוקיות",
+          "4.3 העברת עסק",
+          "6.1 זכות עיון",
+          "6.2 זכות תיקון",
+          "6.3 זכות מחיקה",
+          "6.4 זכות להתנגד",
+          "6.5 זכות לניידות",
+          "7.1 מה הן עוגיות?",
+          "7.2 כיצד אנו משתמשים בעוגיות?",
+          "7.3 ניהול עוגיות"
+        ],
+        "words": 657,
+        "links": [
+          "/",
+          "/accessibility",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/privacy/",
+        "mainHash": "4238b6ebead5"
+      }
+    },
+    "https://mediawave.co.il/accessibility": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "הצהרת נגישות | MediaWave Israel",
+        "description": "הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/accessibility",
+        "hreflang": [],
+        "h1": [
+          "הצהרת נגישות | MediaWave Israel"
+        ],
+        "h2": [
+          "1. המחויבות שלנו לנגישות",
+          "2. התאמות הנגישות באתר",
+          "3. סייגים והבהרות",
+          "4. פנייה בנושאי נגישות",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [],
+        "words": 192,
+        "links": [
+          "/",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#7a171f1e131b0d1b0c1f1309081b1f163a1d171b131654191517",
+          "/cdn-cgi/l/email-protection#b2dfd7d6dbd3c5d3c4d7dbc1c0d3d7def2d5dfd3dbde9cd1dddf",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/accessibility/",
+        "mainHash": "35ec7c4fa869"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "הצהרת נגישות | MediaWave Israel",
+        "description": "הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/accessibility",
+        "hreflang": [],
+        "h1": [
+          "הצהרת נגישות | MediaWave Israel"
+        ],
+        "h2": [
+          "1. המחויבות שלנו לנגישות",
+          "2. התאמות הנגישות באתר",
+          "3. סייגים והבהרות",
+          "4. פנייה בנושאי נגישות",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [],
+        "words": 191,
+        "links": [
+          "/",
+          "/accessibility",
+          "/privacy",
+          "/terms",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808",
+          "tel:0528731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/accessibility/",
+        "mainHash": "5e098199a2b2"
+      }
+    },
+    "https://mediawave.co.il/services/building-websites": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "בניית אתרים מקצועית לעסקים | MediaWave Israel",
+        "description": "בניית אתרים מקצועיים לעסקים קטנים ובינוניים. אתרי תדמית ואתרים מותאמים אישית ב-React ו-Next.js. עיצוב מודרני, מהירות טעינה גבוהה ו-SEO מובנה.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/building-websites",
+        "hreflang": [],
+        "h1": [
+          "בניית אתרים"
+        ],
+        "h2": [
+          "למה לבנות אתר בקוד ולא בוורדפרס?",
+          "מה כולל תהליך בניית האתר?",
+          "טכנולוגיות שאנחנו עובדים איתן",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים אתר שעושה רושם? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 301,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#8fe2eaebe6eef8eef9eae6fcfdeeeae3cfe8e2eee6e3a1ece0e2",
+          "/privacy",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/building-websites/",
+        "mainHash": "92e8f7226f88"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "בניית אתרים מקצועית לעסקים | MediaWave Israel",
+        "description": "בניית אתרים מקצועיים לעסקים קטנים ובינוניים. אתרי תדמית ואתרים מותאמים אישית ב-React ו-Next.js. עיצוב מודרני, מהירות טעינה גבוהה ו-SEO מובנה.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/building-websites",
+        "hreflang": [],
+        "h1": [
+          "בניית אתרים"
+        ],
+        "h2": [
+          "למה לבנות אתר בקוד ולא בוורדפרס?",
+          "מה כולל תהליך בניית האתר?",
+          "טכנולוגיות שאנחנו עובדים איתן",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים אתר שעושה רושם? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 301,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/privacy",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/building-websites/",
+        "mainHash": "92e8f7226f88"
+      }
+    },
+    "https://mediawave.co.il/services/landing-pages": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "דפי נחיתה ממירים לעסקים | MediaWave Israel",
+        "description": "עיצוב ופיתוח דפי נחיתה ממירים לעסקים. דף ממוקד המרה עם חיבור לוואטסאפ, טפסי לידים חכמים ועיצוב Mobile-First. יותר פניות, יותר לקוחות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/landing-pages",
+        "hreflang": [],
+        "h1": [
+          "דפי נחיתה"
+        ],
+        "h2": [
+          "מה זה דף נחיתה ולמה העסק שלכם צריך אחד?",
+          "מה הופך דף נחיתה לממיר?",
+          "דפי נחיתה לקמפיינים",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים דף נחיתה שממיר? בואו נדבר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 300,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#ddb0b8b9b4bcaabcabb8b4aeafbcb8b19dbab0bcb4b1f3beb2b0",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/landing-pages/",
+        "mainHash": "6d3e76540d75"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "דפי נחיתה ממירים לעסקים | MediaWave Israel",
+        "description": "עיצוב ופיתוח דפי נחיתה ממירים לעסקים. דף ממוקד המרה עם חיבור לוואטסאפ, טפסי לידים חכמים ועיצוב Mobile-First. יותר פניות, יותר לקוחות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/landing-pages",
+        "hreflang": [],
+        "h1": [
+          "דפי נחיתה"
+        ],
+        "h2": [
+          "מה זה דף נחיתה ולמה העסק שלכם צריך אחד?",
+          "מה הופך דף נחיתה לממיר?",
+          "דפי נחיתה לקמפיינים",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים דף נחיתה שממיר? בואו נדבר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 300,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/landing-pages/",
+        "mainHash": "6d3e76540d75"
+      }
+    },
+    "https://mediawave.co.il/services/seo-promotion": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "קידום אורגני SEO לעסקים | MediaWave Israel",
+        "description": "קידום אורגני (SEO) לעסקים. מחקר מילות מפתח, אופטימיזציה טכנית, בניית תוכן ממוקד וקידום בגוגל. תוצאות מדידות ודיווחים שקופים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/seo-promotion",
+        "hreflang": [],
+        "h1": [
+          "קידום אורגני SEO"
+        ],
+        "h2": [
+          "למה קידום אורגני חשוב לעסק שלכם?",
+          "מה כולל שירות הקידום שלנו?",
+          "SEO טכני, הבסיס לקידום מוצלח",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים להופיע ראשונים בגוגל? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 319,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#741911101d15031502111d0706151118341319151d185a171b19",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/seo-promotion/",
+        "mainHash": "7dc123ace105"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "קידום אורגני SEO לעסקים | MediaWave Israel",
+        "description": "קידום אורגני (SEO) לעסקים. מחקר מילות מפתח, אופטימיזציה טכנית, בניית תוכן ממוקד וקידום בגוגל. תוצאות מדידות ודיווחים שקופים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/seo-promotion",
+        "hreflang": [],
+        "h1": [
+          "קידום אורגני SEO"
+        ],
+        "h2": [
+          "למה קידום אורגני חשוב לעסק שלכם?",
+          "מה כולל שירות הקידום שלנו?",
+          "SEO טכני, הבסיס לקידום מוצלח",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים להופיע ראשונים בגוגל? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 319,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/seo-promotion/",
+        "mainHash": "7dc123ace105"
+      }
+    },
+    "https://mediawave.co.il/services/chatbots": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "צ׳אטבוטים חכמים לעסקים | MediaWave Israel",
+        "description": "פיתוח צ׳אטבוטים חכמים מבוססי בינה מלאכותית לעסקים. שירות לקוחות אוטומטי 24/7, איסוף לידים ומענה על שאלות נפוצות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/chatbots",
+        "hreflang": [],
+        "h1": [
+          "צ׳אטבוטים חכמים"
+        ],
+        "h2": [
+          "למה העסק שלכם צריך צ׳אטבוט?",
+          "צ׳אטבוט מבוסס בינה מלאכותית",
+          "איפה אפשר לשלב צ׳אטבוט?",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים בוט שעובד בשבילכם? בואו נדבר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 266,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#543931303d35233522313d2726353138143339353d387a373b39",
+          "/privacy",
+          "/services/building-websites",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/chatbots/",
+        "mainHash": "4729794f244d"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "צ׳אטבוטים חכמים לעסקים | MediaWave Israel",
+        "description": "פיתוח צ׳אטבוטים חכמים מבוססי בינה מלאכותית לעסקים. שירות לקוחות אוטומטי 24/7, איסוף לידים ומענה על שאלות נפוצות.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/chatbots",
+        "hreflang": [],
+        "h1": [
+          "צ׳אטבוטים חכמים"
+        ],
+        "h2": [
+          "למה העסק שלכם צריך צ׳אטבוט?",
+          "צ׳אטבוט מבוסס בינה מלאכותית",
+          "איפה אפשר לשלב צ׳אטבוט?",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים בוט שעובד בשבילכם? בואו נדבר",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 266,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/privacy",
+          "/services/building-websites",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/chatbots/",
+        "mainHash": "4729794f244d"
+      }
+    },
+    "https://mediawave.co.il/services/video-editing": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "עריכת וידאו מקצועית | המרת קלטות לדיגיטל | MediaWave Israel",
+        "description": "עריכת וידאו מקצועית והמרת קלטות VHS ומדיה ישנה לפורמט דיגיטלי. שימור זיכרונות ועריכת חומרי גלם לסרטונים מוכנים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/video-editing",
+        "hreflang": [],
+        "h1": [
+          "עריכת וידאו"
+        ],
+        "h2": [
+          "עריכת וידאו מקצועית",
+          "המרת קלטות ומדיה ישנה",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "צריכים עריכת וידאו? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 185,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#b5d8d0d1dcd4c2d4c3d0dcc6c7d4d0d9f5d2d8d4dcd99bd6dad8",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/video-editing/",
+        "mainHash": "1fac34e3ee27"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "עריכת וידאו מקצועית | המרת קלטות לדיגיטל | MediaWave Israel",
+        "description": "עריכת וידאו מקצועית והמרת קלטות VHS ומדיה ישנה לפורמט דיגיטלי. שימור זיכרונות ועריכת חומרי גלם לסרטונים מוכנים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/video-editing",
+        "hreflang": [],
+        "h1": [
+          "עריכת וידאו"
+        ],
+        "h2": [
+          "עריכת וידאו מקצועית",
+          "המרת קלטות ומדיה ישנה",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "צריכים עריכת וידאו? דברו איתנו",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 185,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/memory-videos",
+          "/services/seo-promotion",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/video-editing/",
+        "mainHash": "1fac34e3ee27"
+      }
+    },
+    "https://mediawave.co.il/services/memory-videos": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "סרטוני זיכרונות מתמונות | הנפשת תמונות AI | MediaWave Israel",
+        "description": "הנפשת תמונות ישנות לסרטוני וידאו מרגשים באמצעות בינה מלאכותית. מתנה מושלמת לימי הולדת, חתונות ואירועים משפחתיים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/memory-videos",
+        "hreflang": [],
+        "h1": [
+          "סרטוני זיכרונות"
+        ],
+        "h2": [
+          "איך זה עובד?",
+          "מתנה שלא שוכחים",
+          "הנפשה בבינה מלאכותית",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים להנפיש זיכרונות? שלחו לנו תמונות",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 262,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#e08d858489819781968589939281858ca0878d81898cce838f8d",
+          "/portfolio/memory-videos",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/memory-videos/",
+        "mainHash": "42becc32041e"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "סרטוני זיכרונות מתמונות | הנפשת תמונות AI | MediaWave Israel",
+        "description": "הנפשת תמונות ישנות לסרטוני וידאו מרגשים באמצעות בינה מלאכותית. מתנה מושלמת לימי הולדת, חתונות ואירועים משפחתיים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/services/memory-videos",
+        "hreflang": [],
+        "h1": [
+          "סרטוני זיכרונות"
+        ],
+        "h2": [
+          "איך זה עובד?",
+          "מתנה שלא שוכחים",
+          "הנפשה בבינה מלאכותית",
+          "מה כולל השירות",
+          "שאלות נפוצות",
+          "רוצים להנפיש זיכרונות? שלחו לנו תמונות",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [
+          "שירותים נוספים"
+        ],
+        "words": 262,
+        "links": [
+          "/",
+          "/#contact",
+          "/#services",
+          "/accessibility",
+          "/portfolio/memory-videos",
+          "/privacy",
+          "/services/building-websites",
+          "/services/chatbots",
+          "/services/landing-pages",
+          "/services/seo-promotion",
+          "/services/video-editing",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "FAQPage",
+          "LocalBusiness",
+          "Organization",
+          "Service",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/services/memory-videos/",
+        "mainHash": "42becc32041e"
+      }
+    },
+    "https://mediawave.co.il/portfolio/memory-videos": {
+      "raw": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "סרטון זיכרונות ליום הולדת 60 | דוגמה | MediaWave Israel",
+        "description": "דוגמה לסרטון זיכרונות שהוכן ליום הולדת 60. תמונות משפחתיות ישנות שהונפשו עם מוזיקה מותאמת וכיתובים אישיים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/portfolio/memory-videos",
+        "hreflang": [],
+        "h1": [
+          "סרטון זיכרונות משפחתי"
+        ],
+        "h2": [
+          "על הפרויקט",
+          "רוצים סרטון כזה?",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [],
+        "words": 79,
+        "links": [
+          "/",
+          "/#contact",
+          "/accessibility",
+          "/cdn-cgi/l/email-protection#0b666e6f626a7c6a7d6e6278796a6e674b6c666a626725686466",
+          "/privacy",
+          "/services/memory-videos",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/portfolio/memory-videos/",
+        "mainHash": "d8c9bcccb446"
+      },
+      "rendered": {
+        "lang": "he",
+        "dir": "rtl",
+        "title": "סרטון זיכרונות ליום הולדת 60 | דוגמה | MediaWave Israel",
+        "description": "דוגמה לסרטון זיכרונות שהוכן ליום הולדת 60. תמונות משפחתיות ישנות שהונפשו עם מוזיקה מותאמת וכיתובים אישיים.",
+        "robots": "index, follow",
+        "canonical": "https://mediawave.co.il/portfolio/memory-videos",
+        "hreflang": [],
+        "h1": [
+          "סרטון זיכרונות משפחתי"
+        ],
+        "h2": [
+          "על הפרויקט",
+          "רוצים סרטון כזה?",
+          "קישורים מהירים",
+          "יצירת קשר"
+        ],
+        "h3": [],
+        "words": 79,
+        "links": [
+          "/",
+          "/#contact",
+          "/accessibility",
+          "/privacy",
+          "/services/memory-videos",
+          "/terms",
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "https://www.instagram.com/mediawaveisrael?igsh=aXcwOGVsMXk0bmll&utm_source=qr",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "anchors": [
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "בואו נדבר",
+            "targetExists": false
+          },
+          {
+            "href": "#top",
+            "text": "דף הבית",
+            "targetExists": true
+          },
+          {
+            "href": "#services",
+            "text": "שירותים",
+            "targetExists": false
+          },
+          {
+            "href": "#faq",
+            "text": "שאלות נפוצות",
+            "targetExists": false
+          },
+          {
+            "href": "#contact",
+            "text": "צור קשר",
+            "targetExists": false
+          }
+        ],
+        "ctas": [
+          "https://wa.me/972528731808",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8",
+          "https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A",
+          "mailto:mediawaveisrael@gmail.com",
+          "tel:052-8731808"
+        ],
+        "imageAlts": [],
+        "jsonld": [
+          "BreadcrumbList",
+          "LocalBusiness",
+          "Organization",
+          "WebSite"
+        ],
+        "forms": [],
+        "status": 200,
+        "finalUrl": "https://mediawave.co.il/portfolio/memory-videos/",
+        "mainHash": "d8c9bcccb446"
+      }
+    }
+  },
+  "warnings": [
+    "https://mediawave.co.il/terms: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/terms: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/terms: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/terms: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/terms: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/terms: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/privacy: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/accessibility: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/building-websites: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/landing-pages: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/seo-promotion: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/chatbots: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/video-editing: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/services/memory-videos: menu anchor #contact (\"צור קשר\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #contact (\"בואו נדבר\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #services (\"שירותים\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #faq (\"שאלות נפוצות\") has no target on the page",
+    "https://mediawave.co.il/portfolio/memory-videos: menu anchor #contact (\"צור קשר\") has no target on the page"
+  ]
+}

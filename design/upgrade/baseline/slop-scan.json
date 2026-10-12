@@ -1,0 +1,215 @@
+{
+  "target": "G:\\Web-Dev\\mw-baseline\\src",
+  "files": 92,
+  "findings": {
+    "copy-jargon-he": [
+      "App.tsx:58 — ממירים",
+      "App.tsx:58 — אופטימיזציה",
+      "App.tsx:58 — SEO",
+      "data/services.ts:36 — SEO",
+      "data/services.ts:49 — ואופטימיזציה",
+      "data/services.ts:49 — SEO"
+    ],
+    "three-icon-cards": [
+      "components/layout/Footer.tsx:46 — grid-cols-1 md:grid-cols-3",
+      "components/sections/WhyUs.tsx:151 — grid-cols-1 md:grid-cols-3"
+    ],
+    "tilted-cards": [
+      "components/layout/Footer.tsx:38 — rotate-[-8deg]"
+    ],
+    "uniform-stagger": [
+      "components/layout/Header.tsx:290 — delay: index * 0.1",
+      "components/pages/Blog.tsx:90 — delay: index * 0.1",
+      "components/pages/ServicePage.tsx:208 — delay: index * 0.1",
+      "components/sections/Testimonials.tsx:102 — delay: i * 0.1"
+    ],
+    "transition-all-everywhere": [
+      "components/layout/Header.tsx:136 — transition-all",
+      "components/pages/Blog.tsx:150 — transition-all",
+      "components/pages/BlogPost.tsx:273 — transition-all",
+      "components/pages/NotFound.tsx:98 — transition-all",
+      "components/pages/PortfolioExample.tsx:230 — transition-all",
+      "components/pages/PortfolioExample.tsx:240 — transition-all"
+    ],
+    "hover-lift-everywhere": [
+      "components/layout/Layout.tsx:101 — whileHover={{ scale: 1.03",
+      "components/pages/Blog.tsx:107 — group-hover:scale-105",
+      "components/pages/NotFound.tsx:100 — whileHover={{ scale: 1.02",
+      "components/pages/ServicePage.tsx:273 — hover:-translate-y-0.5",
+      "components/sections/Hero.tsx:256 — whileHover={{ scale: 1.02",
+      "components/sections/Hero.tsx:280 — whileHover={{ scale: 1.02"
+    ],
+    "soft-card-stack": [
+      "components/LeadModal.tsx:194 — rounded-2xl shadow-2xl",
+      "components/pages/PortfolioExample.tsx:144 — rounded-2xl shadow-lg",
+      "components/pages/PortfolioExample.tsx:151 — rounded-2xl overflow-hidden shadow-lg",
+      "components/sections/Contact.tsx:150 — rounded-2xl p-8 shadow-lg",
+      "components/sections/Testimonials.tsx:140 — rounded-3xl p-8 md:p-12 shadow-xl",
+      "components/ui/AccessibilityWidget.tsx:161 — shadow-2xl border border-cream-darker rounded-2xl"
+    ],
+    "lucide-everywhere": [
+      "components/LeadModal.tsx:6 — from 'lucide-react'",
+      "components/pages/Blog.tsx:3 — from 'lucide-react'",
+      "components/pages/BlogPost.tsx:4 — from 'lucide-react'",
+      "components/pages/PortfolioExample.tsx:3 — from 'lucide-react'",
+      "components/pages/ServicePage.tsx:3 — from 'lucide-react'",
+      "components/sections/Services.tsx:4 — from 'lucide-react'"
+    ],
+    "copy-slash-gender-he": [
+      "components/LeadModal.tsx:283 — מאשר/ת",
+      "utils/whatsapp.ts:6 — מתעניין/ת",
+      "utils/whatsapp.ts:7 — מתעניין/ת",
+      "utils/whatsapp.ts:8 — מתעניין/ת"
+    ],
+    "fade-up-everywhere": [
+      "components/pages/Accessibility.tsx:56 — initial={{ opacity: 0, y: 20 }}",
+      "components/pages/Accessibility.tsx:71 — initial={{ opacity: 0, y: 30 }}",
+      "components/pages/Blog.tsx:63 — initial={{ opacity: 0, y: 20 }}",
+      "components/pages/Blog.tsx:88 — initial={{ opacity: 0, y: 30 }}",
+      "components/pages/Blog.tsx:188 — initial={{ opacity: 0, y: 20 }}",
+      "components/pages/BlogPost.tsx:134 — initial={{ opacity: 0, y: 20 }}"
+    ],
+    "blur-blob": [
+      "components/pages/Blog.tsx:194 — absolute inset-0 rounded-full bg-orange/10 blur-2xl",
+      "components/sections/HowWeWork.tsx:106 — absolute -bottom-16 -left-16 w-32 h-32 bg-gradient-to-tr from-sky-200/30 to-cyan-100/20 ro",
+      "components/sections/HowWeWork.tsx:195 — absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-sky-100/40 to-cyan-50/30 rounded",
+      "components/sections/HowWeWork.tsx:196 — absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-teal-100/30 to-sky-50/20 round",
+      "components/sections/Testimonials.tsx:145 — absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl"
+    ],
+    "copy-cliche-he-smb": [
+      "components/pages/Blog.tsx:48 — נוכחות דיגיטלית",
+      "components/sections/Hero.tsx:242 — גישה אישית",
+      "components/sections/Hero.tsx:242 — וליווי צמוד",
+      "components/sections/HowWeWork.tsx:207 — מהרעיון ועד ההשקה",
+      "components/sections/WhyUs.tsx:34 — ליווי אישי",
+      "data/blog-posts.ts:22 — נוכחות דיגיטלית"
+    ],
+    "template-section-headings": [
+      "components/pages/NotFound.tsx:117 —  השירותים שלנו",
+      "components/sections/HowWeWork.tsx:236 —  מוכנים להתחיל?",
+      "data/blog-posts.ts:69 —  צרו איתנו קשר",
+      "data/blog-posts.ts:268 —  צרו איתנו קשר",
+      "data/blog-posts.ts:393 —  צרו איתנו קשר",
+      "data/blog-posts.ts:501 —  צרו איתנו קשר"
+    ],
+    "checkmark-lists": [
+      "components/pages/ServicePage.tsx:252 — <Check",
+      "components/ui/ShareRow.tsx:69 — <Check"
+    ],
+    "copy-default-form-microcopy": [
+      "components/sections/Contact.tsx:85 — ההודעה נשלחה בהצלחה"
+    ],
+    "copy-faq-vendor-voice": [
+      "components/sections/FAQ.tsx:14 —  האם תומכים בתחזוקה שוטפת?",
+      "components/sections/FAQ.tsx:16 —  האם האתר יהיה ידידותי למובייל?",
+      "components/sections/FAQ.tsx:18 —  האם אוכל לעדכן תכנים בעצמי?",
+      "components/sections/FAQ.tsx:19 —  האם אפשר לשלב חנות מקוונת?",
+      "components/sections/FAQ.tsx:21 —  האם אני צריך לספק תכנים ותמונות?",
+      "components/sections/FAQ.tsx:22 —  האם האתר יופיע בגוגל?"
+    ],
+    "parallax-everywhere": [
+      "components/sections/Hero.tsx:81 — useTransform(scrollYProgress"
+    ],
+    "copy-emdash": [
+      "components/ui/Logo.tsx:125 — e — פ",
+      "data/portfolio-examples.ts:25 — ם — י"
+    ],
+    "scroll-progress-bar": [
+      "components/ui/ReadingProgress.tsx:24 — style={{ scaleX: scrollYProgress"
+    ],
+    "always-on-claim": [
+      "data/blog-posts.ts:61 — 24/7",
+      "data/blog-posts.ts:211 — 24/7",
+      "data/blog-posts.ts:217 — 24/7",
+      "data/blog-posts.ts:343 — 24/7",
+      "data/blog-posts.ts:387 — 24/7",
+      "data/services.ts:206 — 24/7"
+    ],
+    "copy-triad-fragments": [
+      "data/blog-posts.ts:410 — . מילאתם טופס. חיכיתם. זה מתיש."
+    ],
+    "copy-ease-claims": [
+      "data/blog-posts.ts:420 — בלי כאב ראש"
+    ],
+    "copy-essay-frames-he": [
+      "data/blog-posts.ts:200 — לסיכום"
+    ],
+    "copy-ai-washing": [
+      "data/services.ts:206 — מבוססי בינה מלאכותית",
+      "data/services.ts:217 — מבוסס בינה מלאכותית"
+    ],
+    "copy-translationese-he": [
+      "data/services.ts:80 — שמאפשרת לכם ל"
+    ],
+    "copy-register-formal-he": [
+      "data/services.ts:311 — באמצעות",
+      "data/services.ts:320 — באמצעות"
+    ],
+    "copy-question-hook-he": [
+      "data/services.ts:325 — . תארו לעצמכם"
+    ],
+    "copy-superlative-he": [
+      "data/services.ts:193 — הכי טוב"
+    ],
+    "default-sans-he": [
+      "styles/index.css:12 — @fontsource/heebo",
+      "styles/index.css:13 — @fontsource/heebo",
+      "styles/index.css:14 — @fontsource/heebo"
+    ],
+    "css-native-reveal-everywhere": [
+      "styles/index.css:1253 — animation-timeline: view()",
+      "styles/index.css:1256 — animation-timeline: view()"
+    ],
+    "default-sans-2026": [
+      "styles/index.css:18 — @fontsource/outfit",
+      "styles/index.css:19 — @fontsource/outfit",
+      "styles/index.css:20 — @fontsource/outfit",
+      "styles/index.css:21 — @fontsource/outfit"
+    ]
+  },
+  "counts": {
+    "copy-jargon-he": 34,
+    "three-icon-cards": 2,
+    "tilted-cards": 1,
+    "uniform-stagger": 4,
+    "transition-all-everywhere": 26,
+    "hover-lift-everywhere": 19,
+    "soft-card-stack": 7,
+    "lucide-everywhere": 8,
+    "copy-slash-gender-he": 4,
+    "fade-up-everywhere": 40,
+    "blur-blob": 5,
+    "copy-cliche-he-smb": 8,
+    "template-section-headings": 7,
+    "checkmark-lists": 2,
+    "copy-default-form-microcopy": 1,
+    "copy-faq-vendor-voice": 11,
+    "parallax-everywhere": 1,
+    "copy-emdash": 2,
+    "scroll-progress-bar": 1,
+    "always-on-claim": 8,
+    "copy-triad-fragments": 1,
+    "copy-ease-claims": 1,
+    "copy-essay-frames-he": 1,
+    "copy-ai-washing": 2,
+    "copy-translationese-he": 1,
+    "copy-register-formal-he": 2,
+    "copy-question-hook-he": 1,
+    "copy-superlative-he": 1,
+    "default-sans-he": 3,
+    "css-native-reveal-everywhere": 2,
+    "default-sans-2026": 4
+  },
+  "second": {
+    "marquee-strip": "Marquee",
+    "grain-overlay": "grain"
+  },
+  "waived": {},
+  "skipped": [],
+  "index": 96,
+  "band": "AI-default template",
+  "secondOrder": [
+    "marquee-strip",
+    "grain-overlay"
+  ]
+}

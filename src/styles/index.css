@@ -438,64 +438,6 @@ button {
   }
 }
 
-/* Technology marquee strip (Hero → WhyUs) */
-.marquee-strip {
-  background: var(--color-cream);
-  padding-block: 1.1rem;
-  overflow: hidden;
-}
-
-.marquee {
-  overflow: hidden;
-  direction: ltr;
-  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marqueeMove 22s linear infinite;
-}
-
-/* Right-to-left flow: items enter from the right and travel left,
-   one after another, on an endless loop */
-@keyframes marqueeMove {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.marquee:hover .marquee-track,
-.marquee-strip[data-paused] .marquee-track {
-  animation-play-state: paused;
-}
-
-.marquee-group {
-  display: flex;
-  align-items: center;
-}
-
-.marquee-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding-inline-end: 2.75rem;
-  font-size: 0.875rem;
-  color: var(--color-brown-light);
-  white-space: nowrap;
-}
-
-.marquee-dot {
-  color: var(--color-orange-dark);
-  font-weight: 700;
-}
-
-
 /* Wave dividers — LIVING section separators. Each layer slides one full
    period (1440 svg units = 100% of the element width) on a seamless
    linear loop; layers move at different speeds and opposite directions
@@ -563,7 +505,7 @@ button {
 }
 
 /* Brand ambient motion under OS reduced-motion: SLOWED, not frozen.
-   These !important rules re-enable the wave/marquee loops that the global
+   These !important rules re-enable the wave loops that the global
    reduce block above kills; the accessibility widget's
    html.disable-animations (higher specificity) still stops everything. */
 @media (prefers-reduced-motion: reduce) {
@@ -585,15 +527,6 @@ button {
 
   .wave-layer.wave-running {
     animation-play-state: running !important;
-  }
-
-  .marquee-track {
-    animation: marqueeMove 36s linear infinite !important;
-  }
-
-  .marquee:hover .marquee-track,
-  .marquee-strip[data-paused] .marquee-track {
-    animation-play-state: paused !important;
   }
 
   .wave-underline-sway {

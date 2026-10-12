@@ -11,6 +11,12 @@ Design inspiration: https://microsoft.ai/about/
 - TypeScript 5.6.2
 - Deployed on **Cloudflare Pages** (functions/ = Pages Functions, e.g. /api/chat)
 
+## ⚠️ OCTOBER 2026 — REDESIGN IN PROGRESS (overrides the palette/motif rules below)
+- Nati released the sky palette, the One-Accent rule and the sea-wave motif (2026-10-12): he wants a
+  clearly different site. Brief: `.context/REDESIGN-PROMPT.md`. Sacred: hero video + all 13 Lotties.
+- Still locked: contained hovers, no static underlines or lines under button labels, a11y settings never
+  persist, AA contrast, Hebrew typography rules, copy voice, no invented proof.
+
 ## ⚠️ STATUS UPDATE — July 2026 (overrides stale sections below)
 - **CMS: NONE.** Directus was fully removed (July 2026). All content is static:
   section data lives inside each component, blog in `src/data/blog-posts.ts`,

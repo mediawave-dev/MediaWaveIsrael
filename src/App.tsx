@@ -3,12 +3,12 @@ import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { MotionProvider } from './components/MotionProvider'
-import ScrollToTop from './components/ScrollToTop'
+import { ScrollEngineProvider } from './motion/ScrollEngineProvider'
 import SEO from './components/SEO'
+import { testimonials } from './data/testimonials'
 
 // Above-fold: load immediately
 import { Hero } from './components/sections'
-import Marquee from './components/ui/Marquee'
 import { WaveDivider } from './components/ui/WaveDivider'
 import { GiantWord } from './components/ui/GiantWord'
 
@@ -61,9 +61,6 @@ function HomePage() {
       {/* Hero Section - loads immediately (above fold, LCP critical) */}
       <Hero />
 
-      {/* Technology marquee strip (DESIGN-UPGRADE §4.2) */}
-      <Marquee />
-
       {/* Below-fold sections - each in separate Suspense for progressive rendering */}
       <Suspense fallback={<SectionFallback height="400px" />}>
         <WhyUs />
@@ -82,9 +79,14 @@ function HomePage() {
         <HowWeWork />
       </Suspense>
 
-      <Suspense fallback={<SectionFallback height="400px" />}>
-        <Testimonials />
-      </Suspense>
+      {/* Only real, owner-confirmed testimonials ever render (honesty rule).
+          While the list is empty the section is not mounted at all: no empty
+          400px fallback, no chunk download. */}
+      {testimonials.length > 0 && (
+        <Suspense fallback={<SectionFallback height="400px" />}>
+          <Testimonials />
+        </Suspense>
+      )}
 
       {/* Wave hand-off: HowWeWork (cream) → FAQ (cream-dark) */}
       <WaveDivider variant="c" fill="#F1F5F9" />
@@ -114,7 +116,7 @@ function App() {
   return (
     <ErrorBoundary>
       <MotionProvider>
-        <ScrollToTop />
+        <ScrollEngineProvider>
         <Routes>
           {/* Sanity Studio — full viewport, NO Layout wrapper */}
           <Route path="/studio/*" element={
@@ -143,6 +145,7 @@ function App() {
             </Layout>
           } />
         </Routes>
+        </ScrollEngineProvider>
       </MotionProvider>
     </ErrorBoundary>
   )

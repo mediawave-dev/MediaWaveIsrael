@@ -12,7 +12,7 @@ export default function Footer() {
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
 
-    // Route link (e.g., /blog) — ScrollToTop handles the scroll reset
+    // Route link (e.g., /blog): ScrollEngineProvider handles the scroll reset
     if (href.startsWith('/')) {
       navigate(href)
       return

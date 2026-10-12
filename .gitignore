@@ -44,3 +44,6 @@ screenshots-after/
 
 # measurement evidence (large LH JSONs, screenshots) — local only
 audit/raw/
+
+# design-loop-router run artifacts (screenshots, reports, ledgers)
+.design-loop/

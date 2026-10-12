@@ -162,6 +162,7 @@ function ServiceCard({ service, index }: { service: ServicePageData; index: numb
                 size={iconSize}
                 playOnHover={true}
                 loop={true}
+                renderer={service.lottieRenderer}
               />
             </div>
           ) : null}

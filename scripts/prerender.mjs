@@ -127,6 +127,11 @@ async function prerender() {
 
     const page = await browser.newPage()
 
+    // The scroll engine (src/motion) renders the plain, final-state page when it
+    // sees this flag and writes no inline styles: a snapshot that kept a scene's
+    // mid-animation styles would ship that frozen frame to every visitor.
+    await page.evaluateOnNewDocument(() => { window.__PRERENDER__ = true })
+
     // Block heavy assets that aren't needed for HTML content
     await page.setRequestInterception(true)
     page.on('request', (req) => {
