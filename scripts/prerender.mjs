@@ -17,7 +17,8 @@ import puppeteer from 'puppeteer'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 const DIST = resolve('dist')
-const PORT = 4173
+// PRERENDER_PORT lets a build run while another local server holds 4173
+const PORT = Number(process.env.PRERENDER_PORT) || 4173
 
 /** Parse blog post slugs from blog-posts.ts (same pattern as generate-seo.mjs) */
 function parseBlogSlugs() {
