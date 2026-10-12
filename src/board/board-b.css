@@ -1,0 +1,214 @@
+/* Direction B · פוסטר עברי. Tokens and reasons:
+   Borrowed tradition: the Israeli modernist poster (Dan Reisinger, the Shamir brothers):
+   flat saturated fields, ink type, no gradients, no shadows, no cards.
+   --saffron #F5B700  field 1, ink type on it (10.7:1)
+   --magenta #D11F65  field 2, white type on it (5.1:1); also the duotone ink of the hero print
+   --green   #0A6B4A  field 3, white type on it (6.6:1)
+   --ink     #141414  type, the stamp button
+   --paper   #FFFFFF  only the Lottie discs: a calm white plate for their mixed colours */
+
+.bd-b {
+  --saffron: #f5b700;
+  --magenta: #d11f65;
+  --green: #0a6b4a;
+  --ink: #141414;
+  --paper: #ffffff;
+  --head: 76px;
+  --gut: clamp(16px, 3.4vw, 48px);
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  font-family: 'Heebo', sans-serif;
+  color: var(--fg);
+  min-height: 100vh;
+  overflow-x: clip;
+}
+.bd-b[data-field='saffron'] { --fg: var(--ink); --bg: var(--saffron); --flood: var(--magenta); --flood-fg: #fff; }
+.bd-b[data-field='magenta'] { --fg: #fff; --bg: var(--magenta); --flood: var(--saffron); --flood-fg: var(--ink); }
+.bd-b[data-field='green'] { --fg: #fff; --bg: var(--green); --flood: var(--saffron); --flood-fg: var(--ink); }
+
+/* Static path (reduced motion, no engine): each section paints its own field */
+.bd-b:not(.b-live) [data-field-section] { color: var(--fg); background: var(--bg); }
+.bd-b:not(.b-live) [data-field-section='saffron'] { --fg: var(--ink); --bg: var(--saffron); --flood: var(--magenta); --flood-fg: #fff; }
+.bd-b:not(.b-live) [data-field-section='magenta'] { --fg: #fff; --bg: var(--magenta); --flood: var(--saffron); --flood-fg: var(--ink); }
+.bd-b:not(.b-live) [data-field-section='green'] { --fg: #fff; --bg: var(--green); --flood: var(--saffron); --flood-fg: var(--ink); }
+
+/* Live path: one fixed field behind everything, pasted over from the reading side */
+.b-fields { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.b-fields i { position: absolute; inset: 0; clip-path: inset(0 0 0 100%); }
+.b-fields [data-f='saffron'] { background: var(--saffron); }
+.b-fields [data-f='magenta'] { background: var(--magenta); }
+.b-fields [data-f='green'] { background: var(--green); }
+.bd-b > main { position: relative; z-index: 1; }
+
+.bd-b ::selection { background: var(--ink); color: var(--saffron); }
+.bd-b a:not(.stamp) { color: inherit; text-decoration: none; }
+.bd-b .stamp { text-decoration: none; }
+.bd-b :is(h1, h2, h3) { font-family: 'MW Poster', 'Heebo', sans-serif; color: inherit; }
+.bd-b :focus-visible { outline: 3px solid var(--fg); outline-offset: 4px; }
+
+/* ── header ── */
+.b-head {
+  position: sticky; top: 0; z-index: 5;
+  height: var(--head);
+  display: flex; align-items: center; gap: 32px;
+  padding-inline: var(--gut);
+  background: var(--bg, var(--saffron));
+  color: var(--fg);
+}
+.b-head__logo img { display: block; height: 28px; width: auto; }
+.bd-b[data-field='saffron'] .b-logo-white, .bd-b:not([data-field='saffron']) .b-logo-ink { display: none; }
+.bd-b:not(.b-live) .b-logo-white { display: none; }
+.bd-b:not(.b-live) .b-logo-ink { display: block; }
+.b-head__nav { display: flex; gap: 28px; margin-inline-start: auto; font-weight: 700; font-size: 16px; }
+@media (hover: hover) { .b-head__nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; } }
+@media (max-width: 860px) {
+  .bd-b { --head: 60px; }
+  .b-head__nav { display: none; }
+  .b-head .stamp { margin-inline-start: auto; }
+}
+
+/* ── hero ── */
+.b-hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  min-height: calc(100svh - var(--head));
+  padding-inline-start: var(--gut);
+}
+.b-hero__copy {
+  grid-column: 1 / span 8;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 28px;
+  padding-block: clamp(8px, 2vh, 24px) clamp(24px, 5vh, 48px);
+  min-width: 0;
+}
+.b-hero__title { margin: 0; font-family: 'MW Poster', 'Heebo', sans-serif; font-weight: 700; line-height: 0.86; }
+.b-line { display: block; }
+.b-line > span, .b-act__word > span { display: inline-block; white-space: nowrap; }
+.b-line > span { font-size: 15vw; }
+.b-hero__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.b-hero__sub { margin: 0; max-width: 26ch; font-size: clamp(1.1rem, 1.45vw, 1.4rem); font-weight: 500; line-height: 1.55; }
+.b-print { grid-column: 9 / -1; margin: 0; position: relative; background: var(--magenta); overflow: hidden; }
+.b-print__media {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
+  filter: grayscale(1) contrast(1.4) brightness(1.08);
+  mix-blend-mode: multiply;
+}
+@media (max-width: 860px) {
+  .b-hero { display: flex; flex-direction: column; min-height: 0; padding: 0; }
+  .b-hero__copy { display: contents; }
+  .b-hero__title { order: 1; padding: 16px var(--gut) 18px; }
+  .b-print { order: 2; aspect-ratio: 4 / 3; }
+  .b-hero__foot { order: 3; flex-direction: column; align-items: stretch; padding: 22px var(--gut) 40px; }
+  .b-hero__foot .stamp { justify-content: center; }
+}
+
+/* ── services: one poster per act ── */
+.b-svc__intro { padding: clamp(80px, 14vh, 160px) var(--gut) clamp(24px, 5vh, 60px); }
+.b-svc__intro h2 { margin: 0 0 12px; font-family: 'MW Poster', sans-serif; font-weight: 700; font-size: clamp(4.4rem, 12vw, 11.5rem); line-height: 0.84; }
+.b-svc__intro p { margin: 0; font-size: clamp(1.15rem, 1.5vw, 1.45rem); font-weight: 500; }
+
+.b-act {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-content: center;
+  min-height: 94svh;
+  padding: 8vh var(--gut);
+  overflow-x: clip;
+}
+.b-act__word {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-family: 'MW Poster', 'Heebo', sans-serif; font-weight: 700;
+  line-height: 0.86;
+}
+.b-act__word > span { font-size: 18vw; will-change: transform; }
+.b-act__text { grid-column: 1 / span 5; align-self: start; padding-top: clamp(16px, 3vh, 32px); }
+.b-act__text p { margin: 0 0 16px; max-width: 24ch; font-size: clamp(1.15rem, 1.6vw, 1.6rem); font-weight: 500; line-height: 1.5; }
+.b-act__text a { font-weight: 800; font-size: 1.1rem; }
+@media (hover: hover) { .b-act__text a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; } }
+.b-disc {
+  grid-column: 8 / span 5; justify-self: end;
+  margin-top: calc(-1 * clamp(24px, 4vw, 64px));
+  width: clamp(220px, 26vw, 380px); aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--paper);
+  display: grid; place-items: center; overflow: hidden;
+}
+@media (max-width: 860px) {
+  .b-act { display: flex; flex-direction: column; min-height: 86svh; }
+  .b-act__text { order: 3; }
+  .b-disc { order: 2; align-self: flex-end; width: 58vw; margin-top: 18px; }
+  .b-disc > * { transform: scale(0.75); }
+}
+
+/* ── the stamp button ── */
+.stamp {
+  --ex: 50%; --ey: 50%;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.36em 0.85em 0.26em;
+  border: 0; border-radius: 0;
+  background: var(--ink); color: var(--saffron);
+  font-family: 'MW Poster', 'Heebo', sans-serif; font-weight: 700;
+  font-size: 2.15rem; line-height: 1;
+  cursor: pointer; white-space: nowrap;
+  transition: transform 150ms var(--ease);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.stamp[data-size='sm'] { font-size: 1.6rem; }
+.stamp__label { position: relative; z-index: 2; transition: color 200ms var(--ease); }
+.stamp__flood {
+  position: absolute; z-index: 1;
+  left: var(--ex); top: var(--ey);
+  width: 20px; height: 20px; margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  background: var(--flood);
+  transform: scale(0);
+  transition: transform 460ms var(--ease);
+  pointer-events: none;
+}
+/* the deboss: a press pushes the block into the paper */
+.stamp::after {
+  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  box-shadow: inset 0 5px 0 rgba(0, 0, 0, 0.38), inset 0 -1px 0 rgba(255, 255, 255, 0.12);
+  opacity: 0; transition: opacity 120ms;
+}
+@media (hover: hover) {
+  .stamp:hover .stamp__flood { transform: scale(64); }
+  .stamp:hover .stamp__label { color: var(--flood-fg); }
+}
+.stamp[data-force='hover'] { --ex: 85%; --ey: 30%; }
+.stamp[data-force='hover'] .stamp__flood { transform: scale(64); }
+.stamp[data-force='hover'] .stamp__label { color: var(--flood-fg); }
+.stamp[data-pressed] { transform: translateY(3px); }
+.stamp[data-pressed]::after { opacity: 1; }
+.stamp:focus-visible, .stamp[data-force='focus'] { outline: 3px solid var(--fg); outline-offset: 4px; }
+
+.stamp[data-state='loading'] {
+  cursor: progress;
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 16px, #34302a 16px 32px);
+  background-size: 32px 100%;
+  animation: stamp-roll 0.5s linear infinite;
+}
+@keyframes stamp-roll { from { background-position-x: 0; } to { background-position-x: -32px; } }
+.stamp[data-state='sent'] { background: var(--green); color: #fff; box-shadow: inset 0 0 0 3px #fff; }
+.stamp[data-state='error'] { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 4px var(--magenta); animation: stamp-shake 360ms steps(1) 1; }
+@keyframes stamp-shake { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-2px); } 100% { transform: none; } }
+html.disable-animations .stamp { animation: none !important; }
+
+/* ── button lab ── */
+.b-lab { padding: clamp(80px, 14vh, 160px) var(--gut) 120px; }
+.b-lab h2 { margin: 0 0 10px; font-family: 'MW Poster', sans-serif; font-weight: 700; font-size: clamp(3.4rem, 7vw, 6.5rem); line-height: 0.86; }
+.b-lab__note { margin: 0 0 32px; max-width: 60ch; font-size: 1.1rem; line-height: 1.6; font-weight: 500; }
+.b-lab__live { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-bottom: 52px; }
+.b-lab__fail { background: none; border: 0; font: 700 16px/1 'Heebo', sans-serif; color: inherit; cursor: pointer; padding: 8px 0; }
+@media (hover: hover) { .b-lab__fail:hover { text-decoration: underline; text-underline-offset: 5px; } }
+.b-lab__strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 32px 20px; }
+.b-lab__strip li { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.b-lab__strip li > span { font-size: 14px; font-weight: 700; }
+@media (max-width: 860px) {
+  .b-lab__strip { grid-template-columns: 1fr; }
+  .b-lab .stamp { font-size: 1.75rem; white-space: normal; }
+}

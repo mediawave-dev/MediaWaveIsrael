@@ -31,6 +31,10 @@ const ServicePage = lazy(() => import('./components/pages/ServicePage'))
 const PortfolioExample = lazy(() => import('./components/pages/PortfolioExample'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
 
+// Style board (dev only): the three redesign directions for Gate 1. Never built:
+// import.meta.env.DEV is a literal false in production, so Rollup drops the import.
+const Board = import.meta.env.DEV ? lazy(() => import('./board/Board')) : null
+
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
 
@@ -124,6 +128,10 @@ function App() {
               <StudioPage />
             </Suspense>
           } />
+
+          {Board && (
+            <Route path="/board/*" element={<Suspense fallback={<PageFallback />}><Board /></Suspense>} />
+          )}
 
           {/* All other routes — wrapped in Layout */}
           <Route path="*" element={
