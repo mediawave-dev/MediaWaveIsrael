@@ -1,11 +1,14 @@
-/* Direction B · פוסטר עברי. Tokens and reasons:
-   Borrowed tradition: the Israeli modernist poster (Dan Reisinger, the Shamir brothers):
-   flat saturated fields, ink type, no gradients, no shadows, no cards.
-   --saffron #F5B700  field 1, ink type on it (10.7:1)
-   --magenta #D11F65  field 2, white type on it (5.1:1); also the duotone ink of the hero print
-   --green   #0A6B4A  field 3, white type on it (6.6:1)
-   --ink     #141414  type, the stamp button
-   --paper   #FFFFFF  only the Lottie discs: a calm white plate for their mixed colours */
+/* Direction B · פוסטר עברי. Borrowed tradition: the Israeli modernist poster (Dan Reisinger,
+   the Shamir brothers): flat fields, ink type, no gradients, no shadows, no cards.
+
+   Three field SLOTS carry the acts. Their names stay "saffron / magenta / green" in the markup,
+   but each palette (?palette=) decides what colour each slot really is, and which text,
+   headline, button and flood colours sit on it. Every pair below is AA:
+   loud   s1 #F5B700 ink (10:1)   s2 #D11F65 white (5.1:1)  s3 #0A6B4A white (6.5:1)
+   faded  s1 #EBC56B ink (11:1)   s2 #D08A95 ink (6.8:1)    s3 #2F5D4C white (7.5:1)
+   paper  s1 #F5B700 ink (10:1)   s2 #EFEEEA ink (15:1)     s3 #E2E0DA ink (13:1)
+   green  s1/s3 #123D30, text #F2F1EC (12:1), headlines saffron (6.9:1)   s2 #EFEEEA ink
+   ink    s1/s3 #161616, text #EFEEEA (15:1), headlines saffron (10:1)   s2 #EFEEEA ink */
 
 .bd-b {
   --saffron: #f5b700;
@@ -13,6 +16,13 @@
   --green: #0a6b4a;
   --ink: #141414;
   --paper: #ffffff;
+
+  /* loud (the original) */
+  --s1: #f5b700; --s1-fg: var(--ink); --s1-hd: var(--ink); --s1-flood: #d11f65; --s1-flood-fg: #fff; --s1-btn: var(--ink); --s1-btn-fg: #f5b700; --s1-logo-ink: block; --s1-logo-white: none;
+  --s2: #d11f65; --s2-fg: #fff; --s2-hd: #fff; --s2-flood: #f5b700; --s2-flood-fg: var(--ink); --s2-btn: var(--ink); --s2-btn-fg: #f5b700; --s2-logo-ink: none; --s2-logo-white: block;
+  --s3: #0a6b4a; --s3-fg: #fff; --s3-hd: #fff; --s3-flood: #f5b700; --s3-flood-fg: var(--ink); --s3-btn: var(--ink); --s3-btn-fg: #f5b700; --s3-logo-ink: none; --s3-logo-white: block;
+  --print: #d11f65;
+
   --head: 76px;
   --gut: clamp(16px, 3.4vw, 48px);
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -22,28 +32,63 @@
   min-height: 100vh;
   overflow-x: clip;
 }
-.bd-b[data-field='saffron'] { --fg: var(--ink); --bg: var(--saffron); --flood: var(--magenta); --flood-fg: #fff; }
-.bd-b[data-field='magenta'] { --fg: #fff; --bg: var(--magenta); --flood: var(--saffron); --flood-fg: var(--ink); }
-.bd-b[data-field='green'] { --fg: #fff; --bg: var(--green); --flood: var(--saffron); --flood-fg: var(--ink); }
 
-/* Static path (reduced motion, no engine): each section paints its own field */
+/* faded: the same poster after a summer on the street. Same three slots, low chroma. */
+.bd-b[data-palette='faded'] {
+  --s1: #ebc56b; --s1-fg: var(--ink); --s1-hd: var(--ink); --s1-flood: #d08a95; --s1-flood-fg: var(--ink); --s1-btn: var(--ink); --s1-btn-fg: #ebc56b;
+  --s2: #d08a95; --s2-fg: var(--ink); --s2-hd: var(--ink); --s2-flood: #ebc56b; --s2-flood-fg: var(--ink); --s2-btn: var(--ink); --s2-btn-fg: #ebc56b; --s2-logo-ink: block; --s2-logo-white: none;
+  --s3: #2f5d4c; --s3-fg: #fff; --s3-hd: #fff; --s3-flood: #ebc56b; --s3-flood-fg: var(--ink); --s3-btn: var(--ink); --s3-btn-fg: #ebc56b;
+  --print: #d08a95;
+}
+
+/* paper: ink on paper, saffron only for the hero field and the button flood */
+.bd-b[data-palette='paper'] {
+  --s2: #efeeea; --s2-fg: var(--ink); --s2-hd: var(--ink); --s2-flood: #f5b700; --s2-flood-fg: var(--ink); --s2-btn: var(--ink); --s2-btn-fg: #f5b700; --s2-logo-ink: block; --s2-logo-white: none;
+  --s3: #e2e0da; --s3-fg: var(--ink); --s3-hd: var(--ink); --s3-flood: #f5b700; --s3-flood-fg: var(--ink); --s3-btn: var(--ink); --s3-btn-fg: #f5b700; --s3-logo-ink: block; --s3-logo-white: none;
+  --s1-flood: #efeeea; --s1-flood-fg: var(--ink);
+  --print: #f5b700;
+}
+
+/* green: deep bottle-green stock with saffron headlines, alternating with paper */
+.bd-b[data-palette='green'] {
+  --s1: #123d30; --s1-fg: #f2f1ec; --s1-hd: #f5b700; --s1-flood: #efeeea; --s1-flood-fg: var(--ink); --s1-btn: #f5b700; --s1-btn-fg: var(--ink); --s1-logo-ink: none; --s1-logo-white: block;
+  --s2: #efeeea; --s2-fg: var(--ink); --s2-hd: #123d30; --s2-flood: #f5b700; --s2-flood-fg: var(--ink); --s2-btn: #123d30; --s2-btn-fg: #f5b700; --s2-logo-ink: block; --s2-logo-white: none;
+  --s3: #123d30; --s3-fg: #f2f1ec; --s3-hd: #f5b700; --s3-flood: #efeeea; --s3-flood-fg: var(--ink); --s3-btn: #f5b700; --s3-btn-fg: var(--ink);
+  --print: #f5b700;
+}
+
+/* ink: the stamp button's own pairing (ink + saffron) scaled up, alternating with paper */
+.bd-b[data-palette='ink'] {
+  --s1: #161616; --s1-fg: #efeeea; --s1-hd: #f5b700; --s1-flood: #efeeea; --s1-flood-fg: var(--ink); --s1-btn: #f5b700; --s1-btn-fg: var(--ink); --s1-logo-ink: none; --s1-logo-white: block;
+  --s2: #efeeea; --s2-fg: var(--ink); --s2-hd: var(--ink); --s2-flood: #f5b700; --s2-flood-fg: var(--ink); --s2-btn: var(--ink); --s2-btn-fg: #f5b700; --s2-logo-ink: block; --s2-logo-white: none;
+  --s3: #161616; --s3-fg: #efeeea; --s3-hd: #f5b700; --s3-flood: #efeeea; --s3-flood-fg: var(--ink); --s3-btn: #f5b700; --s3-btn-fg: var(--ink);
+  --print: #f5b700;
+}
+
+/* A field context: the root while live (it flips), or each section on the static path */
+.bd-b[data-field='saffron'], .bd-b:not(.b-live) [data-field-section='saffron'] {
+  --bg: var(--s1); --fg: var(--s1-fg); --hd: var(--s1-hd); --flood: var(--s1-flood); --flood-fg: var(--s1-flood-fg); --btn: var(--s1-btn); --btn-fg: var(--s1-btn-fg); --logo-ink: var(--s1-logo-ink); --logo-white: var(--s1-logo-white);
+}
+.bd-b[data-field='magenta'], .bd-b:not(.b-live) [data-field-section='magenta'] {
+  --bg: var(--s2); --fg: var(--s2-fg); --hd: var(--s2-hd); --flood: var(--s2-flood); --flood-fg: var(--s2-flood-fg); --btn: var(--s2-btn); --btn-fg: var(--s2-btn-fg); --logo-ink: var(--s2-logo-ink); --logo-white: var(--s2-logo-white);
+}
+.bd-b[data-field='green'], .bd-b:not(.b-live) [data-field-section='green'] {
+  --bg: var(--s3); --fg: var(--s3-fg); --hd: var(--s3-hd); --flood: var(--s3-flood); --flood-fg: var(--s3-flood-fg); --btn: var(--s3-btn); --btn-fg: var(--s3-btn-fg); --logo-ink: var(--s3-logo-ink); --logo-white: var(--s3-logo-white);
+}
 .bd-b:not(.b-live) [data-field-section] { color: var(--fg); background: var(--bg); }
-.bd-b:not(.b-live) [data-field-section='saffron'] { --fg: var(--ink); --bg: var(--saffron); --flood: var(--magenta); --flood-fg: #fff; }
-.bd-b:not(.b-live) [data-field-section='magenta'] { --fg: #fff; --bg: var(--magenta); --flood: var(--saffron); --flood-fg: var(--ink); }
-.bd-b:not(.b-live) [data-field-section='green'] { --fg: #fff; --bg: var(--green); --flood: var(--saffron); --flood-fg: var(--ink); }
 
 /* Live path: one fixed field behind everything, pasted over from the reading side */
 .b-fields { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 .b-fields i { position: absolute; inset: 0; clip-path: inset(0 0 0 100%); }
-.b-fields [data-f='saffron'] { background: var(--saffron); }
-.b-fields [data-f='magenta'] { background: var(--magenta); }
-.b-fields [data-f='green'] { background: var(--green); }
+.b-fields [data-f='saffron'] { background: var(--s1); }
+.b-fields [data-f='magenta'] { background: var(--s2); }
+.b-fields [data-f='green'] { background: var(--s3); }
 .bd-b > main { position: relative; z-index: 1; }
 
 .bd-b ::selection { background: var(--ink); color: var(--saffron); }
 .bd-b a:not(.stamp) { color: inherit; text-decoration: none; }
 .bd-b .stamp { text-decoration: none; }
-.bd-b :is(h1, h2, h3) { font-family: 'MW Poster', 'Heebo', sans-serif; color: inherit; }
+.bd-b :is(h1, h2, h3) { font-family: 'MW Poster', 'Heebo', sans-serif; color: var(--hd, inherit); }
 .bd-b :focus-visible { outline: 3px solid var(--fg); outline-offset: 4px; }
 
 /* ── header ── */
@@ -52,13 +97,12 @@
   height: var(--head);
   display: flex; align-items: center; gap: 32px;
   padding-inline: var(--gut);
-  background: var(--bg, var(--saffron));
+  background: var(--bg, var(--s1));
   color: var(--fg);
 }
-.b-head__logo img { display: block; height: 28px; width: auto; }
-.bd-b[data-field='saffron'] .b-logo-white, .bd-b:not([data-field='saffron']) .b-logo-ink { display: none; }
-.bd-b:not(.b-live) .b-logo-white { display: none; }
-.bd-b:not(.b-live) .b-logo-ink { display: block; }
+.b-head__logo img { height: 28px; width: auto; }
+.b-logo-ink { display: var(--logo-ink, block); }
+.b-logo-white { display: var(--logo-white, none); }
 .b-head__nav { display: flex; gap: 28px; margin-inline-start: auto; font-weight: 700; font-size: 16px; }
 @media (hover: hover) { .b-head__nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; } }
 @media (max-width: 860px) {
@@ -87,7 +131,7 @@
 .b-line > span { font-size: 15vw; }
 .b-hero__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .b-hero__sub { margin: 0; max-width: 26ch; font-size: clamp(1.1rem, 1.45vw, 1.4rem); font-weight: 500; line-height: 1.55; }
-.b-print { grid-column: 9 / -1; margin: 0; position: relative; background: var(--magenta); overflow: hidden; }
+.b-print { grid-column: 9 / -1; margin: 0; position: relative; background: var(--print); overflow: hidden; }
 .b-print__media {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
   filter: grayscale(1) contrast(1.4) brightness(1.08);
@@ -149,7 +193,7 @@
   display: inline-flex; align-items: center; justify-content: center;
   padding: 0.36em 0.85em 0.26em;
   border: 0; border-radius: 0;
-  background: var(--ink); color: var(--saffron);
+  background: var(--btn, var(--ink)); color: var(--btn-fg, var(--saffron));
   font-family: 'MW Poster', 'Heebo', sans-serif; font-weight: 700;
   font-size: 2.15rem; line-height: 1;
   cursor: pointer; white-space: nowrap;
@@ -188,7 +232,7 @@
 
 .stamp[data-state='loading'] {
   cursor: progress;
-  background-image: repeating-linear-gradient(90deg, var(--ink) 0 16px, #34302a 16px 32px);
+  background-image: repeating-linear-gradient(90deg, var(--btn, var(--ink)) 0 16px, color-mix(in srgb, var(--btn, var(--ink)) 78%, var(--btn-fg, #fff)) 16px 32px);
   background-size: 32px 100%;
   animation: stamp-roll 0.5s linear infinite;
 }
