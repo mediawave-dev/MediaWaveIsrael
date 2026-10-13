@@ -29,6 +29,10 @@ interface LottieIconProps {
       otherwise. Undefined keeps the default: play while on screen. Only the Lottie on stage
       should run (DECISIONS #50). */
   active?: boolean
+  /** Held scenes: false keeps the animation unbuilt even when on screen. Building a Lottie is
+      the page's most expensive script on a phone (measured: about 4.7 s of 19 s while
+      scrolling at 4x CPU), so a hold builds only the item on stage and its neighbours. */
+  load?: boolean
   /** Drawn instead of the animation if it cannot be loaded. Pass one wherever
       an empty box would look broken (a CTA button); omit it for decoration. */
   fallback?: React.ReactNode
@@ -48,6 +52,7 @@ export function LottieIcon({
   speed = 1,
   renderer = 'svg',
   active,
+  load = true,
   fallback = null,
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
@@ -91,7 +96,7 @@ export function LottieIcon({
 
   // Load animation from URL - only when visible
   useEffect(() => {
-    if (!animationPath || animationData || !isVisible) return
+    if (!animationPath || animationData || !isVisible || !load) return
 
     let cancelled = false
     let retryTimer: ReturnType<typeof setTimeout> | undefined
@@ -128,7 +133,7 @@ export function LottieIcon({
       cancelled = true
       clearTimeout(retryTimer)
     }
-  }, [animationPath, animationData, isVisible, attempt])
+  }, [animationPath, animationData, isVisible, attempt, load])
 
   // Canvas renderer path — lottie-web drives a <canvas> directly (no per-frame
   // SVG DOM layout; measured 25-54s TBT on one 356-path animation)

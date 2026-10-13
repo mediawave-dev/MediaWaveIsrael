@@ -158,7 +158,7 @@ export default function AccessibilityWidget() {
             role="dialog"
             aria-label="הגדרות נגישות"
             aria-modal="true"
-            className="fixed top-16 left-2 bg-white/95 backdrop-blur-md shadow-2xl border border-cream-darker rounded-2xl p-6 w-72 max-h-[80vh] overflow-y-auto z-50"
+            className="legacy fixed top-16 left-2 bg-white shadow-2xl border border-cream-darker rounded-2xl p-6 w-72 max-h-[80vh] overflow-y-auto z-50"
             variants={panelVariants}
             initial="hidden"
             animate="visible"

@@ -10,15 +10,15 @@ import { testimonials } from './data/testimonials'
 // The look (DECISIONS #50): vite.config aliases @look/registry to this build's look, so the
 // page ships one look's hero and held scenes (dev: all three, ?look= picks one at boot).
 import look from '@look/registry'
-import { GiantWord } from './components/ui/GiantWord'
 
-// Below-fold: lazy load for better initial performance
-const WhyUs = lazy(() => import('./components/sections/WhyUs'))
-const BeforeAfterShowcase = lazy(() => import('./components/sections/BeforeAfterShowcase'))
-const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
+// Below-fold: lazy load for better initial performance. The sections are built on the look
+// tokens (src/look/sections), so one set serves K, M and KM.
+const WhyUs = lazy(() => import('./look/sections/WhyUs'))
+const BeforeAfter = lazy(() => import('./look/sections/BeforeAfter'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
-const FAQ = lazy(() => import('./components/sections/FAQ'))
-const Contact = lazy(() => import('./components/sections/Contact'))
+const Faq = lazy(() => import('./look/sections/Faq'))
+const BigWord = lazy(() => import('./look/sections/BigWord'))
+const Contact = lazy(() => import('./look/sections/Contact'))
 
 // Pages: lazy load (rarely accessed)
 const Terms = lazy(() => import('./components/pages/Terms'))
@@ -69,36 +69,25 @@ function HomePage() {
       {/* Hero: the look's stage or void, loads immediately (the H1 is the LCP) */}
       <look.Hero />
 
-      {/* Legacy sections keep their old ground until step 3 rebuilds them per look; in KM
-          their data-theme keeps the header on the right ground */}
-      <Legacy theme="light">
-        <Suspense fallback={<SectionFallback height="400px" />}>
-          <WhyUs />
-        </Suspense>
-      </Legacy>
+      {/* KM: still on the stage, the screens switch on */}
+      <Suspense fallback={<SectionFallback height="900px" />}>
+        <WhyUs />
+      </Suspense>
 
-      {/* The look's signature hold */}
+      {/* The look's signature hold (KM: the lights come up, the flight) */}
       <Suspense fallback={<SectionFallback height="600px" />}>
         <look.Services />
       </Suspense>
 
-      <Legacy theme="dark">
-        <Suspense fallback={<SectionFallback height="400px" />}>
-          <BeforeAfterShowcase />
-        </Suspense>
-      </Legacy>
+      {/* Back on the stage: the free stretch between the two holds */}
+      <Suspense fallback={<SectionFallback height="800px" />}>
+        <BeforeAfter />
+      </Suspense>
 
-      {look.Process ? (
-        <Suspense fallback={<SectionFallback height="500px" />}>
-          <look.Process />
-        </Suspense>
-      ) : (
-        <Legacy theme="light">
-          <Suspense fallback={<SectionFallback height="500px" />}>
-            <HowWeWork />
-          </Suspense>
-        </Legacy>
-      )}
+      {/* KM: the launch hold; K and M: the line through four screens */}
+      <Suspense fallback={<SectionFallback height="800px" />}>
+        <look.Process />
+      </Suspense>
 
       {/* Only real, owner-confirmed testimonials ever render (honesty rule).
           While the list is empty the section is not mounted at all: no empty
@@ -111,18 +100,18 @@ function HomePage() {
         </Legacy>
       )}
 
-      <Legacy theme="light">
-        <Suspense fallback={<SectionFallback height="400px" />}>
-          <FAQ />
-        </Suspense>
+      {/* The rest beat, in the void */}
+      <Suspense fallback={<SectionFallback height="1200px" />}>
+        <Faq />
+      </Suspense>
 
-        {/* Typographic confidence statement [קופי: נתי — מילת הענק] */}
-        <GiantWord word="מתחילים?" />
-
-        <Suspense fallback={<SectionFallback height="500px" />}>
-          <Contact />
-        </Suspense>
-      </Legacy>
+      {/* Back on the stage for the ask: the giant word [קופי: נתי, approved #54], the form */}
+      <Suspense fallback={<SectionFallback height="300px" />}>
+        <BigWord />
+      </Suspense>
+      <Suspense fallback={<SectionFallback height="900px" />}>
+        <Contact />
+      </Suspense>
     </>
   )
 }

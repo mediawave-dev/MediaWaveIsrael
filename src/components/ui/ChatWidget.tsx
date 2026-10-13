@@ -256,7 +256,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             <m.button
               ref={triggerRef}
               onClick={() => { setIsOpen(true); track('chat_open', { placement: 'floating' }) }}
-              className="group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-orange shadow-lg flex items-center justify-center hover:bg-orange-dark transition-colors overflow-hidden"
+              className="mw-chat-fab group relative w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center overflow-hidden"
               whileHover={{ scale: 1.08, y: -2 }}
               whileTap={{ scale: 0.95 }}
               aria-label="פתח צ'אט"
@@ -285,7 +285,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
             role="dialog"
             aria-label="צ'אט עם MediaWave"
             aria-modal="true"
-            className="fixed z-[60] inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            className="legacy fixed z-[60] inset-x-0 bottom-0 sm:inset-auto sm:bottom-6 sm:right-6 w-full sm:w-[360px] h-[100dvh] sm:h-[520px] sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
             style={{
               background: 'linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%)',
               border: '1px solid rgba(226, 232, 240, 0.6)',

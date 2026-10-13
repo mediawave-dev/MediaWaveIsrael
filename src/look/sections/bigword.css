@@ -1,0 +1,5 @@
+/* The giant word: outline, then filled with ink from the right as it crosses the screen. */
+.bw { position: relative; display: grid; padding: clamp(40px, 8vh, 96px) var(--gut) 0; overflow: clip; text-align: center; }
+.bw__line { grid-area: 1 / 1; font: var(--display-w) clamp(5rem, 19vw, 17rem)/0.95 var(--display); color: transparent; -webkit-text-stroke: 1.5px var(--ink-2); white-space: nowrap; }
+.bw__fill { color: var(--ink); -webkit-text-stroke: 0; }
+html[data-look="m"] .bw__line { -webkit-text-stroke-width: 2px; }

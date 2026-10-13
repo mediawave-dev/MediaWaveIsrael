@@ -9,7 +9,7 @@
 // in) and React tells the one Lottie on stage to play; every other Lottie is paused.
 // Reduced (and no JS): no stage at all, a list of the items, each with its art.
 
-import { useState, type CSSProperties, type FocusEvent, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type FocusEvent, type ReactNode } from 'react'
 import { LookButton } from '@look/button'
 import { useMotionEngine, useScene } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
@@ -41,6 +41,14 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
   const engine = useMotionEngine()
   const n = items.length
   const [active, setActive] = useState(-1)
+  // the Lotties built so far: the one on stage and its neighbours, kept once built
+  const [warm, setWarm] = useState<Set<number>>(() => new Set([0]))
+  useEffect(() => {
+    setWarm((w) => {
+      const next = [active - 1, active, active + 1].filter((i) => i >= 0 && i < n && !w.has(i))
+      return next.length ? new Set([...w, ...next]) : w
+    })
+  }, [active, n])
 
   const ref = useScene<HTMLElement>((e, root) => {
     if (e.REDUCE) return
@@ -117,7 +125,7 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
             <Laptop className="launch__lap">
               <div className="launch__shot launch__shot--opening" data-i="-1"><Logo variant="horizontal" decorative /></div>
               {items.map((it, i) => (
-                <div className="launch__shot" data-i={i} key={it.id}><div className="launch__art"><Art item={it} size={260} active={active === i} /></div></div>
+                <div className="launch__shot" data-i={i} key={it.id}><div className="launch__art"><Art item={it} size={260} active={active === i} load={warm.has(i)} /></div></div>
               ))}
             </Laptop>
           </div>

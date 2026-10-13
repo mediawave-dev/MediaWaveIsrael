@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
-import { Input } from './ui/Input'
-import { Button } from './ui/Button'
+import { LookButton } from '@look/button'
 import { LottieIcon } from './ui/LottieIcon'
-import { X, User, Phone } from 'lucide-react'
+import { X } from 'lucide-react'
+import '../look/lead-modal.css'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { getWhatsAppUrl, WHATSAPP_URLS } from '../utils/whatsapp'
 import { track } from '../utils/analytics'
@@ -189,155 +189,119 @@ export default function LeadModal() {
         }
     }
 
+    // The look's dialog (DECISIONS #54): the current ground and ink (KM: whichever of the
+    // stage or the void is on screen), labelled fields, the look's button with its states.
+    const field = (id: 'name' | 'phone', label: string, props: Record<string, unknown>) => {
+        const err = fieldErrors[id]
+        return (
+            <div className="lm__field" data-invalid={err ? '' : undefined}>
+                <label htmlFor={`lead-${id}`}>{label}</label>
+                <input
+                    id={`lead-${id}`}
+                    required
+                    value={formData[id]}
+                    aria-invalid={err ? true : undefined}
+                    aria-describedby={err ? `lead-${id}-err` : undefined}
+                    onChange={(e) => {
+                        setFieldErrors({})
+                        setFormData(prev => ({ ...prev, [id]: e.target.value }))
+                    }}
+                    {...props}
+                />
+                {err && <p id={`lead-${id}-err`} className="lm__err">{err}</p>}
+            </div>
+        )
+    }
+
     return (
         <AnimatePresence>
             {isVisible && (
-                /* z-[60]: above the cookie banner (z-50) so the form is never covered */
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-                    {/* Backdrop */}
+                /* z-60: above the cookie banner (z-50) so the form is never covered */
+                <div className="lm" data-lenis-prevent="">
                     <m.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={handleClose}
-                        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                        className="lm__backdrop"
                     />
-
-                    {/* Modal Card */}
                     <m.div
                         ref={cardRef}
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby="lead-modal-title"
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 overflow-hidden"
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 16 }}
+                        transition={{ duration: 0.25 }}
+                        className="lm__card"
                     >
-                        {/* Dashed Border Decoration */}
-                        <div className="absolute inset-0 border-[3px] border-dashed border-orange/30 rounded-2xl m-2 pointer-events-none" />
-
-                        {/* Close Button */}
-                        <button
-                            ref={closeButtonRef}
-                            onClick={handleClose}
-                            aria-label="סגירת החלון"
-                            className="absolute top-2 left-2 sm:top-4 sm:left-4 p-1 text-brown-muted hover:text-sky-ink transition-colors z-10"
-                        >
-                            <X size={20} aria-hidden="true" />
+                        <button ref={closeButtonRef} type="button" onClick={handleClose} aria-label="סגירת החלון" className="lm__close">
+                            <X size={22} aria-hidden="true" />
                         </button>
 
                         {success ? (
-                            <div className="text-center py-10">
-                                <div className="w-16 h-16 bg-sage/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span className="text-2xl text-sage-dark">✓</span>
-                                </div>
-                                <h3 id="lead-modal-title" className="text-2xl font-bold text-brown-dark mb-2">תודה!</h3>
-                                <p className="text-brown">
+                            <div className="lm__done">
+                                <span className="lm__check" aria-hidden="true">✓</span>
+                                <h3 id="lead-modal-title">תודה!</h3>
+                                <p>
                                     {waHandoff
                                         ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊'
                                         : 'הפרטים התקבלו, נחזור אליכם בהקדם.'}
                                 </p>
                             </div>
                         ) : (
-                            <div className="text-center relative z-10">
-                                <h3 id="lead-modal-title" className="text-xl md:text-2xl font-bold text-brown-dark mb-2">
-                                    השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!
-                                </h3>
-
-                                {/* Lead animation */}
-                                <div className="flex justify-center mb-4">
+                            <>
+                                <h3 id="lead-modal-title">השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!</h3>
+                                <div className="lm__face" aria-hidden="true">
                                     <LottieIcon
                                         animationPath="/animations/13%20Leave%20Details/contact%20us.json"
-                                        size={150}
+                                        size={120}
                                         playOnHover={false}
                                         loop={true}
                                     />
                                 </div>
-
-                                <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                                    <Input
-                                        label="שם מלא"
-                                        type="text"
-                                        autoComplete="name"
-                                        required
-                                        error={fieldErrors.name}
-                                        value={formData.name}
-                                        onChange={(e) => {
-                                            setFieldErrors({})
-                                            setFormData(prev => ({ ...prev, name: e.target.value }))
-                                        }}
-                                        icon={<User size={18} />}
-                                        className="bg-cream-dark border-cream-darker focus:border-orange text-right"
-                                    />
-
-                                    <Input
-                                        label="טלפון"
-                                        type="tel"
-                                        autoComplete="tel"
-                                        required
-                                        error={fieldErrors.phone}
-                                        value={formData.phone}
-                                        onChange={(e) => {
-                                            setFieldErrors({})
-                                            setFormData(prev => ({ ...prev, phone: e.target.value }))
-                                        }}
-                                        className="bg-cream-dark border-cream-darker focus:border-orange text-right"
-                                        icon={<Phone size={18} />}
-                                        dir="ltr" // Keep numbers LTR
-                                    />
-
-                                    <div className="text-right text-xs text-brown-muted mt-2">
-                                        <div className="flex items-start gap-2">
-                                            <input
-                                                type="checkbox"
-                                                required
-                                                id="privacy"
-                                                className="mt-0.5 w-6 h-6 shrink-0 accent-orange cursor-pointer"
-                                                checked={privacyChecked}
-                                                aria-invalid={fieldErrors.privacy ? true : undefined}
-                                                aria-describedby={fieldErrors.privacy ? 'privacy-error' : undefined}
-                                                onChange={(e) => {
-                                                    setPrivacyChecked(e.target.checked)
-                                                    setFieldErrors({})
-                                                }}
-                                            />
-                                            <label htmlFor="privacy">
-                                                אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
-                                            </label>
-                                        </div>
-                                        {fieldErrors.privacy && (
-                                            <p id="privacy-error" role="alert" className="text-red-500 text-xs mt-1">
-                                                {fieldErrors.privacy}
-                                            </p>
-                                        )}
+                                <form onSubmit={handleSubmit} noValidate className="lm__form">
+                                    {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
+                                    {field('phone', 'טלפון', { type: 'tel', autoComplete: 'tel', inputMode: 'tel', dir: 'ltr' })}
+                                    <div className="lm__privacy">
+                                        <input
+                                            type="checkbox"
+                                            required
+                                            id="privacy"
+                                            checked={privacyChecked}
+                                            aria-invalid={fieldErrors.privacy ? true : undefined}
+                                            aria-describedby={fieldErrors.privacy ? 'privacy-error' : undefined}
+                                            onChange={(e) => {
+                                                setPrivacyChecked(e.target.checked)
+                                                setFieldErrors({})
+                                            }}
+                                        />
+                                        <label htmlFor="privacy">
+                                            אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
+                                        </label>
                                     </div>
-
+                                    {fieldErrors.privacy && (
+                                        <p id="privacy-error" role="alert" className="lm__err">{fieldErrors.privacy}</p>
+                                    )}
                                     {errorMsg && (
-                                        <div role="alert" aria-live="assertive" className="bg-coral/10 border border-coral/30 p-3 rounded text-coral text-sm text-right">
+                                        <p role="alert" className="lm__failure">
                                             {errorMsg}{' '}
                                             <a
                                                 href={WHATSAPP_URLS.general}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="hover:underline font-semibold"
                                                 onClick={() => track('whatsapp_click', { placement: 'lead_modal_error_alert' })}
                                             >
                                                 לוואטסאפ
                                             </a>
-                                        </div>
+                                        </p>
                                     )}
-
-                                    <Button
-                                        type="submit"
-                                        variant="primary"
-                                        className="w-full font-bold py-3 rounded-full text-lg shadow-lg shadow-orange/20"
-                                        isLoading={isSubmitting}
-                                    >
+                                    <LookButton type="submit" block live state={isSubmitting ? 'loading' : errorMsg ? 'error' : 'idle'}>
                                         תחזרו אליי
-                                    </Button>
+                                    </LookButton>
                                 </form>
-                            </div>
+                            </>
                         )}
                     </m.div>
                 </div>

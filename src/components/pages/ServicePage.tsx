@@ -4,7 +4,6 @@ import { ArrowRight, Check, ChevronDown, PlayCircle } from 'lucide-react'
 import { useState } from 'react'
 import SEO from '../SEO'
 import { LottieIcon } from '../ui/LottieIcon'
-import { WaveDivider } from '../ui/WaveDivider'
 import { getServiceBySlug, servicesData } from '../../data/services'
 import { track } from '../../utils/analytics'
 import { inViewOnce } from '../../config/motion'
@@ -83,14 +82,14 @@ export default function ServicePage() {
       <section
         className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ecfeff 100%)',
+          background: 'var(--color-cream)',
         }}
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <div
             className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(125, 211, 252, 0.2) 0%, transparent 70%)',
+              background: 'transparent',
               filter: 'blur(60px)',
             }}
           />
@@ -179,9 +178,9 @@ export default function ServicePage() {
                   key={tag}
                   className="px-3 py-1 text-sm rounded-full"
                   style={{
-                    background: 'rgba(56, 189, 248, 0.1)',
+                    background: 'var(--color-cream-dark)',
                     color: 'var(--color-sky-ink)',
-                    border: '1px solid rgba(56, 189, 248, 0.2)',
+                    border: '1px solid var(--color-cream-darker)',
                   }}
                 >
                   {tag}
@@ -192,7 +191,6 @@ export default function ServicePage() {
         </div>
 
         {/* Signature wave hand-off into the content */}
-        <WaveDivider variant="b" fill="#F8FAFC" className="absolute bottom-0 inset-x-0" />
       </section>
 
       {/* Content Sections */}
@@ -219,7 +217,7 @@ export default function ServicePage() {
       {/* Features */}
       <section
         className="py-16 md:py-24"
-        style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #f0f9ff 100%)' }}
+        style={{ background: 'var(--color-cream-dark)' }}
       >
         <div className="container max-w-4xl">
           <m.h2
@@ -237,7 +235,7 @@ export default function ServicePage() {
                 key={feature}
                 className="flex items-start gap-3 p-4 rounded-xl bg-white"
                 style={{
-                  border: '1px solid rgba(125, 211, 252, 0.2)',
+                  border: '1px solid var(--color-cream-darker)',
                   boxShadow: 'var(--shadow-sm)',
                 }}
                 initial={{ opacity: 0, y: 16 }}
@@ -247,7 +245,7 @@ export default function ServicePage() {
               >
                 <div
                   className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5"
-                  style={{ background: 'rgba(56, 189, 248, 0.15)' }}
+                  style={{ background: 'var(--color-cream-dark)' }}
                 >
                   <Check size={14} style={{ color: 'var(--color-sky-ink)' }} />
                 </div>
@@ -305,7 +303,7 @@ export default function ServicePage() {
       <section
         className="py-16 md:py-24 text-center"
         style={{
-          background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ecfeff 100%)',
+          background: 'var(--color-cream)',
         }}
       >
         <div className="container max-w-3xl">
@@ -328,7 +326,7 @@ export default function ServicePage() {
             <a
               href="/#contact"
               className="inline-flex items-center justify-center gap-2 text-lg font-semibold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 bg-orange hover:bg-orange-dark"
-              style={{ color: '#1e3a5f' }}
+              style={{ color: '#ffffff' }}
               onClick={() => track('cta_click', { placement: 'service_page' })}
             >
               צרו קשר
@@ -339,8 +337,8 @@ export default function ServicePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 text-lg font-semibold py-3.5 px-10 rounded-full transition-all duration-300 bg-white/80 hover:bg-white"
               style={{
-                border: '1px solid rgba(125, 211, 252, 0.3)',
-                color: '#2A2A2A',
+                border: '1px solid var(--color-cream-darker)',
+                color: 'var(--color-brown-dark)',
               }}
               onClick={() => track('whatsapp_click', { placement: 'service_page' })}
             >
@@ -382,8 +380,8 @@ export default function ServicePage() {
                   to={`/services/${s.slug}`}
                   className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:shadow-md bg-white"
                   style={{
-                    border: '1px solid rgba(125, 211, 252, 0.25)',
-                    color: '#2A2A2A',
+                    border: '1px solid var(--color-cream-darker)',
+                    color: 'var(--color-brown-dark)',
                   }}
                 >
                   {s.title}
@@ -411,7 +409,7 @@ function FaqItem({
     <m.div
       className="rounded-xl overflow-hidden bg-white"
       style={{
-        border: '1px solid rgba(125, 211, 252, 0.2)',
+        border: '1px solid var(--color-cream-darker)',
         boxShadow: 'var(--shadow-sm)',
       }}
       initial={{ opacity: 0, y: 15 }}

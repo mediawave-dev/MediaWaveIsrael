@@ -61,6 +61,9 @@ export default defineConfig(({ command, mode }) => {
             'lottie': ['lottie-react', 'lottie-web'],
             // The scroll engine: gsap core + its React hook + Lenis, one cacheable chunk
             'motion-engine': ['gsap', '@gsap/react', 'lenis'],
+            // The contact companion's runtime (DECISIONS #56): only ever imported dynamically,
+            // after load + idle, so it stays out of every page's first download
+            'rive': ['@rive-app/canvas-lite'],
             'react-vendor': ['react', 'react-dom'],
             'router': ['react-router-dom'],
           },

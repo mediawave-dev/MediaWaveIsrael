@@ -10,7 +10,7 @@
 // written directly; the active item is derived from progress on every update.
 // Reduced (and no JS): the tools stand in a grid with their captions.
 
-import { useState, type CSSProperties, type FocusEvent, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type FocusEvent, type ReactNode } from 'react'
 import { LookButton } from '@look/button'
 import { useMotionEngine, useScene } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
@@ -39,6 +39,14 @@ export default function FlightHold({ sectionId, holdId, heading, headingId, intr
   const engine = useMotionEngine()
   const n = items.length
   const [active, setActive] = useState(-1)
+  // the Lotties built so far: the one on stage and its neighbours, kept once built
+  const [warm, setWarm] = useState<Set<number>>(() => new Set([0]))
+  useEffect(() => {
+    setWarm((w) => {
+      const next = [active - 1, active, active + 1].filter((i) => i >= 0 && i < n && !w.has(i))
+      return next.length ? new Set([...w, ...next]) : w
+    })
+  }, [active, n])
   // q runs from the first object still on its way to the last one resting in front
   const Q0 = -0.62
   const Q1 = n - 1 + DWELL * 0.6
@@ -146,7 +154,7 @@ export default function FlightHold({ sectionId, holdId, heading, headingId, intr
             <div className="flight__item" key={it.id} onFocus={onFocus(i)}>
               <div className="flight__fly" data-i={i} data-zone="art" aria-hidden="true">
                 <Thing kind={KINDS[i % KINDS.length]}>
-                  <span className="thing__art"><Art item={it} size={240} active={engine && !engine.REDUCE ? active === i : undefined} /></span>
+                  <span className="thing__art"><Art item={it} size={240} active={engine && !engine.REDUCE ? active === i : undefined} load={!engine || engine.REDUCE || warm.has(i)} /></span>
                 </Thing>
               </div>
               <div className="flight__caption" data-i={i} data-zone="text">

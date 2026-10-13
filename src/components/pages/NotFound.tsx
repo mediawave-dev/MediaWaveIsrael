@@ -48,7 +48,7 @@ export default function NotFound() {
             className="relative text-[120px] md:text-[180px] font-headline leading-none select-none"
             style={{
               color: 'transparent',
-              WebkitTextStroke: '2px rgba(56, 189, 248, 0.6)',
+              WebkitTextStroke: '2px var(--color-brown-dark)',
             }}
           >
             404
@@ -95,7 +95,7 @@ export default function NotFound() {
           <m.a
             href="/"
             className="inline-flex items-center gap-2 bg-orange font-semibold py-4 px-8 rounded-full shadow-md hover:shadow-glow hover:bg-orange-dark transition-all duration-300"
-            style={{ color: '#1e3a5f' }}
+            style={{ color: '#ffffff' }}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

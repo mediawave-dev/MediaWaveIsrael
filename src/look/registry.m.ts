@@ -7,7 +7,7 @@ const registry: LookRegistry = {
   look: 'm',
   Hero: HeroVoid,
   Services: lazy(() => import('./sections/ServicesFlight')),
-  Process: null,
+  Process: lazy(() => import('./sections/ProcessLine')),
   ThemeLayers: null,
 }
 export default registry

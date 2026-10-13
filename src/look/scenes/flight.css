@@ -18,21 +18,29 @@
 .flight__fly { display: grid; place-items: center; min-height: 230px; }
 .flight__fly .thing { font-size: 4.6px; }
 
-/* the held stage: the caption band on top (clear of every floating button and the cookie
-   card at any width), the art box under it, the bottom band left to the buttons */
+/* the held stage. Desktop: the caption at the start side (it reads first in RTL), vertically
+   centred, the flight in the rest of the width: clear of the cookie card and the floating
+   buttons at any width. Phones: the objects on top, the caption under them in the middle of
+   the screen, the bottom band left to the buttons (--safe-b). */
 html.motion-ready .flight__hold { height: var(--hold-h); }
-html.motion-ready .flight__stage { --cap-h: clamp(150px, 22svh, 200px); --art-b: 24px; --cy: calc(var(--cap-h) + (100% - var(--cap-h) - var(--art-b)) / 2); display: block; max-width: none; padding: 0; }
-html.motion-ready .flight__artbox { display: block; position: absolute; inset: var(--cap-h) var(--gut) var(--art-b); }
+html.motion-ready .flight__stage {
+  --cap-w: clamp(260px, 30vw, 440px); --cap-h: 240px; --gap: 40px;
+  --cx: calc(var(--gut) + (100% - 2 * var(--gut) - var(--cap-w) - var(--gap)) / 2); --cy: 50%;
+  display: block; max-width: none; padding: 0;
+}
+html.motion-ready .flight__artbox { display: block; position: absolute; top: 24px; bottom: 24px; left: var(--gut); right: calc(var(--gut) + var(--cap-w) + var(--gap)); }
 html.motion-ready .flight__item { display: contents; }
-html.motion-ready .flight__fly { position: absolute; left: 50%; top: var(--cy); min-height: 0; display: block; opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
+html.motion-ready .flight__fly { position: absolute; left: var(--cx); top: var(--cy); min-height: 0; display: block; opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
 html.motion-ready .flight__fly .thing { font-size: 12px; }
 html.motion-ready .flight__stage.is-live .flight__fly { will-change: transform, opacity; }
 html.motion-ready .flight__caption {
-  position: absolute; left: 0; right: 0; top: 0; height: var(--cap-h); max-width: min(46ch, 100%); margin-inline: auto;
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;
-  padding: clamp(16px, 3svh, 28px) var(--gut) 0; opacity: 0; transform: translateY(8px); pointer-events: none;
+  position: absolute; right: var(--gut); top: 50%; width: var(--cap-w); height: var(--cap-h); margin-top: calc(var(--cap-h) / -2);
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: start;
+  opacity: 0; transform: translateY(8px); pointer-events: none;
   transition: opacity 150ms ease, transform 150ms ease;
 }
+html.motion-ready .flight__caption p { margin-inline: 0; }
+html.motion-ready .flight__links { justify-content: flex-start; }
 .flight__stage[data-active="0"] .flight__caption[data-i="0"], .flight__stage[data-active="1"] .flight__caption[data-i="1"],
 .flight__stage[data-active="2"] .flight__caption[data-i="2"], .flight__stage[data-active="3"] .flight__caption[data-i="3"],
 .flight__stage[data-active="4"] .flight__caption[data-i="4"], .flight__stage[data-active="5"] .flight__caption[data-i="5"],
@@ -42,7 +50,19 @@ html.motion-ready .flight__caption {
 @media (max-width: 860px) {
   .flight__stage { grid-template-columns: 1fr; }
   html.motion-ready .flight__hold { height: var(--hold-h-phone); }
-  html.motion-ready .flight__stage { --cap-h: clamp(164px, 28svh, 200px); --art-b: var(--safe-b); }
+  html.motion-ready .flight__stage {
+    --cap-h: clamp(150px, 24svh, 190px);
+    --cap-top: min(54%, calc(100% - var(--safe-b) - var(--cap-h)));
+    --cx: 50%; --cy: calc((12px + var(--cap-top) - 8px) / 2);
+  }
+  html.motion-ready .flight__artbox { top: 12px; bottom: calc(100% - var(--cap-top) + 8px); left: var(--gut); right: var(--gut); }
   html.motion-ready .flight__fly .thing { font-size: 10px; }
+  html.motion-ready .flight__caption {
+    left: var(--gut); right: var(--gut); width: auto; top: var(--cap-top); margin-top: 0;
+    align-items: center; justify-content: flex-start; text-align: center;
+  }
+  html.motion-ready .flight__links { justify-content: center; }
 }
 html.disable-animations .flight__caption { transition: none !important; }
+/* OS reduced motion (CALM): the flight still follows scroll, the captions swap without travel */
+@media (prefers-reduced-motion: reduce) { html.motion-ready .flight__caption { transform: none !important; } }

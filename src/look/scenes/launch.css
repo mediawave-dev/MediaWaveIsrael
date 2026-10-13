@@ -61,3 +61,5 @@ html.motion-ready .launch__lap .lap__lid { transform: rotateX(-86deg); }
   .launch__line { font-size: 1.05rem; }
 }
 html.disable-animations .launch__spec, html.disable-animations .launch__shot { transition: none !important; }
+/* OS reduced motion (CALM): the hold still follows scroll, the copy swaps without travel */
+@media (prefers-reduced-motion: reduce) { html.motion-ready .launch__spec { transform: none !important; } }

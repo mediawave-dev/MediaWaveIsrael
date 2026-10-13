@@ -7,8 +7,8 @@ export interface LookRegistry {
   /** above the fold, never lazy (the H1 is the LCP) */
   Hero: ComponentType
   Services: ComponentType
-  /** null: the page keeps its legacy HowWeWork for now */
-  Process: ComponentType | null
+  /** how we work: KM's launch hold, K and M's line through four screens */
+  Process: ComponentType
   /** KM's fixed theme layers; null in single-ground looks */
   ThemeLayers: ComponentType | null
 }

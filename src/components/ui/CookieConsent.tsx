@@ -57,16 +57,16 @@ export default function CookieConsent() {
           transition={{ duration: 0.3, ease: EASE_BRAND }}
         >
           {/* Mobile: single compact row. Desktop (sm+): stacked card. */}
-          <div className="bg-white rounded-xl shadow-lg border border-cream-darker/30 p-3 sm:p-4">
+          <div className="mw-consent p-3 sm:p-4">
             <div className="flex items-center gap-3 sm:flex-col sm:items-stretch sm:gap-0">
-              <p className="flex-1 text-xs sm:text-sm text-brown leading-snug sm:leading-relaxed sm:mb-3">
+              <p className="mw-consent__text flex-1 text-sm leading-snug sm:leading-relaxed sm:mb-3">
                 האתר משתמש בעוגיות לשיפור החוויה.{' '}
                 {/* Static underline is a WCAG 1.4.1 requirement for links inside
                     running text (axe link-in-text-block fired on every page) —
                     color alone (1.49:1 vs surrounding text) is not a valid cue */}
                 <a
                   href="/privacy"
-                  className="text-sky-ink underline underline-offset-2 whitespace-nowrap"
+                  className="mw-consent__link underline underline-offset-2 whitespace-nowrap"
                 >
                   מדיניות פרטיות
                 </a>
@@ -75,13 +75,13 @@ export default function CookieConsent() {
               <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <button
                   onClick={() => handleConsent(true)}
-                  className="px-4 py-2 sm:flex-1 text-sm font-medium bg-orange text-brown-dark rounded-lg hover:bg-orange-dark transition-colors"
+                  className="mw-consent__ok px-4 py-2 sm:flex-1 text-sm rounded-lg"
                 >
                   אישור
                 </button>
                 <button
                   onClick={() => handleConsent(false)}
-                  className="px-2.5 py-2 text-sm text-brown-muted hover:text-brown transition-colors"
+                  className="mw-consent__no px-2.5 py-2 text-sm"
                 >
                   דחייה
                 </button>

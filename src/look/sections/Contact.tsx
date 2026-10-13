@@ -1,0 +1,162 @@
+// Contact in the looks (step 3). The form is the page's last ask, so it is plain and calm:
+// labelled fields (never a placeholder for a label), errors on the failing field, the look's
+// button driven by the real states (idle, loading, sent, error). The Rive companion sits on
+// the form and answers it (DECISIONS #56, design/rive/companion/CONTRACT.md): the hero's
+// laptop writes the message on its screen as you type, folds it into the Horizon line while it
+// is sent and fills into the mark when it arrives. In KM: on the stage.
+// Every track() call of the old section is kept.
+
+import { useEffect, useRef, useState, type FocusEvent, type FormEvent } from 'react'
+import { LookButton } from '@look/button'
+import type { BtnState } from '../buttons/StateButton'
+import { useMotionEngine } from '../../motion/ScrollEngineProvider'
+import { LottieIcon } from '../../components/ui/LottieIcon'
+import Companion, { type CompanionStatus } from '../parts/Companion'
+import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../../utils/validation'
+import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
+import { SITE_CONTACT } from '../../data/site'
+import { track } from '../../utils/analytics'
+import './contact.css'
+
+type Field = 'name' | 'email' | 'message'
+
+export default function Contact() {
+  const engine = useMotionEngine()
+  const [data, setData] = useState({ name: '', email: '', message: '' })
+  const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
+  const [state, setState] = useState<BtnState>('idle')
+  const [status, setStatus] = useState('')
+  const [failure, setFailure] = useState('')
+  const [focused, setFocused] = useState(false)
+  const [keys, setKeys] = useState(0)
+  const timer = useRef(0)
+  useEffect(() => () => clearTimeout(timer.current), [])
+
+  // the companion's state: the request lifecycle first, then whether a field has focus
+  const pal: CompanionStatus = state === 'loading' || state === 'sent' || state === 'error' ? state : focused ? 'typing' : 'idle'
+  // 180 characters fill the laptop's page
+  const progress = Math.min(100, ((data.name.length + data.email.length + data.message.length) * 100) / 180)
+  const isField = (el: EventTarget | null) => el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement
+  const focusIn = (e: FocusEvent) => { if (isField(e.target)) setFocused(true) }
+  const focusOut = (e: FocusEvent) => { if (!isField(e.relatedTarget)) setFocused(false) }
+
+  const change = (f: Field) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFailure('')
+    setErrors({})
+    if (state === 'error') setState('idle')
+    setData((d) => ({ ...d, [f]: e.target.value }))
+    setKeys((k) => k + 1)
+  }
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault()
+    if (state === 'loading') return
+    setStatus('')
+    setFailure('')
+    if (!isValidName(data.name)) return setErrors({ name: validationErrors.name })
+    if (!isValidEmail(data.email)) return setErrors({ email: validationErrors.email })
+    if (!isValidMessage(data.message)) return setErrors({ message: validationErrors.message })
+    setErrors({})
+
+    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
+    // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
+    if (!endpoint) {
+      const wa = `היי, אני ${data.name.trim()}.\n${data.message.trim()}\n(אימייל לחזרה: ${data.email.trim()})`
+      track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
+      window.open(getWhatsAppUrl(wa), '_blank', 'noopener')
+      setStatus('פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊')
+      return
+    }
+
+    setState('loading')
+    try {
+      await fetch(endpoint, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: new URLSearchParams({
+          fullName: data.name.trim(),
+          email: data.email.trim(),
+          message: data.message.trim(),
+          page: window.location.href,
+          userAgent: navigator.userAgent,
+        }),
+      })
+      track('form_submit', { placement: 'contact_form', mode: 'endpoint' })
+      setState('sent')
+      setStatus('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם')
+      setData({ name: '', email: '', message: '' })
+      timer.current = window.setTimeout(() => setState('idle'), 4200)
+    } catch {
+      setState('error')
+      setFailure('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')
+    }
+  }
+
+  const field = (f: Field, label: string, props: Record<string, unknown>, area = false) => {
+    const id = `contact-${f}`
+    const err = errors[f]
+    const shared = {
+      id, name: f, value: data[f], required: true, onChange: change(f),
+      'aria-invalid': err ? true : undefined, 'aria-describedby': err ? `${id}-err` : undefined, ...props,
+    }
+    return (
+      <div className="ct__field" data-invalid={err ? '' : undefined}>
+        <label htmlFor={id}>{label}</label>
+        {area ? <textarea rows={5} {...shared} /> : <input {...shared} />}
+        {err && <p id={`${id}-err`} className="ct__err">{err}</p>}
+      </div>
+    )
+  }
+
+  return (
+    <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark">
+      <div className="ct__in">
+        <div className="ct__side">
+          <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
+          <p className="ct__lead" data-zone="text">מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם</p>
+          <div className="ct__face" aria-hidden="true">
+            <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
+          </div>
+          <ul className="ct__ways">
+            <li>
+              <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
+                <span>טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
+                <span>אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
+              </a>
+            </li>
+            <li>
+              <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
+                <span>וואטסאפ</span><b>דברו איתנו</b>
+              </a>
+            </li>
+            <li>
+              <a href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" onClick={() => track('instagram_click', { placement: 'contact_section' })}>
+                <span>אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
+              </a>
+            </li>
+          </ul>
+          <p className="ct__time">{SITE_CONTACT.responseTime}</p>
+        </div>
+
+        <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
+          <Companion engine={engine} status={pal} progress={progress} keys={keys} />
+          {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
+          {field('email', 'אימייל', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
+          {field('message', 'הודעה', {}, true)}
+          {status && <p role="status" className="ct__status">{status}</p>}
+          {failure && (
+            <p role="alert" className="ct__failure">
+              {failure}{' '}
+              <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
+            </p>
+          )}
+          <LookButton type="submit" block state={state} live zone="text">שליחת הודעה</LookButton>
+        </form>
+      </div>
+    </section>
+  )
+}

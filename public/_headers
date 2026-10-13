@@ -29,3 +29,6 @@
 
 /*.woff2
   Content-Type: font/woff2
+
+/*.wasm
+  Content-Type: application/wasm
