@@ -29,6 +29,8 @@ export interface ShowItem {
   /** /services/<slug>, or none (process steps) */
   href?: string
   hrefLabel?: string
+  /** a real work sample (the strongest proof on the card): /portfolio/<slug> */
+  portfolio?: string
   lottie?: string
   image?: string
   renderer?: 'svg' | 'canvas'
@@ -40,6 +42,7 @@ export const SERVICES: ShowItem[] = servicesData.map((s) => ({
   line: LINES[s.id] ?? s.heroSubtitle,
   href: `/services/${s.slug}`,
   hrefLabel: `לפרטים על ${s.title}`,
+  portfolio: s.portfolioLink,
   lottie: s.lottieAnimation,
   image: s.imageIcon,
   renderer: s.lottieRenderer,

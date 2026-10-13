@@ -40,7 +40,7 @@ export default function BeforeAfterShowcase() {
             לפני <span style={{ color: '#7DD3FC' }}>ואחרי</span>
           </h2>
           <div className="section-title-accent" aria-hidden="true" />
-          <p className="text-lg md:text-xl text-white/70 mt-4">
+          <p className="text-lg md:text-xl text-white/70 mt-4 text-balance">
             {/* [קופי: נתי] */}
             גררו את הידית וראו איך מרגישה קפיצת דור באתר
           </p>
@@ -52,7 +52,7 @@ export default function BeforeAfterShowcase() {
             afterSrc="/images/demo-after.webp"
             className="border border-white/15 shadow-2xl"
           />
-          <p className="text-center text-white/45 text-xs md:text-sm mt-3">
+          <p className="text-center text-white/55 text-sm mt-3">
             {/* [קופי: נתי] */}
             הדגמה להמחשה בלבד, לא אתר של לקוח
           </p>

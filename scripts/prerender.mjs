@@ -22,20 +22,6 @@ const DIST = resolve(distArg > 0 ? process.argv[distArg + 1] : 'dist')
 // PRERENDER_PORT lets a build run while another local server holds 4173
 const PORT = Number(process.env.PRERENDER_PORT) || 4173
 
-/** Parse blog post slugs from blog-posts.ts (same pattern as generate-seo.mjs) */
-function parseBlogSlugs() {
-  const source = readFileSync(resolve(ROOT, 'src/data/blog-posts.ts'), 'utf-8')
-  const slugs = []
-  const regex = /slug:\s*'([^']+)'[\s\S]*?published:\s*(true|false)/g
-  let match
-  while ((match = regex.exec(source)) !== null) {
-    if (match[2] === 'true') {
-      slugs.push(match[1])
-    }
-  }
-  return slugs
-}
-
 /** Parse slug values from a simple data file (services / portfolio examples) */
 function parseDataSlugs(relPath) {
   const source = readFileSync(resolve(ROOT, relPath), 'utf-8')
@@ -43,14 +29,13 @@ function parseDataSlugs(relPath) {
 }
 
 // Static routes
-const STATIC_ROUTES = ['/', '/blog', '/terms', '/privacy', '/accessibility']
+const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility']
 
 // Dynamic routes from data files
-const blogSlugs = parseBlogSlugs().map(s => `/blog/${s}`)
 const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
 const portfolioRoutes = parseDataSlugs('src/data/portfolio-examples.ts').map(s => `/portfolio/${s}`)
 
-const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogSlugs]
+const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes]
 
 // Any path that matches no route renders the NotFound page. Prerendering it to
 // 404.html lets Cloudflare Pages serve a real HTTP 404 for unknown URLs instead
@@ -193,6 +178,19 @@ async function prerender() {
 
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
+
+    // Remove the floating overlays (WhatsApp, accessibility, chat, cookie
+    // banner). The prerender waits long enough for them to render, so they
+    // were being baked into the static HTML — but they are client-only, and
+    // main.tsx uses createRoot(), which WIPES #root and renders from scratch
+    // rather than hydrating. So the browser painted a cookie banner, React
+    // then deleted it, and it only returned after requestIdleCallback plus
+    // the banner's own 1.5s timer. On a phone that gap is several seconds and
+    // reads exactly as "the banner appears and disappears without me
+    // accepting it" — which is how it was reported, in both iOS browsers.
+    // Nothing here belongs in prerendered HTML: it is all decoration React
+    // re-renders anyway, and it is correctly outside the <main> landmark.
+    html = html.replace(/<aside aria-label="כלים ופעולות מהירות">[\s\S]*?<\/aside>\s*/, '')
 
     // Preload the look's display face (the H1), early in <head>
     const look = (html.match(/<html[^>]*data-look="(k|m|km)"/) || [])[1] || 'km'

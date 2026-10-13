@@ -106,7 +106,10 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
                 <p className="launch__kicker"><span dir="ltr">{i + 1} / {n}</span></p>
                 <h3>{it.title}</h3>
                 <p className="launch__line">{it.line}</p>
-                {it.href && <a href={it.href} className="launch__link" aria-label={it.hrefLabel}>לפרטים</a>}
+                <p className="launch__links">
+                  {it.href && <a href={it.href} className="launch__link" aria-label={it.hrefLabel}>לפרטים</a>}
+                  {it.portfolio && <a href={it.portfolio} className="launch__link" aria-label={`ראו דוגמה לפרויקט: ${it.title}`}>ראו דוגמה</a>}
+                </p>
               </div>
             ))}
           </div>

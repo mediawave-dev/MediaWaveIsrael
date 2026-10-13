@@ -152,7 +152,10 @@ export default function FlightHold({ sectionId, holdId, heading, headingId, intr
               <div className="flight__caption" data-i={i} data-zone="text">
                 <h3>{it.title}</h3>
                 <p>{it.line}</p>
-                {it.href && <a href={it.href} aria-label={it.hrefLabel}>לפרטים</a>}
+                <p className="flight__links">
+                  {it.href && <a href={it.href} aria-label={it.hrefLabel}>לפרטים</a>}
+                  {it.portfolio && <a href={it.portfolio} aria-label={`ראו דוגמה לפרויקט: ${it.title}`}>ראו דוגמה</a>}
+                </p>
               </div>
             </div>
           ))}

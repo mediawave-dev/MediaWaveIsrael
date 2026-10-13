@@ -17,7 +17,7 @@ export default function Terms() {
   }
 
   return (
-    <main className="min-h-screen bg-cream pt-32 pb-16">
+    <div className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="תקנון שימוש"
         description="תקנון השימוש של MediaWave Israel: תנאי שימוש באתר ושירותי פיתוח אתרים."
@@ -377,6 +377,6 @@ export default function Terms() {
           </div>
         </m.article>
       </div>
-    </main>
+    </div>
   )
 }

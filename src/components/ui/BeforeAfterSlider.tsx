@@ -145,10 +145,10 @@ export function BeforeAfterSlider({
       </div>
 
       {/* Labels */}
-      <span className="absolute top-3 right-3 rounded-full bg-black/60 text-white text-xs md:text-sm px-3 py-1 pointer-events-none" aria-hidden="true">
+      <span className="absolute top-3 right-3 rounded-full bg-black/60 text-white text-sm px-3 py-1 pointer-events-none" aria-hidden="true">
         {beforeLabel}
       </span>
-      <span className="absolute top-3 left-3 rounded-full bg-black/60 text-white text-xs md:text-sm px-3 py-1 pointer-events-none" aria-hidden="true">
+      <span className="absolute top-3 left-3 rounded-full bg-black/60 text-white text-sm px-3 py-1 pointer-events-none" aria-hidden="true">
         {afterLabel}
       </span>
     </div>

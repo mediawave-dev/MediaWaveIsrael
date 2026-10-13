@@ -15,8 +15,7 @@
     "audit:overlap": "node scripts/overlap-audit.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "migrate": "tsx scripts/migrate-to-sanity.ts",
-    "migrate:blog": "tsx scripts/migrate-blog.ts"
+    "migrate": "tsx scripts/migrate-to-sanity.ts"
   },
   "dependencies": {
     "@fontsource/alef": "^5.3.0",

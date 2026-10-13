@@ -18,7 +18,7 @@ export default function Accessibility() {
   }
 
   return (
-    <main className="min-h-screen bg-cream pt-32 pb-16">
+    <div className="min-h-screen bg-cream pt-32 pb-16">
       <SEO
         title="הצהרת נגישות"
         description="הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות."
@@ -134,13 +134,13 @@ export default function Accessibility() {
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li>
                 <strong>טלפון:</strong>{' '}
-                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-sky-ink hover:underline" dir="ltr" onClick={() => track('tel_click', { placement: 'accessibility_page' })}>
+                <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} className="text-sky-ink hover:underline inline-flex items-center min-h-[44px]" dir="ltr" onClick={() => track('tel_click', { placement: 'accessibility_page' })}>
                   {SITE_CONTACT.phone}
                 </a>
               </li>
               <li>
                 <strong>דוא"ל:</strong>{' '}
-                <a href={`mailto:${SITE_CONTACT.email}`} className="text-sky-ink hover:underline" dir="ltr" onClick={() => track('mailto_click', { placement: 'accessibility_page' })}>
+                <a href={`mailto:${SITE_CONTACT.email}`} className="text-sky-ink hover:underline inline-flex items-center min-h-[44px]" dir="ltr" onClick={() => track('mailto_click', { placement: 'accessibility_page' })}>
                   {SITE_CONTACT.email}
                 </a>
               </li>
@@ -151,6 +151,6 @@ export default function Accessibility() {
           </section>
         </m.article>
       </div>
-    </main>
+    </div>
   )
 }

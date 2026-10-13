@@ -4,3 +4,10 @@
 # Deep studio paths rewrite to the studio shell; everything else falls through
 # to 404.html (real HTTP 404 instead of the old /* soft-404).
 /studio/* /studio/ 200
+
+# Blog removed (Oct 2026). The 9 posts and the index were indexed by Google, so
+# their URLs are redirected to the home page rather than left to 404 — that
+# preserves any link equity and keeps visitors from a dead end.
+/blog / 301
+/blog/* / 301
+/feed.xml / 301

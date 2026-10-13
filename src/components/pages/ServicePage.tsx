@@ -102,7 +102,7 @@ export default function ServicePage() {
             className="flex items-center justify-center gap-2 text-sm text-brown-light mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            aria-label="breadcrumb"
+            aria-label="מסלול ניווט"
           >
             <Link to="/" className="hover:text-sky-ink transition-colors">
               דף הבית

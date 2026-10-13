@@ -174,9 +174,10 @@ html[data-look] { scroll-padding-top: var(--head); scrollbar-color: var(--ink-2)
 html[data-look] section[id] { scroll-margin-top: 0; }
 /* The bottom band the floating buttons own. While the cookie banner is open it lifts them
    (index.css .floating-cta), so held stages keep a taller band clear (overlap audit). */
-html[data-look] { --safe-b: 92px; }
-@media (max-width: 639px) { html[data-look] body.mw-consent-open { --safe-b: 172px; } }
-@media (min-width: 640px) and (max-width: 860px) { html[data-look] body.mw-consent-open { --safe-b: 200px; } }
+/* + the same terms index.css adds to the buttons on iOS (home indicator, Safari's toolbar) */
+html[data-look] { --safe-b: calc(92px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
+@media (max-width: 639px) { html[data-look] body.mw-consent-open { --safe-b: calc(172px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); } }
+@media (min-width: 640px) and (max-width: 860px) { html[data-look] body.mw-consent-open { --safe-b: calc(200px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); } }
 html[data-look="km"].motion-ready .mw-foot { background: transparent; }
 .mw-foot__base p { margin: 0; }
 
@@ -203,7 +204,7 @@ html.disable-animations .theme-bg i { transition: none; }
    brand's clear space (half the disc, 13 px) on both sides */
 .mw-head__logo .mw-logo { display: block; height: 26px; width: auto; }
 .mw-head__nav { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 32px); margin-inline-start: auto; }
-.mw-head__nav a { color: var(--ink-2); font: 400 1rem/1 var(--text); white-space: nowrap; padding-block: 10px; }
+.mw-head__nav a { color: var(--ink-2); font: 400 1rem/1 var(--text); white-space: nowrap; padding-block: 13px; } /* 44 px tall */
 @media (hover: hover) { .mw-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
 .mw-head__burger { display: none; margin-inline-start: auto; width: 44px; height: 44px; align-items: center; justify-content: center; background: none; border: 0; color: var(--ink); }
 .mw-head__burger span { display: block; position: relative; width: 22px; height: 14px; }
@@ -249,7 +250,7 @@ html[data-look] .legacy { --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4
 .mw-foot__col { grid-column: span 3; }
 .mw-foot__col h2 { margin: 0 0 14px; font: var(--ui-w) 0.85rem/1.2 var(--ui); color: var(--ink); }
 .mw-foot__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.mw-foot a { color: var(--ink-2); display: inline-flex; align-items: center; gap: 10px; min-height: 36px; }
+.mw-foot a { color: var(--ink-2); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; } /* 44 px tap targets (production a11y fix 2bc9b25) */
 @media (hover: hover) { .mw-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; } }
 .mw-foot__col--wide { grid-column: span 4; }
 .mw-foot__bottom { max-width: 1440px; margin-inline: auto; padding: 0 var(--gut) 28px; }
@@ -263,7 +264,7 @@ html[data-look] .legacy { --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4
   .mw-foot__sign .mw-logo { width: min(300px, 72vw); }
 }
 .mw-foot__base nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
-.mw-foot__base a { min-height: 32px; }
+.mw-foot__base a { min-height: 44px; }
 @media (max-width: 860px) {
   .mw-foot__brand, .mw-foot__col, .mw-foot__col--wide { grid-column: 1 / -1; }
   .mw-foot__bottom { padding-bottom: 96px; } /* the floating buttons sit over the last lines */

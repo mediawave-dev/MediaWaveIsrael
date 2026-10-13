@@ -119,7 +119,7 @@ export default function Header() {
             <AnimatedLogo variant="compact" mode="intro" live decorative />
           </a>
 
-          <nav className="mw-head__nav" aria-label="ראשי">
+          <nav className="mw-head__nav" aria-label="ניווט ראשי">
             {headerLinks.map((link) => (
               <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}>
                 {link.label}
@@ -180,7 +180,7 @@ export default function Header() {
               </svg>
             </button>
 
-            <nav aria-label="תפריט">
+            <nav aria-label="תפריט נייד">
               {headerLinks.map((link) => (
                 <a
                   key={link.href}

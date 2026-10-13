@@ -41,6 +41,39 @@ export default function Layout({ children }: LayoutProps) {
     return () => clearTimeout(timer)
   }, [])
 
+  // iOS Safari's bottom toolbar overlays the layout viewport, and
+  // env(safe-area-inset-bottom) does NOT describe it — that inset is the home
+  // indicator and reads 0 while the toolbar is up. So anything pinned to the
+  // bottom sits behind the toolbar: the cookie banner appeared, the toolbar
+  // covered it, and its buttons could never be tapped.
+  //
+  // visualViewport reports what is actually on screen, so the gap below it is
+  // exactly the browser chrome. Published as a CSS variable, every fixed
+  // bottom element clears it with one rule. (Same API ChatWidget already uses
+  // for its panel height.) Non-iOS browsers report a gap of 0.
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!vv) return
+
+    const update = () => {
+      const raw = window.innerHeight - vv.height - vv.offsetTop
+      // Clamped: pinch-zoom shrinks vv.height enormously, and an unclamped gap
+      // would push the banner and CTAs off the top of the screen. No browser
+      // toolbar is taller than ~160px, so anything beyond that is not chrome.
+      const hidden = Math.min(160, Math.max(0, raw))
+      document.documentElement.style.setProperty('--browser-chrome-bottom', `${Math.round(hidden)}px`)
+    }
+
+    update()
+    vv.addEventListener('resize', update, { passive: true })
+    vv.addEventListener('scroll', update, { passive: true })
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      document.documentElement.style.removeProperty('--browser-chrome-bottom')
+    }
+  }, [])
+
   const handleChatOpenChange = useCallback((open: boolean) => {
     setIsChatOpen(open)
   }, [])
@@ -71,22 +104,42 @@ export default function Layout({ children }: LayoutProps) {
 
       <Footer />
 
-      {/* Floating WhatsApp — left side, hidden when chat panel is open */}
-      <FloatingWhatsApp isChatOpen={isChatOpen} />
+      {/* Fixed overlays live in one complementary landmark (axe "region"):
+          every child is position:fixed, so this wrapper takes no space. */}
+      <aside aria-label="כלים ופעולות מהירות">
+          {/* Floating WhatsApp — left side, hidden when chat panel is open */}
+        <FloatingWhatsApp isChatOpen={isChatOpen} />
 
-      {/* Widgets — mounted after idle (see widgetsReady above) */}
-      {widgetsReady && (
-        <Suspense fallback={null}>
-          {/* Accessibility widget */}
-          <AccessibilityWidget />
+        {/* Widgets — mounted after idle (see widgetsReady above).
+            ONE BOUNDARY EACH, deliberately. These are three separate lazy()
+            chunks, and a single shared <Suspense fallback={null}> meant that
+            whichever chunk was still in flight blanked out the ones already on
+            screen. On a fast connection all three land together and it never
+            shows; throttled to a phone they arrive seconds apart, so the
+            widgets flashed in and out — and every blank remounted
+            CookieConsent, restarting its 1.5s timer, which is why the banner
+            appeared and vanished without ever being dismissed. Reproduced at
+            6x CPU / 1.6Mbps. Separate boundaries stop one pending chunk from
+            hiding its neighbours. */}
+        {widgetsReady && (
+          <>
+            {/* Accessibility widget */}
+            <Suspense fallback={null}>
+              <AccessibilityWidget />
+            </Suspense>
 
-          {/* AI Chat widget — bottom-right, lowest position */}
-          <ChatWidget onOpenChange={handleChatOpenChange} />
+            {/* AI Chat widget — bottom-right, lowest position */}
+            <Suspense fallback={null}>
+              <ChatWidget onOpenChange={handleChatOpenChange} />
+            </Suspense>
 
-          {/* Cookie consent banner */}
-          <CookieConsent />
-        </Suspense>
-      )}
+            {/* Cookie consent banner */}
+            <Suspense fallback={null}>
+              <CookieConsent />
+            </Suspense>
+          </>
+        )}
+      </aside>
     </div>
   )
 }
@@ -100,7 +153,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           href={WHATSAPP_URLS.general}
           target="_blank"
           rel="noopener noreferrer"
-          className="floating-cta fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#25D366]/90 rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4 backdrop-blur-sm"
+          className="floating-cta fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#0E7C44] rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4 backdrop-blur-sm"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}

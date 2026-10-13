@@ -29,6 +29,9 @@ interface LottieIconProps {
       otherwise. Undefined keeps the default: play while on screen. Only the Lottie on stage
       should run (DECISIONS #50). */
   active?: boolean
+  /** Drawn instead of the animation if it cannot be loaded. Pass one wherever
+      an empty box would look broken (a CTA button); omit it for decoration. */
+  fallback?: React.ReactNode
 }
 
 /**
@@ -45,6 +48,7 @@ export function LottieIcon({
   speed = 1,
   renderer = 'svg',
   active,
+  fallback = null,
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -56,6 +60,7 @@ export function LottieIcon({
   const [loadedData, setLoadedData] = useState<object | null>(animationData || null)
   const [isLoading, setIsLoading] = useState(!animationData && !!animationPath)
   const [error, setError] = useState<string | null>(null)
+  const [attempt, setAttempt] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   // Lotties are brand ambient motion: they loop everywhere (mobile has no
   // hover!) and stop only via the site's accessibility widget
@@ -88,6 +93,8 @@ export function LottieIcon({
   useEffect(() => {
     if (!animationPath || animationData || !isVisible) return
 
+    let cancelled = false
+    let retryTimer: ReturnType<typeof setTimeout> | undefined
     setIsLoading(true)
     setError(null)
 
@@ -97,17 +104,31 @@ export function LottieIcon({
         return res.json()
       })
       .then(data => {
+        if (cancelled) return
         setLoadedData(data)
         setIsLoading(false)
       })
       .catch(err => {
+        if (cancelled) return
         if (import.meta.env.DEV) {
           console.error('Failed to load Lottie:', animationPath, err)
+        }
+        // One retry: a single dropped request (flaky mobile connection, Low
+        // Power Mode) used to leave the icon permanently in its error state.
+        // isLoading stays true meanwhile, so the reserved box is shown.
+        if (attempt < 1) {
+          retryTimer = setTimeout(() => setAttempt(a => a + 1), 1200)
+          return
         }
         setError(err.message)
         setIsLoading(false)
       })
-  }, [animationPath, animationData, isVisible])
+
+    return () => {
+      cancelled = true
+      clearTimeout(retryTimer)
+    }
+  }, [animationPath, animationData, isVisible, attempt])
 
   // Canvas renderer path — lottie-web drives a <canvas> directly (no per-frame
   // SVG DOM layout; measured 25-54s TBT on one 356-path animation)
@@ -202,15 +223,20 @@ export function LottieIcon({
     )
   }
 
-  // Error state
+  // Error state — a decorative animation that fails must never announce it.
+  // This used to render "⚠", which iOS draws with emoji presentation (a yellow
+  // warning triangle, ignoring text-sky-300) right in the middle of the chat
+  // trigger: one dropped request made the site look broken. Show the caller's
+  // own fallback, or nothing at all.
   if (error || !loadedData) {
     return (
       <div
         ref={containerRef}
-        className={`flex items-center justify-center bg-sky-50 rounded-xl text-sky-300 ${className}`}
-        style={{ width: size, height: size, fontSize: size * 0.4 }}
+        className={`flex items-center justify-center ${className}`}
+        style={{ width: size, height: size }}
+        aria-hidden="true"
       >
-        ⚠
+        {fallback}
       </div>
     )
   }

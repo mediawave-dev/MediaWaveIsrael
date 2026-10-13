@@ -6,7 +6,8 @@
 .flight__intro p { margin: 0; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.65 var(--text); }
 .flight__caption h3 { margin: 0 0 8px; font: var(--display-w) clamp(2rem, 3.6vw, 3.6rem)/1.08 var(--display); color: var(--ink); }
 .flight__caption p { margin: 0 auto 6px; max-width: 34ch; color: var(--ink-2); font: 400 clamp(1.02rem, 1.2vw, 1.15rem)/1.6 var(--text); }
-.flight__caption a { display: inline-flex; align-items: center; min-height: 40px; color: var(--ink); font: var(--ui-w) 1rem/1.2 var(--ui); }
+.flight__links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 24px; }
+.flight__caption a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font: var(--ui-w) 1rem/1.2 var(--ui); }
 @media (hover: hover) { .flight__caption a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
 .flight__cta { max-width: 1440px; margin-inline: auto; padding: clamp(32px, 6vh, 64px) var(--gut) clamp(72px, 12vh, 140px); display: flex; justify-content: center; }
 

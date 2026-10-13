@@ -162,6 +162,7 @@ export default function Contact() {
                   label="שם מלא"
                   type="text"
                   name="name"
+                  autoComplete="name"
                   required
                   error={fieldErrors.name}
                   value={formData.name}
@@ -176,6 +177,7 @@ export default function Contact() {
                   label="אימייל"
                   type="email"
                   name="email"
+                  autoComplete="email"
                   required
                   dir="ltr"
                   className="text-left"

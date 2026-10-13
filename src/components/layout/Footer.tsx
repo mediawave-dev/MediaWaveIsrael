@@ -18,7 +18,7 @@ export default function Footer() {
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
-    // Route link (e.g., /blog): ScrollEngineProvider handles the scroll reset
+    // Route link (e.g., /terms): ScrollEngineProvider handles the scroll reset
     if (href.startsWith('/')) {
       navigate(href)
       return
@@ -40,13 +40,15 @@ export default function Footer() {
         {/* h2: the page h1 comes first, footer headings must not skip levels */}
         <div className="mw-foot__col">
           <h2>קישורים מהירים</h2>
-          <ul>
-            {footerLinks.map((link) => (
-              <li key={link.href}>
-                <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>{link.label}</a>
-              </li>
-            ))}
-          </ul>
+          <nav aria-label="ניווט בתחתית העמוד">
+            <ul>
+              {footerLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         <div className="mw-foot__col mw-foot__col--wide">
