@@ -18,6 +18,7 @@ import { Art } from '../parts/Art'
 import Logo from '../../components/ui/Logo'
 import type { ShowItem } from '../data'
 import './launch.css'
+import { useIdleWarm } from './idle-warm'
 
 export interface LaunchHoldProps {
   sectionId: string
@@ -94,6 +95,8 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
     const p = START + ((i + 0.5) / n) * (1 - START)
     engine.scrollTo(top + range * p, { immediate: true })
   }
+
+  useIdleWarm(ref, n, setWarm)
 
   return (
     <section ref={ref} id={sectionId} className="launch" aria-labelledby={headingId} data-theme="dark">

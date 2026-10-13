@@ -18,6 +18,7 @@ import { Art } from '../parts/Art'
 import { KINDS, THING_EM, Thing } from '../parts/Things'
 import type { ShowItem } from '../data'
 import './flight.css'
+import { useIdleWarm } from './idle-warm'
 
 export interface FlightHoldProps {
   sectionId: string
@@ -140,6 +141,8 @@ export default function FlightHold({ sectionId, holdId, heading, headingId, intr
     const range = hold.offsetHeight - window.innerHeight
     engine.scrollTo(top + range * ((i - Q0) / (Q1 - Q0)), { immediate: true })
   }
+
+  useIdleWarm(ref, n, setWarm)
 
   return (
     <section ref={ref} id={sectionId} className="flight" aria-labelledby={headingId} data-theme="light">

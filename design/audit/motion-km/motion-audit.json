@@ -1,0 +1,949 @@
+{
+  "url": "http://localhost:4177/",
+  "options": {
+    "only": [
+      "map",
+      "smoothness",
+      "reduced"
+    ],
+    "runs": null,
+    "strict": false,
+    "deadVp": 3,
+    "budgetCls": 0.05,
+    "step": 0.5,
+    "settle": 600,
+    "intro": 4500,
+    "throttle": 4,
+    "maxSteps": 140
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "profile": {
+        "width": 1440,
+        "height": 900,
+        "deviceScaleFactor": 1,
+        "isMobile": false,
+        "hasTouch": false
+      },
+      "motion": {
+        "animatedElements": 171,
+        "earlyEntrances": 0,
+        "scrubbed": 83,
+        "triggered": 88,
+        "scrubRatio": 0.49,
+        "peaks": 8,
+        "kinds": {
+          "scale+rotate": 1,
+          "fade": 10,
+          "scale+horizontal": 9,
+          "scale": 3,
+          "other": 62,
+          "clip": 1,
+          "horizontal": 15,
+          "masked-rise": 10,
+          "rotate": 29,
+          "scale+rotate+horizontal": 1,
+          "fade-up": 3,
+          "rotate+horizontal": 15,
+          "morph": 11,
+          "vertical-travel": 1
+        },
+        "fadeUpShare": 0.15,
+        "distinctKinds": 14,
+        "monotoneZones": [],
+        "holds": [
+          {
+            "section": "section#services.flight",
+            "from": 2281,
+            "to": 6845,
+            "exact": true,
+            "px": 4564
+          },
+          {
+            "section": "section#process.launch",
+            "from": 8140,
+            "to": 11444,
+            "exact": true,
+            "px": 3304
+          }
+        ],
+        "heldShare": 0.5,
+        "holdsApproximate": false,
+        "themes": [
+          {
+            "y": 0,
+            "bg": "rgb(0, 16, 64)"
+          },
+          {
+            "y": 1800,
+            "bg": "rgb(248, 248, 248)"
+          },
+          {
+            "y": 4500,
+            "bg": "rgb(112, 112, 112)"
+          },
+          {
+            "y": 7650,
+            "bg": "rgb(0, 8, 32)"
+          },
+          {
+            "y": 12150,
+            "bg": "rgb(112, 112, 112)"
+          },
+          {
+            "y": 13500,
+            "bg": "rgb(0, 8, 32)"
+          }
+        ],
+        "themeSwitches": 5,
+        "deadZones": [],
+        "deadZoneViewports": 3,
+        "sectionMap": {
+          "section#hero.kh@1": {
+            "scrub": 1,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "scale+rotate": 1
+            },
+            "deadShare": 0,
+            "fadeShare": 0
+          },
+          "section#why-us.why@2": {
+            "scrub": 30,
+            "trigger": 4,
+            "fades": 3,
+            "early": 0,
+            "kinds": {
+              "fade": 3,
+              "horizontal": 7,
+              "other": 8,
+              "rotate": 14,
+              "scale": 1,
+              "scale+rotate+horizontal": 1
+            },
+            "deadShare": 0,
+            "fadeShare": 0.75
+          },
+          "section#services.flight@3": {
+            "scrub": 16,
+            "trigger": 33,
+            "fades": 1,
+            "early": 0,
+            "kinds": {
+              "scale+horizontal": 6,
+              "other": 25,
+              "fade-up": 1,
+              "rotate": 10,
+              "masked-rise": 3,
+              "horizontal": 1,
+              "scale": 1,
+              "morph": 2
+            },
+            "deadShare": 0,
+            "fadeShare": 0.03
+          },
+          "section#process.launch@4": {
+            "scrub": 15,
+            "trigger": 40,
+            "fades": 6,
+            "early": 0,
+            "kinds": {
+              "scale": 1,
+              "other": 12,
+              "fade-up": 2,
+              "fade": 4,
+              "morph": 9,
+              "vertical-travel": 1,
+              "masked-rise": 2,
+              "scale+horizontal": 2,
+              "rotate+horizontal": 13,
+              "horizontal": 6,
+              "rotate": 3
+            },
+            "fadeShare": 0.15
+          },
+          "div.bw@6": {
+            "scrub": 1,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "clip": 1
+            },
+            "fadeShare": 0
+          },
+          "footer.mw-foot@7": {
+            "scrub": 0,
+            "trigger": 8,
+            "fades": 2,
+            "early": 0,
+            "kinds": {
+              "horizontal": 1,
+              "masked-rise": 4,
+              "scale+horizontal": 1,
+              "fade": 2
+            },
+            "fadeShare": 0.25
+          },
+          "body": {
+            "scrub": 8,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 8
+            },
+            "fadeShare": 0
+          },
+          "header#top.mw-head@8": {
+            "scrub": 3,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 3
+            },
+            "fadeShare": 0
+          },
+          "div.lm@9": {
+            "scrub": 9,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 5,
+              "rotate+horizontal": 2,
+              "rotate": 2
+            },
+            "deadShare": 0,
+            "fadeShare": 0
+          },
+          "section#contact.ct@10": {
+            "scrub": 0,
+            "trigger": 3,
+            "fades": 1,
+            "early": 0,
+            "kinds": {
+              "fade": 1,
+              "other": 1,
+              "masked-rise": 1
+            },
+            "fadeShare": 0.33
+          }
+        },
+        "pageHeight": 15833
+      },
+      "smoothness": {
+        "scrolledPx": 14933,
+        "maxY": 14933,
+        "stuck": false,
+        "timedOut": false,
+        "seconds": 22,
+        "frames": 1308,
+        "p50FrameMs": 16.7,
+        "p95FrameMs": 16.9,
+        "p99FrameMs": 17,
+        "jankPct": 0.3,
+        "longTaskMs": 0,
+        "longestTaskMs": 0,
+        "loafBlockingMs": 0,
+        "cls": {
+          "worst": 0,
+          "total": 0,
+          "top": []
+        },
+        "topLongTasks": [],
+        "longTasksBySection": [],
+        "longFrameScripts": [
+          {
+            "script": "react-vendor-CCN-2QgV.js Mn [MessagePort.onmessage]",
+            "ms": 42
+          }
+        ],
+        "range": {
+          "p95FrameMs": [
+            16.9,
+            16.9
+          ],
+          "jankPct": [
+            0.3,
+            0.3
+          ],
+          "longTaskMs": [
+            0,
+            0
+          ]
+        },
+        "runs": [
+          {
+            "p95FrameMs": 16.9,
+            "jankPct": 0.3,
+            "longTaskMs": 0,
+            "longestTaskMs": 0,
+            "cls": 0,
+            "scrolledPx": 14933,
+            "seconds": 22
+          }
+        ]
+      },
+      "idleMotion": 6,
+      "reducedMotion": {
+        "idle": 8,
+        "hiddenSteps": 10,
+        "scrollMotion": {
+          "moving": [
+            "div.kh__tilt in section#hero.kh@2",
+            "span.absolute.inset-0",
+            "g#947",
+            "g#949",
+            "g#951",
+            "g#952",
+            "g#985",
+            "g#948"
+          ],
+          "movingCount": 8,
+          "notes": [
+            "g in section#why-us.why@3 (aria-hidden) ×54",
+            "g in section#services.flight@4 (aria-hidden) ×31",
+            "g in section#process.launch@5 (aria-hidden) ×21",
+            "path in section#process.launch@5 (aria-hidden) ×10",
+            "g in div.lm@9 (aria-hidden) ×9",
+            "div.flight__fly in section#services.flight@4 (aria-hidden) ×6",
+            "path in section#why-us.why@3 (aria-hidden) ×6",
+            "div.flight__caption in section#services.flight@4 (opacity only) ×5",
+            "span.why__off in section#why-us.why@3 (opacity only) ×3",
+            "g in footer.mw-foot@8 (aria-hidden) ×3",
+            "path in footer.mw-foot@8 (aria-hidden) ×3",
+            "div.launch__spec in section#process.launch@5 (opacity only) ×3",
+            "div.launch__shot in section#process.launch@5 (opacity only) ×3",
+            "path in footer.mw-foot@8 (opacity only) ×2",
+            "div.lap.launch__lap in section#process.launch@5 (aria-hidden)",
+            "div.lap__lid in section#process.launch@5 (aria-hidden)",
+            "span.bw__line.bw__fill in div.bw@7 (aria-hidden)",
+            "i.on (opacity only)",
+            "i (opacity only)",
+            "i.on in header#top.mw-head@1 (opacity only)",
+            "i in header#top.mw-head@1 (opacity only)",
+            "div.launch__spec.launch__spec--opening in section#process.launch@5 (opacity only)",
+            "div.launch__shot.launch__shot--opening in section#process.launch@5 (opacity only)",
+            "path in div.lm@9 (aria-hidden)",
+            "g in section#contact.ct@10 (aria-hidden)"
+          ]
+        },
+        "errors": [
+          "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'.",
+          "console: falling back to ArrayBuffer instantiation"
+        ]
+      },
+      "verdicts": [
+        {
+          "ok": true,
+          "label": "page actually loaded and rendered text",
+          "detail": "3292 chars of text, 15833px tall"
+        },
+        {
+          "ok": false,
+          "label": "no page errors",
+          "detail": "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. || console: falling back to ArrayBuffer instantiation"
+        },
+        {
+          "ok": true,
+          "label": "page scrolled to the end",
+          "detail": "map 14933/14933px · smoothness 14933/14933px · reduced 14933/14933px"
+        },
+        {
+          "ok": true,
+          "label": "no content stuck invisible mid-screen",
+          "detail": "none (327 cued-later observations)"
+        },
+        {
+          "ok": true,
+          "label": "no horizontal overflow",
+          "detail": "0px"
+        },
+        {
+          "ok": true,
+          "label": "reveals are not a monotone fade-up",
+          "detail": "fade share 0.15, 14 motion kinds"
+        },
+        {
+          "ok": true,
+          "label": "has at least one memorable moment (held scene or scrub-driven section)",
+          "detail": "8 peaks: 2 held scenes, scrub ratio 0.49"
+        },
+        {
+          "ok": true,
+          "label": "no monotone zone (6+ reveals, 80%+ plain fades)",
+          "detail": "none"
+        },
+        {
+          "ok": true,
+          "label": "no dead zone ≥ 3 viewports",
+          "detail": "none"
+        },
+        {
+          "ok": true,
+          "label": "p95 frame ≤ 34ms while scrolling (timing)",
+          "detail": "16.9ms (p50 16.7)",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": true,
+          "label": "janky frames ≤ 12% (timing)",
+          "detail": "0.3%",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": true,
+          "label": "CLS during scroll ≤ 0.05 (worst session window)",
+          "detail": "0 (sum 0) · top sources: none"
+        },
+        {
+          "ok": true,
+          "label": "long tasks during scroll ≤ 400ms (timing)",
+          "detail": "0ms (longest 0ms)",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: all content visible",
+          "detail": "y=2700 h3: \"דפי נחיתה\" | y=2700 p: \"דף אחד שהופך גולש לפנייה בוואטסאפ.\" | y=2700 p: \"לפרטים\" | y=2700 a: \"לפרטים\""
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: nothing moves on its own",
+          "detail": "8 elements moving while idle (normal mode: 6)"
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: nothing animates on scroll",
+          "detail": "8 moving: div.kh__tilt in section#hero.kh@2, span.absolute.inset-0, g#947, g#949, g#951 · not counted: g in section#why-us.why@3 (aria-hidden) ×54, g in section#services.flight@4 (aria-hidden) ×31, g in section#process.launch@5 (aria-hidden) ×21"
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: no page errors",
+          "detail": "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. || console: falling back to ArrayBuffer instantiation"
+        }
+      ]
+    },
+    {
+      "name": "mobile",
+      "profile": {
+        "width": 390,
+        "height": 844,
+        "deviceScaleFactor": 2,
+        "isMobile": true,
+        "hasTouch": true,
+        "ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1"
+      },
+      "motion": {
+        "animatedElements": 181,
+        "earlyEntrances": 3,
+        "scrubbed": 61,
+        "triggered": 120,
+        "scrubRatio": 0.34,
+        "peaks": 8,
+        "kinds": {
+          "scale+rotate": 1,
+          "fade": 7,
+          "scale": 6,
+          "scale+horizontal": 7,
+          "other": 51,
+          "clip": 1,
+          "scale+rotate+horizontal": 1,
+          "masked-rise": 17,
+          "horizontal": 14,
+          "rotate": 24,
+          "morph": 18,
+          "fade-up": 3,
+          "vertical-travel": 4,
+          "rotate+horizontal": 27
+        },
+        "fadeUpShare": 0.08,
+        "distinctKinds": 14,
+        "monotoneZones": [],
+        "holds": [
+          {
+            "section": "section#services.flight",
+            "from": 2464,
+            "to": 6234,
+            "exact": true,
+            "px": 3770
+          },
+          {
+            "section": "section#process.launch",
+            "from": 7428,
+            "to": 10185,
+            "exact": true,
+            "px": 2757
+          }
+        ],
+        "heldShare": 0.42,
+        "holdsApproximate": false,
+        "themes": [
+          {
+            "y": 0,
+            "bg": "rgb(0, 16, 64)"
+          },
+          {
+            "y": 2110,
+            "bg": "rgb(248, 248, 248)"
+          },
+          {
+            "y": 4642,
+            "bg": "rgb(104, 104, 104)"
+          },
+          {
+            "y": 7174,
+            "bg": "rgb(0, 8, 24)"
+          },
+          {
+            "y": 10972,
+            "bg": "rgb(104, 104, 104)"
+          },
+          {
+            "y": 12238,
+            "bg": "rgb(0, 8, 24)"
+          }
+        ],
+        "themeSwitches": 5,
+        "deadZones": [],
+        "deadZoneViewports": 3,
+        "sectionMap": {
+          "section#hero.kh@1": {
+            "scrub": 0,
+            "trigger": 1,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "scale+rotate": 1
+            },
+            "deadShare": 0,
+            "fadeShare": 0
+          },
+          "section#why-us.why@2": {
+            "scrub": 24,
+            "trigger": 13,
+            "fades": 1,
+            "early": 3,
+            "kinds": {
+              "fade": 1,
+              "horizontal": 8,
+              "other": 13,
+              "rotate": 10,
+              "scale": 1,
+              "morph": 4
+            },
+            "deadShare": 0,
+            "fadeShare": 0.08
+          },
+          "section#services.flight@3": {
+            "scrub": 6,
+            "trigger": 42,
+            "fades": 1,
+            "early": 0,
+            "kinds": {
+              "scale": 2,
+              "scale+horizontal": 5,
+              "other": 16,
+              "fade-up": 1,
+              "rotate": 9,
+              "vertical-travel": 1,
+              "masked-rise": 8,
+              "rotate+horizontal": 2,
+              "morph": 4
+            },
+            "deadShare": 0,
+            "fadeShare": 0.02
+          },
+          "section#process.launch@4": {
+            "scrub": 12,
+            "trigger": 48,
+            "fades": 6,
+            "early": 0,
+            "kinds": {
+              "scale": 1,
+              "other": 7,
+              "fade-up": 2,
+              "fade": 4,
+              "morph": 10,
+              "vertical-travel": 3,
+              "masked-rise": 3,
+              "scale+horizontal": 2,
+              "rotate": 5,
+              "rotate+horizontal": 17,
+              "horizontal": 6
+            },
+            "fadeShare": 0.13
+          },
+          "div.bw@6": {
+            "scrub": 0,
+            "trigger": 1,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "clip": 1
+            },
+            "fadeShare": 0
+          },
+          "footer.mw-foot@7": {
+            "scrub": 0,
+            "trigger": 8,
+            "fades": 2,
+            "early": 0,
+            "kinds": {
+              "scale+rotate+horizontal": 1,
+              "masked-rise": 4,
+              "scale": 1,
+              "fade": 2
+            },
+            "fadeShare": 0.25
+          },
+          "body": {
+            "scrub": 5,
+            "trigger": 2,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "scale": 1,
+              "other": 6
+            },
+            "fadeShare": 0
+          },
+          "header#top.mw-head@8": {
+            "scrub": 3,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 3
+            },
+            "fadeShare": 0
+          },
+          "div.lm@9": {
+            "scrub": 9,
+            "trigger": 0,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 1,
+              "rotate+horizontal": 8
+            },
+            "deadShare": 0,
+            "fadeShare": 0
+          },
+          "section#contact.ct@10": {
+            "scrub": 2,
+            "trigger": 5,
+            "fades": 0,
+            "early": 0,
+            "kinds": {
+              "other": 5,
+              "masked-rise": 2
+            },
+            "fadeShare": 0
+          }
+        },
+        "pageHeight": 15514
+      },
+      "smoothness": {
+        "scrolledPx": 14670,
+        "maxY": 14670,
+        "stuck": false,
+        "timedOut": false,
+        "seconds": 40.9,
+        "frames": 1562,
+        "p50FrameMs": 16.7,
+        "p95FrameMs": 83.6,
+        "p99FrameMs": 133.8,
+        "jankPct": 15.4,
+        "longTaskMs": 12998,
+        "longestTaskMs": 269,
+        "loafBlockingMs": 6170,
+        "cls": {
+          "worst": 0,
+          "total": 0,
+          "top": []
+        },
+        "topLongTasks": [
+          {
+            "ms": 269,
+            "y": 4800,
+            "sec": "section#services.flight"
+          },
+          {
+            "ms": 235,
+            "y": 7920,
+            "sec": "section#process.launch"
+          },
+          {
+            "ms": 226,
+            "y": 11040,
+            "sec": "section#faq.faq"
+          },
+          {
+            "ms": 183,
+            "y": 8880,
+            "sec": "section#process.launch"
+          },
+          {
+            "ms": 171,
+            "y": 12240,
+            "sec": "div.bw"
+          }
+        ],
+        "longTasksBySection": [
+          {
+            "sec": "section#process.launch",
+            "ms": 4269
+          },
+          {
+            "sec": "section#services.flight",
+            "ms": 3610
+          },
+          {
+            "sec": "section#contact.ct",
+            "ms": 1501
+          },
+          {
+            "sec": "section#faq.faq",
+            "ms": 1249
+          },
+          {
+            "sec": "footer.mw-foot",
+            "ms": 1098
+          },
+          {
+            "sec": "section#why-us.why",
+            "ms": 752
+          },
+          {
+            "sec": "div.bw",
+            "ms": 376
+          },
+          {
+            "sec": "section#hero.kh",
+            "ms": 143
+          }
+        ],
+        "longFrameScripts": [
+          {
+            "script": "motion-engine-BYF60otI.js [TimerHandler:setTimeout]",
+            "ms": 4954
+          },
+          {
+            "script": "motion-engine-BYF60otI.js [DOMWindow.onscroll]",
+            "ms": 4842
+          },
+          {
+            "script": "react-vendor-CCN-2QgV.js Mn [MessagePort.onmessage]",
+            "ms": 925
+          },
+          {
+            "script": "(inline) [FrameRequestCallback]",
+            "ms": 589
+          },
+          {
+            "script": "lottie-DxNXyiW4.js p [FrameRequestCallback]",
+            "ms": 221
+          }
+        ],
+        "range": {
+          "p95FrameMs": [
+            83.6,
+            100.3
+          ],
+          "jankPct": [
+            14.1,
+            15.5
+          ],
+          "longTaskMs": [
+            12404,
+            13155
+          ]
+        },
+        "runs": [
+          {
+            "p95FrameMs": 83.6,
+            "jankPct": 15.5,
+            "longTaskMs": 12998,
+            "longestTaskMs": 269,
+            "cls": 0,
+            "scrolledPx": 14670,
+            "seconds": 40.9
+          },
+          {
+            "p95FrameMs": 100.3,
+            "jankPct": 15.4,
+            "longTaskMs": 13155,
+            "longestTaskMs": 290,
+            "cls": 0,
+            "scrolledPx": 14670,
+            "seconds": 41.3
+          },
+          {
+            "p95FrameMs": 83.6,
+            "jankPct": 14.1,
+            "longTaskMs": 12404,
+            "longestTaskMs": 242,
+            "cls": 0,
+            "scrolledPx": 14670,
+            "seconds": 40.8
+          }
+        ]
+      },
+      "idleMotion": 3,
+      "reducedMotion": {
+        "idle": 3,
+        "hiddenSteps": 9,
+        "scrollMotion": {
+          "moving": [
+            "div.kh__tilt in section#hero.kh@2",
+            "span.absolute.inset-0",
+            "g#947",
+            "g#949",
+            "g#951",
+            "g#952",
+            "g#948",
+            "g#950",
+            "g#985",
+            "div.lm__card in div.lm@9"
+          ],
+          "movingCount": 10,
+          "notes": [
+            "g in div.lm@9 (aria-hidden) ×46",
+            "g in section#process.launch@5 (aria-hidden) ×44",
+            "g in section#why-us.why@3 (aria-hidden) ×30",
+            "g in section#services.flight@4 (aria-hidden) ×29",
+            "div.flight__fly in section#services.flight@4 (aria-hidden) ×6",
+            "path in section#why-us.why@3 (aria-hidden) ×6",
+            "div.flight__caption in section#services.flight@4 (opacity only) ×4",
+            "span.why__off in section#why-us.why@3 (opacity only) ×3",
+            "g in footer.mw-foot@8 (aria-hidden) ×3",
+            "path in footer.mw-foot@8 (aria-hidden) ×3",
+            "div.launch__spec in section#process.launch@5 (opacity only) ×3",
+            "div.launch__shot in section#process.launch@5 (opacity only) ×3",
+            "g in section#contact.ct@10 (aria-hidden) ×3",
+            "path in footer.mw-foot@8 (opacity only) ×2",
+            "g in section#process.launch@5 (opacity only) ×2",
+            "div.lap.launch__lap in section#process.launch@5 (aria-hidden)",
+            "div.lap__lid in section#process.launch@5 (aria-hidden)",
+            "span.bw__line.bw__fill in div.bw@7 (aria-hidden)",
+            "i.on (opacity only)",
+            "i (opacity only)",
+            "i.on in header#top.mw-head@1 (opacity only)",
+            "i in header#top.mw-head@1 (opacity only)",
+            "div.launch__spec.launch__spec--opening in section#process.launch@5 (opacity only)",
+            "div.launch__shot.launch__shot--opening in section#process.launch@5 (opacity only)",
+            "path in section#process.launch@5 (aria-hidden)",
+            "path in div.lm@9 (aria-hidden)",
+            "canvas in section#contact.ct@10 (opacity only)"
+          ]
+        },
+        "errors": [
+          "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'.",
+          "console: falling back to ArrayBuffer instantiation"
+        ]
+      },
+      "verdicts": [
+        {
+          "ok": true,
+          "label": "page actually loaded and rendered text",
+          "detail": "3250 chars of text, 15514px tall"
+        },
+        {
+          "ok": false,
+          "label": "no page errors",
+          "detail": "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. || console: falling back to ArrayBuffer instantiation"
+        },
+        {
+          "ok": true,
+          "label": "page scrolled to the end",
+          "detail": "map 14670/14670px · smoothness 14670/14670px · reduced 14670/14670px"
+        },
+        {
+          "ok": true,
+          "label": "no content stuck invisible mid-screen",
+          "detail": "none (295 cued-later observations)"
+        },
+        {
+          "ok": true,
+          "label": "no horizontal overflow",
+          "detail": "0px"
+        },
+        {
+          "ok": true,
+          "label": "reveals are not a monotone fade-up",
+          "detail": "fade share 0.08, 14 motion kinds · 3 early entrances not counted"
+        },
+        {
+          "ok": true,
+          "label": "has at least one memorable moment (held scene or scrub-driven section)",
+          "detail": "8 peaks: 2 held scenes, scrub ratio 0.34"
+        },
+        {
+          "ok": true,
+          "label": "no monotone zone (6+ reveals, 80%+ plain fades)",
+          "detail": "none · 3 early entrances not counted"
+        },
+        {
+          "ok": true,
+          "label": "no dead zone ≥ 3 viewports",
+          "detail": "none"
+        },
+        {
+          "ok": false,
+          "label": "p95 frame ≤ 50ms while scrolling (timing)",
+          "detail": "83.6ms (p50 16.7) · median of 3 runs, range 83.6-100.3ms",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": true,
+          "label": "janky frames ≤ 20% (timing)",
+          "detail": "15.4% · median of 3 runs, range 14.1-15.5%",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": true,
+          "label": "CLS during scroll ≤ 0.05 (worst session window)",
+          "detail": "0 (sum 0) · top sources: none"
+        },
+        {
+          "ok": false,
+          "label": "long tasks during scroll ≤ 1000ms (timing)",
+          "detail": "12998ms (longest 269ms) · longest: 269ms at y=4800 (section#services.flight), 235ms at y=7920 (section#process.launch), 226ms at y=11040 (section#faq.faq), 183ms at y=8880 (section#process.launch), 171ms at y=12240 (div.bw) · median of 3 runs, range 12404-13155ms",
+          "timing": true,
+          "warn": false
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: all content visible",
+          "detail": "y=2532 h3: \"בניית אתרים\" | y=2532 p: \"אתר שנבנה בקוד, נטען מהר ושייך לכם.\" | y=2532 p: \"לפרטים\" | y=2532 a: \"לפרטים\""
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: nothing moves on its own",
+          "detail": "3 elements moving while idle (normal mode: 3)"
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: nothing animates on scroll",
+          "detail": "10 moving: div.kh__tilt in section#hero.kh@2, span.absolute.inset-0, g#947, g#949, g#951 · not counted: g in div.lm@9 (aria-hidden) ×46, g in section#process.launch@5 (aria-hidden) ×44, g in section#why-us.why@3 (aria-hidden) ×30"
+        },
+        {
+          "ok": false,
+          "label": "reduced motion: no page errors",
+          "detail": "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. || console: falling back to ArrayBuffer instantiation"
+        }
+      ]
+    }
+  ]
+}
