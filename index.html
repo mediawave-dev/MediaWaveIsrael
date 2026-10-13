@@ -15,24 +15,24 @@
 
     <!-- Theme & Mobile — constant dark brand navy on the browser chrome (no
          per-section change). Owner decision: address bar stays dark always. -->
-    <meta name="theme-color" content="#1E293B" />
-    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="theme-color" content="#00113D" />
+    <meta name="msapplication-TileColor" content="#00113D" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MediaWave" />
 
-    <!-- Favicons: the Horizon mark (logos/horizon). ?v=4 busts the browser's sticky favicon
+    <!-- Favicons: the Horizon mark (logos/horizon). ?v=5 busts the browser's sticky favicon
          cache after the Horizon redesign; bump it whenever the icon art changes -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=4" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=4" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=5" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=5" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=5" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=5" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- RSS Feed -->
 
-    <!-- Fonts: the look's display face is preloaded per look by scripts/prerender.mjs
-         (hashed @fontsource files). The H1 is the LCP element. No logo preload: the header
+    <!-- Fonts: the display face (EFT Betaamango, /fonts) is preloaded by scripts/prerender.mjs.
+         The H1 is the LCP element. No logo preload: the header
          draws the Horizon logo as inline SVG. -->
 
     <!-- The logo ident (DECISIONS #53) plays once per visit. Decided here, before first paint,
@@ -118,10 +118,10 @@
   <body>
     <!-- Page loading indicator: the Horizon mark (DECISIONS #52). The build's look plugin
          paints the ground and the two tones (vite.config.ts); no gradient, no shadow. -->
-    <div id="page-loader" style="position:fixed;inset:0;background:#000000;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
+    <div id="page-loader" style="position:fixed;inset:0;background:#00113D;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
       <svg id="loader-mark" width="64" height="64" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="MediaWave נטען">
-        <path data-logo="a" fill="#F5F5F7" d="M0.19 45.63A37.51 37.51 0 0 0 47.87 47.23A44.51 44.51 0 0 1 99.8 45.55A50 50 0 0 0 0.19 45.63Z"/>
-        <path data-logo="b" fill="#A1A1A6" d="M0.2 54.45A44.51 44.51 0 0 0 52.13 52.77A37.51 37.51 0 0 1 99.81 54.37A50 50 0 0 1 0.2 54.45Z"/>
+        <path data-logo="a" fill="#FFFFFF" d="M0.19 45.63A37.51 37.51 0 0 0 47.87 47.23A44.51 44.51 0 0 1 99.8 45.55A50 50 0 0 0 0.19 45.63Z"/>
+        <path data-logo="b" fill="#6E8CFF" d="M0.2 54.45A44.51 44.51 0 0 0 52.13 52.77A37.51 37.51 0 0 1 99.81 54.37A50 50 0 0 1 0.2 54.45Z"/>
       </svg>
       <style>
         @media (prefers-reduced-motion: no-preference) {

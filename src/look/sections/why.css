@@ -1,5 +1,5 @@
 /* WhyUs in the looks: three screens that switch on. K / KM: a bezel like the laptop's on the
-   stage. M: a floating object's charcoal body in the void. */
+   stage. M: a floating object's Klein-blue body in the void. */
 .why { padding: clamp(72px, 13vh, 150px) 0 clamp(56px, 10vh, 120px); color: var(--ink); }
 .why__in { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); }
 .why h2 { margin: 0 0 10px; font: var(--display-w) clamp(2.8rem, 5.6vw, 5.8rem)/1.04 var(--display); color: var(--ink); }
@@ -17,7 +17,7 @@
 .why__off { display: none; position: absolute; inset: 0; background: #0b0b0d; }
 html.motion-ready .why__off { display: block; }
 /* M: the object's body instead of a bezel */
-html[data-look="m"] .why__face { margin: 0; border-radius: 22px; box-shadow: 0 0 0 12px var(--obj), 0 30px 44px -22px rgba(43, 40, 51, 0.45); }
+html[data-look="m"] .why__face { margin: 0; border-radius: 22px; box-shadow: 0 0 0 12px var(--obj), 0 30px 44px -22px var(--obj-shadow); }
 html[data-look="m"] .why__list { gap: clamp(36px, 4vw, 64px); padding-inline: 12px; }
 @media (max-width: 860px) {
   .why__list { grid-template-columns: 1fr; gap: 44px; }

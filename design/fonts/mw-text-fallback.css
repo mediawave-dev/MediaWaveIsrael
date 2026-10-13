@@ -1,0 +1,5 @@
+/* "MW Text" weight 700 over Arial Bold, measured 2026-10-13 on win32 */
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 700; size-adjust: 94.1%; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 700; size-adjust: 93.6%;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+/* font-family: "MW Text", "MW Text Fallback", sans-serif; */

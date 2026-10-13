@@ -19,9 +19,12 @@ import { homedir } from 'node:os'
 import { ROOT, markPaths, cubics, vertices, clockwise, horizonSegments } from './mark-vertices.mjs'
 
 const AB = { w: 330, h: 216 }
+// the screen speaks the site's Klein palette (DECISIONS #58); the laptop itself is the hero's
+// hardware (lid, edge, camera, aluminium) and keeps its own greys
 const COL = {
-  ink: 'F5F5F7', ink2: 'A1A1A6', line: '3A3A3D', lid: '0E0E10', screen: '000000', cam: '2A2A2D',
-  notch: 'B9B9BE', hair: '26262A', err: 'FF6961', base: [['E6E6E9', 0], ['A2A2A7', 0.65], ['6E6E73', 1]],
+  ink: 'FFFFFF', words: '8E9CC8', logoA: 'FFFFFF', logoB: '6E8CFF', ui: '2A3563', hair: '1A2246',
+  edge: '3A3A3D', lid: '0E0E10', screen: '000000', cam: '2A2A2D', notch: 'B9B9BE', err: 'FF6961',
+  base: [['E6E6E9', 0], ['A2A2A7', 0.65], ['6E6E73', 1]],
 }
 const G = {
   lid: { cx: 165, cy: 102, w: 290, h: 200, r: 6, edge: 1.5 },
@@ -67,7 +70,7 @@ const bind = (prop, key, conv) => `<DataBindContext ${attrs({ sourcePathIds: `${
 function halves(prefix) {
   return markPaths().map((d, i) => {
     const vs = vertices(cubics(d))
-    const tone = i === 0 ? COL.ink : COL.ink2
+    const tone = i === 0 ? COL.logoA : COL.logoB
     const name = i === 0 ? 'Upper' : 'Lower'
     return { name: `${prefix} ${name}`, tone, vs, cw: clockwise(vs) }
   })
@@ -93,7 +96,7 @@ const lines = F.ys.map((y, i) => {
           <StraightVertex ${attrs({ x: stop, y: 0 })}/>
         </PointsPath>
         <Stroke ${attrs({ thickness: F.thick, cap: 'round', join: 'round', name: 'Words' })}>
-          ${solid(COL.ink2)}
+          ${solid(COL.words)}
           <TrimPath ${attrs({ start: 0, end: 0, modeValue: 'sequential', name: 'Written' })}>${bind(ID.pProgress, 115, endConv)}</TrimPath>
           <DashPath ${attrs({ offset: F.dashOff[i], name: 'Words' })}>
             ${WORDS.map((l, k) => `<Dash length="${l}" name="${k % 2 ? 'Space' : 'Word'}"/>`).join('')}
@@ -143,7 +146,7 @@ const scene = `
         ${fill(h.tone)}
       </Shape>`).join('\n        ')}
       </Node>
-      <Shape ${attrs({ x: G.addr.cx, y: G.addr.cy, name: 'Address', id: nid() })}>${rect(G.addr.w, G.addr.h, { cornerRadiusTL: 2 })}${fill(COL.line)}</Shape>
+      <Shape ${attrs({ x: G.addr.cx, y: G.addr.cy, name: 'Address', id: nid() })}>${rect(G.addr.w, G.addr.h, { cornerRadiusTL: 2 })}${fill(COL.ui)}</Shape>
       <Shape ${attrs({ x: G.hair.cx, y: G.hair.cy, name: 'Rule', id: nid() })}>${rect(G.hair.w, G.hair.h)}${fill(COL.hair)}</Shape>
     </Node>
 
@@ -161,7 +164,7 @@ const scene = `
       <Shape ${attrs({ opacity: 0, name: 'Horizon', id: ID.horizon })}>
         ${pointsPath(hz, false)}
         <Stroke ${attrs({ thickness: 2, cap: 'round', name: 'Stroke' })}>
-          ${solid(COL.ink2)}
+          ${solid(COL.words)}
           <TrimPath ${attrs({ start: 0.5, end: 0.5, modeValue: 'sequential', name: 'Draw', id: ID.hTrim })}/>
         </Stroke>
       </Shape>
@@ -175,7 +178,7 @@ const scene = `
       <Shape ${attrs({ opacity: 0, name: 'Outline', id: ID.outline })}>
         <Ellipse ${attrs({ width: 100, height: 100, name: 'Path' })}/>
         <Stroke ${attrs({ thickness: 1.5, name: 'Stroke' })}>
-          ${solid(COL.line)}
+          ${solid(COL.ui)}
           <TrimPath ${attrs({ start: 0, end: 0, offset: 0.5, modeValue: 'sequential', name: 'Draw', id: ID.oTrim })}/>
         </Stroke>
       </Shape>
@@ -197,7 +200,7 @@ const scene = `
   <Shape ${attrs({ x: G.lid.cx, y: G.lid.cy, name: 'Lid', id: nid() })}>
     ${rect(G.lid.w, G.lid.h, { cornerRadiusTL: G.lid.r })}
     ${fill(COL.lid)}
-    <Stroke ${attrs({ thickness: G.lid.edge, position: 'inside', name: 'Edge' })}>${solid(COL.line)}</Stroke>
+    <Stroke ${attrs({ thickness: G.lid.edge, position: 'inside', name: 'Edge' })}>${solid(COL.edge)}</Stroke>
   </Shape>
   <Shape ${attrs({ x: G.notch.cx, y: G.notch.cy, name: 'Notch', id: nid() })}>
     ${rect(G.notch.w, G.notch.h, radii(G.notch))}
@@ -396,13 +399,13 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${AB.w} ${AB.h
 <path d="${rr(G.base)}" fill="url(#al)"/>
 <path d="${rr(G.notch)}" fill="${hex(COL.notch)}"/>
 <rect ${box(G.lid, G.lid.r)} fill="${hex(COL.lid)}"/>
-<rect x="${n(G.lid.cx - G.lid.w / 2 + ins)}" y="${n(G.lid.cy - G.lid.h / 2 + ins)}" width="${n(G.lid.w - 2 * ins)}" height="${n(G.lid.h - 2 * ins)}" rx="${n(G.lid.r - ins)}" fill="none" stroke="${hex(COL.line)}" stroke-width="${G.lid.edge}"/>
+<rect x="${n(G.lid.cx - G.lid.w / 2 + ins)}" y="${n(G.lid.cy - G.lid.h / 2 + ins)}" width="${n(G.lid.w - 2 * ins)}" height="${n(G.lid.h - 2 * ins)}" rx="${n(G.lid.r - ins)}" fill="none" stroke="${hex(COL.edge)}" stroke-width="${G.lid.edge}"/>
 <rect ${box(G.screen, G.screen.r)} fill="${hex(COL.screen)}"/>
 <circle cx="${G.cam.cx}" cy="${G.cam.cy}" r="${G.cam.d / 2}" fill="${hex(COL.cam)}"/>
 <g opacity="${REST.content}">
 <rect ${box(G.hair)} fill="${hex(COL.hair)}"/>
-<rect ${box(G.addr, 2)} fill="${hex(COL.line)}"/>
-<g transform="translate(${n(m.cx - 50 * m.s)} ${n(m.cy - 50 * m.s)}) scale(${m.s})"><path d="${up}" fill="${hex(COL.ink)}"/><path d="${lo}" fill="${hex(COL.ink2)}"/></g>
+<rect ${box(G.addr, 2)} fill="${hex(COL.ui)}"/>
+<g transform="translate(${n(m.cx - 50 * m.s)} ${n(m.cy - 50 * m.s)}) scale(${m.s})"><path d="${up}" fill="${hex(COL.logoA)}"/><path d="${lo}" fill="${hex(COL.logoB)}"/></g>
 <rect x="${n(F.cx + caretX0 - G.caret.w / 2)}" y="${n(F.cy + F.ys[0] - G.caret.h / 2)}" width="${G.caret.w}" height="${G.caret.h}" rx="1" fill="${hex(COL.ink)}"/>
 </g>
 </svg>

@@ -6,9 +6,9 @@ import { fileURLToPath } from 'node:url'
 type Look = 'k' | 'm' | 'km'
 
 /** First paint per look: the stage is black, the void is lavender (DECISIONS #50). */
-const LOOK_GROUND: Record<Look, string> = { k: '#000000', m: '#E6E1F2', km: '#000000' }
+const LOOK_GROUND: Record<Look, string> = { k: '#00113D', m: '#FAFAF7', km: '#00113D' }
 /** The Horizon mark's two tones on that ground (DECISIONS #52): upper (Media), lower (Wave) */
-const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#F5F5F7', '#A1A1A6'], m: ['#221E2E', '#5B4D94'], km: ['#F5F5F7', '#A1A1A6'] }
+const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#FFFFFF', '#6E8CFF'], m: ['#0E1016', '#002FA7'], km: ['#FFFFFF', '#6E8CFF'] }
 
 /** The look is a build-time constant (.env.look-k|m|km via --mode look-*; unset = km).
     data-look goes into index.html, so the prerendered first paint is already the right
@@ -20,9 +20,9 @@ function lookHtml(look: Look): Plugin {
       return html
         .replace('<html lang="he" dir="rtl">', `<html lang="he" dir="rtl" data-look="${look}">`)
         .replace(/<meta name="theme-color" content="[^"]*" \/>/, `<meta name="theme-color" content="${LOOK_GROUND[look]}" />`)
-        .replace('id="page-loader" style="position:fixed;inset:0;background:#000000;', `id="page-loader" style="position:fixed;inset:0;background:${LOOK_GROUND[look]};`)
-        .replace('data-logo="a" fill="#F5F5F7"', `data-logo="a" fill="${LOOK_LOGO[look][0]}"`)
-        .replace('data-logo="b" fill="#A1A1A6"', `data-logo="b" fill="${LOOK_LOGO[look][1]}"`)
+        .replace('id="page-loader" style="position:fixed;inset:0;background:#00113D;', `id="page-loader" style="position:fixed;inset:0;background:${LOOK_GROUND[look]};`)
+        .replace('data-logo="a" fill="#FFFFFF"', `data-logo="a" fill="${LOOK_LOGO[look][0]}"`)
+        .replace('data-logo="b" fill="#6E8CFF"', `data-logo="b" fill="${LOOK_LOGO[look][1]}"`)
     },
   }
 }

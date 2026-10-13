@@ -13,15 +13,14 @@
 .lens[data-size="sm"] { min-height: 40px; padding: 0.45em 1.05em; font-size: 0.95rem; border-radius: 10px; }
 .lens[data-block] { display: grid; width: 100%; }
 .lens__label { position: relative; display: inline-flex; align-items: center; gap: 0.45em; }
-/* The blend sits on the track, a direct child of the (isolated) button: a blend inside the
-   transformed .lens__pos would be isolated by that transform and paint plain white. The track
-   holds nothing but the disc, so only the disc inverts anything. No z-index (it would isolate
-   it again); it paints over the label by DOM order. */
-.lens__track { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: difference; }
+/* The disc is a lighter tone of the button (--lens) painted under the label: the button is
+   isolated, so z-index -1 sits above its background and below the positioned label. (It used
+   to invert colours with a difference blend; on Klein blue that flashes yellow, DECISIONS #58.) */
+.lens__track { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .lens__pos { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
 .lens__disc {
   position: absolute; left: -26px; top: -26px; width: 52px; height: 52px; border-radius: 50%;
-  background: #fff;
+  background: var(--lens, #fff);
   scale: 0; transition: scale 240ms var(--ease-out);
 }
 .lens[data-size="sm"] .lens__disc { left: -20px; top: -20px; width: 40px; height: 40px; }

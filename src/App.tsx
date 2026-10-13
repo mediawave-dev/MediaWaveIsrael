@@ -14,7 +14,6 @@ import look from '@look/registry'
 // Below-fold: lazy load for better initial performance. The sections are built on the look
 // tokens (src/look/sections), so one set serves K, M and KM.
 const WhyUs = lazy(() => import('./look/sections/WhyUs'))
-const BeforeAfter = lazy(() => import('./look/sections/BeforeAfter'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
 const Faq = lazy(() => import('./look/sections/Faq'))
 const BigWord = lazy(() => import('./look/sections/BigWord'))
@@ -79,12 +78,8 @@ function HomePage() {
         <look.Services />
       </Suspense>
 
-      {/* Back on the stage: the free stretch between the two holds */}
-      <Suspense fallback={<SectionFallback height="800px" />}>
-        <BeforeAfter />
-      </Suspense>
-
-      {/* KM: the launch hold; K and M: the line through four screens */}
+      {/* KM: back on the stage for the launch hold (its intro is the free stretch after the
+          flight; the before/after section was removed, DECISIONS #57); K and M: the line */}
       <Suspense fallback={<SectionFallback height="800px" />}>
         <look.Process />
       </Suspense>

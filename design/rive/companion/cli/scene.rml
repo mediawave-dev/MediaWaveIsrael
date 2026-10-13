@@ -121,7 +121,7 @@
           <CubicDetachedVertex x="49.8" y="-4.45" inRotation="-2.5507" inDistance="19.116" outRotation="-1.6599" outDistance="25.9046"/>
           <CubicDetachedVertex x="-0.0416" y="-49.9986" inRotation="-0.0008" inDistance="25.9046" outRotation="3.1408" outDistance="25.9046"/>
         </PointsPath>
-        <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+        <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
       </Shape>
         <Shape name="Mini Lower" id="0:1028">
         <PointsPath isClosed="true" isClockwise="true" name="Path">
@@ -130,11 +130,11 @@
           <CubicDetachedVertex x="49.81" y="4.37" inRotation="-2.4188" inDistance="17.9509" outRotation="1.6583" outDistance="25.9046"/>
           <CubicDetachedVertex x="0.0416" y="49.9986" inRotation="-0.0008" inDistance="25.9046" outRotation="3.1408" outDistance="25.9046"/>
         </PointsPath>
-        <Fill name="Fill"><SolidColor colorValue="FFA1A1A6" name="Color"/></Fill>
+        <Fill name="Fill"><SolidColor colorValue="FF6E8CFF" name="Color"/></Fill>
       </Shape>
       </Node>
-      <Shape x="242" y="24" name="Address" id="0:1029"><Rectangle width="52" height="4" cornerRadiusTL="2" name="Path"/><Fill name="Fill"><SolidColor colorValue="FF3A3A3D" name="Color"/></Fill></Shape>
-      <Shape x="165" y="40" name="Rule" id="0:1030"><Rectangle width="244" height="1" name="Path"/><Fill name="Fill"><SolidColor colorValue="FF26262A" name="Color"/></Fill></Shape>
+      <Shape x="242" y="24" name="Address" id="0:1029"><Rectangle width="52" height="4" cornerRadiusTL="2" name="Path"/><Fill name="Fill"><SolidColor colorValue="FF2A3563" name="Color"/></Fill></Shape>
+      <Shape x="165" y="40" name="Rule" id="0:1030"><Rectangle width="244" height="1" name="Path"/><Fill name="Fill"><SolidColor colorValue="FF1A2246" name="Color"/></Fill></Shape>
     </Node>
 
     <Node x="165" y="101" name="Caret" id="0:150">
@@ -143,28 +143,28 @@
           <Shape x="114.5" y="0" name="Caret 1" id="0:1011">
             <DataBindContext sourcePathIds="0:900-0:902" propertyKey="13" converterId="0:1008"/><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1009"/>
             <Rectangle width="2" height="12" cornerRadiusTL="1" name="Path"/>
-            <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+            <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
           </Shape>
         </Node>
         <Node x="0" y="-9" opacity="0" name="Caret 2 line" id="0:1015"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1013"/>
           <Shape x="114.5" y="0" name="Caret 2" id="0:1016">
             <DataBindContext sourcePathIds="0:900-0:902" propertyKey="13" converterId="0:1012"/><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1014"/>
             <Rectangle width="2" height="12" cornerRadiusTL="1" name="Path"/>
-            <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+            <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
           </Shape>
         </Node>
         <Node x="0" y="9" opacity="0" name="Caret 3 line" id="0:1020"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1018"/>
           <Shape x="114.5" y="0" name="Caret 3" id="0:1021">
             <DataBindContext sourcePathIds="0:900-0:902" propertyKey="13" converterId="0:1017"/><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1019"/>
             <Rectangle width="2" height="12" cornerRadiusTL="1" name="Path"/>
-            <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+            <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
           </Shape>
         </Node>
         <Node x="0" y="27" opacity="0" name="Caret 4 line" id="0:1024"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="18" converterId="0:1023"/>
           <Shape x="114.5" y="0" name="Caret 4" id="0:1025">
             <DataBindContext sourcePathIds="0:900-0:902" propertyKey="13" converterId="0:1022"/>
             <Rectangle width="2" height="12" cornerRadiusTL="1" name="Path"/>
-            <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+            <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
           </Shape>
         </Node>
       </Node>
@@ -177,7 +177,7 @@
           <StraightVertex x="-105" y="0"/>
         </PointsPath>
         <Stroke thickness="5" cap="round" join="round" name="Words">
-          <SolidColor colorValue="FFA1A1A6" name="Color"/>
+          <SolidColor colorValue="FF8E9CC8" name="Color"/>
           <TrimPath start="0" end="0" modeValue="sequential" name="Written"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="115" converterId="0:1000"/></TrimPath>
           <DashPath offset="0" name="Words">
             <Dash length="18" name="Word"/><Dash length="9" name="Space"/><Dash length="30" name="Word"/><Dash length="9" name="Space"/><Dash length="12" name="Word"/><Dash length="9" name="Space"/><Dash length="26" name="Word"/><Dash length="9" name="Space"/><Dash length="20" name="Word"/><Dash length="9" name="Space"/><Dash length="8" name="Word"/><Dash length="9" name="Space"/><Dash length="34" name="Word"/><Dash length="9" name="Space"/>
@@ -190,7 +190,7 @@
           <StraightVertex x="-119" y="0"/>
         </PointsPath>
         <Stroke thickness="5" cap="round" join="round" name="Words">
-          <SolidColor colorValue="FFA1A1A6" name="Color"/>
+          <SolidColor colorValue="FF8E9CC8" name="Color"/>
           <TrimPath start="0" end="0" modeValue="sequential" name="Written"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="115" converterId="0:1002"/></TrimPath>
           <DashPath offset="46" name="Words">
             <Dash length="18" name="Word"/><Dash length="9" name="Space"/><Dash length="30" name="Word"/><Dash length="9" name="Space"/><Dash length="12" name="Word"/><Dash length="9" name="Space"/><Dash length="26" name="Word"/><Dash length="9" name="Space"/><Dash length="20" name="Word"/><Dash length="9" name="Space"/><Dash length="8" name="Word"/><Dash length="9" name="Space"/><Dash length="34" name="Word"/><Dash length="9" name="Space"/>
@@ -203,7 +203,7 @@
           <StraightVertex x="-83" y="0"/>
         </PointsPath>
         <Stroke thickness="5" cap="round" join="round" name="Words">
-          <SolidColor colorValue="FFA1A1A6" name="Color"/>
+          <SolidColor colorValue="FF8E9CC8" name="Color"/>
           <TrimPath start="0" end="0" modeValue="sequential" name="Written"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="115" converterId="0:1004"/></TrimPath>
           <DashPath offset="87" name="Words">
             <Dash length="18" name="Word"/><Dash length="9" name="Space"/><Dash length="30" name="Word"/><Dash length="9" name="Space"/><Dash length="12" name="Word"/><Dash length="9" name="Space"/><Dash length="26" name="Word"/><Dash length="9" name="Space"/><Dash length="20" name="Word"/><Dash length="9" name="Space"/><Dash length="8" name="Word"/><Dash length="9" name="Space"/><Dash length="34" name="Word"/><Dash length="9" name="Space"/>
@@ -216,7 +216,7 @@
           <StraightVertex x="1" y="0"/>
         </PointsPath>
         <Stroke thickness="5" cap="round" join="round" name="Words">
-          <SolidColor colorValue="FFA1A1A6" name="Color"/>
+          <SolidColor colorValue="FF8E9CC8" name="Color"/>
           <TrimPath start="0" end="0" modeValue="sequential" name="Written"><DataBindContext sourcePathIds="0:900-0:902" propertyKey="115" converterId="0:1006"/></TrimPath>
           <DashPath offset="23" name="Words">
             <Dash length="18" name="Word"/><Dash length="9" name="Space"/><Dash length="30" name="Word"/><Dash length="9" name="Space"/><Dash length="12" name="Word"/><Dash length="9" name="Space"/><Dash length="26" name="Word"/><Dash length="9" name="Space"/><Dash length="20" name="Word"/><Dash length="9" name="Space"/><Dash length="8" name="Word"/><Dash length="9" name="Space"/><Dash length="34" name="Word"/><Dash length="9" name="Space"/>
@@ -233,7 +233,7 @@
           <CubicDetachedVertex x="49.805" y="-0.04" inRotation="-2.4869" inDistance="18.4932" outRotation="0" outDistance="0"/>
         </PointsPath>
         <Stroke thickness="2" cap="round" name="Stroke">
-          <SolidColor colorValue="FFA1A1A6" name="Color"/>
+          <SolidColor colorValue="FF8E9CC8" name="Color"/>
           <TrimPath start="0.5" end="0.5" modeValue="sequential" name="Draw" id="0:112"/>
         </Stroke>
       </Shape>
@@ -245,7 +245,7 @@
           <CubicDetachedVertex x="49.8" y="-4.45" inRotation="-2.5507" inDistance="19.116" outRotation="-1.6599" outDistance="25.9046"/>
           <CubicDetachedVertex x="-0.0416" y="-49.9986" inRotation="-0.0008" inDistance="25.9046" outRotation="3.1408" outDistance="25.9046"/>
         </PointsPath>
-          <Fill name="Fill"><SolidColor colorValue="FFF5F5F7" name="Color"/></Fill>
+          <Fill name="Fill"><SolidColor colorValue="FFFFFFFF" name="Color"/></Fill>
           <ClippingShape sourceId="0:120" name="Level clip"/>
         </Shape>
         <Shape name="Mark Lower" id="0:1032">
@@ -255,14 +255,14 @@
           <CubicDetachedVertex x="49.81" y="4.37" inRotation="-2.4188" inDistance="17.9509" outRotation="1.6583" outDistance="25.9046"/>
           <CubicDetachedVertex x="0.0416" y="49.9986" inRotation="-0.0008" inDistance="25.9046" outRotation="3.1408" outDistance="25.9046"/>
         </PointsPath>
-          <Fill name="Fill"><SolidColor colorValue="FFA1A1A6" name="Color"/></Fill>
+          <Fill name="Fill"><SolidColor colorValue="FF6E8CFF" name="Color"/></Fill>
           <ClippingShape sourceId="0:120" name="Level clip"/>
         </Shape>
       </Node>
       <Shape opacity="0" name="Outline" id="0:116">
         <Ellipse width="100" height="100" name="Path"/>
         <Stroke thickness="1.5" name="Stroke">
-          <SolidColor colorValue="FF3A3A3D" name="Color"/>
+          <SolidColor colorValue="FF2A3563" name="Color"/>
           <TrimPath start="0" end="0" offset="0.5" modeValue="sequential" name="Draw" id="0:117"/>
         </Stroke>
       </Shape>

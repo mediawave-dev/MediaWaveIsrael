@@ -46,23 +46,14 @@ const NOT_FOUND_ROUTE = '/__not-found__'
 // first paint is over: a late swap re-layouts the text (measured CLS 0.127 from "Web font
 // loaded") and re-emits a later LCP entry. The metric-matched fallback (looks.css) keeps the
 // swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
-import { readdirSync } from 'fs'
-const DISPLAY_FONT = {
-  k: /^assistant-hebrew-200-normal-.*\.woff2$/,
-  km: /^assistant-hebrew-200-normal-.*\.woff2$/,
-  m: /^alef-hebrew-700-normal-.*\.woff2$/,
-}
-// Assistant 200 Hebrew is 4,072 bytes, under Vite's 4 KB assetsInlineLimit: it ships inside
-// the CSS as a data URI (no request at all), so K and KM need no preload.
-let inlinedNoted = false
+// The display face (EFT Betaamango, DECISIONS #59) lives at a stable public URL for every look.
+const DISPLAY_FONT = '/fonts/EFT_Betaamango.woff2'
 function fontPreloadLinks(look) {
-  const assets = readdirSync(resolve(DIST, 'assets'))
-  const file = assets.find((f) => (DISPLAY_FONT[look] || DISPLAY_FONT.km).test(f))
-  if (!file && !inlinedNoted) {
-    inlinedNoted = true
-    console.log(`    (look ${look}: display face inlined in the CSS, no preload needed)`)
+  if (!existsSync(resolve(DIST, DISPLAY_FONT.slice(1)))) {
+    console.log(`    (look ${look}: ${DISPLAY_FONT} missing from the build, no preload)`)
+    return ''
   }
-  return file ? `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>` : ''
+  return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>`
 }
 
 /** Serve dist/ as a static file server */

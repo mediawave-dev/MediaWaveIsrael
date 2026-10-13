@@ -1,4 +1,4 @@
-# MediaWave logo: "Horizon" (chosen 2026-10-13)
+# MediaWave logo: "Horizon" (chosen 2026-10-13, palette "Klein" chosen the same day)
 
 A disc split by a wave into two tones, the MediaWave wordmark with a drop on the i, and the tagline "Web Development". This folder is the source of truth: every file here is final, vector, and drawn once. Copy the files; never redraw, retype or trace them.
 
@@ -23,14 +23,16 @@ Each SVG paints its parts with four classes: `.a` (Media and the upper half of t
 
 | Palette | `.a` | `.b` | `.t` / `.l` | Background it is made for |
 |---|---|---|---|---|
-| dark | `#F5F5F7` | `#A1A1A6` | `#A1A1A6` (rules at 55 % opacity) | black or near black (`#000`, `#1D1D1F`) |
-| light | `#221E2E` | `#5B4D94` | `#4D4760` (rules at 55 % opacity) | white, light grey, light lavender (`#E6E1F2`) |
+| dark | `#FFFFFF` | `#6E8CFF` | `#8E9CC8` (rules at 55 % opacity) | Klein night `#00113D`, or black |
+| light | `#0E1016` | `#002FA7` (International Klein Blue) | `#4E5468` (rules at 55 % opacity) | paper `#FAFAF7`, or white |
 | black / white | one colour for everything | | | print, photos |
+
+The brand's one colour is International Klein Blue `#002FA7`: buttons and accents on light grounds. On dark grounds buttons are white with Klein-blue text. The palette lives in `scripts/brand-palette.mjs`, which rewrites these files and re-renders the PNG icons from vector.
 
 ## Rules
 
 - Never change the geometry, the proportions, or the space between the disc and the name.
-- Never swap the two tones of the disc (the light half is always on top in the dark palette, the dark half on top in the light palette, exactly as in the files).
+- Never swap the two tones of the disc: the upper half is always `.a` (white on dark, ink on light), the lower half `.b` (the blue), exactly as in the files.
 - No shadow, outline, frame, gradient, glow or 3D effect.
 - Clear space: at least half the disc's diameter empty on every side.
 - Minimum sizes: horizontal 160 px wide, compact 90 px wide. The mark alone goes down to 16 px only as a favicon.

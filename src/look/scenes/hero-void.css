@@ -17,7 +17,7 @@
 .mh__float { position: absolute; display: block; }
 .mh__float .thing { font-size: var(--s, 3px); rotate: var(--r, 0deg); }
 .mh__float--screen { left: 12%; right: 12%; top: 24%; }
-.mh__screen { position: relative; display: block; aspect-ratio: 16 / 9; border: 10px solid var(--obj); border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 30px 44px -22px rgba(43, 40, 51, 0.45); }
+.mh__screen { position: relative; display: block; aspect-ratio: 16 / 9; border: 10px solid var(--obj); border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 30px 44px -22px var(--obj-shadow); }
 .mh__float--bubble { top: 1%; left: 56%; --s: 3px; }
 .mh__float--phone { top: 3%; left: 5%; --s: 3.3px; --r: -9deg; }
 .mh__float--loupe { bottom: 4%; left: 78%; --s: 2.8px; --r: 10deg; }

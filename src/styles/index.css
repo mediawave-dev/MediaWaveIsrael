@@ -285,10 +285,6 @@
 header,
 footer,
 #hero,
-#before-after {
-  --focus-ring: #7DD3FC;
-}
-
 /* Remove default button styles */
 button {
   font-family: inherit;

@@ -1,7 +1,7 @@
 /* M's objects, in em (the context's font-size is the size knob; default 10px = full size).
-   Charcoal bodies, white faces. One soft shadow under each body, no filter. */
+   Klein-blue bodies, white faces (DECISIONS #58). One soft shadow under each body, no filter. */
 .thing { display: block; position: relative; font-size: 10px; }
-.thing__body { position: relative; display: block; background: var(--obj); box-shadow: 0 2.6em 4em -1.8em rgba(43, 40, 51, 0.38); }
+.thing__body { position: relative; display: block; background: var(--obj); box-shadow: 0 2.6em 4em -1.8em var(--obj-shadow); }
 .thing__face { position: absolute; display: grid; place-items: center; overflow: hidden; background: var(--face); }
 .thing__art { display: grid; place-items: center; width: 82%; height: 82%; }
 .thing__art > div, .thing__art > img { width: 100% !important; height: 100% !important; object-fit: contain; }
@@ -28,5 +28,5 @@
 .thing__reel:nth-of-type(2) { right: 24%; }
 
 .thing--frame .thing__body { width: 44em; height: 44em; border-radius: 0.6em; }
-.thing--frame .thing__face { inset: 2.2em; border-radius: 0.2em; box-shadow: inset 0 0 0 2.6em #f3f1f7; }
+.thing--frame .thing__face { inset: 2.2em; border-radius: 0.2em; box-shadow: inset 0 0 0 2.6em #f1f3f9; }
 .thing--frame .thing__art { width: 64%; height: 64%; }

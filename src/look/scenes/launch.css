@@ -40,7 +40,7 @@ html.motion-ready .launch__lap .lap__lid { transform: rotateX(-86deg); }
 .launch__art { height: 82%; aspect-ratio: 1; display: grid; place-items: center; }
 .launch__art > div, .launch__art > img { width: 100% !important; height: 100% !important; object-fit: contain; }
 /* the screen is white: the logo takes the light palette; 52 % of the screen keeps the clear space */
-.launch__shot--opening { --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4760; }
+.launch__shot--opening { --logo-a: #0e1016; --logo-b: #002fa7; --logo-tag: #4e5468; }
 .launch__shot--opening .mw-logo { width: 52%; height: auto; }
 /* on stage: the outgoing item leaves first, then the next one arrives (no two texts at once) */
 .launch__stage[data-active="-1"] [data-i="-1"], .launch__stage[data-active="0"] [data-i="0"],
