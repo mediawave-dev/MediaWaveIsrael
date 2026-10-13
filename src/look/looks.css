@@ -12,27 +12,32 @@
         sculptures).
    KM · launch night. The page alternates between the stage and the lit void (T-01 theme
         layers).
-   Type (all looks, #59): EFT Betaamango for display, EFT OffSet for text and UI, Outfit for
-   Latin and digits.
+   Type (all looks, #59): EFT Betaamango for display (Outfit for its Latin and digits), IBM
+   Plex Sans Hebrew 400/600 for text and UI.
 
    Contrast (WCAG AA, checked with the contrast gate): see design/audit/klein-contrast.md */
 
-/* ── fonts (DECISIONS #59, Nati's choice A): the site's own faces, licensed and self-hosted
-   in public/fonts (stable URLs, the display face preloaded by prerender.mjs). Each role is one
-   composite family: the Hebrew face for Hebrew, Outfit (OFL) for Latin, digits and punctuation,
-   as on the live site. EFT Betaamango and EFT OffSet have a single weight each, so the faces
-   declare the whole weight range: a heading or <strong> never gets a synthetic bold. ── */
+/* ── fonts (DECISIONS #59): EFT Betaamango for display (the live site's face, licensed),
+   IBM Plex Sans Hebrew for text and UI (OFL, Nati's choice A of four, with Plex's own Latin,
+   drawn to sit with the Hebrew), Outfit (OFL) for the Latin and digits in headings. All
+   self-hosted in public/fonts (stable URLs; the display face is preloaded by prerender.mjs).
+   EFT Betaamango has one weight, so its faces declare the whole range: a heading never gets a
+   synthetic bold. ── */
 @font-face { font-family: "MW Display"; src: url("/fonts/EFT_Betaamango.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4F, U+20AA, U+25CC; }
 @font-face { font-family: "MW Display"; src: url("/fonts/Outfit-Latin-500.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "MW Text"; src: url("/fonts/EFT_OffSet-Bold.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4F, U+20AA, U+25CC; }
-@font-face { font-family: "MW Text"; src: url("/fonts/Outfit-Latin-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "MW Text"; src: url("/fonts/IBMPlexSansHebrew-Hebrew-400.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4F, U+20AA, U+25CC; }
+@font-face { font-family: "MW Text"; src: url("/fonts/IBMPlexSansHebrew-Latin-400.woff2") format("woff2"); font-weight: 400; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "MW Text"; src: url("/fonts/IBMPlexSansHebrew-Hebrew-600.woff2") format("woff2"); font-weight: 600; font-display: swap; unicode-range: U+0590-05FF, U+FB1D-FB4F, U+20AA, U+25CC; }
+@font-face { font-family: "MW Text"; src: url("/fonts/IBMPlexSansHebrew-Latin-600.woff2") format("woff2"); font-weight: 600; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* Metric-matched fallbacks (pattern-breaker font-fallback.mjs, 2026-10-13, win32): Hebrew and
-   Latin measured apart, proof "no rewrap" at 340 and 680 px. design/fonts/mw-*-fallback.css */
+   Latin measured apart, proof "no rewrap" at 340 and 680 px. design/fonts/mw-*-fallback.css (text at 400 and 600) */
 @font-face { font-family: "MW Display Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 900; size-adjust: 99.8%; }
 @font-face { font-family: "MW Display Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 900; size-adjust: 91.9%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 94.1%; }
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 93.6%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 96.8%; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 103.3%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 94.9%; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 102.4%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
 
 /* ── tokens ── */
 :root {
@@ -70,7 +75,7 @@ html[data-look="k"] {
   --display-w: 400;
   --text: var(--face-text);
   --ui: var(--face-text);
-  --ui-w: 700;
+  --ui-w: 600;
   --focus-ring: var(--stage-ink);
   --logo-a: #ffffff;
   --logo-b: #6e8cff;
@@ -93,7 +98,7 @@ html[data-look="m"] {
   --display-w: 400;
   --text: var(--face-text);
   --ui: var(--face-text);
-  --ui-w: 700;
+  --ui-w: 600;
   --focus-ring: var(--klein);
   --logo-a: #0e1016;
   --logo-b: #002fa7;
@@ -109,7 +114,7 @@ html[data-look="km"] {
   --display-w: 400;
   --text: var(--face-text);
   --ui: var(--face-text);
-  --ui-w: 700;
+  --ui-w: 600;
   background: var(--stage);
 }
 html[data-look="km"],

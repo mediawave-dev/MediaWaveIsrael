@@ -1,5 +1,0 @@
-/* "Assistant" weight 600 over Arial Bold, measured 2026-10-13 on win32 */
-@font-face { font-family: "Assistant Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600; size-adjust: 87.9%; }
-@font-face { font-family: "Assistant Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600; size-adjust: 91.9%;
-  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
-/* font-family: "Assistant", "Assistant Fallback", sans-serif; */

@@ -7,9 +7,9 @@
   max-height: 100dvh !important;
 }
 
-/* Fonts: each look's faces (Assistant, Alef) are self-hosted from src/look/looks.css
-   (@fontsource, hebrew + latin subsets). Heebo, Outfit and the EFT faces are gone: the
-   theme's font tokens below are remapped per look there (DECISIONS #50). */
+/* Fonts: EFT Betaamango (display) and IBM Plex Sans Hebrew (text), with Outfit for the Latin
+   in headings, are self-hosted from public/fonts and declared in src/look/looks.css; the
+   theme's font tokens below are remapped there (DECISIONS #59). */
 
 /* ============================================
    TAILWIND v4 THEME CONFIGURATION
