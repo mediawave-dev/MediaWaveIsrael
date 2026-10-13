@@ -53,11 +53,11 @@ export function HeroMedia({ className = '' }: { className?: string }) {
   }, [src])
   return (
     <span ref={ref} className={`hero-media ${className}`}>
-      {/* fetchpriority low: the LCP is the H1 text, not this frame */}
+      {/* fetchpriority low: the H1 is the LCP; this frame sits in the built site's slot (#60) */}
       <img
         src="/images/hero-poster.webp"
         srcSet="/images/hero-poster-m.webp 720w, /images/hero-poster.webp 1920w"
-        sizes="(max-width: 860px) 92vw, 860px"
+        sizes="(max-width: 860px) 45vw, 504px"
         alt=""
         aria-hidden="true"
         width="1920"

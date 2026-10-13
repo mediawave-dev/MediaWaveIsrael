@@ -35,17 +35,22 @@
          The H1 is the LCP element. No logo preload: the header
          draws the Horizon logo as inline SVG. -->
 
-    <!-- The logo ident (DECISIONS #53) plays once per visit. Decided here, before first paint,
-         so the header logo never shows and then replays: motion allowed (or ?motion=full), not
-         seen this visit, not a prerender. AnimatedLogo removes the class as the ident starts;
-         the timeout is the safety net if the app never boots. -->
+    <!-- The logo ident (DECISIONS #53) and the hero's build (#60) play once per visit. Decided
+         here, before first paint, so nothing shows and then replays: motion allowed (or
+         ?motion=full), not a prerender, not ?reduce=1, not seen this visit. AnimatedLogo and
+         HeroBuild remove their classes; the timeouts are the safety net if the app never boots. -->
     <script>
       (function () { try {
         if (window.__PRERENDER__) return;
         var full = /[?&]motion=full(&|$)/.test(location.search);
         if (!full && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        if (sessionStorage.getItem('mw-logo-ident')) return;
+        if (/[?&]reduce=1(&|$)/.test(location.search)) return;
         var d = document.documentElement;
+        if (location.pathname === '/' && !sessionStorage.getItem('mw-hero-build')) {
+          d.classList.add('hero-build');
+          setTimeout(function () { d.classList.remove('hero-build'); }, 10000);
+        }
+        if (sessionStorage.getItem('mw-logo-ident')) return;
         d.classList.add('logo-intro');
         setTimeout(function () { d.classList.remove('logo-intro'); }, 4000);
       } catch (e) {} })();

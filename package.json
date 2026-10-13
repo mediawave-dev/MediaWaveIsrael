@@ -13,6 +13,7 @@
     "build:m": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-m --outDir dist-m && node scripts/prerender.mjs --dist dist-m",
     "build:km": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-km --outDir dist-km && node scripts/prerender.mjs --dist dist-km",
     "rive:companion": "node design/rive/companion/build-scene.mjs --riv",
+    "rive:hero": "node design/rive/hero/build-hero.mjs --riv",
     "audit:overlap": "node scripts/overlap-audit.mjs",
     "lint": "eslint .",
     "preview": "vite preview",

@@ -1,6 +1,6 @@
 ---
 name: MediaWave Israel
-description: Hebrew RTL site for a one-developer web studio - "launch night": a Klein-blue night stage and a paper void that alternate as you scroll, the hero laptop playing the real video, two held scenes, the Horizon logo, a Rive companion on the contact form
+description: Hebrew RTL site for a one-developer web studio - "launch night": a Klein-blue night stage and a paper void that alternate as you scroll, a website that builds itself on the stage screen and launches the real film, two held scenes, the Horizon logo, a Rive companion on the contact form
 colors:
   klein: "#002FA7"
   klein-night: "#00113D"
@@ -80,7 +80,7 @@ Engine: `src/motion/` (GSAP ScrollTrigger + Lenis on desktop only). Policy: REDU
 
 | Moment | Where | Move |
 |---|---|---|
-| Hero | stage | the laptop plays the hero video; a scrubbed lean as you scroll |
+| Hero | stage | on the stage's big screen a website builds itself (Rive, once per visit); the site's button is clicked and the film starts in its hero slot; scrolling moves the screen toward you (`design/rive/hero/CONTRACT.md`) |
 | Theme flips | KM | fixed layers crossfade stage and void; text follows the body class |
 | Flight | services, void | sticky stage: you fly into six floating tools, one service each |
 | Launch | process, stage | sticky stage: the laptop opens and turns, one step per announcement |

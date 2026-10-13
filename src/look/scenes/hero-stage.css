@@ -10,15 +10,26 @@
 .kh__ctas { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 30px; }
 .kh__more { color: var(--ink-2); font: 400 1.05rem/1.2 var(--text); padding-block: 12px; }
 @media (hover: hover) { .kh__more:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
-.kh__object { position: relative; width: min(860px, 86vw); margin-top: clamp(48px, 9vh, 96px); perspective: 2200px; }
-.kh__object::after { content: ''; position: absolute; left: 12%; right: 12%; bottom: -28px; height: 56px; background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.09), transparent 70%); pointer-events: none; }
-.kh__tilt { transform: rotateX(12deg); transform-style: preserve-3d; }
+/* the stage's big screen: the film, a hairline edge, and the screen's light on the stage floor */
+.kh__object { position: relative; width: min(1120px, 88vw); margin-top: clamp(48px, 9vh, 96px); }
+.kh__object::after { content: ''; position: absolute; left: 8%; right: 8%; bottom: -46px; height: 80px; background: radial-gradient(ellipse at center, rgba(110, 140, 255, 0.16), transparent 70%); pointer-events: none; }
+.kh__screen { position: relative; z-index: 1; aspect-ratio: 16 / 9; border-radius: clamp(10px, 1.4vw, 18px); overflow: hidden; background: #030a26; box-shadow: 0 0 0 1px rgba(163, 175, 214, 0.22); transform-origin: 50% 35%; }
+/* the build (HeroBuild): the finished frame, the Rive canvas, the film over the site's slot */
+.kh__build { position: absolute; inset: 0; }
+.kh__built, .kh__rive { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.kh__built svg { display: block; width: 100%; height: 100%; }
+.kh__rive { z-index: 1; }
+.kh__slot { position: absolute; z-index: 2; overflow: hidden; }
+.kh__slot .hero-media { position: absolute; inset: 0; }
+html.hero-build .kh__built { opacity: 0; }
+html.hero-build .kh__slot { opacity: 0; transition: opacity 0.7s ease; }
+html.hero-build .kh__build[data-live] .kh__slot { opacity: 1; }
 @media (max-width: 860px) {
   .kh { padding-top: 36px; }
   .kh__title { font-size: clamp(2.6rem, 14.6vw, 4rem); }
   .kh__ctas { flex-direction: column; gap: 4px; width: 100%; }
   .kh__ctas > :first-child { width: 100%; max-width: 420px; }
-  .kh__object { width: 92vw; margin-top: 40px; }
+  .kh__object { width: 100%; margin-top: 40px; }
 }
 /* the accessibility tab hangs at the left edge, 120 px down: the H1 clears it on small phones */
 @media (max-width: 359px) { .kh__title { font-size: 12.8vw; } }

@@ -183,6 +183,16 @@ async function prerender() {
     // re-renders anyway, and it is correctly outside the <main> landmark.
     html = html.replace(/<aside aria-label="כלים ופעולות מהירות">[\s\S]*?<\/aside>\s*/, '')
 
+    // Only the entry stylesheet blocks the first paint. The snapshot also carries the CSS of the
+    // lazy sections (and, on inner pages, of sections they never show); blocking on all of them
+    // delayed the H1 on a real network (Lighthouse mobile on Cloudflare: LCP 4.0 s, 2.4 s
+    // locally). They now load without blocking; Vite finds them already present when a section
+    // mounts (it matches link[href][rel="stylesheet"]), and <noscript> keeps them without JS.
+    // (later routes are served the already-rewritten home page, so drop earlier rewrites first)
+    html = html.replace(/<noscript><link rel="stylesheet" href="\/assets\/[^"]+\.css"><\/noscript>/g, '')
+    html = html.replace(/<link rel="stylesheet" crossorigin="" href="(\/assets\/(?!index-)[^"]+\.css)"(?: media="[^"]*")?(?: onload="[^"]*")?>/g,
+      (_, href) => `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
+
     // Preload the look's display face (the H1), early in <head>
     const look = (html.match(/<html[^>]*data-look="(k|m|km)"/) || [])[1] || 'km'
     html = html.replace('<title>', `${fontPreloadLinks(look)}<title>`)
