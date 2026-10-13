@@ -9,7 +9,6 @@ export default function ServicesFlight() {
       holdId="services"
       headingId="services-title"
       heading="מה אנחנו עושים"
-      intro="שישה כלים מרחפים. גוללים, וטסים לתוך כל אחד." /* [קופי: נתי] */
       items={SERVICES}
       cta={{ label: 'מתחילים פרויקט', placement: 'services' }} /* [קופי: נתי] was "התחל פרויקט" */
       length={['600svh', '540svh']}

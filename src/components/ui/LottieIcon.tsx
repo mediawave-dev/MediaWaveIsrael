@@ -156,6 +156,12 @@ export function LottieIcon({
     }
   }, [renderer, loadedData, loop, ambient])
 
+  // Render at the file's own frame rate (most of these are 25-30 fps) instead of every display
+  // frame: half the drawing work while scrolling on a phone, the same motion to the eye
+  useEffect(() => {
+    getAnim()?.setSubframe(false)
+  }, [loadedData, renderer])
+
   // Set animation speed
   useEffect(() => {
     if (speed !== 1) {

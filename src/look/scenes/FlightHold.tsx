@@ -24,7 +24,7 @@ export interface FlightHoldProps {
   holdId: string
   heading: ReactNode
   headingId: string
-  intro: string
+  intro?: string
   items: ShowItem[]
   cta?: { label: string; placement: string }
   length: [string, string]
@@ -145,7 +145,7 @@ export default function FlightHold({ sectionId, holdId, heading, headingId, intr
     <section ref={ref} id={sectionId} className="flight" aria-labelledby={headingId} data-theme="light">
       <div className="flight__intro">
         <h2 id={headingId} data-zone="text">{heading}</h2>
-        <p data-zone="text">{intro}</p>
+        {intro && <p data-zone="text">{intro}</p>}
       </div>
       <div className="hold flight__hold" data-hold={holdId} style={{ '--hold-h': length[0], '--hold-h-phone': length[1] } as CSSProperties}>
         <div className="hold__stage flight__stage" data-active="-1">

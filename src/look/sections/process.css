@@ -1,8 +1,7 @@
 /* How we work (K, M): four screens on a line that draws with the scroll. */
 .proc { padding: clamp(72px, 13vh, 150px) 0 clamp(64px, 11vh, 130px); color: var(--ink); }
 .proc__in { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); }
-.proc h2 { margin: 0 0 10px; font: var(--display-w) clamp(2.8rem, 5.6vw, 5.8rem)/1.04 var(--display); color: var(--ink); }
-.proc__lead { margin: 0 0 clamp(40px, 7vh, 72px); color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.6 var(--text); }
+.proc h2 { margin: 0 0 clamp(40px, 7vh, 72px); font: var(--display-w) clamp(2.8rem, 5.6vw, 5.8rem)/1.04 var(--display); color: var(--ink); }
 .proc__track { position: relative; container-type: inline-size; --gap: clamp(16px, 2vw, 32px); --bezel: 8.5px; }
 /* the line runs through the screens' centres (desktop), from the first step on the right:
    a column is (100cqi - 3 gaps) / 4 wide, its screen 4:3 inside the bezel margin */

@@ -24,7 +24,7 @@ export interface LaunchHoldProps {
   holdId: string
   heading: ReactNode
   headingId: string
-  intro: string
+  intro?: string
   items: ShowItem[]
   /** the frame shown while the lid opens */
   opening: { kicker: string; line: string }
@@ -99,7 +99,7 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
     <section ref={ref} id={sectionId} className="launch" aria-labelledby={headingId} data-theme="dark">
       <div className="launch__intro">
         <h2 id={headingId} data-zone="text">{heading}</h2>
-        <p data-zone="text">{intro}</p>
+        {intro && <p data-zone="text">{intro}</p>}
       </div>
       <div className="hold launch__hold" data-hold={holdId} style={{ '--hold-h': length[0], '--hold-h-phone': length[1] } as CSSProperties}>
         <div className="hold__stage launch__stage" data-active="-1">

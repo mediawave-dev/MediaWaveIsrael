@@ -19,7 +19,9 @@
 
 .thing--bubble .thing__body { width: 48em; height: 33em; border-radius: 7em; }
 .thing--bubble .thing__face { inset: 1.6em; border-radius: 5.6em; }
-.thing__tail { position: absolute; top: 94%; inset-inline-start: 5em; border-top: 5.4em solid var(--obj); border-inline-end: 4.6em solid transparent; }
+/* the tail starts inside the frame (half its 1.6em thickness) and on the straight part of the
+   bottom edge, past the 7em corner: it never reaches into the face or out past the curve */
+.thing__tail { position: absolute; top: calc(100% - 0.8em); inset-inline-start: 8.6em; border-top: 5.4em solid var(--obj); border-inline-end: 4.6em solid transparent; }
 
 .thing--cassette .thing__body { width: 52em; height: 33em; border-radius: 1.6em; }
 .thing--cassette .thing__face { inset: 1.8em 2.2em 10.4em; border-radius: 0.7em; }

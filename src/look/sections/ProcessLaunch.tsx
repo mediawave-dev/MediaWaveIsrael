@@ -9,7 +9,6 @@ export default function ProcessLaunch() {
       holdId="process"
       headingId="how-we-work-title"
       heading="איך אנחנו עובדים"
-      intro="מהרעיון ועד ההשקה: תהליך פשוט וברור"
       items={STEPS}
       opening={{ kicker: 'ארבעה צעדים', line: 'מהשיחה ועד ההשקה' }} /* [קופי: נתי] */
       cta={{ label: 'דברו איתנו', placement: 'process' }}

@@ -42,7 +42,6 @@ export default function ProcessLine() {
     <section ref={ref} id="process" className="proc" aria-labelledby="how-we-work-title">
       <div className="proc__in">
         <h2 id="how-we-work-title" data-zone="text">איך אנחנו עובדים</h2>
-        <p className="proc__lead" data-zone="text">מהרעיון ועד ההשקה: תהליך פשוט וברור</p>
         <div className="proc__track">
           <span className="proc__line" aria-hidden="true"><i className="proc__fill" /></span>
           <ol className="proc__steps">
