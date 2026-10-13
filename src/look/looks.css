@@ -217,6 +217,10 @@ html.disable-animations .theme-bg i { transition: none; }
 .mw-head__nav a { color: var(--ink-2); font: 400 1rem/1 var(--text); white-space: nowrap; padding-block: 13px; } /* 44 px tall */
 @media (hover: hover) { .mw-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
 .mw-head__burger { display: none; margin-inline-start: auto; width: 44px; height: 44px; align-items: center; justify-content: center; background: none; border: 0; color: var(--ink); }
+/* phones: the accessibility panel's trigger sits in the header beside the menu (DECISIONS #63),
+   quieter than the menu (the secondary ink); desktops keep the tab at the page's edge */
+.mw-head__a11y { display: none; width: 40px; height: 44px; align-items: center; justify-content: center; background: none; border: 0; color: var(--ink-2); }
+@media (hover: hover) { .mw-head__a11y:hover { color: var(--ink); } }
 .mw-head__burger span { display: block; position: relative; width: 22px; height: 14px; }
 .mw-head__burger i { position: absolute; inset-inline-end: 0; height: 2px; width: 100%; border-radius: 2px; background: currentColor; }
 .mw-head__burger i:nth-child(1) { top: 0; }
@@ -229,8 +233,12 @@ html.disable-animations .theme-bg i { transition: none; }
   .mw-head__burger { display: inline-flex; }
   .mw-head__logo .mw-logo { height: 24px; }
   .mw-head__cta { order: 3; }
-  .mw-head__burger { order: 2; margin-inline-start: auto; }
+  .mw-head__a11y { display: inline-flex; order: 2; margin-inline-start: auto; margin-inline-end: -10px; }
+  .mw-head__burger { order: 2; margin-inline-start: 0; }
+  .mw-a11y-tab { display: none !important; }
 }
+/* the smallest phones: the logo gives up 3 px of height so the two icons still fit */
+@media (max-width: 359px) { .mw-head__logo .mw-logo { height: 21px; } }
 /* KM: the header carries its own two layers, flipped by the same themeLayers() call */
 .mw-head .theme-bg { position: absolute; z-index: 0; }
 html[data-look="km"].motion-ready .mw-head { background: transparent; }

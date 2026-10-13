@@ -45,7 +45,7 @@ export function useHeroVideo(): string | null {
   return isDesktop ? '/videos/hero-bg.mp4' : '/videos/hero-bg-m.mp4'
 }
 
-export function HeroMedia({ className = '' }: { className?: string }) {
+export function HeroMedia({ className = '', sizes = '(max-width: 860px) 45vw, 504px' }: { className?: string; sizes?: string }) {
   const src = useHeroVideo()
   const ref = useScene<HTMLSpanElement>((e, root) => {
     const video = root.querySelector('video')
@@ -53,11 +53,11 @@ export function HeroMedia({ className = '' }: { className?: string }) {
   }, [src])
   return (
     <span ref={ref} className={`hero-media ${className}`}>
-      {/* fetchpriority low: the H1 is the LCP; this frame sits in the built site's slot (#60) */}
+      {/* fetchpriority low: the H1 is the LCP (the KM opener's film fills the hero, #62) */}
       <img
         src="/images/hero-poster.webp"
         srcSet="/images/hero-poster-m.webp 720w, /images/hero-poster.webp 1920w"
-        sizes="(max-width: 860px) 45vw, 504px"
+        sizes={sizes}
         alt=""
         aria-hidden="true"
         width="1920"

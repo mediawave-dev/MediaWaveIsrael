@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
 import { useAccessibility, type TextSize } from '../../hooks/useAccessibility'
+import { A11Y_EVENT } from './a11y-event'
 
-// Accessibility icon (universal symbol)
+// Accessibility icon (universal symbol; the header's phone trigger draws the same one)
 function AccessibilityIcon({ className = '' }: { className?: string }) {
   return (
     <svg
@@ -78,7 +79,7 @@ export default function AccessibilityWidget() {
         setIsOpen(false)
         // The trigger only renders when !isOpen — a synchronous focus() hits a
         // null ref and keyboard focus fell to <body>. Defer like the X button.
-        setTimeout(() => buttonRef.current?.focus(), 60)
+        returnFocus()
         return
       }
 
@@ -113,7 +114,8 @@ export default function AccessibilityWidget() {
         panelRef.current &&
         !panelRef.current.contains(target) &&
         buttonRef.current &&
-        !buttonRef.current.contains(target)
+        !buttonRef.current.contains(target) &&
+        !(target instanceof Element && target.closest('[data-a11y-open]'))
       ) {
         setIsOpen(false)
       }
@@ -136,6 +138,21 @@ export default function AccessibilityWidget() {
   const handleToggle = useCallback(() => {
     setIsOpen(prev => !prev)
   }, [])
+
+  // Phones open the panel from the header (Header.tsx, A11Y_EVENT), not from the side tab
+  // (Nati: the tab over the hero was in the way). The opener gets the focus back on close.
+  const opener = useRef<HTMLElement | null>(null)
+  useEffect(() => {
+    const open = (e: Event) => {
+      opener.current = (e as CustomEvent<HTMLElement | null>).detail ?? null
+      setIsOpen((prev) => !prev)
+    }
+    window.addEventListener(A11Y_EVENT, open)
+    const w = window as unknown as { __mwA11yPending?: HTMLElement | null }
+    if (w.__mwA11yPending !== undefined) { opener.current = w.__mwA11yPending; delete w.__mwA11yPending; setIsOpen(true) }
+    return () => window.removeEventListener(A11Y_EVENT, open)
+  }, [])
+  const returnFocus = () => setTimeout(() => (opener.current?.isConnected && opener.current.offsetParent ? opener.current : buttonRef.current)?.focus(), 60)
 
   // Animation variants
   const panelVariants = {
@@ -175,7 +192,7 @@ export default function AccessibilityWidget() {
                 onClick={() => {
                   setIsOpen(false)
                   // trigger re-mounts after close — return keyboard focus to it
-                  setTimeout(() => buttonRef.current?.focus(), 60)
+                  returnFocus()
                 }}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-brown-light hover:bg-cream-darker hover:text-brown-dark transition-colors"
                 aria-label="סגור"
@@ -266,7 +283,7 @@ export default function AccessibilityWidget() {
         <button
           ref={buttonRef}
           onClick={handleToggle}
-          className="w-7 h-11 rounded-r-full bg-white/90 border border-l-0 border-cream-darker shadow-md flex items-center justify-center text-brown hover:text-orange hover:bg-white transition-colors"
+          className="mw-a11y-tab w-7 h-11 rounded-r-full bg-white/90 border border-l-0 border-cream-darker shadow-md flex items-center justify-center text-brown hover:text-orange hover:bg-white transition-colors"
           aria-label="פתח תפריט נגישות"
           aria-expanded={isOpen}
         >

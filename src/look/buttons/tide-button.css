@@ -1,0 +1,56 @@
+/* KM · the tide (DECISIONS #62). The water is the label's colour (--tide) with the Horizon
+   mark's wave on its surface; it rises behind the label and fills the button. The label is
+   always on top and never masked: it changes colour as the water passes its middle, so the
+   text is never hidden (Nati, 13/10). No line under or inside the label at rest: at rest the
+   water waits below the button's edge. */
+.tide {
+  --tide: var(--btn-fg);
+  /* the water's top, from the button's top, in the water's own height (1.2 of the button's, so
+     a full button has no gap at the bottom): below the edge at rest */
+  --lvl: calc(83.333% + 3px);
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-grid; place-items: center;
+  min-height: 52px; padding: 0.8em 1.7em; border: 0; border-radius: 12px;
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: var(--ui-w) 1.1rem/1.2 var(--ui); text-decoration: none; white-space: nowrap;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.tide:hover { color: var(--btn-fg); }
+.tide[data-size="sm"] { min-height: 40px; padding: 0.45em 1.05em; font-size: 0.95rem; border-radius: 10px; }
+.tide[data-block] { display: grid; width: 100%; }
+.tide__label {
+  position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 0.45em;
+  /* the colour turns as the water reaches the label's middle, rising or draining */
+  transition: color 120ms linear 150ms;
+}
+/* the rim: on paper the water is white, so the button keeps its blue edge over it */
+.tide::after { content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; box-shadow: inset 0 0 0 1.5px var(--btn-bg); pointer-events: none; }
+
+.tide__sea {
+  position: absolute; inset: 0 0 -20% 0; z-index: 0; pointer-events: none; background: var(--tide);
+  /* the wave: 64 px long, about 4 px high, stretched to the water's height */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 100' preserveAspectRatio='none'%3E%3Cpath d='M0 4C10.7 0 21.3 0 32 4S53.3 8 64 4V100H0Z'/%3E%3C/svg%3E") 0 0 / 64px 100% repeat-x;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 100' preserveAspectRatio='none'%3E%3Cpath d='M0 4C10.7 0 21.3 0 32 4S53.3 8 64 4V100H0Z'/%3E%3C/svg%3E") 0 0 / 64px 100% repeat-x;
+  transform: translateY(var(--lvl));
+  transition: transform 420ms cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+/* full: the wave rises out over the top edge and the label takes the button's colour */
+@media (hover: hover) and (pointer: fine) { .tide:hover { --lvl: -6px; } .tide:hover .tide__label { color: var(--btn-bg); } }
+.tide:focus-visible, .tide[data-force], .tide[data-pressed], .tide[data-state="sent"], .tide[data-state="loading"] { --lvl: -6px; }
+.tide:focus-visible .tide__label, .tide[data-force] .tide__label, .tide[data-pressed] .tide__label,
+.tide[data-state="sent"] .tide__label, .tide[data-state="loading"] .tide__label { color: var(--btn-bg); }
+.tide[data-pressed] .tide__sea { transition-duration: 240ms; }
+.tide[data-pressed] .tide__label { transition-delay: 60ms; }
+
+.tide:focus-visible, .tide[data-force="focus"] { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+/* loading: full, with the wave running along the top edge, above the label, from the right */
+.tide[data-state="loading"] { cursor: progress; --lvl: 5%; }
+.tide[data-state="loading"] .tide__sea { animation: tide-run 1.4s linear infinite; }
+@keyframes tide-run { to { -webkit-mask-position: -64px 0; mask-position: -64px 0; } }
+/* error: the water drains and the button shakes once */
+.tide[data-state="error"] { box-shadow: 0 0 0 2px var(--err); animation: tide-shake 340ms steps(1) 1; }
+@keyframes tide-shake { 25% { translate: 4px 0; } 50% { translate: -3px 0; } 75% { translate: 2px 0; } }
+.tide:disabled { cursor: not-allowed; }
+/* the OS flag keeps the fill (the visitor's own hover) and drops the running wave */
+html.motion-calm .tide__sea { animation: none !important; }
+html.disable-animations .tide, html.disable-animations .tide * { animation: none !important; transition: none !important; }

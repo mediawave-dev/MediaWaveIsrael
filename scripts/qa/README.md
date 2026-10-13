@@ -11,7 +11,11 @@ TEMP='G:\tmp\temp' TMP='G:\tmp\temp' node scripts/qa/rum.mjs https://mediawave.c
 | `rum.mjs <url> [runs]` | real-browser FCP / LCP (+ element) / CLS / blocking on a phone with 4x CPU and slow 4G. Trust it over Lighthouse's simulated numbers |
 | `live-check.mjs` | production, desktop and phone: console and network errors, the wasm content type, the contact companion going live, the fonts in use |
 | `page-shots.mjs <url> <outdir> [fractions...]` | viewport frames down the page, desktop and phone |
-| `hero-build-film.mjs [url]` | frames of the hero build over time; reports whether `reveal` fired and the film plays |
+| `hero-build-film.mjs [url]` | frames of the K look's hero build (#60) over time; reports whether `reveal` fired and the film plays |
+| `sea-film.mjs [url] [d\|p\|s\|both\|all]` | the KM opener (#62): the opening frame by frame, the pointer lifting and splashing the water, a click or tap, the flood on scroll; `s` is a phone with the browser bars showing (390 x 664) |
+| `tide-states.mjs [origin]` | the tide buttons in every state on `/states`, and a real hover and press on the hero's button |
+| `a11y-header.mjs [origin]` | the phone header's accessibility trigger (#63) from 320 to 1280: positions, overflow, the panel opening from it and focus coming back |
+| `sheet.mjs out.png cols scale files...` | a contact sheet of screenshots |
 | `companion-live.mjs <url> <outdir> [desktop\|phone] [ok\|fail] [no-preference\|reduce]` | every contact-companion state; the form request is intercepted, never sent (needs a build with `VITE_CONTACT_ENDPOINT=https://form.test.invalid/submit`) |
 | `why-measure.mjs [url]` | sizes of the why-us Lottie frames and boxes (the cropping bug) |
 | `trace-section.mjs <url> <selector> [seconds]` | trace one section's scroll on a throttled phone: what fills the long tasks |

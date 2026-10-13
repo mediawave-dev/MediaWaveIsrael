@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { openAccessibility } from '../ui/a11y-event'
 import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { LookButton } from '@look/button'
@@ -138,6 +139,24 @@ export default function Header() {
           >
             בואו נדבר
           </LookButton>
+
+          {/* phones: the accessibility panel opens from here, not from a tab over the page (#63) */}
+          <button
+            type="button"
+            className="mw-head__a11y"
+            data-a11y-open=""
+            aria-label="פתח תפריט נגישות"
+            aria-haspopup="dialog"
+            onClick={(e) => openAccessibility(e.currentTarget)}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="4.5" r="2.5" />
+              <path d="M12 7v5" />
+              <path d="M6 10l6 2 6-2" />
+              <path d="M9 22l3-8 3 8" />
+              <path d="M7 17h10" />
+            </svg>
+          </button>
 
           <button
             ref={burgerRef}

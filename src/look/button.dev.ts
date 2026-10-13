@@ -2,6 +2,7 @@
 // button.<look>.ts instead, so production ships one family.
 import { LOOK } from './look'
 import { ProductButton } from './buttons/ProductButton'
-import { LensButton, LensTiltButton } from './buttons/LensButton'
+import { LensButton } from './buttons/LensButton'
+import { TideButton } from './buttons/TideButton'
 
-export const LookButton = LOOK === 'k' ? ProductButton : LOOK === 'm' ? LensButton : LensTiltButton
+export const LookButton = LOOK === 'k' ? ProductButton : LOOK === 'm' ? LensButton : TideButton

@@ -43,7 +43,16 @@ export default function LeadModal() {
 
         // Never interrupt someone mid-task: not while focus is on a link, a button or a field
         // (keyboard navigation, typing in the contact form). The next scroll tries again.
+        // An in-page link is a deliberate jump (often to the contact form itself): its scroll never
+        // opens the popup. The link can lose focus before the scroll lands (the gate caught the popup
+        // taking focus at #contact), so the click itself marks the next 1.5 s as busy.
+        let jumping = 0
+        const onJump = (e: MouseEvent) => {
+            if ((e.target as Element | null)?.closest?.('a[href^="#"], a[href^="/#"]')) jumping = performance.now() + 1500
+        }
+        document.addEventListener('click', onJump, true)
         const busy = () => {
+            if (performance.now() < jumping) return true
             const a = document.activeElement
             return !!a && a !== document.body && a.matches('a, button, input, textarea, select, [tabindex], [contenteditable]')
         }
@@ -66,6 +75,7 @@ export default function LeadModal() {
         function cleanup() {
             clearTimeout(timer)
             window.removeEventListener('scroll', handleScroll)
+            document.removeEventListener('click', onJump, true)
         }
 
         return cleanup
