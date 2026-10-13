@@ -102,6 +102,29 @@ export default function BoardIndex() {
         ))}
       </ul>
       <section style={{ maxWidth: 1400, margin: '40px auto 0' }}>
+        <h2 style={{ margin: '0 0 6px', fontSize: '1.6rem', fontWeight: 800 }}>סבב שני: שלושה עולמות מבנק הכיוונים</h2>
+        <p style={{ margin: '0 0 16px', color: '#4a4a4a', lineHeight: 1.7 }}>נבחרו מתוך 20 כיוונים שנאספו מאתרים מיוחדים בעולם (pattern-breaker, direction-bank.md). כל אחד עם ההירו והסרטון, הכפתור בכל המצבים, והשירותים עם הלוטים.</p>
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+          {[
+            { to: '/board/d', k: 'D', t: 'המקלט', f: "'MW Dial', serif", s: { fontStretch: '75%', fontWeight: 600 }, sw: ['#241912', '#EADFC5', '#E0482F', '#79E07A'], d: 'מקלט רדיו משנות השישים. הסרטון רץ מאחורי זכוכית החוגה. בשירותים הגלילה מסובבת את החוגה: בין תחנות יש רעש, ועל תחנה העין הירוקה נסגרת והשידור נקלט. השראה: Radio Garden.' },
+            { to: '/board/e', k: 'E', t: 'יום ולילה', f: "'MW Daylight', serif", s: { fontWeight: 400 }, sw: ['#EADBD0', '#F5F4EF', '#ECBE8C', '#4B3346', '#121620'], d: 'האתר מואר לפי שעת היום. הגלילה מזיזה את השמש: שחר, צהריים, שקיעה ולילה, הסרטון משנה תאורה ובלילה נדלקת מנורה. בשירותים אור מהחלון עובר על הקיר. השראה: Daylight Computer.' },
+            { to: '/board/f', k: 'F', t: 'שרטוט מפורק', f: "'MW Draft', sans-serif", s: { fontWeight: 700 }, sw: ['#F2F2EE', '#1E1F22', '#55575C', '#C8361F'], d: 'גיליון שרטוט טכני עם מסגרת, קווי מידה ובלוק כותרת. בשירותים האתר מתפרק לשש שכבות במבט איזומטרי, כל שכבה מסומנת בתורה עם פרט מוגדל, ובסוף הכול מתחבר בחזרה. השראה: Isoduct.' },
+          ].map((x) => (
+            <li key={x.to} style={{ background: '#fff', borderRadius: 8, padding: 22, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
+                <span dir="ltr" style={{ fontWeight: 800, fontSize: 15, color: '#666' }}>{x.k}</span>
+                <h3 style={{ margin: 0, fontFamily: x.f, fontSize: '2.8rem', lineHeight: 1, ...(x.s as React.CSSProperties) }}>{x.t}</h3>
+              </div>
+              <div style={{ display: 'flex', height: 34, borderRadius: 4, overflow: 'hidden', border: '1px solid #ddd' }}>
+                {x.sw.map((c) => <span key={c} title={c} style={{ flex: 1, background: c }} />)}
+              </div>
+              <p style={{ margin: 0, lineHeight: 1.65 }}>{x.d}</p>
+              <Link to={x.to} style={{ marginTop: 'auto', alignSelf: 'flex-start', padding: '10px 18px', background: '#161616', color: '#fff', borderRadius: 4, fontWeight: 700, textDecoration: 'none' }}>לפתוח את כיוון {x.k}</Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section style={{ maxWidth: 1400, margin: '40px auto 0' }}>
         <h2 style={{ margin: '0 0 6px', fontSize: '1.6rem', fontWeight: 800 }}>שלושה רעיונות מבנק הרעיונות, על כיוון B</h2>
         <p style={{ margin: '0 0 16px', color: '#4a4a4a', lineHeight: 1.7 }}>כל רעיון הוא עמוד שלם לדוגמה. ברירת המחדל היא הפלטה השקטה "נייר ודיו", ואפשר להחליף בכפתורים למטה.</p>
         <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
