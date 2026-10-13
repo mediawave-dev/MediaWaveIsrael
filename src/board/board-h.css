@@ -1,0 +1,139 @@
+/* Direction H · קומיקס. Tokens and reasons (the material is a printed comic book):
+   --page   #FFFFFF  the page and the balloons
+   --ink    #111111  panel borders (4px), lettering (18:1)
+   --yellow #FFDD33  narration boxes, the hover fill (ink on it 15:1); the comic's own convention
+   --red    #D42A1B  only the error balloon (5.4:1 on white)
+   --muted  #3E3E3E  small print (11:1)
+   Photos keep their colour under a light Ben-Day dot screen, the printing texture of comics. */
+
+.bd-h {
+  --page: #ffffff;
+  --ink: #111111;
+  --yellow: #ffdd33;
+  --red: #d42a1b;
+  --muted: #3e3e3e;
+  --head: 70px;
+  --gut: clamp(14px, 3vw, 44px);
+  --lab-fg: var(--ink); --lab-muted: var(--muted); --lab-line: var(--ink); --lab-font: 'MW Comic', sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-family: 'Heebo', sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+.bd-h ::selection { background: var(--yellow); color: var(--ink); }
+.bd-h a:not(.bln) { color: inherit; text-decoration: none; }
+.bd-h .bln { text-decoration: none; }
+.bd-h :is(h1, h2, h3) { font-family: 'MW Comic', sans-serif; font-weight: 800; color: inherit; }
+.bd-h :focus-visible { outline: 3px dashed var(--ink); outline-offset: 4px; }
+
+.h-head { position: sticky; top: 0; z-index: 20; height: var(--head); display: flex; align-items: center; gap: 30px; padding-inline: var(--gut); background: var(--page); border-bottom: 4px solid var(--ink); }
+.h-head__logo img { display: block; height: 24px; width: auto; }
+.h-head__nav { display: flex; gap: 26px; margin-inline-start: auto; font: 800 15px/1 'MW Comic', sans-serif; }
+@media (hover: hover) { .h-head__nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; } }
+@media (max-width: 860px) { .bd-h { --head: 60px; } .h-head__nav { display: none; } .h-head .bln { margin-inline-start: auto; } }
+
+/* narration boxes and balloons */
+.h-narr { display: inline-block; margin: 0; padding: 0.5em 0.85em; background: var(--yellow); border: 3px solid var(--ink); font: 500 1.05rem/1.55 'Heebo', sans-serif; }
+.h-narr--corner { position: absolute; top: 10px; inset-inline-start: 10px; z-index: 2; padding: 0.25em 0.7em; font: 800 0.95rem/1.4 'MW Comic', sans-serif; }
+.h-narr--title { padding: 0.3em 0.8em; font: 800 clamp(1.6rem, 3vw, 2.6rem)/1.2 'MW Comic', sans-serif; }
+.h-bubble {
+  position: relative; margin: 0 0 14px;
+  padding: 0.5em 0.95em; max-width: 92%;
+  background: var(--page); border: 3px solid var(--ink); border-radius: 22px;
+  font: 400 clamp(0.88rem, 1vw, 1rem)/1.4 'MW Comic', sans-serif; text-align: center;
+}
+.h-bubble::before { content: ''; position: absolute; bottom: -15px; inset-inline-start: 24px; border-top: 15px solid var(--ink); border-inline: 9px solid transparent; }
+.h-bubble::after { content: ''; position: absolute; bottom: -9px; inset-inline-start: 27px; border-top: 10px solid var(--page); border-inline: 6px solid transparent; }
+
+/* ── the cover page ── */
+.h-cover {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto; gap: 14px;
+  padding: 18px var(--gut) clamp(40px, 7vh, 80px);
+}
+.h-titlepanel { grid-column: 1 / span 5; grid-row: 1 / span 2; border: 4px solid var(--ink); padding: clamp(20px, 3vw, 40px); display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 22px; }
+.h-title { margin: 0; font-size: clamp(3rem, 5.8vw, 6.6rem); line-height: 1.04; }
+.h-title span { display: block; }
+.h-panel { position: relative; margin: 0; border: 4px solid var(--ink); overflow: hidden; background: #ddd; min-height: 180px; }
+.h-panel--video { grid-column: 6 / span 7; grid-row: 1; aspect-ratio: 16 / 8; }
+.h-cover .h-panel:nth-of-type(2) { grid-column: 6 / span 3; grid-row: 2; }
+.h-cover .h-panel:nth-of-type(3) { grid-column: 9 / span 4; grid-row: 2; }
+.h-panel__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.12) saturate(1.1); }
+.h-panel::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle, rgba(0, 0, 0, 0.22) 1px, transparent 1.7px); background-size: 6px 6px; mix-blend-mode: multiply; }
+@media (max-width: 860px) {
+  .h-cover { grid-template-columns: 1fr 1fr; padding-top: 12px; }
+  .h-titlepanel { grid-column: 1 / -1; grid-row: auto; }
+  .h-title { font-size: clamp(2.8rem, 13vw, 4rem); }
+  .h-titlepanel .bln { align-self: stretch; }
+  .h-panel--video { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 16 / 10; }
+  .h-cover .h-panel:nth-of-type(2), .h-cover .h-panel:nth-of-type(3) { grid-column: auto; grid-row: auto; aspect-ratio: 1; min-height: 0; }
+}
+
+/* ── the balloon button ── */
+.bln {
+  --fill: var(--page);
+  position: relative; display: inline-block;
+  padding: 0 0 15px; border: 0; background: none;
+  color: var(--ink); font: 800 1.15rem/1.25 'MW Comic', sans-serif;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.bln[data-size='sm'] { font-size: 0.98rem; }
+.bln__body {
+  position: relative; display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.7em 1.35em; border: 3px solid var(--ink); border-radius: 26px;
+  background: var(--fill);
+  transition: background-color 150ms, transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.bln[data-size='sm'] .bln__body { padding: 0.45em 0.95em; border-radius: 20px; }
+.bln__body::before { content: ''; position: absolute; bottom: -16px; inset-inline-start: 22px; border-top: 16px solid var(--tail, var(--ink)); border-inline: 10px solid transparent; }
+.bln__body::after { content: ''; position: absolute; bottom: -10px; inset-inline-start: 25px; border-top: 11px solid var(--fill); border-inline: 7px solid transparent; transition: border-top-color 150ms; }
+@media (hover: hover) { .bln:hover { --fill: var(--yellow); } }
+.bln[data-force='hover'] { --fill: var(--yellow); }
+.bln[data-pressed] .bln__body { transform: scale(0.95); }
+.bln:focus-visible { outline: none; }
+.bln:focus-visible .bln__body, .bln[data-force='focus'] .bln__body { outline: 3px dashed var(--ink); outline-offset: 4px; }
+.bln[data-state='loading'] { cursor: progress; }
+.bln__dots { display: inline-flex; gap: 3px; margin-inline-start: 4px; }
+.bln__dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink); animation: bln-type 0.9s infinite; }
+.bln__dots i:nth-child(2) { animation-delay: 0.15s; }
+.bln__dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bln-type { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+.bln[data-state='sent'] { --fill: var(--yellow); }
+.bln[data-state='error'] { color: var(--red); --tail: var(--red); animation: bln-shake 340ms steps(1) 1; }
+.bln[data-state='error'] .bln__body { border-color: var(--red); }
+@keyframes bln-shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+html.disable-animations .bln, html.disable-animations .bln * { animation: none !important; }
+
+/* ── services: the page fills panel by panel ── */
+.h-svcsec { padding-top: clamp(56px, 10vh, 120px); }
+.h-svcsec__intro { padding-inline: var(--gut); margin-bottom: 12px; }
+.h-hold { position: relative; height: 520vh; }
+.h-stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); display: grid; place-items: center; padding: 14px var(--gut) 20px; box-sizing: border-box; }
+.h-grid { width: 100%; max-width: 1240px; height: 100%; max-height: 760px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.h-svc {
+  position: relative; border: 4px solid var(--ink); background: var(--page);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 46px 14px 12px; overflow: hidden;
+  background-image: radial-gradient(circle, rgba(255, 221, 51, 0.55) 1.4px, transparent 2px); background-size: 9px 9px;
+}
+.h-svc:nth-child(2n) { background-image: radial-gradient(circle, rgba(17, 17, 17, 0.08) 1.4px, transparent 2px); }
+.h-svc__art { width: clamp(110px, 12vw, 170px); aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: var(--page); border: 3px solid var(--ink); overflow: hidden; }
+.h-svc__art > * { transform: scale(0.75); }
+.h-svc .h-bubble { margin-top: 10px; }
+.h-svc__line { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); text-align: center; max-width: 34ch; }
+.h-svc__line a { font-weight: 800; color: var(--ink); }
+@media (hover: hover) { .h-svc__line a:hover { text-decoration: underline; text-underline-offset: 4px; } }
+@media (max-width: 860px) {
+  .h-hold { height: 480vh; }
+  .h-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .h-svc { padding: 34px 6px 6px; border-width: 3px; }
+  .h-svc__art { width: 76px; }
+  .h-svc__art > * { transform: none; zoom: 0.42; }
+  .h-svc .h-bubble { font-size: 11px; padding: 0.35em 0.6em; border-width: 2px; }
+  .h-svc__line { display: none; }
+  .h-narr--corner { font-size: 0.78rem; top: 6px; inset-inline-start: 6px; }
+}
+.h-svcsec--still .h-hold { height: auto; }
+.h-svcsec--still .h-stage { position: static; height: auto; }
+.h-svcsec--still .h-grid { height: auto; max-height: none; grid-template-rows: none; }
+.h-svcsec--still .h-svc { min-height: 380px; }

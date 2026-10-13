@@ -102,13 +102,20 @@ export default function BoardIndex() {
         ))}
       </ul>
       <section style={{ maxWidth: 1400, margin: '40px auto 0' }}>
-        <h2 style={{ margin: '0 0 6px', fontSize: '1.6rem', fontWeight: 800 }}>סבב שני: שלושה עולמות מבנק הכיוונים</h2>
-        <p style={{ margin: '0 0 16px', color: '#4a4a4a', lineHeight: 1.7 }}>נבחרו מתוך 20 כיוונים שנאספו מאתרים מיוחדים בעולם (pattern-breaker, direction-bank.md). כל אחד עם ההירו והסרטון, הכפתור בכל המצבים, והשירותים עם הלוטים.</p>
+        <h2 style={{ margin: '0 0 6px', fontSize: '1.6rem', fontWeight: 800 }}>סבב שני: עשרה עולמות מבנק הכיוונים</h2>
+        <p style={{ margin: '0 0 16px', color: '#4a4a4a', lineHeight: 1.7 }}>עשרה כיוונים מתוך 20 שנאספו מאתרים מיוחדים בעולם (pattern-breaker, direction-bank.md). אין שניים עם אותה משפחת צבעים, אותו פונט, אותה גלילה או אותו כפתור. בכל אחד: ההירו עם הסרטון, השירותים עם הלוטים, והכפתור בכל המצבים.</p>
         <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           {[
-            { to: '/board/d', k: 'D', t: 'המקלט', f: "'MW Dial', serif", s: { fontStretch: '75%', fontWeight: 600 }, sw: ['#241912', '#EADFC5', '#E0482F', '#79E07A'], d: 'מקלט רדיו משנות השישים. הסרטון רץ מאחורי זכוכית החוגה. בשירותים הגלילה מסובבת את החוגה: בין תחנות יש רעש, ועל תחנה העין הירוקה נסגרת והשידור נקלט. השראה: Radio Garden.' },
-            { to: '/board/e', k: 'E', t: 'יום ולילה', f: "'MW Daylight', serif", s: { fontWeight: 400 }, sw: ['#EADBD0', '#F5F4EF', '#ECBE8C', '#4B3346', '#121620'], d: 'האתר מואר לפי שעת היום. הגלילה מזיזה את השמש: שחר, צהריים, שקיעה ולילה, הסרטון משנה תאורה ובלילה נדלקת מנורה. בשירותים אור מהחלון עובר על הקיר. השראה: Daylight Computer.' },
-            { to: '/board/f', k: 'F', t: 'שרטוט מפורק', f: "'MW Draft', sans-serif", s: { fontWeight: 700 }, sw: ['#F2F2EE', '#1E1F22', '#55575C', '#C8361F'], d: 'גיליון שרטוט טכני עם מסגרת, קווי מידה ובלוק כותרת. בשירותים האתר מתפרק לשש שכבות במבט איזומטרי, כל שכבה מסומנת בתורה עם פרט מוגדל, ובסוף הכול מתחבר בחזרה. השראה: Isoduct.' },
+            { to: '/board/d', k: 'D', t: 'המקלט', f: "'MW Dial', serif", s: { fontStretch: '75%', fontWeight: 600 }, sw: ['#241912', '#EADFC5', '#E0482F', '#79E07A'], d: 'מקלט רדיו משנות השישים. הגלילה מסובבת את החוגה: בין תחנות רעש, ועל תחנה העין הירוקה נסגרת. השראה: Radio Garden.' },
+            { to: '/board/e', k: 'E', t: 'יום ולילה', f: "'MW Daylight', serif", s: { fontWeight: 400 }, sw: ['#EADBD0', '#F5F4EF', '#ECBE8C', '#4B3346', '#121620'], d: 'האתר מואר לפי שעת היום והגלילה מזיזה את השמש. בשירותים אור מהחלון עובר על הקיר. השראה: Daylight Computer.' },
+            { to: '/board/f', k: 'F', t: 'שרטוט מפורק', f: "'MW Draft', sans-serif", s: { fontWeight: 700 }, sw: ['#F2F2EE', '#1E1F22', '#55575C', '#C8361F'], d: 'גיליון שרטוט טכני. בשירותים האתר מתפרק לשש שכבות איזומטריות ומתחבר בחזרה. השראה: Isoduct.' },
+            { to: '/board/g', k: 'G', t: 'כוכב קטן', f: "'MW Planet', sans-serif", s: { fontWeight: 400 }, sw: ['#1F1530', '#B9D36B', '#FFD36E', '#F3EEDF'], d: 'כוכב פיסטוק בחלל סגול. הגלילה מסובבת את הכוכב, ושישה בניינים עולים לראשו בתורם. השראה: Messenger.' },
+            { to: '/board/h', k: 'H', t: 'קומיקס', f: "'MW Comic', sans-serif", s: { fontWeight: 800 }, sw: ['#FFFFFF', '#111111', '#FFDD33'], d: 'חוברת קומיקס מצילומים אמיתיים של הסטודיו. העמוד מתמלא ריבוע אחרי ריבוע. השראה: Ponpon Mania.' },
+            { to: '/board/i', k: 'I', t: 'האלבום', f: "'MW Album', serif", s: { fontWeight: 700 }, sw: ['#1E2B24', '#1A1917', '#EDE6D6', '#F1ECE2'], d: 'אלבום משפחתי פתוח. הגלילה מדפדפת, ותמונה שמחזיקים מתעוררת לווידאו האמיתי. השראה: David Whyte Experience.' },
+            { to: '/board/j', k: 'J', t: 'הרחוב', f: "'MW Sign', serif", s: { fontWeight: 400 }, sw: ['#EFE3C2', '#E9E3D7', '#B8322A', '#2F6B45', '#3B3A38'], d: 'רחוב קניות ביום חמסין. ההירו הוא החנות שלנו, ובשירותים הולכים לאורך שש חנויות. השראה: Bruno Simon.' },
+            { to: '/board/k', k: 'K', t: 'ההשקה', f: "'MW Keynote', sans-serif", s: { fontWeight: 200 }, sw: ['#000000', '#F5F5F7', '#A1A1A6'], d: 'במה של כנס השקה. מחשב נייד נפתח ומסתובב, ועל המסך מוכרז כל שירות. השראה: Oryzo AI.' },
+            { to: '/board/l', k: 'L', t: 'בית הבובות', f: "'MW House', serif", s: { fontWeight: 700 }, sw: ['#E4E1DA', '#8F8B84', '#EAD9B8', '#2F2C3A', '#E6D3D9'], d: 'הסטודיו כבית חתוך לרוחבו. המצלמה נכנסת לחדר אחרי חדר. השראה: Hotel 1 Place Vendôme.' },
+            { to: '/board/m', k: 'M', t: 'עצמים מרחפים', f: "'MW Void', sans-serif", s: { fontWeight: 700 }, sw: ['#E6E1F2', '#2B2833', '#FFFFFF'], d: 'כלים מרחפים בחלל לבנדר. טסים לתוך כל אחד, ובתוכו השירות. השראה: Igloo Inc.' },
           ].map((x) => (
             <li key={x.to} style={{ background: '#fff', borderRadius: 8, padding: 22, display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>

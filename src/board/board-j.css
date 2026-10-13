@@ -1,0 +1,139 @@
+/* Direction J · הרחוב. Tokens and reasons (an Israeli high street on a hamsin day):
+   --haze     #EFE3C2  the dusty hamsin sky, the ground (ink on it 13:1)
+   --plaster  #E9E3D7  shop fronts; --plaster-2 #DCD4C4 every other building
+   --stone    #CEC5B3  the sidewalk; --asphalt #3B3A38 the road
+   --ink      #22201C  text, frames, silhouettes
+   --lit      #FFE08A  a sign or a window with its light on
+   Sign colours vary shop to shop (street vernacular); each sign's lettering is set for AA. */
+
+.bd-j {
+  --haze: #efe3c2;
+  --plaster: #e9e3d7;
+  --plaster-2: #dcd4c4;
+  --stone: #cec5b3;
+  --asphalt: #3b3a38;
+  --ink: #22201c;
+  --muted: #4c4740;
+  --wood: #3a2e25;
+  --paper: #f4efe4;
+  --lit: #ffe08a;
+  --head: 70px;
+  --gut: clamp(16px, 3.6vw, 52px);
+  --lab-fg: var(--ink); --lab-muted: var(--muted); --lab-line: var(--ink); --lab-font: 'MW Sign', serif;
+  background: var(--haze);
+  color: var(--ink);
+  font-family: 'Heebo', sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+.bd-j ::selection { background: var(--ink); color: var(--lit); }
+.bd-j a:not(.lbx) { color: inherit; text-decoration: none; }
+.bd-j .lbx { text-decoration: none; }
+.bd-j :is(h1, h2, h3) { font-family: 'MW Sign', serif; font-weight: 400; color: inherit; }
+.bd-j :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.j-head { position: sticky; top: 0; z-index: 20; height: var(--head); display: flex; align-items: center; gap: 30px; padding-inline: var(--gut); background: var(--haze); border-bottom: 2px solid var(--ink); }
+.j-head__logo img { display: block; height: 24px; width: auto; }
+.j-head__nav { display: flex; gap: 26px; margin-inline-start: auto; font-size: 15px; color: var(--muted); }
+@media (hover: hover) { .j-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; } }
+@media (max-width: 860px) { .bd-j { --head: 60px; } .j-head__nav { display: none; } .j-head .lbx { margin-inline-start: auto; } }
+
+/* awnings: stripes with a scalloped hem */
+.j-front__awning, .j-shop__awning {
+  height: 46px;
+  background: repeating-linear-gradient(90deg, var(--sign, #b8322a) 0 44px, var(--paper) 44px 88px);
+  -webkit-mask: radial-gradient(22px 12px at 22px 100%, transparent 98%, #000) 0 0 / 44px 100% repeat-x;
+  mask: radial-gradient(22px 12px at 22px 100%, transparent 98%, #000) 0 0 / 44px 100% repeat-x;
+}
+
+/* ── hero: our own shop front ── */
+.j-hero { padding: clamp(20px, 4vh, 44px) var(--gut) 0; display: flex; flex-direction: column; align-items: center; }
+.j-front { width: min(1180px, 100%); background: var(--plaster); border: 2px solid var(--ink); border-bottom: 0; }
+.j-front__sign { background: var(--ink); color: var(--paper); padding: clamp(14px, 2.4vw, 28px) clamp(18px, 3vw, 40px); }
+.j-front__title { margin: 0; font-size: clamp(2.8rem, 5.4vw, 6.2rem); line-height: 1.08; display: flex; flex-wrap: wrap; gap: 0 0.35em; }
+.j-front__body { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(16px, 3vw, 40px); padding: clamp(18px, 3vw, 40px); align-items: end; }
+.j-front__window { position: relative; aspect-ratio: 16 / 10; border: 10px solid var(--wood); background: #1b1612; overflow: hidden; }
+.j-front__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.j-front__glass { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.16) 44%, transparent 52%); }
+.j-front__decal { position: absolute; top: 12px; right: 14px; padding: 4px 10px; background: rgba(244, 239, 228, 0.92); font: 400 15px/1.2 'MW Sign', serif; }
+.j-front__door { background: var(--wood); color: var(--paper); padding: clamp(18px, 2.4vw, 30px); min-height: 70%; display: flex; flex-direction: column; justify-content: flex-end; gap: 22px; }
+.j-front__sub { margin: 0; font-size: clamp(1.02rem, 1.25vw, 1.2rem); line-height: 1.65; }
+.j-sidewalk { width: 100%; height: 34px; background: linear-gradient(to bottom, var(--stone) 0 70%, #9b9385 70% 80%, var(--asphalt) 80%); }
+@media (max-width: 860px) {
+  .j-front__body { grid-template-columns: 1fr; }
+  .j-front__title { font-size: clamp(2.4rem, 11vw, 3.4rem); }
+  .j-front__door .lbx { align-self: stretch; }
+}
+
+/* ── the lightbox sign button ── */
+.lbx { display: inline-block; padding: 0 0 4px; border: 0; background: none; cursor: pointer; color: var(--ink); font: 400 1.32rem/1.2 'MW Sign', serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.lbx[data-size='sm'] { font-size: 1.05rem; }
+.lbx__panel {
+  display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.55em 1.3em 0.6em;
+  background: var(--paper); border: 3px solid var(--ink);
+  transition: background-color 180ms, box-shadow 180ms, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.lbx[data-size='sm'] .lbx__panel { padding: 0.35em 0.9em 0.4em; }
+@media (hover: hover) { .lbx:hover .lbx__panel { background: var(--lit); box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.85); } }
+.lbx[data-force='hover'] .lbx__panel { background: var(--lit); box-shadow: inset 0 0 16px rgba(255, 255, 255, 0.85); }
+.lbx[data-pressed] .lbx__panel { transform: translateY(3px); }
+.lbx:focus-visible { outline: none; }
+.lbx:focus-visible .lbx__panel, .lbx[data-force='focus'] .lbx__panel { outline: 3px solid var(--ink); outline-offset: 4px; }
+.lbx[data-state='loading'] { cursor: progress; }
+.lbx[data-state='loading'] .lbx__panel { animation: lbx-flicker 1.2s steps(1) infinite; }
+@keyframes lbx-flicker { 0%, 100% { background: var(--lit); } 50% { background: var(--paper); } }
+.lbx[data-state='sent'] .lbx__panel { background: #2f6b45; color: #f7f1e6; border-color: #2f6b45; }
+.lbx[data-state='error'] .lbx__panel { background: linear-gradient(to left, var(--lit) 50%, var(--stone) 50%); animation: lbx-shake 340ms steps(1) 1; }
+@keyframes lbx-shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+html.disable-animations .lbx, html.disable-animations .lbx * { animation: none !important; }
+
+/* ── services: a walk down the street ── */
+.j-street { padding-top: clamp(64px, 12vh, 140px); }
+.j-street__intro { padding-inline: var(--gut); max-width: 820px; margin-bottom: clamp(16px, 3vh, 32px); }
+.j-street__intro h2 { margin: 0 0 10px; font-size: clamp(2.8rem, 5vw, 5rem); line-height: 1.05; }
+.j-street__intro p { margin: 0; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
+.j-street__hold { position: relative; height: 560vh; }
+.j-street__stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); overflow: hidden; background: var(--haze); }
+.j-layer { position: absolute; inset-inline-start: 0; display: flex; width: max-content; will-change: transform; }
+.j-layer--roofs { bottom: 40%; height: 30%; align-items: flex-end; gap: 10px; padding-inline: 40px; }
+.j-roofs { display: flex; align-items: flex-end; gap: 10px; height: 100%; }
+.j-roof { position: relative; width: 150px; background: #d6c9a8; }
+.j-roof:nth-child(3n) { background: #cdbf9c; }
+.j-boiler { position: absolute; top: -26px; inset-inline-start: 22%; width: 34px; height: 16px; border-radius: 8px; background: #e9e2d2; box-shadow: 40px 6px 0 -4px #a9a08c; }
+.j-layer--shops { bottom: 13%; height: 70%; align-items: stretch; }
+.j-shop { position: relative; width: clamp(380px, 38vw, 560px); display: flex; flex-direction: column; background: var(--plaster); border-inline-start: 2px solid rgba(34, 32, 28, 0.25); }
+.j-shop:nth-child(2n) { background: var(--plaster-2); margin-top: 4%; }
+.j-shop__sign { margin: 14% 8% 0; padding: 12px 18px; background: var(--sign); color: var(--sign-fg); }
+.j-shop__sign h3 { margin: 0; font-size: clamp(1.6rem, 2.4vw, 2.6rem); line-height: 1.15; }
+.j-shop__front { flex: 1; display: flex; align-items: flex-end; gap: 14px; padding: 16px 8% 0; }
+.j-shop__window { flex: 1.25; aspect-ratio: 1 / 1.06; display: grid; place-items: center; background: #fff6de; border: 8px solid var(--wood); transition: background-color 300ms, box-shadow 300ms; }
+.j-shop__window > * { transform: scale(0.85); }
+.j-shop__door { flex: 1; align-self: stretch; margin-top: 18%; padding: 14px; background: var(--wood); color: var(--paper); display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; line-height: 1.55; }
+.j-shop__door p { margin: 0; }
+.j-shop__door a { font-weight: 700; color: var(--lit); }
+@media (hover: hover) { .j-shop__door a:hover { text-decoration: underline; text-underline-offset: 5px; } }
+.j-street__stage[data-active='0'] .j-shop[data-i='0'] .j-shop__window, .j-street__stage[data-active='1'] .j-shop[data-i='1'] .j-shop__window,
+.j-street__stage[data-active='2'] .j-shop[data-i='2'] .j-shop__window, .j-street__stage[data-active='3'] .j-shop[data-i='3'] .j-shop__window,
+.j-street__stage[data-active='4'] .j-shop[data-i='4'] .j-shop__window, .j-street__stage[data-active='5'] .j-shop[data-i='5'] .j-shop__window { background: #ffedb0; box-shadow: inset 0 0 34px rgba(255, 190, 70, 0.7); }
+.j-layer--front { bottom: 5%; height: 62%; align-items: flex-end; gap: clamp(180px, 22vw, 340px); padding-inline: 120px; pointer-events: none; z-index: 3; }
+.j-lamp { position: relative; width: 7px; height: 100%; background: #2c2925; }
+.j-lamp::before { content: ''; position: absolute; top: 0; inset-inline-start: -30px; width: 44px; height: 7px; background: #2c2925; }
+.j-lamp::after { content: ''; position: absolute; top: 7px; inset-inline-start: -34px; width: 18px; height: 12px; border-radius: 0 0 10px 10px; background: #2c2925; }
+.j-tree { position: relative; width: 12px; height: 46%; background: #2c2925; }
+.j-tree::before { content: ''; position: absolute; bottom: 88%; left: 50%; width: 150px; aspect-ratio: 1; margin-left: -75px; border-radius: 50%; background: #3c4a33; }
+.j-road { position: absolute; left: 0; right: 0; bottom: 0; height: 13%; background: linear-gradient(to bottom, var(--stone) 0 40%, #9b9385 40% 46%, var(--asphalt) 46%); z-index: 2; }
+@media (max-width: 860px) {
+  .j-street__hold { height: 520vh; }
+  .j-shop { width: 84vw; }
+  .j-shop__front { flex-direction: column; align-items: stretch; gap: 10px; padding-bottom: 0; }
+  .j-shop__window { aspect-ratio: 16 / 10; }
+  .j-shop__window > * { transform: scale(0.6); }
+  .j-shop__door { margin-top: 0; font-size: 0.88rem; }
+  .j-layer--front { gap: 60vw; }
+}
+.j-street--still .j-street__hold { height: auto; }
+.j-street--still .j-street__stage { position: static; height: auto; overflow: visible; padding: 20px var(--gut) 60px; }
+.j-street--still .j-layer--roofs, .j-street--still .j-layer--front, .j-street--still .j-road { display: none; }
+.j-street--still .j-layer--shops { position: static; width: auto; flex-wrap: wrap; gap: 20px; height: auto; }
+.j-street--still .j-shop { min-height: 520px; margin-top: 0; }

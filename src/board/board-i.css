@@ -1,0 +1,144 @@
+/* Direction I · האלבום. Tokens and reasons (the material is a family photo album):
+   --cloth  #1E2B24  bottle-green bookcloth around the album, the ground
+   --page   #1A1917  the album's black pages
+   --ink    #F1ECE2  white-ink captions and text on the pages (15:1)
+   --muted  #B7B0A2  secondary text (8:1)
+   --ivory  #EDE6D6  photo mounts, the cards, the button
+   --corner #2C2620  the paper photo corners
+   Photos are shown sepia (the album's age) and wake up in their real colours. */
+
+@property --dev { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+
+.bd-i {
+  --cloth: #1e2b24;
+  --page: #1a1917;
+  --ink: #f1ece2;
+  --muted: #b7b0a2;
+  --ivory: #ede6d6;
+  --corner: #2c2620;
+  --head: 70px;
+  --gut: clamp(16px, 3.6vw, 52px);
+  --lab-fg: var(--ink); --lab-muted: var(--muted); --lab-line: #33463b; --lab-font: 'MW Album', serif;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px),
+    var(--cloth);
+  color: var(--ink);
+  font-family: 'Heebo', sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+.bd-i ::selection { background: var(--ivory); color: var(--page); }
+.bd-i a:not(.mph) { color: inherit; text-decoration: none; }
+.bd-i .mph { text-decoration: none; }
+.bd-i :is(h1, h2, h3) { font-family: 'MW Album', serif; color: inherit; }
+.bd-i :focus-visible { outline: 2px solid var(--ivory); outline-offset: 4px; }
+
+.i-head { position: sticky; top: 0; z-index: 40; height: var(--head); display: flex; align-items: center; gap: 30px; padding-inline: var(--gut); background: var(--cloth); }
+.i-head__logo img { display: block; height: 26px; width: auto; }
+.i-head__nav { display: flex; gap: 28px; margin-inline-start: auto; font-size: 15px; color: var(--muted); }
+@media (hover: hover) { .i-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; } }
+@media (max-width: 860px) { .bd-i { --head: 60px; } .i-head__nav { display: none; } .i-head .mph { margin-inline-start: auto; } }
+
+/* ── an open spread ── */
+.i-spread { position: relative; display: grid; grid-template-columns: 1fr 1fr; background: var(--page); border-radius: 3px; box-shadow: 0 34px 60px -24px rgba(0, 0, 0, 0.7), 0 0 0 1px #000; }
+.i-spine { position: absolute; top: 0; bottom: 0; left: 50%; width: 48px; margin-left: -24px; pointer-events: none; z-index: 50; background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.5) 46%, rgba(255, 255, 255, 0.04) 50%, rgba(0, 0, 0, 0.5) 54%, transparent); }
+.i-pg { position: relative; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: clamp(22px, 3.6vw, 56px); box-sizing: border-box; }
+.i-pg--photo { align-items: center; }
+
+.i-hero { padding: clamp(20px, 4vh, 44px) var(--gut) clamp(40px, 8vh, 90px); }
+.i-hero .i-spread { min-height: calc(100svh - var(--head) - 80px); }
+.i-hero__title { margin: 0 0 22px; font-weight: 700; font-size: clamp(3rem, 5.3vw, 6.2rem); line-height: 1.12; }
+.i-hero__title span { display: block; }
+.i-hero__sub { margin: 0 0 34px; max-width: 30ch; color: var(--muted); font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.7; }
+
+/* photos with paper corners */
+.i-photo { margin: 0; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 14px; cursor: default; }
+.i-photo__mount { position: relative; display: block; width: 100%; max-width: 520px; aspect-ratio: 4 / 3; background: #f4efe3; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.55); transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1); }
+.i-photo__mount > img, .i-photo__mount > video, .i-photo__media { position: absolute; inset: 10px; width: calc(100% - 20px); height: calc(100% - 20px); object-fit: cover; }
+.i-photo__mount > img { filter: sepia(0.6) contrast(1.05) brightness(0.95); }
+.i-photo__media { filter: sepia(0.35); }
+.i-photo[data-awake] .i-photo__mount { transform: scale(1.025); }
+.i-photo figcaption { font: 400 1.08rem/1.4 'MW Album', serif; color: var(--ink); }
+.i-corner { position: absolute; width: 26px; height: 26px; background: var(--corner); z-index: 2; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+.i-corner--1 { top: -5px; right: -5px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.i-corner--2 { top: -5px; left: -5px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.i-corner--3 { bottom: -5px; right: -5px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.i-corner--4 { bottom: -5px; left: -5px; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+
+/* service pages: the Lottie mounted on an ivory card */
+.i-card { position: relative; width: clamp(160px, 15vw, 230px); aspect-ratio: 1; display: grid; place-items: center; background: var(--ivory); margin-bottom: 20px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5); }
+.i-card > :not(.i-corner) { transform: scale(0.82); }
+.i-pg--text h3 { margin: 0 0 10px; font-weight: 700; font-size: clamp(2rem, 3.1vw, 3.2rem); line-height: 1.1; }
+.i-pg--text p { margin: 0 0 14px; max-width: 30ch; color: var(--muted); font-size: clamp(1rem, 1.15vw, 1.15rem); line-height: 1.65; }
+.i-pg--text a { font-weight: 700; }
+@media (hover: hover) { .i-pg--text a:hover { text-decoration: underline; text-underline-offset: 6px; } }
+
+/* ── services: the book turns its pages ── */
+.i-albumsec { padding-top: clamp(64px, 12vh, 140px); }
+.i-albumsec__intro { padding-inline: var(--gut); max-width: 820px; margin-bottom: clamp(16px, 3vh, 32px); }
+.i-albumsec__intro h2 { margin: 0 0 10px; font-weight: 700; font-size: clamp(2.8rem, 5vw, 5rem); line-height: 1.05; }
+.i-albumsec__intro p { margin: 0; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
+.i-hold { position: relative; height: 660vh; }
+.i-stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); display: grid; place-items: center; perspective: 2800px; }
+.i-book {
+  position: relative;
+  width: min(1180px, 92vw, calc((100svh - var(--head) - 70px) * 1.75));
+  aspect-ratio: 1.75;
+  transform-style: preserve-3d;
+  box-shadow: 0 40px 70px -26px rgba(0, 0, 0, 0.75);
+}
+.i-base, .i-leaf { position: absolute; top: 0; bottom: 0; width: 50%; }
+.i-base { background: var(--page); }
+.i-base--right { right: 0; }
+.i-base--left { left: 0; }
+.i-base > .i-pg, .i-leaf__face > .i-pg { height: 100%; }
+.i-leaf { left: 0; transform-origin: 100% 50%; transform-style: preserve-3d; will-change: transform; }
+.i-leaf__face { position: absolute; inset: 0; background: var(--page); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.i-leaf__back { transform: rotateY(180deg); }
+.i-book .i-photo__mount { max-width: 420px; }
+.i-mobile { display: none; }
+
+@media (max-width: 860px) {
+  .i-hero .i-spread, .i-spread--small { grid-template-columns: 1fr; min-height: 0; }
+  .i-hero .i-spine, .i-spread--small .i-spine { display: none; }
+  .i-hero__title { font-size: clamp(2.6rem, 12vw, 3.8rem); }
+  .i-hero__copy .mph { align-self: stretch; }
+  .i-hold { height: auto; }
+  .i-stage { position: static; height: auto; display: block; perspective: none; padding: 0 var(--gut) 40px; }
+  .i-book { display: none; }
+  .i-mobile { display: grid; gap: 22px; }
+  .i-card { width: 150px; }
+}
+.i-albumsec--still .i-mobile--all { display: grid; gap: 26px; padding: 0 var(--gut) 60px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); }
+.i-albumsec--still .i-spread--small { grid-template-columns: 1fr 1fr; }
+
+/* ── the mounted-photo button ── */
+.mph { display: inline-block; padding: 6px; border: 0; background: none; cursor: pointer; color: var(--page); font: 700 1.15rem/1.25 'MW Album', serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.mph[data-size='sm'] { font-size: 0.98rem; }
+.mph__card {
+  --dev: 0%;
+  position: relative; display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.85em 1.7em; background: var(--ivory);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 220ms, background-color 200ms;
+}
+.mph[data-size='sm'] .mph__card { padding: 0.55em 1.05em; }
+.mph__c { position: absolute; width: 13px; height: 13px; background: var(--corner); transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1), opacity 300ms; }
+.mph__c--1 { top: -3px; right: -3px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.mph__c--2 { top: -3px; left: -3px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.mph__c--3 { bottom: -3px; right: -3px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.mph__c--4 { bottom: -3px; left: -3px; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+@media (hover: hover) { .mph:hover .mph__card { transform: translateY(-3px); box-shadow: 0 7px 12px rgba(0, 0, 0, 0.45); } }
+.mph[data-force='hover'] .mph__card { transform: translateY(-3px); box-shadow: 0 7px 12px rgba(0, 0, 0, 0.45); }
+.mph[data-pressed] .mph__card { transform: translateY(1px) scale(0.98); background: #e0d6c2; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.mph:focus-visible { outline: none; }
+.mph:focus-visible .mph__card, .mph[data-force='focus'] .mph__card { outline: 2px solid var(--ivory); outline-offset: 5px; }
+.mph[data-state='loading'] { cursor: progress; }
+.mph[data-state='loading'] .mph__card { background: linear-gradient(to top, #d9c39a var(--dev), var(--ivory) var(--dev)); animation: mph-develop 1.4s ease-in-out infinite; }
+@keyframes mph-develop { from { --dev: 0%; } to { --dev: 100%; } }
+.mph[data-state='sent'] .mph__card { background: #d9c39a; }
+.mph[data-state='error'] .mph__c--1 { transform: translate(-6px, 16px) rotate(-38deg); opacity: 0.85; }
+.mph[data-state='error'] .mph__card { animation: mph-shake 340ms steps(1) 1; box-shadow: 0 0 0 2px #c4513a; }
+@keyframes mph-shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+html.disable-animations .mph, html.disable-animations .mph * { animation: none !important; }

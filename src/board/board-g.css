@@ -1,0 +1,172 @@
+/* Direction G · כוכב קטן. Tokens and reasons:
+   --space   #1F1530  plum space, the ground (star text on it 15:1)
+   --planet  #B9D36B  the pistachio planet (plum text on it 9.6:1)
+   --butter  #FFD36E  the sun, lit windows, the button (plum text on it 11:1)
+   --star    #F3EEDF  text and the drive-in screen frame
+   --muted   #C9BFD8  secondary text on plum (9:1)
+   A toy world on purpose: no sky blue, no gradients except the planet's own shading. */
+
+.bd-g {
+  --space: #1f1530;
+  --space-2: #2c1f44;
+  --planet: #b9d36b;
+  --planet-dark: #8fae4a;
+  --butter: #ffd36e;
+  --star: #f3eedf;
+  --muted: #c9bfd8;
+  --head: 70px;
+  --gut: clamp(16px, 3.6vw, 52px);
+  --lab-fg: var(--star); --lab-muted: var(--muted); --lab-line: #3a2d55; --lab-font: 'MW Planet', sans-serif;
+  position: relative;
+  background: var(--space);
+  color: var(--star);
+  font-family: 'Heebo', sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+/* a few fixed stars: one dot, many shadows */
+.bd-g::before {
+  content: ''; position: fixed; top: 0; left: 0; width: 2px; height: 2px; border-radius: 50%; pointer-events: none; z-index: 0;
+  box-shadow: 9vw 14vh var(--star), 23vw 31vh #fff8, 41vw 9vh var(--star), 58vw 22vh #fff8, 72vw 12vh var(--star), 88vw 34vh #fff8,
+    14vw 62vh #fff8, 33vw 78vh var(--star), 52vw 58vh #fff8, 67vw 84vh var(--star), 81vw 66vh #fff8, 94vw 88vh var(--star),
+    5vw 92vh var(--star), 47vw 41vh #fff6, 77vw 47vh #fff6;
+}
+.bd-g > * { position: relative; z-index: 1; }
+.bd-g ::selection { background: var(--butter); color: var(--space); }
+.bd-g a:not(.orb) { color: inherit; text-decoration: none; }
+.bd-g .orb { text-decoration: none; }
+.bd-g :is(h1, h2, h3) { font-family: 'MW Planet', sans-serif; font-weight: 400; color: inherit; }
+.bd-g :focus-visible { outline: 3px solid var(--butter); outline-offset: 3px; }
+
+.g-head { position: sticky; top: 0; z-index: 20; height: var(--head); display: flex; align-items: center; gap: 32px; padding-inline: var(--gut); background: var(--space); }
+.g-head__logo img { display: block; height: 26px; width: auto; }
+.g-head__nav { display: flex; gap: 28px; margin-inline-start: auto; font-size: 15px; color: var(--muted); }
+@media (hover: hover) { .g-head__nav a:hover { color: var(--star); text-decoration: underline; text-underline-offset: 6px; } }
+@media (max-width: 860px) { .bd-g { --head: 60px; } .g-head__nav { display: none; } .g-head .orb { margin-inline-start: auto; } }
+
+/* ── hero: a drive-in screen on the planet's horizon ── */
+.g-hero { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; min-height: calc(100svh - var(--head)); padding: 0 var(--gut); }
+.g-hero__copy { grid-column: 1 / span 6; display: flex; flex-direction: column; align-items: flex-start; padding-block: 40px; }
+.g-hero__title { margin: 0 0 clamp(18px, 3vh, 30px); font-size: clamp(3.4rem, 6.8vw, 8rem); line-height: 1; }
+.g-hero__title span { display: block; }
+.g-hero__title span + span { color: var(--planet); }
+.g-hero__sub { margin: 0 0 clamp(24px, 4vh, 40px); max-width: 30ch; font-size: clamp(1.05rem, 1.35vw, 1.3rem); line-height: 1.65; color: var(--muted); }
+.g-world { grid-column: 7 / span 6; position: relative; align-self: stretch; min-height: 520px; overflow: hidden; }
+.g-world__planet { position: absolute; left: -20%; right: -20%; bottom: -78%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 42% 18%, #cfe388, var(--planet) 34%, var(--planet-dark) 78%); }
+.g-world__sun { position: absolute; top: 9%; left: 12%; width: 74px; aspect-ratio: 1; border-radius: 50%; background: var(--butter); }
+.g-screen { position: absolute; left: 14%; right: 14%; bottom: 31%; display: flex; flex-direction: column; align-items: center; }
+.g-screen__frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border: 9px solid var(--star); border-radius: 6px; overflow: hidden; background: #120c1d; }
+.g-screen__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.g-screen__leg { position: absolute; bottom: -42px; width: 8px; height: 46px; background: var(--star); }
+.g-screen__leg:nth-of-type(1) { left: 22%; }
+.g-screen__leg:nth-of-type(2) { right: 22%; }
+@media (max-width: 860px) {
+  .g-hero { display: flex; flex-direction: column; align-items: stretch; min-height: 0; padding-bottom: 20px; }
+  .g-hero__copy { padding-block: 28px 8px; }
+  .g-hero__title { font-size: clamp(3rem, 14vw, 4.4rem); }
+  .g-hero__copy .orb { align-self: stretch; }
+  .g-world { min-height: 360px; margin-inline: calc(-1 * var(--gut)); }
+  .g-world__planet { bottom: -132%; }
+  .g-world__sun { width: 52px; top: 4%; }
+  .g-screen { left: 10%; right: 10%; bottom: 31%; }
+}
+
+/* ── the orbit button ── */
+.orb {
+  position: relative; isolation: isolate;
+  display: inline-grid; place-items: center;
+  padding: 0.82em 1.7em 0.72em;
+  border: 0; border-radius: 20px;
+  background: var(--butter); color: var(--space);
+  font: 400 1.28rem/1.2 'MW Planet', sans-serif;
+  cursor: pointer;
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), background-color 200ms;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.orb[data-size='sm'] { padding: 0.55em 1.1em 0.48em; font-size: 1.05rem; border-radius: 16px; }
+.orb__label { position: relative; z-index: 2; }
+.orb__path { position: absolute; inset: 6px 12px; transform: scaleY(0.42); opacity: 0; transition: opacity 200ms; pointer-events: none; z-index: 1; }
+.orb__arm { position: absolute; left: 50%; top: 50%; width: 50%; height: 0; transform-origin: 0 50%; animation: orb-spin 2.6s linear infinite; animation-play-state: paused; }
+.orb__arm i { position: absolute; right: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--space); }
+@keyframes orb-spin { to { transform: rotate(-360deg); } }
+@media (hover: hover) { .orb:hover .orb__path { opacity: 1; } .orb:hover .orb__arm { animation-play-state: running; } }
+.orb[data-force='hover'] .orb__path { opacity: 1; }
+.orb[data-force='hover'] .orb__arm { transform: rotate(-130deg); animation: none; }
+.orb[data-pressed] { transform: scale(1.04, 0.9); }
+.orb:focus-visible, .orb[data-force='focus'] { outline: 3px solid var(--star); outline-offset: 4px; }
+.orb[data-state='loading'] { cursor: progress; }
+.orb[data-state='loading'] .orb__path { opacity: 1; }
+.orb[data-state='loading'] .orb__arm { animation-duration: 0.9s; animation-play-state: running; }
+.orb[data-state='sent'] { background: var(--planet); }
+.orb[data-state='error'] { background: var(--star); box-shadow: inset 0 0 0 3px #e5484d; animation: orb-shake 340ms steps(1) 1; }
+@keyframes orb-shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(3px); } 75% { transform: translateX(-2px); } }
+html.disable-animations .orb, html.disable-animations .orb * { animation: none !important; }
+
+/* ── services: the planet turns ── */
+.g-orbit { padding-top: clamp(64px, 12vh, 140px); }
+.g-orbit__intro { padding-inline: var(--gut); max-width: 820px; margin-bottom: clamp(16px, 3vh, 32px); }
+.g-orbit__intro h2 { margin: 0 0 10px; font-size: clamp(2.8rem, 5.4vw, 5.4rem); line-height: 1; }
+.g-orbit__intro p { margin: 0; color: var(--muted); font-size: 1.15rem; line-height: 1.7; }
+.g-orbit__hold { position: relative; height: 600vh; }
+.g-orbit__stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); overflow: hidden; }
+.g-orbit__planet {
+  position: absolute; left: 50%; top: 58%;
+  width: 150vmin; aspect-ratio: 1; margin-left: -75vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle at 46% 10%, #cfe388, var(--planet) 30%, var(--planet-dark) 75%);
+  will-change: transform;
+}
+.g-orbit__slot { position: absolute; left: 50%; top: 0; width: 0; height: 50%; transform-origin: 50% 100%; }
+.g-bld { position: absolute; left: 0; top: 6px; width: 190px; height: 175px; transform: translate(-50%, -100%); }
+.g-bld i, .g-bld b { position: absolute; display: block; }
+.g-bld i:nth-child(1) { bottom: 0; left: 15%; right: 15%; height: 58%; background: var(--space-2); border-radius: 4px 4px 0 0; }
+.g-bld i:nth-child(2) { bottom: 58%; left: 10%; right: 10%; height: 12%; background: var(--space); border-radius: 4px; }
+.g-bld i:nth-child(3) { bottom: 18%; left: 36%; right: 36%; height: 24%; background: var(--butter); border-radius: 2px; }
+.g-bld b { bottom: 70%; left: calc(50% - 2px); width: 4px; height: 24%; background: var(--star); }
+/* 1 kiosk with a pitched roof and a flag */
+.g-bld--1 i:nth-child(1) { left: 26%; right: 26%; height: 50%; }
+.g-bld--1 i:nth-child(2) { bottom: 50%; left: 20%; right: 20%; height: 0; background: none; border-radius: 0; border-bottom: 26px solid var(--butter); border-inline: 34px solid transparent; }
+.g-bld--1 b { bottom: 72%; height: 30%; }
+/* 2 a lighthouse: tall, its lamp lit */
+.g-bld--2 i:nth-child(1) { left: 40%; right: 40%; height: 82%; }
+.g-bld--2 i:nth-child(2) { bottom: 82%; left: 36%; right: 36%; height: 10%; background: var(--butter); }
+.g-bld--2 i:nth-child(3) { bottom: 40%; left: 45%; right: 45%; height: 12%; }
+.g-bld--2 b { display: none; }
+/* 3 a robot booth: round top and one eye */
+.g-bld--3 i:nth-child(1) { left: 28%; right: 28%; height: 66%; border-radius: 40px 40px 0 0; }
+.g-bld--3 i:nth-child(2) { display: none; }
+.g-bld--3 i:nth-child(3) { bottom: 32%; left: 42%; right: 42%; height: 16%; border-radius: 50%; }
+.g-bld--3 b { bottom: 66%; height: 20%; }
+.g-bld--3 b::after { content: ''; position: absolute; top: -6px; left: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--butter); }
+/* 4 a cinema: wide, a marquee band */
+.g-bld--4 i:nth-child(1) { left: 2%; right: 2%; height: 48%; }
+.g-bld--4 i:nth-child(2) { bottom: 48%; left: 0; right: 0; height: 14%; background: var(--butter); }
+.g-bld--4 i:nth-child(3) { bottom: 0; left: 40%; right: 40%; height: 30%; background: var(--space); }
+.g-bld--4 b { display: none; }
+/* 5 a house with a chimney: the album house */
+.g-bld--5 i:nth-child(1) { left: 22%; right: 22%; height: 50%; }
+.g-bld--5 i:nth-child(2) { bottom: 50%; left: 14%; right: 14%; height: 0; background: none; border-radius: 0; border-bottom: 34px solid var(--space); border-inline: 46px solid transparent; }
+.g-bld--5 b { bottom: 62%; left: 64%; width: 10px; height: 22%; background: var(--space-2); }
+
+.g-sign { position: absolute; top: 6%; left: 0; right: 0; display: grid; place-items: center; z-index: 2; }
+.g-sign__item { grid-area: 1 / 1; display: flex; align-items: center; gap: clamp(20px, 3vw, 44px); visibility: hidden; padding: 0 var(--gut); }
+.g-sign__disc { flex: none; width: clamp(160px, 17vw, 240px); aspect-ratio: 1; border-radius: 50%; background: var(--star); display: grid; place-items: center; overflow: hidden; box-shadow: 0 0 0 8px var(--space-2); }
+.g-sign__text h3 { margin: 0 0 8px; font-size: clamp(2.4rem, 4.4vw, 4.6rem); line-height: 1; }
+.g-sign__text p { margin: 0 0 12px; max-width: 30ch; color: var(--muted); font-size: clamp(1rem, 1.25vw, 1.2rem); line-height: 1.6; }
+.g-sign__text a { font-weight: 700; color: var(--butter); }
+@media (hover: hover) { .g-sign__text a:hover { text-decoration: underline; text-underline-offset: 6px; } }
+.g-orbit__stage[data-active='0'] .g-sign__item[data-i='0'], .g-orbit__stage[data-active='1'] .g-sign__item[data-i='1'],
+.g-orbit__stage[data-active='2'] .g-sign__item[data-i='2'], .g-orbit__stage[data-active='3'] .g-sign__item[data-i='3'],
+.g-orbit__stage[data-active='4'] .g-sign__item[data-i='4'], .g-orbit__stage[data-active='5'] .g-sign__item[data-i='5'] { visibility: visible; }
+@media (max-width: 860px) {
+  .g-orbit__hold { height: 560vh; }
+  .g-orbit__planet { width: 190vmin; margin-left: -95vmin; top: 64%; }
+  .g-sign__item { flex-direction: column; text-align: center; gap: 12px; }
+  .g-sign__disc { width: 130px; }
+  .g-sign__disc > * { zoom: 0.55; }
+  .g-sign__text h3 { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .g-bld { transform: translate(-50%, -100%) scale(0.75); transform-origin: 50% 100%; }
+}
+.g-still { list-style: none; margin: 0; padding: 0 var(--gut) 60px; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; }
+.g-still h3 { margin: 14px 0 6px; font-size: 2rem; }
+.g-still p { margin: 0; color: var(--muted); }

@@ -1,7 +1,7 @@
 // Shared pieces for the dev-only style board (/board). Never built: App.tsx only
 // imports this tree behind import.meta.env.DEV.
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { LottieIcon } from '../components/ui'
 import { useMediaQuery } from '../hooks/useMediaQuery'
@@ -137,6 +137,13 @@ export function BoardNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
     { to: '/board/d', label: 'D' },
     { to: '/board/e', label: 'E' },
     { to: '/board/f', label: 'F' },
+    { to: '/board/g', label: 'G' },
+    { to: '/board/h', label: 'H' },
+    { to: '/board/i', label: 'I' },
+    { to: '/board/j', label: 'J' },
+    { to: '/board/k', label: 'K' },
+    { to: '/board/l', label: 'L' },
+    { to: '/board/m', label: 'M' },
     { to: '/board/i1', label: 'רעיון 1' },
     { to: '/board/i2', label: 'רעיון 2' },
     { to: '/board/i3', label: 'רעיון 3' },
@@ -144,7 +151,7 @@ export function BoardNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
   const fg = tone === 'dark' ? '#fff' : '#111'
   const bg = tone === 'dark' ? 'rgba(17,17,17,.88)' : 'rgba(255,255,255,.92)'
   return (
-    <nav aria-label="כיוונים" style={{ position: 'fixed', insetInlineEnd: 12, bottom: 12, zIndex: 90, display: 'flex', gap: 2, padding: 4, background: bg, borderRadius: 8, font: '600 13px/1 Heebo, sans-serif', boxShadow: '0 2px 10px rgba(0,0,0,.2)' }}>
+    <nav aria-label="כיוונים" style={{ position: 'fixed', insetInlineEnd: 12, bottom: 12, zIndex: 200, display: 'flex', flexWrap: 'wrap', maxWidth: 'calc(100vw - 24px)', gap: 2, padding: 4, background: bg, borderRadius: 8, font: '600 13px/1 Heebo, sans-serif', boxShadow: '0 2px 10px rgba(0,0,0,.2)' }}>
       {items.map((it) => (
         <Link key={it.to} to={it.to + search} style={{ color: fg, padding: '8px 10px', borderRadius: 6, textDecoration: 'none', background: pathname === it.to ? (tone === 'dark' ? 'rgba(255,255,255,.18)' : 'rgba(0,0,0,.1)') : 'transparent' }}>
           {it.label}
@@ -166,4 +173,76 @@ export function useDocBackground(color: string) {
     document.body.style.background = color
     return () => { html.style.background = prev[0]; document.body.style.background = prev[1] }
   }, [color])
+}
+
+/* ───────── shared button engine and lab for the round-2 worlds (G..M) ───────── */
+
+export interface StateButtonProps {
+  href?: string
+  state?: BtnState
+  force?: BtnForce
+  size?: 'sm' | 'lg'
+  onClick?: () => void
+  children: ReactNode
+}
+
+/** One press/force/state engine; each world supplies its class and its inner markup.
+    `track` receives pointer positions (relative 0..1) for worlds whose hover follows the pointer. */
+export function StateButton({ cls, render, track, href, state = 'idle', force, size = 'lg', onClick, children }: StateButtonProps & {
+  cls: string
+  render: (label: ReactNode, state: BtnState) => ReactNode
+  track?: boolean
+}) {
+  const [pressed, setPressed] = useState(false)
+  const label = state === 'idle' ? children : STATE_LABEL[state]
+  const move = (e: React.PointerEvent<HTMLElement>) => {
+    if (!track) return
+    const r = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--px', ((e.clientX - r.left) / r.width).toFixed(3))
+    e.currentTarget.style.setProperty('--py', ((e.clientY - r.top) / r.height).toFixed(3))
+  }
+  const shared = {
+    className: cls,
+    'data-state': state,
+    'data-force': force,
+    'data-size': size,
+    'data-pressed': pressed || force === 'pressed' ? '' : undefined,
+    onPointerMove: move,
+    onPointerEnter: move,
+    onPointerDown: () => setPressed(true),
+    onPointerUp: () => setPressed(false),
+    onPointerLeave: (e: React.PointerEvent<HTMLElement>) => {
+      setPressed(false)
+      if (track) { e.currentTarget.style.removeProperty('--px'); e.currentTarget.style.removeProperty('--py') }
+    },
+    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === ' ' || e.key === 'Enter') setPressed(true) },
+    onKeyUp: () => setPressed(false),
+    onBlur: () => setPressed(false),
+    onClick,
+  }
+  const inner = render(label, state)
+  return href ? <a href={href} {...shared}>{inner}</a> : <button type="button" {...shared}>{inner}</button>
+}
+
+/** The seven states of one world's button, plus a live one. Styled by lab.css through --lab-* vars. */
+export function ButtonLab({ Btn, title, note }: { Btn: (p: StateButtonProps) => ReactNode; title: string; note: string }) {
+  const m = useButtonMachine()
+  return (
+    <section id="lab" className="blab" aria-labelledby="blab-h">
+      <h2 id="blab-h">{title}</h2>
+      <p className="blab__note">{note}</p>
+      <div className="blab__live">
+        {Btn({ state: m.state, onClick: () => { if (m.state === 'idle') m.run() }, children: HERO.cta })}
+        <button type="button" className="blab__fail" onClick={() => m.run(true)}>להדגים שגיאה</button>
+      </div>
+      <ul className="blab__strip">
+        {STRIP.map((s) => (
+          <li key={s.label}>
+            {Btn({ state: s.state, force: s.force, children: HERO.cta })}
+            <span>{s.label}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
 }
