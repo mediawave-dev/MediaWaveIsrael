@@ -153,14 +153,14 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           href={WHATSAPP_URLS.general}
           target="_blank"
           rel="noopener noreferrer"
-          className="floating-cta fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#0E7C44] rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4 backdrop-blur-sm"
+          className="floating-cta fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-30 h-11 sm:h-12 bg-[#0E7C44] rounded-full shadow-md flex items-center gap-2 px-3 sm:px-4"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 200, damping: 20 }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          aria-label="צור קשר בוואטסאפ"
+          aria-label="דברו איתנו בוואטסאפ"
           data-zone="ui"
           onClick={() => track('whatsapp_click', { placement: 'floating' })}
         >

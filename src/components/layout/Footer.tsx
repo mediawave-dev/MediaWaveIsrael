@@ -25,9 +25,15 @@ export default function Footer() {
     }
     if (href === '#top') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      document.querySelector<HTMLElement>('.mw-head__logo')?.focus({ preventScroll: true })
       return
     }
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    const el = document.querySelector<HTMLElement>(href)
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth' })
+    // keyboard users continue from the section they asked for
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+    el.focus({ preventScroll: true })
   }
 
   return (

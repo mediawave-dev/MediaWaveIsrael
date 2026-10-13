@@ -3,12 +3,15 @@
 Brief: .context/REDESIGN-PROMPT.md (2026-10-12) + the three-looks prompt (2026-10-13, Gate 1 decided: K + M). Decisions live in DECISIONS.rtl.md (#47+). Concept: design/CONCEPT.md. Score: design/SCROLL-SCORE.md.
 
 ## Open
-- [ ] Step 4: gates.mjs, slop-scan (≤ 40), preserve diff, contrast + a11y rounds, Lighthouse mobile median of 3 vs ../mw-baseline, overlap-audit 0, console 0, no overflow 320-1440, mobile scroll smoothness vs production, impeccable pass, one critic agent (also scores the Rive companion)
-- [ ] STOP 2 (owner: Nati) after step 4
+- [ ] Mobile scroll under 4x CPU: more long tasks than the old site (Lottie building in the two holds); load metrics are better than the old site
+- [ ] After deploy: preservation diff against the live site (environment differences cancel), console check on production (wasm MIME from _headers)
 - [ ] Deploy (Nati's OK given 2026-10-13 for "when everything is done", through mediawave-dev; switching gh account allowed then). Rollback ready: tag prod-before-looks = 58cf21f, scripts/rollback-prod.cmd
 - [ ] Before public use: direction I (album, board only) uses the family's photos from memory-video.mp4: needs the family's consent
 
 ## Done
+- [x] Klein palette (#58), fonts (#59), before/after removed (#57), two generic lines removed, bubble tail, geresh, anchor focus, popup never interrupts typing (2026-10-13)
+- [x] Step 4 checks (2026-10-13): overlap 0 (KM, 5 widths); gates: axe 0, overflow 0, no-JS 196 %, forms OK; Lighthouse mobile median 96 / LCP 2.39 s / TBT 50 ms / CLS 0.006 (live site 89 / 3.58 s / 34 ms / 0.016; July baseline 81 / 4.17 s / 116 ms); desktop 100 x4; contrast 0 failures; slop (built site) 25
+- [x] Nati's instruction (2026-10-13): implement everything and deploy through mediawave-dev (STOP 2 waived)
 - [x] STOP 1 (#54, #55): Nati chose KM "launch night", a Rive character for the contact form, and approved the marked copy as is (2026-10-13)
 - [x] Step 3 (KM, shared by all looks): WhyUs, before/after, process line (K/M), FAQ (13 FAQs in src/data/faqs.ts), giant word, contact with the look's button; LeadModal on the look's tokens and button; cookie banner, chat FAB and a11y panel on the look (no backdrop-filter); 404 and inner pages on the tokens (legacy remap scope); Lottie `load` gating (holds build only the active ±1)
 - [x] Rive contact companion (#56): the hero's laptop writes the message, folds it into the horizon while sending, fills into the mark when sent; design/rive/MOTION-BRIEF.md + companion/CONTRACT.md; canvas-lite 2.43.1, lazy after load + idle + near

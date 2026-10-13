@@ -41,8 +41,15 @@ export default function LeadModal() {
         // for someone reading slowly without scrolling.
         let opened = false
 
+        // Never interrupt someone mid-task: not while focus is on a link, a button or a field
+        // (keyboard navigation, typing in the contact form). The next scroll tries again.
+        const busy = () => {
+            const a = document.activeElement
+            return !!a && a !== document.body && a.matches('a, button, input, textarea, select, [tabindex], [contenteditable]')
+        }
+
         const open = () => {
-            if (opened) return
+            if (opened || busy()) return
             opened = true
             setIsVisible(true)
             cleanup()

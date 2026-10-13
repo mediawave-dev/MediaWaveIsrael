@@ -180,6 +180,8 @@ html[data-look] { scroll-padding-top: var(--head); scrollbar-color: var(--ink-2)
   html[data-look="m"] { --head: 60px; }
 }
 html[data-look] section[id] { scroll-margin-top: 0; }
+/* sections take focus after an in-page link (tabindex -1); the section itself shows no ring */
+html[data-look] section[tabindex="-1"]:focus { outline: none; }
 /* The bottom band the floating buttons own. While the cookie banner is open it lifts them
    (index.css .floating-cta), so held stages keep a taller band clear (overlap audit). */
 /* + the same terms index.css adds to the buttons on iOS (home indicator, Safari's toolbar) */

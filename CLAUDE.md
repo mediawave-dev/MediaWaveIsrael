@@ -11,11 +11,18 @@ Design inspiration: https://microsoft.ai/about/
 - TypeScript 5.6.2
 - Deployed on **Cloudflare Pages** (functions/ = Pages Functions, e.g. /api/chat)
 
-## ⚠️ OCTOBER 2026 — REDESIGN IN PROGRESS (overrides the palette/motif rules below)
-- Nati released the sky palette, the One-Accent rule and the sea-wave motif (2026-10-12): he wants a
-  clearly different site. Brief: `.context/REDESIGN-PROMPT.md`. Sacred: hero video + all 13 Lotties.
-- Still locked: contained hovers, no static underlines or lines under button labels, a11y settings never
-  persist, AA contrast, Hebrew typography rules, copy voice, no invented proof.
+## ⚠️ OCTOBER 2026 — THE "LAUNCH NIGHT" REDESIGN (overrides the palette/motif rules below)
+- Production look: **KM** ("launch night", `npm run build`); K and M stay buildable for comparison
+  (`build:k`, `build:m`). Design system: `DESIGN.md`. Decisions: `DECISIONS.rtl.md` #47-#59.
+- Palette "Klein" (#58): stage `#00113D`, paper `#FAFAF7`, International Klein Blue `#002FA7`.
+  Fonts (#59): EFT Betaamango headings, IBM Plex Sans Hebrew text, all in `public/fonts`.
+- Logo: Horizon (`logos/horizon`, rules in its README; colours via `scripts/brand-palette.mjs`).
+- Rive contact companion: `design/rive/companion/` (CONTRACT.md), `npm run rive:companion`.
+- Sacred: hero video + all 13 Lotties. Locked: contained hovers, no static underlines or lines under
+  button labels, a11y settings never persist, AA contrast, Hebrew typography rules, copy voice, no
+  invented proof, overlap audit 0 (`npm run audit:overlap`).
+- Rollback to the pre-redesign site: `scripts\rollback-prod.cmd` (tag `prod-before-looks`) or the
+  Cloudflare Pages dashboard.
 
 ## ⚠️ STATUS UPDATE — July 2026 (overrides stale sections below)
 - **CMS: NONE.** Directus was fully removed (July 2026). All content is static:

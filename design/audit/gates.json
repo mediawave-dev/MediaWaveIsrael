@@ -1,0 +1,530 @@
+{
+  "takenAt": "2026-10-13T11:25:53.219Z",
+  "axeVersion": "4.12.1",
+  "budgets": {
+    "lcp": 2000,
+    "tbt": 200,
+    "cls": 0.1
+  },
+  "urls": {
+    "http://localhost:4177/": {
+      "url": "http://localhost:4177/",
+      "loads": 6,
+      "axe": {
+        "390": {
+          "version": "4.12.1",
+          "violations": []
+        },
+        "1440": {
+          "version": "4.12.1",
+          "violations": []
+        }
+      },
+      "anchors": {
+        "1440 reduced": {
+          "total": 5,
+          "links": [
+            {
+              "href": "#main-content",
+              "top": 164,
+              "mark": "h3#lead-modal-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": false,
+              "active": "body.mw-consent-open.t-dark",
+              "focusByTab": true,
+              "tabbedTo": "button.lm__close"
+            },
+            {
+              "href": "#services",
+              "top": 181,
+              "mark": "h2#services-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 2047,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#services.flight"
+            },
+            {
+              "href": "#faq",
+              "top": 181,
+              "mark": "h2#faq-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 12497,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#faq.faq"
+            },
+            {
+              "href": "#contact",
+              "top": 181,
+              "mark": "h2#contact-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 13995,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#contact.ct"
+            },
+            {
+              "href": "#top",
+              "top": 0,
+              "mark": "header#top.mw-head",
+              "boxTop": 0,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "a.mw-head__logo"
+            }
+          ]
+        },
+        "390 reduced": {
+          "total": 5,
+          "links": [
+            {
+              "href": "#main-content",
+              "top": 92,
+              "mark": "h1.kh__title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": false,
+              "active": "body.t-dark.mw-consent-open",
+              "focusByTab": true,
+              "tabbedTo": "a.lens.lens--tilt"
+            },
+            {
+              "href": "#services",
+              "top": 166,
+              "mark": "h2#services-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 2268,
+              "atStart": false,
+              "atEnd": false,
+              "focused": false,
+              "active": "body.mw-consent-open.t-light",
+              "focusByTab": true,
+              "tabbedTo": "a[href=\"/services/building-websites\"]"
+            },
+            {
+              "href": "#faq",
+              "top": 166,
+              "mark": "h2#faq-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 11180,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#faq.faq"
+            },
+            {
+              "href": "#contact",
+              "top": 166,
+              "mark": "h2#contact-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 12684,
+              "atStart": false,
+              "atEnd": false,
+              "focused": false,
+              "active": "button.lm__close",
+              "focusByTab": false,
+              "tabbedTo": "input#lead-name",
+              "expected": "a[href=\"tel:0528731808\"]"
+            },
+            {
+              "href": "#top",
+              "top": 0,
+              "mark": "header#top.mw-head",
+              "boxTop": 0,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "a.mw-head__logo"
+            }
+          ]
+        },
+        "390 motion": {
+          "total": 5,
+          "links": [
+            {
+              "href": "#main-content",
+              "top": 167,
+              "mark": "h3#lead-modal-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "main#main-content.flex-1"
+            },
+            {
+              "href": "#services",
+              "top": 166,
+              "mark": "h2#services-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 2268,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#services.flight"
+            },
+            {
+              "href": "#faq",
+              "top": 166,
+              "mark": "h2#faq-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 11180,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#faq.faq"
+            },
+            {
+              "href": "#contact",
+              "top": 166,
+              "mark": "h2#contact-title",
+              "boxTop": 56,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 12684,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#contact.ct"
+            },
+            {
+              "href": "#top",
+              "top": 0,
+              "mark": "header#top.mw-head",
+              "boxTop": 0,
+              "header": 56,
+              "headerBy": "header#top.mw-head",
+              "vh": 844,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "a.mw-head__logo"
+            }
+          ]
+        },
+        "1440 motion": {
+          "total": 5,
+          "links": [
+            {
+              "href": "#main-content",
+              "top": 164,
+              "mark": "h3#lead-modal-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "main#main-content.flex-1"
+            },
+            {
+              "href": "#services",
+              "top": 181,
+              "mark": "h2#services-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 2047,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#services.flight"
+            },
+            {
+              "href": "#faq",
+              "top": 181,
+              "mark": "h2#faq-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 12497,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#faq.faq"
+            },
+            {
+              "href": "#contact",
+              "top": 181,
+              "mark": "h2#contact-title",
+              "boxTop": 64,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 13995,
+              "atStart": false,
+              "atEnd": false,
+              "focused": true,
+              "active": "section#contact.ct"
+            },
+            {
+              "href": "#top",
+              "top": 0,
+              "mark": "header#top.mw-head",
+              "boxTop": 0,
+              "header": 64,
+              "headerBy": "header#top.mw-head",
+              "vh": 900,
+              "y": 0,
+              "atStart": true,
+              "atEnd": false,
+              "focused": true,
+              "active": "a.mw-head__logo"
+            }
+          ]
+        }
+      },
+      "overflow": {
+        "320": {
+          "over": 0,
+          "vw": 320,
+          "culprits": []
+        },
+        "390": {
+          "over": 0,
+          "vw": 390,
+          "culprits": []
+        },
+        "768": {
+          "over": 0,
+          "vw": 768,
+          "culprits": []
+        },
+        "1440": {
+          "over": 0,
+          "vw": 1440,
+          "culprits": []
+        }
+      },
+      "nojs": {
+        "on": {
+          "words": 279,
+          "h1": 1,
+          "h1Visible": 1,
+          "hidden": [
+            "div#faq-answer-faq-11.faq__a (22 words)",
+            "div#faq-answer-faq-3.faq__a (19 words)",
+            "div#faq-answer-faq-13.faq__a (19 words)",
+            "div#faq-answer-faq-1.faq__a (18 words)",
+            "div#faq-answer-faq-10.faq__a (18 words)",
+            "div#faq-answer-faq-5.faq__a (17 words)"
+          ]
+        },
+        "off": {
+          "words": 548,
+          "h1": 1,
+          "h1Visible": 1,
+          "hidden": []
+        }
+      },
+      "forms": {
+        "forms": [
+          {
+            "i": 0,
+            "form": "form.lm__form",
+            "action": "",
+            "fields": [
+              {
+                "field": "input#lead-name",
+                "name": "",
+                "label": "שם מלא",
+                "placeholder": ""
+              },
+              {
+                "field": "input#lead-phone",
+                "name": "",
+                "label": "טלפון",
+                "placeholder": ""
+              },
+              {
+                "field": "input#privacy",
+                "name": "",
+                "label": "אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.",
+                "placeholder": ""
+              }
+            ],
+            "own": false,
+            "button": false,
+            "delegated": "div#root"
+          },
+          {
+            "i": 1,
+            "form": "form.ct__form",
+            "action": "",
+            "fields": [
+              {
+                "field": "input#contact-name[name=name]",
+                "name": "name",
+                "label": "שם מלא",
+                "placeholder": ""
+              },
+              {
+                "field": "input#contact-email[name=email]",
+                "name": "email",
+                "label": "אימייל",
+                "placeholder": ""
+              },
+              {
+                "field": "textarea#contact-message[name=message]",
+                "name": "message",
+                "label": "הודעה",
+                "placeholder": ""
+              }
+            ],
+            "own": false,
+            "button": false,
+            "delegated": "div#root"
+          }
+        ],
+        "loose": []
+      },
+      "errors": [
+        "console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. (http://localhost:4177/assets/rive-Bf94lQ9W.js)",
+        "console: falling back to ArrayBuffer instantiation (http://localhost:4177/assets/rive-Bf94lQ9W.js)"
+      ]
+    }
+  },
+  "results": [
+    {
+      "url": "http://localhost:4177/",
+      "gate": "axe",
+      "scope": "390",
+      "ok": true,
+      "detail": "0 violations (axe 4.12.1)"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "axe",
+      "scope": "1440",
+      "ok": true,
+      "detail": "0 violations (axe 4.12.1)"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "anchors",
+      "scope": "1440",
+      "ok": true,
+      "detail": "5 links land below the header (the target 117 px below it), same spot with motion on and reduced, focus follows"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "anchors",
+      "scope": "390",
+      "ok": false,
+      "detail": "#contact reduced: focus did not move (stayed on button.lm__close; next Tab went to input#lead-name, expected a[href=\"tel:0528731808\"]); #main-content: lands 75 px apart with motion on and reduced (top 167 vs 92; two offsets adding up?)"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "overflow",
+      "scope": "320",
+      "ok": true,
+      "detail": "0 px"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "overflow",
+      "scope": "390",
+      "ok": true,
+      "detail": "0 px"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "overflow",
+      "scope": "768",
+      "ok": true,
+      "detail": "0 px"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "overflow",
+      "scope": "1440",
+      "ok": true,
+      "detail": "0 px"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "nojs",
+      "scope": "",
+      "ok": true,
+      "detail": "JavaScript off shows 548 of 279 words (196 %); H1 visible without JavaScript"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "forms",
+      "scope": "",
+      "ok": true,
+      "detail": "2 forms, 6 fields: every form has a receiver, every field a label. Note: form 1 (form.lm__form) is handled only by a listener on an div#root (React registers one for every form): submit it once by hand; form 2 (form.ct__form) is handled only by a listener on an div#root (React registers one for every form): submit it once by hand"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "console",
+      "scope": "",
+      "ok": false,
+      "detail": "2 error(s): console: wasm streaming compile failed: TypeError: Failed to execute 'compile' on 'WebAssembly': Incorrect response MIME type. Expected 'application/wasm'. (http://localhost:4177/assets/rive-Bf94lQ9W.js) | console: falling back to ArrayBuffer instantiation (http://localhost:4177/assets/rive-Bf94lQ9W.js)"
+    },
+    {
+      "url": "http://localhost:4177/",
+      "gate": "lighthouse",
+      "scope": "",
+      "ok": null,
+      "detail": "skipped: no lighthouse binary on PATH (npm i -g lighthouse; 13.x needs Node 22.19 or newer, use lighthouse@12.8.2 on older Node, foundations.md §2)"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "/": {
+    "h1": "העסק שלכםהמומחיות שלנו",
+    "h2": [
+      "למה לעבוד איתנו?",
+      "מה אנחנו עושים",
+      "איך אנחנו עובדים",
+      "שאלות נפוצות",
+      "דברו איתנו",
+      "קישורים מהירים",
+      "יצירת קשר"
+    ],
+    "copy": {
+      "minWords": 500
+    },
+    "images": true,
+    "_why": "H1 no longer duplicates its text; before/after removed (#57); copy approved at STOP 1 (#54); the before/after images went with the section"
+  }
+}

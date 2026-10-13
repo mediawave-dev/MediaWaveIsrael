@@ -37,6 +37,9 @@ export default function Header() {
       if (!el) return
       if (engine) engine.scrollTo(el)
       else el.scrollIntoView({ behavior: 'smooth' })
+      // keyboard users continue from the section they asked for, not from the header
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+      el.focus({ preventScroll: true })
     }
     if (!isHomePage) {
       navigate('/')
@@ -101,7 +104,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="mw-head" data-zone="ui">
+      <header id="top" className="mw-head" data-zone="ui">
         {LOOK === 'km' && (
           <span className="theme-bg" aria-hidden="true"><i data-t="dark" /><i data-t="light" /></span>
         )}

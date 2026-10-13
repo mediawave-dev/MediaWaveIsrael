@@ -1,0 +1,136 @@
+# Preservation diff
+
+baseline: design/upgrade/baseline/preservation.json (2026-10-12T16:04:41.445Z)
+candidate: design/upgrade/candidate-km.json (2026-10-13T11:27:32.591Z)
+
+**FAIL — 53 undeclared change(s)**
+
+- https://mediawave.co.il/ [raw]: H1 changed: ["העסק שלכםהעסק שלכםהמומחיות שלנוהמומחיות שלנו"] → ["העסק שלכםהמומחיות שלנו"]
+- https://mediawave.co.il/ [raw]: H2 sequence changed
+- https://mediawave.co.il/ [raw]: raw words dropped 744 → 655
+- https://mediawave.co.il/ [raw]: main text changed (copy edits must be declared as "copy")
+- https://mediawave.co.il/ [raw]: links removed: /cdn-cgi/l/email-protection#3d505859545c4a5c4b58544e4f5c58517d5a505c5451135e5250 /cdn-cgi/l/email-protection#e08d858489819781968589939281858ca0878d81898cce838f8d
+- https://mediawave.co.il/ [raw]: CTA hrefs changed: ["https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A","tel:052-8731808","tel:0528731808"] → ["https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A0%D7%95%D7%A1%D7%A4%D7%99%D7%9D%20%F0%9F%98%8A","mailto:mediawaveisrael@gmail.com","tel:052-8731808","tel:0528731808"]
+- https://mediawave.co.il/ [raw]: image alt texts lost: אתר בסגנון מיושן, הדגמה בלבד | האתר החדש: העיצוב הנוכחי של MediaWave
+- https://mediawave.co.il/ [rendered]: H2 sequence changed
+- https://mediawave.co.il/ [rendered]: main text changed (copy edits must be declared as "copy")
+- https://mediawave.co.il/ [rendered]: image alt texts lost: אתר בסגנון מיושן, הדגמה בלבד | האתר החדש: העיצוב הנוכחי של MediaWave
+- https://mediawave.co.il/terms [raw]: finalUrl changed: "https://mediawave.co.il/terms/" → "https://mediawave.co.il/terms"
+- https://mediawave.co.il/terms [raw]: main text changed (copy edits must be declared as "copy")
+- https://mediawave.co.il/terms [raw]: links removed: /cdn-cgi/l/email-protection#107d757479716771667579636271757c50777d71797c3e737f7d /cdn-cgi/l/email-protection#fa979f9e939b8d9b8c9f9389889b9f96ba9d979b9396d4999597
+- https://mediawave.co.il/terms [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/terms [rendered]: finalUrl changed: "https://mediawave.co.il/terms/" → "https://mediawave.co.il/terms"
+- https://mediawave.co.il/privacy [raw]: finalUrl changed: "https://mediawave.co.il/privacy/" → "https://mediawave.co.il/privacy"
+- https://mediawave.co.il/privacy [raw]: main text changed (copy edits must be declared as "copy")
+- https://mediawave.co.il/privacy [raw]: links removed: /cdn-cgi/l/email-protection /cdn-cgi/l/email-protection#c9a4acada0a8bea8bfaca0babba8aca589aea4a8a0a5e7aaa6a4 /cdn-cgi/l/email-protection#ed808889848c9a8c9b88849e9f8c8881ad8a808c8481c38e8280
+- https://mediawave.co.il/privacy [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/privacy [rendered]: finalUrl changed: "https://mediawave.co.il/privacy/" → "https://mediawave.co.il/privacy"
+- https://mediawave.co.il/accessibility [raw]: finalUrl changed: "https://mediawave.co.il/accessibility/" → "https://mediawave.co.il/accessibility"
+- https://mediawave.co.il/accessibility [raw]: main text changed (copy edits must be declared as "copy")
+- https://mediawave.co.il/accessibility [raw]: links removed: /cdn-cgi/l/email-protection#7a171f1e131b0d1b0c1f1309081b1f163a1d171b131654191517 /cdn-cgi/l/email-protection#b2dfd7d6dbd3c5d3c4d7dbc1c0d3d7def2d5dfd3dbde9cd1dddf
+- https://mediawave.co.il/accessibility [raw]: CTA hrefs changed: ["https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808","tel:0528731808"] → ["https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808","tel:0528731808"]
+- https://mediawave.co.il/accessibility [rendered]: finalUrl changed: "https://mediawave.co.il/accessibility/" → "https://mediawave.co.il/accessibility"
+- https://mediawave.co.il/services/building-websites [raw]: finalUrl changed: "https://mediawave.co.il/services/building-websites/" → "https://mediawave.co.il/services/building-websites"
+- https://mediawave.co.il/services/building-websites [raw]: links removed: /cdn-cgi/l/email-protection#8fe2eaebe6eef8eef9eae6fcfdeeeae3cfe8e2eee6e3a1ece0e2
+- https://mediawave.co.il/services/building-websites [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/building-websites [rendered]: finalUrl changed: "https://mediawave.co.il/services/building-websites/" → "https://mediawave.co.il/services/building-websites"
+- https://mediawave.co.il/services/landing-pages [raw]: finalUrl changed: "https://mediawave.co.il/services/landing-pages/" → "https://mediawave.co.il/services/landing-pages"
+- https://mediawave.co.il/services/landing-pages [raw]: links removed: /cdn-cgi/l/email-protection#ddb0b8b9b4bcaabcabb8b4aeafbcb8b19dbab0bcb4b1f3beb2b0
+- https://mediawave.co.il/services/landing-pages [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/landing-pages [rendered]: finalUrl changed: "https://mediawave.co.il/services/landing-pages/" → "https://mediawave.co.il/services/landing-pages"
+- https://mediawave.co.il/services/seo-promotion [raw]: finalUrl changed: "https://mediawave.co.il/services/seo-promotion/" → "https://mediawave.co.il/services/seo-promotion"
+- https://mediawave.co.il/services/seo-promotion [raw]: links removed: /cdn-cgi/l/email-protection#741911101d15031502111d0706151118341319151d185a171b19
+- https://mediawave.co.il/services/seo-promotion [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/seo-promotion [rendered]: finalUrl changed: "https://mediawave.co.il/services/seo-promotion/" → "https://mediawave.co.il/services/seo-promotion"
+- https://mediawave.co.il/services/chatbots [raw]: finalUrl changed: "https://mediawave.co.il/services/chatbots/" → "https://mediawave.co.il/services/chatbots"
+- https://mediawave.co.il/services/chatbots [raw]: links removed: /cdn-cgi/l/email-protection#543931303d35233522313d2726353138143339353d387a373b39
+- https://mediawave.co.il/services/chatbots [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/chatbots [rendered]: finalUrl changed: "https://mediawave.co.il/services/chatbots/" → "https://mediawave.co.il/services/chatbots"
+- https://mediawave.co.il/services/video-editing [raw]: finalUrl changed: "https://mediawave.co.il/services/video-editing/" → "https://mediawave.co.il/services/video-editing"
+- https://mediawave.co.il/services/video-editing [raw]: links removed: /cdn-cgi/l/email-protection#b5d8d0d1dcd4c2d4c3d0dcc6c7d4d0d9f5d2d8d4dcd99bd6dad8
+- https://mediawave.co.il/services/video-editing [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/video-editing [rendered]: finalUrl changed: "https://mediawave.co.il/services/video-editing/" → "https://mediawave.co.il/services/video-editing"
+- https://mediawave.co.il/services/memory-videos [raw]: finalUrl changed: "https://mediawave.co.il/services/memory-videos/" → "https://mediawave.co.il/services/memory-videos"
+- https://mediawave.co.il/services/memory-videos [raw]: links removed: /cdn-cgi/l/email-protection#e08d858489819781968589939281858ca0878d81898cce838f8d
+- https://mediawave.co.il/services/memory-videos [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/services/memory-videos [rendered]: finalUrl changed: "https://mediawave.co.il/services/memory-videos/" → "https://mediawave.co.il/services/memory-videos"
+- https://mediawave.co.il/portfolio/memory-videos [raw]: finalUrl changed: "https://mediawave.co.il/portfolio/memory-videos/" → "https://mediawave.co.il/portfolio/memory-videos"
+- https://mediawave.co.il/portfolio/memory-videos [raw]: links removed: /cdn-cgi/l/email-protection#0b666e6f626a7c6a7d6e6278796a6e674b6c666a626725686466
+- https://mediawave.co.il/portfolio/memory-videos [raw]: CTA hrefs changed: ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","tel:052-8731808"] → ["https://wa.me/972528731808","https://wa.me/972528731808?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%2F%D7%AA%20%D7%91%D7%91%D7%A0%D7%99%D7%99%D7%AA%20%D7%90%D7%AA%D7%A8","mailto:mediawaveisrael@gmail.com","tel:052-8731808"]
+- https://mediawave.co.il/portfolio/memory-videos [rendered]: finalUrl changed: "https://mediawave.co.il/portfolio/memory-videos/" → "https://mediawave.co.il/portfolio/memory-videos"
+
+## Warnings (not failures)
+- https://mediawave.co.il/terms [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/terms [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/terms [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/terms [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/terms [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/terms [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/privacy [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/accessibility [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/building-websites [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/landing-pages [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/seo-promotion [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/chatbots [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/video-editing [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/services/memory-videos [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [raw]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [raw]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [raw]: menu anchor #contact still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [rendered]: menu anchor #services still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [rendered]: menu anchor #faq still points at nothing (broken in the baseline too)
+- https://mediawave.co.il/portfolio/memory-videos [rendered]: menu anchor #contact still points at nothing (broken in the baseline too)
+
+## Notes
+- origin mapped: http://localhost:4177 → https://mediawave.co.il (inferred; pass --map to set it)
+- https://mediawave.co.il/: raw 655 / rendered 655 words
+- https://mediawave.co.il/terms: raw 799 / rendered 799 words
+- https://mediawave.co.il/privacy: raw 657 / rendered 657 words
+- https://mediawave.co.il/accessibility: raw 191 / rendered 191 words
+- https://mediawave.co.il/services/building-websites: raw 301 / rendered 301 words
+- https://mediawave.co.il/services/landing-pages: raw 300 / rendered 300 words
+- https://mediawave.co.il/services/seo-promotion: raw 319 / rendered 319 words
+- https://mediawave.co.il/services/chatbots: raw 266 / rendered 266 words
+- https://mediawave.co.il/services/video-editing: raw 185 / rendered 185 words
+- https://mediawave.co.il/services/memory-videos: raw 262 / rendered 262 words
+- https://mediawave.co.il/portfolio/memory-videos: raw 79 / rendered 79 words
