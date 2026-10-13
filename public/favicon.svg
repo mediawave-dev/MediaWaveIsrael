@@ -1,14 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="MediaWave">
-  <defs>
-    <linearGradient id="mwft" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
-    </linearGradient>
-  </defs>
-  <rect width="120" height="120" rx="27" fill="url(#mwft)"/>
-  <g transform="translate(2 30) scale(1.06)" fill="#FFFFFF">
-    <path d="M13.17 96.17 C34.15 75.86 75.56 52.68 110 69 C76.44 57.32 37.85 82.14 18.83 101.83 C15.06 105.6 9.4 99.94 13.17 96.17 Z"/>
-    <path d="M10.18 87.59 C24.23 60.74 61.63 37.18 104 53 C62.37 40.82 27.77 65.26 15.82 90.41 C13.94 94.17 8.3 91.35 10.18 87.59 Z"/>
-    <path d="M9.65 76.16 C20.37 47.41 49.64 21.57 96 37 C50.36 24.43 23.63 50.59 14.35 77.84 C13.23 80.98 8.52 79.3 9.65 76.16 Z"/>
-    <path d="M10.07 64.48 C18.6 33.84 45.67 7.87 84 23 C46.33 10.13 21.4 36.16 13.93 65.52 C13.25 68.09 9.38 67.06 10.07 64.48 Z"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><style>.a{fill:#221E2E}.b{fill:#5B4D94}@media (prefers-color-scheme:dark){.a{fill:#F5F5F7}.b{fill:#B6AEDB}}</style><path class="a" d="M0.65 13.87A9.69 9.69 0 0 0 14.93 14.88A12.79 12.79 0 0 1 31.35 13.85A15.5 15.5 0 0 0 0.65 13.87Z"/><path class="b" d="M0.65 18.15A12.79 12.79 0 0 0 17.07 17.12A9.69 9.69 0 0 1 31.35 18.13A15.5 15.5 0 0 1 0.65 18.15Z"/></svg>

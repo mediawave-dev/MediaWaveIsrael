@@ -1,7 +1,7 @@
 import { m } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SEO from '../SEO'
-import { SwellMark } from '../ui'
+import { LogoMark } from '../ui'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { EASE_BRAND } from '../../config/motion'
 import { track } from '../../utils/analytics'
@@ -21,14 +21,14 @@ export default function NotFound() {
         noindex
       />
       <div className="text-center max-w-md">
-        {/* Brand mark — the wave the lost page "drifted with" */}
+        {/* Brand mark: the Horizon disc (DECISIONS #52), clear space kept by mb-6 and the column */}
         <m.div
           className="flex justify-center mb-6"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE_BRAND }}
         >
-          <SwellMark tone="onLight" className="w-20 h-20 md:w-24 md:h-24" title="MediaWave" />
+          <LogoMark className="h-20 md:h-24 w-auto" title="MediaWave" />
         </m.div>
 
         {/* Animated 404 */}

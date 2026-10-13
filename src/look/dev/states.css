@@ -1,0 +1,10 @@
+.st { padding: 48px var(--gut) 72px; background: var(--ground); color: var(--ink); }
+.st h1 { margin: 0 0 28px; font: var(--display-w) clamp(2.2rem, 4vw, 3.4rem)/1.1 var(--display); color: var(--ink); }
+.st__live { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-bottom: 44px; }
+.st__fail { background: none; border: 0; padding: 8px 0; color: var(--ink-2); font: 400 1rem/1 var(--text); cursor: pointer; }
+.st__strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 34px 22px; }
+.st__strip li { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.st__strip li > span { font-size: 0.85rem; color: var(--ink-2); }
+/* KM shows both grounds side by side, whatever the page theme */
+html[data-look] .st.st[data-theme="dark"] { --ground: var(--stage); --ink: var(--stage-ink); --ink-2: var(--stage-ink-2); --btn-bg: var(--stage-ink); --btn-fg: #000; --err: #ff6961; --focus-ring: var(--stage-ink); }
+html[data-look] .st.st[data-theme="light"] { --ground: var(--void); --ink: var(--void-ink); --ink-2: var(--void-ink-2); --btn-bg: var(--obj); --btn-fg: #fff; --err: #b3261e; --focus-ring: var(--obj); }

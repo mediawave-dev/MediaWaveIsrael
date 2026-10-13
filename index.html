@@ -16,34 +16,40 @@
     <!-- Theme & Mobile — constant dark brand navy on the browser chrome (no
          per-section change). Owner decision: address bar stays dark always. -->
     <meta name="theme-color" content="#1E293B" />
-    <meta name="msapplication-TileColor" content="#38BDF8" />
+    <meta name="msapplication-TileColor" content="#000000" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MediaWave" />
 
-    <!-- Favicons (?v=3 busts the browser's sticky favicon cache after the
-         Swell logo redesign — bump this whenever the icon art changes) -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=3" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=3" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+    <!-- Favicons: the Horizon mark (logos/horizon). ?v=4 busts the browser's sticky favicon
+         cache after the Horizon redesign; bump it whenever the icon art changes -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=4" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="MediaWave Israel | בלוג" href="/feed.xml" />
 
-    <!-- Preload logo for faster LCP (this is the LCP element) — inline SVG lockup -->
-    <link rel="preload" href="/logo-lockup-white.svg" as="image" type="image/svg+xml" fetchpriority="high" />
+    <!-- Fonts: the look's display face is preloaded per look by scripts/prerender.mjs
+         (hashed @fontsource files). The H1 is the LCP element. -->
 
-    <!-- Preload the Hebrew fonts used above the fold (stable public/fonts URLs).
-         NOTE: no hero-poster preload — the in-document <img> is discovered by the
-         preload scanner anyway, and a fetchpriority=high 66KB image was stealing
-         pre-paint bandwidth from CSS/fonts on 1.6Mbps (~330ms of FCP).
-         Outfit is now self-hosted via @fontsource (bundled into the CSS) — the
-         old Google Fonts media="print" onload trick measurably HELD first paint
-         ~1s in traces (removing it moved observed FP 1434ms -> 480ms). -->
-    <link rel="preload" href="/fonts/EFT_Betaamango.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/EFT_OffSet-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- The logo ident (DECISIONS #53) plays once per visit. Decided here, before first paint,
+         so the header logo never shows and then replays: motion allowed (or ?motion=full), not
+         seen this visit, not a prerender. AnimatedLogo removes the class as the ident starts;
+         the timeout is the safety net if the app never boots. -->
+    <script>
+      (function () { try {
+        if (window.__PRERENDER__) return;
+        var full = /[?&]motion=full(&|$)/.test(location.search);
+        if (!full && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (sessionStorage.getItem('mw-logo-ident')) return;
+        var d = document.documentElement;
+        d.classList.add('logo-intro');
+        setTimeout(function () { d.classList.remove('logo-intro'); }, 4000);
+      } catch (e) {} })();
+    </script>
 
     <!-- Structured Data - LocalBusiness -->
     <script type="application/ld+json">
@@ -110,56 +116,20 @@
 
   </head>
   <body>
-    <!-- Page loading indicator - the MediaWave mark (brand moment on first paint) -->
-    <div id="page-loader" style="position:fixed;inset:0;background:#F8FAFC;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
-      <svg id="loader-mark" width="76" height="76" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="MediaWave נטען">
-        <defs>
-          <linearGradient id="loader-tile" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#0369A1"/>
-          </linearGradient>
-        </defs>
-        <rect width="120" height="120" rx="27" fill="url(#loader-tile)"/>
-        <g transform="translate(2 30) scale(1.06)" fill="#FFFFFF">
-          <path class="lw" d="M13.17 96.17 C34.15 75.86 75.56 52.68 110 69 C76.44 57.32 37.85 82.14 18.83 101.83 C15.06 105.6 9.4 99.94 13.17 96.17 Z"/>
-          <path class="lw" d="M10.18 87.59 C24.23 60.74 61.63 37.18 104 53 C62.37 40.82 27.77 65.26 15.82 90.41 C13.94 94.17 8.3 91.35 10.18 87.59 Z"/>
-          <path class="lw" d="M9.65 76.16 C20.37 47.41 49.64 21.57 96 37 C50.36 24.43 23.63 50.59 14.35 77.84 C13.23 80.98 8.52 79.3 9.65 76.16 Z"/>
-          <path class="lw" d="M10.07 64.48 C18.6 33.84 45.67 7.87 84 23 C46.33 10.13 21.4 36.16 13.93 65.52 C13.25 68.09 9.38 67.06 10.07 64.48 Z"/>
-        </g>
+    <!-- Page loading indicator: the Horizon mark (DECISIONS #52). The build's look plugin
+         paints the ground and the two tones (vite.config.ts); no gradient, no shadow. -->
+    <div id="page-loader" style="position:fixed;inset:0;background:#000000;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.4s ease;pointer-events:auto;">
+      <svg id="loader-mark" width="64" height="64" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="MediaWave נטען">
+        <path data-logo="a" fill="#F5F5F7" d="M0.19 45.63A37.51 37.51 0 0 0 47.87 47.23A44.51 44.51 0 0 1 99.8 45.55A50 50 0 0 0 0.19 45.63Z"/>
+        <path data-logo="b" fill="#A1A1A6" d="M0.2 54.45A44.51 44.51 0 0 0 52.13 52.77A37.51 37.51 0 0 1 99.81 54.37A50 50 0 0 1 0.2 54.45Z"/>
       </svg>
       <style>
-        #loader-mark { animation: lw-breathe 2.2s ease-in-out infinite; }
-        @keyframes lw-breathe { 0%,100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.06); opacity: .82 } }
         @media (prefers-reduced-motion: no-preference) {
-          .lw { opacity: 0; animation: lw-rise 1.6s ease-in-out infinite; }
-          .lw:nth-child(1){ animation-delay: 0s } .lw:nth-child(2){ animation-delay: .12s }
-          .lw:nth-child(3){ animation-delay: .24s } .lw:nth-child(4){ animation-delay: .36s }
-          @keyframes lw-rise { 0% { opacity:0; transform: translateY(6px) } 30%,70% { opacity:1; transform: translateY(0) } 100% { opacity:0; transform: translateY(-4px) } }
+          #loader-mark { animation: lw-breathe 2.2s ease-in-out infinite; }
+          @keyframes lw-breathe { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
         }
       </style>
     </div>
-
-    <!-- Static header for instant LCP - dimensions match React header exactly
-         (h-10 mobile / h-14 desktop, same as Logo variant="header" not scrolled) -->
-    <header id="static-header" style="position:fixed;top:0;right:0;left:0;z-index:50;padding:0.75rem 0;background:transparent;" aria-hidden="true">
-      <div style="max-width:1280px;margin:0 auto;padding:0 1rem;">
-        <img
-          src="/logo-lockup-white.svg"
-          alt=""
-          width="742"
-          height="168"
-          fetchpriority="high"
-          decoding="async"
-          class="static-logo"
-          style="width:auto;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.4));"
-        />
-        <style>
-          .static-logo { height: 2.5rem; }
-          @media (min-width: 640px) { .static-logo { height: 2.75rem; } }
-          @media (min-width: 768px) { .static-logo { height: 3.25rem; } }
-          @media (min-width: 1024px) { .static-logo { height: 3.5rem; } }
-        </style>
-      </div>
-    </header>
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

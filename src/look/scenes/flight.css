@@ -1,0 +1,47 @@
+/* M / KM · the flight hold. Default (no JS, prerender, reduced): the tools stand in a grid
+   with their captions. html.motion-ready: the held stage with an art box and a caption band. */
+.flight { padding-top: clamp(72px, 13vh, 150px); color: var(--ink); }
+.flight__intro { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); margin-bottom: clamp(20px, 4vh, 40px); }
+.flight__intro h2 { margin: 0 0 10px; font: var(--display-w) clamp(2.8rem, 5.4vw, 5.6rem)/1.05 var(--display); color: var(--ink); }
+.flight__intro p { margin: 0; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.65 var(--text); }
+.flight__caption h3 { margin: 0 0 8px; font: var(--display-w) clamp(2rem, 3.6vw, 3.6rem)/1.08 var(--display); color: var(--ink); }
+.flight__caption p { margin: 0 auto 6px; max-width: 34ch; color: var(--ink-2); font: 400 clamp(1.02rem, 1.2vw, 1.15rem)/1.6 var(--text); }
+.flight__caption a { display: inline-flex; align-items: center; min-height: 40px; color: var(--ink); font: var(--ui-w) 1rem/1.2 var(--ui); }
+@media (hover: hover) { .flight__caption a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
+.flight__cta { max-width: 1440px; margin-inline: auto; padding: clamp(32px, 6vh, 64px) var(--gut) clamp(72px, 12vh, 140px); display: flex; justify-content: center; }
+
+/* the grid (default) */
+.flight__stage { max-width: 1440px; margin-inline: auto; padding: 12px var(--gut) 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 56px 32px; }
+.flight__artbox { display: none; }
+.flight__item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+.flight__fly { display: grid; place-items: center; min-height: 230px; }
+.flight__fly .thing { font-size: 4.6px; }
+
+/* the held stage: the caption band on top (clear of every floating button and the cookie
+   card at any width), the art box under it, the bottom band left to the buttons */
+html.motion-ready .flight__hold { height: var(--hold-h); }
+html.motion-ready .flight__stage { --cap-h: clamp(150px, 22svh, 200px); --art-b: 24px; --cy: calc(var(--cap-h) + (100% - var(--cap-h) - var(--art-b)) / 2); display: block; max-width: none; padding: 0; }
+html.motion-ready .flight__artbox { display: block; position: absolute; inset: var(--cap-h) var(--gut) var(--art-b); }
+html.motion-ready .flight__item { display: contents; }
+html.motion-ready .flight__fly { position: absolute; left: 50%; top: var(--cy); min-height: 0; display: block; opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
+html.motion-ready .flight__fly .thing { font-size: 12px; }
+html.motion-ready .flight__stage.is-live .flight__fly { will-change: transform, opacity; }
+html.motion-ready .flight__caption {
+  position: absolute; left: 0; right: 0; top: 0; height: var(--cap-h); max-width: min(46ch, 100%); margin-inline: auto;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;
+  padding: clamp(16px, 3svh, 28px) var(--gut) 0; opacity: 0; transform: translateY(8px); pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.flight__stage[data-active="0"] .flight__caption[data-i="0"], .flight__stage[data-active="1"] .flight__caption[data-i="1"],
+.flight__stage[data-active="2"] .flight__caption[data-i="2"], .flight__stage[data-active="3"] .flight__caption[data-i="3"],
+.flight__stage[data-active="4"] .flight__caption[data-i="4"], .flight__stage[data-active="5"] .flight__caption[data-i="5"],
+.flight__stage[data-active="6"] .flight__caption[data-i="6"], .flight__stage[data-active="7"] .flight__caption[data-i="7"] {
+  opacity: 1; transform: none; pointer-events: auto; transition: opacity 260ms ease 150ms, transform 360ms var(--ease-out) 150ms;
+}
+@media (max-width: 860px) {
+  .flight__stage { grid-template-columns: 1fr; }
+  html.motion-ready .flight__hold { height: var(--hold-h-phone); }
+  html.motion-ready .flight__stage { --cap-h: clamp(164px, 28svh, 200px); --art-b: var(--safe-b); }
+  html.motion-ready .flight__fly .thing { font-size: 10px; }
+}
+html.disable-animations .flight__caption { transition: none !important; }

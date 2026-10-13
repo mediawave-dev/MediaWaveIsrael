@@ -16,7 +16,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    /* vite.config aliases @look/* to the build's look; the dev modules carry the types */
+    "paths": { "@look/registry": ["./src/look/registry.dev.ts"], "@look/button": ["./src/look/button.dev.ts"] }
   },
   "include": ["src", "sanity.config.ts"]
 }

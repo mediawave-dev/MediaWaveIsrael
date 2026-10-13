@@ -40,9 +40,30 @@ export function ScrollEngineProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const e = createMotionEngine({ gsap, ScrollTrigger, SplitText, Lenis }, { reduce: !ambient })
+    // CSS-only ambient loops (floating objects) stop under the OS flag; ?motion=full lifts it
+    const calm = e.CALM && !e.PRERENDER
+    document.documentElement.classList.toggle('motion-calm', calm)
     setEngine(e)
-    return () => e.destroy() // the second StrictMode mount gets a fresh engine
+    return () => { e.destroy(); document.documentElement.classList.remove('motion-calm') } // the second StrictMode mount gets a fresh engine
   }, [ambient])
+
+  // Content that mounts late (lazy sections, a variant swap) moves every trigger below it, and
+  // ScrollTrigger only re-measures on resize, fonts and load: re-measure when the page's height
+  // changes, once scrolling is calm (safeRefresh waits for a lifted finger and 350 ms of quiet).
+  useEffect(() => {
+    if (!engine || engine.PRERENDER || typeof ResizeObserver === 'undefined') return
+    let h = document.body.scrollHeight
+    let timer = 0
+    const ro = new ResizeObserver(() => {
+      const nh = document.body.scrollHeight
+      if (Math.abs(nh - h) < 2) return
+      h = nh
+      clearTimeout(timer)
+      timer = window.setTimeout(() => engine.safeRefresh(), 200)
+    })
+    ro.observe(document.body)
+    return () => { ro.disconnect(); clearTimeout(timer) }
+  }, [engine])
 
   // Deep link (/#contact) on first load: held stages grow after mount, which moves the target the
   // browser already jumped to. Re-land on it once fonts are in and the triggers have measured.

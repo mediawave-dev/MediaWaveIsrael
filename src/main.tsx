@@ -4,7 +4,12 @@ import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { PreviewProvider } from './sanity/PreviewContext'
 import './styles/index.css'
+import './look/looks.css'
+import { stampLook } from './look/look'
 import App from './App.tsx'
+
+// dev ?look= override (production HTML already carries data-look from the build)
+stampLook()
 
 // The site is the portfolio — that includes whoever opens DevTools.
 // Deliberate brand signature, not a stray debug log.

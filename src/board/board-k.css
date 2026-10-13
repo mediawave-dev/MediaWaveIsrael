@@ -13,6 +13,8 @@
   --head: 64px;
   --gut: clamp(16px, 4vw, 64px);
   --lab-fg: var(--white); --lab-muted: var(--gray); --lab-line: var(--line); --lab-font: 'MW Keynote', sans-serif;
+  /* Horizon logo on the stage (DECISIONS #52) */
+  --logo-a: #f5f5f7; --logo-b: #a1a1a6; --logo-tag: #a1a1a6;
   background: var(--stage);
   color: var(--white);
   font-family: 'Heebo', sans-serif;
@@ -26,10 +28,10 @@
 .bd-k :focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
 
 .k-head { position: sticky; top: 0; z-index: 20; height: var(--head); display: flex; align-items: center; gap: 30px; padding-inline: var(--gut); background: rgba(0, 0, 0, 0.92); border-bottom: 1px solid var(--line); }
-.k-head__logo img { display: block; height: 22px; width: auto; }
+.k-head__logo .mw-logo { display: block; height: 26px; width: auto; }
 .k-head__nav { display: flex; gap: 28px; margin-inline-start: auto; font-size: 14px; color: var(--gray); }
 @media (hover: hover) { .k-head__nav a:hover { color: var(--white); text-decoration: underline; text-underline-offset: 6px; } }
-@media (max-width: 860px) { .bd-k { --head: 56px; } .k-head__nav { display: none; } .k-head .kbtn { margin-inline-start: auto; } }
+@media (max-width: 860px) { .bd-k { --head: 56px; } .k-head__nav { display: none; } .k-head .kbtn { margin-inline-start: auto; } .k-head__logo .mw-logo { height: 24px; } }
 
 /* ── hero: the stage, centred because it is a stage ── */
 .k-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(44px, 9vh, 110px) var(--gut) clamp(60px, 10vh, 120px); }
@@ -90,7 +92,8 @@ html.disable-animations .kbtn, html.disable-animations .kbtn * { animation: none
 .k-turntable { grid-column: 6 / span 7; perspective: 2400px; display: grid; place-items: center; }
 .k-laptop--big { width: min(780px, 54vw); transform: rotateY(var(--ry, 0deg)) rotateX(6deg); }
 .k-shot { position: absolute; inset: 0; display: grid; place-items: center; background: #fff; opacity: 0; transition: opacity 260ms ease; }
-.k-shot--intro img { width: 46%; height: auto; }
+.k-shot--intro { --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4760; } /* the screen is white */
+.k-shot--intro .mw-logo { width: 52%; height: auto; }
 .k-stage[data-active='-1'] [data-i='-1'], .k-stage[data-active='0'] [data-i='0'], .k-stage[data-active='1'] [data-i='1'],
 .k-stage[data-active='2'] [data-i='2'], .k-stage[data-active='3'] [data-i='3'], .k-stage[data-active='4'] [data-i='4'],
 .k-stage[data-active='5'] [data-i='5'] { opacity: 1; transform: none; pointer-events: auto; }

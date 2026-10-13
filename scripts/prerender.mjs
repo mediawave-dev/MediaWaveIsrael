@@ -16,7 +16,9 @@ import puppeteer from 'puppeteer'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
-const DIST = resolve('dist')
+// --dist <dir>: the look builds write to dist-k / dist-m / dist-km (package.json build:*)
+const distArg = process.argv.indexOf('--dist')
+const DIST = resolve(distArg > 0 ? process.argv[distArg + 1] : 'dist')
 // PRERENDER_PORT lets a build run while another local server holds 4173
 const PORT = Number(process.env.PRERENDER_PORT) || 4173
 
@@ -55,24 +57,27 @@ const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogS
 // of the soft-404 (200 + homepage shell) it served with the /* catch-all.
 const NOT_FOUND_ROUTE = '/__not-found__'
 
-// Above-the-fold body fonts (hashed @fontsource assets) get preloads so they
-// arrive BEFORE first paint — a late font swap both re-layouts the text
-// (measured CLS 0.127 from "Web font loaded") and re-emits a later LCP entry.
-// Hashes change per build, so the links are resolved from dist/assets here.
+// The look's display face gets a preload so the H1 (the LCP element) paints in it before
+// first paint is over: a late swap re-layouts the text (measured CLS 0.127 from "Web font
+// loaded") and re-emits a later LCP entry. The metric-matched fallback (looks.css) keeps the
+// swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
 import { readdirSync } from 'fs'
-function fontPreloadLinks() {
-  const wanted = [
-    /^heebo-hebrew-400-normal-.*\.woff2$/,
-    /^heebo-hebrew-700-normal-.*\.woff2$/,
-    /^outfit-latin-400-normal-.*\.woff2$/,
-    /^outfit-latin-700-normal-.*\.woff2$/,
-  ]
+const DISPLAY_FONT = {
+  k: /^assistant-hebrew-200-normal-.*\.woff2$/,
+  km: /^assistant-hebrew-200-normal-.*\.woff2$/,
+  m: /^alef-hebrew-700-normal-.*\.woff2$/,
+}
+// Assistant 200 Hebrew is 4,072 bytes, under Vite's 4 KB assetsInlineLimit: it ships inside
+// the CSS as a data URI (no request at all), so K and KM need no preload.
+let inlinedNoted = false
+function fontPreloadLinks(look) {
   const assets = readdirSync(resolve(DIST, 'assets'))
-  return wanted
-    .map((re) => assets.find((f) => re.test(f)))
-    .filter(Boolean)
-    .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>`)
-    .join('')
+  const file = assets.find((f) => (DISPLAY_FONT[look] || DISPLAY_FONT.km).test(f))
+  if (!file && !inlinedNoted) {
+    inlinedNoted = true
+    console.log(`    (look ${look}: display face inlined in the CSS, no preload needed)`)
+  }
+  return file ? `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin>` : ''
 }
 
 /** Serve dist/ as a static file server */
@@ -189,8 +194,9 @@ async function prerender() {
     // Remove the static header placeholder (React header is now in the HTML)
     html = html.replace(/<header id="static-header"[\s\S]*?<\/header>\s*/, '')
 
-    // Inject hashed body-font preloads next to the existing EFT preloads
-    html = html.replace('<link rel="preload" href="/fonts/EFT_Betaamango.woff2"', `${fontPreloadLinks()}<link rel="preload" href="/fonts/EFT_Betaamango.woff2"`)
+    // Preload the look's display face (the H1), early in <head>
+    const look = (html.match(/<html[^>]*data-look="(k|m|km)"/) || [])[1] || 'km'
+    html = html.replace('<title>', `${fontPreloadLinks(look)}<title>`)
 
     // Write the prerendered HTML
     const outPath = route === '/'

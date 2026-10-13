@@ -1,0 +1,55 @@
+/* M hero: copy at the start side, the void beside it. Objects are placed in % of the void
+   and sized by font-size (things.css draws in em). */
+.mh {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center;
+  min-height: calc(100svh - var(--head)); padding: 0 var(--gut); overflow: clip; color: var(--ink);
+  max-width: 1600px; margin-inline: auto;
+}
+.mh__copy { grid-column: 1 / span 5; display: flex; flex-direction: column; align-items: flex-start; padding-block: 48px; }
+.mh__title { margin: 0 0 clamp(18px, 3vh, 30px); font: var(--display-w) clamp(3.2rem, 5.6vw, 6.8rem)/1.05 var(--display); color: var(--ink); }
+.mh__title span { display: block; }
+.mh__sub { margin: 0 0 clamp(24px, 4vh, 40px); max-width: 30ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.35vw, 1.3rem)/1.7 var(--text); }
+.mh__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+.mh__more { color: var(--ink-2); font: 400 1.05rem/1.2 var(--text); padding-block: 12px; }
+@media (hover: hover) { .mh__more:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
+
+.mh__void { grid-column: 6 / span 7; position: relative; height: min(74svh, 660px); }
+.mh__float { position: absolute; display: block; }
+.mh__float .thing { font-size: var(--s, 3px); rotate: var(--r, 0deg); }
+.mh__float--screen { left: 12%; right: 12%; top: 24%; }
+.mh__screen { position: relative; display: block; aspect-ratio: 16 / 9; border: 10px solid var(--obj); border-radius: 14px; overflow: hidden; background: #000; box-shadow: 0 30px 44px -22px rgba(43, 40, 51, 0.45); }
+.mh__float--bubble { top: 1%; left: 56%; --s: 3px; }
+.mh__float--phone { top: 3%; left: 5%; --s: 3.3px; --r: -9deg; }
+.mh__float--loupe { bottom: 4%; left: 78%; --s: 2.8px; --r: 10deg; }
+.mh__float--cassette { bottom: 3%; left: 2%; --s: 3.2px; --r: 5deg; }
+.mh__float--laptop { bottom: 1%; left: 38%; --s: 2.7px; --r: -3deg; }
+.mh__float--frame { top: 7%; left: 31%; --s: 2.3px; --r: 7deg; }
+
+/* the bob: CSS owns each object's `translate`; GSAP owns each float's `transform` */
+@keyframes mh-bob { 50% { translate: 0 -10px; } }
+html.motion-ready:not(.motion-calm) .mh .mh__float .thing,
+html.motion-ready:not(.motion-calm) .mh .mh__screen { animation: mh-bob 6.4s ease-in-out infinite; }
+html.motion-ready:not(.motion-calm) .mh .mh__float--phone .thing { animation-delay: -1.6s; }
+html.motion-ready:not(.motion-calm) .mh .mh__float--loupe .thing { animation-delay: -3.1s; animation-duration: 7.2s; }
+html.motion-ready:not(.motion-calm) .mh .mh__float--cassette .thing { animation-delay: -4.4s; }
+html.motion-ready:not(.motion-calm) .mh .mh__float--frame .thing { animation-delay: -2.2s; animation-duration: 5.8s; }
+html.motion-ready:not(.motion-calm) .mh .mh__screen { animation-duration: 8.4s; }
+.mh--off .mh__float .thing, .mh--off .mh__screen { animation-play-state: paused !important; }
+
+@media (max-width: 860px) {
+  .mh { display: flex; flex-direction: column; align-items: stretch; min-height: 0; padding-bottom: 24px; }
+  .mh__copy { padding-block: 28px 8px; }
+  .mh__title { font-size: clamp(2.6rem, 12.4vw, 4rem); }
+  .mh__ctas { flex-direction: column; align-items: stretch; gap: 4px; }
+  .mh__more { align-self: flex-start; }
+  .mh__void { height: clamp(280px, 86vw, 420px); margin-top: 8px; }
+  .mh__float--screen { left: 9%; right: 9%; top: 21%; }
+  .mh__screen { border-width: 7px; border-radius: 10px; }
+  .mh__float--bubble { top: 0; left: 64%; --s: 1.7px; }
+  .mh__float--phone { top: 1%; left: 2%; --s: 1.8px; }
+  .mh__float--loupe { bottom: 2%; left: 74%; --s: 1.7px; }
+  .mh__float--cassette { bottom: 2%; left: 3%; --s: 1.8px; }
+  .mh__float--laptop, .mh__float--frame { display: none; }
+}
+/* the accessibility tab hangs at the left edge, 120 px down: the H1 clears it on small phones */
+@media (max-width: 359px) { .mh__title { font-size: 10.6vw; } }

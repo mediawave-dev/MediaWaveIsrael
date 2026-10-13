@@ -50,6 +50,7 @@ export default function CookieConsent() {
           aria-label="הודעת עוגיות"
           aria-live="polite"
           className="fixed bottom-3 inset-x-3 sm:bottom-4 sm:inset-x-auto sm:right-4 sm:max-w-sm z-50"
+          data-zone="ui"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}

@@ -8,6 +8,7 @@
 import type { ReactNode } from 'react'
 import { useScene, useMotionEngine } from '../motion/ScrollEngineProvider'
 import { SERVICES, HERO, NAV, HeroMedia, ServiceArt, BoardNav, useDocBackground, StateButton, ButtonLab, type StateButtonProps } from './shared'
+import Logo from '../components/ui/Logo'
 import './fonts.css'
 import './lab.css'
 import './board-m.css'
@@ -45,7 +46,7 @@ export default function BoardM() {
     <div className="bd-m" dir="rtl" lang="he">
       <header className="m-head">
         <a href="/board/m" className="m-head__logo" aria-label="MediaWave">
-          <img src="/logo-lockup-ink.svg" alt="MediaWave" width="150" height="30" />
+          <Logo variant="compact" decorative />
         </a>
         <nav className="m-head__nav" aria-label="ראשי">{NAV.map((n) => <a key={n} href="#services">{n}</a>)}</nav>
         <LensButton href="#lab" size="sm">{HERO.headerCta}</LensButton>

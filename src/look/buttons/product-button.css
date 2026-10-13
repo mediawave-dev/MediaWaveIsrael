@@ -1,0 +1,27 @@
+/* K · the product button. No line inside or under the label in any state (Nati's rule). */
+.kbtn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0.8em 1.7em; border: 0; border-radius: 14px;
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: var(--ui-w) 1.1rem/1.2 var(--ui); text-decoration: none; white-space: nowrap;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: transform 160ms linear, scale 120ms var(--ease-out), background-color 200ms ease, box-shadow 200ms ease;
+}
+.kbtn:hover { color: var(--btn-fg); }
+.kbtn[data-size="sm"] { min-height: 40px; padding: 0.45em 1.05em; font-size: 0.95rem; border-radius: 10px; }
+.kbtn[data-block] { display: flex; width: 100%; }
+.kbtn[data-force="hover"] { transform: perspective(520px) rotateX(3deg) rotateY(5.5deg); }
+.kbtn[data-pressed] { scale: 0.965; background-color: color-mix(in srgb, var(--btn-bg) 86%, var(--btn-fg)); }
+.kbtn:focus-visible, .kbtn[data-force="focus"] { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.kbtn__label { display: inline-flex; align-items: center; gap: 0.45em; }
+.kbtn__mark { font-size: 0.95em; }
+.kbtn[data-state="loading"] { cursor: progress; }
+.kbtn__dots { display: inline-flex; gap: 3px; margin-inline-start: 2px; }
+.kbtn__dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; animation: kbtn-dot 0.9s ease-in-out infinite; }
+.kbtn__dots i:nth-child(2) { animation-delay: 0.15s; }
+.kbtn__dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes kbtn-dot { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.kbtn[data-state="error"] { box-shadow: 0 0 0 2px var(--err); animation: kbtn-shake 340ms steps(1) 1; }
+@keyframes kbtn-shake { 25% { translate: 4px 0; } 50% { translate: -3px 0; } 75% { translate: 2px 0; } }
+.kbtn:disabled { cursor: not-allowed; }
+html.disable-animations .kbtn, html.disable-animations .kbtn * { animation: none !important; transition: none !important; }

@@ -15,6 +15,8 @@
   --head: 70px;
   --gut: clamp(16px, 3.6vw, 52px);
   --lab-fg: var(--ink); --lab-muted: var(--muted); --lab-line: #c9c1e0; --lab-font: 'MW Void', sans-serif;
+  /* Horizon logo in the void (DECISIONS #52) */
+  --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4760;
   background: var(--void);
   color: var(--ink);
   font-family: 'Heebo', sans-serif;
@@ -28,10 +30,10 @@
 .bd-m :focus-visible { outline: 2px solid var(--obj); outline-offset: 4px; }
 
 .m-head { position: sticky; top: 0; z-index: 120; height: var(--head); display: flex; align-items: center; gap: 30px; padding-inline: var(--gut); background: var(--void); }
-.m-head__logo img { display: block; height: 24px; width: auto; }
+.m-head__logo .mw-logo { display: block; height: 26px; width: auto; }
 .m-head__nav { display: flex; gap: 26px; margin-inline-start: auto; font-size: 15px; color: var(--muted); }
 @media (hover: hover) { .m-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; } }
-@media (max-width: 860px) { .bd-m { --head: 60px; } .m-head__nav { display: none; } .m-head .lens { margin-inline-start: auto; } }
+@media (max-width: 860px) { .bd-m { --head: 60px; } .m-head__nav { display: none; } .m-head .lens { margin-inline-start: auto; } .m-head__logo .mw-logo { height: 24px; } }
 
 /* ── the objects ── */
 .m-thing { display: block; filter: drop-shadow(0 26px 22px rgba(43, 40, 51, 0.22)); }

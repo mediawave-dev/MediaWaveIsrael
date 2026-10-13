@@ -1,26 +1,29 @@
 # LEDGER - MediaWave "a different Wave" (pattern-breaker upgrade + rive-studio)
 
-Brief: .context/REDESIGN-PROMPT.md (2026-10-12, supersedes the sky/wave plan). Decisions live in DECISIONS.rtl.md (#47+).
+Brief: .context/REDESIGN-PROMPT.md (2026-10-12) + the three-looks prompt (2026-10-13, Gate 1 decided: K + M). Decisions live in DECISIONS.rtl.md (#47+). Concept: design/CONCEPT.md. Score: design/SCROLL-SCORE.md.
 
 ## Open
-- [ ] Gate 1 (Nati + Moriah, owner: Nati): pick a direction on /board (mixing allowed). Branch must be pushed first so Moriah can run it (needs `gh auth switch -u mediawave-dev` by Nati)
-- [ ] Copy marked [קופי: נתי] on the board: hero sub line, six service lines, sent label "נחזור אליכם היום"
-- [ ] W1 hero + Rive button family (Rive CLI 1.5.1 installed, unsigned builds, no Luau)
-- [ ] W2 signature hold (services)
-- [ ] W3 story: second hold, WhyUs, FAQ, act flip, dividers
-- [ ] W4 contact companion (Rive), giant word, copy track [קופי: נתי]
-- [ ] Final verification set + critic x2 + Lighthouse A/B vs ../mw-baseline (quiet machine)
-- [ ] Gate 2 (Nati): production deploy via mediawave-dev
+- [ ] **STOP 1 (owner: Nati):** K, M or KM, and what to change. Films + screenshots of the three looks side by side
+- [ ] Copy marked [קופי: נתי]: hero sub line, six service lines, "נשלח. נחזור אליכם היום", "שש הכרזות קטנות.", "שישה כלים מרחפים. גוללים, וטסים לתוך כל אחד.", "הכירו את / האתר שלכם", "ארבעה צעדים / מהשיחה ועד ההשקה", "מתחילים פרויקט" (was "התחל פרויקט")
+- [ ] Step 3 (chosen look): WhyUs, before/after, process (K/M), FAQ, giant word, contact + Rive companion, 404, inner pages on the new tokens; legacy widgets (cookie banner, chat FAB, a11y panel) on the look's tokens
+- [ ] Step 4: gates.mjs, slop-scan (≤ 40), preserve diff, contrast + a11y rounds, Lighthouse mobile median of 3 vs ../mw-baseline, overlap-audit 0, console 0, no overflow 320-1440, impeccable pass, one critic agent
+- [ ] STOP 2 (owner: Nati): deploy only with his OK, only through mediawave-dev
+- [ ] Before public use: direction I (album, board only) uses the family's photos from memory-video.mp4: needs the family's consent
 
 ## Done
-- [x] Rejected sky-palette lab deleted; W0 committed 46da290
-- [x] Style board /board (dev only) committed 544fef5: A edit suite (Noto Sans Hebrew ExtraCondensed, graphite + tally red), B Hebrew poster (Karantina, saffron/magenta/green), C gallery (Bona Nova, white cube + salon red). Each: real hero + video rules, button family with 7 states, services signature moment with the real Lotties. Fonts OFL via @fontsource.
-- [x] Intake round (2026-10-12): sacred = hero video; Lotties stay; Rive in buttons + earned scenes; palette/copy/dividers may change
-- [x] Short research: Awwwards SOTY 2025 Lando Norris (motif as reactive surface), Ocean School water buttons
-- [x] W0 foundation: engine in src/motion (CALM policy, #47), ScrollEngineProvider replaces ScrollToTop, prerender sets __PRERENDER__, motion-engine chunk, Marquee removed (#48), Testimonials unmounted while empty, Services Lottie renderer bug (#49)
-- [x] Baseline: slop-scan 96 (design/upgrade/baseline/slop-scan.md), preservation snapshot of live site (11 URLs)
-- [x] Smoke: engine on /, /services/*, /blog, /accessibility: no errors; #faq lands at 90px with and without Lenis
+- [x] Gate 1: Nati chose K (keynote launch, D-01) + M (floating objects, D-03), to be compared as K / M / KM (2026-10-13)
+- [x] Look system (#50): VITE_LOOK via Vite modes (.env.look-*, build:k|m|km → dist-k|m|km, plain build = KM), data-look in the HTML via transformIndexHtml, dev ?look= override, @look/registry + @look/button aliases so each build ships only its own look (verified: no M/KM scene code in dist-k, no K code in dist-m, no product button in dist-km)
+- [x] Tokens for the three looks in src/look/looks.css; fonts Assistant 200/400/600 + Alef 400/700 via @fontsource (hebrew + latin), metric-matched fallbacks (font-fallback.mjs, no rewrap); Heebo/Outfit/EFT removed; Assistant 200 Hebrew (4 KB) inlined in CSS, Alef 700 preloaded in M by prerender.mjs
+- [x] Header + footer for all looks (sticky, --head, the look's button, KM theme layers inside the header, mobile sheet menu with engine lock)
+- [x] Button families with seven states: K product button (tilt + press), M lens (blend on the disc's track, press fills), KM lens + calm tilt; /states?look= (dev only) shows all seven
+- [x] Heroes: K/KM stage (H1, line, button, laptop playing the video, scrubbed lean), M void (copy at the start side, video on a floating screen among six tools, bob + depth drift)
+- [x] Holds: LaunchHold (K services, KM process), FlightHold (M + KM services), sticky stages, transform/opacity only, only the on-stage Lottie plays (LottieIcon `active`), keyboard focus scrolls the hold to its item, list layout as the reduced / no-JS last frame
+- [x] KM theme flip (T-01): fixed layers crossfade, body class flips text instantly, sections declare data-theme
+- [x] Hero video on phones (#51, Nati's request): hero-bg-m.mp4 640 px 189 KB, after load + idle, not with Data Saver; poster srcset (17 KB on phones)
+- [x] scripts/overlap-audit.mjs (zones text/art/ui, 5 widths, 2 % page steps, 5 % hold steps)
+- [x] Earlier: W0 engine (46da290), style board (544fef5 … c4b6b9c), baseline slop 96, preservation snapshot
 
 ## Verification log
-- 2026-10-12 board: /board, /a, /b, /c at 1440 and 390 with motion on: 0 console errors, 0 horizontal overflow; tsc clean; npm run build clean and dist has no board code
-- 2026-10-12 engine smoke (reduce emulated + ?motion=full): 0 console errors, anchors OK
+- 2026-10-13 tsc clean; build:k, build:m, build:km clean (prerender 21 pages each)
+- 2026-10-13 mobile video: plays hero-bg-m.mp4 at 390 in K/M/KM, hero-bg.mp4 at 1440; nothing loads under OS reduce; ?motion=full overrides
+- 2026-10-13 overlap audit run 1: 48 counted (KM process copy vs the chat button at 320 while the cookie banner lifts it; flight captions vs the cookie card at 1024; H1 vs the accessibility tab at 320) → fixed with --safe-b, captions on top, H1 size under 360 px

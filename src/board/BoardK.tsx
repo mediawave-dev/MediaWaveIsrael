@@ -6,6 +6,7 @@
 import type { ReactNode } from 'react'
 import { useScene, useMotionEngine } from '../motion/ScrollEngineProvider'
 import { SERVICES, HERO, NAV, HeroMedia, ServiceArt, BoardNav, useDocBackground, StateButton, ButtonLab, type StateButtonProps } from './shared'
+import Logo from '../components/ui/Logo'
 import './fonts.css'
 import './lab.css'
 import './board-k.css'
@@ -37,7 +38,7 @@ export default function BoardK() {
     <div className="bd-k" dir="rtl" lang="he">
       <header className="k-head">
         <a href="/board/k" className="k-head__logo" aria-label="MediaWave">
-          <img src="/logo-lockup-white.svg" alt="MediaWave" width="150" height="30" />
+          <Logo variant="compact" decorative />
         </a>
         <nav className="k-head__nav" aria-label="ראשי">{NAV.map((n) => <a key={n} href="#services">{n}</a>)}</nav>
         <ProductButton href="#lab" size="sm">{HERO.headerCta}</ProductButton>
@@ -113,7 +114,7 @@ function Keynote() {
               {SERVICES.map((s, i) => (
                 <div className="k-shot" data-i={i} key={s.id}><ServiceArt service={s} size={220} /></div>
               ))}
-              <div className="k-shot k-shot--intro" data-i="-1"><img src="/logo-lockup-ink.svg" alt="" /></div>
+              <div className="k-shot k-shot--intro" data-i="-1"><Logo variant="horizontal" decorative /></div>
             </Laptop>
           </div>
         </div>

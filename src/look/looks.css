@@ -1,0 +1,287 @@
+/* The three looks (DECISIONS #50). Tokens for all of them live here as html[data-look]
+   blocks; scene CSS lives next to each scene and ships only in its own look's build.
+
+   K  · the launch. A keynote stage: near-black because it is a stage (the product is the
+        only lit thing), centred hero because a stage has a centre. No accent colour: the
+        laptop and what it shows are the colour. Type: Assistant 200 for display (a
+        keynote's thin type, slop-ok default-font-he-2), 400 text, 600 UI.
+   M  · floating objects. A flat lavender void (not a gradient wallpaper): the tools of the
+        trade hang in it, charcoal bodies with white faces where the Lotties live.
+        Type: Alef 700 display, 400 text and UI (clean letters for objects in a void).
+   KM · launch night. The page alternates between the stage and the lit void (T-01 theme
+        layers). Assistant 200 for display, Alef for text and UI.
+
+   Contrast (WCAG AA, checked with the contrast gate):
+   K   ink #F5F5F7 on #000 19.2:1 · ink-2 #A1A1A6 on #000 8.2:1 · button #000 on #F5F5F7 19.2:1
+   M   ink #221E2E on #E6E1F2 12.6:1 · ink-2 #4D4760 on #E6E1F2 6.3:1 · white on #2B2833 14:1 */
+
+/* ── fonts: self-hosted (@fontsource, OFL), hebrew + latin subsets only ── */
+@import "@fontsource/assistant/hebrew-200.css";
+@import "@fontsource/assistant/latin-200.css";
+@import "@fontsource/assistant/hebrew-400.css";
+@import "@fontsource/assistant/latin-400.css";
+@import "@fontsource/assistant/hebrew-600.css";
+@import "@fontsource/assistant/latin-600.css";
+@import "@fontsource/alef/hebrew-400.css";
+@import "@fontsource/alef/latin-400.css";
+@import "@fontsource/alef/hebrew-700.css";
+@import "@fontsource/alef/latin-700.css";
+
+/* Metric-matched fallbacks (pattern-breaker font-fallback.mjs, 2026-10-13, win32): Hebrew and
+   Latin measured apart, proof "no rewrap" at 340 and 680 px. design/fonts/*.css */
+@font-face { font-family: "Assistant Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 200; size-adjust: 89.1%; }
+@font-face { font-family: "Assistant Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 200; size-adjust: 89.7%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Assistant Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 92.8%; }
+@font-face { font-family: "Assistant Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 93.6%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Assistant Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600; size-adjust: 87.9%; }
+@font-face { font-family: "Assistant Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600; size-adjust: 91.9%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Alef Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 103.5%; }
+@font-face { font-family: "Alef Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 400; size-adjust: 103.0%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "Alef Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 700; size-adjust: 103.8%; }
+@font-face { font-family: "Alef Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 700; size-adjust: 105.1%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+
+/* ── tokens ── */
+:root {
+  --stage: #000000;
+  --stage-ink: #f5f5f7;
+  --stage-ink-2: #a1a1a6;
+  --stage-line: #2c2c2e;
+  --void: #e6e1f2;
+  --void-2: #d8d1ea;
+  --void-ink: #221e2e;
+  --void-ink-2: #4d4760;
+  --void-line: #c9c1e0;
+  --obj: #2b2833;
+  --obj-2: #3a3644;
+  --face: #ffffff;
+  --assistant: "Assistant", "Assistant Fallback", sans-serif;
+  --alef: "Alef", "Alef Fallback", sans-serif;
+  --gut: clamp(16px, 4vw, 64px);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html[data-look="k"] {
+  --head: 64px;
+  --ground: var(--stage);
+  --ink: var(--stage-ink);
+  --ink-2: var(--stage-ink-2);
+  --line: var(--stage-line);
+  --btn-bg: var(--stage-ink);
+  --btn-fg: #000000;
+  --err: #ff6961;
+  --display: var(--assistant);
+  --display-w: 200;
+  --text: var(--assistant);
+  --ui: var(--assistant);
+  --ui-w: 600;
+  --focus-ring: var(--stage-ink);
+  --logo-a: #f5f5f7;
+  --logo-b: #a1a1a6;
+  --logo-tag: #a1a1a6;
+  background: var(--stage);
+  color-scheme: dark;
+}
+
+html[data-look="m"] {
+  --head: 70px;
+  --ground: var(--void);
+  --ink: var(--void-ink);
+  --ink-2: var(--void-ink-2);
+  --line: var(--void-line);
+  --btn-bg: var(--obj);
+  --btn-fg: #ffffff;
+  --err: #b3261e;
+  --display: var(--alef);
+  --display-w: 700;
+  --text: var(--alef);
+  --ui: var(--alef);
+  --ui-w: 700;
+  --focus-ring: var(--obj);
+  --logo-a: #221e2e;
+  --logo-b: #5b4d94;
+  --logo-tag: #4d4760;
+  background: var(--void);
+}
+
+/* KM: the stage is the default (the hero is on it); body.t-light is the void.
+   themeLayers() flips the body class instantly; only the fixed layers crossfade. */
+html[data-look="km"] {
+  --head: 64px;
+  --display: var(--assistant);
+  --display-w: 200;
+  --text: var(--alef);
+  --ui: var(--alef);
+  --ui-w: 700;
+  background: var(--stage);
+}
+html[data-look="km"],
+html[data-look="km"] [data-theme="dark"] {
+  --ground: var(--stage);
+  --ink: var(--stage-ink);
+  --ink-2: var(--stage-ink-2);
+  --line: var(--stage-line);
+  --btn-bg: var(--stage-ink);
+  --btn-fg: #000000;
+  --err: #ff6961;
+  --focus-ring: var(--stage-ink);
+  --logo-a: #f5f5f7;
+  --logo-b: #a1a1a6;
+  --logo-tag: #a1a1a6;
+}
+html[data-look="km"] body.t-light,
+html[data-look="km"] [data-theme="light"] {
+  --ground: var(--void);
+  --ink: var(--void-ink);
+  --ink-2: var(--void-ink-2);
+  --line: var(--void-line);
+  --btn-bg: var(--obj);
+  --btn-fg: #ffffff;
+  --err: #b3261e;
+  --focus-ring: var(--obj);
+  --logo-a: #221e2e;
+  --logo-b: #5b4d94;
+  --logo-tag: #4d4760;
+}
+/* With the engine running, text follows the body class (it must match the ground on screen,
+   not its own section); sections become transparent over the fixed layers. Without it
+   (no JS, prerender snapshot, reduced): every section paints its own ground. */
+html[data-look="km"].motion-ready [data-theme] { --ground: inherit; --ink: inherit; --ink-2: inherit; --line: inherit; --btn-bg: inherit; --btn-fg: inherit; --err: inherit; --focus-ring: inherit; --logo-a: inherit; --logo-b: inherit; --logo-tag: inherit; }
+html[data-look="km"]:not(.motion-ready) [data-theme] { background: var(--ground); color: var(--ink); }
+
+/* The legacy sections (restyled per look in step 3) pick up the look's type now. */
+html[data-look] {
+  --font-headline: var(--display);
+  --font-body: var(--text);
+  --font-english: var(--text);
+  --font-english-display: var(--display);
+  --font-english-body: var(--text);
+}
+html[data-look="k"], html[data-look="km"] { --font-headline: var(--assistant); }
+
+html[data-look] body {
+  background: var(--ground, transparent);
+  color: var(--ink);
+  font-family: var(--text);
+}
+html[data-look="km"] body { background: transparent; }
+html[data-look] ::selection { background: var(--ink); color: var(--ground); }
+html[data-look] :focus-visible { outline-color: var(--focus-ring); }
+html[data-look] { scroll-padding-top: var(--head); scrollbar-color: var(--ink-2) transparent; }
+@media (max-width: 860px) {
+  html[data-look="k"], html[data-look="km"] { --head: 56px; }
+  html[data-look="m"] { --head: 60px; }
+}
+html[data-look] section[id] { scroll-margin-top: 0; }
+/* The bottom band the floating buttons own. While the cookie banner is open it lifts them
+   (index.css .floating-cta), so held stages keep a taller band clear (overlap audit). */
+html[data-look] { --safe-b: 92px; }
+@media (max-width: 639px) { html[data-look] body.mw-consent-open { --safe-b: 172px; } }
+@media (min-width: 640px) and (max-width: 860px) { html[data-look] body.mw-consent-open { --safe-b: 200px; } }
+html[data-look="km"].motion-ready .mw-foot { background: transparent; }
+.mw-foot__base p { margin: 0; }
+
+/* ── theme layers (KM only, T-01) ── */
+.theme-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; isolation: isolate; display: none; }
+.theme-bg i { position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s ease; }
+.theme-bg i[data-t="dark"] { background: var(--stage); }
+.theme-bg i[data-t="light"] { background: var(--void); }
+.theme-bg i.on { opacity: 1; }
+html[data-look="km"].motion-ready .theme-bg { display: block; }
+html.disable-animations .theme-bg i { transition: none; }
+
+/* ── header ── */
+.mw-head {
+  position: sticky; top: 0; z-index: 50;
+  height: var(--head);
+  background: var(--ground);
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+.mw-head__bar { position: relative; z-index: 1; height: 100%; display: flex; align-items: center; gap: clamp(16px, 2.6vw, 34px); padding-inline: var(--gut); max-width: 1440px; margin-inline: auto; }
+.mw-head__logo { display: block; flex: none; }
+/* Horizon compact: 26 px tall (24 on phones), about 214 px wide; the bar's gap keeps the
+   brand's clear space (half the disc, 13 px) on both sides */
+.mw-head__logo .mw-logo { display: block; height: 26px; width: auto; }
+.mw-head__nav { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 32px); margin-inline-start: auto; }
+.mw-head__nav a { color: var(--ink-2); font: 400 1rem/1 var(--text); white-space: nowrap; padding-block: 10px; }
+@media (hover: hover) { .mw-head__nav a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
+.mw-head__burger { display: none; margin-inline-start: auto; width: 44px; height: 44px; align-items: center; justify-content: center; background: none; border: 0; color: var(--ink); }
+.mw-head__burger span { display: block; position: relative; width: 22px; height: 14px; }
+.mw-head__burger i { position: absolute; inset-inline-end: 0; height: 2px; width: 100%; border-radius: 2px; background: currentColor; }
+.mw-head__burger i:nth-child(1) { top: 0; }
+.mw-head__burger i:nth-child(2) { top: 6px; width: 72%; }
+.mw-head__burger i:nth-child(3) { top: 12px; width: 44%; }
+/* phones: the compact logo (198 px at 24 px) plus its clear space and the burger leave no
+   room for the header button; "בואו נדבר" stays in the menu sheet, the hero and the WhatsApp FAB */
+@media (max-width: 860px) {
+  .mw-head__nav { display: none; }
+  .mw-head__burger { display: inline-flex; }
+  .mw-head__logo .mw-logo { height: 24px; }
+  .mw-head__cta { order: 3; }
+  .mw-head__burger { order: 2; margin-inline-start: auto; }
+}
+/* KM: the header carries its own two layers, flipped by the same themeLayers() call */
+.mw-head .theme-bg { position: absolute; z-index: 0; }
+html[data-look="km"].motion-ready .mw-head { background: transparent; }
+/* the logo ident (DECISIONS #53): hidden before first paint only when index.html decided it plays */
+.mw-logo-motion { display: block; }
+html.logo-intro .mw-head .mw-logo-motion svg { visibility: hidden; }
+@media (max-width: 430px) { html[data-look] .mw-head__cta { display: none; } }
+/* The logo paints through --logo-a/b/tag, so it follows the ground on its own (KM: the
+   body class flips them with the theme). Inside legacy (cream) sections: the light palette. */
+html[data-look] .legacy { --logo-a: #221e2e; --logo-b: #5b4d94; --logo-tag: #4d4760; }
+
+/* mobile menu: a full sheet in the look's ground */
+.mw-menu { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: var(--ground); color: var(--ink); padding: calc(var(--head) + 24px) var(--gut) 32px; }
+.mw-menu__close { position: absolute; top: calc((var(--head) - 44px) / 2); inset-inline-end: var(--gut); width: 44px; height: 44px; display: grid; place-items: center; background: none; border: 0; color: var(--ink); }
+.mw-menu__logo { position: absolute; top: 0; height: var(--head); display: flex; align-items: center; inset-inline-start: var(--gut); }
+.mw-menu__logo .mw-logo { display: block; height: 24px; width: auto; }
+.mw-menu nav { display: flex; flex-direction: column; gap: 6px; }
+.mw-menu nav a { color: var(--ink); font: var(--display-w) clamp(2.2rem, 10vw, 3rem)/1.25 var(--display); min-height: 44px; }
+.mw-menu__foot { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; color: var(--ink-2); font-size: 0.95rem; }
+.mw-menu__foot a { color: var(--ink-2); }
+
+/* ── footer ── */
+.mw-foot { position: relative; background: var(--ground); color: var(--ink-2); box-shadow: inset 0 1px 0 var(--line); font-family: var(--text); }
+.mw-foot__in { max-width: 1440px; margin-inline: auto; padding: clamp(56px, 9vh, 96px) var(--gut) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
+.mw-foot__brand { grid-column: 1 / span 5; }
+.mw-foot__line { margin: 0; max-width: 32ch; font: var(--display-w) clamp(1.5rem, 2.2vw, 2rem)/1.3 var(--display); color: var(--ink); }
+.mw-foot__col { grid-column: span 3; }
+.mw-foot__col h2 { margin: 0 0 14px; font: var(--ui-w) 0.85rem/1.2 var(--ui); color: var(--ink); }
+.mw-foot__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.mw-foot a { color: var(--ink-2); display: inline-flex; align-items: center; gap: 10px; min-height: 36px; }
+@media (hover: hover) { .mw-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; } }
+.mw-foot__col--wide { grid-column: span 4; }
+.mw-foot__bottom { max-width: 1440px; margin-inline: auto; padding: 0 var(--gut) 28px; }
+.mw-foot__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 22px; box-shadow: inset 0 1px 0 var(--line); font-size: 0.85rem; }
+/* the sign-off: clear space of half the disc on every side (the disc is 14 % of the horizontal
+   lockup's width, so 8 % of the width above and below; stacked: 34 % of its width) */
+.mw-foot .mw-foot__sign { display: grid; place-items: center; padding: max(80px, 8vw) var(--gut); }
+.mw-foot__sign .mw-logo { display: block; width: min(1100px, 76vw); height: auto; }
+@media (max-width: 639px) {
+  .mw-foot .mw-foot__sign { padding: 64px var(--gut) 56px; }
+  .mw-foot__sign .mw-logo { width: min(300px, 72vw); }
+}
+.mw-foot__base nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.mw-foot__base a { min-height: 32px; }
+@media (max-width: 860px) {
+  .mw-foot__brand, .mw-foot__col, .mw-foot__col--wide { grid-column: 1 / -1; }
+  .mw-foot__bottom { padding-bottom: 96px; } /* the floating buttons sit over the last lines */
+}
+
+/* ── zones (the overlap audit reads data-zone; nothing visual) ── */
+
+/* ── shared held-scene base: tall wrapper, sticky stage under the header. Only once the
+   engine runs with motion (html.motion-ready); without it (no JS, prerender, reduced) every
+   hold is an ordinary section showing its last frame as a list. ── */
+html.motion-ready .hold { position: relative; height: var(--hold-h, 500svh); }
+html.motion-ready .hold__stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); overflow: clip; }
+
+/* ── the hero video (every look): poster underneath, the video shown once a frame paints ── */
+.hero-media { position: absolute; inset: 0; display: block; background: #000; }
+.hero-media img, .hero-media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-media video { opacity: 0; transition: opacity 0.3s ease; }
+.hero-media video.is-playing { opacity: 1; }
+
+/* ── legacy sections: kept as they were until step 3 rebuilds them per look ── */
+html[data-look] .legacy { background: var(--color-cream) !important; color: var(--color-brown); }

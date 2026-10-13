@@ -1,0 +1,46 @@
+/* M / KM · the lens. No line inside or under the label in any state (Nati's rule). */
+.lens {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: inline-grid; place-items: center;
+  min-height: 52px; padding: 0.8em 1.7em; border: 0; border-radius: 12px;
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: var(--ui-w) 1.1rem/1.2 var(--ui); text-decoration: none; white-space: nowrap;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+}
+.lens:hover { color: var(--btn-fg); }
+.lens--tilt { transition: transform 180ms linear, background-color 200ms ease, box-shadow 200ms ease; }
+.lens[data-size="sm"] { min-height: 40px; padding: 0.45em 1.05em; font-size: 0.95rem; border-radius: 10px; }
+.lens[data-block] { display: grid; width: 100%; }
+.lens__label { position: relative; display: inline-flex; align-items: center; gap: 0.45em; }
+/* The blend sits on the track, a direct child of the (isolated) button: a blend inside the
+   transformed .lens__pos would be isolated by that transform and paint plain white. The track
+   holds nothing but the disc, so only the disc inverts anything. No z-index (it would isolate
+   it again); it paints over the label by DOM order. */
+.lens__track { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: difference; }
+.lens__pos { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.lens__disc {
+  position: absolute; left: -26px; top: -26px; width: 52px; height: 52px; border-radius: 50%;
+  background: #fff;
+  scale: 0; transition: scale 240ms var(--ease-out);
+}
+.lens[data-size="sm"] .lens__disc { left: -20px; top: -20px; width: 40px; height: 40px; }
+@media (hover: hover) and (pointer: fine) { .lens:hover .lens__disc { scale: 1; } }
+.lens:focus-visible .lens__disc { scale: 0; }
+.lens[data-force="hover"] .lens__track { translate: 18% 0; }
+.lens[data-force="hover"] .lens__disc { scale: 1; }
+.lens[data-force="hover"].lens--tilt { transform: perspective(600px) rotateX(-1.2deg) rotateY(1.3deg); }
+.lens[data-pressed] .lens__disc { scale: 16; transition-duration: 320ms; }
+.lens:focus-visible, .lens[data-force="focus"] { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+/* loading: the lens scans the label, reading it */
+.lens[data-state="loading"] { cursor: progress; }
+.lens[data-state="loading"] .lens__pos { transform: none !important; left: 0; }
+.lens[data-state="loading"] .lens__disc { scale: 0.75; }
+.lens[data-state="loading"] .lens__track { animation: lens-scan 1.2s ease-in-out infinite alternate; }
+@keyframes lens-scan { from { translate: 14% 0; } to { translate: 86% 0; } }
+.lens[data-state="sent"] { background: var(--btn-fg); color: var(--btn-bg); box-shadow: inset 0 0 0 2px var(--btn-bg); }
+.lens[data-state="sent"] .lens__track, .lens[data-state="error"] .lens__track { display: none; }
+.lens[data-state="error"] { box-shadow: 0 0 0 2px var(--err); animation: lens-shake 340ms steps(1) 1; }
+@keyframes lens-shake { 25% { translate: 4px 0; } 50% { translate: -3px 0; } 75% { translate: 2px 0; } }
+.lens:disabled { cursor: not-allowed; }
+html.disable-animations .lens, html.disable-animations .lens * { animation: none !important; transition: none !important; }

@@ -224,6 +224,7 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
         {!isOpen && (
           <m.div
             className="floating-cta fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
+            data-zone="ui"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0 }}

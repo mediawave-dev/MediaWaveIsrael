@@ -1,0 +1,24 @@
+/* K / KM hero: the stage. Display type thin and large, everything centred. */
+.kh {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: clamp(40px, 8vh, 104px) var(--gut) clamp(56px, 10vh, 120px);
+  overflow: clip; color: var(--ink);
+}
+.kh__title { margin: 0 0 clamp(14px, 2.2vh, 24px); font: var(--display-w) clamp(4rem, 8.4vw, 9.6rem)/1.02 var(--display); color: var(--ink); }
+.kh__title span { display: block; }
+.kh__sub { margin: 0 0 clamp(24px, 4vh, 36px); max-width: 34ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.45vw, 1.4rem)/1.6 var(--text); }
+.kh__ctas { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 30px; }
+.kh__more { color: var(--ink-2); font: 400 1.05rem/1.2 var(--text); padding-block: 12px; }
+@media (hover: hover) { .kh__more:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
+.kh__object { position: relative; width: min(860px, 86vw); margin-top: clamp(48px, 9vh, 96px); perspective: 2200px; }
+.kh__object::after { content: ''; position: absolute; left: 12%; right: 12%; bottom: -28px; height: 56px; background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.09), transparent 70%); pointer-events: none; }
+.kh__tilt { transform: rotateX(12deg); transform-style: preserve-3d; }
+@media (max-width: 860px) {
+  .kh { padding-top: 36px; }
+  .kh__title { font-size: clamp(2.6rem, 14.6vw, 4rem); }
+  .kh__ctas { flex-direction: column; gap: 4px; width: 100%; }
+  .kh__ctas > :first-child { width: 100%; max-width: 420px; }
+  .kh__object { width: 92vw; margin-top: 40px; }
+}
+/* the accessibility tab hangs at the left edge, 120 px down: the H1 clears it on small phones */
+@media (max-width: 359px) { .kh__title { font-size: 12.8vw; } }

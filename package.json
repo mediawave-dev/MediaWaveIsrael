@@ -9,12 +9,18 @@
     "generate:og": "node scripts/generate-og-image.mjs",
     "generate:favicons": "node scripts/generate-favicons.mjs",
     "build": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build && node scripts/prerender.mjs",
+    "build:k": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-k --outDir dist-k && node scripts/prerender.mjs --dist dist-k",
+    "build:m": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-m --outDir dist-m && node scripts/prerender.mjs --dist dist-m",
+    "build:km": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-km --outDir dist-km && node scripts/prerender.mjs --dist dist-km",
+    "audit:overlap": "node scripts/overlap-audit.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "migrate": "tsx scripts/migrate-to-sanity.ts",
     "migrate:blog": "tsx scripts/migrate-blog.ts"
   },
   "dependencies": {
+    "@fontsource/alef": "^5.3.0",
+    "@fontsource/assistant": "^5.3.0",
     "@fontsource/heebo": "^5.2.8",
     "@fontsource/outfit": "^5.2.8",
     "@gsap/react": "^2.1.2",

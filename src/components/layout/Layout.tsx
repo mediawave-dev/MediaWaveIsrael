@@ -1,5 +1,7 @@
 import { ReactNode, useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { m, AnimatePresence } from 'framer-motion'
+import { useLocation } from 'react-router-dom'
+import look from '@look/registry'
 import Header from './Header'
 import Footer from './Footer'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
@@ -19,6 +21,8 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
+  // Inner pages are not rebuilt for the looks yet: they keep their old cream ground
+  const isHome = useLocation().pathname === '/'
 
   // Pointer-following sky glow on .spotlight-card surfaces (desktop pointers only)
   useEffect(() => installSpotlight(), [])
@@ -42,7 +46,10 @@ export default function Layout({ children }: LayoutProps) {
   }, [])
 
   return (
-    <div className="min-h-screen flex flex-col bg-cream relative">
+    <div className="min-h-screen flex flex-col relative">
+      {/* KM: the stage and the void, crossfading behind the page */}
+      {look.ThemeLayers && <look.ThemeLayers />}
+
       {/* Preview mode banner */}
       <Suspense fallback={null}>
         <PreviewBanner />
@@ -58,7 +65,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <Header />
 
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className={isHome ? 'flex-1' : 'flex-1 legacy'} data-theme={isHome ? undefined : 'light'}>
         {children}
       </main>
 
@@ -101,6 +108,7 @@ function FloatingWhatsApp({ isChatOpen }: { isChatOpen: boolean }) {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           aria-label="צור קשר בוואטסאפ"
+          data-zone="ui"
           onClick={() => track('whatsapp_click', { placement: 'floating' })}
         >
           {/* Gentle breathing glow */}

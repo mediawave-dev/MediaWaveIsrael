@@ -25,6 +25,10 @@ interface LottieIconProps {
   /** 'canvas' for vector-heavy animations — the default SVG renderer re-lays-out
       every shape node per frame, which measured 25-54s TBT on one 356-path file */
   renderer?: 'svg' | 'canvas'
+  /** Held scenes: play only while this is true (restarting from the first frame), pause
+      otherwise. Undefined keeps the default: play while on screen. Only the Lottie on stage
+      should run (DECISIONS #50). */
+  active?: boolean
 }
 
 /**
@@ -40,6 +44,7 @@ export function LottieIcon({
   loop = true,
   speed = 1,
   renderer = 'svg',
+  active,
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -113,7 +118,7 @@ export function LottieIcon({
       container: canvasContainerRef.current,
       renderer: 'canvas',
       loop: loop && ambient,
-      autoplay: ambient,
+      autoplay: ambient && active !== false,
       animationData: loadedData,
       rendererSettings: { clearCanvas: true },
     })
@@ -136,7 +141,7 @@ export function LottieIcon({
   // Pause when scrolled out of view, resume when back — a dozen looping
   // Lotties running offscreen is the biggest CPU cost on the home page
   useEffect(() => {
-    if (!containerRef.current || !loadedData || !ambient) return
+    if (!containerRef.current || !loadedData || !ambient || active !== undefined) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -152,7 +157,18 @@ export function LottieIcon({
     observer.observe(containerRef.current)
     return () => observer.disconnect()
      
-  }, [loadedData, ambient])
+  }, [loadedData, ambient, active])
+
+  // Held scenes: the stage decides. Restart on entry so each announcement plays from its
+  // first frame; everything off stage is paused.
+  useEffect(() => {
+    if (active === undefined || !loadedData || !ambient) return
+    const anim = getAnim()
+    if (!anim) return
+    if (active) anim.goToAndPlay(0, true)
+    else anim.pause()
+     
+  }, [active, loadedData, ambient, renderer])
 
   // Animations disabled (a11y widget): freeze on the LAST frame — draw-on
   // animations are empty at frame 0, while the final frame always shows
@@ -213,7 +229,7 @@ export function LottieIcon({
           lottieRef={lottieRef}
           animationData={loadedData}
           loop={loop && ambient}
-          autoplay={ambient}
+          autoplay={ambient && active !== false}
           style={{ width: '100%', height: '100%' }}
         />
       )}

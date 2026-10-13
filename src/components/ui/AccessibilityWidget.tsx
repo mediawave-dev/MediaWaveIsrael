@@ -148,7 +148,7 @@ export default function AccessibilityWidget() {
   // burger on the left), so a tap at the burger's centre hit this wrapper and
   // the menu never opened (measured with elementFromPoint at 320 and 390).
   return (
-    <div className="absolute left-0 z-[51]" data-accessibility-widget style={{ top: '120px' }}>
+    <div className="absolute left-0 z-[51]" data-accessibility-widget data-zone="ui" style={{ top: '120px' }}>
       {/* Side Panel Drawer */}
       <AnimatePresence mode='wait'>
         {isOpen && (

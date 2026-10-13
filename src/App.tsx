@@ -7,14 +7,13 @@ import { ScrollEngineProvider } from './motion/ScrollEngineProvider'
 import SEO from './components/SEO'
 import { testimonials } from './data/testimonials'
 
-// Above-fold: load immediately
-import { Hero } from './components/sections'
-import { WaveDivider } from './components/ui/WaveDivider'
+// The look (DECISIONS #50): vite.config aliases @look/registry to this build's look, so the
+// page ships one look's hero and held scenes (dev: all three, ?look= picks one at boot).
+import look from '@look/registry'
 import { GiantWord } from './components/ui/GiantWord'
 
 // Below-fold: lazy load for better initial performance
 const WhyUs = lazy(() => import('./components/sections/WhyUs'))
-const Services = lazy(() => import('./components/sections/Services'))
 const BeforeAfterShowcase = lazy(() => import('./components/sections/BeforeAfterShowcase'))
 const HowWeWork = lazy(() => import('./components/sections/HowWeWork'))
 const Testimonials = lazy(() => import('./components/sections/Testimonials'))
@@ -31,9 +30,11 @@ const ServicePage = lazy(() => import('./components/pages/ServicePage'))
 const PortfolioExample = lazy(() => import('./components/pages/PortfolioExample'))
 const NotFound = lazy(() => import('./components/pages/NotFound'))
 
-// Style board (dev only): the three redesign directions for Gate 1. Never built:
+// Style board (dev only): the redesign directions for Gate 1. Never built:
 // import.meta.env.DEV is a literal false in production, so Rollup drops the import.
 const Board = import.meta.env.DEV ? lazy(() => import('./board/Board')) : null
+// The button families' seven states, for screenshots (dev only, same reason)
+const States = import.meta.env.DEV ? lazy(() => import('./look/dev/States')) : null
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
@@ -41,6 +42,11 @@ const StudioPage = lazy(() => import('./pages/StudioPage'))
 // Lead modal appears only after 35s — no reason for it (and lottie-react)
 // to sit in the critical bundle
 const LeadModal = lazy(() => import('./components/LeadModal'))
+
+/** A section not yet rebuilt for the looks: painted on its old cream ground (looks.css). */
+const Legacy = ({ theme, children }: { theme: 'light' | 'dark'; children: React.ReactNode }) => (
+  <div className="legacy" data-theme={theme}>{children}</div>
+)
 
 // Minimal fallback - reserves space with CSS containment for CLS prevention
 const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
@@ -62,56 +68,63 @@ function HomePage() {
         description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה."
         canonical="/"
       />
-      {/* Hero Section - loads immediately (above fold, LCP critical) */}
-      <Hero />
+      {/* Hero: the look's stage or void, loads immediately (the H1 is the LCP) */}
+      <look.Hero />
 
-      {/* Below-fold sections - each in separate Suspense for progressive rendering */}
-      <Suspense fallback={<SectionFallback height="400px" />}>
-        <WhyUs />
-      </Suspense>
+      {/* Legacy sections keep their old ground until step 3 rebuilds them per look; in KM
+          their data-theme keeps the header on the right ground */}
+      <Legacy theme="light">
+        <Suspense fallback={<SectionFallback height="400px" />}>
+          <WhyUs />
+        </Suspense>
+      </Legacy>
 
+      {/* The look's signature hold */}
       <Suspense fallback={<SectionFallback height="600px" />}>
-        <Services />
+        <look.Services />
       </Suspense>
 
-      {/* Interactive before/after on the single dark band */}
-      <Suspense fallback={<SectionFallback height="400px" />}>
-        <BeforeAfterShowcase />
-      </Suspense>
+      <Legacy theme="dark">
+        <Suspense fallback={<SectionFallback height="400px" />}>
+          <BeforeAfterShowcase />
+        </Suspense>
+      </Legacy>
 
-      <Suspense fallback={<SectionFallback height="500px" />}>
-        <HowWeWork />
-      </Suspense>
+      {look.Process ? (
+        <Suspense fallback={<SectionFallback height="500px" />}>
+          <look.Process />
+        </Suspense>
+      ) : (
+        <Legacy theme="light">
+          <Suspense fallback={<SectionFallback height="500px" />}>
+            <HowWeWork />
+          </Suspense>
+        </Legacy>
+      )}
 
       {/* Only real, owner-confirmed testimonials ever render (honesty rule).
           While the list is empty the section is not mounted at all: no empty
           400px fallback, no chunk download. */}
       {testimonials.length > 0 && (
-        <Suspense fallback={<SectionFallback height="400px" />}>
-          <Testimonials />
-        </Suspense>
+        <Legacy theme="light">
+          <Suspense fallback={<SectionFallback height="400px" />}>
+            <Testimonials />
+          </Suspense>
+        </Legacy>
       )}
 
-      {/* Wave hand-off: HowWeWork (cream) → FAQ (cream-dark) */}
-      <WaveDivider variant="c" fill="#F1F5F9" />
+      <Legacy theme="light">
+        <Suspense fallback={<SectionFallback height="400px" />}>
+          <FAQ />
+        </Suspense>
 
-      <Suspense fallback={<SectionFallback height="400px" />}>
-        <FAQ />
-      </Suspense>
+        {/* Typographic confidence statement [קופי: נתי — מילת הענק] */}
+        <GiantWord word="מתחילים?" />
 
-      {/* Wave hand-off: FAQ (cream-dark) → Contact (cream) */}
-      <WaveDivider variant="a" fill="#F8FAFC" bg="#F1F5F9" />
-
-      {/* Typographic confidence statement (DESIGN-UPGRADE §4.9)
-          [קופי: נתי — מילת הענק] */}
-      <GiantWord word="מתחילים?" />
-
-      <Suspense fallback={<SectionFallback height="500px" />}>
-        <Contact />
-      </Suspense>
-
-      {/* Wave hand-off: Contact (cream) → Footer (dark) */}
-      <WaveDivider variant="b" fill="#1a1a1a" bg="#F8FAFC" layers={3} />
+        <Suspense fallback={<SectionFallback height="500px" />}>
+          <Contact />
+        </Suspense>
+      </Legacy>
     </>
   )
 }
@@ -131,6 +144,9 @@ function App() {
 
           {Board && (
             <Route path="/board/*" element={<Suspense fallback={<PageFallback />}><Board /></Suspense>} />
+          )}
+          {States && (
+            <Route path="/states" element={<Suspense fallback={<PageFallback />}><States /></Suspense>} />
           )}
 
           {/* All other routes — wrapped in Layout */}
