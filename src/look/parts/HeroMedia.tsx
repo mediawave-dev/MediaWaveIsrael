@@ -35,18 +35,46 @@ function useLoadedIdle(): boolean {
   return ready
 }
 
+/** A film and its first frame, for desktops and for phones. */
+export interface HeroFilm {
+  video: string
+  videoMobile: string
+  poster: string
+  posterMobile: string
+  /** the phone poster's width, for srcset */
+  posterMobileWidth: number
+  width: number
+  height: number
+}
+
+/** The launch film (K and M looks): a top-down desk, 1920 x 1028. */
+export const DESK_FILM: HeroFilm = {
+  video: '/videos/hero-bg.mp4', videoMobile: '/videos/hero-bg-m.mp4',
+  poster: '/images/hero-poster.webp', posterMobile: '/images/hero-poster-m.webp', posterMobileWidth: 720,
+  width: 1920, height: 1028,
+}
+
+/** The KM lens's film (DECISIONS #64): someone browsing an online store on a round table, cut
+    square around the laptop and the hand and looped forward and back (7.6 s, seamless). Source:
+    Pexels 5585952 (RDNE Stock project, Pexels licence). */
+export const LENS_FILM: HeroFilm = {
+  video: '/videos/lens.mp4', videoMobile: '/videos/lens-m.mp4',
+  poster: '/images/lens-poster.webp', posterMobile: '/images/lens-m-poster.webp', posterMobileWidth: 600,
+  width: 720, height: 720,
+}
+
 /** The file to play, or null while the video must not run. */
-export function useHeroVideo(): string | null {
+export function useHeroVideo(film: HeroFilm = DESK_FILM): string | null {
   const isDesktop = useMediaQuery('(min-width: 768px)')
   const reduced = useReducedMotion()
   const ambient = useAmbientMotion()
   const ready = useLoadedIdle()
   if (!ready || !ambient || (reduced && !forceFull()) || saveData()) return null
-  return isDesktop ? '/videos/hero-bg.mp4' : '/videos/hero-bg-m.mp4'
+  return isDesktop ? film.video : film.videoMobile
 }
 
-export function HeroMedia({ className = '', sizes = '(max-width: 860px) 45vw, 504px' }: { className?: string; sizes?: string }) {
-  const src = useHeroVideo()
+export function HeroMedia({ className = '', sizes = '(max-width: 860px) 45vw, 504px', film = DESK_FILM }: { className?: string; sizes?: string; film?: HeroFilm }) {
+  const src = useHeroVideo(film)
   const ref = useScene<HTMLSpanElement>((e, root) => {
     const video = root.querySelector('video')
     if (video) e.playInView(video)
@@ -55,13 +83,13 @@ export function HeroMedia({ className = '', sizes = '(max-width: 860px) 45vw, 50
     <span ref={ref} className={`hero-media ${className}`}>
       {/* fetchpriority low: the H1 is the LCP (the KM opener's film fills the hero, #62) */}
       <img
-        src="/images/hero-poster.webp"
-        srcSet="/images/hero-poster-m.webp 720w, /images/hero-poster.webp 1920w"
+        src={film.poster}
+        srcSet={`${film.posterMobile} ${film.posterMobileWidth}w, ${film.poster} ${film.width}w`}
         sizes={sizes}
         alt=""
         aria-hidden="true"
-        width="1920"
-        height="1028"
+        width={film.width}
+        height={film.height}
         decoding="async"
         {...{ fetchpriority: 'low' }}
       />

@@ -1,3 +1,3 @@
-// KM's one button family: the tide, the opener's water in every button (DECISIONS #62; vite.config
+// KM's one button family: the iris, the opener's lens in every button (DECISIONS #64; vite.config
 // aliases @look/button here for build:km).
-export { TideButton as LookButton } from './buttons/TideButton'
+export { IrisButton as LookButton } from './buttons/IrisButton'
