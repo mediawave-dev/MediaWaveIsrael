@@ -1,44 +1,45 @@
 /* K · the launch hold. Default (no JS, prerender, reduced): a plain list of the items with
    their art. html.motion-ready: the held stage. */
 .launch { padding-top: clamp(72px, 13vh, 150px); color: var(--ink); }
-.launch__intro { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); margin-bottom: clamp(20px, 4vh, 40px); }
-.launch__intro h2 { margin: 0 0 10px; max-width: 14ch; font: var(--display-w) clamp(3rem, 6vw, 6.2rem)/1.02 var(--display); color: var(--ink); }
-.launch__intro p { margin: 0; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.6 var(--text); }
+.launch__intro { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); margin-bottom: clamp(20px, 4vh, 40px); text-align: center; }
+.launch__intro h2 { margin: 0 auto 10px; max-width: 14ch; font: var(--display-w) clamp(3rem, 6vw, 6.2rem)/1.02 var(--display); color: var(--ink); }
+.launch__intro p { margin: 0 auto; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.6 var(--text); }
 
-.launch__kicker { margin: 0 0 10px; font: var(--ui-w) 0.85rem/1 var(--ui); color: var(--ink-2); font-variant-numeric: tabular-nums; text-align: start; }
+.launch__kicker { margin: 0 0 10px; font: var(--ui-w) 0.85rem/1 var(--ui); color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .launch__spec h3 { margin: 0 0 12px; font: var(--display-w) clamp(2.4rem, 5.6vw, 6.2rem)/1.04 var(--display); color: var(--ink); text-wrap: balance; }
-.launch__line { margin: 0 0 14px; max-width: 30ch; color: var(--ink-2); font: 400 clamp(1.05rem, 1.35vw, 1.3rem)/1.6 var(--text); }
-.launch__links { margin: 0; display: flex; flex-wrap: wrap; gap: 0 24px; }
+.launch__line { margin: 0 auto 14px; max-width: 30ch; color: var(--ink-2); font: 400 clamp(1.05rem, 1.35vw, 1.3rem)/1.6 var(--text); }
+.launch__links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 24px; }
 .launch__link { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font: var(--ui-w) 1rem/1.2 var(--ui); }
 @media (hover: hover) { .launch__link:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; } }
 .launch__big { margin: 0; font: var(--display-w) clamp(2.6rem, 5.6vw, 6.2rem)/1.04 var(--display); color: var(--ink); }
 
 /* the list (default) */
 .launch__stage { max-width: 1440px; margin-inline: auto; padding: 8px var(--gut) 24px; }
-.launch__specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 48px 32px; }
+.launch__specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 48px 32px; text-align: center; }
 .launch__spec--opening, .launch__turntable { display: none; }
-.launch__thumb { width: 120px; height: 120px; margin-bottom: 18px; border-radius: 16px; background: var(--face); display: grid; place-items: center; overflow: hidden; }
+.launch__thumb { width: 120px; height: 120px; margin: 0 auto 18px; border-radius: 16px; background: var(--face); display: grid; place-items: center; overflow: hidden; }
 .launch__thumb img { width: 84px; height: 84px; object-fit: contain; }
 .launch__spec h3 { font-size: clamp(2rem, 3.4vw, 3rem); }
-.launch__cta { max-width: 1440px; margin-inline: auto; padding: clamp(32px, 6vh, 64px) var(--gut) clamp(72px, 12vh, 140px); display: flex; }
+.launch__cta { max-width: 1440px; margin-inline: auto; padding: clamp(32px, 6vh, 64px) var(--gut) clamp(72px, 12vh, 140px); display: flex; justify-content: center; }
 
 /* the held stage */
 html.motion-ready .launch__hold { height: var(--hold-h); }
+/* centred at every width (Nati, 2026-10-13): the laptop on top, the announcement under it */
 html.motion-ready .launch__stage {
-  max-width: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center;
-  padding: 0 max(var(--gut), calc((100vw - 1440px) / 2 + var(--gut)));
+  max-width: none; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(16px, 3svh, 36px); padding: clamp(16px, 3svh, 36px) var(--gut) var(--safe-b);
 }
-html.motion-ready .launch__specs { grid-column: 1 / span 5; display: grid; gap: 0; }
+html.motion-ready .launch__specs { display: grid; gap: 0; width: 100%; max-width: 760px; }
 html.motion-ready .launch__spec { grid-area: 1 / 1; opacity: 0; transform: translateY(10px); transition: opacity 150ms ease, transform 150ms ease; }
 html.motion-ready .launch__spec--opening { display: block; }
 html.motion-ready .launch__thumb { display: none; }
-html.motion-ready .launch__spec h3 { font-size: clamp(2.6rem, 5.4vw, 6rem); }
-html.motion-ready .launch__turntable { grid-column: 6 / span 7; display: grid; place-items: center; perspective: 2400px; }
-html.motion-ready .launch__lap { width: min(780px, 52vw); transform: rotateY(-22deg) rotateX(6deg); }
+html.motion-ready .launch__spec h3 { font-size: clamp(2.4rem, 4.4vw, 4.6rem); }
+html.motion-ready .launch__turntable { order: -1; display: grid; place-items: center; perspective: 2400px; }
+html.motion-ready .launch__lap { width: max(150px, min(640px, 88vw, (100svh - var(--head) - var(--safe-b) - 300px) * 1.55)); transform: rotateY(-22deg) rotateX(6deg); }
 html.motion-ready .launch__lap .lap__lid { transform: rotateX(-86deg); }
-.launch__shot { position: absolute; inset: 0; display: grid; place-items: center; background: var(--face); opacity: 0; transition: opacity 150ms ease; }
-.launch__art { height: 82%; aspect-ratio: 1; display: grid; place-items: center; }
-.launch__art > div, .launch__art > img { width: 100% !important; height: 100% !important; object-fit: contain; }
+.launch__shot { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--face); opacity: 0; transition: opacity 150ms ease; }
+.launch__art { position: relative; height: 82%; aspect-ratio: 1; }
+.launch__art > div, .launch__art > img { position: absolute; inset: 0; width: auto !important; height: auto !important; object-fit: contain; }
 /* the screen is white: the logo takes the light palette; 52 % of the screen keeps the clear space */
 .launch__shot--opening { --logo-a: #0e1016; --logo-b: #002fa7; --logo-tag: #4e5468; }
 .launch__shot--opening .mw-logo { width: 52%; height: auto; }
@@ -53,8 +54,7 @@ html.motion-ready .launch__lap .lap__lid { transform: rotateX(-86deg); }
 @media (max-width: 860px) {
   html.motion-ready .launch__hold { height: var(--hold-h-phone); }
   /* the laptop above the announcement, never beside it; the floating buttons keep the bottom */
-  html.motion-ready .launch__stage { display: flex; flex-direction: column; justify-content: flex-start; gap: clamp(16px, 3svh, 32px); padding: clamp(16px, 3svh, 36px) var(--gut) var(--safe-b); }
-  html.motion-ready .launch__turntable { order: -1; }
+  html.motion-ready .launch__stage { justify-content: flex-start; }
   /* the laptop takes what the announcement (about 250 px) and the button band leave */
   html.motion-ready .launch__lap { width: max(150px, min(88vw, (100svh - var(--head) - var(--safe-b) - 270px) * 1.55)); }
   html.motion-ready .launch__spec h3 { font-size: clamp(2.2rem, 10.4vw, 3rem); }

@@ -1,9 +1,9 @@
 /* M / KM · the flight hold. Default (no JS, prerender, reduced): the tools stand in a grid
    with their captions. html.motion-ready: the held stage with an art box and a caption band. */
 .flight { padding-top: clamp(72px, 13vh, 150px); color: var(--ink); }
-.flight__intro { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); margin-bottom: clamp(20px, 4vh, 40px); }
+.flight__intro { max-width: 1440px; margin-inline: auto; padding-inline: var(--gut); margin-bottom: clamp(20px, 4vh, 40px); text-align: center; }
 .flight__intro h2 { margin: 0 0 10px; font: var(--display-w) clamp(2.8rem, 5.4vw, 5.6rem)/1.05 var(--display); color: var(--ink); }
-.flight__intro p { margin: 0; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.65 var(--text); }
+.flight__intro p { margin: 0 auto; max-width: 40ch; color: var(--ink-2); font: 400 clamp(1.1rem, 1.4vw, 1.3rem)/1.65 var(--text); }
 .flight__caption h3 { margin: 0 0 8px; font: var(--display-w) clamp(2rem, 3.6vw, 3.6rem)/1.08 var(--display); color: var(--ink); }
 .flight__caption p { margin: 0 auto 6px; max-width: 34ch; color: var(--ink-2); font: 400 clamp(1.02rem, 1.2vw, 1.15rem)/1.6 var(--text); }
 .flight__links { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 24px; }
@@ -18,29 +18,27 @@
 .flight__fly { display: grid; place-items: center; min-height: 230px; }
 .flight__fly .thing { font-size: 4.6px; }
 
-/* the held stage. Desktop: the caption at the start side (it reads first in RTL), vertically
-   centred, the flight in the rest of the width: clear of the cookie card and the floating
-   buttons at any width. Phones: the objects on top, the caption under them in the middle of
-   the screen, the bottom band left to the buttons (--safe-b). */
+/* the held stage, centred at every width (Nati, 2026-10-13): the objects on top, the caption
+   under them in the middle, the bottom band left to the floating buttons (--safe-b). */
 html.motion-ready .flight__hold { height: var(--hold-h); }
 html.motion-ready .flight__stage {
-  --cap-w: clamp(260px, 30vw, 440px); --cap-h: 240px; --gap: 40px;
-  --cx: calc(var(--gut) + (100% - 2 * var(--gut) - var(--cap-w) - var(--gap)) / 2); --cy: 50%;
+  --cap-h: clamp(170px, 24svh, 230px);
+  --cap-top: min(58%, calc(100% - var(--safe-b) - var(--cap-h)));
+  --cx: 50%; --cy: calc((16px + var(--cap-top) - 8px) / 2);
   display: block; max-width: none; padding: 0;
 }
-html.motion-ready .flight__artbox { display: block; position: absolute; top: 24px; bottom: 24px; left: var(--gut); right: calc(var(--gut) + var(--cap-w) + var(--gap)); }
+html.motion-ready .flight__artbox { display: block; position: absolute; top: 16px; bottom: calc(100% - var(--cap-top) + 8px); left: var(--gut); right: var(--gut); }
 html.motion-ready .flight__item { display: contents; }
 html.motion-ready .flight__fly { position: absolute; left: var(--cx); top: var(--cy); min-height: 0; display: block; opacity: 0; transform: translate(-50%, -50%) scale(0.1); }
 html.motion-ready .flight__fly .thing { font-size: 12px; }
 html.motion-ready .flight__stage.is-live .flight__fly { will-change: transform, opacity; }
 html.motion-ready .flight__caption {
-  position: absolute; right: var(--gut); top: 50%; width: var(--cap-w); height: var(--cap-h); margin-top: calc(var(--cap-h) / -2);
-  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: start;
+  position: absolute; left: var(--gut); right: var(--gut); top: var(--cap-top); height: var(--cap-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center;
   opacity: 0; transform: translateY(8px); pointer-events: none;
   transition: opacity 150ms ease, transform 150ms ease;
 }
-html.motion-ready .flight__caption p { margin-inline: 0; }
-html.motion-ready .flight__links { justify-content: flex-start; }
+html.motion-ready .flight__caption p { margin-inline: auto; }
 .flight__stage[data-active="0"] .flight__caption[data-i="0"], .flight__stage[data-active="1"] .flight__caption[data-i="1"],
 .flight__stage[data-active="2"] .flight__caption[data-i="2"], .flight__stage[data-active="3"] .flight__caption[data-i="3"],
 .flight__stage[data-active="4"] .flight__caption[data-i="4"], .flight__stage[data-active="5"] .flight__caption[data-i="5"],
@@ -53,15 +51,10 @@ html.motion-ready .flight__links { justify-content: flex-start; }
   html.motion-ready .flight__stage {
     --cap-h: clamp(150px, 24svh, 190px);
     --cap-top: min(54%, calc(100% - var(--safe-b) - var(--cap-h)));
-    --cx: 50%; --cy: calc((12px + var(--cap-top) - 8px) / 2);
+    --cy: calc((12px + var(--cap-top) - 8px) / 2);
   }
-  html.motion-ready .flight__artbox { top: 12px; bottom: calc(100% - var(--cap-top) + 8px); left: var(--gut); right: var(--gut); }
+  html.motion-ready .flight__artbox { top: 12px; }
   html.motion-ready .flight__fly .thing { font-size: 10px; }
-  html.motion-ready .flight__caption {
-    left: var(--gut); right: var(--gut); width: auto; top: var(--cap-top); margin-top: 0;
-    align-items: center; justify-content: flex-start; text-align: center;
-  }
-  html.motion-ready .flight__links { justify-content: center; }
 }
 html.disable-animations .flight__caption { transition: none !important; }
 /* OS reduced motion (CALM): the flight still follows scroll, the captions swap without travel */

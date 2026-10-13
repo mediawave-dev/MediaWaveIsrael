@@ -2,9 +2,9 @@
    Klein-blue bodies, white faces (DECISIONS #58). One soft shadow under each body, no filter. */
 .thing { display: block; position: relative; font-size: 10px; }
 .thing__body { position: relative; display: block; background: var(--obj); box-shadow: 0 2.6em 4em -1.8em var(--obj-shadow); }
-.thing__face { position: absolute; display: grid; place-items: center; overflow: hidden; background: var(--face); }
-.thing__art { display: grid; place-items: center; width: 82%; height: 82%; }
-.thing__art > div, .thing__art > img { width: 100% !important; height: 100% !important; object-fit: contain; }
+.thing__face { position: absolute; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--face); }
+.thing__art { position: relative; width: 82%; height: 82%; }
+.thing__art > div, .thing__art > img { position: absolute; inset: 0; width: auto !important; height: auto !important; object-fit: contain; }
 
 .thing--laptop .thing__body { width: 52em; height: 33em; border-radius: 1.4em 1.4em 0.6em 0.6em; }
 .thing--laptop .thing__face { inset: 1.2em 1.2em 1.8em; border-radius: 0.5em; }

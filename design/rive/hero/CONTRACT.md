@@ -51,4 +51,4 @@ The agreement between `src/look/parts/hero.riv` and `src/look/parts/HeroBuild.ts
 
 - `prefersReducedMotion = true` goes straight to the rest pose. The page itself never starts the build under reduced motion, under `?reduce=1`, on a repeat visit in the same session (`sessionStorage mw-hero-build`), or in the prerender: index.html decides before the first paint (`html.hero-build`).
 - Decorative: the canvas and the finished frame are `aria-hidden`; the H1, line and buttons above the screen carry the meaning. No text inside the canvas (bars only).
-- The build starts when the screen is at least 40 % in view; the canvas stops drawing off screen. If Rive has not loaded within 4 s, the finished frame and the film show and the build never starts late.
+- The build starts when the screen is at least 60 % in view (desktop: at the first scroll; phones: at once); the canvas stops drawing off screen. If Rive has not loaded within 4 s, the finished frame and the film show and the build never starts late.

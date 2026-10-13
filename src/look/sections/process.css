@@ -9,8 +9,8 @@
 .proc__fill { position: absolute; inset: 0; background: var(--ink); transform-origin: 100% 50%; transform: scaleX(1); }
 .proc__steps { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
 .proc__face { position: relative; aspect-ratio: 4 / 3; border-radius: 14px; background: var(--face); overflow: hidden; box-shadow: 0 0 0 7px #0e0e10, 0 0 0 8.5px #3a3a3d; margin: var(--bezel); }
-.proc__art { position: absolute; inset: 7%; display: grid; place-items: center; }
-.proc__art > div { width: 100% !important; height: 100% !important; }
+.proc__art { position: absolute; inset: 7%; }
+.proc__art > div { position: absolute; inset: 0; width: auto !important; height: auto !important; }
 .proc__off { display: none; position: absolute; inset: 0; background: #0b0b0d; transition: opacity 0.45s ease; }
 html.motion-ready .proc__off { display: block; }
 .proc__step[data-on] .proc__off { opacity: 0; }
@@ -28,3 +28,6 @@ html[data-look="m"] .proc__face { border-radius: 20px; box-shadow: 0 0 0 11px va
   .proc__face { max-width: 440px; }
 }
 html.disable-animations .proc__off { transition: none; }
+/* centred composition (Nati, 2026-10-13) */
+.proc { text-align: center; }
+.proc__step p { margin-inline: auto; }

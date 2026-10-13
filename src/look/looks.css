@@ -254,17 +254,17 @@ html[data-look] .legacy { --logo-a: #0e1016; --logo-b: #002fa7; --logo-tag: #4e5
 
 /* ── footer ── */
 .mw-foot { position: relative; background: var(--ground); color: var(--ink-2); box-shadow: inset 0 1px 0 var(--line); font-family: var(--text); }
-.mw-foot__in { max-width: 1440px; margin-inline: auto; padding: clamp(56px, 9vh, 96px) var(--gut) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; }
-.mw-foot__brand { grid-column: 1 / span 5; }
-.mw-foot__line { margin: 0; max-width: 32ch; font: var(--display-w) clamp(1.5rem, 2.2vw, 2rem)/1.3 var(--display); color: var(--ink); }
-.mw-foot__col { grid-column: span 3; }
+.mw-foot__in { max-width: 1440px; margin-inline: auto; padding: clamp(56px, 9vh, 96px) var(--gut) 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 40px; text-align: center; }
+.mw-foot__brand { grid-column: 1 / -1; }
+.mw-foot__line { margin: 0 auto; max-width: 32ch; font: var(--display-w) clamp(1.5rem, 2.2vw, 2rem)/1.3 var(--display); color: var(--ink); }
+.mw-foot__col { grid-column: span 4; }
 .mw-foot__col h2 { margin: 0 0 14px; font: var(--ui-w) 0.85rem/1.2 var(--ui); color: var(--ink); }
-.mw-foot__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.mw-foot__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .mw-foot a { color: var(--ink-2); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; } /* 44 px tap targets (production a11y fix 2bc9b25) */
 @media (hover: hover) { .mw-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; } }
 .mw-foot__col--wide { grid-column: span 4; }
 .mw-foot__bottom { max-width: 1440px; margin-inline: auto; padding: 0 var(--gut) 28px; }
-.mw-foot__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-top: 22px; box-shadow: inset 0 1px 0 var(--line); font-size: 0.85rem; }
+.mw-foot__base { display: flex; flex-wrap: wrap; justify-content: center; text-align: center; gap: 12px 24px; padding-top: 22px; box-shadow: inset 0 1px 0 var(--line); font-size: 0.85rem; }
 /* the sign-off: clear space of half the disc on every side (the disc is 14 % of the horizontal
    lockup's width, so 8 % of the width above and below; stacked: 34 % of its width) */
 .mw-foot .mw-foot__sign { display: grid; place-items: center; padding: max(80px, 8vw) var(--gut); }
@@ -273,7 +273,7 @@ html[data-look] .legacy { --logo-a: #0e1016; --logo-b: #002fa7; --logo-tag: #4e5
   .mw-foot .mw-foot__sign { padding: 64px var(--gut) 56px; }
   .mw-foot__sign .mw-logo { width: min(300px, 72vw); }
 }
-.mw-foot__base nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.mw-foot__base nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 20px; }
 .mw-foot__base a { min-height: 44px; }
 @media (max-width: 860px) {
   .mw-foot__brand, .mw-foot__col, .mw-foot__col--wide { grid-column: 1 / -1; }

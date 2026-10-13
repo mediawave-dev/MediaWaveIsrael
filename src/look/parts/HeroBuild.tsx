@@ -69,14 +69,14 @@ export function HeroBuild({ engine }: { engine: MotionEngine | null }) {
           clearTimeout(fallback)
           rive = r
           r.resizeDrawingSurfaceToCanvas()
-          // the build starts once the screen is well in view (never unseen below the fold), and
+          // the build starts once most of the screen is in view (on a desktop: at the first scroll), and
           // the canvas stops drawing whenever the screen is off screen
           let started = false
           seen = new IntersectionObserver(([e]) => {
-            if (e.intersectionRatio >= 0.4 && !started) { started = true; r.play() }
+            if (e.intersectionRatio >= 0.6 && !started) { started = true; r.play() }
             if (!started) return
             if (e.isIntersecting) r.startRendering(); else r.stopRendering()
-          }, { threshold: [0, 0.4] })
+          }, { threshold: [0, 0.6] })
           seen.observe(el)
         },
         onLoadError: () => { clearTimeout(fallback); showStatic() },
