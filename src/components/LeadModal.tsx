@@ -64,16 +64,23 @@ export default function LeadModal() {
             cleanup()
         }
 
+        // Both triggers wait an extra 10s: the halfway scroll arms a delayed open
+        let scrollTimer: ReturnType<typeof setTimeout> | undefined
         const handleScroll = () => {
+            if (scrollTimer) return
             const max = document.documentElement.scrollHeight - window.innerHeight
-            if (max > 0 && window.scrollY / max >= 0.5) open()
+            if (max > 0 && window.scrollY / max >= 0.5) {
+                scrollTimer = setTimeout(open, 10000)
+                window.removeEventListener('scroll', handleScroll)
+            }
         }
 
-        const timer = setTimeout(open, 60000)
+        const timer = setTimeout(open, 70000)
         window.addEventListener('scroll', handleScroll, { passive: true })
 
         function cleanup() {
             clearTimeout(timer)
+            clearTimeout(scrollTimer)
             window.removeEventListener('scroll', handleScroll)
             document.removeEventListener('click', onJump, true)
         }
