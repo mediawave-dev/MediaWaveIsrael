@@ -39,7 +39,7 @@ export default function ProcessLine() {
   })
 
   return (
-    <section ref={ref} id="process" className="proc" aria-labelledby="how-we-work-title">
+    <section ref={ref} id="process" className="proc" aria-labelledby="how-we-work-title" data-intent="interest">
       <div className="proc__in">
         <h2 id="how-we-work-title" data-zone="text">איך אנחנו עובדים</h2>
         <div className="proc__track">

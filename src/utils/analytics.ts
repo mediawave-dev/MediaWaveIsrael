@@ -15,6 +15,7 @@ export type TrackEvent =
   | 'cta_click'
   | 'form_submit'
   | 'lead_submit'
+  | 'lead_modal_open'
   | 'chat_open'
   | 'chat_handoff'
   | 'share_click'

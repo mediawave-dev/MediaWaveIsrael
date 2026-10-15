@@ -109,7 +109,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark">
+    <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark" data-intent="contact">
       <div className="ct__in">
         <div className="ct__side">
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>

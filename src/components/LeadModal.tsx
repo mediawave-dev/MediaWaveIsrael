@@ -7,6 +7,7 @@ import '../look/lead-modal.css'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { getWhatsAppUrl, WHATSAPP_URLS } from '../utils/whatsapp'
 import { track } from '../utils/analytics'
+import { createLeadIntent, type LeadIntent } from '../utils/lead-intent.js'
 
 // Same endpoint as Contact form
 const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
@@ -26,71 +27,35 @@ export default function LeadModal() {
         phone: '',
     })
 
+    // Open on intent, never on a bare timer (Nati, 2026-10-15). The old "10 s after halfway"
+    // trigger covered the whole story for anyone who read slowly (diagnosis: frames 21-37 of the
+    // phone film were all popup). lead-intent.js scores what the visitor does (engaged reading,
+    // time on the process and FAQ, opening FAQ answers, coming back to the tab, scrolling back up)
+    // and opens on two signals, or on one strong one (the pointer leaving through the top edge after
+    // real reading; reading to the footer and heading back up), and only at a calm moment: not while
+    // scrolling, typing, navigating by keyboard, jumping to an anchor, with the contact form in view,
+    // with a dialog (chat, accessibility, menu) open, or while the cookie banner waits for an answer.
+    // A WhatsApp, phone or mail click or any form submit counts as converted: never again.
+    const intentRef = useRef<LeadIntent | null>(null)
     useEffect(() => {
-        // Check if previously submitted (permanent)
-        const hasSubmitted = localStorage.getItem('leadModalSubmitted')
-        if (hasSubmitted) return
-
-        // Check if previously closed in this session (temporary)
-        const hasClosed = sessionStorage.getItem('leadModalClosed')
-        if (hasClosed) return
-
-        // Open on whichever comes first: reading halfway down the page, or
-        // 60s. The old flat 35s fired while most visitors were still on the
-        // hero. Scroll depth is the intent signal; the timer is the fallback
-        // for someone reading slowly without scrolling.
-        let opened = false
-
-        // Never interrupt someone mid-task: not while focus is on a link, a button or a field
-        // (keyboard navigation, typing in the contact form). The next scroll tries again.
-        // An in-page link is a deliberate jump (often to the contact form itself): its scroll never
-        // opens the popup. The link can lose focus before the scroll lands (the gate caught the popup
-        // taking focus at #contact), so the click itself marks the next 1.5 s as busy.
-        let jumping = 0
-        const onJump = (e: MouseEvent) => {
-            if ((e.target as Element | null)?.closest?.('a[href^="#"], a[href^="/#"]')) jumping = performance.now() + 1500
-        }
-        document.addEventListener('click', onJump, true)
-        const busy = () => {
-            if (performance.now() < jumping) return true
-            const a = document.activeElement
-            return !!a && a !== document.body && a.matches('a, button, input, textarea, select, [tabindex], [contenteditable]')
-        }
-
-        const open = () => {
-            if (opened || busy()) return
-            opened = true
-            setIsVisible(true)
-            cleanup()
-        }
-
-        // Both triggers wait an extra 10s: the halfway scroll arms a delayed open
-        let scrollTimer: ReturnType<typeof setTimeout> | undefined
-        const handleScroll = () => {
-            if (scrollTimer) return
-            const max = document.documentElement.scrollHeight - window.innerHeight
-            if (max > 0 && window.scrollY / max >= 0.5) {
-                scrollTimer = setTimeout(open, 10000)
-                window.removeEventListener('scroll', handleScroll)
-            }
-        }
-
-        const timer = setTimeout(open, 70000)
-        window.addEventListener('scroll', handleScroll, { passive: true })
-
-        function cleanup() {
-            clearTimeout(timer)
-            clearTimeout(scrollTimer)
-            window.removeEventListener('scroll', handleScroll)
-            document.removeEventListener('click', onJump, true)
-        }
-
-        return cleanup
+        const intent = createLeadIntent({
+            onOpen: (reason) => {
+                track('lead_modal_open', { reason })
+                setIsVisible(true)
+            },
+            isBusy: () => document.body.classList.contains('mw-consent-open'),
+            // Keys the previous trigger wrote: a visitor who already submitted or closed stays quiet
+            legacyConverted: ['leadModalSubmitted'],
+            legacyDismissed: ['leadModalClosed'],
+        })
+        intentRef.current = intent
+        return () => intent.destroy()
     }, [])
 
     const handleClose = () => {
         setIsVisible(false)
         sessionStorage.setItem('leadModalClosed', 'true')
+        intentRef.current?.dismissed()
     }
 
     // Dialog behavior (same pattern as ChatWidget): Escape closes, Tab stays
@@ -108,6 +73,7 @@ export default function LeadModal() {
             if (e.key === 'Escape') {
                 setIsVisible(false)
                 sessionStorage.setItem('leadModalClosed', 'true')
+                intentRef.current?.dismissed()
                 return
             }
 

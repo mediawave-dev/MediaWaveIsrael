@@ -99,7 +99,7 @@ export default function LaunchHold({ sectionId, holdId, heading, headingId, intr
   useIdleWarm(ref, n, setWarm)
 
   return (
-    <section ref={ref} id={sectionId} className="launch" aria-labelledby={headingId} data-theme="dark">
+    <section ref={ref} id={sectionId} className="launch" aria-labelledby={headingId} data-theme="dark" data-intent={sectionId === 'process' ? 'interest' : undefined}>
       <div className="launch__intro">
         <h2 id={headingId} data-zone="text">{heading}</h2>
         {intro && <p data-zone="text">{intro}</p>}

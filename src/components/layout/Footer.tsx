@@ -37,7 +37,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="mw-foot" data-theme="dark">
+    <footer className="mw-foot" data-theme="dark" data-intent="end">
       <div className="mw-foot__in">
         <div className="mw-foot__brand">
           <p className="mw-foot__line">עיצוב ופיתוח אתרים מקצועיים לעסקים</p>

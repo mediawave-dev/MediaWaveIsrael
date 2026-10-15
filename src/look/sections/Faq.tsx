@@ -22,7 +22,7 @@ export default function Faq() {
     })),
   }
   return (
-    <section id="faq" className="faq" aria-labelledby="faq-title" data-theme="light">
+    <section id="faq" className="faq" aria-labelledby="faq-title" data-theme="light" data-intent="interest">
       <div className="faq__in">
         <div className="faq__head">
           <h2 id="faq-title" data-zone="text">שאלות נפוצות</h2>
@@ -37,6 +37,7 @@ export default function Faq() {
                   <button
                     type="button"
                     className="faq__q"
+                    data-intent-signal
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${item._id}`}
                     onClick={() => setOpen(isOpen ? null : i)}
