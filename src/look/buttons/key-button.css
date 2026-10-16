@@ -1,0 +1,228 @@
+/* shot · the key, "המקש" (DECISIONS #87). A port of the approved lab, design/ideas/buttons/keycap.html.
+   A keycap lying on the desk. Four layers, one owner each:
+   .key__shadow  its contact shadow on the desk. Opacity only.
+   .key__skirt   the cap's side wall, with a hard ink rim where it meets the desk. Static.
+   .key__cap     the face with the printed legends. Transform only. It travels down over its own wall.
+   .key__render  the render pass (loading): an inverted copy of the face, revealed by clip-path,
+                 frame by frame at 25 fps. The label is printed twice, so it is never hidden.
+   Palette (D81): #ECEEF1 / #FFFFFF / #1B1D21 / #4A4F57 only. The lab's #D3D7DC and #6B717B are
+   re-expressed as ink or paper at alpha over the face they sit on (same pixels, no new tone);
+   opaque layers stack the alpha over a palette colour. The wall is the cap's side, not a line
+   under the label: it never touches the text and the face covers it when pressed. */
+.key {
+  /* sizes: face 49 + travel 7 = a 56px key */
+  --k-face-h: 49px; --k-travel: 7px; --k-r: 10px; --k-pad: 20px; --k-fs: 17px; --k-taper: 1px;
+  /* tone: ink cap, paper legends (primary) */
+  --k-face: #1B1D21; --k-on: #FFFFFF; --k-legend: rgba(255, 255, 255, 0.82); --k-led: #FFFFFF;
+  --k-skirt: rgba(27, 29, 33, 0.78);                                /* ink at alpha over the desk */
+  --k-skirt-rim: inset 0 -1px 0 #1B1D21, inset 0 0 0 1px rgba(27, 29, 33, 0.55);
+  --k-rim: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.07); /* a concave cap */
+  /* the render pass: paper at .37 over ink (3.4:1 against the face, the label 4.9:1 on it) */
+  --k-render: linear-gradient(rgba(255, 255, 255, 0.37), rgba(255, 255, 255, 0.37)) #1B1D21;
+  --k-render-on: #FFFFFF; --k-render-legend: #FFFFFF;
+  --k-ring: #1B1D21;
+  /* timing */
+  /* impeccable-disable-next-line bounce-easing: a keycap's spring return (DECISIONS #87), a few px */
+  --k-t-release: 300ms cubic-bezier(0.25, 1.75, 0.45, 1);  /* the key spring: a small overshoot past rest */
+  --k-t-press: 60ms cubic-bezier(0.5, 0, 1, 1);            /* a finger: accelerates into the bottom */
+  --k-t-touch: 150ms cubic-bezier(0.2, 0.7, 0.2, 1);       /* fingertip resting on it */
+
+  position: relative; isolation: isolate;
+  display: inline-grid; vertical-align: top; max-width: 100%;
+  margin: 0; padding: 0 0 var(--k-travel); border: 0; border-radius: var(--k-r);
+  background: none; color: var(--k-on);
+  font: 600 var(--k-fs)/1.2 var(--ui, system-ui, sans-serif); font-stretch: 100%; text-decoration: none; text-align: start;
+  white-space: normal; letter-spacing: normal;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  scroll-margin-block: 12px; /* Tab scrolls the whole focus ring (offset 4 + 2) into view, not just the key */
+}
+.key:hover { color: var(--k-on); text-decoration: none; }
+/* paper cap, ink legends: the header (sm default), or tone="paper" / className="key--paper" */
+.key--paper {
+  --k-face: #FFFFFF; --k-on: #1B1D21; --k-legend: #4A4F57; --k-led: #1B1D21;
+  --k-skirt: linear-gradient(rgba(27, 29, 33, 0.18), rgba(27, 29, 33, 0.18)) #FFFFFF;
+  --k-skirt-rim: inset 0 -1px 0 rgba(27, 29, 33, 0.6), inset 0 0 0 1px rgba(27, 29, 33, 0.2);
+  --k-rim: inset 0 0 0 1px rgba(27, 29, 33, 0.18);
+  /* ink pass: 16:1 against paper */
+  --k-render: #1B1D21; --k-render-on: #FFFFFF; --k-render-legend: rgba(255, 255, 255, 0.82);
+}
+.key[data-size="sm"] { --k-face-h: 40px; --k-travel: 5px; --k-r: 8px; --k-pad: 13px; --k-fs: 15px; }
+.key[data-block] { display: grid; width: 100%; }
+
+.key__shadow {
+  position: absolute; z-index: -2; inset: var(--k-travel) 3px 0; border-radius: var(--k-r);
+  box-shadow: 0 9px 14px -8px rgba(27, 29, 33, 0.55), 0 2px 2px -1px rgba(27, 29, 33, 0.22);
+  transition: opacity var(--k-t-release);
+}
+.key__skirt {
+  position: absolute; z-index: -1; inset: var(--k-travel) 0 0; border-radius: var(--k-r);
+  background: var(--k-skirt); box-shadow: var(--k-skirt-rim);
+}
+
+/* the face and its render copy share one grid, so the two prints line up to the pixel */
+.key__cap, .key__render {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label legend"; column-gap: 22px;
+  padding: 0 var(--k-pad) 0 12px; border-radius: var(--k-r);
+}
+.key__cap {
+  position: relative; overflow: hidden;
+  min-height: var(--k-face-h); min-width: 136px; margin-inline: var(--k-taper);
+  background: var(--k-face); color: var(--k-on); box-shadow: var(--k-rim);
+  transform: translateY(0);
+  transition: transform var(--k-t-release);
+}
+.key__label { grid-area: label; align-self: end; padding-bottom: 13px; text-wrap: balance; }
+.key__legend { grid-area: legend; align-self: start; margin-top: 8px; }
+
+/* block (the form): both legends gather in the reading corner, the Latin one above the Hebrew,
+   so the legend never floats 400px away on a wide face */
+.key[data-block] .key__cap, .key[data-block] .key__render { grid-template-columns: 1fr; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr; }
+.key[data-block] .key__legend { justify-self: start; margin-top: 8px; }
+.key[data-block] .key__label { padding-bottom: 9px; line-height: 1.15; }
+
+/* small (the header): the legend stays printed in its corner, so ↵ reads as a keycap print, not an appended arrow */
+.key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render { padding: 0 var(--k-pad) 0 9px; column-gap: 14px; }
+.key[data-size="sm"] .key__cap { min-width: 0; }
+.key[data-size="sm"] .key__label { align-self: center; padding-bottom: 0; }
+.key[data-size="sm"] .key__legend { margin-top: 6px; }
+
+/* the Latin legend */
+.key__legend {
+  position: relative; direction: ltr; display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  font: 500 12px/1 var(--ui, system-ui, sans-serif); font-stretch: 87.5%; color: var(--k-legend);
+  font-variant-numeric: tabular-nums;
+}
+.key .lg-rest, .key .lg-run, .key .lg-done { display: none; align-items: center; gap: 4px; }
+.key .lg-rest { display: inline-flex; }
+.key__glyph { width: 12px; height: 10px; display: block; transition: transform 80ms steps(2, end); }
+
+/* caps-lock LED, 6px: a ring when off, a solid dot in its own ring when on */
+.key__led { position: relative; flex: none; width: 6px; height: 6px; border-radius: 50%; box-shadow: inset 0 0 0 1.25px var(--k-legend); }
+.key__led::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--k-led);
+  box-shadow: 0 0 0 1px var(--k-face), 0 0 0 2px var(--k-legend);   /* the housing ring, crisp, no glow */
+  opacity: 0;
+}
+
+/* phones: the Latin word drops to its glyph, as on a compact keyboard; the LED stays */
+@media (max-width: 480px) {
+  .key { --k-pad: 16px; --k-fs: 16px; }
+  .key[data-size="sm"] { --k-fs: 15px; --k-pad: 12px; }
+  .key__cap, .key__render { column-gap: 14px; }
+  .key:not([data-block]) .lg-word { display: none; }
+}
+/* the header key where the phone header leaves it ~84px (431-559px, beside the logo and two
+   icons): the prints stack as on a real Israeli keycap, Latin top-left, Hebrew bottom-right,
+   so "בואו נדבר" stays on one line instead of wrapping or being cut */
+@media (max-width: 559px) {
+  .key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render {
+    grid-template-columns: auto; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr;
+    padding: 0 10px 0 9px;
+  }
+  .key[data-size="sm"] .key__legend { justify-self: end; margin-top: 5px; }
+  .key[data-size="sm"] .key__label { align-self: end; padding-bottom: 5px; line-height: 1.15; white-space: nowrap; }
+  .key[data-size="sm"] .lg-word { display: none; }
+}
+
+/* the render pass: the inverted face, revealed right to left, then cleared right to left */
+.key__render {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: var(--k-render); color: var(--k-render-on);
+  clip-path: inset(0 0 0 100%);
+}
+.key__render .key__legend { color: var(--k-render-legend); }
+.key__render .key__led { box-shadow: inset 0 0 0 1.25px var(--k-render-legend); }
+.key__render .key__led::after { background: var(--k-render-on); box-shadow: none; }
+
+/* ── hover: a fingertip resting on the key (fine pointers only) ── */
+@media (hover: hover) and (pointer: fine) {
+  .key:hover .key__cap { transform: translateY(2px); transition: transform var(--k-t-touch); }
+  .key:hover .key__shadow { opacity: 0.7; transition: opacity var(--k-t-touch); }
+  .key:hover .key__glyph { transform: translateX(-1.5px); }
+}
+.key[data-force="hover"] .key__cap { transform: translateY(2px); }
+.key[data-force="hover"] .key__shadow { opacity: 0.7; }
+.key[data-force="hover"] .key__glyph { transform: translateX(-1.5px); }
+
+/* ── pressed: the face goes all the way down over its own wall, the shadow is gone: in the desk ── */
+.key[data-pressed] .key__cap { transform: translateY(var(--k-travel)); transition: transform var(--k-t-press); }
+.key[data-pressed] .key__shadow { opacity: 0; transition: opacity var(--k-t-press); }
+
+/* ── focus ── */
+.key:focus { outline: none; }
+.key:focus-visible, .key[data-force="focus"] { outline: 2px solid var(--k-ring); outline-offset: 4px; }
+
+/* ── loading: the key held down while it renders ── */
+.key[data-state="loading"] { cursor: progress; }
+.key[data-state="loading"] .key__cap { transform: translateY(var(--k-travel)); transition: transform 90ms cubic-bezier(0.4, 0, 0.9, 1); }
+.key[data-state="loading"] .key__shadow { opacity: 0; transition: opacity 90ms linear; }
+.key[data-state="loading"] .key__render { animation: key-render 1200ms linear infinite; }
+.key[data-state="loading"] .lg-rest { display: none; }
+.key[data-state="loading"] .lg-run { display: inline-flex; }
+.key[data-state="loading"] .key__led::after { animation: key-led 400ms steps(1, end) infinite; }
+/* steps() set per keyframe interval: 15 frames in each 600ms half = one frame every 40ms = 25 fps (PAL) */
+@keyframes key-render {
+  0%   { clip-path: inset(0 0 0 100%); animation-timing-function: steps(15, end); }
+  50%  { clip-path: inset(0 0 0 0);    animation-timing-function: steps(15, end); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes key-led { 0% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ── sent: the key springs up and latches 2px down, like caps lock, and its LED is on ── */
+/* impeccable-disable-next-line bounce-easing: the key springs up and latches (DECISIONS #87) */
+.key[data-state="sent"] .key__cap { transform: translateY(2px); transition: transform 380ms cubic-bezier(0.25, 1.9, 0.45, 1); }
+.key[data-state="sent"] .key__shadow { opacity: 0.55; }
+.key[data-state="sent"] .lg-rest { display: none; }
+.key[data-state="sent"] .lg-done { display: inline-flex; }
+.key[data-state="sent"] .key__led::after { opacity: 1; transition: opacity 0ms linear 150ms; } /* on, as the face latches */
+
+/* ── error: the key comes back up, damped; the LED blinks twice and goes out ── */
+.key[data-state="error"] .key__cap { transition: transform 320ms cubic-bezier(0.2, 0.8, 0.3, 1); }
+.key[data-state="error"] .key__led::after { animation: key-led 320ms steps(1, end) 2; }
+.key__mark { display: none; }
+.key[data-state="error"] .key__mark {
+  display: inline-grid; place-items: center; width: 1.05em; height: 1.05em; margin-inline-end: 0.45em;
+  border-radius: 50%; box-shadow: inset 0 0 0 1.5px currentColor; font: 700 0.7em/1 var(--ui, system-ui, sans-serif); vertical-align: -0.1em;
+}
+
+/* ── disabled: a key that is not connected, sitting flat, no legend, no LED ── */
+.key:disabled, .key[aria-disabled="true"] { cursor: not-allowed; --k-face: #ECEEF1; --k-on: #4A4F57; --k-rim: inset 0 0 0 1px rgba(27, 29, 33, 0.11); }
+.key:disabled .key__cap, .key[aria-disabled="true"] .key__cap { transform: translateY(var(--k-travel)); }
+.key:disabled .key__shadow, .key[aria-disabled="true"] .key__shadow,
+.key:disabled .key__skirt, .key[aria-disabled="true"] .key__skirt { opacity: 0; }
+.key:disabled .key__legend, .key[aria-disabled="true"] .key__legend { visibility: hidden; }
+
+/* the shot hero asks for block (full width on phones). Where its CTA row turns into a row, the key
+   keeps its own width and the lg print, as shot-hero.css does for .iris (.shot-hero__ctas .iris
+   { width: auto }, from 1100px). Layout only; remove once the chapter targets .key itself. */
+@media (min-width: 1100px) {
+  .shot-hero__ctas .key[data-block] { display: inline-grid; width: auto; }
+  .shot-hero__ctas .key[data-block] .key__cap, .shot-hero__ctas .key[data-block] .key__render { grid-template-columns: 1fr auto; grid-template-areas: "label legend"; grid-template-rows: none; }
+  .shot-hero__ctas .key[data-block] .key__legend { justify-self: auto; }
+  .shot-hero__ctas .key[data-block] .key__label { padding-bottom: 13px; line-height: 1.2; }
+}
+
+/* ── reduced motion: nothing moves; a press flattens the key by opacity ── */
+@media (prefers-reduced-motion: reduce) {
+  .key__cap, .key__shadow, .key__skirt, .key__glyph, .key__led::after { transition: none !important; }
+  .key .key__cap, .key:hover .key__cap, .key .key__glyph, .key:hover .key__glyph { transform: none !important; }
+  .key[data-pressed] .key__skirt, .key[data-state="loading"] .key__skirt { opacity: 0; }
+  .key[data-pressed] .key__shadow, .key[data-state="loading"] .key__shadow { opacity: 0; }
+  .key[data-state="sent"] .key__shadow { opacity: 0.55; }
+  .key[data-state="loading"] .key__render { animation: none; clip-path: none; }
+  .key[data-state="loading"] .key__led::after { animation: none; opacity: 1; }
+  .key[data-state="error"] .key__led::after { animation: none; }
+}
+/* the site's accessibility panel (same hooks as iris-button.css) */
+html.motion-calm .key[data-state="loading"] .key__render { animation: none !important; clip-path: none; }
+html.motion-calm .key__led::after { animation: none !important; }
+/* the full stop: the accessibility switch (html.disable-animations) and ?reduce=1 (the motion engine
+   sets html.motion-reduced for both). Every state lands at once; loading shows the whole render pass
+   with the LED on, as under reduced motion. */
+html.disable-animations .key, html.disable-animations .key *, html.disable-animations .key *::after,
+html.motion-reduced .key, html.motion-reduced .key *, html.motion-reduced .key *::after { animation: none !important; transition: none !important; }
+html.disable-animations .key[data-state="loading"] .key__render,
+html.motion-reduced .key[data-state="loading"] .key__render { clip-path: none; }
+html.disable-animations .key[data-state="loading"] .key__led::after,
+html.motion-reduced .key[data-state="loading"] .key__led::after { opacity: 1; }

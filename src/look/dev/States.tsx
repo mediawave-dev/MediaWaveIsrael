@@ -7,7 +7,7 @@ import { LOOK } from '../look'
 import type { BtnForce, BtnState } from '../buttons/StateButton'
 import './states.css'
 
-const STRIP: { label: string; state: BtnState; force?: BtnForce }[] = [
+const STRIP: { label: string; state: BtnState; force?: BtnForce; disabled?: boolean }[] = [
   { label: 'מנוחה', state: 'idle' },
   { label: 'ריחוף', state: 'idle', force: 'hover' },
   { label: 'לחיצה', state: 'idle', force: 'pressed' },
@@ -15,6 +15,7 @@ const STRIP: { label: string; state: BtnState; force?: BtnForce }[] = [
   { label: 'שולח', state: 'loading' },
   { label: 'נשלח', state: 'sent' },
   { label: 'שגיאה', state: 'error' },
+  { label: 'מושבת', state: 'idle', disabled: true },
 ]
 
 function Live() {
@@ -40,16 +41,23 @@ function Live() {
 function Ground({ theme }: { theme?: 'dark' | 'light' }) {
   return (
     <section className="st" data-theme={theme}>
-      <h1>{LOOK === 'k' ? 'כפתור המוצר' : 'העדשה'}{theme ? (theme === 'dark' ? ' · במה' : ' · חלל') : ''}</h1>
+      <h1>{LOOK === 'k' ? 'כפתור המוצר' : LOOK === 'shot' ? 'המקש' : 'העדשה'}{theme ? (theme === 'dark' ? ' · במה' : ' · חלל') : ''}</h1>
       <Live />
       <ul className="st__strip">
         {STRIP.map((s) => (
           <li key={s.label}>
-            <LookButton state={s.state} force={s.force}>בואו נדבר על הפרויקט שלכם</LookButton>
+            <LookButton state={s.state} force={s.force} disabled={s.disabled}>בואו נדבר על הפרויקט שלכם</LookButton>
             <span>{s.label}</span>
           </li>
         ))}
         <li><LookButton size="sm">בואו נדבר</LookButton><span>קטן (כותרת)</span></li>
+        <li><LookButton block>שליחת הודעה</LookButton><span>ברוחב מלא (טופס)</span></li>
+        {LOOK === 'shot' && STRIP.slice(0, 7).map((s) => (
+          <li key={`paper-${s.label}`}>
+            <LookButton className="key--paper" state={s.state} force={s.force}>צרו קשר</LookButton>
+            <span>מקש נייר · {s.label}</span>
+          </li>
+        ))}
       </ul>
     </section>
   )

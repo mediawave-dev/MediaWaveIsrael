@@ -4,5 +4,7 @@ import { LOOK } from './look'
 import { ProductButton } from './buttons/ProductButton'
 import { LensButton } from './buttons/LensButton'
 import { IrisButton } from './buttons/IrisButton'
+import { KeyButton } from './buttons/KeyButton'
 
-export const LookButton = LOOK === 'k' ? ProductButton : LOOK === 'm' ? LensButton : IrisButton
+// shot: the key, "המקש" (DECISIONS #87). km keeps the iris.
+export const LookButton = LOOK === 'k' ? ProductButton : LOOK === 'm' ? LensButton : LOOK === 'shot' ? KeyButton : IrisButton

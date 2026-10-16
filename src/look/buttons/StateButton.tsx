@@ -49,17 +49,31 @@ export interface Pointer {
 const finePointer = () => typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
 export function StateButton({
-  cls, render, onPoint, children, href, target, rel, type = 'button', state = 'idle', force, size = 'lg',
+  cls, render, onPoint, pressHold = 0, spaceOnLink = true, children, href, target, rel, type = 'button', state = 'idle', force, size = 'lg',
   block, disabled, className = '', ariaLabel, live, zone, onClick,
 }: LookButtonProps & {
   cls: string
   render: (label: ReactNode, state: BtnState) => ReactNode
   /** Called with the pointer position (fine pointers only), and with null on leave. */
   onPoint?: (el: HTMLElement, p: Pointer | null) => void
+  /** Keep data-pressed at least this long (ms), so a quick tap still reads as a full press. Default 0. */
+  pressHold?: number
+  /** Space presses a link too (default). A family can turn it off: Space does not follow a link. */
+  spaceOnLink?: boolean
 }) {
   const [pressed, setPressed] = useState(false)
   const fine = useRef(false)
+  const downAt = useRef(0)
+  const holdTimer = useRef(0)
   useEffect(() => { fine.current = finePointer() }, [])
+  useEffect(() => () => window.clearTimeout(holdTimer.current), [])
+  const press = () => { window.clearTimeout(holdTimer.current); downAt.current = performance.now(); setPressed(true) }
+  const release = () => {
+    window.clearTimeout(holdTimer.current)
+    const left = pressHold - (performance.now() - downAt.current)
+    if (left > 0) holdTimer.current = window.setTimeout(() => setPressed(false), left)
+    else setPressed(false)
+  }
   const label = state === 'idle' ? children : STATE_LABEL[state]
 
   const point = (e: React.PointerEvent<HTMLElement>) => {
@@ -78,16 +92,16 @@ export function StateButton({
     'aria-label': ariaLabel,
     onPointerEnter: point,
     onPointerMove: point,
-    onPointerDown: () => setPressed(true),
-    onPointerUp: () => setPressed(false),
-    onPointerCancel: () => setPressed(false),
+    onPointerDown: press,
+    onPointerUp: release,
+    onPointerCancel: release,
     onPointerLeave: (e: React.PointerEvent<HTMLElement>) => {
-      setPressed(false)
+      release()
       if (onPoint && fine.current) onPoint(e.currentTarget, null)
     },
-    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === ' ' || e.key === 'Enter') setPressed(true) },
-    onKeyUp: () => setPressed(false),
-    onBlur: () => setPressed(false),
+    onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || (e.key === ' ' && (spaceOnLink || !href))) press() },
+    onKeyUp: release,
+    onBlur: release,
     onClick,
   }
   const inner = render(<span aria-live={live ? 'polite' : undefined}>{label}</span>, state)

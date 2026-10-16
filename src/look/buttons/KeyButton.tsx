@@ -1,0 +1,120 @@
+// shot · the key, "המקש" (DECISIONS #87; lab: design/ideas/buttons/keycap.html). Every button is a
+// key from the keyboard on Nati's desk, mostly Enter: the key that runs, sends and confirms. Press
+// it and it really goes all the way down. The Hebrew label is the Hebrew legend (bottom-right, as
+// on an Israeli keyboard); "Enter" is the Latin legend (top-left), next to a caps-lock style LED.
+// Layers, one owner each: .key__shadow opacity, .key__skirt static, .key__cap transform,
+// .key__render clip-path (loading: an inverted copy of the face, so the label is never hidden).
+// Loading counts real frames at 25 fps (PAL) in the legend; sent latches 2px down with the LED on.
+// Tone: ink (lg, block) or paper (sm, the header) by default; `tone` or className="key--paper" picks.
+
+import { useEffect, useRef, type ReactNode, type RefObject } from 'react'
+import { StateButton, type BtnState, type LookButtonProps } from './StateButton'
+import './key-button.css'
+
+export type KeyTone = 'ink' | 'paper'
+
+export interface KeyButtonProps extends LookButtonProps {
+  /** ink cap with paper legends, or a paper cap with ink legends. Default: paper for sm, ink otherwise. */
+  tone?: KeyTone
+}
+
+/** A quick tap still reads as a key that went down (the lab's minimum hold). */
+const PRESS_HOLD_MS = 90
+/** One PAL frame: 25 fps. */
+const FRAME_MS = 40
+
+const pad = (n: number) => String(n).padStart(2, '0')
+/** MM:SS:FF at 25 fps. */
+export const timecode = (f: number) => `${pad(Math.floor(f / 1500))}:${pad(Math.floor(f / 25) % 60)}:${pad(f % 25)}`
+
+/** Reduced motion, the site's calm and stop switches, or ?reduce=1 (html.motion-reduced): the counter
+ *  steps once a second instead of 25 times. Read on every frame, so a switch flipped mid-render applies. */
+const calm = (mq: MediaQueryList) => {
+  const html = document.documentElement.classList
+  return mq.matches || html.contains('disable-animations') || html.contains('motion-reduced') || html.contains('motion-calm')
+}
+
+/** Write without replacing the text node React owns. */
+const writeText = (el: HTMLElement | null, s: string) => {
+  if (!el) return
+  if (el.firstChild) el.firstChild.nodeValue = s
+  else el.textContent = s
+}
+
+/** Count real elapsed frames while loading; write only when the shown frame changes. */
+function useTimecode(state: BtnState, nodes: RefObject<HTMLSpanElement>[]) {
+  useEffect(() => {
+    if (state !== 'loading') return
+    const write = (s: string) => nodes.forEach((n) => writeText(n.current, s))
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const t0 = performance.now()
+    let last = 0
+    let raf = 0
+    const tick = () => {
+      const f = Math.floor((performance.now() - t0) / FRAME_MS)
+      const shown = calm(mq) ? f - (f % 25) : f
+      if (shown !== last) { last = shown; write(timecode(shown)) }
+      raf = requestAnimationFrame(tick)
+    }
+    write(timecode(0))
+    raf = requestAnimationFrame(tick)
+    return () => { cancelAnimationFrame(raf); write(timecode(0)) }
+  }, [state, nodes])
+}
+
+// ↵ as printed on the Enter key. It points left, which is "forward" in RTL, so it is not mirrored.
+const EnterGlyph = () => (
+  <svg className="key__glyph" viewBox="0 0 12 10" aria-hidden="true" focusable="false">
+    <path d="M10.6 1v4.6H1.8M4.4 3 1.8 5.6l2.6 2.6" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+const CheckGlyph = () => (
+  <svg className="key__glyph" viewBox="0 0 12 10" aria-hidden="true" focusable="false">
+    <path d="M1.5 5.4 4.4 8.2 10.5 1.8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+/** One print of the face: the label and the aria-hidden Latin legend. Stamped twice (face, render). */
+function KeyPrint({ label, tc }: { label: ReactNode; tc: RefObject<HTMLSpanElement> }) {
+  return (
+    <>
+      <span className="key__label"><span className="key__mark" aria-hidden="true">!</span>{label}</span>
+      <span className="key__legend" aria-hidden="true">
+        <span className="key__led" />
+        <span className="lg-rest"><span className="lg-word">Enter</span><EnterGlyph /></span>
+        <span className="lg-run"><span className="key__tc" ref={tc}>00:00:00</span></span>
+        <span className="lg-done"><CheckGlyph /></span>
+      </span>
+    </>
+  )
+}
+
+export function KeyButton({ tone, className = '', ...props }: KeyButtonProps) {
+  const faceTc = useRef<HTMLSpanElement>(null)
+  const renderTc = useRef<HTMLSpanElement>(null)
+  const nodes = useRef([faceTc, renderTc]).current
+  useTimecode(props.state ?? 'idle', nodes)
+  const paper = (tone ?? (props.size === 'sm' ? 'paper' : 'ink')) === 'paper'
+
+  return (
+    <StateButton
+      {...props}
+      className={`${paper ? 'key--paper ' : ''}${className}`.trim()}
+      cls="key"
+      pressHold={PRESS_HOLD_MS}
+      spaceOnLink={false}
+      render={(label) => (
+        <>
+          <span className="key__shadow" aria-hidden="true" />
+          <span className="key__skirt" aria-hidden="true" />
+          <span className="key__cap">
+            <KeyPrint label={label} tc={faceTc} />
+            <span className="key__render" aria-hidden="true">
+              <KeyPrint label={label} tc={renderTc} />
+            </span>
+          </span>
+        </>
+      )}
+    />
+  )
+}
