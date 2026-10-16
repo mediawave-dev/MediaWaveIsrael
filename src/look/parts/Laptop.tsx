@@ -6,12 +6,15 @@
 import { forwardRef, type ReactNode } from 'react'
 import './laptop.css'
 
-export const Laptop = forwardRef<HTMLDivElement, { children?: ReactNode; className?: string }>(function Laptop({ children, className = '' }, ref) {
+// `back` (optional, the shot's build): what the lid's outer side carries, seen only from behind
+// while the laptop is closed (a face turned away with backface-visibility hidden).
+export const Laptop = forwardRef<HTMLDivElement, { children?: ReactNode; className?: string; back?: ReactNode }>(function Laptop({ children, className = '', back }, ref) {
   return (
     <div ref={ref} className={`lap ${className}`} aria-hidden="true">
       <div className="lap__lid">
         <div className="lap__screen">{children}</div>
         <span className="lap__cam" />
+        {back && <div className="lap__back">{back}</div>}
       </div>
       <div className="lap__base"><span className="lap__notch" /></div>
     </div>

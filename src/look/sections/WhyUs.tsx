@@ -9,9 +9,9 @@ import { useScene } from '../../motion/ScrollEngineProvider'
 import { LottieIcon } from '../../components/ui/LottieIcon'
 import './why.css'
 
-const ITEMS = [
+export const WHY_ITEMS = [
   { id: 'tech', lottie: '/animations/2/computer%20technician.json', title: 'אתר מהיר שלא נתקע', line: 'נטען כמעט מיד ועובד חלק בכל טלפון ומחשב.' },
-  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'שימצאו אתכם, גם ב-AI', line: "היום מחפשים לא רק בגוגל, גם אצל צ'אטבוטים. בונים אתר שיופיע בשני המקומות." },
+  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'שימצאו אתכם, גם בחיפושי AI', line: "היום מחפשים לא רק בגוגל, גם אצל צ'אטבוטים. בונים אתר שיופיע בשני המקומות." },
   { id: 'personal', lottie: '/animations/6%20personal/contact%20us.json', title: 'ליווי אישי', line: 'מדברים ישירות עם המפתח, בלי מתווכים.' },
 ]
 
@@ -40,7 +40,7 @@ export default function WhyUs() {
         <h2 id="why-title" data-zone="text">למה לעבוד איתנו?</h2>
         <p className="why__lead" data-zone="text">שלושה דברים שמבדילים אותנו</p>
         <ul className="why__list">
-          {ITEMS.map((it, i) => {
+          {WHY_ITEMS.map((it, i) => {
             const on = !lit || lit[i]
             return (
               <li key={it.id} className="why__item">

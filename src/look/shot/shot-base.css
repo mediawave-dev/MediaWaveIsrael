@@ -1,0 +1,336 @@
+/* shot · the desk's shared base (SPEC 1.3-1.6, 1.11, 1.12; DECISIONS #81-#86). Written for 390 first,
+   widened at 768 and 1100. Tokens live in src/look/looks.css (html[data-look="shot"]); this file
+   holds the type scale, the paper primitives, the hold heights and the skins the shot puts on the
+   shared chrome (header, menu, footer, cookie strip, accessibility and chat panels) and on the
+   reused objects (the laptop, the Things).
+
+   Two selector rules keep the other looks and the section files safe:
+   - every rule on a shared class (.mw-*, .lap, .thing, the widgets) is scoped to
+     html[data-look="shot"], because the dev server loads every look's CSS at once;
+   - the shot-only primitives (.shot-*) stay at one class and their children at zero specificity
+     (:where), so a section's own class (shot-meet.css, shot-process.css, ...) always wins.
+   Sizes in rem (the accessibility text scale multiplies the root, 18px). No text under 0.9rem
+   (16px). Colours: table, paper, ink, ink-2 and ink at an alpha only. */
+
+/* The viewport clips horizontally (clip on the root reaches the viewport as hidden; clip makes no
+   scroll container, so sticky stages still stick). The body clip alone did not stop it: before
+   the chapters' own stylesheets arrive (they load without blocking) the desk objects show at
+   their natural size, a phone zoomed the page out to fit 520px and it opened scrolled 130px
+   sideways, a 0.154 layout shift when the styles landed (measured at 390, 4x CPU, 1.6 Mbps).
+   A clip on main or on each chapter did not help: the overflow escapes through positioned
+   descendants; only the root level stops the zoom-out (measured: innerWidth 520 -> 390). */
+html[data-look="shot"],
+html[data-look="shot"] body { overflow-x: clip; }
+/* Every chapter is the containing block of its own absolute art from the entry stylesheet on.
+   Before a chapter's stylesheet arrived, its ink line (.shot-line, absolute) attached to the
+   first viewport and was drawn full height over the hero, then jumped away (a 0.013 shift).
+   Chapters only: main also holds fixed layers (the lead dialog, the --safe-b probe), and a
+   blanket `main > *` turned the dialog into a block at the top of the page and the probe into
+   an empty inline box that measured 0 (audit, 16.10). */
+html[data-look="shot"] main > :is(section, .shot-bw) { position: relative; }
+
+/* ── type scale (SPEC 1.3) ── */
+html[data-look="shot"] {
+  --shot-h1: clamp(2.2rem, 13.8vw, 3.4rem);
+  --shot-h2: clamp(2.2rem, 10vw, 3rem);       /* chapter headings printed on the table */
+  --shot-big: clamp(2rem, 9vw, 2.6rem);       /* the big lines (process) */
+  --shot-h3: 1.35rem;                         /* labels and meet */
+  --shot-h3-step: 1.45rem;                    /* the process steps */
+  --shot-body: 1rem;
+  --shot-small: 0.9rem;                       /* receipt, kicker, card label, strip, footer base: the floor */
+  --shot-btn: 1.1rem;
+}
+@media (max-width: 359px) { html[data-look="shot"] { --shot-h1: clamp(2.2rem, 12.8vw, 3.4rem); } }
+@media (max-height: 700px) and (max-width: 1099px) { html[data-look="shot"] { --shot-h1: clamp(2.2rem, 13.8vw, 2.67rem); } }
+@media (max-height: 700px) and (max-width: 359px) { html[data-look="shot"] { --shot-h1: clamp(2.2rem, 12.8vw, 2.67rem); } }
+@media (min-width: 1100px) {
+  html[data-look="shot"] {
+    --shot-h1: clamp(3.6rem, 6.4vw, 6.2rem);
+    --shot-h2: 3.4rem;
+    --shot-big: 3.2rem;
+    --shot-h3: 1.5rem;
+    --shot-h3-step: 1.6rem;
+    --shot-body: 1.05rem;
+  }
+}
+
+/* Headings: 800 at 75% width, never italic. The H1 is never balanced, split or faded (it is the LCP). */
+.shot-h1, .shot-h2, .shot-big, .shot-h3 { margin: 0; color: var(--ink); font-family: var(--display); font-weight: 800; font-stretch: 75%; font-style: normal; }
+.shot-h1 { font-size: var(--shot-h1); line-height: 1.02; }
+.shot-h2 { font-size: var(--shot-h2); line-height: 1.05; text-wrap: balance; }
+.shot-big { font-size: var(--shot-big); line-height: 1.1; }
+.shot-h3 { font-size: var(--shot-h3); line-height: 1.15; }
+.shot-h3--step { font-size: var(--shot-h3-step); }
+.shot-body { margin: 0; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
+.shot-small { margin: 0; color: var(--ink-2); font: 400 var(--shot-small)/1.6 var(--text); }
+
+/* ── layout primitives (SPEC 1.4) ── */
+
+/* chapter headings printed on the table: centred (#61), never transformed */
+.shot-table-head { display: block; text-align: center; padding-inline: var(--gut); margin-block: 0 24px; }
+:where(.shot-table-head) > h2 { margin: 0; color: var(--ink); font: 800 var(--shot-h2)/1.05 var(--display); font-stretch: 75%; text-wrap: balance; }
+:where(.shot-table-head) > p { margin: 12px auto 0; max-width: 34ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
+@media (min-width: 1100px) { .shot-table-head { margin-block: 0 40px; } }
+
+/* a sheet of paper on the table: 366px at 390 (12px of table on each side) */
+.shot-sheet {
+  --sheet-max: 1160px;
+  display: block; box-sizing: border-box;
+  width: min(100% - 2 * var(--gut), var(--sheet-max)); margin-inline: auto;
+  background: var(--paper); color: var(--ink); box-shadow: var(--paper-shadow); border-radius: 2px;
+}
+@media (min-width: 768px) and (max-width: 1099px) { .shot-sheet { --sheet-max: 720px; } }
+
+/* a small paper card (labels, the contact card) */
+.shot-label { box-sizing: border-box; max-width: 366px; padding: 20px; background: var(--paper); color: var(--ink); box-shadow: var(--paper-shadow); border-radius: 2px; }
+@media (min-width: 1100px) { .shot-label { max-width: 420px; } }
+
+/* the ink line: a faint ruled track and the ink that the scroll draws down it (inkLine). Without
+   the engine (no JS, prerender, REDUCE) the line is drawn in full; with it the helper owns scaleY. */
+.shot-line { position: absolute; top: 0; bottom: 0; inset-inline-start: 14px; width: 2px; background: var(--line); pointer-events: none; }
+.shot-line__fill { position: absolute; inset: 0; display: block; background: var(--ink); transform-origin: 50% 0; }
+html.motion-ready .shot-line__fill { transform: scaleY(0); }
+
+/* the move helpers toggle this from their ScrollTrigger onToggle: at most 2-3 layers at a time */
+html[data-look="shot"] .is-scrubbing { will-change: transform; }
+
+/* a text link on the table or on paper: 44px tall, no static underline, a contained hover */
+.shot-link {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding-inline: 10px;
+  color: var(--ink); font: 700 1rem/1.2 var(--ui); text-decoration: none; border-radius: 2px;
+}
+@media (hover: hover) and (pointer: fine) { .shot-link:hover { color: var(--ink); background: rgba(27, 29, 33, 0.06); text-decoration: none; } }
+
+/* focus (SPEC 1.15): a 3px ink ring. :where keeps it at the lowest weight, so IrisButton keeps its 4px. */
+html[data-look="shot"] :where(:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+/* a focused field or link is never scrolled under the dock or the cookie strip (WCAG 2.4.11): the
+   browser keeps --safe-b clear at the bottom, as --head at the top */
+html[data-look="shot"] { scroll-padding-bottom: var(--safe-b); }
+/* the skip link (Layout's legacy utilities paint it sky on sky-ink, 3.4:1 and off-palette): ink and paper */
+html[data-look="shot"] a[href="#main-content"]:focus {
+  background: var(--ink); color: var(--paper); border-radius: 2px; font: 700 1rem/1.4 var(--ui); text-decoration: none;
+}
+
+/* the probe JS reads to resolve --safe-b in px (camera.ts safeB(), ShotHome renders it once) */
+.shot-probe { position: fixed; bottom: 0; inset-inline-start: 0; width: 0; height: var(--safe-b); visibility: hidden; pointer-events: none; }
+
+/* Suspense fallbacks: the storyboard's px model of each chapter (390 / 1100+), so a lazy chunk
+   arriving never moves what is below it. Measured 2026-10-16 on the built chapters (390x844, 1440x900). */
+.shot-fb { display: block; }
+.shot-fb--meet { min-height: 1375px; }
+.shot-fb--choose { min-height: 2887px; }
+.shot-fb--build { min-height: calc(300svh + 1896px); }
+.shot-fb--start { min-height: 2880px; }
+.shot-fb--deliver { min-height: 200svh; }
+@media (min-width: 1100px) {
+  .shot-fb--meet { min-height: 1354px; }
+  .shot-fb--choose { min-height: 2199px; }
+  .shot-fb--build { min-height: calc(350svh + 1720px); }
+  .shot-fb--start { min-height: 2410px; }
+  .shot-fb--deliver { min-height: 240svh; }
+}
+
+/* ── holds (SPEC 1.4): heights only with the engine running (looks.css .hold reads --hold-h).
+   These are the numbers the storyboard's held-share maths uses: change them only together. ── */
+html[data-look="shot"] .hold[data-hold="dive"] { --hold-h: 200svh; }
+html[data-look="shot"] .hold[data-hold="build"] { --hold-h: 300svh; }
+html[data-look="shot"] .hold[data-hold="pullback"] { --hold-h: 200svh; }
+@media (min-width: 1100px) {
+  html[data-look="shot"] .hold[data-hold="dive"] { --hold-h: 230svh; }
+  html[data-look="shot"] .hold[data-hold="build"] { --hold-h: 350svh; }
+  html[data-look="shot"] .hold[data-hold="pullback"] { --hold-h: 240svh; }
+}
+
+/* CSS mirrors of useShotPolicy (SPEC 1.6). Short viewports (stage under 560px): the dive and the
+   pull-back fall into the flow with no hold. A scaled text size: the hero's text needs the room. The
+   build and pull-back stages carry no text, so they keep their holds under the text scale. */
+@media (max-height: 615px) {
+  html.motion-ready .shot-hero .hold, html.motion-ready .shot-deliver .hold { height: auto; }
+  html.motion-ready .shot-hero .hold__stage, html.motion-ready .shot-deliver .hold__stage { position: static; height: auto; }
+}
+html.text-scaled .shot-hero .hold { height: auto; }
+html.text-scaled .shot-hero .hold__stage { position: static; height: auto; }
+
+/* ── header (SPEC 1.11): the desk's far edge ── */
+html[data-look="shot"] .mw-head { height: var(--head); background: var(--table); box-shadow: inset 0 -1px 0 var(--line); }
+/* the accessibility icon sits in the header at every width; the side tab over the page is gone */
+html[data-look="shot"] .mw-head__a11y { display: inline-flex; }
+html[data-look="shot"] .mw-a11y-tab { display: none !important; }
+/* the compact logo's heights (24 / 21 / 26px) and 'בואו נדבר' from 431px are the shared rules in looks.css */
+
+/* mobile menu: a white sheet of paper on the table, an index of the page's chapters in the display
+   face, ruled like the FAQ pad; the chapter in view when it opened carries an ink dot. The sheet
+   scrolls on a short phone (Lenis is off inside it, data-lenis-prevent). */
+html[data-look="shot"] .mw-menu { background: var(--paper); color: var(--ink); overflow-y: auto; overscroll-behavior: contain; }
+html[data-look="shot"] .mw-menu nav { gap: 0; }
+html[data-look="shot"] .mw-menu nav a {
+  display: flex; align-items: center; gap: 12px; min-height: 60px;
+  color: var(--ink); font: 800 clamp(1.9rem, 8vw, 2.6rem)/1.2 var(--display); font-stretch: 75%; text-decoration: none;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+html[data-look="shot"] .mw-menu nav a[aria-current]::after {
+  content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--ink);
+}
+html[data-look="shot"] .mw-menu__foot { padding-top: 28px; color: var(--ink); font: 400 1rem/1.6 var(--text); }
+html[data-look="shot"] .mw-menu__foot > a[dir="ltr"],
+html[data-look="shot"] .mw-menu__foot > .mw-menu__wa { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); }
+html[data-look="shot"] .mw-menu__foot > .mw-menu__wa { font-weight: 600; }
+/* the shared .mw-menu__foot a { color: var(--ink-2) } (0,1,1) beats the button's own colour
+   (0,1,0) and left 'בואו נדבר' ink-2 on ink (1.6:1): give the LookButton its label colour back */
+html[data-look="shot"] .mw-menu__foot > a:not([dir="ltr"], .mw-menu__wa) { color: var(--btn-fg); }
+/* a short phone: the index and the contact block both fit without scrolling down to 600px */
+@media (max-height: 700px) {
+  html[data-look="shot"] .mw-menu { padding-top: calc(var(--head) + 8px); padding-bottom: 20px; }
+  html[data-look="shot"] .mw-menu nav a { min-height: 52px; font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  html[data-look="shot"] .mw-menu__foot { gap: 6px; padding-top: 16px; }
+}
+/* the sheet settles 8px as it fades in (framer owns the 200ms opacity) */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-look="shot"]:not(.disable-animations) .mw-menu > nav,
+  html[data-look="shot"]:not(.disable-animations) .mw-menu__foot { animation: shot-menu-in 200ms var(--ease-out) both; }
+}
+@keyframes shot-menu-in { from { transform: translateY(-8px); } }
+
+/* ── footer (S10): the sign-off. It lies on the same table as the pull-back stage (no top hairline:
+   the desk does not end there), the Horizon ident first, stamped right under the phone the page
+   ends in (Footer.tsx renders it first only in this look), then the tagline in the display face,
+   the two columns and the base. No text under 16px, links 44px, centred (#61), contained hovers
+   (no underline). The dock is hidden over the footer, so the bottom only clears the safe area.
+   The ident's own ScrollTrigger (AnimatedLogo mode="scroll") is untouched (#53). ── */
+html[data-look="shot"] .mw-foot { background: var(--table); color: var(--ink-2); box-shadow: none; }
+/* the sign-off: min(300px, 72vw) stacked below 640px with 64 / 56px around it (looks.css), the
+   horizontal lockup above; clear space of half the disc on every side comes from that padding */
+html[data-look="shot"] .mw-foot .mw-foot__sign { padding-top: max(56px, 4.4vw); }
+html[data-look="shot"] .mw-foot__sign .mw-logo { width: min(760px, 62vw); }
+@media (max-width: 639px) {
+  html[data-look="shot"] .mw-foot .mw-foot__sign { padding: 48px var(--gut) 56px; }
+  html[data-look="shot"] .mw-foot__sign .mw-logo { width: min(300px, 72vw); }
+}
+/* the tagline across, then the two columns side by side under it, centred as a pair (not in the
+   first two thirds of a 12-column grid); one column below 861px (looks.css) */
+html[data-look="shot"] .mw-foot__in { padding-top: 0; max-width: 820px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html[data-look="shot"] .mw-foot__col, html[data-look="shot"] .mw-foot__col--wide { grid-column: span 1; }
+@media (max-width: 860px) {
+  html[data-look="shot"] .mw-foot__col, html[data-look="shot"] .mw-foot__col--wide { grid-column: 1 / -1; }
+}
+html[data-look="shot"] .mw-foot__line { font-weight: 800; font-stretch: 75%; font-size: clamp(1.35rem, 6vw, 2rem); line-height: 1.3; text-wrap: balance; }
+html[data-look="shot"] .mw-foot__col h2 { font: 700 1rem/1.4 var(--ui); }
+html[data-look="shot"] .mw-foot__col ul { gap: 0; }
+html[data-look="shot"] .mw-foot a { padding-inline: 10px; border-radius: 2px; font-size: 1rem; line-height: 1.6; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .mw-foot a:hover { color: var(--ink); text-decoration: none; background: rgba(27, 29, 33, 0.06); }
+  html[data-look="shot"] .mw-foot a.mw-foot__sign:hover { background: none; }
+}
+html[data-look="shot"] .mw-foot__base { font-size: 0.9rem; line-height: 1.6; color: var(--ink-2); align-items: center; }
+html[data-look="shot"] .mw-foot__base a { font-size: 0.9rem; }
+html[data-look="shot"] .mw-foot__bottom { padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
+/* the cookie strip does not hide with the dock: while it is open, the base clears it (--safe-b is
+   the strip's band then), so the legal links and the year are never under it at the page end */
+html[data-look="shot"].consent-pending .mw-foot__bottom,
+html[data-look="shot"] body.mw-consent-open .mw-foot__bottom { padding-bottom: calc(24px + var(--safe-b)); }
+
+/* ── the laptop (S4, S1's closed corner): ink lid, paper screen, a paper base with an ink-alpha
+   edge (the aluminium gradient is gone, D81 [לבירור: נתי]). Transforms only on .lap and .lap__lid. ── */
+.shot-lap .lap__lid { background: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink-2); }
+.shot-lap .lap__screen { background: var(--paper); }
+.shot-lap .lap__cam { background: var(--ink-2); }
+.shot-lap .lap__base { background: var(--paper); box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow); }
+.shot-lap .lap__notch { background: rgba(27, 29, 33, 0.08); }
+/* closed, seen from above (the hero's overview), the pose the build hold starts from: the top
+   tilted toward the viewer, so the folded lid shows its outer side (+55 was a camera under the
+   table, which saw the lid's inner side) */
+.shot-lap--closed { transform: rotateX(-55deg) rotateZ(-9deg); }
+.shot-lap--closed .lap__lid { transform: rotateX(-86deg); }
+
+/* ── the Things (M's objects) on the desk: ink bodies and white faces through the tokens; the
+   reels and the frame's mat read as the table (no tinted white). ── */
+html[data-look="shot"] .thing--frame .thing__face { box-shadow: inset 0 0 0 2.6em var(--table); }
+
+/* ── cookie strip (SPEC 1.12): a receipt-like paper strip at the table's near edge, in the band
+   --safe-b reserves (--strip-h), so it replaces the dock and nothing stacks over it. Phones: the
+   text beside the two buttons stacked at the inline end (2 x 44px fit the 104px band). ── */
+html[data-look="shot"] .mw-consent-banner {
+  left: 12px; right: 12px; max-width: none;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+}
+html[data-look="shot"] .mw-consent {
+  box-sizing: border-box; display: flex; align-items: center; min-height: var(--strip-h); padding: 6px 14px;
+  border-radius: 0; background: var(--paper); color: var(--ink); box-shadow: inset 0 1px 0 var(--line), var(--paper-shadow);
+}
+html[data-look="shot"] .mw-consent > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; max-width: 1160px; margin-inline: auto; }
+html[data-look="shot"] .mw-consent__text { margin: 0; color: var(--ink-2); font: 400 0.9rem/1.6 var(--text); }
+html[data-look="shot"] .mw-consent__link { color: var(--ink); } /* keeps its WCAG underline (a link inside running text) */
+/* its tap area is the 44px row, not the 22px line (vertical padding on an inline box moves nothing) */
+html[data-look="shot"] .mw-consent__link { padding-block: 11px; }
+html[data-look="shot"] .mw-consent__text + div { display: flex; flex-direction: column; align-items: stretch; gap: 4px; }
+html[data-look="shot"] .mw-consent__ok,
+html[data-look="shot"] .mw-consent__no { flex: none; min-height: 44px; padding: 0 16px; border-radius: 2px; text-decoration: none; }
+html[data-look="shot"] .mw-consent__ok { background: var(--ink); color: var(--paper); font: 700 1rem/1 var(--ui); }
+html[data-look="shot"] .mw-consent__no { background: none; color: var(--ink-2); font: 600 1rem/1 var(--text); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .mw-consent__no:hover { color: var(--ink); background: rgba(27, 29, 33, 0.06); text-decoration: none; }
+}
+@media (min-width: 640px) {
+  html[data-look="shot"] .mw-consent { padding: 12px 20px; }
+  html[data-look="shot"] .mw-consent__text + div { flex-direction: row; align-items: center; gap: 8px; }
+}
+
+/* ── the legacy panels on the desk: their Tailwind palette (looks.css .legacy) remapped onto
+   table, paper and ink, only inside the two panels (the inner pages keep theirs). ── */
+html[data-look="shot"] #accessibility-panel,
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] {
+  --color-cream: #eceef1;
+  --color-cream-dark: #eceef1;
+  --color-cream-darker: rgba(27, 29, 33, 0.14);
+  --color-brown: #1b1d21;
+  --color-brown-light: #4a4f57;
+  --color-brown-dark: #1b1d21;
+  --color-brown-muted: #4a4f57;
+  --color-orange: #1b1d21;
+  --color-orange-light: #eceef1;
+  --color-orange-dark: #4a4f57;
+  --color-sky-ink: #1b1d21;
+  --color-sky-ink-strong: #1b1d21;
+  --color-terracotta: #1b1d21;
+  --color-coral: #1b1d21;
+  --color-sage: #1b1d21;
+  --color-sage-light: #eceef1;
+  --color-sage-dark: #1b1d21;
+  --focus-ring: #1b1d21;
+  font-family: var(--text);
+}
+
+/* accessibility panel: a paper card dropping from the header, 1rem text, 44px controls */
+html[data-look="shot"] #accessibility-panel {
+  top: calc(var(--head) + 8px); left: var(--gut);
+  border: 0; border-radius: 2px; background: var(--paper); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow);
+}
+html[data-look="shot"] #accessibility-panel h2 { color: var(--ink); font: 800 1.35rem/1.15 var(--display); font-stretch: 75%; }
+html[data-look="shot"] #accessibility-panel :is(.text-sm, label) { font-size: 1rem; line-height: 1.6; }
+html[data-look="shot"] #accessibility-panel button { min-height: 44px; border-radius: 2px; }
+html[data-look="shot"] #accessibility-panel button[aria-label="סגור"] { width: 44px; height: 44px; }
+/* on is an ink track (--color-orange above); off must not read as a second dark track, so it is
+   a paper track with an ink-2 ring and an ink-2 knob (8.2:1 on paper, WCAG 1.4.11) */
+html[data-look="shot"] #accessibility-panel .bg-gray-400 { background: var(--paper); box-shadow: inset 0 0 0 2px var(--ink-2); }
+html[data-look="shot"] #accessibility-panel .bg-gray-400 .bg-white { background: var(--ink-2); }
+
+/* chat panel: a sheet of paper (full screen on phones), an ink header, 17px messages, 18px input
+   (no iOS zoom). The panel's inline gradients are overridden here. */
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] {
+  background: var(--paper) !important; border: 0 !important; color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow);
+}
+@media (min-width: 640px) { html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] { border-radius: 2px; } }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child { background: var(--ink) !important; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child .rounded-full:has(> div) { background: var(--paper); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child p { font: 600 1rem/1.4 var(--ui); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child p + p { font: 400 0.9rem/1.4 var(--text); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child button { width: 44px; height: 44px; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] [role="log"] .text-sm { font-size: 0.95rem; line-height: 1.6; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] textarea {
+  min-height: 44px; border-radius: 2px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line-ui);
+  color: var(--ink); font: 400 1rem/1.5 var(--text);
+}
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] textarea::placeholder { color: var(--ink-2); opacity: 1; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] button[aria-label="שלח הודעה"] { width: 44px; height: 44px; border-radius: 2px; }

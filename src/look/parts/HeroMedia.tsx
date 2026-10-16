@@ -12,6 +12,7 @@ import { useAmbientMotion, useReducedMotion } from '../../hooks/useReducedMotion
 import { useScene } from '../../motion/ScrollEngineProvider'
 
 const forceFull = () => new URLSearchParams(window.location.search).get('motion') === 'full'
+const strictReduce = () => /[?&]reduce=1(&|$)/.test(window.location.search)
 const saveData = () => Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData)
 
 /** After load, then idle: the video never competes with the first paint for bandwidth. */
@@ -69,7 +70,8 @@ export function useHeroVideo(film: HeroFilm = DESK_FILM): string | null {
   const reduced = useReducedMotion()
   const ambient = useAmbientMotion()
   const ready = useLoadedIdle()
-  if (!ready || !ambient || (reduced && !forceFull()) || saveData()) return null
+  // ?reduce=1 is the strict still page (the engine's REDUCE): no video element at all, not even an empty one
+  if (!ready || !ambient || (reduced && !forceFull()) || saveData() || strictReduce()) return null
   return isDesktop ? film.video : film.videoMobile
 }
 

@@ -5,6 +5,7 @@ import { track } from '../../utils/analytics'
 import { SITE_CONTACT } from '../../data/site'
 import AnimatedLogo from '../ui/AnimatedLogo'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
+import { LOOK } from '../../look/look'
 
 const currentYear = new Date().getFullYear()
 
@@ -36,8 +37,23 @@ export default function Footer() {
     el.focus({ preventScroll: true })
   }
 
+  // The sign-off (DECISIONS #53): the logo's ident, scrubbed by the visitor's scroll. In the shot
+  // look it comes first in DOM order, stamped on the table right under the phone the page ends in
+  // (SPEC S10), so focus order still equals visual order; every other look keeps it after the columns.
+  const signFirst = LOOK === 'shot'
+  // the overlap audit's text zone on the base (the last lines, where the cookie strip could sit),
+  // in the shot look only: the other looks' DOM is unchanged. The rest of the footer stays unzoned,
+  // or the audit's end-of-page rule would count whatever column scrolls under the header there.
+  const zone = LOOK === 'shot' ? 'text' : undefined
+  const sign = (
+    <a href="/" className="mw-foot__sign" aria-label="MediaWave, חזרה לדף הבית" onClick={(e) => handleLinkClick(e, '/')}>
+      <AnimatedLogo variant={phone ? 'stacked' : 'horizontal'} mode="scroll" live decorative />
+    </a>
+  )
+
   return (
     <footer className="mw-foot" data-theme="dark" data-intent="end">
+      {signFirst && sign}
       <div className="mw-foot__in">
         <div className="mw-foot__brand">
           <p className="mw-foot__line">עיצוב ופיתוח אתרים מקצועיים לעסקים</p>
@@ -85,19 +101,16 @@ export default function Footer() {
 
       </div>
 
-      {/* The sign-off (DECISIONS #53): the logo's ident, scrubbed by the visitor's scroll */}
-      <a href="/" className="mw-foot__sign" aria-label="MediaWave, חזרה לדף הבית" onClick={(e) => handleLinkClick(e, '/')}>
-        <AnimatedLogo variant={phone ? 'stacked' : 'horizontal'} mode="scroll" live decorative />
-      </a>
+      {!signFirst && sign}
 
       <div className="mw-foot__bottom">
         <div className="mw-foot__base">
           <nav aria-label="מסמכים">
-            <a href="/terms" target="_blank" rel="noopener noreferrer">תקנון שימוש</a>
-            <a href="/privacy" target="_blank" rel="noopener noreferrer">מדיניות פרטיות</a>
-            <a href="/accessibility" target="_blank" rel="noopener noreferrer">הצהרת נגישות</a>
+            <a href="/terms" data-zone={zone} target="_blank" rel="noopener noreferrer">תקנון שימוש</a>
+            <a href="/privacy" data-zone={zone} target="_blank" rel="noopener noreferrer">מדיניות פרטיות</a>
+            <a href="/accessibility" data-zone={zone} target="_blank" rel="noopener noreferrer">הצהרת נגישות</a>
           </nav>
-          <p dir="ltr">© {currentYear} MediaWave Israel</p>
+          <p dir="ltr" data-zone={zone}>© {currentYear} MediaWave Israel</p>
         </div>
       </div>
     </footer>

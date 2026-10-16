@@ -1,0 +1,86 @@
+{
+  "/animations/1/web-design.json": {
+    "src": "/animations/posters/1-web-design.webp",
+    "frame": 118,
+    "w": 500,
+    "h": 500
+  },
+  "/animations/10 design/Web Design Illustration.json": {
+    "src": "/animations/posters/10-design-web-design-illustration.webp",
+    "frame": 163,
+    "w": 640,
+    "h": 427
+  },
+  "/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json": {
+    "src": "/animations/posters/11-launch-web-deployment-isometric-concept-lottie-animations.webp",
+    "frame": 156,
+    "w": 640,
+    "h": 427
+  },
+  "/animations/12 Talk with us/Topictalk_icon.json": {
+    "src": "/animations/posters/12-talk-with-us-topictalk-icon.webp",
+    "frame": 69,
+    "w": 512,
+    "h": 512
+  },
+  "/animations/13 Leave Details/contact us.json": {
+    "src": "/animations/posters/13-leave-details-contact-us.webp",
+    "frame": 52,
+    "w": 640,
+    "h": 640
+  },
+  "/animations/14 chatbot/Live chatbot.json": {
+    "src": "/animations/posters/14-chatbot-live-chatbot.webp",
+    "frame": 63,
+    "w": 640,
+    "h": 527
+  },
+  "/animations/2/computer technician.json": {
+    "src": "/animations/posters/2-computer-technician.webp",
+    "frame": 240,
+    "w": 640,
+    "h": 640
+  },
+  "/animations/3 landing page/Contact us.json": {
+    "src": "/animations/posters/3-landing-page-contact-us.webp",
+    "frame": 0,
+    "w": 640,
+    "h": 360
+  },
+  "/animations/4 SEO/Website SEO Audit.json": {
+    "src": "/animations/posters/4-seo-website-seo-audit.webp",
+    "frame": 5,
+    "w": 640,
+    "h": 640
+  },
+  "/animations/6 personal/contact us.json": {
+    "src": "/animations/posters/6-personal-contact-us.webp",
+    "frame": 63,
+    "w": 640,
+    "h": 474
+  },
+  "/animations/7 chatbot/chatbot_header.json": {
+    "src": "/animations/posters/7-chatbot-chatbot-header.webp",
+    "frame": 125,
+    "w": 24,
+    "h": 24
+  },
+  "/animations/8 call/Call Center Support Lottie Animation.json": {
+    "src": "/animations/posters/8-call-call-center-support-lottie-animation.webp",
+    "frame": 119,
+    "w": 640,
+    "h": 471
+  },
+  "/animations/9 build/website build.json": {
+    "src": "/animations/posters/9-build-website-build.webp",
+    "frame": 94,
+    "w": 640,
+    "h": 360
+  },
+  "/animations/AI/AI animation.json": {
+    "src": "/animations/posters/ai-ai-animation.webp",
+    "frame": 63,
+    "w": 520,
+    "h": 520
+  }
+}

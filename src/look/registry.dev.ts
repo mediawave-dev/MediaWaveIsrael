@@ -4,5 +4,6 @@ import { LOOK } from './look'
 import k from './registry.k'
 import m from './registry.m'
 import km from './registry.km'
+import shot from './registry.shot'
 
-export default LOOK === 'k' ? k : LOOK === 'm' ? m : km
+export default LOOK === 'k' ? k : LOOK === 'm' ? m : LOOK === 'shot' ? shot : km

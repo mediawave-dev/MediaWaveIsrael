@@ -1,0 +1,78 @@
+/* shot · the dock (SPEC 1.12): the table's near edge. Fixed to the bottom at every width, the
+   height of --dock-h plus the home indicator and iOS's overlaid toolbar (--browser-chrome-bottom,
+   Layout), the same sum --safe-b reserves, so text never runs under it. It slides away instead of
+   covering the hero CTAs, #contact, the footer, the cookie strip or a dialog; --safe-b stays put. */
+html[data-look="shot"] .shot-dock {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  height: calc(var(--dock-h, 64px) + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+  padding-block: 0 calc(env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+  /* the content keeps to the sheets' measure on wide screens */
+  padding-inline: max(var(--gut, 12px), (100% - 1160px) / 2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--table);
+  box-shadow: inset 0 1px 0 var(--line);
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 0s;
+}
+html[data-look="shot"] .shot-dock[data-hidden="true"] {
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 140ms cubic-bezier(0.4, 0, 1, 1), visibility 0s linear 140ms;
+}
+/* The widget's stop switch: no slide, it is simply there or not */
+html[data-look="shot"].disable-animations .shot-dock,
+html[data-look="shot"].disable-animations .shot-dock[data-hidden="true"] { transition: none; }
+
+/* WhatsApp: an ink pill on the inline-start side (the right thumb in RTL) */
+html[data-look="shot"] .shot-dock__wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font: var(--ui-w, 700) 1rem/1 var(--ui);
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+html[data-look="shot"] .shot-dock__wa-icon { width: 20px; height: 20px; flex: none; fill: currentColor; }
+
+/* The chat trigger's slot reserves the disc before ChatWidget mounts (idle), so nothing shifts */
+html[data-look="shot"] .shot-dock__chat { display: flex; width: 44px; height: 44px; flex: none; }
+html[data-look="shot"] .shot-dock__chat-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html[data-look="shot"] .shot-dock__wa:focus-visible,
+html[data-look="shot"] .shot-dock__chat-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* Contained hovers, fine pointers only (a locked rule): the change stays inside each control's box */
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .shot-dock__wa { transition: box-shadow 160ms ease; }
+  html[data-look="shot"] .shot-dock__wa:hover { box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.4); }
+  html[data-look="shot"] .shot-dock__chat-btn { transition: box-shadow 160ms ease; }
+  html[data-look="shot"] .shot-dock__chat-btn:hover { box-shadow: inset 0 0 0 2px var(--ink); }
+}

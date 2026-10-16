@@ -11,4 +11,7 @@ export interface LookRegistry {
   Process: ComponentType
   /** KM's fixed theme layers; null in single-ground looks */
   ThemeLayers: ComponentType | null
+  /** A look that composes the whole home page itself (shot): App renders it in place of the
+      shared Hero / WhyUs / Services / Process / Faq / Contact order. Never lazy: it holds the H1. */
+  Home?: ComponentType
 }

@@ -12,6 +12,7 @@
     "build:k": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-k --outDir dist-k && node scripts/prerender.mjs --dist dist-k",
     "build:m": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-m --outDir dist-m && node scripts/prerender.mjs --dist dist-m",
     "build:km": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-km --outDir dist-km && node scripts/prerender.mjs --dist dist-km",
+    "build:shot": "node scripts/generate-seo.mjs && node scripts/generate-favicons.mjs && tsc -b && vite build --mode look-shot --outDir dist-shot && node scripts/prerender.mjs --dist dist-shot",
     "rive:companion": "node design/rive/companion/build-scene.mjs --riv",
     "rive:hero": "node design/rive/hero/build-hero.mjs --riv",
     "rive:lens": "node design/rive/lens/build-lens.mjs --riv",

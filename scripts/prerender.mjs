@@ -46,9 +46,11 @@ const NOT_FOUND_ROUTE = '/__not-found__'
 // first paint is over: a late swap re-layouts the text (measured CLS 0.127 from "Web font
 // loaded") and re-emits a later LCP entry. The metric-matched fallback (looks.css) keeps the
 // swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
-// The display face (EFT Betaamango, DECISIONS #59) lives at a stable public URL for every look.
-const DISPLAY_FONT = '/fonts/EFT_Betaamango.woff2'
+// The display face lives at a stable public URL: EFT Betaamango for k, m and km (DECISIONS #59),
+// Noto Sans Hebrew's Hebrew subset for shot (#81, the H1 is Hebrew, so only that subset is needed).
+const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2' }
 function fontPreloadLinks(look) {
+  const DISPLAY_FONT = DISPLAY_FONTS[look] || DISPLAY_FONTS.shot
   if (!existsSync(resolve(DIST, DISPLAY_FONT.slice(1)))) {
     console.log(`    (look ${look}: ${DISPLAY_FONT} missing from the build, no preload)`)
     return ''
@@ -194,7 +196,7 @@ async function prerender() {
       (_, href) => `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
 
     // Preload the look's display face (the H1), early in <head>
-    const look = (html.match(/<html[^>]*data-look="(k|m|km)"/) || [])[1] || 'km'
+    const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'
     html = html.replace('<title>', `${fontPreloadLinks(look)}<title>`)
 
     // Write the prerendered HTML

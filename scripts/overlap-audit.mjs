@@ -8,8 +8,8 @@
  * scrolls it, and reports every visible text/art, text/text or text/ui intersection larger
  * than --min px in both directions.
  *
- *   node scripts/overlap-audit.mjs --looks k=http://localhost:4175/,m=http://localhost:4176/,km=http://localhost:4177/
- *   node scripts/overlap-audit.mjs --base http://localhost:5173/ --looks k,m,km      (dev: appends ?look=)
+ *   node scripts/overlap-audit.mjs --looks k=http://localhost:4175/,m=http://localhost:4176/,km=http://localhost:4177/,shot=http://localhost:4178/
+ *   node scripts/overlap-audit.mjs --base http://localhost:5173/ --looks k,m,km,shot (dev: appends ?look=)
  *        [--vp 320,390,768,1024,1440] [--page-step 0.02] [--hold-step 0.05] [--min 4]
  *        [--path /] [--out design/audit] [--shots 12]
  *
@@ -40,12 +40,12 @@ if (args.includes('--help')) { console.log(readHelp()); process.exit(0) }
 function readHelp() { return 'see the header of scripts/overlap-audit.mjs' }
 
 const base = opt('--base', null)
-const lookArg = opt('--looks', 'k,m,km')
+const lookArg = opt('--looks', 'k,m,km,shot')
 const targets = lookArg.split(',').map((s) => {
   const [look, url] = s.includes('=') ? s.split(/=(.+)/) : [s, null]
   const path = opt('--path', '/')
   if (url) return { look, url: new URL(path, url).href }
-  if (!base) throw new Error('--looks k,m,km needs --base, or give look=url pairs')
+  if (!base) throw new Error('--looks k,m,km,shot needs --base, or give look=url pairs')
   const u = new URL(path, base)
   u.searchParams.set('look', look)
   return { look, url: u.href }

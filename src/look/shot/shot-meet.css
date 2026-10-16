@@ -1,0 +1,97 @@
+/* shot · S2 meet, why us (SPEC S2). One sheet, three screens drawn in ink that switch on at the 62%
+   line. 390 first: one column, the screen 300x225 (4:3) centred above its text, items split by an
+   ink hairline (never cards). 768-1099: one column, the screen 360x270. 1100+: each item a row,
+   the screen at the inline-start and the text beside it, every row stepping 72px inward (a
+   descending staircase, never a three-card grid); a short desktop (1440x700) 320x240 and 48px.
+   Off is only ever painted with the engine running (JS sets it); without it every screen is on. */
+
+.shot-meet { position: relative; padding-block: 72px 48px; }
+
+/* each screen's untransformed twin on the section: what the scroll triggers measure (ShotMeet) */
+.shot-meet__mark { position: absolute; top: 0; inset-inline-start: 0; width: 1px; height: 0; visibility: hidden; pointer-events: none; }
+
+.shot-meet__sheet {
+  position: relative; /* the offsetParent: land() measures the first screen's bottom from here */
+  list-style: none; margin-block: 0; padding: 24px 20px 28px;
+}
+
+.shot-meet__item { display: block; padding-block: 20px; box-shadow: inset 0 -1px 0 var(--line); }
+.shot-meet__item:first-child { padding-top: 0; }
+.shot-meet__item:last-child { padding-bottom: 0; box-shadow: none; }
+
+/* ── the screen: ink frame, a well that is the table when off and paper when on, a power dot ── */
+.shot-screen {
+  position: relative; box-sizing: border-box;
+  width: min(100%, 300px); aspect-ratio: 4 / 3; margin-inline: auto;
+  border: 2px solid var(--ink); border-radius: 6px; background: var(--paper);
+}
+.shot-screen__well {
+  position: absolute; inset: 8px; display: grid; place-items: center; overflow: hidden;
+  border-radius: 2px; background: var(--paper);
+}
+.shot-screen__well > * { flex: none; }
+.shot-screen__dot {
+  position: absolute; inset-inline-end: 14px; bottom: 14px; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--ink); transform: scale(0);
+}
+
+/* off (the engine set it): dot showing, the well the colour of the table, the art not yet drawn */
+.shot-meet__item:not([data-on]) .shot-screen__well { background: var(--table); }
+/* a screen that is off still shows its picture, dimmed and grey, like a monitor in standby: an
+   empty grey box read as a broken image (critic, 16.10). The poster still comes from
+   scripts/lottie-posters.mjs, so nothing is built for it. */
+.shot-meet__item:not([data-on]) .shot-screen__well > * { opacity: 0.35; filter: grayscale(1); }
+.shot-meet__item:not([data-on]) .shot-screen__dot { transform: scale(1); }
+.shot-meet__item:not([data-on]) h3 { color: var(--ink-2); }
+
+/* switching on, in this order: the dot shrinks (0-180ms), the well turns paper (120-240ms), the
+   title darkens from 200ms (colour only). Switching off runs the same timings. */
+html.motion-ready .shot-screen__dot { transition: transform 180ms var(--ease-out, cubic-bezier(.2, .8, .2, 1)); }
+html.motion-ready .shot-screen__well { transition: background-color 120ms linear 120ms; }
+html.motion-ready .shot-screen__well > * { transition: opacity 120ms linear 120ms; }
+html.motion-ready .shot-meet__item h3 { transition: color 200ms linear 200ms; }
+/* CALM: the same order, 120ms in all */
+html.motion-calm .shot-screen__dot { transition-duration: 80ms; }
+html.motion-calm .shot-screen__well,
+html.motion-calm .shot-screen__well > * { transition-duration: 60ms; transition-delay: 40ms; }
+html.motion-calm .shot-meet__item h3 { transition-duration: 60ms; transition-delay: 60ms; }
+/* the stop switch: instant */
+html.disable-animations .shot-screen__dot,
+html.disable-animations .shot-screen__well,
+html.disable-animations .shot-screen__well > *,
+html.disable-animations .shot-meet__item h3 { transition: none; }
+
+/* ── the text ── */
+.shot-meet__text { margin-top: 16px; }
+.shot-meet__item h3 {
+  margin: 0; color: var(--ink);
+  font: 800 var(--shot-h3, 1.35rem)/1.15 var(--display); font-stretch: 75%;
+}
+.shot-meet__item p { margin: 8px 0 0; color: var(--ink-2); font: 400 var(--shot-body, 1rem)/1.7 var(--text); }
+.shot-meet__item .shot-receipt { margin-top: 12px; font-size: var(--shot-small, 0.9rem); line-height: 1.6; }
+
+/* ── 768-1099: one column, a larger screen ── */
+@media (min-width: 768px) {
+  .shot-meet__sheet { padding: 40px 48px 44px; }
+  .shot-meet__item { padding-block: 28px; }
+  .shot-screen { width: min(100%, 360px); }
+  .shot-meet__text { max-width: 46ch; margin-inline: auto; text-align: center; }
+}
+
+/* ── 1100+: rows, the screen at the inline-start, a descending staircase ── */
+@media (min-width: 1100px) {
+  .shot-meet { --meet-screen: 360px; --meet-step: 72px; padding-block: 88px 64px; }
+  .shot-meet__sheet { padding: 56px 64px 60px; }
+  .shot-meet__item {
+    display: grid; grid-template-columns: var(--meet-screen) minmax(0, 46ch);
+    align-items: center; column-gap: 48px; padding-block: 32px;
+  }
+  .shot-meet__item:nth-child(2) { padding-inline-start: var(--meet-step); }
+  .shot-meet__item:nth-child(3) { padding-inline-start: calc(2 * var(--meet-step)); }
+  .shot-screen { width: var(--meet-screen); margin: 0; }
+  .shot-meet__text { margin: 0; max-width: none; text-align: start; }
+}
+/* a short desktop (1440x700): a smaller screen, a shallower step */
+@media (min-width: 1100px) and (max-height: 760px) {
+  .shot-meet { --meet-screen: 320px; --meet-step: 48px; }
+}

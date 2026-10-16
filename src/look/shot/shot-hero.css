@@ -1,0 +1,223 @@
+/* shot · S1 the hero, the dive (SPEC S1, storyboard "hero"). Imported by ShotHero, which is eager,
+   so these rules land in the render-blocking entry stylesheet: the first paint already has the
+   sheet, the lens's frame and (html.shot-dive) the overview pose.
+
+   Layout at 390 (the binding one), top to bottom inside the stuck stage: 12px of table, the lens
+   (35% of it on the table, the rest on the paper), 12px, the H1 in two lines, 14px, the sub line,
+   18px, the CTA block (52px), 8px, the services link (44px), 16px of paper. --lens-d gives way so
+   the CTA always ends above --safe-b (the cookie strip reserves its band before the first paint).
+   The camera's pivot is the H1's own centre line (--h1-line), computable before paint. */
+
+.shot-hero {
+  --hero-reserve: 0px;
+  --lens-d: clamp(140px, calc(100svh - var(--head) - var(--hero-reserve) - 380px), 248px);
+  --h1-fs: var(--shot-h1);
+  --g-lens: 12px; --g-sub: 14px; --g-cta: 18px; --g-link: 8px;
+  /* from the model's top: the lens (its top is the model's top), the gap, then one H1 line */
+  --h1-line: calc(var(--lens-d) + var(--g-lens) + 1.02 * var(--h1-fs));
+  position: relative;
+}
+html[data-look="shot"].consent-pending .shot-hero { --hero-reserve: var(--strip-h); }
+@media (max-height: 700px) and (max-width: 1099px) {
+  .shot-hero { --g-lens: 8px; --g-sub: 10px; --g-cta: 14px; --g-link: 4px; }
+}
+/* short stages (no hold, SPEC 1.6): the lens and the gaps give more way, so the CTA group still
+   clears the cookie strip on a 320x568 phone; the hero fills the first view, so the next
+   chapter's heading never starts under the strip */
+@media (max-height: 615px) and (max-width: 1099px) {
+  .shot-hero {
+    --lens-d: clamp(88px, calc(100svh - var(--head) - var(--hero-reserve) - 340px), 248px);
+    --g-lens: 6px; --g-sub: 8px; --g-cta: 12px; --g-link: 2px;
+    min-height: calc(100svh - var(--head));
+  }
+}
+
+/* The hero fills the first view before the app boots too (the hold's height needs the engine),
+   so the next chapter's heading never peeks in at the bottom edge and moves when its own
+   stylesheet lands (measured: 7px of the meet heading at y 837 at 390, a counted shift) */
+.shot-hero { min-height: calc(100svh - var(--head)); }
+
+.shot-hero__stage { padding-top: 12px; box-sizing: border-box; }
+
+/* the camera layer: the dive's only transform. Full stage width, so the desk around the sheet is
+   in the same layer and never crosses it. */
+.shot-hero__model {
+  position: relative;
+  padding-top: calc(var(--lens-d) * 0.35);
+  transform-origin: 50% var(--h1-line);
+}
+
+/* ── the hero sheet ── */
+/* flow-root: the lens's negative top margin stays inside the sheet (a block would collapse it
+   through, and the paper would rise to the lens's top instead of the lens lying on its edge) */
+.shot-hero .shot-hero__sheet { position: relative; display: flow-root; text-align: center; }
+
+.shot-hero__lens {
+  position: relative; z-index: 0;
+  width: var(--lens-d); aspect-ratio: 1;
+  margin: calc(var(--lens-d) * -0.35) auto 0;
+}
+/* a short contact shadow on the desk and the paper under the lens (static) */
+.shot-hero__lens::before {
+  content: ""; position: absolute; z-index: -1; inset: 10% -3% -7% -3%; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(27, 29, 33, 0.18), rgba(27, 29, 33, 0.07) 72%, transparent);
+  pointer-events: none;
+}
+
+/* the lens itself (Lens.tsx). hero-lens.css belongs to KM's scene and is not in the shot build,
+   so the frame's layers are set here, under the hero's class (it also wins over KM's rules in dev). */
+.shot-hero__lens .kl__lens {
+  --d: auto;
+  position: relative; display: block; width: 100%; aspect-ratio: 1; margin: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.shot-hero__lens .kl__film { position: absolute; inset: 14.6%; border-radius: 50%; overflow: hidden; background: var(--ink); }
+.shot-hero__lens .kl__film .hero-media { background: var(--ink); }
+.shot-hero__lens .kl__still,
+.shot-hero__lens .kl__rive { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.shot-hero__lens .kl__still svg { display: block; width: 100%; height: 100%; }
+.shot-hero__lens .kl__still--closed { opacity: 0; }
+.shot-hero__lens .kl__rive { opacity: 0; }
+/* a first visit paints the iris closed; the canvas takes over in the same pose */
+html.hero-iris .shot-hero__lens .kl__still--rest { opacity: 0; }
+html.hero-iris .shot-hero__lens .kl__still--closed { opacity: 1; }
+.shot-hero__lens .kl__lens[data-live] .kl__rive { opacity: 1; }
+.shot-hero__lens .kl__lens[data-live] .kl__still { opacity: 0; }
+
+/* ── the copy: never transformed on its own (rule 4), the H1 never split, faded or balanced ── */
+/* 12px of paper at the sides: the H1's second line needs about 330px at 390 (13.8vw, 75% width) */
+.shot-hero__copy { padding: var(--g-lens) 12px 16px; }
+.shot-hero__title {
+  margin: 0; color: var(--ink);
+  font-family: var(--display); font-weight: 800; font-stretch: 75%; font-style: normal;
+  font-size: var(--h1-fs); line-height: 1.02;
+}
+.shot-hero__sub {
+  margin: var(--g-sub) auto 0; max-width: 16.7rem; /* Noto's 32ch, in rem: ch changed with the font swap (a 0.001 shift) */
+  color: var(--ink-2); font: 400 1rem/1.65 var(--text); text-wrap: pretty;
+}
+.shot-hero__ctas { display: flex; flex-direction: column; align-items: stretch; gap: var(--g-link); margin-top: var(--g-cta); }
+.shot-hero__ctas .shot-link { align-self: center; }
+
+/* ── the desk around the sheet: art only, outside the sheet's rectangle at every step of the
+   dive (it shares the model's transform, so it never crosses it), and outside the stage at
+   scale 1 (clipped). Shown with the engine (or the pre-paint pose); never under REDUCE, the
+   prerender, no JS, a short stage or a scaled text size. ── */
+.shot-desk { display: none; position: absolute; inset: 0; pointer-events: none; }
+html.shot-dive .shot-desk,
+html.motion-ready .shot-desk { display: block; }
+@media (max-height: 615px) { html.motion-ready .shot-desk { display: none; } }
+html.text-scaled .shot-desk { display: none; }
+
+/* two sheets of the site under the hero sheet, a little askew */
+.shot-desk__sheet {
+  position: absolute; top: calc(var(--lens-d) * 0.35); bottom: 0; left: 50%;
+  width: min(100% - 2 * var(--gut), var(--sheet-w, 1160px));
+  background: var(--paper); box-shadow: var(--paper-shadow); border-radius: 2px;
+}
+.shot-desk__sheet--a { transform: translateX(-50%) rotate(-3deg) translate(-6px, 10px); }
+.shot-desk__sheet--b { transform: translateX(-50%) rotate(2deg) translate(8px, 16px); }
+
+/* the objects: positioned in the model (100% is the sheet's bottom edge). Below 1100px they lie
+   whole in the table the overview shows around the sheet: a phone's overview shows only about 25px
+   past the stage's edges, so objects placed out there showed as black wedges, and a laptop corner
+   stayed in the stage after the release (critic and audit, 16.10). The dive then pushes them out of
+   the frame as the camera lands (ShotHero), so the landed stage holds the sheet alone. From 1100px
+   they sit past the stage's edges (--stage-b is its bottom in the model), where the wide overview
+   shows them and the landed frame does not. */
+.shot-desk__obj { position: absolute; display: block; }
+/* a Thing is drawn in em of its own font-size (things.css sets 10px on .thing): the size knob */
+.shot-desk__obj .thing { font-size: var(--thing-px, 2.6px); }
+.shot-hero { --stage-b: calc(100svh - var(--head) - 12px); }
+.shot-desk__wide { display: none; }
+
+/* the closed laptop on the table under the sheet's inline-end corner (the one laptop of the page:
+   it opens and builds the site in S4) */
+.shot-desk__laptop { top: calc(100% + 16px); left: 6%; width: 150px; perspective: 900px; rotate: 3deg; }
+/* closed: the lid lies on the deck, so the camera sees its ink back with the Horizon mark (as in
+   S4), not the paper screen */
+.shot-desk__laptop .lap__screen,
+.shot-desk__laptop .lap__cam { visibility: hidden; }
+.shot-desk__laptop .lap__lid { transform-style: preserve-3d; }
+.shot-desk__laptop .lap__back {
+  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+  backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
+}
+.shot-desk__laptop .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #ffffff; --logo-b: #6e8cff; }
+/* the folded lid lies in front of the hinge, below the box it stood in: the laptop is drawn up by
+   most of its box, so the lid (not the empty box above the hinge) lies where the box says */
+.shot-desk__laptop .shot-lap--closed { transform: translateY(-80%) rotateX(-55deg) rotateZ(-9deg); }
+/* the loupe on the table above the sheet's top inline-start corner, clear of the lens */
+.shot-desk__loupe { top: -62px; right: -10%; }
+.shot-desk__loupe .thing { transform: rotate(95deg); }
+/* the cassette on the table under the sheet's inline-start corner */
+.shot-desk__cassette { top: calc(100% + 26px); right: 8%; --thing-px: 2.3px; }
+.shot-desk__cassette .thing { transform: rotate(-9deg); }
+
+/* ── the pre-paint pose (index.html adds html.shot-dive before the first paint): the same numbers
+   camera.ts divePose() starts GSAP from, about the same origin, so the boot does not jump. The
+   stage is clipped like the held one. Short stages have no dive, so no pose. ── */
+@media (min-height: 616px) {
+  html[data-look="shot"].shot-dive .shot-hero .hold__stage { height: calc(100svh - var(--head)); overflow: clip; }
+  html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(16deg) scale(0.88); }
+}
+@media (min-height: 616px) and (min-width: 768px) {
+  html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(18deg) scale(0.76); }
+}
+@media (min-height: 616px) and (min-width: 1100px) {
+  html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(20deg) scale(0.64); }
+}
+@media (min-height: 616px) {
+  html[data-look="shot"].shot-dive-calm .shot-hero__model { transform: perspective(1100px) rotateX(8deg) scale(0.94); }
+}
+
+/* ── tablet: the same stacking on a narrower sheet ── */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .shot-hero { --sheet-w: 720px; }
+  .shot-hero__copy { padding-inline: 40px; }
+  .shot-hero__ctas { align-items: center; }
+  .shot-desk__laptop { top: calc(100% + 40px); width: 230px; left: 10%; rotate: 2deg; }
+  .shot-desk { --thing-px: 3px; }
+  .shot-desk__loupe { top: -70px; right: 4%; }
+  .shot-desk__cassette { top: calc(100% + 52px); right: 14%; --thing-px: 3px; }
+}
+
+/* ── 1100+: two columns, the copy on the inline-start side (right), the lens at the inline-end
+   side overhanging the sheet's top corner by 35%; the whole desk around it in the overview ── */
+@media (min-width: 1100px) {
+  .shot-hero {
+    --lens-d: min(36vw, calc(100svh - var(--head) - 180px), 460px);
+    --copy-pad: 40px;
+    --h1-line: calc(var(--lens-d) * 0.35 + var(--copy-pad) + 1.02 * var(--h1-fs));
+  }
+  .shot-hero .shot-hero__sheet {
+    display: grid; grid-template-columns: minmax(0, 1fr) var(--lens-d); align-items: start;
+    text-align: start;
+  }
+  /* on the corner: 35% above the sheet's top edge, 12% past its inline-end edge (a relative offset,
+     layout only: the lens itself is never transformed) */
+  .shot-hero__lens { grid-column: 2; grid-row: 1; margin: calc(var(--lens-d) * -0.35) 0 0; inset-inline-start: calc(var(--lens-d) * 0.12); }
+  .shot-hero__copy { grid-column: 1; grid-row: 1; padding: var(--copy-pad) 56px 48px; }
+  .shot-hero__sub { margin-inline: 0; max-width: 36ch; font-size: var(--shot-body); line-height: 1.7; }
+  .shot-hero__ctas { flex-direction: row; align-items: center; gap: 24px; }
+  /* the CTA keeps its own width in the row, whatever the button family (layout only; its skin is untouched) */
+  .shot-hero__ctas > :first-child { width: auto; }
+  .shot-hero__ctas .shot-link { align-self: auto; }
+
+  .shot-desk { --thing-px: 3.4px; }
+  .shot-desk__wide { display: block; }
+  /* the lid's near edge just past the stage's bottom (the laptop is drawn up by 80% of its box) */
+  .shot-desk__laptop { top: calc(var(--stage-b) - 24px); left: 18%; width: 340px; rotate: none; }
+  .shot-desk__loupe { top: 8%; right: auto; left: -200px; }
+  .shot-desk__cassette { top: calc(var(--stage-b) + 40px); right: 20%; --thing-px: 3.4px; }
+  .shot-desk__bubble { top: 4%; right: -210px; }
+  .shot-desk__bubble .thing { transform: rotate(7deg); }
+  .shot-desk__phone { top: 50%; right: -150px; }
+  .shot-desk__phone .thing { transform: rotate(-12deg); }
+  .shot-desk__frame { top: 56%; left: -210px; }
+  .shot-desk__frame .thing { transform: rotate(6deg); }
+}
+/* a laptop screen (about 700px tall): the copy moves up so the CTA row clears the cookie strip */
+@media (min-width: 1100px) and (max-height: 760px) {
+  .shot-hero { --copy-pad: 28px; --g-sub: 10px; --g-cta: 14px; }
+}

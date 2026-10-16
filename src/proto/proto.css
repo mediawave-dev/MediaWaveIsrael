@@ -1,0 +1,86 @@
+/* site-director prototype, direction C "link to live" (DECISIONS D65-D80). One ground, one face. */
+@font-face { font-family: 'MW Proto'; src: url('/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: 'MW Proto'; src: url('/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0000-00FF, U+2013-2014, U+2022, U+00D7; }
+
+.px {
+  --ground: #ECEEF1; --ink: #1B1D21; --soft: #4A4F57; --line: #C9CDD3; --screen: #FFFFFF;
+  --live: #00CC66; --live-text: #008800;
+  --head: 56px;
+  background: var(--ground); color: var(--ink);
+  font-family: 'MW Proto', system-ui, sans-serif; font-size: 18px; line-height: 1.6;
+  font-feature-settings: 'tnum' 1; min-height: 100vh;
+}
+.px a { color: inherit; }
+/* The live site styles headings with its display face (MW Display); the prototype has one face only (D68/D69). */
+.px :is(h1, h2, h3) { font-family: inherit; }
+.px-skip { position: absolute; inset-inline-start: 12px; top: -60px; background: var(--ink); color: #fff; padding: 10px 14px; z-index: 10; }
+.px-skip:focus { top: 8px; }
+.px :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.px-head { position: sticky; top: 0; z-index: 5; height: var(--head); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--ground); border-bottom: 1px solid var(--line); }
+/* The Horizon logo keeps its own light-ground tones (logos/horizon README); it is sacred, not re-coloured. */
+.px-head .mw-logo { height: 30px; width: auto; --logo-a: #0E1016; --logo-b: #002FA7; --logo-tag: #4E5468; }
+
+/* ---- hero: the page narrows from 1440 to 390 (D72) ---- */
+.px-hold { position: relative; }
+html.motion-ready .px-hold { height: 250svh; }
+.px-stage { padding: 20px 24px 28px; }
+html.motion-ready .px-stage { position: sticky; top: var(--head); height: calc(100svh - var(--head)); display: flex; flex-direction: column; overflow: clip; }
+.px-ruler { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--soft); padding: 0 4px 8px; }
+.px-frame { --w: 1440px; position: relative; width: min(var(--w), 100%); margin-inline: auto; flex: 1; min-height: 0; background: var(--screen); border: 1px solid var(--line); container-type: inline-size; overflow: clip; }
+.px-site { height: 100%; display: grid; grid-template-columns: 1.05fr 1fr; gap: 32px; align-items: center; padding: clamp(20px, 4cqi, 56px); }
+.px-copy { min-width: 0; }
+.px-title { font-weight: 800; font-stretch: 100%; font-size: clamp(36px, 7.4cqi, 112px); line-height: .98; margin: 0; letter-spacing: 0; }
+.px-title span { display: block; }
+.px-sub { font-size: clamp(17px, 1.7cqi, 22px); color: var(--soft); max-width: 34ch; margin: 18px 0 24px; }
+.px-ctas { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
+.px-btn { background: var(--ink); color: #fff !important; text-decoration: none; padding: 15px 22px; border-radius: 6px; font-weight: 600; }
+.px-sec { font-weight: 600; text-decoration: none; }
+.px-film { min-width: 0; height: 100%; max-height: 520px; border-radius: 4px; overflow: hidden; background: #d6d9de; }
+.px-film video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* The frame is the container: at phone widths the hero restacks, as the real site does (W19). */
+@container (max-width: 720px) {
+  .px-site { grid-template-columns: 1fr; align-content: start; gap: 16px; overflow: auto; }
+  .px-film { order: -1; height: 34cqi; max-height: none; min-height: 140px; }
+  .px-title { font-size: clamp(34px, 11cqi, 56px); }
+}
+.px-handle { position: absolute; inset-block: 0; inset-inline-end: -1px; width: 14px; cursor: ew-resize; touch-action: none; display: grid; place-items: center; }
+.px-handle::before { content: ''; width: 4px; height: 56px; border-radius: 2px; background: var(--ink); }
+.px-handle:focus-visible { outline-offset: 0; }
+.px-hint { text-align: center; font-size: 15px; color: var(--soft); margin: 12px 0 0; }
+
+/* ---- chapter "measure": the score climbs to the real 96, then the address goes live ---- */
+.px-measure { min-height: 100svh; padding: 64px 24px; display: flex; flex-direction: column; justify-content: center; }
+.px-tc { font-size: 13px; font-weight: 600; color: var(--soft); margin: 0 0 18px; text-align: start; }
+.px-measure-grid { display: flex; gap: 64px; align-items: center; justify-content: center; }
+.px-phone { width: 300px; height: 600px; flex: none; border-radius: 36px; border: 10px solid var(--ink); background: var(--screen); display: flex; flex-direction: column; overflow: hidden; }
+.px-addr { height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; border-bottom: 1px solid #E1E4E8; }
+/* The dot carries an ink ring, so "live" never depends on the green alone (WCAG 1.4.11, critic M1 S4). */
+.px-dot { width: 10px; height: 10px; border-radius: 50%; background: transparent; box-shadow: inset 0 0 0 2px var(--ink); }
+.px-addr[data-live='true'] .px-dot { background: var(--live); }
+.px-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+.px-gauge { width: 210px; }
+.px-arc-track { fill: none; stroke: #E6E8EB; stroke-width: 14; }
+.px-arc-fill { fill: none; stroke: var(--ink); stroke-width: 14; }
+.px-arc-fill[data-pass='true'] { stroke: var(--live); }
+.px-score { font-size: 80px; font-weight: 700; line-height: 1; margin: -54px 0 0; }
+.px-score-label { margin: 10px 0 0; color: var(--soft); font-size: 15px; }
+/* #008800 is 4.6:1 on the white screen only; it never sits on the ground (critic M1 S4). */
+.px-verdict { margin: 18px 0 0; font-size: 18px; font-weight: 700; color: var(--soft); }
+.px-addr[data-live='true'] ~ .px-screen .px-verdict { color: var(--live-text); }
+.px-measure-copy { max-width: min(36rem, 100%); }
+.px-measure-copy h2 { font-weight: 800; font-stretch: 75%; font-size: clamp(40px, 5vw, 72px); line-height: 1; margin: 0 0 14px; }
+.px-readout { display: grid; grid-template-columns: auto auto; gap: 4px 18px; margin: 22px 0 0; font-size: 16px; font-weight: 600; }
+.px-readout dt { color: var(--soft); font-weight: 400; }
+.px-readout dd { margin: 0; }
+.px-live { margin: 22px 0 0; font-weight: 600; }
+.px-end { padding: 80px 24px 160px; text-align: center; color: var(--soft); }
+
+@media (max-width: 760px) {
+  .px-measure-grid { flex-direction: column; gap: 28px; }
+  .px-phone { width: 240px; height: 470px; }
+  .px-score { font-size: 64px; margin-top: -46px; }
+  .px-gauge { width: 180px; }
+  .px-stage { padding: 14px 16px; }
+  .px-hint { display: none; }
+}

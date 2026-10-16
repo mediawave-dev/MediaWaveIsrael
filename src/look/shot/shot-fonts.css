@@ -1,0 +1,13 @@
+/* shot · one face for the whole page: Noto Sans Hebrew, variable weight 100-900 and width 62.5-100
+   (DECISIONS #81). Loaded only by the shot look. The fallback is Arial scaled to Noto's measured
+   average advance (size-adjust) with Noto's vertical metrics re-expressed for that size, so the
+   swap from fallback to webfont moves no line (no CLS). Measured 2026-10-15 with fontTools on the
+   home page's own Hebrew copy: weight 400 Hebrew 109.1%, Latin 104.6%; weight 800 Hebrew 112.0%,
+   Latin 106.0%. Noto: ascent 1.068, descent 0.292, no line gap. */
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: "MW Noto Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 599; size-adjust: 104.6%; ascent-override: 102.1%; descent-override: 27.9%; line-gap-override: 0%; }
+@font-face { font-family: "MW Noto Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 599; size-adjust: 109.1%; ascent-override: 97.9%; descent-override: 26.8%; line-gap-override: 0%; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Noto Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 106.0%; ascent-override: 100.8%; descent-override: 27.5%; line-gap-override: 0%; }
+@font-face { font-family: "MW Noto Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 112.0%; ascent-override: 95.4%; descent-override: 26.1%; line-gap-override: 0%; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }

@@ -23,6 +23,9 @@
    self-hosted in public/fonts (stable URLs; the display face is preloaded by prerender.mjs).
    EFT Betaamango has one weight, so its faces declare the whole range: a heading never gets a
    synthetic bold. ── */
+/* shot (DECISIONS #81): one face, Noto Sans Hebrew, with a metric-matched Arial fallback. */
+@import "./shot/shot-fonts.css";
+
 @font-face { font-family: "MW Display"; src: url("/fonts/EFT_Betaamango.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0590-05F2, U+05F5-05FF, U+FB1D-FB4F, U+20AA, U+25CC; }
 /* Betaamango has no geresh or gershayim (׳ ״): those two come from Plex 600, whose stroke matches
    and which sits the mark against its letter (Arial's, the fallback, floated off it) */
@@ -156,6 +159,55 @@ html[data-look="km"] [data-theme="light"] {
 html[data-look="km"].motion-ready [data-theme] { --ground: inherit; --ink: inherit; --ink-2: inherit; --line: inherit; --btn-bg: inherit; --btn-fg: inherit; --lens: inherit; --err: inherit; --focus-ring: inherit; --logo-a: inherit; --logo-b: inherit; --logo-tag: inherit; }
 html[data-look="km"]:not(.motion-ready) [data-theme] { background: var(--ground); color: var(--ink); }
 
+/* shot · one shot (DECISIONS #81-#84): Nati's desk. One ground from top to bottom (the grey table),
+   white paper for every surface, ink for text and buttons, one face (Noto Sans Hebrew). No theme
+   layers, no flips. Contrast (computed): ink on the table 14.5:1, ink-2 #4A4F57 on the table 7.1:1, on paper 8.2:1. */
+html[data-look="shot"] {
+  --head: 56px;
+  --table: #eceef1;
+  --paper: #ffffff;
+  --ground: var(--table);
+  --ink: #1b1d21;
+  --ink-2: #4a4f57;
+  --line: rgba(27, 29, 33, 0.14);       /* hairlines are ink at an alpha (D81), never a new grey */
+  --line-ui: rgba(27, 29, 33, 0.62);    /* field borders: 4.8:1 on paper, 4.0:1 on the table (WCAG 1.4.11) */
+  --btn-bg: #1b1d21;
+  --btn-fg: #ffffff;
+  --lens: #eceef1;
+  --err: var(--ink);                    /* [לבירור: נתי] red #b3261e only if Nati rules for it; the error is never colour-only */
+  --display: "MW Noto", "MW Noto Fallback", sans-serif;
+  --display-w: 800;
+  --text: "MW Noto", "MW Noto Fallback", sans-serif;
+  --ui: "MW Noto", "MW Noto Fallback", sans-serif;
+  --ui-w: 700;
+  --focus-ring: #1b1d21;
+  /* Horizon in deep Klein (DECISIONS #86, Nati 15.10): ink above the wave, a half-step darker
+     Klein below ("Wave" 11.2:1 on the table). The page's only colour stays in the logo. */
+  --logo-a: #1b1d21;
+  --logo-b: #00248a;
+  --logo-tag: #4a4f57;
+  --paper-shadow: 0 1px 0 rgba(27, 29, 33, 0.05), 0 18px 30px -22px rgba(27, 29, 33, 0.45);
+  /* The old site's objects (Things, the laptop) keep their shapes on the desk, in ink with white
+     faces instead of Klein: D81 locks the palette to grey, white and ink. */
+  --obj: #1b1d21;
+  --obj-2: #4a4f57;
+  --obj-shadow: rgba(27, 29, 33, 0.35);
+  --face: #ffffff;
+  --void-2: #eceef1;                    /* the reels and wells read as the table */
+  --field-line: var(--line-ui);         /* kept as an alias: #6b717b was a new grey (D81) */
+  /* layout: the table's side margin, the dock and the cookie strip at the near edge. --safe-b is
+     the only source of the bottom band's height (storyboard rule 7); it never changes when the
+     dock hides, so nothing moves. The shot --safe-b rules sit after the generic ones below. */
+  --gut: 12px;
+  --dock-h: 64px;
+  --strip-h: 104px;                     /* cookie strip below 640px; 88px from 640px */
+  --eye-top: 0.36;                      /* the Lottie eye band, read by eye-line.ts */
+  --eye-bottom: 0.62;
+  background: var(--table);
+}
+@media (min-width: 640px) { html[data-look="shot"] { --strip-h: 88px; } }
+@media (min-width: 768px) { html[data-look="shot"] { --gut: 32px; } }
+
 /* The legacy sections (restyled per look in step 3) pick up the look's type now. */
 html[data-look] {
   --font-headline: var(--display);
@@ -165,6 +217,7 @@ html[data-look] {
   --font-english-body: var(--text);
 }
 html[data-look] { --font-headline: var(--face-display); }
+html[data-look="shot"] { --font-headline: var(--display); }
 
 html[data-look] body {
   background: var(--ground, transparent);
@@ -188,6 +241,12 @@ html[data-look] section[tabindex="-1"]:focus { outline: none; }
 html[data-look] { --safe-b: calc(92px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
 @media (max-width: 639px) { html[data-look] body.mw-consent-open { --safe-b: calc(172px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); } }
 @media (min-width: 640px) and (max-width: 860px) { html[data-look] body.mw-consent-open { --safe-b: calc(200px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); } }
+/* shot: one band at the near edge of the table, the dock (64px), or the cookie strip while it is
+   open (consent-pending is set before first paint by index.html, so nothing moves when the strip
+   appears). After the generic rules above so they win at equal specificity. */
+html[data-look="shot"] { --safe-b: calc(var(--dock-h) + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
+html[data-look="shot"].consent-pending,
+html[data-look="shot"] body.mw-consent-open { --safe-b: calc(var(--strip-h) + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
 html[data-look="km"].motion-ready .mw-foot { background: transparent; }
 .mw-foot__base p { margin: 0; }
 

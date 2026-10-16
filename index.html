@@ -38,15 +38,24 @@
     <!-- The logo ident (DECISIONS #53) and the hero's opening (#64) play once per visit. Decided
          here, before first paint, so nothing shows and then replays: motion allowed (or
          ?motion=full), not a prerender, not ?reduce=1, not seen this visit. AnimatedLogo and
-         Lens remove their classes; the timeouts are the safety net if the app never boots. -->
+         Lens remove their classes; the timeouts are the safety net if the app never boots.
+         Shot look only (SPEC 1.5): consent-pending reserves the cookie strip in --safe-b from
+         frame 0 (CookieConsent removes it on a choice), and shot-dive / shot-dive-calm paint the
+         hero's overview pose until GSAP takes over (ShotHero removes them). -->
     <script>
       (function () { try {
         if (window.__PRERENDER__) return;
+        var d = document.documentElement, shot = d.getAttribute('data-look') === 'shot';
         var full = /[?&]motion=full(&|$)/.test(location.search);
-        if (!full && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var calm = !full && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (shot) { try { if (!localStorage.getItem('mw_cookie_consent')) d.classList.add('consent-pending'); } catch (e) {} }
         if (/[?&]reduce=1(&|$)/.test(location.search)) return;
-        var d = document.documentElement;
-        if (location.pathname === '/' && !sessionStorage.getItem('mw-hero-iris')) {
+        if (shot && location.pathname === '/') {
+          d.classList.add('shot-dive'); if (calm) d.classList.add('shot-dive-calm');
+          setTimeout(function () { d.classList.remove('shot-dive', 'shot-dive-calm'); }, 10000);
+        }
+        if (calm) return;
+        if (!shot && location.pathname === '/' && !sessionStorage.getItem('mw-hero-iris')) { // shot: the dive opens the iris (D88)
           d.classList.add('hero-iris');
           setTimeout(function () { d.classList.remove('hero-iris'); }, 10000);
         }

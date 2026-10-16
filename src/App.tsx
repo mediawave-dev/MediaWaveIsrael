@@ -32,6 +32,9 @@ const NotFound = lazy(() => import('./components/pages/NotFound'))
 const Board = import.meta.env.DEV ? lazy(() => import('./board/Board')) : null
 // The button families' seven states, for screenshots (dev only, same reason)
 const States = import.meta.env.DEV ? lazy(() => import('./look/dev/States')) : null
+// site-director stage 3 prototype (dev only): the new hero and one chapter
+const Proto = import.meta.env.DEV ? lazy(() => import('./proto/Proto')) : null
+const ProtoC = import.meta.env.DEV ? lazy(() => import('./proto/ProtoC')) : null
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
@@ -56,15 +59,21 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
 // CLS of exactly 0.50 on cold route loads (footer impact 0.5 x distance 1.0).
 const PageFallback = () => <SectionFallback height="120vh" />
 
+const HOME_SEO = (
+  <SEO
+    title="פיתוח אתרים ודפי נחיתה מותאמים לעסקים"
+    description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל וקידום בגוגל. יותר פניות, יותר מכירות, יותר הצלחה."
+    canonical="/"
+  />
+)
+
 // Home page with all sections - each in separate Suspense for progressive rendering
 function HomePage() {
+  // A look that composes the whole page itself (shot, DECISIONS #83) replaces the shared order
+  if (look.Home) return <>{HOME_SEO}<look.Home /></>
   return (
     <>
-      <SEO
-        title="פיתוח אתרים ודפי נחיתה מותאמים לעסקים"
-        description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל ו-SEO. יותר פניות, יותר מכירות, יותר הצלחה."
-        canonical="/"
-      />
+      {HOME_SEO}
       {/* Hero: the look's stage or void, loads immediately (the H1 is the LCP) */}
       <look.Hero />
 
@@ -126,6 +135,12 @@ function App() {
 
           {Board && (
             <Route path="/board/*" element={<Suspense fallback={<PageFallback />}><Board /></Suspense>} />
+          )}
+          {ProtoC && (
+            <Route path="/proto-c" element={<Suspense fallback={<PageFallback />}><ProtoC /></Suspense>} />
+          )}
+          {Proto && (
+            <Route path="/proto" element={<Suspense fallback={<PageFallback />}><Proto /></Suspense>} />
           )}
           {States && (
             <Route path="/states" element={<Suspense fallback={<PageFallback />}><States /></Suspense>} />

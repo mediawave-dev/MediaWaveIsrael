@@ -8,6 +8,9 @@ import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 import { track } from '../../utils/analytics'
 import { installSpotlight } from '../../utils/spotlight'
+import { LOOK } from '../../look/look'
+import ShotDock from '../../look/shot/ShotDock'
+import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
@@ -33,13 +36,24 @@ export default function Layout({ children }: LayoutProps) {
   // and main-thread cost in every trace
   const [widgetsReady, setWidgetsReady] = useState(false)
   useEffect(() => {
+    // An explicit chat request (openChat, shot's chatbots bubble) cannot wait for idle: mount
+    // the widgets now and ChatWidget opens itself from the pending flag
+    if (hasPendingChat()) { setWidgetsReady(true); return }
+    const now = () => setWidgetsReady(true)
+    window.addEventListener(CHAT_EVENT, now)
     if ('requestIdleCallback' in window) {
       const id = window.requestIdleCallback(() => setWidgetsReady(true), { timeout: 3000 })
-      return () => window.cancelIdleCallback(id)
+      return () => { window.cancelIdleCallback(id); window.removeEventListener(CHAT_EVENT, now) }
     }
     const timer = setTimeout(() => setWidgetsReady(true), 1500)
-    return () => clearTimeout(timer)
+    return () => { clearTimeout(timer); window.removeEventListener(CHAT_EVENT, now) }
   }, [])
+
+  // Shot: the dock holds the chat trigger (ChatWidget portals into its slot) and tells it when
+  // the dock shows, so Lottie 7 plays once per appearance (SPEC 1.12)
+  const shot = LOOK === 'shot'
+  const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null)
+  const [dockShown, setDockShown] = useState(false)
 
   // iOS Safari's bottom toolbar overlays the layout viewport, and
   // env(safe-area-inset-bottom) does NOT describe it — that inset is the home
@@ -107,8 +121,11 @@ export default function Layout({ children }: LayoutProps) {
       {/* Fixed overlays live in one complementary landmark (axe "region"):
           every child is position:fixed, so this wrapper takes no space. */}
       <aside aria-label="כלים ופעולות מהירות">
-          {/* Floating WhatsApp — left side, hidden when chat panel is open */}
-        <FloatingWhatsApp isChatOpen={isChatOpen} />
+          {/* Floating WhatsApp - left side, hidden when chat panel is open.
+              Shot: the dock replaces it (WhatsApp + the chat trigger in one bar) */}
+        {shot
+          ? <ShotDock chatOpen={isChatOpen} onSlot={setDockSlot} onShownChange={setDockShown} />
+          : <FloatingWhatsApp isChatOpen={isChatOpen} />}
 
         {/* Widgets — mounted after idle (see widgetsReady above).
             ONE BOUNDARY EACH, deliberately. These are three separate lazy()
@@ -130,7 +147,11 @@ export default function Layout({ children }: LayoutProps) {
 
             {/* AI Chat widget — bottom-right, lowest position */}
             <Suspense fallback={null}>
-              <ChatWidget onOpenChange={handleChatOpenChange} />
+              <ChatWidget
+                onOpenChange={handleChatOpenChange}
+                triggerSlot={shot ? dockSlot : undefined}
+                triggerActive={shot ? dockShown : undefined}
+              />
             </Suspense>
 
             {/* Cookie consent banner */}

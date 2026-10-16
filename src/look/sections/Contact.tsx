@@ -5,8 +5,11 @@
 // laptop writes the message on its screen as you type, folds it into the Horizon line while it
 // is sent and fills into the mark when it arrives. In KM: on the stage.
 // Every track() call of the old section is kept.
+// The shot (SPEC S8) adds, only when LOOK === 'shot': the business card (.ct__card around the
+// Lottie and the four ways), overlap-audit zones on the ways, the time line and the messages,
+// and its own companion file through `pal`. The props are optional; the looks' DOM is unchanged.
 
-import { useEffect, useRef, useState, type FocusEvent, type FormEvent } from 'react'
+import { Fragment, useEffect, useRef, useState, type FocusEvent, type FormEvent, type ReactNode } from 'react'
 import { LookButton } from '@look/button'
 import type { BtnState } from '../buttons/StateButton'
 import { useMotionEngine } from '../../motion/ScrollEngineProvider'
@@ -16,11 +19,27 @@ import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
 import { track } from '../../utils/analytics'
+import { LOOK } from '../look'
 import './contact.css'
 
 type Field = 'name' | 'email' | 'message'
 
-export default function Contact() {
+const SHOT = LOOK === 'shot'
+/** overlap-audit zone for the shot's text (the looks keep their markup as it was) */
+const Z = SHOT ? 'text' : undefined
+/** the shot's business card around the Lottie and the ways; a Fragment in the looks */
+const Card = ({ children }: { children: ReactNode }) => (SHOT ? <div className="ct__card">{children}</div> : <Fragment>{children}</Fragment>)
+
+interface ContactProps {
+  /** data-chapter on the section (the shot's chapter id) */
+  chapter?: string
+  /** data-dossier on the section */
+  dossier?: string
+  /** the companion's file and rest pose in another palette (passed through as Companion `src`) */
+  pal?: { riv: string; rest: string }
+}
+
+export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps = {}) {
   const engine = useMotionEngine()
   const [data, setData] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
@@ -68,6 +87,8 @@ export default function Contact() {
       return
     }
 
+    // a second send within 4.2 s must not be reset to idle by the first send's timer mid-request
+    clearTimeout(timer.current)
     setState('loading')
     try {
       await fetch(endpoint, {
@@ -101,7 +122,7 @@ export default function Contact() {
     }
     return (
       <div className="ct__field" data-invalid={err ? '' : undefined}>
-        <label htmlFor={id}>{label}</label>
+        <label htmlFor={id} data-zone={Z}>{label}</label>
         {area ? <textarea rows={5} {...shared} /> : <input {...shared} />}
         {err && <p id={`${id}-err`} className="ct__err">{err}</p>}
       </div>
@@ -109,47 +130,49 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark" data-intent="contact">
+    <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark" data-intent="contact" data-chapter={chapter} data-dossier={dossier}>
       <div className="ct__in">
         <div className="ct__side">
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
           <p className="ct__lead" data-zone="text">מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם</p>
-          <div className="ct__face" aria-hidden="true">
-            <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
-          </div>
-          <ul className="ct__ways">
-            <li>
-              <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
-                <span>טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
-              </a>
-            </li>
-            <li>
-              <a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
-                <span>אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
-              </a>
-            </li>
-            <li>
-              <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                <span>וואטסאפ</span><b>דברו איתנו</b>
-              </a>
-            </li>
-            <li>
-              <a href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" onClick={() => track('instagram_click', { placement: 'contact_section' })}>
-                <span>אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
-              </a>
-            </li>
-          </ul>
-          <p className="ct__time">{SITE_CONTACT.responseTime}</p>
+          <Card>
+            <div className="ct__face" aria-hidden="true">
+              <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
+            </div>
+            <ul className="ct__ways">
+              <li>
+                <a data-zone={Z} href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
+                  <span>טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
+                </a>
+              </li>
+              <li>
+                <a data-zone={Z} href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
+                  <span>אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
+                </a>
+              </li>
+              <li>
+                <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
+                  <span>וואטסאפ</span><b>דברו איתנו</b>
+                </a>
+              </li>
+              <li>
+                <a data-zone={Z} href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" onClick={() => track('instagram_click', { placement: 'contact_section' })}>
+                  <span>אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
+                </a>
+              </li>
+            </ul>
+          </Card>
+          <p className="ct__time" data-zone={Z}>{SITE_CONTACT.responseTime}</p>
         </div>
 
         <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
-          <Companion engine={engine} status={pal} progress={progress} keys={keys} />
+          <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />
           {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
           {field('email', 'אימייל', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {field('message', 'הודעה', {}, true)}
-          {status && <p role="status" className="ct__status">{status}</p>}
+          {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (
-            <p role="alert" className="ct__failure">
+            <p role="alert" className="ct__failure" data-zone={Z}>
               {failure}{' '}
               <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
             </p>

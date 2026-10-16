@@ -12,9 +12,25 @@
 // opens all the way as the hero scrolls away. It draws only while it moves and is on screen.
 // Repeat visits and CALM start at rest (lens-rest.svg, the same pose); REDUCE, the prerender and
 // no-JS show the rest frame only.
+//
+// Optional, for the shot look (SPEC S1; every prop off = KM exactly as before):
+//   src             the lens in another palette (lens-shot.riv and its two frames); a lens given its
+//                   own src also shares the page's one Rive slot (src/look/shot/rive-slot.ts)
+//   range           the scroll that opens the iris (the dive hold) instead of the closest section:
+//                   rest 0.72 -> 1 over the range's progress from `from` (0.7) to 1
+//   startAfterIdle  Rive after load + idle even on a first visit (the wasm stays off the LCP path);
+//                   the opening then plays only while the dive is below 0.1 and within 5 s of the
+//                   first paint, else the lens starts at the scroll's aperture and the visit is
+//                   remembered all the same
+//   startOnInteraction  Rive only on the visitor's first move (scroll, pointer, touch, key), then an
+//                   idle slot; no opening at all, the lens rests until then (the shot's dive opens the
+//                   iris instead). Loading and drawing the opening right after load cost about 1 s of
+//                   Lighthouse's simulated blocking time on the shot page (measured with Rive blocked)
+//   filmSizes       the film poster's sizes attribute
 
 import { useEffect, useRef, useState } from 'react'
 import type { MotionEngine } from '../../motion/motion-engine.js'
+import { claimRive, releaseRive } from '../shot/rive-slot'
 // inline markup, not an <img>: an inline SVG is never an LCP candidate, so the H1 stays the LCP
 import restSvg from './lens-rest.svg?raw'
 import closedSvg from './lens-closed.svg?raw'
@@ -28,6 +44,27 @@ type Num = { value: number }
 
 const endIntro = () => document.documentElement.classList.remove('hero-iris')
 const remember = () => { try { sessionStorage.setItem('mw-hero-iris', '1') } catch { /* private mode */ } }
+
+/** On the visitor's first move (scroll, wheel, pointer, touch, key), then at the next idle slot. */
+function afterInteraction(cb: () => void): () => void {
+  const events = ['scroll', 'wheel', 'pointerdown', 'pointermove', 'touchstart', 'keydown']
+  let done = false, idle = 0, timer = 0
+  const off = () => events.forEach((e) => window.removeEventListener(e, go, true))
+  function go() {
+    if (done) return
+    done = true
+    off()
+    if ('requestIdleCallback' in window) idle = window.requestIdleCallback(cb, { timeout: 500 })
+    else timer = setTimeout(cb, 50) as unknown as number
+  }
+  events.forEach((e) => window.addEventListener(e, go, { capture: true, passive: true }))
+  return () => {
+    done = true
+    off()
+    if (idle) window.cancelIdleCallback?.(idle)
+    clearTimeout(timer)
+  }
+}
 
 function afterLoadAndIdle(cb: () => void): () => void {
   let idle = 0, timer = 0, done = false
@@ -46,12 +83,40 @@ function afterLoadAndIdle(cb: () => void): () => void {
   }
 }
 
+/** ms from navigation start to the first paint (0 if the browser does not report it) */
+function firstPaint(): number {
+  try { return performance.getEntriesByName('first-paint')[0]?.startTime ?? 0 } catch { return 0 }
+}
+
 const NAMES = ['v0x', 'v0y', 'e0x', 'e0y', 'e1x', 'e1y', 'g0x', 'g0y', 'g1x', 'g1y'] as const
 
-export function Lens({ engine }: { engine: MotionEngine | null }) {
+export interface LensRange {
+  /** the element whose scroll opens the iris (the shot's dive hold) */
+  trigger: () => Element | null
+  start: string | (() => string)
+  end: string | (() => string)
+  /** the range progress at which the iris starts opening from rest (default 0.7) */
+  from?: number
+}
+
+export interface LensProps {
+  engine: MotionEngine | null
+  range?: LensRange
+  startAfterIdle?: boolean
+  startOnInteraction?: boolean
+  filmSizes?: string
+  /** riv: a URL; rest and closed: inline SVG markup (?raw), never an <img> (LCP) */
+  src?: { riv: string; rest: string; closed: string }
+}
+
+export function Lens(props: LensProps) {
+  const { engine, filmSizes, src } = props
   const box = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const [live, setLive] = useState(false)
+  // read once per engine (the effect's only dependency), so a new object each render changes nothing
+  const opts = useRef(props)
+  opts.current = props
 
   useEffect(() => {
     const el = box.current, cv = canvas.current
@@ -59,10 +124,21 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
     const intro = document.documentElement.classList.contains('hero-iris')
     if (engine.PRERENDER || engine.REDUCE) { endIntro(); return }
     const hero = el.closest('section') as HTMLElement
+    const { range, startAfterIdle = false, startOnInteraction = false, src: own } = opts.current
+    // a late start (after idle, or on the first move): Rive takes over at the scroll's aperture
+    const late = startAfterIdle || startOnInteraction
+    const riv = own?.riv ?? rivUrl
+    // the shot's lens shares the page's one Rive slot: a claim from another piece stops this one
+    const slot = Boolean(own)
+    const from = Math.min(0.99, Math.max(0, range?.from ?? 0.7))
+    const gain = range ? 1 : 1.5
+    // startAfterIdle: the opening may begin no later than 5 s after the first paint
+    const deadline = firstPaint() + 5000
+    let skipped = false
 
     let rive: Rive | null = null, gone = false, gaveUp = false
     let raf = 0, awake = false, visible = true, phase: 'wait' | 'intro' | 'live' = 'wait'
-    let props: Record<string, Num> = {}
+    let vm: Record<string, Num> = {}
     let focus: Num | null = null
     // the iris: aperture a (0 closed, 1 open) on a spring, and a small turn toward the pointer
     let a = intro ? 0 : LENS.rest, va = 0, turn = 0, turnTo = 0, t0 = 0, last = 0
@@ -71,7 +147,7 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
     const write = () => {
       const b = blade(a, twistFor(a, turn))
       const vals = [b.v[0], b.v[1], b.e0[0], b.e0[1], b.e1[0], b.e1[1], b.g0[0], b.g0[1], b.g1[0], b.g1[1]]
-      NAMES.forEach((k, i) => { props[k].value = vals[i] })
+      NAMES.forEach((k, i) => { vm[k].value = vals[i] })
       if (focus) focus.value = 0.35 * (a - LENS.rest) + scrollP * 0.7 + turn * 0.6
     }
     const target = (now: number) => {
@@ -83,9 +159,9 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
         remember()
       }
       if (now < blinkUntil) return { to: 0.03, k: 900 }
-      const open = LENS.rest + (1 - LENS.rest) * Math.min(1, scrollP * 1.5)
-      return { to: Math.max(hover ? 0.92 : LENS.rest, open), k: 150 }
+      return { to: Math.max(hover ? 0.92 : LENS.rest, openness()), k: 150 }
     }
+    const openness = () => LENS.rest + (1 - LENS.rest) * Math.min(1, scrollP * gain)
 
     const frame = (now: number) => {
       raf = 0
@@ -109,9 +185,16 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
       if (phase === 'live' && still && now >= blinkUntil) { sleep(); return }
       raf = requestAnimationFrame(frame)
     }
+    // another Rive piece took the slot: stop drawing (the next wake claims it back)
+    const yieldSlot = () => {
+      cancelAnimationFrame(raf); raf = 0
+      awake = false
+      rive?.stopRendering()
+    }
     const wake = () => {
       if (awake || !rive || !visible || phase === 'wait') return
       awake = true
+      if (slot) claimRive('lens', yieldSlot)
       rive.startRendering()
       last = performance.now()
       raf = requestAnimationFrame(frame)
@@ -119,7 +202,17 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
     // let the last values draw, then stop the canvas
     const sleep = () => {
       awake = false
-      requestAnimationFrame(() => requestAnimationFrame(() => { if (!awake && rive) rive.stopRendering() }))
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!awake && rive) { rive.stopRendering(); if (slot) releaseRive('lens') }
+      }))
+    }
+    // startAfterIdle: too late or scrolled too far for the opening; the iris starts where the
+    // scroll has it, and the visit counts as seen (no closed iris on the next load)
+    const skipIntro = () => {
+      if (!intro || skipped || phase !== 'wait') return
+      skipped = true
+      endIntro()
+      remember()
     }
 
     // ---- the visitor's hand
@@ -147,7 +240,7 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
       if (gone) return
       RuntimeLoader.setWasmUrl(wasmUrl)
       const r = new Rive({
-        src: rivUrl, canvas: cv, artboard: 'Lens', stateMachines: 'Main',
+        src: riv, canvas: cv, artboard: 'Lens', stateMachines: 'Main',
         autoplay: true, autoBind: true, shouldDisableRiveListeners: true, isTouchScrollEnabled: true,
         layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
         onLoad: () => {
@@ -155,15 +248,24 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
           if (gaveUp) { r.cleanup(); return }
           clearTimeout(fallback)
           rive = r
+          if (slot) claimRive('lens', yieldSlot)
           r.resizeDrawingSurfaceToCanvas(Math.min(2, window.devicePixelRatio || 1))
           const v = r.viewModelInstance
-          props = Object.fromEntries(NAMES.map((k) => [k, v?.number(k) as Num | null])) as Record<string, Num>
+          vm = Object.fromEntries(NAMES.map((k) => [k, v?.number(k) as Num | null])) as Record<string, Num>
           focus = (v?.number('focus') as Num | null) ?? null
-          if (NAMES.some((k) => !props[k])) { r.cleanup(); rive = null; endIntro(); return }
-          // the opening needs the lens on screen (a reload further down starts at rest)
-          const onScreen = el.getBoundingClientRect().top < window.innerHeight
-          const opening = intro && onScreen && !engine.CALM
-          if (!opening) a = LENS.rest
+          if (NAMES.some((k) => !vm[k])) { r.cleanup(); rive = null; if (slot) releaseRive('lens'); endIntro(); return }
+          let opening: boolean
+          if (late) {
+            // the dive has barely started and the first paint was under 5 s ago (never on a first move)
+            const early = range ? st.progress < 0.1 : el.getBoundingClientRect().top < window.innerHeight
+            opening = !startOnInteraction && intro && !skipped && early && !engine.CALM && performance.now() < deadline
+            if (!opening) { skipIntro(); a = openness() }
+          } else {
+            // the opening needs the lens on screen (a reload further down starts at rest)
+            const onScreen = el.getBoundingClientRect().top < window.innerHeight
+            opening = intro && onScreen && !engine.CALM
+            if (!opening) a = LENS.rest
+          }
           write()
           // writes apply on the next advance: show the canvas once that frame is drawn
           requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -179,28 +281,42 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
             } else {
               phase = 'live'
               r.stopRendering()
+              if (slot) releaseRive('lens')
             }
           }))
         },
-        onLoadError: () => { clearTimeout(fallback); endIntro() },
+        onLoadError: () => { clearTimeout(fallback); if (slot) releaseRive('lens'); endIntro() },
       })
     }
 
     // the opening must not start late: if Rive is not there in time the lens shows at rest
-    const fallback = window.setTimeout(() => { if (!rive) { gaveUp = true; endIntro() } }, intro ? 4500 : 1e9)
+    // (startAfterIdle: Rive still comes, at the scroll's aperture; only the opening is skipped)
+    if (startOnInteraction) skipIntro() // no opening: the lens rests until the visitor moves
+    const fallback = late
+      ? window.setTimeout(() => { if (!rive) skipIntro() }, intro ? Math.max(0, deadline - performance.now()) : 1e9)
+      : window.setTimeout(() => { if (!rive) { gaveUp = true; endIntro() } }, intro ? 4500 : 1e9)
     let cancelIdle = () => {}
     let raf0 = 0
-    if (intro) raf0 = requestAnimationFrame(() => { start().catch(() => endIntro()) })
-    else cancelIdle = afterLoadAndIdle(() => { start().catch(() => {}) })
+    if (intro && !late) raf0 = requestAnimationFrame(() => { start().catch(() => endIntro()) })
+    else cancelIdle = (startOnInteraction ? afterInteraction : afterLoadAndIdle)(() => { start().catch(() => { if (late) endIntro() }) })
 
-    // the scroll opens the iris all the way as the hero leaves
-    const st = engine.ScrollTrigger.create({
-      trigger: hero, start: 'top top', end: 'bottom top',
-      onUpdate: (self) => { scrollP = self.progress; wake() },
-    })
+    // the scroll opens the iris all the way as the hero leaves (range: over the end of the dive)
+    const st = range
+      ? engine.ScrollTrigger.create({
+        trigger: range.trigger() ?? hero, start: range.start, end: range.end, invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          scrollP = Math.max(0, Math.min(1, (self.progress - from) / (1 - from)))
+          if (late && self.progress >= 0.1) skipIntro()
+          wake()
+        },
+      })
+      : engine.ScrollTrigger.create({
+        trigger: hero, start: 'top top', end: 'bottom top',
+        onUpdate: (self) => { scrollP = self.progress; wake() },
+      })
     const seen = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting
-      if (!visible && awake) { cancelAnimationFrame(raf); raf = 0; awake = false; rive?.stopRendering() }
+      if (!visible && awake) { cancelAnimationFrame(raf); raf = 0; awake = false; rive?.stopRendering(); if (slot) releaseRive('lens') }
       else if (visible) wake()
     })
     seen.observe(el)
@@ -225,15 +341,16 @@ export function Lens({ engine }: { engine: MotionEngine | null }) {
       el.removeEventListener('pointerdown', onDown)
       rive?.cleanup()
       rive = null
+      if (slot) releaseRive('lens')
       setLive(false)
     }
   }, [engine])
 
   return (
     <div ref={box} className="kl__lens" data-live={live ? '' : undefined} data-zone="art">
-      <div className="kl__film" aria-hidden="true"><HeroMedia film={LENS_FILM} sizes="(max-width: 860px) 62vw, 440px" /></div>
-      <div className="kl__still kl__still--rest" aria-hidden="true" dangerouslySetInnerHTML={{ __html: restSvg }} />
-      <div className="kl__still kl__still--closed" aria-hidden="true" dangerouslySetInnerHTML={{ __html: closedSvg }} />
+      <div className="kl__film" aria-hidden="true"><HeroMedia film={LENS_FILM} sizes={filmSizes ?? '(max-width: 860px) 62vw, 440px'} /></div>
+      <div className="kl__still kl__still--rest" aria-hidden="true" dangerouslySetInnerHTML={{ __html: src?.rest ?? restSvg }} />
+      <div className="kl__still kl__still--closed" aria-hidden="true" dangerouslySetInnerHTML={{ __html: src?.closed ?? closedSvg }} />
       <canvas ref={canvas} className="kl__rive" aria-hidden="true" />
     </div>
   )

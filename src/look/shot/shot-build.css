@@ -1,0 +1,107 @@
+/* shot · S4 build, the laptop hold (SPEC S4). 390 first: the sticky stage (100svh - 56px) holds
+   only the laptop, 343x221, centred between the stage's top and the dock line (--safe-b), and the
+   ink line's stub from the laptop's base down to the stage's bottom. The perspective sits on the
+   stage, never on a transformed ancestor; the camera (orbit) and the laptop (openLaptop) are the
+   only moving layers. 768-1099: min(72vw, 560px). 1100+: min(56vw, ..., 860px), 806x520 at 900
+   and 700. Without the engine (REDUCE, no JS, prerender) there is no hold: the laptop sits open
+   and frontal in the flow with the finished site on its screen, and the stub is drawn.
+
+   --line-x is where the ink line runs, from the section's inline-start edge: the stub here, the
+   heading segment and the steps' line (shot-process.css) share it, so the line is one stroke. */
+
+.shot-build {
+  --line-x: calc(var(--gut) + 14px);
+  /* on a phone the laptop is the screen's width and a little more (the base bleeds past the edges,
+     a close-up): its screen is about 370px, so the site that builds on it reads (critic: 343px
+     left 75% of the stage as bare table) */
+  --lap-w: max(150px, min(108vw, 430px, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55));
+  --lap-h: calc(var(--lap-w) / 1.55);
+  position: relative;
+}
+@media (min-width: 768px) and (max-width: 1099px) {
+  .shot-build {
+    --line-x: calc((100% - 588px) / 2 + 14px);
+    --lap-w: max(150px, min(72vw, 560px, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55));
+  }
+}
+@media (min-width: 1100px) {
+  .shot-build {
+    --line-x: calc(50% - 1px);
+    --lap-w: max(150px, min(56vw, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55, 860px));
+  }
+}
+
+/* ── the stage: art only ── */
+.shot-build__stage {
+  --lap-bottom: calc(40px + var(--lap-h));
+  position: relative; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center;
+  padding-block: 40px 32px;
+  perspective: 1100px;
+}
+html.motion-ready .shot-build__stage {
+  --lap-bottom: calc((100% - var(--safe-b)) / 2 + var(--lap-h) / 2);
+  justify-content: center;
+  padding-block: 0 var(--safe-b);
+}
+
+/* the camera: it turns around the laptop (orbit). preserve-3d so the laptop's own tilt is seen
+   through the stage's perspective, not flattened into the camera's plane */
+.shot-build__cam { position: relative; width: var(--lap-w); transform-style: preserve-3d; }
+/* the laptop's shadow on the table: static, under the base */
+.shot-build__cam::after {
+  content: ""; position: absolute; inset-inline: 4%; bottom: -14px; height: 22px; z-index: -1;
+  background: radial-gradient(closest-side, rgba(27, 29, 33, 0.22), rgba(27, 29, 33, 0));
+  pointer-events: none;
+}
+
+/* ── the screen: the opening frame (the Horizon mark on white) and the site that builds over it,
+   one grid cell. The site keeps the artboard's 16:9 so the slot rectangle (hero-slot.json) lands
+   where Rive and the finished frame draw it. ── */
+.shot-build .lap__screen { display: grid; place-items: center; }
+.shot-lap__opening { display: none; grid-area: 1 / 1; align-self: center; justify-self: center; }
+html.motion-ready .shot-lap__opening { display: block; }
+.shot-lap__opening .mw-logo { display: block; height: calc(var(--lap-h) * 0.26); width: auto; }
+
+.shot-build .kh__build { position: relative; grid-area: 1 / 1; z-index: 1; width: 100%; aspect-ratio: 16 / 9; }
+.shot-build .kh__built,
+.shot-build .kh__rive { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.shot-build .kh__built svg { display: block; width: 100%; height: 100%; }
+.shot-build .kh__rive { z-index: 1; }
+.shot-build .kh__slot { position: absolute; z-index: 2; overflow: hidden; }
+
+/* the finished frame: only as the last frame (no JS, REDUCE) or as the fallback until Rive is live */
+.shot-build .kh__build--scrub .kh__built { visibility: hidden; }
+.shot-build .kh__build--scrub[data-built] .kh__built { visibility: visible; }
+.shot-build .kh__build--scrub:not([data-live]) .kh__rive { visibility: hidden; }
+
+/* the lens in the site's slot: the film's poster cropped to a circle as tall as the slot, from the
+   moment the site's button is clicked (REVEAL), over the slot Rive paints as the table */
+.shot-build .kh__slot-still {
+  position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1;
+  translate: -50% 0; border-radius: 50%; object-fit: cover;
+  opacity: 0; transition: opacity 180ms var(--ease-out, ease-out);
+}
+.shot-build .kh__build--scrub[data-still] .kh__slot-still { opacity: 1; }
+html.disable-animations .shot-build .kh__slot-still { transition: none; }
+
+/* ── the stub: from the laptop's base to the stage's bottom, at the line's x ── */
+.shot-line--stub { top: var(--lap-bottom); bottom: 0; inset-inline-start: var(--line-x); }
+/* only the ink is drawn in the stage: no faint ruled track ahead of it */
+.shot-line--stub { background: none; }
+
+/* closed means closed: while the lid lies on the laptop, the camera sees its back (ink), never the
+   screen's content mirrored through it. The lid joins the 3D scene so its screen can hide its back. */
+.shot-build .lap__lid { transform-style: preserve-3d; }
+.shot-build .lap__screen,
+.shot-build .lap__cam { backface-visibility: hidden; transform: translateZ(0.5px); }
+/* the lid's outer side: the Horizon mark in its dark-ground tones, seen only while the lid is shut */
+.shot-build .lap__back {
+  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+  backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
+}
+.shot-build .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #ffffff; --logo-b: #6e8cff; }
+
+/* the browser window fills the screen's width (the artboard's margin around it is cropped by the
+   screen): the site reads larger on a 343px laptop. The slot keeps its place (percentages of the box). */
+.shot-build .kh__build { width: 111%; }

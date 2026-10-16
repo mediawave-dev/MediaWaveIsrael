@@ -22,3 +22,18 @@
 .lm__done { padding: 28px 0 8px; }
 .lm__check { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; margin-bottom: 14px; background: var(--btn-bg); color: var(--btn-fg); font-size: 1.5rem; }
 .lm__done p { margin: 0; color: var(--ink-2); font: 400 1.05rem/1.6 var(--text); }
+/* shot (SPEC 1.12): a bottom sheet of paper on the table. Ink at an alpha for the backdrop (no
+   black), square top corners, fields with the ink-alpha UI border. Behaviour is untouched. */
+html[data-look="shot"] .lm { align-items: flex-end; padding: 0; }
+html[data-look="shot"] .lm__backdrop { background: rgba(27, 29, 33, 0.25); }
+html[data-look="shot"] .lm__card { max-width: 480px; max-height: 70svh; padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); border-radius: 2px 2px 0 0; background: var(--paper); box-shadow: 0 -1px 0 var(--line), 0 -18px 30px -22px rgba(27, 29, 33, 0.45); }
+html[data-look="shot"] .lm__card h3 { font: 800 clamp(1.35rem, 5vw, 1.5rem)/1.3 var(--display); font-stretch: 75%; }
+html[data-look="shot"] .lm__face { width: 96px; border-radius: 0; background: none; margin-bottom: 14px; }
+html[data-look="shot"] .lm__face > div { inset: 0; }
+html[data-look="shot"] .lm__field label { font: 600 1rem/1.6 var(--ui); }
+html[data-look="shot"] .lm__field input { min-height: 52px; border-radius: 2px; border-color: var(--line-ui); background: var(--paper); }
+html[data-look="shot"] .lm__field input:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-color: var(--line-ui); }
+html[data-look="shot"] .lm__field[data-invalid] input { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+html[data-look="shot"] .lm__privacy { font: 400 0.9rem/1.6 var(--text); }
+html[data-look="shot"] .lm__err, html[data-look="shot"] .lm__failure { font: 400 1rem/1.6 var(--text); }
+html[data-look="shot"] .lm__done p { font: 400 1rem/1.7 var(--text); }

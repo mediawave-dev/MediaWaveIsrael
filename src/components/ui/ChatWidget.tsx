@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect, useCallback, type KeyboardEvent } from 'react'
+import { createPortal } from 'react-dom'
 import { m, AnimatePresence } from 'framer-motion'
 import { X, Send, RotateCcw, MessageCircle } from 'lucide-react'
 import { useChat, type ChatMessage } from '../../hooks/useChat'
 import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
 import { track } from '../../utils/analytics'
+import { CHAT_EVENT, takePendingChat } from './chat-event'
 
 // --- Typing Indicator ---
 
@@ -92,9 +94,15 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 
 interface ChatWidgetProps {
   onOpenChange?: (open: boolean) => void
+  /** Shot: render the trigger into this element (the dock) instead of the floating button.
+      Undefined keeps the floating trigger (every other look). */
+  triggerSlot?: HTMLElement | null
+  /** Shot dock: the trigger's Lottie plays once each time this turns true, then rests on its
+      last frame. */
+  triggerActive?: boolean
 }
 
-export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
+export default function ChatWidget({ onOpenChange, triggerSlot, triggerActive }: ChatWidgetProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState('')
   const [viewportHeight, setViewportHeight] = useState<number | null>(null)
@@ -107,9 +115,40 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
   // Close must return focus to the trigger (it re-mounts via AnimatePresence,
   // so focus on the next tick) — keyboard users were dropped at <body>
+  // The dock trigger stays mounted but is hidden while a dialog is open, so it can take focus
+  // only once the panel has left: retry for up to about 40 frames.
+  const slotted = triggerSlot !== undefined
   const closeChat = useCallback(() => {
     setIsOpen(false)
-    setTimeout(() => triggerRef.current?.focus(), 60)
+    if (!slotted) {
+      setTimeout(() => triggerRef.current?.focus(), 60)
+      return
+    }
+    let tries = 0
+    const tryFocus = () => {
+      const el = triggerRef.current
+      el?.focus()
+      if (el && document.activeElement !== el && ++tries < 40) requestAnimationFrame(tryFocus)
+    }
+    setTimeout(tryFocus, 60)
+  }, [slotted])
+
+  // openChat(placement) from anywhere (chat-event.ts): a request made before this widget
+  // mounted waits on window and is honoured here; later ones arrive as events.
+  useEffect(() => {
+    const open = (placement: string) => {
+      setIsOpen(true)
+      track('chat_open', { placement })
+    }
+    const pending = takePendingChat()
+    if (pending) open(pending)
+    const onEvent = (e: Event) => {
+      takePendingChat()
+      const placement = (e as CustomEvent<{ placement?: string }>).detail?.placement
+      open(placement || 'event')
+    }
+    window.addEventListener(CHAT_EVENT, onEvent)
+    return () => window.removeEventListener(CHAT_EVENT, onEvent)
   }, [])
 
   // Notify parent of open state changes
@@ -231,11 +270,37 @@ export default function ChatWidget({ onOpenChange }: ChatWidgetProps) {
 
   const canSend = input.trim().length > 0 && !isLoading && !isLimitReached
 
+  // Shot: a plain disc in the dock, always mounted (the dock hides itself while the panel is
+  // open), Lottie 7 played once per dock appearance (SPEC 1.8, 1.12)
+  const slotTrigger = triggerSlot ? createPortal(
+    <button
+      ref={triggerRef}
+      type="button"
+      onClick={() => { setIsOpen(true); track('chat_open', { placement: 'dock' }) }}
+      className="shot-dock__chat-btn"
+      aria-label="פתח צ'אט"
+      aria-expanded={isOpen}
+      data-zone="ui"
+    >
+      <LottieIcon
+        animationPath="/animations/7%20chatbot/chatbot_header.json"
+        size={36}
+        loop={false}
+        playOnHover={false}
+        active={triggerActive}
+        fallback={<MessageCircle size={22} aria-hidden="true" />}
+      />
+    </button>,
+    triggerSlot,
+  ) : null
+
   return (
     <>
+      {slotTrigger}
+
       {/* --- Trigger Button --- */}
       <AnimatePresence>
-        {!isOpen && (
+        {!isOpen && !slotted && (
           <m.div
             className="floating-cta fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40"
             data-zone="ui"

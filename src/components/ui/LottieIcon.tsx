@@ -7,6 +7,17 @@ import type { LottieRefCurrentProps } from 'lottie-react'
 import lottie, { type AnimationItem } from 'lottie-web'
 import { useAmbientMotion } from '../../hooks/useReducedMotion'
 
+// Dev only: window.__mwLottiePlaying is how many Lotties are playing right now, so QA can assert
+// "at most 1" while scrolling (shot SPEC 1.8). A live count over lottie-web's own registry: both
+// renderers register there, and destroyed animations leave it.
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  const registry = lottie as unknown as { getRegisteredAnimations(): AnimationItem[] }
+  Object.defineProperty(window, '__mwLottiePlaying', {
+    configurable: true,
+    get: () => registry.getRegisteredAnimations().filter(a => !a.isPaused).length,
+  })
+}
+
 interface LottieIconProps {
   /** URL path to animation JSON file */
   animationPath?: string
@@ -33,6 +44,14 @@ interface LottieIconProps {
       the page's most expensive script on a phone (measured: about 4.7 s of 19 s while
       scrolling at 4x CPU), so a hold builds only the item on stage and its neighbours. */
   load?: boolean
+  /** With `active` false: 'last' shows the finished artwork until the Lottie first plays (draw-on
+      files are empty at frame 0); once it has played, leaving the stage pauses where it is. The
+      default 'first' keeps today's behaviour (the shot look passes 'last'). */
+  rest?: 'first' | 'last'
+  /** A still of the animation's fullest frame (scripts/lottie-posters.mjs): shown until the
+      animation is built and set, so a card is never a blank box; the animation then starts from
+      that frame and rests on it again off stage, and the stop switch freezes on it. */
+  poster?: { src: string; frame: number }
   /** Drawn instead of the animation if it cannot be loaded. Pass one wherever
       an empty box would look broken (a CTA button); omit it for decoration. */
   fallback?: React.ReactNode
@@ -53,6 +72,8 @@ export function LottieIcon({
   renderer = 'svg',
   active,
   load = true,
+  rest = 'first',
+  poster,
   fallback = null,
 }: LottieIconProps) {
   const lottieRef = useRef<LottieRefCurrentProps>(null)
@@ -149,6 +170,8 @@ export function LottieIcon({
       rendererSettings: { clearCanvas: true },
     })
     canvasAnimRef.current = anim
+    // the stage (play / rest frame / poster) is applied once lottie has built the frames
+    anim.addEventListener('DOMLoaded', () => applyStage())
 
     return () => {
       anim.destroy()
@@ -193,14 +216,30 @@ export function LottieIcon({
 
   // Held scenes: the stage decides. Restart on entry so each announcement plays from its
   // first frame; everything off stage is paused.
-  useEffect(() => {
-    if (active === undefined || !loadedData || !ambient) return
+  // The state is applied again when the animation reports DOMLoaded: on first mount this effect
+  // runs before lottie has created the animation (getAnim() is still null), so a resting
+  // Lottie used to keep showing frame 0 (critic, 16.10).
+  const playedRef = useRef(false)
+  const [settled, setSettled] = useState(false)
+  const applyStage = () => {
     const anim = getAnim()
     if (!anim) return
-    if (active) anim.goToAndPlay(0, true)
+    const last = Math.max(0, (anim.getDuration(true) ?? 1) - 1)
+    if (!ambient) anim.goToAndStop(poster ? poster.frame : last, true)
+    else if (active === undefined) { /* the default: plays while on screen */ }
+    else if (active) {
+      playedRef.current = true
+      anim.goToAndPlay(poster ? poster.frame : 0, true)
+    } else if (poster) anim.goToAndStop(poster.frame, true)
+    else if (rest === 'last' && !playedRef.current) anim.goToAndStop(last, true)
     else anim.pause()
+    setSettled(true)
+  }
+  useEffect(() => {
+    if (!loadedData) return
+    applyStage()
      
-  }, [active, loadedData, ambient, renderer])
+  }, [active, loadedData, ambient, renderer, rest])
 
   // Animations disabled (a11y widget): freeze on the LAST frame — draw-on
   // animations are empty at frame 0, while the final frame always shows
@@ -209,7 +248,7 @@ export function LottieIcon({
     const anim = getAnim()
     if (!ambient && anim && loadedData) {
       const totalFrames = anim.getDuration(true)
-      anim.goToAndStop(Math.max(0, (totalFrames ?? 1) - 1), true)
+      anim.goToAndStop(poster ? poster.frame : Math.max(0, (totalFrames ?? 1) - 1), true)
     }
      
   }, [ambient, loadedData])
@@ -229,8 +268,10 @@ export function LottieIcon({
         // Reserve the space silently. The old pulsing sky-blue block drew the
         // eye to a placeholder and then swapped to the illustration.
         className={`rounded-xl ${className}`}
-        style={{ width: size, height: size }}
-      />
+        style={{ width: size, height: size, position: poster ? 'relative' : undefined }}
+      >
+        {poster && <img className="lottie-poster" src={poster.src} alt="" aria-hidden="true" decoding="async" style={POSTER_STYLE} />}
+      </div>
     )
   }
 
@@ -256,9 +297,10 @@ export function LottieIcon({
     <div
       ref={containerRef}
       className={className}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, position: poster ? 'relative' : undefined }}
       onMouseEnter={handleMouseEnter}
     >
+      {poster && !settled && <img className="lottie-poster" src={poster.src} alt="" aria-hidden="true" decoding="async" style={POSTER_STYLE} />}
       {renderer === 'canvas' ? (
         <div ref={canvasContainerRef} style={{ width: '100%', height: '100%' }} />
       ) : (
@@ -267,11 +309,15 @@ export function LottieIcon({
           animationData={loadedData}
           loop={loop && ambient}
           autoplay={ambient && active !== false}
+          onDOMLoaded={applyStage}
           style={{ width: '100%', height: '100%' }}
         />
       )}
     </div>
   )
 }
+
+/** The poster sits exactly over the animation's box, until the animation has its frame. */
+const POSTER_STYLE: React.CSSProperties = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', pointerEvents: 'none' }
 
 export default LottieIcon

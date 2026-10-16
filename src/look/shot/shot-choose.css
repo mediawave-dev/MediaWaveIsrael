@@ -1,0 +1,116 @@
+/* shot · S3 choose, the tool row (SPEC S3). 390 first, widened at 768 and 1100.
+   Each tool is an object band (its footprint plus 20px, centred) and a paper label under it. The
+   objects are sized in em: --fs is the Thing's font-size knob, clamped so the widest one still
+   fits a 320px phone. Three layers per object: .shot-tool__obj / .shot-bubble__thing (the move
+   helpers own its transform), .shot-tool__rest (the static rest angle, CSS) and the Thing.
+   Default (no JS, prerender, REDUCE) is the last frame: rest angles, the phone upright, the wash
+   gone, the reels still. Colours: table, paper, ink, ink-2 and ink at an alpha only. */
+
+.shot-choose { padding: 64px 0 48px; color: var(--ink); }
+
+.shot-tools {
+  list-style: none; margin: 0 auto; padding: 0 var(--gut);
+  display: flex; flex-direction: column; gap: 40px;
+}
+
+.shot-tool { display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+/* ── the objects ── */
+.shot-tool {
+  --fs: 5.6px;   /* the Thing's font-size at 390 (SPEC S3 object map) */
+  --w: 44;       /* footprint in em, for the band and the 320 clamp */
+  --h: 44;
+}
+.shot-tool--landing { --fs: 5.4px; --w: 50; --h: 27; }
+.shot-tool--seo { --w: 40; --h: 46; }
+.shot-tool--chatbots { --w: 48; --h: 38; }
+.shot-tool--video-editing { --fs: 6px; --w: 52; --h: 33; }
+.shot-tool--memory-videos { --w: 44; --h: 44; }
+
+.shot-tool__obj {
+  display: flex; justify-content: center; padding: 10px 0; margin-bottom: 4px;
+  font-size: min(var(--fs), calc((100vw - 2 * var(--gut) - 16px) / var(--w)));
+}
+.shot-tool__rest {
+  display: grid; place-items: center;
+  width: calc(var(--w) * 1em); height: calc(var(--h) * 1em);
+}
+/* the Things keep their shapes; the band sets their size (things.css defaults to 10px) */
+.shot-choose .thing { font-size: inherit; }
+
+/* landing: the phone lies on its side (-90deg on the Thing); its art turns back to landscape */
+.shot-tool--landing .shot-tool__rest { position: relative; display: block; transform: rotate(-4deg); }
+.shot-tool--landing .thing { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); }
+.shot-choose .shot-tool--landing .thing__art {
+  position: absolute; left: 50%; top: 50%; width: 40.7em; height: 23em;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* seo: the loupe; its handle hangs past the body, so the band reserves 46em under it */
+.shot-tool--seo .shot-tool__rest { transform: rotate(6deg); place-items: start center; }
+.shot-choose .shot-tool--seo .thing__art { width: 74%; height: 74%; }
+
+/* video-editing: the cassette, its Lottie in the label window */
+.shot-tool--video-editing .shot-tool__rest { transform: rotate(4deg); }
+
+/* memory-videos: the frame, the photo under a table-coloured wash that clears (develop) */
+.shot-tool--memory-videos .shot-tool__rest { transform: rotate(-5deg); }
+.shot-wash { position: absolute; inset: 0; display: none; background: var(--table); }
+html.motion-ready .shot-wash { display: block; }
+
+/* chatbots: the bubble is a real button; its whole body and the hint are the target */
+.shot-tool--chatbots .shot-tool__rest { transform: rotate(-3deg); }
+.shot-choose .shot-tool--chatbots .thing__art { width: 96%; height: 96%; } /* the file has a wide margin of its own */
+.shot-bubble {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  margin: 0 0 4px; padding: 10px 12px 4px; border: 0; border-radius: 2px;
+  background: none; color: var(--ink); cursor: pointer; font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.shot-bubble__thing { display: block; font-size: min(var(--fs), calc((100vw - 2 * var(--gut) - 40px) / var(--w))); }
+.shot-bubble__hint {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--ink); font: 700 1rem/1.6 var(--ui);
+}
+.shot-bubble .thing__body { transition: transform 160ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .shot-bubble:hover .thing__body { transform: translateY(-2px); } /* contained: inside the button's padding */
+}
+html.motion-reduced .shot-bubble .thing__body { transition: none; }
+
+/* ── the labels: text-first paper cards, centred (#61), never transformed (websites lands) ── */
+.shot-tool__label { position: relative; width: 100%; margin-inline: auto; text-align: center; }
+.shot-tool__title { margin: 0; color: var(--ink); font: 800 var(--shot-h3)/1.15 var(--display); font-stretch: 75%; }
+.shot-tool__line { margin: 8px auto 0; max-width: 34ch; text-wrap: pretty; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
+.shot-label__links { margin: 6px 0 -8px; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 16px; }
+.shot-label__links--two { flex-direction: column; align-items: center; }
+
+/* websites: the Lottie well opens the label (file aspect 1:1) */
+.shot-label__well { display: flex; justify-content: center; height: 180px; margin: 0 auto 20px; }
+
+/* ── the CTA under the row ── */
+.shot-choose__cta { width: min(100% - 2 * var(--gut), 366px); margin: 32px auto 0; }
+
+/* ── tablet: one column, the objects a little larger ── */
+@media (min-width: 768px) {
+  .shot-tool { --fs: 6.4px; }
+  .shot-tool--landing, .shot-tool--video-editing { --fs: 6.4px; }
+  .shot-tool__label { max-width: 420px; }
+}
+
+/* ── desktop: two columns, the inline-end column 120px lower (a stagger, not a card grid) ── */
+@media (min-width: 1100px) {
+  .shot-choose { padding: 96px 0 72px; }
+  .shot-tools {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px 64px;
+    max-width: 1160px; padding-bottom: 120px; box-sizing: content-box;
+  }
+  .shot-tool:nth-child(even) { position: relative; top: 120px; }
+  /* a label without an object sits at the foot of its row, so it still reads after its neighbour */
+  .shot-tool--well { justify-content: flex-end; align-self: stretch; }
+  .shot-tool, .shot-tool--landing, .shot-tool--video-editing { --fs: 7.4px; }
+  .shot-choose__cta { margin-top: 40px; }
+}
+@media (min-width: 1100px) and (max-height: 780px) {
+  .shot-tool, .shot-tool--landing, .shot-tool--video-editing { --fs: 6.6px; }
+}

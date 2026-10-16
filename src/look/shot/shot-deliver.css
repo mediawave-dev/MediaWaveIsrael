@@ -1,0 +1,163 @@
+/* shot · S9 deliver: the pull-back into one phone (SPEC S9). All art. Written for 390 first.
+   The stage holds the camera layer only; the layer holds the set: the phone (Thing, 6.6px at 390,
+   8.4px from 1100, 7.2px on short desktops) with the miniature on its face, and four props around
+   it, partly off the edges, echoing the hero's overview. pullBackMatched owns the layer's
+   transform; nothing in here is ever faded. Without the engine (REDUCE, prerender, no JS) and on
+   short viewports the stage is static and the set sits in the flow at its final size. */
+
+.shot-deliver { position: relative; overflow: clip; }
+
+/* ── the stage and the layer ── */
+.shot-deliver__stage { position: relative; }
+.shot-deliver__layer {
+  position: relative; box-sizing: border-box;
+  display: grid; place-items: center; padding: 56px 0;
+}
+/* held: the layer fills the stuck stage; the phone is centred between the header and the dock */
+html.motion-ready .shot-deliver__layer { position: absolute; inset: 0; padding: 0 0 var(--safe-b); }
+@media (max-height: 615px) {
+  html.motion-ready .shot-deliver__layer { position: relative; inset: auto; padding: 56px 0; }
+}
+
+/* ── the set: the phone, and the props placed around it in the phone's own frame ── */
+.shot-deliver__set { position: relative; --thing-fs: 6.6px; --prop-fs: 2.4px; }
+@media (min-width: 768px) { .shot-deliver__set { --thing-fs: 7.4px; --prop-fs: 3px; } }
+@media (min-width: 1100px) { .shot-deliver__set { --thing-fs: 8.4px; --prop-fs: 3.4px; } }
+@media (min-width: 1100px) and (max-height: 760px) { .shot-deliver__set { --thing-fs: 7.2px; } }
+
+.shot-phone { position: relative; z-index: 1; }
+.shot-phone .thing { font-size: var(--thing-fs); }
+.shot-phone .thing__face {
+  flex-direction: column; align-items: stretch; justify-content: flex-start;
+  background: var(--face);
+}
+
+/* the address bar: the only text on the stage (art, aria-hidden), an LTR island */
+.shot-phone__url {
+  flex: none; display: block; box-sizing: border-box;
+  padding: calc(var(--thing-fs) * 1.5) 0 calc(var(--thing-fs) * 0.5); text-align: center;
+  color: var(--ink-2); font: 400 0.9rem/1.6 var(--text);
+  box-shadow: inset 0 -1px 0 var(--line);
+  white-space: nowrap; overflow: hidden; text-overflow: clip;
+}
+
+/* the props: Things at --prop-fs, at rest angles (a static rotate on the inner span) */
+/* behind the phone; shown in every mode (REDUCE and the short policy keep the props around the
+   phone, while the hero hides its own .shot-desk there) */
+.shot-deliver .shot-desk--end { position: absolute; inset: 0; z-index: 0; display: block; pointer-events: none; transform: none; }
+html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-hero.css's .shot-desk hides (short, text scale, no engine) */
+.shot-deliver__prop { position: absolute; display: block; }
+.shot-deliver__prop > span { display: block; }
+.shot-deliver__prop .thing { font-size: var(--prop-fs); }
+/* 390: in the side margins beside the screen, partly past the stage's edges (the stage clips
+   them), two high and two low. All of them sit outside the phone's width, so the first frames of
+   the pull-back (the phone magnified past the screen's sides) show none of them: they enter from
+   the sides as the camera pulls back. (RTL: inline-start is the right, so "start: 100% + x" is
+   the left margin.) */
+.shot-deliver__prop--loupe { top: 4%; inset-inline-end: calc(100% + 18px); }
+.shot-deliver__prop--loupe > span { transform: rotate(8deg); }
+.shot-deliver__prop--frame { top: 14%; inset-inline-start: calc(100% + 16px); }
+.shot-deliver__prop--frame > span { transform: rotate(-5deg); }
+.shot-deliver__prop--cassette { top: calc(100% - 64px); inset-inline-end: calc(100% + 6px); }
+.shot-deliver__prop--cassette > span { transform: rotate(-6deg); }
+.shot-deliver__prop--bubble { top: calc(100% - 92px); inset-inline-start: calc(100% + 8px); }
+.shot-deliver__prop--bubble > span { transform: rotate(4deg); }
+/* the narrowest phones (side margins under 90px): the props tuck half behind the phone's edges, so
+   they still read; none reaches below the phone's bottom edge */
+@media (max-width: 359px) {
+  .shot-deliver__prop--loupe { inset-inline-end: calc(100% - 36px); }
+  .shot-deliver__prop--frame { inset-inline-start: calc(100% - 40px); }
+  .shot-deliver__prop--cassette { top: calc(100% - 88px); inset-inline-end: calc(100% - 50px); }
+  .shot-deliver__prop--bubble { inset-inline-start: calc(100% - 44px); }
+}
+@media (min-width: 1100px) {
+  .shot-deliver__prop--loupe { top: 2%; inset-inline-end: calc(100% + 110px); }
+  .shot-deliver__prop--frame { top: 14%; inset-inline-start: calc(100% + 120px); }
+  .shot-deliver__prop--cassette { top: calc(100% - 150px); inset-inline-end: calc(100% + 60px); }
+  .shot-deliver__prop--bubble { top: calc(100% - 120px); inset-inline-start: calc(100% + 70px); }
+}
+
+/* ── the miniature (Mini.tsx): a column on the table, in cqw of its own width. The chapters keep
+   their order and shapes, condensed to fit the face (about 1 : 1.87 under the address bar);
+   space-between spreads whatever height is left, the letter always last at the bottom. ── */
+.shot-mini {
+  flex: 1 1 auto; min-height: 0; box-sizing: border-box;
+  container-type: inline-size;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  padding: 0.8em 1.9em 1.6em; overflow: hidden;
+  background: var(--table);
+}
+.shot-mini > * { flex: none; }
+.shot-mini i { display: block; }
+.shot-mini__sheet { box-sizing: border-box; width: 94cqw; background: var(--paper); border-radius: 0.6cqw; box-shadow: 0 0.4cqw 1.2cqw -0.6cqw rgba(27, 29, 33, 0.45); }
+.shot-mini__bar { height: 3cqw; border-radius: 0.6cqw; background: var(--ink); margin-inline: auto; }
+
+/* hero: the lens on the sheet's top edge (a third of it on the table), H1 bars, the CTA */
+.shot-mini__hero { margin-top: 6.6cqw; padding: 0 5cqw 3cqw; text-align: center; }
+.shot-mini__lens {
+  display: block; width: 20cqw; height: 20cqw; margin: -6.6cqw auto 2.4cqw;
+  border-radius: 50%; object-fit: cover; background: var(--ink);
+  box-shadow: 0 0 0 0.9cqw var(--ink);
+}
+.shot-mini__bar--h1 { width: 62cqw; }
+.shot-mini__bar--h1b { width: 54cqw; margin-top: 1.4cqw; }
+.shot-mini__bar--cta { width: 84cqw; height: 4.4cqw; margin-top: 2.6cqw; }
+
+/* meet: three 4:3 screens in ink frames */
+.shot-mini__meet { display: flex; justify-content: center; gap: 4cqw; padding: 2.4cqw; }
+.shot-mini__meet > i { width: 16cqw; aspect-ratio: 4 / 3; box-sizing: border-box; border: 0.8cqw solid var(--ink); border-radius: 1cqw; background: var(--paper); }
+
+/* choose: five small silhouettes on the table */
+.shot-mini__tools { display: flex; align-items: flex-end; justify-content: center; gap: 3.4cqw; }
+.shot-mini__tool { background: var(--ink); }
+.shot-mini__tool--phone { width: 4.6cqw; height: 8cqw; border-radius: 1.2cqw; }
+.shot-mini__tool--loupe { width: 7cqw; height: 7cqw; border-radius: 50%; }
+.shot-mini__tool--bubble { width: 9cqw; height: 6.4cqw; border-radius: 2.4cqw; }
+.shot-mini__tool--cassette { width: 10cqw; height: 6.4cqw; border-radius: 0.8cqw; }
+.shot-mini__tool--frame { width: 7cqw; height: 7cqw; border-radius: 0.4cqw; }
+
+/* build: the laptop, open and frontal (no perspective: the miniature is flat) */
+.shot-mini__build { width: 32cqw; }
+.shot-mini .lap__lid { box-shadow: none; transform: none; border-radius: 1cqw 1cqw 0 0; }
+.shot-mini .lap__screen { border-radius: 0.3cqw; }
+.shot-mini .lap__cam { display: none; }
+.shot-mini .lap__base { border-radius: 0 0 1.2cqw 1.2cqw; box-shadow: inset 0 0 0 1px var(--line); }
+.shot-mini .lap__notch { display: none; }
+.shot-mini__built { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the CSS stand-in for the built page (until hero-built-shot.svg exists) */
+.shot-mini__built--css { display: block; background: var(--paper); }
+.shot-mini__built--css > i { position: absolute; display: block; background: var(--ink); }
+.shot-mini__built-chrome { inset: 0 0 auto; height: 12%; }
+.shot-mini__built--css > .shot-mini__built-dot { top: 26%; inset-inline-end: 10%; width: 26%; aspect-ratio: 1; border-radius: 50%; background: var(--table); box-shadow: 0 0 0 1px var(--ink); }
+.shot-mini__built-bar { top: 30%; inset-inline-start: 10%; width: 44%; height: 9%; border-radius: 1px; }
+.shot-mini__built-bar--b { top: 46%; width: 34%; }
+.shot-mini__built-btn { top: 66%; inset-inline-start: 10%; width: 24%; height: 11%; border-radius: 1px; }
+
+/* process: the ink line down the inline-start side and four sheets beside it */
+.shot-mini__steps { position: relative; width: 94cqw; box-sizing: border-box; padding-inline-start: 12cqw; display: grid; gap: 1.2cqw; }
+.shot-mini__line { position: absolute; top: 0; bottom: 0; inset-inline-start: 5cqw; width: 0.8cqw; background: var(--ink); }
+.shot-mini__step { height: 2.6cqw; width: 66cqw; background: var(--paper); border-radius: 0.4cqw; box-shadow: 0 0.3cqw 0.8cqw -0.4cqw rgba(27, 29, 33, 0.45); }
+
+/* the pad: a binding band and ruled lines */
+.shot-mini__pad { padding: 0 4cqw 1.6cqw; }
+.shot-mini__pad::before { content: ""; display: block; height: 2.6cqw; margin: 0 -4cqw 0.4cqw; background: rgba(27, 29, 33, 0.14); border-radius: 0.6cqw 0.6cqw 0 0; }
+.shot-mini__pad > i { height: 2.4cqw; box-shadow: inset 0 -1px 0 var(--line); }
+
+/* 'מתחילים?' on the table: one ink bar */
+.shot-mini__word { width: 50cqw; height: 5cqw; border-radius: 0.8cqw; background: var(--ink); }
+
+/* the card: its art band and two rows */
+.shot-mini__card { display: grid; justify-items: center; gap: 1.2cqw; padding: 2cqw 6cqw 2.2cqw; }
+.shot-mini__card-face { width: 7cqw; height: 7cqw; border-radius: 50%; box-sizing: border-box; border: 1cqw solid var(--ink); }
+.shot-mini__card-row { width: 100%; height: 1.6cqw; border-radius: 0.4cqw; background: rgba(27, 29, 33, 0.14); }
+
+/* the letter (the match target): the small laptop a third above its top edge, fields, send */
+.shot-mini__letter { --pal: 22cqw; position: relative; display: grid; gap: 1.2cqw; margin-top: calc(var(--pal) * 0.6452 / 3); padding: calc(var(--pal) * 0.6452 * 2 / 3 + 2cqw) 6cqw 3cqw; }
+.shot-mini__pal { position: absolute; top: calc(var(--pal) * 0.6452 / -3); inset-inline-start: calc(50% - var(--pal) / 2); width: var(--pal); }
+.shot-mini__field { height: 3cqw; box-sizing: border-box; border: 1px solid var(--line-ui); border-radius: 0.5cqw; }
+.shot-mini__field--area { height: 6cqw; }
+.shot-mini__send { height: 4.2cqw; margin-top: 0.6cqw; border-radius: 0.5cqw; background: var(--ink); }
+.shot-mini__writing { position: absolute; inset: 0; display: grid; align-content: center; gap: 12%; padding-inline: 14%; background: var(--paper); }
+.shot-mini__writing > i { height: 1px; background: var(--ink-2); }
+.shot-mini__writing > i:nth-child(2) { width: 76%; }
+.shot-mini__writing > i:nth-child(3) { width: 48%; }

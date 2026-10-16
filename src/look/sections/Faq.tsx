@@ -1,16 +1,26 @@
 // FAQ in the looks (step 3): the rest beat after the two holds, deliberately calm. Hairline
 // rows, no cards, no entrance beyond the engine's early reveal. The answers stay mounted (the
 // text is in the prerendered HTML for crawlers and no-JS readers); framer owns the height.
-// In KM it sits in the void.
+// In KM it sits in the void. The shot (SPEC S6) passes `chapter`, `dossier` and `decor` (its
+// notepad's margin line); without them the markup is exactly the looks' own.
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { m } from 'framer-motion'
 import { LookButton } from '@look/button'
 import { HtmlContent } from '../../components/HtmlContent'
 import { faqs } from '../../data/faqs'
 import './faq.css'
 
-export default function Faq() {
+interface FaqProps {
+  /** data-chapter on the section (the shot's chapter id) */
+  chapter?: string
+  /** data-dossier on the section */
+  dossier?: string
+  /** rendered first inside .faq__in (the shot's margin line) */
+  decor?: ReactNode
+}
+
+export default function Faq({ chapter, dossier, decor }: FaqProps = {}) {
   const [open, setOpen] = useState<number | null>(null)
   const schema = {
     '@context': 'https://schema.org',
@@ -22,8 +32,9 @@ export default function Faq() {
     })),
   }
   return (
-    <section id="faq" className="faq" aria-labelledby="faq-title" data-theme="light" data-intent="interest">
+    <section id="faq" className="faq" aria-labelledby="faq-title" data-theme="light" data-intent="interest" data-chapter={chapter} data-dossier={dossier}>
       <div className="faq__in">
+        {decor}
         <div className="faq__head">
           <h2 id="faq-title" data-zone="text">שאלות נפוצות</h2>
           <p data-zone="text">כל מה שרציתם לדעת על תהליך בניית האתר</p>

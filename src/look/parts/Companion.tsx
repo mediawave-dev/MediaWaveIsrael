@@ -9,12 +9,16 @@
 // slot and the form coming within 600 px of the viewport. The swap is invisible because both
 // poses are the same. REDUCE (the stop switch, prerender) never loads it; CALM (the OS flag)
 // loads it without loops. Off screen it stops rendering.
+// The shot (SPEC S8, section 3) passes `src`, its own palette's file and rest pose; with `src` the
+// companion also takes the page's one Rive slot while it draws (src/look/shot/rive-slot.ts), so
+// it never draws at the same time as the shot's lens or build. Without `src`: the looks' own.
 
 import { useEffect, useRef, useState } from 'react'
 import type { MotionEngine } from '../../motion/motion-engine.js'
 import restUrl from './companion-rest.svg'
 import rivUrl from './companion.riv?url'
 import wasmUrl from '@rive-app/canvas-lite/rive.wasm?url'
+import { claimRive, releaseRive } from '../shot/rive-slot'
 
 export type CompanionStatus = 'idle' | 'typing' | 'loading' | 'sent' | 'error'
 
@@ -45,9 +49,16 @@ interface Props {
   progress: number
   /** increments on every keystroke in the form */
   keys: number
+  /** another palette's file and its rest pose (the shot); also claims the one Rive slot */
+  src?: { riv: string; rest: string }
 }
 
-export default function Companion({ engine, status, progress, keys }: Props) {
+const SLOT = 'companion'
+
+export default function Companion({ engine, status, progress, keys, src }: Props) {
+  const riv = src?.riv ?? rivUrl
+  const rest = src?.rest ?? restUrl
+  const slot = !!src
   const box = useRef<HTMLSpanElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const vmi = useRef<VMI | null>(null)
@@ -66,7 +77,7 @@ export default function Companion({ engine, status, progress, keys }: Props) {
       if (gone) return
       RuntimeLoader.setWasmUrl(wasmUrl)
       rive = new Rive({
-        src: rivUrl, canvas: cv, artboard: 'Companion', stateMachines: 'Main',
+        src: riv, canvas: cv, artboard: 'Companion', stateMachines: 'Main',
         autoplay: true, autoBind: true, shouldDisableRiveListeners: true, isTouchScrollEnabled: true,
         layout: new Layout({ fit: Fit.Contain, alignment: Alignment.Center }),
         onLoad: () => {
@@ -83,7 +94,17 @@ export default function Companion({ engine, status, progress, keys }: Props) {
           // writes apply on the next advance: show the canvas once that frame is drawn
           requestAnimationFrame(() => requestAnimationFrame(() => { if (!gone) setLive(true) }))
           // draw only while the laptop is on screen
-          seen = new IntersectionObserver(([e]) => { if (!rive) return; if (e.isIntersecting) rive.startRendering(); else rive.stopRendering() })
+          seen = new IntersectionObserver(([e]) => {
+            const r = rive
+            if (!r) return
+            if (e.isIntersecting) {
+              if (slot) claimRive(SLOT, () => r.stopRendering())
+              r.startRendering()
+            } else {
+              r.stopRendering()
+              if (slot) releaseRive(SLOT)
+            }
+          })
           seen.observe(el)
         },
       })
@@ -104,11 +125,12 @@ export default function Companion({ engine, status, progress, keys }: Props) {
       gone = true
       io?.disconnect(); seen?.disconnect(); resize.disconnect(); cancelIdle()
       vmi.current = null
+      if (slot) releaseRive(SLOT)
       rive?.cleanup()
       rive = null
       setLive(false)
     }
-  }, [engine])
+  }, [engine, riv, slot])
 
   useEffect(() => {
     const st = vmi.current?.enum('status')
@@ -124,7 +146,7 @@ export default function Companion({ engine, status, progress, keys }: Props) {
 
   return (
     <span ref={box} className="ct__pal" data-live={live ? '' : undefined} data-zone="art" aria-hidden="true">
-      <img src={restUrl} alt="" width={330} height={216} decoding="async" />
+      <img src={rest} alt="" width={330} height={216} decoding="async" />
       <canvas ref={canvas} />
     </span>
   )

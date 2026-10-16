@@ -34,6 +34,8 @@ function applySettings(settings: AccessibilitySettings): void {
 
   // Text scaling
   html.style.setProperty('--accessibility-text-scale', String(TEXT_SCALES[settings.textSize]))
+  // Shot: scaled text drops the hero's sticky hold (useShotPolicy, SPEC 1.6). In memory only.
+  html.classList.toggle('text-scaled', TEXT_SCALES[settings.textSize] > 1)
 
   // High contrast
   html.classList.toggle('high-contrast', settings.highContrast)

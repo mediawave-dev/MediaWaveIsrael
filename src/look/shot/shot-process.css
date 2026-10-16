@@ -1,0 +1,112 @@
+/* shot · S5 the process (SPEC S5). 390 first: the heading printed on the table, then the track: a
+   28px gutter at the inline-start with the ink line 14px in (the same --line-x as the stub from
+   the laptop, shot-build.css), four step sheets of 338px, 24px apart, each with a 12px ink dot on
+   the line at its well's centre, then 'דברו איתנו'. A sheet: its Lottie well 190px tall at the
+   file's own aspect (art first, so the sheet can land on it), the kicker '1 / 4' under it, the
+   title and the line. Off (the line has not reached it): an empty dot and an ink-2 title; on: the
+   dot fills with ink, then the title turns ink (geometry, emphasis, text). The dot sits outside
+   the sheet's paper (on the li), so it never moves while the paper lands or tips away.
+   768-1099: as 390 with 560px sheets. 1100+: the line down the middle, 520px sheets alternating
+   sides (the first on the inline-start side), overlapped so about two show per screen; the
+   heading has no line beside it there (the line would cross its centred words). */
+
+.shot-process { position: relative; padding-block: 56px 64px; }
+
+/* ── the heading on the table ── */
+.shot-process__head { position: relative; padding-inline: 40px; padding-block-start: 0; }
+.shot-process__head > h2 { position: relative; }
+.shot-process .shot-process__big {
+  margin: 14px auto 0; max-width: none;
+  color: var(--ink); font: 800 var(--shot-big)/1.1 var(--display); font-stretch: 75%;
+}
+.shot-process__big > span { display: block; text-wrap: balance; }
+/* the heading's segment of the line: from the section's top (where the stub ends) to the track */
+.shot-line--head { inset-inline-start: var(--line-x); top: -56px; bottom: -24px; }
+
+/* ── the track ── */
+.shot-process__track {
+  --well-h: 190px;
+  --pad-t: 22px;
+  position: relative; box-sizing: border-box;
+  width: min(100% - 2 * var(--gut), 588px); margin-inline: auto;
+  padding-inline-start: 28px;
+}
+.shot-process__track > .shot-line { inset-inline-start: 14px; }
+
+.shot-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+
+.shot-step { position: relative; }
+.shot-step__paper {
+  position: relative; /* the offsetParent: land() measures the kicker from here */
+  width: 100%; margin: 0; padding: var(--pad-t) 20px 26px;
+  text-align: center;
+}
+
+/* the dot: on the line, level with the well's centre */
+.shot-step__dot {
+  position: absolute; z-index: 1;
+  inset-inline-start: calc(-28px + 14px + 1px - 6px);
+  top: calc(var(--pad-t) + var(--well-h) / 2 - 6px);
+  width: 12px; height: 12px; box-sizing: border-box; border-radius: 50%;
+  background: var(--table); box-shadow: inset 0 0 0 2px var(--ink);
+  transition: background-color 120ms linear 120ms;
+}
+.shot-step[data-on] .shot-step__dot { background: var(--ink); }
+
+/* the well: the Lottie at its real box, the file's own aspect (never scaled by a transform) */
+.shot-step__well {
+  position: relative; overflow: hidden;
+  width: min(100%, calc(var(--well-h) * (var(--ar)))); aspect-ratio: var(--ar);
+  max-height: var(--well-h); margin-inline: auto;
+}
+.shot-step__well > div { position: absolute; inset: 0; width: auto !important; height: auto !important; }
+
+.shot-step__kicker { margin: 16px 0 0; color: var(--ink-2); font: 600 var(--shot-small)/1.6 var(--text); }
+.shot-step__paper > h3 {
+  margin: 4px 0 0; color: var(--ink-2);
+  font: 800 var(--shot-h3-step)/1.15 var(--display); font-stretch: 75%;
+  transition: color 160ms linear 200ms;
+}
+.shot-step[data-on] .shot-step__paper > h3 { color: var(--ink); }
+.shot-step__line { margin: 8px auto 0; max-width: 34ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
+
+html.disable-animations .shot-step__dot,
+html.disable-animations .shot-step__paper > h3 { transition: none; }
+
+.shot-process__cta { margin-top: 40px; }
+
+/* ── tablet: the same column, wider sheets ── */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .shot-process__track { width: 588px; }
+}
+
+/* ── desktop: the line down the middle, the sheets alternating sides ── */
+@media (min-width: 1100px) {
+  .shot-process { padding-block: 72px 80px; }
+  .shot-process__head { padding-inline: var(--gut); }
+  .shot-line--head { display: none; }
+  .shot-process__track {
+    --well-h: 240px;
+    --pad-t: 26px;
+    --cta-block: 112px; /* the CTA's 40px margin and its 72px row: the line stops above it */
+    width: min(100% - 2 * var(--gut), 1160px); padding-inline-start: 0;
+  }
+  .shot-process__track > .shot-line { inset-inline-start: calc(50% - 1px); bottom: var(--cta-block); }
+  .shot-steps { gap: 0; }
+  .shot-step + .shot-step { margin-top: -150px; }
+  .shot-step__paper { width: 520px; padding: var(--pad-t) 32px 30px; }
+  .shot-step:nth-child(even) .shot-step__paper { margin-inline-start: auto; }
+  .shot-step__dot { inset-inline-start: calc(50% - 6px); }
+  .shot-process__cta { display: flex; justify-content: center; align-items: center; height: 72px; margin-top: 40px; }
+  .shot-process__cta > * { width: min(100%, 360px); }
+}
+@media (min-width: 1100px) and (max-height: 760px) {
+  .shot-process__track { --well-h: 200px; }
+  .shot-step + .shot-step { margin-top: -130px; }
+}
+.shot-step__line { text-wrap: pretty; }
+@media (min-width: 1100px) {
+  .shot-step__line { max-width: 44ch; }
+  .shot-process__cta { width: min(100%, 360px); margin-inline: auto; }
+  .shot-process__cta > * { width: 100%; }
+}

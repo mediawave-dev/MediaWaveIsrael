@@ -11,8 +11,12 @@ export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
+    // The prerender snapshot never carries the banner: a slow snapshot once froze
+    // body.mw-consent-open into the shot HTML, so returning visitors started with the strip's space
+    if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
     const stored = localStorage.getItem(CONSENT_KEY)
     if (stored === 'accepted' || stored === 'rejected') {
+      document.documentElement.classList.remove('consent-pending')
       setStatus(stored)
     } else {
       // Show banner after short delay
@@ -35,6 +39,8 @@ export default function CookieConsent() {
   const handleConsent = (accepted: boolean) => {
     const newStatus = accepted ? 'accepted' : 'rejected'
     localStorage.setItem(CONSENT_KEY, newStatus)
+    // Shot: index.html reserved the strip in --safe-b from frame 0 (SPEC 1.5); the choice frees it
+    document.documentElement.classList.remove('consent-pending')
     setStatus(newStatus)
     setIsVisible(false)
   }
