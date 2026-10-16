@@ -101,6 +101,11 @@ Report: design/audit/impeccable/AUDIT.rtl.md (14/20 before the fixes). Evidence:
 - Mobile audit after the fixes: axe 0, no text under 12px, no sideways overflow at 320 and 390 in both visit states; the menu fits 320x568 (design/audit/impeccable/mobile-audit-after-*.md).
 - tsc 0; the build prerenders 11 pages with data-look="shot".
 
+### Released (2026-10-16)
+- Rollback tag prod-before-shot = 412b810 (the KM site) pushed first; then main 412b810..143e0f7 (8 commits, incl. the intent popup 6bc7ac2 from 15.10); live with data-look="shot" after about 5 minutes (Cloudflare Pages project mediawaveisrael, build npm run build, output dist, no VITE_LOOK in its env).
+- Nati on his phone: a square around the popup X. The popup opens by itself, so the programmatic focus on the close button drew the ring; the first focus is now the title (tabindex -1, no outline). Pushed as 1e7d492.
+- The previous production deployment in the Cloudflare dashboard: 0a22fa1b (412b810), the instant rollback.
+
 ### Open
 - [ ] Critic #11, desktop: the overview at 0.64 renders the sub and the CTA small; a larger pose needs the bottom props re-placed with an exit (as below 1100px).
 - [ ] Critic #6 (the self-building site reads as a template), #7 (no ink spine through meet and choose), #8 (blank faces on some props), #12 (every paper surface is the same card): design work, for Nati.
