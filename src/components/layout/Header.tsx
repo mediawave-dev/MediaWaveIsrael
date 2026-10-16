@@ -4,10 +4,21 @@ import { m, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { LookButton } from '@look/button'
 import { LOOK } from '../../look/look'
-import { headerLinks } from '../../config/navigation'
+import { headerLinks, menuLinks } from '../../config/navigation'
 import { useMotionEngine } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
+
+/** The menu chapter in view: the last one whose top has passed 40% of the viewport (page order). */
+function chapterInView(): string | null {
+  let current: string | null = null
+  for (const link of menuLinks) {
+    const el = link.href.startsWith('#') ? document.querySelector(link.href) : null
+    if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.4) current = link.href
+  }
+  return current
+}
 import Logo from '../ui/Logo'
 import AnimatedLogo from '../ui/AnimatedLogo'
 
@@ -20,6 +31,12 @@ export default function Header() {
   const navigate = useNavigate()
   const location = useLocation()
   const isHomePage = location.pathname === '/'
+  // the menu also says where the visitor is: the chapter in view when it opens is marked
+  const [here, setHere] = useState<string | null>(null)
+  const openMenu = () => {
+    setHere(isHomePage ? chapterInView() : null)
+    setIsMobileMenuOpen(true)
+  }
 
   // Remove the static paint-first header from index.html once React mounts
   useEffect(() => {
@@ -161,7 +178,7 @@ export default function Header() {
           <button
             ref={burgerRef}
             type="button"
-            onClick={() => setIsMobileMenuOpen(true)}
+            onClick={openMenu}
             className="mw-head__burger"
             aria-label="פתח תפריט"
             aria-expanded={isMobileMenuOpen}
@@ -203,10 +220,11 @@ export default function Header() {
             </button>
 
             <nav aria-label="תפריט נייד">
-              {headerLinks.map((link) => (
+              {menuLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
+                  aria-current={here === link.href ? 'location' : undefined}
                   onClick={(e) => {
                     handleNavClick(e, link.href)
                     setIsMobileMenuOpen(false)
@@ -229,6 +247,15 @@ export default function Header() {
               >
                 בואו נדבר
               </LookButton>
+              <a
+                className="mw-menu__wa"
+                href={WHATSAPP_URLS.general}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('whatsapp_click', { placement: 'mobile_menu' })}
+              >
+                וואטסאפ
+              </a>
               <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} dir="ltr" onClick={() => track('tel_click', { placement: 'mobile_menu' })}>{SITE_CONTACT.phone}</a>
               <a href={`mailto:${SITE_CONTACT.email}`} dir="ltr" onClick={() => track('mailto_click', { placement: 'mobile_menu' })}>{SITE_CONTACT.email}</a>
             </div>

@@ -4,15 +4,22 @@ export interface NavLink {
   label: string
   href: string
   showInHeader?: boolean
+  /** the menu sheet (phones and tablets): every chapter of the home page, in page order */
+  showInMenu?: boolean
   showInFooter?: boolean
 }
 
+// Labels are the chapters' own headings ("למה לעבוד איתנו?", "איך אנחנו עובדים") or the labels the
+// footer already used. Two items in the menu read as an empty sheet (Nati, 16.10).
 export const navigation: NavLink[] = [
   { label: 'דף הבית', href: '#top', showInFooter: true },
-  { label: 'שירותים', href: '#services', showInHeader: true, showInFooter: true },
-  { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInFooter: true },
-  { label: 'צור קשר', href: '#contact', showInFooter: true },
+  { label: 'למה לעבוד איתנו', href: '#why-us', showInHeader: true, showInMenu: true },
+  { label: 'שירותים', href: '#services', showInHeader: true, showInMenu: true, showInFooter: true },
+  { label: 'איך אנחנו עובדים', href: '#process', showInHeader: true, showInMenu: true },
+  { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInMenu: true, showInFooter: true },
+  { label: 'צור קשר', href: '#contact', showInMenu: true, showInFooter: true },
 ]
 
 export const headerLinks = navigation.filter((n) => n.showInHeader)
+export const menuLinks = navigation.filter((n) => n.showInMenu)
 export const footerLinks = navigation.filter((n) => n.showInFooter)
