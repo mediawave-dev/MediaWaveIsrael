@@ -59,15 +59,20 @@ export default function LeadModal() {
     }
 
     // Dialog behavior (same pattern as ChatWidget): Escape closes, Tab stays
-    // inside, focus enters the card and returns to where the visitor was
+    // inside, focus enters the card and returns to where the visitor was.
+    // Focus lands on the title, not the close button: the popup opens by itself
+    // (no tap before it), so a phone drew the focus ring around the X (Nati, 16.10).
+    // A long dialog starting at a static element at its top is the APG pattern;
+    // Tab goes on to the first field, Shift+Tab to the close button.
     const cardRef = useRef<HTMLDivElement>(null)
     const closeButtonRef = useRef<HTMLButtonElement>(null)
+    const titleRef = useRef<HTMLHeadingElement>(null)
 
     useEffect(() => {
         if (!isVisible) return
 
         const previouslyFocused = document.activeElement as HTMLElement | null
-        closeButtonRef.current?.focus()
+        ;(titleRef.current ?? closeButtonRef.current)?.focus({ preventScroll: true })
 
         const handleKeyDown = (e: globalThis.KeyboardEvent) => {
             if (e.key === 'Escape') {
@@ -242,7 +247,7 @@ export default function LeadModal() {
                             </div>
                         ) : (
                             <>
-                                <h3 id="lead-modal-title">השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!</h3>
+                                <h3 id="lead-modal-title" ref={titleRef} tabIndex={-1}>השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!</h3>
                                 <div className="lm__face" aria-hidden="true">
                                     <LottieIcon
                                         animationPath="/animations/13%20Leave%20Details/contact%20us.json"
