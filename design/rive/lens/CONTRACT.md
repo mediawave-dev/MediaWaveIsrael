@@ -37,3 +37,7 @@ Blades 1 to 8 are blade 0 turned by 40 degrees each, so these numbers move all n
 | REDUCE, prerender, no JS, Rive late (4.5 s) | `lens-rest.svg` | CSS |
 
 The film inside is `LENS_FILM` (`HeroMedia.tsx`): Pexels 5585952 (RDNE Stock project, Pexels licence), cut square around the laptop and the hand, looped forward and back (7.6 s): 720 px 740 KB, phones 600 px 396 KB, posters 46 KB and 34 KB.
+
+## Change log
+
+- 2026-10-15, shot (SPEC section 3, DECISIONS #81): `build-lens.mjs --riv --palette shot` writes `src/look/parts/lens-shot.riv` (19 KB, built from `cli-shot/`), `lens-shot-rest.svg` and `lens-shot-closed.svg` next to the KM files, which are unchanged. Colours only: ink `#1B1D21` barrel and blades, ink-2 `#4A4F57` focus scale, knurling and blade light, `#0E1016` blade edges, and a short ink contact shadow (stops 0.88 / 0.9 at 30% / 0.97) instead of the navy halo. Artboard `Lens`, machine `Main` and the 11 view-model numbers unchanged (probed with rive-probe.mjs). In the shot, `Lens` gets `src`, `range` (the dive hold: the iris opens 0.72 to 1 over its last 30%), `startAfterIdle` (Rive after load + idle even on a first visit; the opening plays only below 0.1 of the dive and within 5 s of first paint, else the lens starts at rest and the visit is remembered) and `filmSizes`, and claims the one Rive slot (`src/look/shot/rive-slot.ts`). Blades in Klein only if Nati rules for it.

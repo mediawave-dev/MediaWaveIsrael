@@ -7,6 +7,7 @@ The agreement between `src/look/parts/companion.riv` and `src/look/parts/Compani
 - Source: `design/rive/companion/build-scene.mjs` generates `cli/scene.rml` (the Rive CLI project) and the CSS rest pose `src/look/parts/companion-rest.svg` from one set of numbers. Never edit `scene.rml` by hand.
 - Build: `npm run rive:companion` (generator, then `rive design/rive/companion/cli --once`, unsigned, no Luau, then copy to `src/look/parts/companion.riv`).
 - Runtime file: `src/look/parts/companion.riv` (about 7 KB), imported with `?url` so Vite fingerprints it.
+- Shot palette (SPEC section 3, colours only): `node design/rive/companion/build-scene.mjs --riv --palette shot` writes `cli-shot/scene.rml`, `src/look/parts/companion-shot.riv` and `src/look/parts/companion-shot-rest.svg`; `ShotStart` passes them to `Companion` as `src`. The KM files above are untouched by it.
 - Assets: none (vector only, no text, no fonts, no images).
 - Runtime: `@rive-app/canvas-lite` 2.43.1 (Canvas2D, the small wasm: the file has no text, layout or scripts), wasm self-hosted (imported from the package with `?url`, fingerprinted by Vite), pinned in its own `rive` chunk.
 
@@ -97,3 +98,4 @@ No overshoot and no elastic anywhere (the site's rule). The only loops are the s
 | Date | Change | By |
 |---|---|---|
 | 2026-10-13 | initial contract | Claude (Nati chose a Rive character at STOP 1) |
+| 2026-10-15 | `--palette shot`: colours only (ink lid, ink-2 edge and camera, white screen, ink caret, ink-2 words, Horizon mark in deep Klein `#1B1D21` / `#00248A` (D86), `#ECEEF1` address bar, notch and disc outline, hairline ink at 14%, flat paper base with an ink-14% edge instead of aluminium, error dot ink). Artboard `Companion`, machine `Main`, VM `status/progress/keystroke/prefersReducedMotion` unchanged; `rive-probe.mjs --contract`: the file matches (shots in `shots/shot/`) | Claude (shot S8) |

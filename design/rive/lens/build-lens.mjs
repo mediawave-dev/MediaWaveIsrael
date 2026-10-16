@@ -7,8 +7,16 @@
 //   src/look/parts/lens-rest.svg     the rest pose (before Rive, no JS, the stop switch, fallback)
 //   src/look/parts/lens-closed.svg   the closed iris (the first paint of a first visit)
 // Run: npm run rive:lens
+//
+// --palette shot (SPEC section 3, DECISIONS #81): the same lens on Nati's grey desk, written next
+// to the KM files, which stay untouched:
+//   cli-shot/scene.rml                    built to src/look/parts/lens-shot.riv
+//   src/look/parts/lens-shot-rest.svg     lens-shot-closed.svg
+// Ink barrel, an ink-2 focus scale and knurling, ink blades with an ink-2 light, and a short ink
+// contact shadow on the table instead of the navy halo. Artboard, machine and view model unchanged.
+// Run: node design/rive/lens/build-lens.mjs --riv --palette shot
 
-import { writeFileSync, copyFileSync, existsSync } from 'node:fs'
+import { writeFileSync, copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { execFileSync } from 'node:child_process'
@@ -17,10 +25,31 @@ import { LENS, blade, twistFor } from '../../../src/look/parts/lens-geometry.js'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..')
 const { size: S, n: N, rl: RL, rOut: RO } = LENS
-const C = {
-  lit: '3366E8', mid: '002FA7', shade: '00175C', edge: '00103F',
-  bevel: '060F33', scale: '0E1B4D', grip: '0A1640', knurl: '040B26', shadow: '00061E', night: '00113D',
+const pi = process.argv.indexOf('--palette')
+const PALETTE = pi > 0 ? process.argv[pi + 1] : 'km'
+if (!['km', 'shot'].includes(PALETTE)) throw new Error(`build-lens: unknown --palette "${PALETTE}" (km or shot)`)
+const SHOT = PALETTE === 'shot'
+// shadow: the outer ring's radial stops (fractions of r 540, the rim is at 0.9) and its peak alpha
+const PALETTES = {
+  km: {
+    lit: '3366E8', mid: '002FA7', shade: '00175C', edge: '00103F',
+    bevel: '060F33', scale: '0E1B4D', grip: '0A1640', knurl: '040B26', shadow: '00061E', night: '00113D',
+    shade0: 0.86, shadeAt: 0.9, shade1: 1, shadeAlpha: 0.55,
+  },
+  // ink #1B1D21, ink-2 #4A4F57 and a blend of the two for the blades' middle; the edge line is
+  // the logo's near-black so the nine blades stay apart on an ink iris
+  shot: {
+    lit: '4A4F57', mid: '2B2E34', shade: '1B1D21', edge: '0E1016',
+    bevel: '1B1D21', scale: '4A4F57', grip: '1B1D21', knurl: '4A4F57', shadow: '1B1D21', night: '1B1D21',
+    shade0: 0.88, shadeAt: 0.9, shade1: 0.97, shadeAlpha: 0.3,
+  },
 }
+const C = PALETTES[PALETTE]
+const hexA = (a) => Math.round(a * 255).toString(16).toUpperCase().padStart(2, '0')
+const CLI = resolve(ROOT, SHOT ? 'design/rive/lens/cli-shot' : 'design/rive/lens/cli')
+const OUT = SHOT
+  ? { riv: 'src/look/parts/lens-shot.riv', rest: 'src/look/parts/lens-shot-rest.svg', closed: 'src/look/parts/lens-shot-closed.svg', ids: ['lsr', 'lsc'] }
+  : { riv: 'src/look/parts/lens.riv', rest: 'src/look/parts/lens-rest.svg', closed: 'src/look/parts/lens-closed.svg', ids: ['lr', 'lc'] }
 const RING = { bevel: [RL, RL + 16], scale: [RL + 16, RL + 56], grip: [RL + 56, RO] }
 const TICK = { from: RL + 22, to: RL + 34, major: RL + 44, w: 2.2, count: 60 }
 const KNURL = { from: RL + 62, to: RO - 6, w: 4.5, count: 144 }
@@ -89,7 +118,7 @@ const blades = `<Node name="Iris" id="${nid()}">
     ${Array.from({ length: N }, (_, i) => bladeXml(i)).join('\n    ')}
   </Node>`
 const vignette = circle('Depth', 2 * RL, `<Fill name="Fill"><RadialGradient ${attrs({ startX: 0, startY: 0, endX: RL, endY: 0, name: 'Vignette' })}><GradientStop colorValue="00${C.night}" position="0.62"/><GradientStop colorValue="A6${C.night}" position="1"/></RadialGradient></Fill>`)
-const shadow = circle('Shadow', 1080, `<Fill name="Fill"><RadialGradient ${attrs({ startX: 0, startY: 0, endX: 540, endY: 0, name: 'Shade' })}><GradientStop colorValue="00${C.shadow}" position="0.86"/><GradientStop colorValue="8C${C.shadow}" position="0.9"/><GradientStop colorValue="00${C.shadow}" position="1"/></RadialGradient></Fill>`)
+const shadow = circle('Shadow', 1080, `<Fill name="Fill"><RadialGradient ${attrs({ startX: 0, startY: 0, endX: 540, endY: 0, name: 'Shade' })}><GradientStop colorValue="00${C.shadow}" position="${C.shade0}"/><GradientStop colorValue="${hexA(C.shadeAlpha)}${C.shadow}" position="${C.shadeAt}"/><GradientStop colorValue="00${C.shadow}" position="${C.shade1}"/></RadialGradient></Fill>`)
 
 const SM = nid(), LAYER = nid(), IDLE = nid(), S_IDLE = nid()
 const rml = `<Rive version="1" kind="fragment">
@@ -122,7 +151,12 @@ const rml = `<Rive version="1" kind="fragment">
 </ViewModel>
 </Rive>
 `
-writeFileSync(resolve(ROOT, 'design/rive/lens/cli/scene.rml'), rml)
+mkdirSync(CLI, { recursive: true })
+if (SHOT) {
+  writeFileSync(resolve(CLI, 'rive.yaml'), 'name: cli-shot\r\nlogs:\r\n  file: build/rive.log\r\n  problems: build/problems.log\r\n')
+  writeFileSync(resolve(CLI, '.gitignore'), 'build/\r\n')
+}
+writeFileSync(resolve(CLI, 'scene.rml'), rml)
 
 // ---------------------------------------------------------------- the static poses (SVG)
 const dash = (r, count, w) => { const c = 2 * Math.PI * r; return `${f(w)} ${f(c / count - w)}` }
@@ -133,7 +167,7 @@ function svgPose(a, id) {
   const tickR = (TICK.from + TICK.to) / 2, majR = (TICK.from + TICK.major) / 2, knR = (KNURL.from + KNURL.to) / 2
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-S / 2} ${-S / 2} ${S} ${S}" aria-hidden="true" focusable="false">
 <defs>
-<radialGradient id="${id}-shadow" cx="0" cy="0" r="540" gradientUnits="userSpaceOnUse"><stop offset="0.86" stop-color="#${C.shadow}" stop-opacity="0"/><stop offset="0.9" stop-color="#${C.shadow}" stop-opacity="0.55"/><stop offset="1" stop-color="#${C.shadow}" stop-opacity="0"/></radialGradient>
+<radialGradient id="${id}-shadow" cx="0" cy="0" r="540" gradientUnits="userSpaceOnUse"><stop offset="${C.shade0}" stop-color="#${C.shadow}" stop-opacity="0"/><stop offset="${C.shadeAt}" stop-color="#${C.shadow}" stop-opacity="${C.shadeAlpha}"/><stop offset="${C.shade1}" stop-color="#${C.shadow}" stop-opacity="0"/></radialGradient>
 <radialGradient id="${id}-depth" cx="0" cy="0" r="${RL}" gradientUnits="userSpaceOnUse"><stop offset="0.62" stop-color="#${C.night}" stop-opacity="0"/><stop offset="1" stop-color="#${C.night}" stop-opacity="0.65"/></radialGradient>
 <linearGradient id="${id}-blade" gradientUnits="userSpaceOnUse" x1="${f(b.g0[0])}" y1="${f(b.g0[1])}" x2="${f(b.g1[0])}" y2="${f(b.g1[1])}"><stop offset="0" stop-color="#${C.lit}"/><stop offset="0.5" stop-color="#${C.mid}"/><stop offset="1" stop-color="#${C.shade}"/></linearGradient>
 <linearGradient id="${id}-light" gradientUnits="userSpaceOnUse" x1="${f(-RO * 0.8)}" y1="${f(-RO * 0.8)}" x2="${f(RO * 0.45)}" y2="${f(RO * 0.45)}"><stop offset="0" stop-color="#fff" stop-opacity="0.18"/><stop offset="0.55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.2"/></linearGradient>
@@ -157,15 +191,14 @@ ${Array.from({ length: N }, (_, i) => `<g transform="rotate(${f((360 * i) / N)})
 </svg>
 `
 }
-writeFileSync(resolve(ROOT, 'src/look/parts/lens-rest.svg'), svgPose(LENS.rest, 'lr'))
-writeFileSync(resolve(ROOT, 'src/look/parts/lens-closed.svg'), svgPose(0, 'lc'))
-console.log(`scene.rml ${rml.length} chars, ${props.length} view model numbers`)
+writeFileSync(resolve(ROOT, OUT.rest), svgPose(LENS.rest, OUT.ids[0]))
+writeFileSync(resolve(ROOT, OUT.closed), svgPose(0, OUT.ids[1]))
+console.log(`${PALETTE}: scene.rml ${rml.length} chars, ${props.length} view model numbers`)
 
 if (process.argv.includes('--riv')) {
-  const cli = resolve(ROOT, 'design/rive/lens/cli')
   const exe = [resolve(homedir(), '.rive/bin/rive.exe'), resolve(homedir(), '.rive/bin/rive')].find(existsSync) ?? 'rive'
-  execFileSync(exe, [cli, '--once'], { stdio: 'inherit' })
-  copyFileSync(resolve(cli, 'build/cli.riv'), resolve(ROOT, 'src/look/parts/lens.riv'))
-  console.log('copied to src/look/parts/lens.riv')
+  execFileSync(exe, [CLI, '--once'], { stdio: 'inherit' })
+  copyFileSync(resolve(CLI, SHOT ? 'build/cli-shot.riv' : 'build/cli.riv'), resolve(ROOT, OUT.riv))
+  console.log(`copied to ${OUT.riv}`)
 }
 

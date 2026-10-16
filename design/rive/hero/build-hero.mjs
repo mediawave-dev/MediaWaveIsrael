@@ -11,8 +11,12 @@
 // ink, Klein blue, the Horizon mark); a cursor comes in and clicks the button; the film starts
 // in the hero slot; a message arrives (a toast). Then it rests.
 // Run: npm run rive:hero
+// Shot (SPEC section 3): node design/rive/hero/build-hero.mjs --riv --palette shot writes
+// hero-shot.riv and hero-built-shot.svg next to the KM files (same hero-slot.json), from the
+// same numbers in the D81 palette: table, paper, ink, ink-2, ink at an alpha, and the Horizon
+// mark in deep Klein (D86). KM's files are never touched by a --palette run.
 
-import { writeFileSync, copyFileSync, existsSync } from 'node:fs'
+import { writeFileSync, copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { homedir } from 'node:os'
@@ -20,12 +24,35 @@ import { ROOT, markPaths, cubics, vertices, clockwise } from '../companion/mark-
 
 const W = 1600, H = 900
 export const SLOT = { x: 164, y: 236, w: 720, h: 405, r: 18 }
-const C = {
-  screen: '030A26', frame: '0F1C4D', frameLine: '24346F', addr: '16255E', dot: '3A4C8F',
+// Colours are RRGGBB (opaque) or AARRGGBB (Rive's own order, alpha first) for ink at an alpha.
+const KM = {
+  screen: '030A26', frame: '0F1C4D', frameLine: '24346F', addr: '16255E', dot: '3A4C8F', addrInk: '3A4C8F',
   pageDark: '0A1640', page: 'FAFAF7', wireFill: '13215A', wireLine: '3B4E93',
   ink: '0E1016', ink2: '4E5468', mute: 'B4B8C6', line: 'E4E4DE', klein: '002FA7', kleinTint: 'E3E9FB',
-  white: 'FFFFFF', logoA: '0E1016', logoB: '002FA7',
+  white: 'FFFFFF', logoA: '0E1016', logoB: '002FA7', rule: 'E6E6E0', cursorFill: 'FFFFFF', cursorLine: '0E1016',
 }
+// shot (D81): the screen is transparent, so the laptop's paper screen and its opening mark show
+// until the window rises over them; chrome in ink; the page goes from the table to paper; the
+// wireframe is ink at 20% outlined in ink-2; the button and the toast's bubble are ink (as on this
+// site); the film's slot and the card icons read as the table (the poster still sits on the slot);
+// the cursor is ink with a paper edge; the mark in deep Klein (D86).
+const SHOT = {
+  screen: '00FFFFFF', frame: '1B1D21', frameLine: '1B1D21', addr: '4A4F57', dot: '4A4F57', addrInk: 'ECEEF1',
+  pageDark: 'ECEEF1', page: 'FFFFFF', wireFill: '331B1D21', wireLine: '4A4F57',
+  ink: '1B1D21', ink2: '4A4F57', mute: '591B1D21', line: '241B1D21', klein: '1B1D21', kleinTint: 'ECEEF1',
+  white: 'FFFFFF', logoA: '1B1D21', logoB: '00248A', rule: '241B1D21', cursorFill: '1B1D21', cursorLine: 'FFFFFF',
+}
+const pi = process.argv.indexOf('--palette')
+const PALETTE = pi >= 0 ? process.argv[pi + 1] : 'km'
+if (!['km', 'shot'].includes(PALETTE)) throw new Error(`unknown --palette ${PALETTE} (km, shot)`)
+const C = PALETTE === 'shot' ? SHOT : KM
+const OUT = PALETTE === 'shot'
+  ? { cli: 'design/rive/hero/cli-shot', svg: 'src/look/parts/hero-built-shot.svg', riv: 'src/look/parts/hero-shot.riv', slot: false }
+  : { cli: 'design/rive/hero/cli', svg: 'src/look/parts/hero-built.svg', riv: 'src/look/parts/hero.riv', slot: true }
+// Rive wants AARRGGBB; an SVG wants #RRGGBB or #RRGGBBAA
+const A = (c) => (c.length === 8 ? c : 'FF' + c)
+const Z = (c) => '00' + c.slice(-6)
+const X = (c) => '#' + (c.length === 8 ? c.slice(2) + c.slice(0, 2) : c)
 const WIN = { x: 96, y: 72, w: 1408, h: 764, r: 20, bar: 56 }
 const PAGE_Y = WIN.y + WIN.bar
 const REVEAL = 190, END = 264
@@ -35,7 +62,7 @@ let next = 2000
 const nid = () => `0:${next++}`
 const n = (v) => +(+v).toFixed(3)
 const attrs = (o) => Object.entries(o).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${typeof v === 'number' ? n(v) : v}"`).join(' ')
-const solid = (c, a = 'FF') => `<SolidColor colorValue="${a}${c}" name="C"/>`
+const solid = (c, a = 'FF') => `<SolidColor colorValue="${c.length === 8 ? c : a + c}" name="C"/>`
 const EASE = { out: [0.16, 1, 0.3, 1], inout: [0.65, 0, 0.35, 1], soft: [0.4, 0, 0.2, 1], press: [0.3, 0, 0.2, 1] }
 const curve = (e) => `<CubicEaseInterpolator ${attrs(Object.fromEntries(['x1', 'y1', 'x2', 'y2'].map((k, i) => [k, EASE[e][i]])))}/>`
 const kd = ([f, v, e]) => e && e !== 'hold' ? `<KeyFrameDouble ${attrs({ value: v, frame: f, interpolationType: 'cubic' })}>${curve(e)}</KeyFrameDouble>` : `<KeyFrameDouble ${attrs({ value: v, frame: f, interpolationType: 'hold' })}/>`
@@ -50,8 +77,8 @@ const appearUp = (node, f, len = 20, dy = 18, y0) => { track(node, 'opacity', [[
 const PAINT0 = 84, PAINT1 = 112
 // a block's paint: wireframe fill + outline, then its final colour, the outline fading
 const paint = (fillId, strokeId, final) => {
-  track(fillId, 'colorValue', [[0, `FF${C.wireFill}`], [PAINT0, `FF${C.wireFill}`, 'soft'], [PAINT1, `FF${final}`]], 'c')
-  track(strokeId, 'colorValue', [[0, `FF${C.wireLine}`], [PAINT0, `FF${C.wireLine}`, 'soft'], [PAINT1, `00${C.wireLine}`]], 'c')
+  track(fillId, 'colorValue', [[0, `${A(C.wireFill)}`], [PAINT0, `${A(C.wireFill)}`, 'soft'], [PAINT1, `${A(final)}`]], 'c')
+  track(strokeId, 'colorValue', [[0, `${A(C.wireLine)}`], [PAINT0, `${A(C.wireLine)}`, 'soft'], [PAINT1, `${Z(C.wireLine)}`]], 'c')
 }
 
 // a rectangle block anchored at its right edge (scales from the right)
@@ -61,13 +88,13 @@ function block({ name, right, cy, w, h, r, final, f, wire = true }) {
   const node = nid(), fillC = nid(), strokeC = nid()
   blocks.push(`<Node ${attrs({ x: right, y: cy, name, id: node })}>
       <Shape name="${name} shape"><Rectangle ${attrs({ width: w, height: h, originX: 1, originY: 0.5, cornerRadiusTL: r, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${wire ? C.wireFill : final}" name="C" id="${fillC}"/></Fill>
-        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="${wire ? 'FF' + C.wireLine : '00' + C.wireLine}" name="C" id="${strokeC}"/></Stroke>
+        <Fill name="Fill"><SolidColor colorValue="${A(wire ? C.wireFill : final)}" name="C" id="${fillC}"/></Fill>
+        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="${wire ? A(C.wireLine) : Z(C.wireLine)}" name="C" id="${strokeC}"/></Stroke>
       </Shape>
     </Node>`)
   appearX(node, f)
   if (wire) paint(fillC, strokeC, final)
-  svgFinal.push(`<rect x="${n(right - w)}" y="${n(cy - h / 2)}" width="${n(w)}" height="${n(h)}" rx="${r}" fill="#${final}"/>`)
+  svgFinal.push(`<rect x="${n(right - w)}" y="${n(cy - h / 2)}" width="${n(w)}" height="${n(h)}" rx="${r}" fill="${X(final)}"/>`)
   return node
 }
 
@@ -93,28 +120,28 @@ blocks.push(`<Node ${attrs({ x: BTN.right - BTN.w / 2, y: BTN.cy, name: 'Button'
       <Shape name="Button label"><Rectangle ${attrs({ width: 112, height: 12, cornerRadiusTL: 6, name: 'Path' })}/>
         <Fill name="Fill"><SolidColor colorValue="00FFFFFF" name="C" id="${btnLabel}"/></Fill></Shape>
       <Shape name="Button shape"><Rectangle ${attrs({ width: BTN.w, height: BTN.h, cornerRadiusTL: 14, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${btnFill}"/></Fill>
-        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="FF${C.wireLine}" name="C" id="${btnStroke}"/></Stroke></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${btnFill}"/></Fill>
+        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="${A(C.wireLine)}" name="C" id="${btnStroke}"/></Stroke></Shape>
     </Node>`)
 track(btnNode, 'opacity', [[0, 0], [46, 0, 'out'], [64, 1]])
 track(btnNode, 'scaleX', [[0, 0.6], [46, 0.6, 'out'], [64, 1], [180, 1, 'press'], [186, 0.95, 'out'], [REVEAL + 8, 1]])
 track(btnNode, 'scaleY', [[0, 1], [180, 1, 'press'], [186, 0.95, 'out'], [REVEAL + 8, 1]])
 paint(btnFill, btnStroke, C.klein)
 track(btnLabel, 'colorValue', [[0, '00FFFFFF'], [PAINT0, '00FFFFFF', 'soft'], [PAINT1, 'FFFFFFFF']], 'c')
-svgFinal.push(`<rect x="${BTN.right - BTN.w}" y="${BTN.cy - BTN.h / 2}" width="${BTN.w}" height="${BTN.h}" rx="14" fill="#${C.klein}"/><rect x="${BTN.right - BTN.w / 2 - 56}" y="${BTN.cy - 6}" width="112" height="12" rx="6" fill="#FFFFFF"/>`)
+svgFinal.push(`<rect x="${BTN.right - BTN.w}" y="${BTN.cy - BTN.h / 2}" width="${BTN.w}" height="${BTN.h}" rx="14" fill="${X(C.klein)}"/><rect x="${BTN.right - BTN.w / 2 - 56}" y="${BTN.cy - 6}" width="112" height="12" rx="6" fill="#FFFFFF"/>`)
 
 // the film's slot (the DOM video sits exactly over it)
 const slotNode = nid(), slotFill = nid(), slotStroke = nid()
 blocks.push(`<Node ${attrs({ x: SLOT.x + SLOT.w / 2, y: SLOT.y + SLOT.h / 2, name: 'Slot', id: slotNode })}>
       <Shape name="Slot shape"><Rectangle ${attrs({ width: SLOT.w, height: SLOT.h, cornerRadiusTL: SLOT.r, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${slotFill}"/></Fill>
-        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="FF${C.wireLine}" name="C" id="${slotStroke}"/></Stroke></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${slotFill}"/></Fill>
+        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="${A(C.wireLine)}" name="C" id="${slotStroke}"/></Stroke></Shape>
     </Node>`)
 track(slotNode, 'opacity', [[0, 0], [38, 0, 'out'], [60, 1]])
 track(slotNode, 'scaleX', [[0, 0.94], [38, 0.94, 'out'], [60, 1]])
 track(slotNode, 'scaleY', [[0, 0.94], [38, 0.94, 'out'], [60, 1]])
 paint(slotFill, slotStroke, C.kleinTint)
-svgFinal.push(`<rect x="${SLOT.x}" y="${SLOT.y}" width="${SLOT.w}" height="${SLOT.h}" rx="${SLOT.r}" fill="#${C.kleinTint}"/>`)
+svgFinal.push(`<rect x="${SLOT.x}" y="${SLOT.y}" width="${SLOT.w}" height="${SLOT.h}" rx="${SLOT.r}" fill="${X(C.kleinTint)}"/>`)
 
 // cards
 const CARD = { y: 746, h: 120, w: 400, gap: 32 }
@@ -123,22 +150,22 @@ const CARD = { y: 746, h: 120, w: 400, gap: 32 }
   const node = nid(), fillC = nid(), strokeC = nid(), icon = nid(), b1 = nid(), b2 = nid()
   blocks.push(`<Node ${attrs({ x: 0, y: 0, name: `Card ${i + 1}`, id: node })}>
       <Shape ${attrs({ x: right - 52, y: CARD.y, name: 'Icon' })}><Ellipse ${attrs({ width: 46, height: 46, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${icon}"/></Fill></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${icon}"/></Fill></Shape>
       <Shape ${attrs({ x: right - 92, y: CARD.y - 12, name: 'Title' })}><Rectangle ${attrs({ width: 150, height: 12, originX: 1, cornerRadiusTL: 6, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${b1}"/></Fill></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${b1}"/></Fill></Shape>
       <Shape ${attrs({ x: right - 92, y: CARD.y + 14, name: 'Text' })}><Rectangle ${attrs({ width: 220, height: 9, originX: 1, cornerRadiusTL: 4.5, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${b2}"/></Fill></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${b2}"/></Fill></Shape>
       <Shape ${attrs({ x: right - CARD.w / 2, y: CARD.y, name: 'Card shape' })}><Rectangle ${attrs({ width: CARD.w, height: CARD.h, cornerRadiusTL: 16, name: 'Path' })}/>
-        <Fill name="Fill"><SolidColor colorValue="FF${C.wireFill}" name="C" id="${fillC}"/></Fill>
-        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="FF${C.wireLine}" name="C" id="${strokeC}"/></Stroke></Shape>
+        <Fill name="Fill"><SolidColor colorValue="${A(C.wireFill)}" name="C" id="${fillC}"/></Fill>
+        <Stroke ${attrs({ thickness: 2, name: 'Wire' })}><SolidColor colorValue="${A(C.wireLine)}" name="C" id="${strokeC}"/></Stroke></Shape>
     </Node>`)
   appearUp(node, 52 + i * 5, 22, 22, 0)
-  track(fillC, 'colorValue', [[0, `FF${C.wireFill}`], [PAINT0, `FF${C.wireFill}`, 'soft'], [PAINT1, 'FFFFFFFF']], 'c')
-  track(strokeC, 'colorValue', [[0, `FF${C.wireLine}`], [PAINT0, `FF${C.wireLine}`, 'soft'], [PAINT1, `FF${C.line}`]], 'c')
-  track(icon, 'colorValue', [[0, `FF${C.wireLine}`], [PAINT0, `FF${C.wireLine}`, 'soft'], [PAINT1, `FF${C.kleinTint}`]], 'c')
-  track(b1, 'colorValue', [[0, `FF${C.wireLine}`], [PAINT0, `FF${C.wireLine}`, 'soft'], [PAINT1, `FF${C.ink}`]], 'c')
-  track(b2, 'colorValue', [[0, `FF${C.wireLine}`], [PAINT0, `FF${C.wireLine}`, 'soft'], [PAINT1, `FF${C.mute}`]], 'c')
-  svgFinal.push(`<rect x="${right - CARD.w + 1}" y="${CARD.y - CARD.h / 2 + 1}" width="${CARD.w - 2}" height="${CARD.h - 2}" rx="16" fill="#FFFFFF" stroke="#${C.line}" stroke-width="2"/><circle cx="${right - 52}" cy="${CARD.y}" r="23" fill="#${C.kleinTint}"/><rect x="${right - 92 - 150}" y="${CARD.y - 18}" width="150" height="12" rx="6" fill="#${C.ink}"/><rect x="${right - 92 - 220}" y="${CARD.y + 9.5}" width="220" height="9" rx="4.5" fill="#${C.mute}"/>`)
+  track(fillC, 'colorValue', [[0, `${A(C.wireFill)}`], [PAINT0, `${A(C.wireFill)}`, 'soft'], [PAINT1, A(C.white)]], 'c')
+  track(strokeC, 'colorValue', [[0, `${A(C.wireLine)}`], [PAINT0, `${A(C.wireLine)}`, 'soft'], [PAINT1, `${A(C.line)}`]], 'c')
+  track(icon, 'colorValue', [[0, `${A(C.wireLine)}`], [PAINT0, `${A(C.wireLine)}`, 'soft'], [PAINT1, `${A(C.kleinTint)}`]], 'c')
+  track(b1, 'colorValue', [[0, `${A(C.wireLine)}`], [PAINT0, `${A(C.wireLine)}`, 'soft'], [PAINT1, `${A(C.ink)}`]], 'c')
+  track(b2, 'colorValue', [[0, `${A(C.wireLine)}`], [PAINT0, `${A(C.wireLine)}`, 'soft'], [PAINT1, `${A(C.mute)}`]], 'c')
+  svgFinal.push(`<rect x="${right - CARD.w + 1}" y="${CARD.y - CARD.h / 2 + 1}" width="${CARD.w - 2}" height="${CARD.h - 2}" rx="16" fill="#FFFFFF" stroke="${X(C.line)}" stroke-width="2"/><circle cx="${right - 52}" cy="${CARD.y}" r="23" fill="${X(C.kleinTint)}"/><rect x="${right - 92 - 150}" y="${CARD.y - 18}" width="150" height="12" rx="6" fill="${X(C.ink)}"/><rect x="${right - 92 - 220}" y="${CARD.y + 9.5}" width="220" height="9" rx="4.5" fill="${X(C.mute)}"/>`)
 })
 
 // the Horizon mark in the page header (appears with the paint)
@@ -148,10 +175,10 @@ const markXml = `<Node ${attrs({ x: MARK.cx, y: MARK.cy, scaleX: MARK.s, scaleY:
 track(markNode, 'scaleX', [[0, 0.001], [100, 0.001, 'out'], [118, MARK.s]])
 track(markNode, 'scaleY', [[0, 0.001], [100, 0.001, 'out'], [118, MARK.s]])
 const [upD, loD] = markPaths()
-svgFinal.push(`<g transform="translate(${n(MARK.cx - 50 * MARK.s)} ${n(MARK.cy - 50 * MARK.s)}) scale(${MARK.s})"><path d="${upD}" fill="#${C.logoA}"/><path d="${loD}" fill="#${C.logoB}"/></g>`)
+svgFinal.push(`<g transform="translate(${n(MARK.cx - 50 * MARK.s)} ${n(MARK.cy - 50 * MARK.s)}) scale(${MARK.s})"><path d="${upD}" fill="${X(C.logoA)}"/><path d="${loD}" fill="${X(C.logoB)}"/></g>`)
 
 // the header rule
-block({ name: 'Rule', right: WIN.x + WIN.w, cy: PAGE_Y + 72, w: WIN.w, h: 2, r: 0, final: 'E6E6E0', f: 22, wire: true })
+block({ name: 'Rule', right: WIN.x + WIN.w, cy: PAGE_Y + 72, w: WIN.w, h: 2, r: 0, final: C.rule, f: 22, wire: true })
 
 // ---------------------------------------------------------------- the toast (a message arrives)
 const TOAST = { x: 128, y: 142, w: 360, h: 84 } // floats over the page's top corner, above the film's slot
@@ -165,14 +192,14 @@ const toastXml = `<Node ${attrs({ x: 0, y: 0, opacity: 0, name: 'Toast', id: toa
     </Node>`
 track(toastNode, 'opacity', [[0, 0], [214, 0, 'out'], [234, 1]])
 track(toastNode, 'y', [[0, -22], [214, -22, 'out'], [238, 0]])
-svgFinal.push(`<g><rect x="${TOAST.x + 1}" y="${TOAST.y + 1}" width="${TOAST.w - 2}" height="${TOAST.h - 2}" rx="16" fill="#FFFFFF" stroke="#${C.line}" stroke-width="2"/><circle cx="${TOAST.x + TOAST.w - 48}" cy="${TOAST.y + TOAST.h / 2}" r="22" fill="#${C.klein}"/><circle cx="${TOAST.x + TOAST.w - 48}" cy="${TOAST.y + TOAST.h / 2}" r="6" fill="#FFFFFF"/><rect x="${TOAST.x + TOAST.w - 86 - 160}" y="${TOAST.y + 26}" width="160" height="12" rx="6" fill="#${C.ink}"/><rect x="${TOAST.x + TOAST.w - 86 - 210}" y="${TOAST.y + 49.5}" width="210" height="9" rx="4.5" fill="#${C.mute}"/></g>`)
+svgFinal.push(`<g><rect x="${TOAST.x + 1}" y="${TOAST.y + 1}" width="${TOAST.w - 2}" height="${TOAST.h - 2}" rx="16" fill="#FFFFFF" stroke="${X(C.line)}" stroke-width="2"/><circle cx="${TOAST.x + TOAST.w - 48}" cy="${TOAST.y + TOAST.h / 2}" r="22" fill="${X(C.klein)}"/><circle cx="${TOAST.x + TOAST.w - 48}" cy="${TOAST.y + TOAST.h / 2}" r="6" fill="#FFFFFF"/><rect x="${TOAST.x + TOAST.w - 86 - 160}" y="${TOAST.y + 26}" width="160" height="12" rx="6" fill="${X(C.ink)}"/><rect x="${TOAST.x + TOAST.w - 86 - 210}" y="${TOAST.y + 49.5}" width="210" height="9" rx="4.5" fill="${X(C.mute)}"/></g>`)
 
 // ---------------------------------------------------------------- the cursor
 const cursorNode = nid()
 const cursorXml = `<Node ${attrs({ x: 1640, y: 960, name: 'Cursor', id: cursorNode })}>
       <Shape name="Arrow"><PointsPath isClosed="true" name="Path">
         ${[[0, 0], [0, 38], [10, 29], [17, 44], [24, 41], [17, 26], [30, 26]].map(([x, y]) => `<StraightVertex ${attrs({ x, y, radius: 1.5 })}/>`).join('')}
-      </PointsPath><Fill name="Fill">${solid('FFFFFF')}</Fill><Stroke thickness="2.5" join="round" name="Line">${solid(C.ink)}</Stroke></Shape>
+      </PointsPath><Fill name="Fill">${solid(C.cursorFill)}</Fill><Stroke thickness="2.5" join="round" name="Line">${solid(C.cursorLine)}</Stroke></Shape>
     </Node>`
 const CX = BTN.right - BTN.w / 2 + 10, CY = BTN.cy + 6
 track(cursorNode, 'x', [[0, 1640], [128, 1640, 'inout'], [176, CX], [REVEAL + 20, CX, 'inout'], [256, CX + 70]])
@@ -186,16 +213,16 @@ const pageFill = nid(), winNode = nid()
 const chrome = `<Node ${attrs({ x: 0, y: 0, name: 'Window', id: winNode })}>
     ${[0, 1, 2].map((i) => `<Shape ${attrs({ x: WIN.x + 36 + i * 26, y: WIN.y + WIN.bar / 2, name: `Dot ${i + 1}` })}><Ellipse width="13" height="13" name="Path"/><Fill name="Fill">${solid(C.dot)}</Fill></Shape>`).join('\n    ')}
     <Shape ${attrs({ x: 800, y: WIN.y + WIN.bar / 2, name: 'Address' })}><Rectangle ${attrs({ width: 520, height: 30, cornerRadiusTL: 15, name: 'Path' })}/><Fill name="Fill">${solid(C.addr)}</Fill></Shape>
-    <Shape ${attrs({ x: 800 + 230, y: WIN.y + WIN.bar / 2, name: 'Address lock' })}><Ellipse width="10" height="10" name="Path"/><Fill name="Fill">${solid(C.dot)}</Fill></Shape>
-    <Shape ${attrs({ x: 800 + 214, y: WIN.y + WIN.bar / 2, name: 'Address text' })}><Rectangle ${attrs({ width: 170, height: 8, originX: 1, cornerRadiusTL: 4, name: 'Path' })}/><Fill name="Fill">${solid(C.dot)}</Fill></Shape>
+    <Shape ${attrs({ x: 800 + 230, y: WIN.y + WIN.bar / 2, name: 'Address lock' })}><Ellipse width="10" height="10" name="Path"/><Fill name="Fill">${solid(C.addrInk)}</Fill></Shape>
+    <Shape ${attrs({ x: 800 + 214, y: WIN.y + WIN.bar / 2, name: 'Address text' })}><Rectangle ${attrs({ width: 170, height: 8, originX: 1, cornerRadiusTL: 4, name: 'Path' })}/><Fill name="Fill">${solid(C.addrInk)}</Fill></Shape>
     <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: PAGE_Y + (WIN.h - WIN.bar) / 2, name: 'Page' })}><Rectangle ${attrs({ width: WIN.w, height: WIN.h - WIN.bar, linkCornerRadius: 'false', cornerRadiusTL: 0, cornerRadiusTR: 0, cornerRadiusBR: WIN.r, cornerRadiusBL: WIN.r, name: 'Path' })}/>
-      <Fill name="Fill"><SolidColor colorValue="FF${C.pageDark}" name="C" id="${pageFill}"/></Fill></Shape>
+      <Fill name="Fill"><SolidColor colorValue="${A(C.pageDark)}" name="C" id="${pageFill}"/></Fill></Shape>
     <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: WIN.y + WIN.h / 2, name: 'Frame' })}><Rectangle ${attrs({ width: WIN.w, height: WIN.h, cornerRadiusTL: WIN.r, name: 'Path' })}/>
       <Fill name="Fill">${solid(C.frame)}</Fill><Stroke thickness="2" name="Line">${solid(C.frameLine)}</Stroke></Shape>
   </Node>`
 track(winNode, 'opacity', [[0, 0], [2, 0, 'out'], [22, 1]])
 track(winNode, 'y', [[0, 26], [2, 26, 'out'], [26, 0]])
-track(pageFill, 'colorValue', [[0, `FF${C.pageDark}`], [PAINT0 - 4, `FF${C.pageDark}`, 'soft'], [PAINT1 - 4, `FF${C.page}`]], 'c')
+track(pageFill, 'colorValue', [[0, `${A(C.pageDark)}`], [PAINT0 - 4, `${A(C.pageDark)}`, 'soft'], [PAINT1 - 4, `${A(C.page)}`]], 'c')
 
 // the content rides with the window as it settles
 const site = `<Node ${attrs({ x: 0, y: 0, name: 'Site', id: nid() })}>
@@ -252,26 +279,32 @@ const rml = `<Rive version="1" kind="fragment">
 </ViewModel>
 </Rive>
 `
-writeFileSync(resolve(ROOT, 'design/rive/hero/cli/scene.rml'), rml)
+if (PALETTE !== 'km') {
+  // a second CLI project, so the KM scene.rml in cli/ stays as it is
+  mkdirSync(resolve(ROOT, OUT.cli), { recursive: true })
+  writeFileSync(resolve(ROOT, OUT.cli, 'rive.yaml'), 'name: cli\nlogs:\n  file: build/rive.log\n  problems: build/problems.log\n')
+  writeFileSync(resolve(ROOT, OUT.cli, '.gitignore'), 'build/\n')
+}
+writeFileSync(resolve(ROOT, OUT.cli, 'scene.rml'), rml)
 
 // ---------------------------------------------------------------- the finished frame (SVG)
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
-<rect width="${W}" height="${H}" fill="#${C.screen}"/>
-<rect x="${WIN.x + 1}" y="${WIN.y + 1}" width="${WIN.w - 2}" height="${WIN.h - 2}" rx="${WIN.r}" fill="#${C.frame}" stroke="#${C.frameLine}" stroke-width="2"/>
-<path d="M${WIN.x} ${PAGE_Y}H${WIN.x + WIN.w}V${WIN.y + WIN.h - WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x + WIN.w - WIN.r} ${WIN.y + WIN.h}H${WIN.x + WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x} ${WIN.y + WIN.h - WIN.r}Z" fill="#${C.page}"/>
-${[0, 1, 2].map((i) => `<circle cx="${WIN.x + 36 + i * 26}" cy="${WIN.y + WIN.bar / 2}" r="6.5" fill="#${C.dot}"/>`).join('')}
-<rect x="540" y="${WIN.y + WIN.bar / 2 - 15}" width="520" height="30" rx="15" fill="#${C.addr}"/><circle cx="1030" cy="${WIN.y + WIN.bar / 2}" r="5" fill="#${C.dot}"/><rect x="${1014 - 170}" y="${WIN.y + WIN.bar / 2 - 4}" width="170" height="8" rx="4" fill="#${C.dot}"/>
+<rect width="${W}" height="${H}" fill="${X(C.screen)}"/>
+<rect x="${WIN.x + 1}" y="${WIN.y + 1}" width="${WIN.w - 2}" height="${WIN.h - 2}" rx="${WIN.r}" fill="${X(C.frame)}" stroke="${X(C.frameLine)}" stroke-width="2"/>
+<path d="M${WIN.x} ${PAGE_Y}H${WIN.x + WIN.w}V${WIN.y + WIN.h - WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x + WIN.w - WIN.r} ${WIN.y + WIN.h}H${WIN.x + WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x} ${WIN.y + WIN.h - WIN.r}Z" fill="${X(C.page)}"/>
+${[0, 1, 2].map((i) => `<circle cx="${WIN.x + 36 + i * 26}" cy="${WIN.y + WIN.bar / 2}" r="6.5" fill="${X(C.dot)}"/>`).join('')}
+<rect x="540" y="${WIN.y + WIN.bar / 2 - 15}" width="520" height="30" rx="15" fill="${X(C.addr)}"/><circle cx="1030" cy="${WIN.y + WIN.bar / 2}" r="5" fill="${X(C.addrInk)}"/><rect x="${1014 - 170}" y="${WIN.y + WIN.bar / 2 - 4}" width="170" height="8" rx="4" fill="${X(C.addrInk)}"/>
 ${svgFinal.join('\n')}
 </svg>
 `
-writeFileSync(resolve(ROOT, 'src/look/parts/hero-built.svg'), svg)
-writeFileSync(resolve(ROOT, 'src/look/parts/hero-slot.json'), JSON.stringify({ artboard: { w: W, h: H }, slot: SLOT }) + '\n')
-console.log(`scene.rml ${rml.length} chars, ${tracks.length} tracks; hero-built.svg ${svg.length} chars`)
+writeFileSync(resolve(ROOT, OUT.svg), svg)
+if (OUT.slot) writeFileSync(resolve(ROOT, 'src/look/parts/hero-slot.json'), JSON.stringify({ artboard: { w: W, h: H }, slot: SLOT }) + '\n')
+console.log(`[${PALETTE}] scene.rml ${rml.length} chars, ${tracks.length} tracks; ${OUT.svg} ${svg.length} chars`)
 
 if (process.argv.includes('--riv')) {
-  const cli = resolve(ROOT, 'design/rive/hero/cli')
+  const cli = resolve(ROOT, OUT.cli)
   const exe = [resolve(homedir(), '.rive/bin/rive.exe'), resolve(homedir(), '.rive/bin/rive')].find(existsSync) ?? 'rive'
   execFileSync(exe, [cli, '--once'], { stdio: 'inherit' })
-  copyFileSync(resolve(cli, 'build/cli.riv'), resolve(ROOT, 'src/look/parts/hero.riv'))
-  console.log('copied to src/look/parts/hero.riv')
+  copyFileSync(resolve(cli, 'build/cli.riv'), resolve(ROOT, OUT.riv))
+  console.log(`copied to ${OUT.riv}`)
 }

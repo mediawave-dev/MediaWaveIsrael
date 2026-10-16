@@ -11,20 +11,46 @@
 // Sending folds the lines into the horizon and draws the disc around it; the horizon sloshes
 // while the request is out. Sent: the level rises and fills the disc into the exact mark.
 // Error: the horizon unfolds back into the lines (nothing lost) and the header shows a dot.
+//
+// Palettes: `--palette km` (default) writes the files above. `--palette shot` (the one-shot desk,
+// DECISIONS #81/#86, SPEC section 3) changes colours only and writes its own files next to them:
+//   cli-shot/scene.rml, src/look/parts/companion-shot-rest.svg, src/look/parts/companion-shot.riv
+// Run: node design/rive/companion/build-scene.mjs --riv --palette shot
 
-import { writeFileSync, copyFileSync, existsSync } from 'node:fs'
+import { writeFileSync, copyFileSync, existsSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { homedir } from 'node:os'
 import { ROOT, markPaths, cubics, vertices, clockwise, horizonSegments } from './mark-vertices.mjs'
 
 const AB = { w: 330, h: 216 }
-// the screen speaks the site's Klein palette (DECISIONS #58); the laptop itself is the hero's
-// hardware (lid, edge, camera, aluminium) and keeps its own greys
-const COL = {
-  ink: 'FFFFFF', words: '8E9CC8', logoA: 'FFFFFF', logoB: '6E8CFF', ui: '2A3563', hair: '1A2246',
-  edge: '3A3A3D', lid: '0E0E10', screen: '000000', cam: '2A2A2D', notch: 'B9B9BE', err: 'FF6961',
-  base: [['E6E6E9', 0], ['A2A2A7', 0.65], ['6E6E73', 1]],
+const argv = process.argv.slice(2)
+const PALETTE = argv.includes('--palette') ? argv[argv.indexOf('--palette') + 1] : 'km'
+// Colours are RRGGBB, or AARRGGBB where a colour is ink at an alpha.
+const PALETTES = {
+  // the screen speaks the site's Klein palette (DECISIONS #58); the laptop itself is the hero's
+  // hardware (lid, edge, camera, aluminium) and keeps its own greys
+  km: {
+    ink: 'FFFFFF', words: '8E9CC8', logoA: 'FFFFFF', logoB: '6E8CFF', ui: '2A3563', hair: '1A2246',
+    edge: '3A3A3D', lid: '0E0E10', screen: '000000', cam: '2A2A2D', notch: 'B9B9BE', err: 'FF6961',
+    base: [['E6E6E9', 0], ['A2A2A7', 0.65], ['6E6E73', 1]],
+  },
+  // the desk (D81): an ink laptop with a white page, the Horizon mark in deep Klein (D86), a paper
+  // base with an ink-alpha edge instead of aluminium (the CSS laptop skin in shot-base.css), and
+  // no red: the error dot is ink (the form's alert carries the meaning)
+  shot: {
+    ink: '1B1D21', words: '4A4F57', logoA: '1B1D21', logoB: '00248A', ui: 'ECEEF1', hair: '241B1D21',
+    edge: '4A4F57', lid: '1B1D21', screen: 'FFFFFF', cam: '4A4F57', notch: 'ECEEF1', err: '1B1D21',
+    base: 'FFFFFF', baseEdge: '241B1D21',
+  },
+}
+const COL = PALETTES[PALETTE]
+if (!COL) throw new Error(`unknown --palette ${PALETTE} (km or shot)`)
+const SHOT = PALETTE === 'shot'
+const OUT = {
+  cli: SHOT ? 'design/rive/companion/cli-shot' : 'design/rive/companion/cli',
+  rest: SHOT ? 'src/look/parts/companion-shot-rest.svg' : 'src/look/parts/companion-rest.svg',
+  riv: SHOT ? 'src/look/parts/companion-shot.riv' : 'src/look/parts/companion.riv',
 }
 const G = {
   lid: { cx: 165, cy: 102, w: 290, h: 200, r: 6, edge: 1.5 },
@@ -61,7 +87,8 @@ const STATUS = { idle: ID.eIdle, typing: ID.eTyping, loading: ID.eLoading, sent:
 // ---------------------------------------------------------------- helpers
 const n = (v) => +(+v).toFixed(4)
 const attrs = (o) => Object.entries(o).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${typeof v === 'number' ? n(v) : v}"`).join(' ')
-const solid = (c, name = 'Color') => `<SolidColor colorValue="FF${c}" name="${name}"/>`
+const argb = (c) => (c.length === 8 ? c : `FF${c}`)
+const solid = (c, name = 'Color') => `<SolidColor colorValue="${argb(c)}" name="${name}"/>`
 const fill = (c) => `<Fill name="Fill">${solid(c)}</Fill>`
 const rect = (w, h, extra = {}) => `<Rectangle ${attrs({ width: w, height: h, ...extra, name: 'Path' })}/>`
 const radii = (g) => ({ linkCornerRadius: 'false', cornerRadiusTL: g.tl, cornerRadiusTR: g.tr, cornerRadiusBR: g.br, cornerRadiusBL: g.bl })
@@ -208,11 +235,12 @@ const scene = `
   </Shape>
   <Shape ${attrs({ x: G.base.cx, y: G.base.cy, name: 'Base', id: nid() })}>
     ${rect(G.base.w, G.base.h, radii(G.base))}
-    <Fill name="Fill">
+    ${Array.isArray(COL.base) ? `<Fill name="Fill">
       <LinearGradient ${attrs({ startX: 0, startY: -G.base.h / 2, endX: 0, endY: G.base.h / 2, name: 'Aluminium' })}>
         ${COL.base.map(([c, p]) => `<GradientStop ${attrs({ colorValue: `FF${c}`, position: p })}/>`).join('')}
       </LinearGradient>
-    </Fill>
+    </Fill>` : `${fill(COL.base)}
+    <Stroke ${attrs({ thickness: 1, position: 'inside', name: 'Edge' })}>${solid(COL.baseEdge)}</Stroke>`}
   </Shape>
 
   __ANIMATIONS__
@@ -378,12 +406,15 @@ ${scene.replace('__LAYERS__', layers).replace('__ANIMATIONS__', animations.join(
 ${data}
 </Rive>
 `
-writeFileSync(resolve(ROOT, 'design/rive/companion/cli/scene.rml'), rml)
+mkdirSync(resolve(ROOT, OUT.cli), { recursive: true })
+writeFileSync(resolve(ROOT, OUT.cli, 'scene.rml'), rml)
 
 // ---------------------------------------------------------------- the CSS rest pose (SVG)
 // The idle pose with progress 0: the laptop, the header and the caret at the first line's
 // start, the screen content at the idle dim. Nothing else is visible in that pose.
-const hex = (c) => `#${c.toLowerCase()}`
+const hex = (c) => `#${c.slice(-6).toLowerCase()}`
+// an SVG paint attribute; an AARRGGBB colour adds its alpha as <attr>-opacity
+const paint = (attr, c) => `${attr}="${hex(c)}"${c.length === 8 ? ` ${attr}-opacity="${n(parseInt(c.slice(0, 2), 16) / 255)}"` : ''}`
 const rr = (g) => {
   // a rectangle with four radii, as a path (x, y = top left)
   const x = g.cx - g.w / 2, y = g.cy - g.h / 2, w = g.w, h = g.h
@@ -395,28 +426,36 @@ const [up, lo] = markPaths()
 const m = G.mini
 const ins = G.lid.edge / 2
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${AB.w} ${AB.h}" width="${AB.w}" height="${AB.h}">
-<defs><linearGradient id="al" x1="0" y1="0" x2="0" y2="1">${COL.base.map(([c, p]) => `<stop offset="${p}" stop-color="${hex(c)}"/>`).join('')}</linearGradient></defs>
-<path d="${rr(G.base)}" fill="url(#al)"/>
+${Array.isArray(COL.base) ? `<defs><linearGradient id="al" x1="0" y1="0" x2="0" y2="1">${COL.base.map(([c, p]) => `<stop offset="${p}" stop-color="${hex(c)}"/>`).join('')}</linearGradient></defs>
+<path d="${rr(G.base)}" fill="url(#al)"/>` : `<path d="${rr(G.base)}" ${paint('fill', COL.base)}/>
+<path d="${rr({ ...G.base, w: G.base.w - 1, h: G.base.h - 1 })}" fill="none" ${paint('stroke', COL.baseEdge)} stroke-width="1"/>`}
 <path d="${rr(G.notch)}" fill="${hex(COL.notch)}"/>
 <rect ${box(G.lid, G.lid.r)} fill="${hex(COL.lid)}"/>
 <rect x="${n(G.lid.cx - G.lid.w / 2 + ins)}" y="${n(G.lid.cy - G.lid.h / 2 + ins)}" width="${n(G.lid.w - 2 * ins)}" height="${n(G.lid.h - 2 * ins)}" rx="${n(G.lid.r - ins)}" fill="none" stroke="${hex(COL.edge)}" stroke-width="${G.lid.edge}"/>
 <rect ${box(G.screen, G.screen.r)} fill="${hex(COL.screen)}"/>
 <circle cx="${G.cam.cx}" cy="${G.cam.cy}" r="${G.cam.d / 2}" fill="${hex(COL.cam)}"/>
 <g opacity="${REST.content}">
-<rect ${box(G.hair)} fill="${hex(COL.hair)}"/>
+<rect ${box(G.hair)} ${paint('fill', COL.hair)}/>
 <rect ${box(G.addr, 2)} fill="${hex(COL.ui)}"/>
 <g transform="translate(${n(m.cx - 50 * m.s)} ${n(m.cy - 50 * m.s)}) scale(${m.s})"><path d="${up}" fill="${hex(COL.logoA)}"/><path d="${lo}" fill="${hex(COL.logoB)}"/></g>
 <rect x="${n(F.cx + caretX0 - G.caret.w / 2)}" y="${n(F.cy + F.ys[0] - G.caret.h / 2)}" width="${G.caret.w}" height="${G.caret.h}" rx="1" fill="${hex(COL.ink)}"/>
 </g>
 </svg>
 `
-writeFileSync(resolve(ROOT, 'src/look/parts/companion-rest.svg'), svg)
-console.log(`scene.rml ${rml.length} chars, companion-rest.svg ${svg.length} chars, ${conv.length} converters`)
+writeFileSync(resolve(ROOT, OUT.rest), svg)
+console.log(`[${PALETTE}] scene.rml ${rml.length} chars, ${OUT.rest} ${svg.length} chars, ${conv.length} converters`)
 
 if (process.argv.includes('--riv')) {
-  const cli = resolve(ROOT, 'design/rive/companion/cli')
+  const cli = resolve(ROOT, OUT.cli)
+  // the Rive CLI project: rive.yaml names the build (build/<name>.riv)
+  const name = SHOT ? 'cli-shot' : 'cli'
+  if (!existsSync(resolve(cli, 'rive.yaml'))) writeFileSync(resolve(cli, 'rive.yaml'), `name: ${name}
+logs:
+  file: build/rive.log
+  problems: build/problems.log
+`)
   const exe = [resolve(homedir(), '.rive/bin/rive.exe'), resolve(homedir(), '.rive/bin/rive')].find(existsSync) ?? 'rive'
   execFileSync(exe, [cli, '--once'], { stdio: 'inherit' })
-  copyFileSync(resolve(cli, 'build/cli.riv'), resolve(ROOT, 'src/look/parts/companion.riv'))
-  console.log('copied to src/look/parts/companion.riv')
+  copyFileSync(resolve(cli, `build/${name}.riv`), resolve(ROOT, OUT.riv))
+  console.log(`copied to ${OUT.riv}`)
 }
