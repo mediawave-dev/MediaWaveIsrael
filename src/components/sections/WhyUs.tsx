@@ -24,7 +24,7 @@ const differentiators: WhyUsItem[] = [
   {
     _id: 'ai',
     lottieAnimation: '/animations/AI/AI%20animation.json',
-    title: 'שימצאו אתכם, גם ב-AI',
+    title: 'שימצאו אתכם, גם בחיפושי AI',
     description: 'היום מחפשים לא רק בגוגל, גם אצל צ\'אטבוטים. בונים אתר שיופיע בשני המקומות.',
     color: 'terracotta',
   },

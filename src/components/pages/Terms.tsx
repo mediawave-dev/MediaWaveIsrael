@@ -137,7 +137,7 @@ export default function Terms() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">3.4 מחירים</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li>המחירים המצוינים בהצעת המחיר בתוקף ל-30 יום מיום ההצעה.</li>
+              <li>המחירים המצוינים בהצעת המחיר בתוקף למשך 30 יום מיום ההצעה.</li>
               <li>כל המחירים כוללים מע"מ אלא אם צוין אחרת.</li>
             </ul>
           </section>
@@ -151,7 +151,7 @@ export default function Terms() {
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">4.1 היקף עבודה מוגדר</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li>היקף העבודה יוגדר בהצעת המחיר ויכלול את מספר העמודים, התכונות, והשירותים הנלווים.</li>
-              <li>כל עבודה מעבר להיקף המוסכם תחויב בנפרד לפי מחירון השעתי של החברה (200-300 ₪ לשעה).</li>
+              <li>כל עבודה מעבר להיקף המוסכם תחויב בנפרד לפי מחירון השעתי של החברה (200 עד 300 ₪ לשעה).</li>
             </ul>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">4.2 שינויים ותיקונים</h3>
@@ -226,9 +226,9 @@ export default function Terms() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">7.2 חידוש שנתי</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li>מהשנה השנייה ואילך, דמי אחסון שנתיים יהיו בין 500-800 ₪ בהתאם לחבילת האחסון.</li>
+              <li>מהשנה השנייה ואילך, דמי אחסון שנתיים יהיו 500 עד 800 ₪ בהתאם לחבילת האחסון.</li>
               <li>הלקוח יקבל תזכורת 30 יום לפני פקיעת האחסון.</li>
-              <li>אי-חידוש האחסון עלול להוביל להורדת האתר מהרשת.</li>
+              <li>אי חידוש האחסון עלול להוביל להורדת האתר מהרשת.</li>
             </ul>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">7.3 חבילות תחזוקה</h3>
@@ -252,7 +252,7 @@ export default function Terms() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">8.2 הגבלת אחריות</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li>החברה אינה אחראית לנזקים עקיפים, אובדן רווחים, או נזקים תוצאתיים הנובעים מהשימוש באתר או מאי-יכולת להשתמש בו.</li>
+              <li>החברה אינה אחראית לנזקים עקיפים, אובדן רווחים, או נזקים תוצאתיים הנובעים מהשימוש באתר או מחוסר יכולת להשתמש בו.</li>
               <li>אחריות החברה מוגבלת לסכום ששולם עבור השירות הספציפי.</li>
             </ul>
 
@@ -278,7 +278,7 @@ export default function Terms() {
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">9.2 ביטול על ידי החברה</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li>החברה רשאית לבטל פרויקט במקרים של אי-שיתוף פעולה מצד הלקוח, איחור משמעותי בתשלומים, או חוסר אפשרות טכנית.</li>
+              <li>החברה רשאית לבטל פרויקט במקרים של חוסר שיתוף פעולה מצד הלקוח, איחור משמעותי בתשלומים, או חוסר אפשרות טכנית.</li>
               <li>במקרה כזה, הלקוח יקבל החזר יחסי בניכוי עלות העבודה שכבר בוצעה.</li>
             </ul>
           </section>
