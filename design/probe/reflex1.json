@@ -1,0 +1,26 @@
+{
+ "page_bg": "#F7F3EC",
+ "text": "#1C1B19",
+ "accent": "#25D366",
+ "display_font": "Frank Ruhl Libre",
+ "body_font": "Heebo",
+ "hero": "אתר שנבנה בקוד בשבילך, לא תבנית: כתבו לי בוואטסאפ ותקבלו תשובה היום",
+ "sections": [
+  "Hero with WhatsApp CTA",
+  "Proof: real client sites side by side with templates",
+  "Three services: websites, video editing, tape conversion",
+  "How it works in 3 steps",
+  "About Nati, one person, direct contact",
+  "FAQ on price and timeline",
+  "Final WhatsApp CTA"
+ ],
+ "motion": [
+  "Hero headline reveals word by word from the right",
+  "Portfolio screenshots scroll inside phone frames on view",
+  "Sticky WhatsApp button pulses gently once after 10 seconds"
+ ],
+ "buttons": "fully rounded pill, solid accent fill",
+ "labels": "short first-person Hebrew verbs, e.g. 'שלחו לי הודעה'",
+ "imagery": "real screenshots of client sites in phone mockups plus warm photos of Nati and old VHS tapes",
+ "_note": "probe ran as a workflow agent with CLAUDE.md loaded (pb-reflex-probe agent not installed); effort low"
+}

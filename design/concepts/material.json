@@ -1,0 +1,133 @@
+{
+  "name": "Glass and Tape",
+  "lane": "material",
+  "idea": "Whatever he makes for you, a site, a video or your old tapes, ends up on your own phone, and you watch the site being built there until it is fast enough to go live.",
+  "subject_world": [
+    "materials: phone screen glass (dark when off, lit when woken), the anodised phone frame, magnetic-tape oxide ribbon (matte brown), the black VHS shell with a paper label, the client's red markup pen on a screenshot",
+    "tools: DevTools device mode (390 x 844, drag handle, px ruler, W x H readout), the Lighthouse gauge 0-100, the edit timeline with its playhead, the VCR and its tape counter, the capture card",
+    "rituals: send the staging link, the client opens it on his phone, 'תרענן' (refresh), the client circles it in red and sends a screenshot back, deploy and the address changes, rewind the tape before capture",
+    "units: px, the 390 column, score 0-100, timecode HH:MM:SS:FF at 25 fps PAL (frames 00-24), E-180 / E-240 cassettes",
+    "insider words: לינק, סטייג'ינג, גרסה ראשונה, 'סימנתי לך', תיקונים, תרענן, עלה לאוויר, קאט, המרה, קלטת",
+    "sounds (not played, they set the timing): the screenshot shutter, the VCR clunk on load, the tape hiss during transfer"
+  ],
+  "dossier": [
+    "W02: hero interaction and grid. The page opens inside device mode, and the px ruler and 'W x H' readout are the only labels in the hero; 390 is the grid's base unit",
+    "W04: persistent object. One phone holds one real client site through its states, and it also plays the finished video and the converted tape (everything ends on the client's phone)",
+    "W03: content. The phone's own address bar shows the chapter path as a single fixed line (no eyebrow over each heading); at live it changes to the real domain",
+    "W05/W06: colour. Green appears only on glass, at pass and live; red and orange appear only inside the gauge arc while the score counts",
+    "W07: shape and motion. The playhead track is a strip of tape-oxide ribbon that runs down the inline-end edge",
+    "W08: type. Timecode set in the text face's tabular figures, at 25 fps PAL, marks each cut on the ribbon (instead of 01/02/03)",
+    "W09: motion. Every chapter change is a hard cut on a frame boundary (steps(1)) and leaves a one-frame splice gap in the ribbon",
+    "W12 + W20: moment. The address change and the green dot are the page's main peak",
+    "W14: content. The ribbon threads out of a photographed VHS cassette in the tapes part",
+    "W17: interaction. A shutter flash, the client's red circles drawn on the screenshot, then pull-to-refresh to the corrected version",
+    "W19: grid. The page starts from the 390 column and the phone stays centred on desktop",
+    "W21: proof. Two real, different client sites are swiped inside the same phone"
+  ],
+  "pinned": "W04 is carried literally. The phone narrows into being in the hero, then goes through its states in order: link (a notification on dark glass), first version, circled fixes, measured, live (green dot, real address). The hero's W02 move (narrowing desktop width down to 390) is where the phone first appears.",
+  "tradition": null,
+  "transformation": "The page opens as Nati's workbench: a site at desktop width inside device mode on grey, with a ruler and a readout. It ends as the object in the client's hand: the ruler is gone, the phone shows the real address with a green dot and holds the visitor's own message to Nati, and the tape ribbon runs out into its clear leader.",
+  "palette": [
+    { "name": "device grey", "hex": "#E4E6E9", "role": "ground (~70%): the canvas around every client site in device mode, where Nati looks at each build" },
+    { "name": "screen-off glass", "hex": "#111316", "role": "ink, the phone body, its dark screen and the WhatsApp button fill (~22%): the client's phone before it wakes" },
+    { "name": "oxide", "hex": "#3A2B22", "role": "the tape ribbon, splice gaps and timecode text (~4%): the magnetic tape that cutting, timecode and playhead all come from; 10.9:1 on grey" },
+    { "name": "markup red", "hex": "#E0322B", "role": "the client's pen circles, only on the screenshot in the fix chapter (under 1%): 'this, fix this'" },
+    { "name": "pass green", "hex": "#0CCE6B", "role": "accent, only on glass (under 1%): the gauge's pass arc and the live dot; 8.9:1 on glass, never on grey" }
+  ],
+  "type": {
+    "display": "Karantina 700",
+    "text": "Noto Sans Hebrew 400/600, with tabular figures for timecode and scores (no mono face)",
+    "hebrew_support": "native",
+    "why": "Karantina is condensed, so 44-56 px Hebrew headlines keep their words whole in the 390 column (W19). Noto Sans Hebrew is the face Android uses to render Hebrew on most clients' own phones, which makes it the material of the object we are showing."
+  },
+  "hero_ascii": "0        390                 1280\n|.........|.....................|\n   +-------------+  640 x 844  <||\n   | staging link|\n   | client site |     H1 Karantina\n   | reflowing   |     two lines\n   | as you      |   [WhatsApp] [tel]\n   | narrow it   |\n   +-------------+               |<-ribbon",
+  "motif": {
+    "what": "The oxide ribbon: a 2 px strip of magnetic-tape brown that runs down the page's inline-end gutter and behaves like real tape",
+    "jobs": [
+      "playhead: scroll position as a mark moving along the ribbon (W07)",
+      "chapter marker: timecode at each cut, 25 fps (W08)",
+      "cut: a one-frame splice gap at every hard cut (W09)",
+      "tapes: threads out of the photographed cassette (W14)",
+      "video: widens into the edit track that holds the 13 Lotties as clips, each one playing only while the playhead crosses it",
+      "end: runs out into a clear leader just before the footer"
+    ]
+  },
+  "signature_moments": [
+    {
+      "where": "hero (act 1, held)",
+      "sentence": "אתה רואה את האתר שלך נבנה, בטלפון שלך [קופי: נתי]",
+      "move": "The visitor narrows the page, by scroll or by the drag handle, from desktop width down to 390. A real client site reflows column by column, the readout counts down, and at 390 the device-mode rectangle hardens into a glass phone, centred.",
+      "why_only_here": "This is Nati's daily instrument on every build (W02), and the brief pins it as the hero interaction."
+    },
+    {
+      "where": "process, the first state (link)",
+      "sentence": "שולח לך לינק [קופי: נתי]",
+      "move": "On dark glass a notification drops in carrying the staging link. A tap, the screen wakes, the Horizon ident plays as the staging splash, then a hard cut to the first version.",
+      "why_only_here": "The sacred ident counts as a signature moment anyway; putting it where the client first opens the link ties the brand mark to the ritual that defines the business."
+    },
+    {
+      "where": "process, measure into live (the peak, W20)",
+      "sentence": "עולה לאוויר רק כשהוא מהיר בטלפון [קופי: נתי]",
+      "move": "The real measured score counts up from 0 through the red and orange arcs. At the frame it crosses 90, the address bar hard-cuts from the staging address to the real domain and a green dot lights: the first green on the page.",
+      "why_only_here": "This is the one true claim made visible. Green is kept back until this moment, so it can mean only 'passed, live'."
+    }
+  ],
+  "motion_grammar": {
+    "verbs": ["reflow", "wake", "cut"],
+    "easing_character": "The ribbon moves at constant linear speed, like tape transport. Glass uses damped springs with no overshoot (rubber-band only on pull-to-refresh). Cuts are instant, steps(1). No crossfades and no fade-ups.",
+    "scroll_model": "lenis + sticky stages on the existing engine (GSAP ScrollTrigger on gsap.ticker); the phone pins with CSS position: sticky (CLS 0); only the hero width and the ribbon are scrubbed, and state changes are threshold-triggered cuts",
+    "intensity": "orchestrated"
+  },
+  "scroll_outline": [
+    "act 1, 0-1.5 vp, held #1: device mode on grey, the H1 and the WhatsApp/tel buttons beside it; narrowing to 390 produces the phone",
+    "act 2, 1.5-4 vp, #services, phone released into normal flow: three crafts, each ending on the phone. Sites (the staging site), video (the ribbon widens into a track of 13 Lottie clips; the hero film plays as the finished cut), tapes (the ribbon threads from a cassette photo; the phone plays a converted clip)",
+    "act 3, 4-8.5 vp, #process, held #2: link > first version (pull-to-refresh) > fixes (shutter, red circles, refresh, corrected) > measure > live (address cut, green dot); the address bar carries each path",
+    "act 4, 8.5-9.5 vp: proof, two real and different client sites swiped in the same phone (W21)",
+    "act 5, 9.5-11 vp, #faq: the 13 entries as a quiet list; the phone asleep (dark glass) beside it; the ribbon keeps running",
+    "act 6, 11-12 vp, #contact: the phone holds the visitor's prefilled message with send = the real WhatsApp link, plus tel and the form; the ribbon runs out into its clear leader; footer"
+  ],
+  "reflex_hits": [
+    { "item": "probes' accent #25D366 (green)", "reason": "This green is Lighthouse's pass band (W05/W06), pinned by the brief. It is #0CCE6B, it appears only on glass at pass and live, and it is never on a button; the WhatsApp button is glass black." },
+    { "item": "probes' imagery: client screenshots in phone mockups", "reason": "W04 pins the phone. This is one phone holding one site through its real states, not a gallery of static mockups." },
+    { "item": "ambition probe: tape, timecode, playhead", "reason": "W07/W08 pin playhead and timecode. Tape here is the material of the track, not a page-wide 'restoration' metaphor: no degraded-to-sharp filter, no CRT band, no REC ending." },
+    { "item": "stat-hero (big number with a small label)", "reason": "W05 makes the real measured number the proof. It lives inside the gauge in the process chapter, not in the hero." },
+    { "item": "a mono face for small labels / 01-02-03", "reason": "remove: timecode uses Noto's tabular figures, and the sequence is real (W08)" },
+    { "item": "Layer 2 'be bold': giant tight headline", "reason": "Karantina is sized to fit the 390 column in 2-3 lines, not blown up to fill the screen" },
+    { "item": "dev-tool kit (masked grid, dot background)", "reason": "remove: the ruler exists only in the hero and leaves once 390 is reached; the ground is plain grey" },
+    { "item": "pill buttons, floating WhatsApp pulse", "reason": "remove: buttons are glass slabs with the phone screen's corner radius; nothing pulses" },
+    { "item": "grain/noise, VHS tracking overlays", "reason": "remove: the tape is shown as a photographed object and a ribbon, never as a screen filter" }
+  ],
+  "assets_needed": [
+    "one real client site, captured at its real states: staging link, first version, corrected version, live (needs the client's consent)",
+    "a real circled-correction screenshot from that client, with consent; if it is reconstructed on the consenting client's site, it must be labelled as a reconstruction",
+    "VHS cassette photo with a handwritten label (W14): Nati's own tape photographed, or licence-checked free media",
+    "a converted-tape clip for the phone: memory-video.mp4 only with family consent, otherwise licensed footage",
+    "a dated Lighthouse mobile run of the redesigned home page (the number shown)",
+    "reference photos for colour sampling: a tape-ribbon macro, phone glass when off, a DevTools device-mode screenshot",
+    "Karantina and Noto Sans Hebrew woff2 files, self-hosted and subset",
+    "existing: hero film, 13 Lotties, Horizon ident"
+  ],
+  "risks": [
+    "Phone-in-a-phone on mobile: under 768 px the frame must drop away so the visitor's own screen is the glass, and act 1 becomes a scrubbed narrowing of a desktop miniature. This needs its own design pass.",
+    "The brief says green is the only accent; the fix chapter's red pen adds a second chroma. It is kept under 1% and only on the screenshot, but this needs Nati's ruling.",
+    "Held scene #2 is about 4.5 vp long. If the cuts land too far apart it reads as a dead zone; it needs a cut roughly every 0.8 vp.",
+    "Hard cuts can read as jank or glitches; the playhead has to reach the splice mark one beat before each cut.",
+    "The ribbon in the gutter has to stay clear of text at 320 px (overlap audit), and could be mistaken for a generic scroll-progress bar.",
+    "13 Lotties on one track are a TBT risk (the 356-path lesson): only the clip under the playhead plays, the rest show a poster frame.",
+    "The concept depends on a real client's consent. If none is given, the only honest fallback is MediaWave's own site going through its own staging.",
+    "Chat-style UI in act 6 must stay generic: no WhatsApp logo, no cloned UI.",
+    "The peak depends on the redesigned page really scoring 90 or above on mobile; the number has to be measured and dated, never hardcoded.",
+    "Karantina 700 is hard to read below 28 px; it is restricted to headings.",
+    "Reduced motion (CALM tier) has to show the five phone states as a static sequence of stills."
+  ],
+  "facts_to_verify": [
+    "Lighthouse/PSI band hexes (pass #0CCE6B, average #FFA400, fail #FF4E42) in the current report",
+    "Android's default Hebrew system font is Noto Sans Hebrew; Android vs iOS share in Israel",
+    "Karantina on Google Fonts: weights 300/400/700, Hebrew + Latin, OFL",
+    "Noto Sans Hebrew on Google Fonts ships Latin and tabular figures (tnum)",
+    "Israel was PAL (25 fps), and VHS cassettes there were labelled E-180 / E-240",
+    "VHS tape has a clear leader at the ends (the auto-stop sensor)",
+    "The DevTools device-mode canvas colour in the light theme; whether the iPhone 12 Pro preset reads 390 x 844",
+    "Which client sites may be shown, and whether the 96 (2026-10-13) holds on the redesign"
+  ]
+}

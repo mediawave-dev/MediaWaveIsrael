@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>השלמה · משפחת כפתורים</title>
+<!--
+  shot · button family "השלמה" (autocomplete). Round 2, after the judges.
+  The button is one line in Nati's editor (W01) with the editor's inline suggestion already
+  offered: the label in white, and after it, in the editor's grey, where the button goes
+  ("בוואטסאפ", W16). It is there at rest on every device, so a phone sees the destination before
+  the tap (everyone knows grey predictive text from their phone keyboard). Hover / keyboard focus:
+  the caret arrives in the gap, blinks twice and fades, and the suggestion sharpens. A press
+  accepts it: the grey turns white right to left in six frames (W10), and the line is one
+  sentence. Sending is a render (W11): the slab fills with ink right to left, frame by frame,
+  until the message is out. Label swaps are hard cuts (W09).
+  Round 2 removed: the arbitrary line numbers, the space reserved at rest, the WhatsApp ticks,
+  the caret that held solid next to a letter.
+  Palette locked (D81): #ECEEF1 #FFFFFF #1B1D21 #4A4F57 #D3D7DC #6B717B (field borders only).
+  One face: Noto Sans Hebrew.
+  Invented micro-text, all [קופי: נתי]: the suggestions "בוואטסאפ" (WhatsApp CTAs) and "לנתי"
+  (form submit), the screen-reader description "נפתח בוואטסאפ", the form field labels "שם" /
+  "טלפון", the demo control labels.
+-->
+<style>
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0000-00FF, U+2000-206F, U+2190-21FF; }
+
+:root {
+  --table: #ECEEF1; --paper: #FFFFFF; --ink: #1B1D21; --soft: #4A4F57; --line: #D3D7DC; --field: #6B717B;
+  --paper-shadow: 0 1px 0 rgba(27,29,33,.05), 0 18px 30px -22px rgba(27,29,33,.45);
+  --face: "MW Noto", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--table); }
+body { margin: 0; background: var(--table); color: var(--ink); font: 400 16px/1.7 var(--face); -webkit-font-smoothing: antialiased; }
+.page { max-width: 1240px; margin: 0 auto; padding: 56px 32px 96px; }
+.num { font-family: var(--face); font-stretch: 62.5%; font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* ── head ─────────────────────────────────────────── */
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 12px 64px; align-items: end; margin-bottom: 48px; }
+.head__kicker { margin: 0 0 6px; font: 500 12px/1.4 var(--face); font-stretch: 62.5%; color: var(--soft); direction: ltr; text-align: right; }
+.head h1 { margin: 0; font: 800 clamp(56px, 8vw, 104px)/0.95 var(--face); font-stretch: 87.5%; }
+.head__idea { margin: 0 0 12px; font-size: 19px; line-height: 1.6; color: var(--ink); max-width: 38em; }
+.head__meta { margin: 0; font-size: 15px; color: var(--soft); max-width: 42em; }
+.head__meta b { color: var(--ink); font-weight: 600; }
+.w { font: 500 13px/1 var(--face); font-stretch: 62.5%; color: var(--ink); }
+
+.sec-title { display: flex; align-items: baseline; gap: 12px; margin: 64px 0 18px; font: 700 15px/1.3 var(--face); }
+.sec-title .num { font-size: 12px; font-weight: 500; color: var(--soft); }
+.cap { margin: 0 0 14px; font: 500 12.5px/1.4 var(--face); color: var(--soft); }
+.cap .num { font-size: 12px; }
+
+.sheet { background: var(--paper); box-shadow: var(--paper-shadow); border-radius: 2px; }
+
+/* ── live area ────────────────────────────────────── */
+.live { display: grid; grid-template-columns: 1.35fr 1fr; gap: 28px; align-items: start; }
+.hero { padding: 72px 56px 64px; min-height: 340px; display: flex; flex-direction: column; justify-content: flex-end; gap: 26px; }
+.hero__rows { display: grid; gap: 14px; justify-items: start; }
+.hero__hint { margin: 0; font-size: 15px; color: var(--soft); max-width: 30em; }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 4px 10px 0; }
+.logo { font: 800 21px/1 var(--face); font-stretch: 87.5%; direction: ltr; }
+.form { padding: 32px 32px 28px; display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 14px; font-weight: 600; }
+.field input { height: 48px; padding: 0 14px; border: 1.5px solid var(--field); border-radius: 6px; background: var(--paper); color: var(--ink); font: 400 16px var(--face); }
+.field input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.field input[type="tel"] { direction: ltr; text-align: left; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.ctl { min-height: 44px; padding: 0 14px; border: 1.5px solid var(--field); border-radius: 6px; background: var(--paper); color: var(--ink); font: 500 13.5px var(--face); cursor: pointer; }
+.ctl:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.faq { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; padding: 6px 0; }
+
+/* ── states strip ─────────────────────────────────── */
+.strip { padding: 36px 40px 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 48px; }
+.cell { display: grid; gap: 12px; justify-items: start; align-content: start; }
+.cell .cap { margin: 0; display: flex; gap: 8px; align-items: baseline; }
+.cell .cap .en { direction: ltr; font-stretch: 62.5%; font-size: 11.5px; }
+.phone-col { width: 390px; max-width: 100%; padding: 24px 16px 28px; display: grid; gap: 18px; }
+.strips-row { display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 28px; align-items: start; margin-top: 28px; }
+.mid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.mid .sheet { padding: 22px 24px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; }
+.mid .sheet .cap { flex-basis: 100%; }
+
+/* frames: the accept and the render, one cell per frame */
+.frames { padding: 28px 32px 32px; display: grid; gap: 22px; }
+.frames__row { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 14px 20px; }
+.frames__row .cell { gap: 8px; }
+
+.notes { margin-top: 64px; padding: 32px 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; font-size: 14.5px; line-height: 1.7; }
+.notes h3 { margin: 0 0 8px; font-size: 15px; }
+.notes p, .notes ul { margin: 0; color: var(--soft); }
+.notes ul { padding-inline-start: 1.1em; }
+.notes code { direction: ltr; unicode-bidi: isolate; font: 500 12.5px var(--face); font-stretch: 75%; color: var(--ink); }
+.ask { margin-top: 28px; padding: 26px 32px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 12px 40px; font-size: 14.5px; }
+.ask h3 { margin: 0; font-size: 15px; }
+.ask ul { margin: 0; padding-inline-start: 1.1em; color: var(--soft); }
+.ask b { color: var(--ink); font-weight: 600; }
+
+/* ════════════════════════════════════════════════════
+   THE FAMILY · .ln (one line of the editor, suggestion offered)
+   Layers, one property owner each:
+     .ln            transform (press)
+     .ln__fill      clip-path (the render while sending)
+     .ln__comp      opacity (the suggestion is offered, once, after the line appears)
+     .ln__ghost     opacity (rest .62, sharpened on hover / focus)
+     .ln__acc       clip-path (the accepted text, swept right to left)
+     .ln__caret     opacity (arrives, blinks twice, fades; after an accept: once, then fades)
+     .ln__mark      opacity + transform (the sent / error mark lands)
+   No layout property moves. Nothing is reserved empty at rest: the suggestion is visible text.
+   ════════════════════════════════════════════════════ */
+.ln {
+  --bg: var(--ink); --fg: #FFFFFF; --ghost: #D3D7DC; --ghost-o: .62; --ghost-hi: .88; --acc: #FFFFFF; --caret: #FFFFFF; --stamp: #D3D7DC;
+  --press: .976; --gap: .64em;
+  position: relative; isolation: isolate;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 56px; padding: 8px 26px;
+  border: 0; border-radius: 6px; background: var(--bg); color: var(--fg);
+  font: 620 17px/1.3 var(--face); text-decoration: none; text-align: center;
+  cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
+  /* release: back to rest without overshoot, so nothing ever grows past its box */
+  transition: transform 320ms cubic-bezier(.2, .9, .25, 1);
+}
+.ln[data-size="sm"] { min-height: 44px; padding: 6px 16px; border-radius: 5px; font-size: 15px; --press: .965; }
+.ln[data-block] { display: flex; width: 100%; --press: .985; }
+.ln--sec { --bg: var(--paper); --fg: var(--ink); --ghost: var(--soft); --ghost-o: .8; --ghost-hi: 1; --acc: var(--ink); --caret: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.ln:focus-visible, .ln[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* the line: label, suggestion, stamp. It wraps as whole words on the narrowest phones. */
+.ln__run { position: relative; z-index: 1; display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; column-gap: var(--gap); row-gap: 0; }
+.ln__label, .ln__comp, .ln__stamp { white-space: nowrap; }
+.ln__label { display: inline-flex; align-items: center; gap: .42em; }
+
+/* the suggestion: the same type as the label, in the editor's grey, so accepting it makes one sentence */
+.ln__comp { position: relative; animation: ln-offer 80ms steps(2, jump-end) 620ms backwards; /* backwards only: the end is the plain style, never a rounded last step */ }
+@keyframes ln-offer { from { opacity: 0; } to { opacity: 1; } }
+.ln__ghost { display: block; color: var(--ghost); opacity: var(--ghost-o); transition: opacity 0s; }
+.ln__acc { position: absolute; inset: 0; color: var(--acc); clip-path: inset(0 0 0 100%); transition: clip-path 0s; }
+/* the caret never touches a letter: it sits in the middle of the gap, about .3em from each side */
+.ln__caret { position: absolute; top: 50%; width: 2px; height: 1.12em; margin-top: -.56em; background: var(--caret); border-radius: 1px; opacity: 0; pointer-events: none; }
+.ln__caret--a { inset-inline-start: calc(var(--gap) / -2 - 1px); }
+.ln__caret--b { inset-inline-end: calc(var(--gap) / -2 - 1px); }
+/* two blinks, then it fades: the suggestion already marks where the line goes on */
+@keyframes ln-caret {
+  0% { opacity: 1; animation-timing-function: steps(1, end); }
+  28% { opacity: 0; animation-timing-function: steps(1, end); }
+  56% { opacity: 1; animation-timing-function: linear; }
+  80% { opacity: 1; animation-timing-function: linear; }
+  100% { opacity: 0; }
+}
+/* after an accept: the caret jumps to the end of the line once the sweep lands, and goes */
+@keyframes ln-caret-b {
+  0% { opacity: 0; animation-timing-function: steps(1, end); }
+  27% { opacity: 1; animation-timing-function: linear; }
+  68% { opacity: 1; animation-timing-function: linear; }
+  100% { opacity: 0; }
+}
+
+/* the sent / error mark (label size, before the label) and the time it happened (after it) */
+.ln__mark { display: none; flex: none; width: 1.05em; height: 1.05em; overflow: visible; }
+.ln__mark * { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ln__stamp { display: none; color: var(--stamp); font: 500 13px/1 var(--face); font-stretch: 75%; font-variant-numeric: tabular-nums; direction: ltr; }
+
+/* the render while sending: ink fills the slab right to left, frame by frame */
+.ln__fill { position: absolute; inset: 0; z-index: 0; display: none; border-radius: inherit; background: var(--ink); clip-path: inset(0 0 0 100%); pointer-events: none; }
+.ln[data-state="loading"] .ln__fill { display: block; }   /* it exists only while sending, so no other state can ever wear it */
+
+/* ── hover (fine pointers), keyboard focus, forced: the caret arrives, the suggestion sharpens ── */
+.ln[data-state="idle"]:not(:disabled):is(:focus-visible, [data-force="hover"], [data-force="focus"], [data-pressed], [data-accepted]) .ln__ghost {
+  opacity: var(--ghost-hi); transition: opacity 50ms steps(2, jump-end) 90ms;
+}
+.ln[data-state="idle"]:not(:disabled):is(:focus-visible, [data-force="hover"], [data-force="focus"]):not([data-pressed]):not([data-accepted]) .ln__caret--a {
+  animation: ln-caret 1.9s both;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ln[data-state="idle"]:not(:disabled):hover .ln__ghost { opacity: var(--ghost-hi); transition: opacity 50ms steps(2, jump-end) 90ms; }
+  .ln[data-state="idle"]:not(:disabled):hover:not([data-pressed]):not([data-accepted]) .ln__caret--a { animation: ln-caret 1.9s both; }
+}
+
+/* ── press = accept: the slab gives, the suggestion turns solid right to left in six frames,
+      the caret jumps to the end of the line and goes ── */
+.ln:not(:disabled):is([data-pressed], [data-force="pressed"]) { transform: scale(var(--press)) translateY(1px); transition: transform 80ms cubic-bezier(.3, 0, .5, 1); }
+.ln[data-state="idle"]:not(:disabled):is([data-pressed], [data-force="pressed"], [data-accepted]) .ln__acc { clip-path: inset(0 0 0 0); transition: clip-path 132ms steps(6, jump-end); }
+.ln[data-state="idle"]:not(:disabled):is([data-pressed], [data-force="pressed"], [data-accepted]) .ln__caret--b { animation: ln-caret-b 480ms both; }
+
+/* ── loading / sent / error: the suggestion leaves (it was accepted), the line reports ── */
+.ln:not([data-state="idle"]) .ln__comp { display: none; }
+.ln[data-state="loading"] { --bg: var(--soft); cursor: progress; }
+.ln[data-state="loading"] .ln__fill { animation: ln-render 1.6s steps(24, jump-end) infinite; }
+@keyframes ln-render {
+  0% { clip-path: inset(0 0 0 100%); }
+  50% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+.ln:is([data-state="sent"], [data-state="error"]) .ln__stamp { display: inline; }
+.ln[data-state="sent"] .ln__mark--sent,
+.ln[data-state="error"] .ln__mark--err { display: block; }
+.ln[data-state="sent"] .ln__mark--sent { animation: ln-land 96ms steps(3, jump-end) backwards; }
+@keyframes ln-land { from { opacity: 0; transform: scale(1.6); } to { opacity: 1; transform: scale(1); } }
+/* error: honest and calm. A cut to paper with an ink rim, the label stays ink. Nothing shakes. */
+.ln[data-state="error"] { --bg: var(--paper); --fg: var(--ink); --stamp: var(--soft); box-shadow: inset 0 0 0 2px var(--ink); }
+
+/* disabled: the line is not offered anything */
+.ln:disabled { --bg: var(--table); --fg: var(--soft); box-shadow: none; cursor: not-allowed; }
+.ln:disabled .ln__comp { display: none; }
+
+/* ── the quiet link: ctrl-hover "go to definition", the only underline, on hover only ── */
+.q { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font: 600 16px/1.3 var(--face); text-decoration: none; cursor: pointer; }
+.q__t { position: relative; }
+.q__t::after { content: ""; position: absolute; inset-inline: 0; bottom: -3px; height: 1.5px; background: var(--ink); clip-path: inset(0 0 0 100%); transition: clip-path 0s; }
+@media (hover: hover) and (pointer: fine) { .q:hover .q__t::after { clip-path: inset(0 0 0 0); transition: clip-path 100ms steps(5, jump-end); } }
+.q:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+.q:focus-visible .q__t::after, .q[data-force] .q__t::after { clip-path: inset(0 0 0 0); }
+
+/* reduced motion, and the site's own calm switches: states change instantly or by opacity;
+   nothing moves, nothing blinks, the caret stays away */
+@media (prefers-reduced-motion: reduce) {
+  .ln, .ln *, .q__t::after { transition-duration: 0s !important; transition-delay: 0s !important; animation: none !important; }
+  .ln:is([data-pressed], [data-force="pressed"]) { transform: none !important; }
+  .ln .ln__caret { display: none; }
+}
+html:is(.motion-calm, .disable-animations) :is(.ln, .ln *, .q__t::after) { transition-duration: 0s !important; transition-delay: 0s !important; animation: none !important; }
+html:is(.motion-calm, .disable-animations) .ln:is([data-pressed], [data-force="pressed"]) { transform: none !important; }
+html:is(.motion-calm, .disable-animations) .ln .ln__caret { display: none; }
+
+/* ── phone ── */
+@media (max-width: 900px) {
+  .page { padding: 32px 16px 64px; }
+  .head, .live, .strips-row, .mid, .notes, .ask { grid-template-columns: minmax(0, 1fr); }
+  .head { gap: 16px; }
+  .hero { padding: 40px 16px 32px; min-height: 0; }
+  .hero .ln { display: flex; width: 100%; --press: .985; }
+  .strip { grid-template-columns: minmax(0, 1fr); padding: 24px 16px; }
+  .strip .ln { display: flex; width: 100%; --press: .985; }
+  .phone-col { width: 100%; }
+  .form { padding: 24px 16px; }
+  .frames { padding: 22px 16px 24px; }
+}
+@media (max-width: 480px) {
+  .ln[data-size="lg"] { font-size: 16px; padding-inline: 16px; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- 1 · head -->
+  <header class="head">
+    <div>
+      <p class="head__kicker num">shot · buttons · autocomplete · round 2</p>
+      <h1>השלמה</h1>
+    </div>
+    <div>
+      <p class="head__idea">הכפתור הוא שורה בעורך הקוד של נתי, והעורך כבר מציע את ההמשך שלה: אחרי התווית, באפור, לאן הכפתור לוקח. כמו ההשלמה במקלדת של הטלפון, רואים אותה לפני שנוגעים. עכבר או מקלדת מביאים את הסמן וההצעה מתחדדת. לחיצה מקבלת אותה: האפור נצבע לבן מימין לשמאל, פריים אחרי פריים, והשורה נהיית משפט אחד.</p>
+      <p class="head__meta">מגיע מ- <span class="w">W01</span> העורך · <span class="w">W16</span> וואטסאפ · <span class="w">W10</span> פריים · <span class="w">W11</span> רינדור · <span class="w">W09</span> קאט.
+        <b>למה רק של MediaWave:</b> נתי כותב כל אתר בעצמו, בעורך, שורה אחרי שורה, וכל שיחה איתו קורית בוואטסאפ. הכפתור משלים את עצמו בדיוק לשם, כמו שהעורך שלו משלים לו את הקוד. וכששולחים, ההודעה יוצאת כמו סרטון שנגמר לרנדר.</p>
+    </div>
+  </header>
+
+  <!-- the description every WhatsApp CTA points to [קופי: נתי] -->
+  <span id="wa-note" hidden>נפתח בוואטסאפ</span>
+
+  <!-- 2 · live -->
+  <h2 class="sec-title"><span class="num">02</span> חי · אפשר לגעת</h2>
+  <div class="live" id="live">
+    <div class="sheet hero">
+      <p class="cap"><span class="num">a</span> · CTA ראשי על דף נייר</p>
+      <div class="hero__rows">
+        <a class="ln" data-state="idle" data-size="lg" href="#" aria-describedby="wa-note" data-demo>
+          <span class="ln__fill" aria-hidden="true"></span>
+          <span class="ln__run">
+            <span class="ln__label">בואו נדבר על הפרויקט שלכם</span>
+            <!-- suggestion "בוואטסאפ" [קופי: נתי] -->
+            <span class="ln__comp" aria-hidden="true"><span class="ln__ghost">בוואטסאפ</span><span class="ln__acc">בוואטסאפ</span><span class="ln__caret ln__caret--a"></span><span class="ln__caret ln__caret--b"></span></span>
+          </span>
+        </a>
+      </div>
+      <p class="hero__hint">ההצעה האפורה שם תמיד, גם בטלפון. עכבר או Tab מביאים את הסמן; לחיצה, Enter או נגיעה מקבלים את ההצעה.</p>
+    </div>
+
+    <div style="display:grid; gap:28px;">
+      <div>
+        <p class="cap"><span class="num">b</span> · כותרת האתר, על השולחן</p>
+        <div class="bar">
+          <span class="logo">MediaWave</span>
+          <a class="ln" data-state="idle" data-size="sm" href="#" aria-describedby="wa-note" data-demo>
+            <span class="ln__fill" aria-hidden="true"></span>
+            <span class="ln__run">
+              <span class="ln__label">בואו נדבר</span>
+              <span class="ln__comp" aria-hidden="true"><span class="ln__ghost">בוואטסאפ</span><span class="ln__acc">בוואטסאפ</span><span class="ln__caret ln__caret--a"></span><span class="ln__caret ln__caret--b"></span></span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <form class="sheet form" id="form" novalidate>
+        <p class="cap" style="margin:0"><span class="num">c</span> · טופס, כפתור ברוחב מלא</p>
+        <!-- field labels [קופי: נתי] -->
+        <div class="field"><label for="f-name">שם</label><input id="f-name" autocomplete="name"></div>
+        <div class="field"><label for="f-tel">טלפון</label><input id="f-tel" type="tel" autocomplete="tel" inputmode="tel"></div>
+        <button class="ln" type="submit" data-state="idle" data-size="lg" data-block id="submit">
+          <span class="ln__fill" aria-hidden="true"></span>
+          <span class="ln__run">
+            <span class="ln__label">
+              <svg class="ln__mark ln__mark--sent" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.6 8.6l3.6 3.6 7.2-8"/></svg>
+              <svg class="ln__mark ln__mark--err" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4"/><path d="M8 4.6v4.2"/><path d="M8 11.4h.01" stroke-width="2.2"/></svg>
+              <span class="ln__text">שליחת הודעה</span>
+            </span>
+            <!-- suggestion "לנתי" [קופי: נתי] -->
+            <span class="ln__comp" aria-hidden="true"><span class="ln__ghost">לנתי</span><span class="ln__acc">לנתי</span><span class="ln__caret ln__caret--a"></span><span class="ln__caret ln__caret--b"></span></span>
+            <span class="ln__stamp" aria-hidden="true">--:--</span>
+          </span>
+        </button>
+        <!-- state announcements live outside the button, so a label swap is read once and reliably -->
+        <p class="sr" role="status" id="form-status"></p>
+        <!-- demo controls, not site copy [קופי: נתי] -->
+        <div class="controls">
+          <button type="button" class="ctl" data-run="sent">טעינה ואז נשלח</button>
+          <button type="button" class="ctl" data-run="error">טעינה ואז שגיאה</button>
+          <button type="button" class="ctl" data-run="idle">איפוס</button>
+        </div>
+      </form>
+
+      <div>
+        <p class="cap"><span class="num">d</span> · סוף השאלות, על השולחן</p>
+        <div class="faq">
+          <a class="ln ln--sec" data-state="idle" data-size="lg" href="#" aria-describedby="wa-note" data-demo>
+            <span class="ln__fill" aria-hidden="true"></span>
+            <span class="ln__run">
+              <span class="ln__label">צרו קשר</span>
+              <span class="ln__comp" aria-hidden="true"><span class="ln__ghost">בוואטסאפ</span><span class="ln__acc">בוואטסאפ</span><span class="ln__caret ln__caret--a"></span><span class="ln__caret ln__caret--b"></span></span>
+            </span>
+          </a>
+          <a class="q" href="#" data-demo-q><span class="q__t">לשירותים שלנו</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 · states strip -->
+  <h2 class="sec-title"><span class="num">03</span> כל המצבים, בבת אחת</h2>
+  <div class="sheet strip" id="strip"></div>
+  <div class="strips-row">
+    <div class="sheet phone-col" id="col390"></div>
+    <div>
+      <p class="cap"><span class="num">03b</span> · המשני (צרו קשר) והקישור השקט, על השולחן</p>
+      <div class="mid" id="mid"></div>
+    </div>
+  </div>
+
+  <!-- 4 · frames -->
+  <h2 class="sec-title"><span class="num">04</span> פריים אחרי פריים</h2>
+  <div class="sheet frames" id="frames">
+    <p class="cap" style="margin:0">קבלה: שישה פריימים ב-132ms, מימין לשמאל. התווית לבנה ושלמה בכל אחד מהם.</p>
+    <div class="frames__row" id="frames-acc"></div>
+    <p class="cap" style="margin:0">שולחים: רינדור, 24 פריימים ב-1.6 שניות, מימין לשמאל. הלבן על דיו ועל אפור כהה עובר AA בכל פריים.</p>
+    <div class="frames__row" id="frames-render"></div>
+  </div>
+
+  <!-- 5 · how to build it on StateButton -->
+  <h2 class="sec-title"><span class="num">05</span> איך בונים את זה על StateButton</h2>
+  <section class="sheet notes">
+    <div>
+      <h3>render(label, state)</h3>
+      <p><code>cls="ln"</code>. ה-render מחזיר <code>.ln__fill</code> (aria-hidden), ואז <code>.ln__run</code> ובו: ה-label של StateButton בתוך <code>.ln__label</code> עם סימן הנשלח או השגיאה לפניו; <code>.ln__comp</code> ב-aria-hidden עם ghost, acc ושני סמנים (prop חדש <code>completes</code>, ברירת מחדל "בוואטסאפ"); ו-<code>.ln__stamp</code> עם השעה. בלי <code>completes</code> הכפתור הוא תווית לבד במרכז, בלי חור.</p>
+    </div>
+    <div>
+      <h3>CSS ומנוע</h3>
+      <ul>
+        <li>data-state, data-force, data-pressed, data-size, data-block מניעים הכול. מונפשים רק transform, opacity, clip-path.</li>
+        <li>שינוי קטן במנוע: <code>data-accepted</code> נדלק ב-click ונכבה ב-pointerleave (עכבר) או blur, ובמגע אחרי 1.6 שניות. ו-data-pressed מוחזק לפחות 180ms, כדי שגם נגיעה מהירה תראה את הקבלה. הניווט לא מתעכב בכלל.</li>
+        <li>תזמונים: ההצעה מוצעת 620ms אחרי שהשורה נראית (בשני פריימים, פעם אחת); בריחוף הסמן מיד, שתי הבהובים ודעיכה (1.9s), ההצעה מתחדדת אחרי 90ms; קבלה 132ms בשישה פריימים; לחיצה 80ms; שחרור 320ms בלי overshoot; רינדור 1.6s ב-24 פריימים.</li>
+        <li>reduced motion וגם <code>html.motion-calm</code> / <code>html.disable-animations</code>: מיידי, בלי סמן, בלי רינדור.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>נגישות</h3>
+      <ul>
+        <li>השם הנגיש הוא התווית המאושרת. כל CTA של וואטסאפ מקבל <code>aria-describedby</code> אל "נפתח בוואטסאפ" [קופי: נתי].</li>
+        <li>הודעות מצב יוצאות מ-<code>role="status"</code> מחוץ לכפתור (לא aria-live על התווית), עם aria-busy בזמן השליחה.</li>
+        <li>השעה: <code>new Date()</code> מקומית, נקבעת כשהמצב עובר ל-loading, ומוצגת בנשלח ובשגיאה.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sheet ask">
+    <h3>צריך את האישור של נתי</h3>
+    <ul>
+      <li><b>ההצעות "בוואטסאפ" ו"לנתי"</b> נראות עכשיו תמיד, אז הן קופי גלוי ליד התוויות המאושרות. כל הרעיון נשען עליהן. אם לא, הכפתור נשאר תווית לבד במרכז, והסמן והקבלה עובדים על התווית עצמה.</li>
+      <li><b>"נפתח בוואטסאפ"</b> לקוראי מסך בלבד.</li>
+      <li><b>השעה</b> שליד "נשלח" ו"לא נשלח": מספר אמיתי, לא מילה חדשה.</li>
+    </ul>
+  </section>
+</main>
+
+<template id="tpl">
+  <button class="ln" type="button" data-state="idle" data-size="lg">
+    <span class="ln__fill" aria-hidden="true"></span>
+    <span class="ln__run">
+      <span class="ln__label">
+        <svg class="ln__mark ln__mark--sent" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.6 8.6l3.6 3.6 7.2-8"/></svg>
+        <svg class="ln__mark ln__mark--err" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.4"/><path d="M8 4.6v4.2"/><path d="M8 11.4h.01" stroke-width="2.2"/></svg>
+        <span class="ln__text">בואו נדבר על הפרויקט שלכם</span>
+      </span>
+      <span class="ln__comp" aria-hidden="true"><span class="ln__ghost">בוואטסאפ</span><span class="ln__acc">בוואטסאפ</span><span class="ln__caret ln__caret--a"></span><span class="ln__caret ln__caret--b"></span></span>
+      <span class="ln__stamp" aria-hidden="true">--:--</span>
+    </span>
+  </button>
+</template>
+
+<script>
+(() => {
+  // StateButton.tsx STATE_LABEL, verbatim
+  const STATE_LABEL = { loading: 'שולחים', sent: 'נשלח. נחזור אליכם היום', error: 'לא נשלח. נסו שוב' };
+  const MIN_PRESS = 180;
+  const hhmm = () => new Date().toTimeString().slice(0, 5);
+  const IDLE = new WeakMap();
+  const textOf = (el) => el.querySelector('.ln__text') || el.querySelector('.ln__label');
+
+  // press: pointer (mouse, pen, touch) and keyboard, like StateButton, plus a minimum press and
+  // the accepted state (the engine change described in section 05)
+  const wire = (el) => {
+    let t0 = 0, release = 0, forget = 0;
+    const on = () => { clearTimeout(release); t0 = performance.now(); el.setAttribute('data-pressed', ''); };
+    const off = () => {
+      clearTimeout(release);
+      release = setTimeout(() => el.removeAttribute('data-pressed'), Math.max(0, MIN_PRESS - (performance.now() - t0)));
+    };
+    const unaccept = () => { clearTimeout(forget); el.removeAttribute('data-accepted'); };
+    el.addEventListener('pointerdown', (e) => { on(); if (e.pointerType === 'touch') { clearTimeout(forget); forget = setTimeout(unaccept, 1600); } });
+    el.addEventListener('pointerup', off);
+    el.addEventListener('pointercancel', off);
+    el.addEventListener('pointerleave', (e) => { off(); if (e.pointerType !== 'touch') unaccept(); });
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') on(); });
+    el.addEventListener('keyup', off);
+    el.addEventListener('blur', () => { off(); unaccept(); });
+  };
+
+  const status = document.getElementById('form-status');
+  const setState = (el, state) => {
+    const t = textOf(el);
+    if (!IDLE.has(el)) IDLE.set(el, t.textContent);
+    if (state === 'loading') el.querySelectorAll('.ln__stamp').forEach((s) => { s.textContent = hhmm(); });
+    el.removeAttribute('data-accepted');
+    el.setAttribute('data-state', state);
+    t.textContent = state === 'idle' ? IDLE.get(el) : STATE_LABEL[state];   // a hard cut (W09)
+    if (el.tagName === 'BUTTON') el.toggleAttribute('aria-busy', state === 'loading');
+    if (el.id === 'submit') status.textContent = state === 'idle' ? '' : STATE_LABEL[state];
+  };
+
+  // the live buttons
+  document.querySelectorAll('#live .ln').forEach(wire);
+  document.querySelectorAll('[data-demo]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();                              // demo: no WhatsApp tab, keep the accepted line
+    a.setAttribute('data-accepted', '');
+  }));
+  document.querySelectorAll('[data-demo-q]').forEach((a) => a.addEventListener('click', (e) => e.preventDefault()));
+
+  const submit = document.getElementById('submit');
+  let timer = 0;
+  const run = (end) => {
+    clearTimeout(timer);
+    if (end === 'idle') { setState(submit, 'idle'); return; }
+    setState(submit, 'loading');
+    timer = setTimeout(() => setState(submit, end), 2400);
+  };
+  document.getElementById('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (submit.dataset.state === 'loading') return;
+    run('sent');
+  });
+  document.querySelectorAll('[data-run]').forEach((b) => b.addEventListener('click', () => run(b.dataset.run)));
+
+  // the states strip, built from one template so every cell is the real button
+  const tpl = document.getElementById('tpl');
+  const STATES = [
+    ['מנוחה', 'rest', {}], ['ריחוף', 'hover', { force: 'hover' }], ['פוקוס', 'focus', { force: 'focus' }],
+    ['לחיצה', 'pressed', { force: 'pressed' }], ['שולחים', 'loading', { state: 'loading' }],
+    ['נשלח', 'sent', { state: 'sent' }], ['שגיאה', 'error', { state: 'error' }], ['מושבת', 'disabled', { disabled: true }],
+  ];
+  const make = (opts, block, mods) => {
+    const el = tpl.content.firstElementChild.cloneNode(true);
+    if (mods && mods.sec) el.classList.add('ln--sec');
+    if (mods && mods.label) { textOf(el).textContent = mods.label; el.querySelectorAll('.ln__ghost, .ln__acc').forEach((g) => { g.textContent = mods.ghost; }); }
+    if (mods && mods.size) el.setAttribute('data-size', mods.size);
+    if (block) el.setAttribute('data-block', '');
+    if (opts.force) el.setAttribute('data-force', opts.force);
+    if (opts.disabled) el.disabled = true;
+    if (opts.state) setState(el, opts.state);
+    // a picture holds its caret at a lit frame: hover / focus mid-blink, pressed just after the sweep
+    if (opts.force === 'hover' || opts.force === 'focus') el.querySelector('.ln__caret--a').style.cssText = 'animation-delay:-1.3s;animation-play-state:paused';
+    if (opts.force === 'pressed') el.querySelector('.ln__caret--b').style.cssText = 'animation-delay:-.2s;animation-play-state:paused';
+    el.tabIndex = -1;                                // the strip is a picture, not more tab stops
+    el.setAttribute('aria-hidden', 'true');
+    return el;
+  };
+  const cell = (host, [he, en, opts], block, mods) => {
+    const c = document.createElement('div');
+    c.className = 'cell';
+    c.innerHTML = `<p class="cap"><span>${he}</span><span class="en">${en}</span></p>`;
+    const el = make(opts, block, mods);
+    c.appendChild(el);
+    host.appendChild(c);
+    return el;
+  };
+  const strip = document.getElementById('strip');
+  const col = document.getElementById('col390');
+  STATES.forEach((s) => cell(strip, s, false));
+  col.innerHTML = '<p class="cap" style="margin:0"><span class="num">390</span> · טור טלפון, ברוחב מלא</p>';
+  STATES.forEach((s) => cell(col, s, true));
+
+  // secondary in its states
+  const mid = document.getElementById('mid');
+  [['מנוחה', 'rest', {}], ['ריחוף', 'hover', { force: 'hover' }], ['לחיצה', 'pressed', { force: 'pressed' }]].forEach(([he, en, opts]) => {
+    const s = document.createElement('div');
+    s.className = 'sheet';
+    s.style.background = 'var(--table)';
+    s.style.boxShadow = 'none';
+    s.innerHTML = `<p class="cap" style="margin:0"><span>${he}</span> <span class="num">${en}</span></p>`;
+    s.appendChild(make(opts, false, { sec: true, label: 'צרו קשר', ghost: 'בוואטסאפ' }));
+    const sm = make(opts, false, { label: 'בואו נדבר', ghost: 'בוואטסאפ', size: 'sm' });
+    s.appendChild(sm);
+    const q = document.createElement('a');
+    q.className = 'q'; q.href = '#'; q.tabIndex = -1;
+    if (opts.force) q.setAttribute('data-force', opts.force);
+    q.innerHTML = '<span class="q__t">לשירותים שלנו</span>';
+    q.addEventListener('click', (e) => e.preventDefault());
+    s.appendChild(q);
+    mid.appendChild(s);
+  });
+
+  // frames: each cell is the real button held at one frame (styles written inline, no animation)
+  const accRow = document.getElementById('frames-acc');
+  for (let f = 0; f <= 6; f++) {
+    const el = cell(accRow, [`פריים ${f}`, `${Math.round(f * 22)}ms`, {}], true);
+    el.querySelector('.ln__comp').style.animation = 'none';
+    el.querySelector('.ln__ghost').style.opacity = 'var(--ghost-hi)';
+    el.querySelector('.ln__acc').style.clipPath = `inset(0 0 0 ${(100 - (f * 100) / 6).toFixed(2)}%)`;
+    if (f === 6) el.querySelector('.ln__caret--b').style.cssText = 'opacity:1;animation:none';
+  }
+  const renRow = document.getElementById('frames-render');
+  [[3, '200ms'], [8, '533ms'], [12, '800ms'], [17, '1133ms']].forEach(([f, ms]) => {
+    const el = cell(renRow, [`פריים ${f}`, ms, { state: 'loading' }], true);
+    const fill = el.querySelector('.ln__fill');
+    const p = f / 24;
+    fill.style.animation = 'none';
+    fill.style.clipPath = p <= .5 ? `inset(0 0 0 ${(100 - p * 200).toFixed(2)}%)` : `inset(0 ${((p - .5) * 200).toFixed(2)}% 0 0)`;
+  });
+
+  document.querySelectorAll('.ln__stamp').forEach((t) => { if (t.textContent === '--:--') t.textContent = hhmm(); });
+})();
+</script>
+</body>
+</html>

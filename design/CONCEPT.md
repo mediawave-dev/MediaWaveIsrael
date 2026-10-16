@@ -1,69 +1,82 @@
-# CONCEPT · three looks from one codebase · 2026-10-13
+# CONCEPT · C · Link To Live · 2026-10-15
 
-> Gate 1 (Nati, 2026-10-13): two board worlds, **K** (the keynote launch, direction-bank D-01) and **M** (flight through floating objects, D-03). Built as three switchable looks: K alone, M alone and **KM** (the two combined), so the whole site can be judged in each. Mechanism: DECISIONS #50. The contract below is what tokens, the score and copy answer to.
+> The contract the storyboard, tokens and copy answer to. Amend only with Nati's agreement, and log the amendment at the bottom. Where this file and the decision log disagree, the decision log wins.
 
 ## The idea
+On his site you shrink the page into a phone with your own finger, then watch a real client's site get built inside that phone, step by step, until it turns green and goes live, and the last link on the page is the one you send him.
 
-MediaWave makes ordinary things for small businesses (a site, a landing page, a video) and treats each one as a product launch.
-
-- **K · the launch:** "Introducing: your website." The site is presented like a flagship product on a keynote stage.
-- **M · floating objects:** the tools of the trade (a laptop, a phone, a loupe, a chat bubble, a cassette, a photo frame) hang in a quiet void, and the camera flies into each one; inside each is a service.
-- **KM · launch night:** the evening alternates between the dark stage (the announcement) and the lit void (the product up close).
-
-Lane: artifact (the real tools and the real hero video), with a borrowed tradition for K (the product keynote).
-Transformation, first viewport to last: a black stage with one lit product, then (KM) the lights come up on the tools, then back on stage to show how it gets built.
-Boldness budget: the two held scenes. Everything around them stays calm.
+- Lane: transformation
+- Subject world: materials: the staging link sent over WhatsApp, a client's first-version screenshot, the production address, a VHS cassette with a handwritten label, raw clips; tools: Chrome DevTools device mode (drag handle, rulers, the 390 x 844 readout), the address bar and its thin load bar, the Lighthouse gauge, an editing timeline with a playhead; rituals: send the link, the client opens it on his phone, he circles what bothers him and sends it back, fix, measure, deploy; insider words: סטייג'ינג, לעלות לאוויר, דיפלוי, רספונסיבי, 'תבדוק בטלפון', קאט, טיימקוד
+- Dossier items: W02: the hero interaction and the instrument face: a width handle, px rulers and a live dimension readout around the column; W19: the grid unit is the 390 column; on desktop it stays centred and the copy sits in the ground beside it, aligned to ruler ticks; W03: the motif: an address line heads each chapter with that chapter's path; its load bar doubles as the progress track; W04: the persistent object: on desktop a 390 column, on a phone the visitor's own screen (no mockup), holding one client site through its states; W07: the address line's load bar is the playhead track; the video service shows a real timeline with a playhead; W08: chapters are stamped with timecode, taken from the visitor's own elapsed time on the page, not invented numbers; W09: every state change inside the phone is a hard cut on a scroll frame, never a crossfade; W17: the fix chapter: a finger-drawn circle on a first-version screenshot, then a cut to the corrected version; W05/W06: colour exists only as a verdict: red and orange only inside the gauge and the circle, green only for live; W12/W20: the main peak: the staging host is replaced by the real address and a green dot lights; W21: after live, a hard cut swaps a second, different real client site into the same phone; W14: the tape service enters the phone as a labelled cassette and comes out as a file playing
+- Pinned by the brief: The column/phone never leaves the screen from the hero to the contact chapter and carries one real client site through link sent > first version > circled fix > measured > live (green dot), in that order; the hero is device mode, with the visitor narrowing the page to 390.
+- Tradition borrowed: The instrument UI of browser developer tools (device toolbar, rulers, dimension readout) and the non-linear editor (timecode, playhead, hard cut), borrowed only as chrome and marking, never as decoration.
+- Transformation (first viewport → last): First viewport: a wide desktop page on a staging address with a width readout of 1440. Last viewport: the same column at 390, live on its real address with a green dot, holding a prefilled message to Nati; the link the visitor received at the top becomes the link the visitor sends at the bottom.
 
 ## Visual system
+| Token | Value | Role / reason |
+|---|---|---|
+| ground | #ECEEF1 | one ground for the whole page: the device-mode backdrop (W02); no theme flips (D67) |
+| ink | #1B1D21 | text, rulers, buttons, readouts |
+| screen | #FFFFFF | the phone screen: the client's own page surface |
+| live | #00CC66 | accent: Lighthouse pass green, means passed / live; only the live dot and the gauge arc past 90; never text (D66) |
+| live text | #008800 | the readable pass green for the one "עבר" label |
+| mark | #E0322B | the client's circled correction, only in the fix chapter |
+| Display face | Noto Sans Hebrew 800, width 75% (wdth axis) | The Hebrew face of the client's Android phone (W04); its width axis narrows with the device-mode drag (W02). |
+| Text / instrument face | Noto Sans Hebrew 400/600, tabular figures | picked by Nati from rendered specimens |
 
-| Token | K | M | KM | Reason |
-|---|---|---|---|---|
-| --ground | #000000 | #E6E1F2 | stage #000 / void #E6E1F2 | K: near-black because it is a keynote stage (the reflex "near-black" is the concept, not a default: the product is the only lit thing). M: a flat lavender void, no gradient wallpaper, only shadows under the objects. |
-| --ink | #F5F5F7 (19.2:1) | #221E2E (12.6:1) | follows the ground | |
-| --ink-2 | #A1A1A6 (8.2:1) | #4D4760 (6.3:1) | follows the ground | secondary copy, nav |
-| accent | none | none | none | the product is the colour: the laptop screen, the hero video, the 13 Lotties on white faces |
-| objects | aluminium laptop | charcoal #2B2833 bodies, white faces | both | the Lotties keep their mixed colours on calm white surfaces (REDESIGN-PROMPT §2) |
-| Display | Assistant 200 | Alef 700 | Assistant 200 | K: a keynote's thin type, large (slop-ok default-font-he-2: Assistant is a reflex face as a body voice; here it is the keynote's thin display). M: Alef, clean letters for objects in a void. |
-| Text | Assistant 400 | Alef 400 | Alef 400 | |
-| UI | Assistant 600 | Alef 700 | Alef 700 | |
-| Grid | 12 columns, gutter 24, side clamp(16px, 4vw, 64px) | same | same | holds split the grid into a text zone and an art zone |
-| Header | 64 / 56 px, black | 70 / 60 px, lavender | 64 / 56 px, follows the theme | stage tops sit under it |
+## Motif
+- What: The address line (W03): host + chapter path, a status chip (grey 'staging' until the deploy, then the green dot), and a 2px load bar that is also the playhead.
+- Jobs: preloader: the staging link types in while the Horizon ident plays in its favicon slot, section marker: each chapter's path plus a timecode stamp of when the visitor reached it, progress: the load bar fills along the whole story (W07), state: the staging chip becomes the green live dot at the deploy, call to action: in the last chapter the line shows the WhatsApp link the button opens
 
-Fonts are self-hosted (@fontsource, OFL), Hebrew and Latin subsets only, with metric-matched fallbacks measured by font-fallback.mjs ("no rewrap" at 340 and 680 px). Assistant 200 Hebrew is 4 KB and ships inside the CSS; Alef 700 Hebrew is preloaded in M.
-
-## Buttons (one family per look)
-
-- **K · the product button:** a white slab that tips toward the pointer like a product on a turntable (one transform) and presses in (`scale`). Touch: the press only.
-- **M · the lens:** a small disc follows the pointer inside the button and inverts what it passes over (`mix-blend-mode: difference`, only on that disc); a press grows it until it fills the button.
-- **KM · the lens with a light tilt** (±3°): one family across the page, calm.
-- Seven states in each: idle, hover, pressed, focus, loading (K: three dots breathe; lens: the disc scans the label), sent (✓ + "נשלח. נחזור אליכם היום" [קופי: נתי]), error (a red ring and a short shake). No line inside or under any label.
-
-## Motif and motion grammar
-
-- K verbs: open, turn, announce. The lid opens on its hinge; the laptop turns a little per announcement; a thin headline names it.
-- M verbs: hang, approach, pass through. Objects bob slowly at rest; in the flight they come from the distance, rest in front of you, then grow to their zone's edge while fading as you pass through.
-- Scroll model: Lenis on desktop through the engine, native touch scroll, sticky stages read by ScrollTrigger (no pins), CALM policy for the OS reduced-motion flag, REDUCE for the widget's stop.
-- Per frame: transform and opacity only, written directly on the moving elements.
+## Motion grammar
+- Verbs: narrow, cut, pass
+- Easing character: Instrument-true: linear scrub for widths and the gauge so the values read honestly, zero-duration cuts on frame boundaries, and only the circle stroke is eased, at hand speed.
+- Scroll model: Lenis 1.3 on gsap.ticker + ScrollTrigger reading two CSS-sticky stages on desktop (no transform pin, for CLS); native scroll with CSS sticky on phones
+- Intensity: orchestrated
 
 ## Signature moments
-
-| # | Where | Sentence | What the visitor sees | Why only MediaWave | Cost class | Touch version |
+| # | Where | Sentence it performs | What the visitor sees | Why only this client | Cost class | Touch version |
 |---|---|---|---|---|---|---|
-| 1 | K, KM hero | "your business, launched" | the H1 on a stage, under it a laptop playing the real hero video; it leans toward you as you scroll | the video is theirs (the desk, the laptops, the coffee) | compositor | same, the laptop below the button, the light video encode |
-| 1 | M hero | "these are the tools" | the hero video on a floating screen among six floating tools | the tools are the services | compositor | 4 small tools around the screen |
-| 2 | K services · KM process | "six small announcements" | the lid opens, the laptop turns per announcement, its screen plays the item's Lottie | the Lotties are the client's own | compositor | the laptop above the text |
-| 3 | M, KM services | "fly into each tool" | the camera flies through the void into each object; its face plays the service's Lottie | each object is a service's tool | compositor | captions on top, objects below, clear of the floating buttons |
+| 1 | hero (#top), held stage 1; the Horizon ident is folded in here as the load-in | H1 (approved copy) + [קופי: נתי] a single line saying every site starts at the width of a phone | The visitor drags the page edge (scroll and a keyboard slider drive it too) from desktop width to 390; the H1 rewraps and condenses on its width axis, the hero film reframes from 16:9 to portrait along its subject, and the readout counts down to 390 x 844. On a phone the readout shows the visitor's own measured screen size. | Narrowing to a phone is Nati's literal first act on every project (W02/W19); only here does the visitor do the studio's work with their own hand. | see storyboard | see storyboard |
+| 2 | #process, the fix chapter | [קופי: נתי] the client circles what bothers him on his phone, and it gets fixed | A real first-version screenshot sits in the phone; a red finger stroke circles one element at hand speed; on the next scroll frame a hard cut swaps in the corrected version with the circle gone. | The circled screenshot is the real artefact clients send back (W17); it proves 'he listens' without a testimonial. | see storyboard | see storyboard |
+| 3 | #process end, held stage 2 (measure > live), the page's main peak (W20) | approved copy: it goes live only when it is fast on a phone | The Lighthouse gauge sweeps through red and orange to the real measured mobile score; on the frame it crosses 90, a hard cut replaces the staging host with the real address and lights the green dot, the only green on the page. | Going live is the state every client waits for, and the measured score is the one claim the site can prove about itself (W05/W12). | see storyboard | see storyboard |
 
 ## Reflex check
-
-| Reflex | Present? | Reason or change |
+| Reflex | Present? | Reason, or the change made |
 |---|---|---|
-| 3 · near-black + acid signal | near-black, no signal | the stage is the concept; there is no acid accent at all |
-| 9 · centred hero | K yes | a stage has a centre; M puts the copy at the start side instead |
-| 15 · Assistant as the brand voice | K, KM display | used thin (200) as keynote display, waived in fonts.css |
-| 4 · purple gradients | no | lavender is a flat void, never a gradient |
-| 10 · fade-up everywhere | no | the holds are scrubbed; routine reveals stay the engine's early, short ones |
-| 11 · scroll kit | no | no preloader counter, no split headings, no marquee, no magnetic buttons |
+| Layer 0: the system font as the brand voice (Noto Sans Hebrew is Android's Hebrew system face) | yes | Brief-specific: the claim is 'your site on your phone', so the page speaks in the face the client's phone uses, and its wdth axis performs the W02 reflow. |
+| 2026-10 note: a variable-width display that swells as you scroll | yes | The width axis moves only during the hero's device-mode drag, tied to the real column width, never scrubbed by scroll elsewhere. |
+| Layer 2: rough-notation circles (scrapbook kit) | yes | One recorded finger stroke on a real screenshot, the literal W17 artefact, used once; no handwriting font, no tape, no polaroids. |
+| Probes 1 and 2: phone mockups with portfolio screenshots | yes | The phone is pinned by the brief; here it holds a site changing state over time, and on phones there is no mockup, because the visitor's screen is the phone. |
+| Probes: WhatsApp green #25D366 as accent; pill buttons | yes | Remove: green is Lighthouse 'pass' and appears only at live; buttons are 4px rectangles like device-toolbar inputs. |
+| Layer 2: the stat-hero (a big number with a small label) | yes | The number appears once, inside its own gauge, and is the real measured mobile score injected at build time, never a round stat. |
+| Ambition probe: timecode counter and playhead | yes | These are dossier items W07/W08 from Nati's answers; here they stamp chapters with the visitor's real time and track progress, with no restoration scrub. |
+| Cluster 5: '01 / 02 / 03' and a mono face for small labels | yes | Remove: timecode replaces numerals, and readouts use the text face's tabular figures. |
+| Layer 2: the dev-tool dark kit (near-black, masked grid) | yes | Avoided: a light ground with no grid or dot field; rulers only flank the column on desktop. |
+| KM palette (Klein night / paper / Klein blue) and EFT Betaamango | yes | Remove: recent portfolio line; nothing reused. |
+
+## Why this concept won
+- vs A Glass and Tape: survives a font and colour swap into C, so it is the same concept; its tape ribbon touches the ambition probe's "restored tape" rut. Kept idea: the Lotties as screens in the phone.
+- vs B Made to Measure: the most original, but a metaphor from another trade that can read as a sewing business at a glance on a phone.
+- Safe card rejected: the dark agency kit (WhatsApp green, Rubik/Heebo, cards, fade-up): shows a capable agency and hides the one thing only MediaWave does.
+
+## Risks (from the lane, to watch in the prototype)
+- Animating the real layout width per frame in the hero is expensive (reflow, INP and CLS); it needs a fixed-height sticky stage with container queries, and no width animation on phones
+- The H1 must be the LCP and fully readable at first paint, before any narrowing
+- The drag handle may go unnoticed; scroll must drive it too, and reduced motion opens at 390 with the readout already set
+- The fixed address line on phones is floating chrome that can sit over headings; the overlap audit must stay at 0 at 320/390
+- A cool grey ground can read clinical; the warmth depends entirely on real client material that is not yet confirmed
+- Without client consent the phone would hold a demo site, which must then be labelled as a demo (no invented proof)
+- 'Under construction' states could make MediaWave itself look unfinished, so the MediaWave chrome must always look complete
+- Lighthouse green #0CCE6B fails contrast as text; the word 'live' stays in ink and the dot carries the colour
+- 13 Lotties inside a 390 column risk crowding and TBT; mount lazily and pause them offscreen
+- The Horizon ident folded into the address-line load-in may undersell a sacred asset; giving it its own moment would make a fourth signature moment and needs a decision row
+- A displayed Lighthouse score that drops after a deploy turns the proof into a lie; hide the gauge if the injected run is under 90
+- The visitor-time timecode stamps can feel watched; compute them locally and never send them to analytics
+- Moving #services after #process changes the current section order (the anchors themselves remain)
 
 ## Amendments
-- 2026-10-13 · the hero video plays on phones too (light encode, after load and idle, never with Data Saver) · Nati, DECISIONS #51
+- 2026-10-15: Accent hex corrected from #0CCE6B (an older PageSpeed value) to #00CC66, the pass colour in the current Lighthouse source (report/assets/styles.css: --color-green #0c6); text uses #008800 (--color-green-700). Agreed: Nati chose C with the green as its accent.
+- 2026-10-15: Fonts: Nati picked pair A (Noto Sans Hebrew, one family) from the rendered specimens.
+- 2026-10-15: Hero: Nati picked idea 1 (narrow the page to 390) from the 10-idea board.
+- 2026-10-15: The 13 Lotties are the screens inside the phone in the "build" chapter (D77); the hero film plays in the 1440 frame and continues inside the phone (D78).

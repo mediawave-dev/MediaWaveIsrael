@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>המקש · משפחת כפתורים</title>
+<!--
+  "shot" look, button family "המקש" (the key), round 2 after the judges. One self-contained study page.
+  Palette locked (D81): #ECEEF1 table, #FFFFFF paper, #1B1D21 ink, #4A4F57 secondary,
+  #D3D7DC line (decoration only), #6B717B field borders. Every shade that is not one of the six
+  is ink or paper at alpha, the same way the paper shadow already is. No color-mix, no new tone.
+-->
+<style>
+@font-face {
+  font-family: 'Noto Sans Hebrew';
+  src: url(/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2) format('woff2');
+  font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap;
+  unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: 'Noto Sans Hebrew';
+  src: url(/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2) format('woff2');
+  font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2190-21FF, U+2212;
+}
+
+:root {
+  --table: #ECEEF1; --paper: #FFFFFF; --ink: #1B1D21; --ink-2: #4A4F57; --line: #D3D7DC; --field: #6B717B;
+  --paper-shadow: 0 1px 0 rgba(27,29,33,.05), 0 18px 30px -22px rgba(27,29,33,.45);
+  --ui: 'Noto Sans Hebrew', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--table); color: var(--ink);
+  font: 400 16px/1.7 var(--ui); font-stretch: 100%;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.page { max-width: 1280px; margin: 0 auto; padding: 56px 40px 96px; }
+@media (max-width: 600px) { .page { padding: 32px 16px 72px; } }
+
+/* ── the head ─────────────────────────────────────────────────────────── */
+.head { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: end; margin-bottom: 56px; }
+.head__name { margin: 0; font-weight: 800; font-stretch: 75%; font-size: clamp(64px, 9vw, 112px); line-height: .9; }
+.head__idea { margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.65; color: var(--ink); }
+.head__meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 18px; font-size: 14px; color: var(--ink-2); }
+.head__meta b { color: var(--ink); font-weight: 600; }
+.w { display: inline-flex; gap: 6px; align-items: baseline; }
+.w i { font-style: normal; direction: ltr; font-size: 12px; font-weight: 600; color: var(--ink); }
+.head__why { grid-column: 1 / -1; margin: 6px 0 0; max-width: 72ch; font-size: 15px; color: var(--ink-2); }
+@media (max-width: 760px) { .head { grid-template-columns: 1fr; } }
+
+/* section label, set like a gutter line number (W01) */
+.sec { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 0 12px; margin-top: 56px; }
+.sec__no { direction: ltr; text-align: end; font-size: 12px; line-height: 26px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.sec__title { margin: 0 0 18px; font-size: 18px; font-weight: 700; line-height: 26px; }
+.sec__body { grid-column: 2; }
+@media (max-width: 600px) { .sec { grid-template-columns: 18px minmax(0, 1fr); gap: 0 6px; } .sec__no { font-size: 11px; } }
+
+.note { font-size: 13px; color: var(--ink-2); margin: 10px 0 0; line-height: 1.6; }
+.sheet { background: var(--paper); border-radius: 4px; box-shadow: var(--paper-shadow); padding: 48px; }
+@media (max-width: 600px) { .sheet { padding: 28px 14px; } }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THE KEY
+   A keycap lying on the desk. Four layers, one owner each:
+   .key__shadow  its contact shadow on the desk. Opacity only.
+   .key__skirt   the cap's side wall, with a hard ink rim where it meets the desk. Static.
+   .key__cap     the face with the printed legends. Transform only. It travels down over its own wall.
+   .key__render  the render pass (loading): an inverted copy of the face, revealed by clip-path,
+                 frame by frame at 25 fps. The label is printed twice, so it is never hidden.
+   The Hebrew label is the Hebrew legend (bottom-right, as on an Israeli keyboard);
+   "Enter ↵" is the Latin legend (top-left), next to a caps-lock style LED.
+   ═══════════════════════════════════════════════════════════════════════ */
+.key {
+  /* sizes: face 49 + travel 7 = a 56px key */
+  --face-h: 49px; --travel: 7px; --r: 10px; --pad: 20px; --fs: 17px; --taper: 1px;
+  /* tone: ink cap, paper legends (primary) */
+  --face: #1B1D21; --on: #FFFFFF; --legend: #D3D7DC; --led: #FFFFFF;
+  --skirt: rgba(27,29,33,.78);                                   /* ink at alpha over the desk */
+  --skirt-rim: inset 0 -1px 0 #1B1D21, inset 0 0 0 1px rgba(27,29,33,.55);
+  --rim: inset 0 1px 0 rgba(255,255,255,.10), inset 0 -1px 0 rgba(255,255,255,.07); /* paper at alpha: a concave cap */
+  --render: #6B717B; --render-on: #FFFFFF; --render-legend: #FFFFFF;  /* 3.4:1 against the face, label 4.9:1 */
+  /* timing */
+  --t-release: 300ms cubic-bezier(.25, 1.75, .45, 1);   /* the key spring: a small overshoot past rest */
+  --t-press: 60ms cubic-bezier(.5, 0, 1, 1);             /* a finger: accelerates into the bottom */
+  --t-touch: 150ms cubic-bezier(.2, .7, .2, 1);          /* fingertip resting on it */
+
+  position: relative; isolation: isolate;
+  display: inline-grid; vertical-align: top; max-width: 100%;
+  margin: 0; padding: 0 0 var(--travel); border: 0; border-radius: var(--r);
+  background: none; color: var(--on);
+  font: 600 var(--fs)/1.2 var(--ui); font-stretch: 100%; text-decoration: none; text-align: start;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+/* the paper tone is a class, so the engine needs no new prop: className="key--paper" */
+.key--paper {
+  --face: #FFFFFF; --on: #1B1D21; --legend: #4A4F57; --led: #1B1D21;
+  --skirt: #D3D7DC;
+  --skirt-rim: inset 0 -1px 0 rgba(27,29,33,.6), inset 0 0 0 1px rgba(27,29,33,.2);
+  --rim: inset 0 0 0 1px #D3D7DC;
+  --render: #1B1D21; --render-on: #FFFFFF; --render-legend: #D3D7DC;  /* ink pass: 16:1 against paper */
+}
+.key[data-size="sm"] { --face-h: 40px; --travel: 5px; --r: 8px; --pad: 13px; --fs: 15px; }
+.key[data-block] { display: grid; width: 100%; }
+
+.key__shadow {
+  position: absolute; z-index: -2; inset: var(--travel) 3px 0; border-radius: var(--r);
+  box-shadow: 0 9px 14px -8px rgba(27,29,33,.55), 0 2px 2px -1px rgba(27,29,33,.22);
+  transition: opacity var(--t-release);
+}
+.key__skirt {
+  position: absolute; z-index: -1; inset: var(--travel) 0 0; border-radius: var(--r);
+  background: var(--skirt); box-shadow: var(--skirt-rim);
+}
+
+/* the face and its render copy share one grid, so the two prints line up to the pixel */
+.key__cap, .key__render {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label legend"; column-gap: 22px;
+  padding: 0 var(--pad) 0 12px; border-radius: var(--r);
+}
+.key__cap {
+  position: relative; overflow: hidden;
+  min-height: var(--face-h); min-width: 136px; margin-inline: var(--taper);
+  background: var(--face); box-shadow: var(--rim);
+  transform: translateY(0);
+  transition: transform var(--t-release);
+}
+.key__label { grid-area: label; align-self: end; padding-bottom: 13px; text-wrap: balance; }
+.key__legend { grid-area: legend; align-self: start; margin-top: 8px; }
+
+/* block (the form): both legends gather in the reading corner, the Latin one above the Hebrew,
+   so the legend never floats 400px away on a wide face */
+.key[data-block] .key__cap, .key[data-block] .key__render { grid-template-columns: 1fr; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr; }
+.key[data-block] .key__legend { justify-self: start; margin-top: 8px; }
+.key[data-block] .key__label { padding-bottom: 9px; line-height: 1.15; }
+
+/* small (the header): the legend stays printed in its corner, so ↵ reads as a keycap print, not an appended arrow */
+.key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render { padding: 0 var(--pad) 0 9px; column-gap: 14px; }
+.key[data-size="sm"] .key__cap { min-width: 0; }
+.key[data-size="sm"] .key__label { align-self: center; padding-bottom: 0; }
+.key[data-size="sm"] .key__legend { margin-top: 6px; }
+
+/* the Latin legend */
+.key__legend {
+  position: relative; direction: ltr; display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  font: 500 11.5px/1 var(--ui); font-stretch: 87.5%; color: var(--legend);
+  font-variant-numeric: tabular-nums;
+}
+.lg-rest, .lg-run, .lg-done { display: none; align-items: center; gap: 4px; }
+.lg-rest { display: inline-flex; }
+.key__glyph { width: 12px; height: 10px; display: block; transition: transform 80ms steps(2, end); }
+
+/* caps-lock LED, 6px: a ring when off, a solid dot in its own ring when on */
+.key__led { position: relative; flex: none; width: 6px; height: 6px; border-radius: 50%; box-shadow: inset 0 0 0 1.25px var(--legend); }
+.key__led::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--led);
+  box-shadow: 0 0 0 1px var(--face), 0 0 0 2px var(--legend);   /* the housing ring, crisp, no glow */
+  opacity: 0;
+}
+
+/* phones: the Latin word drops to its glyph, as on a compact keyboard; the LED stays */
+@media (max-width: 480px) {
+  .key { --pad: 16px; --fs: 16px; }
+  .key[data-size="sm"] { --fs: 15px; --pad: 12px; }
+  .key__cap, .key__render { column-gap: 14px; }
+  .key:not([data-block]) .lg-word { display: none; }
+}
+
+/* the render pass: the inverted face, revealed right to left, then cleared right to left */
+.key__render {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: var(--render); color: var(--render-on);
+  clip-path: inset(0 0 0 100%);
+}
+.key__render .key__legend { color: var(--render-legend); }
+.key__render .key__led { box-shadow: inset 0 0 0 1.25px var(--render-legend); }
+.key__render .key__led::after { background: var(--render-on); box-shadow: none; }
+
+/* ── hover: a fingertip resting on the key (fine pointers only) ─────────── */
+@media (hover: hover) and (pointer: fine) {
+  .key:hover .key__cap { transform: translateY(2px); transition: transform var(--t-touch); }
+  .key:hover .key__shadow { opacity: .7; transition: opacity var(--t-touch); }
+  .key:hover .key__glyph { transform: translateX(-1.5px); }
+}
+.key[data-force="hover"] .key__cap { transform: translateY(2px); }
+.key[data-force="hover"] .key__shadow { opacity: .7; }
+.key[data-force="hover"] .key__glyph { transform: translateX(-1.5px); }
+
+/* ── pressed: the face goes all the way down over its own wall, the shadow is gone: in the desk ── */
+.key[data-pressed] .key__cap { transform: translateY(var(--travel)); transition: transform var(--t-press); }
+.key[data-pressed] .key__shadow { opacity: 0; transition: opacity var(--t-press); }
+
+/* ── focus ─────────────────────────────────────────────────────────────── */
+.key:focus { outline: none; }
+.key:focus-visible, .key[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+/* ── loading: the key held down while it renders ───────────────────────── */
+.key[data-state="loading"] { cursor: progress; }
+.key[data-state="loading"] .key__cap { transform: translateY(var(--travel)); transition: transform 90ms cubic-bezier(.4, 0, .9, 1); }
+.key[data-state="loading"] .key__shadow { opacity: 0; transition: opacity 90ms linear; }
+.key[data-state="loading"] .key__render { animation: key-render 1200ms linear infinite; }
+.key[data-state="loading"] .lg-rest { display: none; }
+.key[data-state="loading"] .lg-run { display: inline-flex; }
+.key[data-state="loading"] .key__led::after { animation: key-led 400ms steps(1, end) infinite; }
+/* steps() set per keyframe interval: 15 frames in each 600ms half = one frame every 40ms = 25 fps (PAL) */
+@keyframes key-render {
+  0%   { clip-path: inset(0 0 0 100%); animation-timing-function: steps(15, end); }
+  50%  { clip-path: inset(0 0 0 0);    animation-timing-function: steps(15, end); }
+  100% { clip-path: inset(0 100% 0 0); }
+}
+@keyframes key-led { 0% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ── sent: the key springs up and latches 2px down, like caps lock, and its LED is on ── */
+.key[data-state="sent"] .key__cap { transform: translateY(2px); transition: transform 380ms cubic-bezier(.25, 1.9, .45, 1); }
+.key[data-state="sent"] .key__shadow { opacity: .55; }
+.key[data-state="sent"] .lg-rest { display: none; }
+.key[data-state="sent"] .lg-done { display: inline-flex; }
+.key[data-state="sent"] .key__led::after { opacity: 1; transition: opacity 0ms linear 150ms; } /* on, as the face latches */
+
+/* ── error: the key comes back up, damped; the LED blinks twice and goes out ─ */
+.key[data-state="error"] .key__cap { transition: transform 320ms cubic-bezier(.2, .8, .3, 1); }
+.key[data-state="error"] .key__led::after { animation: key-led 320ms steps(1, end) 2; }
+.key__mark { display: none; }
+.key[data-state="error"] .key__mark {
+  display: inline-grid; place-items: center; width: 1.05em; height: 1.05em; margin-inline-end: .45em;
+  border-radius: 50%; box-shadow: inset 0 0 0 1.5px currentColor; font: 700 .7em/1 var(--ui); vertical-align: -.1em;
+}
+
+/* ── disabled: a key that is not connected, sitting flat, no legend, no LED ─ */
+.key:disabled, .key[aria-disabled="true"] { cursor: not-allowed; --face: #ECEEF1; --on: #4A4F57; --rim: inset 0 0 0 1px #D3D7DC; }
+.key:disabled .key__cap, .key[aria-disabled="true"] .key__cap { transform: translateY(var(--travel)); }
+.key:disabled .key__shadow, .key[aria-disabled="true"] .key__shadow,
+.key:disabled .key__skirt, .key[aria-disabled="true"] .key__skirt { opacity: 0; }
+.key:disabled .key__legend, .key[aria-disabled="true"] .key__legend { visibility: hidden; }
+
+/* strip only: freeze the render pass on one frame so a still shows it */
+.key[data-freeze] .key__render { animation-play-state: paused; animation-delay: -280ms; }
+.key[data-freeze] .key__led::after { animation: none; opacity: 1; }
+
+/* ── reduced motion: nothing moves; a press flattens the key by opacity ─── */
+@media (prefers-reduced-motion: reduce) {
+  .key__cap, .key__shadow, .key__skirt, .key__glyph, .key__led::after { transition: none !important; }
+  .key .key__cap, .key:hover .key__cap, .key .key__glyph, .key:hover .key__glyph { transform: none !important; }
+  .key[data-pressed] .key__skirt, .key[data-state="loading"] .key__skirt { opacity: 0; }
+  .key[data-pressed] .key__shadow, .key[data-state="loading"] .key__shadow { opacity: 0; }
+  .key[data-state="sent"] .key__shadow { opacity: .55; }
+  .key[data-state="loading"] .key__render { animation: none; clip-path: none; }
+  .key[data-state="loading"] .key__led::after { animation: none; opacity: 1; }
+  .key[data-state="error"] .key__led::after { animation: none; }
+  .qlink::after { transition: none !important; }
+}
+/* the site's accessibility panel (same hooks as iris-button.css) */
+html.motion-calm .key[data-state="loading"] .key__render { animation: none !important; clip-path: none; }
+html.motion-calm .key__led::after { animation: none !important; }
+html.disable-animations .key, html.disable-animations .key *, html.disable-animations .key *::after { animation: none !important; transition: none !important; }
+html.disable-animations .key[data-state="loading"] .key__render { clip-path: none; }
+
+/* ── the quiet link ────────────────────────────────────────────────────── */
+.qlink {
+  position: relative; display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--ink); font-weight: 600; font-size: 16px; text-decoration: none;
+}
+.qlink::after { /* appears only on hover, drawn from the right (reading start) */
+  content: ''; position: absolute; inset-inline: 0; bottom: 10px; height: 1.5px; background: currentColor;
+  transform: scaleX(0); transform-origin: right; transition: transform 260ms cubic-bezier(.2, .7, .2, 1);
+}
+@media (hover: hover) and (pointer: fine) { .qlink:hover::after { transform: scaleX(1); } }
+.qlink[data-force="hover"]::after { transform: scaleX(1); }
+.qlink:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 2px; }
+
+/* ── live area layout ─────────────────────────────────────────────────── */
+.live { display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; }
+@media (max-width: 960px) { .live { grid-template-columns: 1fr; } }
+.cell-cap { font-size: 13px; color: var(--ink-2); margin: 0 0 18px; }
+.hero-sheet { display: grid; align-content: center; min-height: 300px; }
+.hero-sheet .key { justify-self: start; }
+
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 4px; }
+.logo { font-weight: 700; font-size: 20px; letter-spacing: 0; direction: ltr; }
+
+.form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 14px; font-weight: 600; }
+.field input {
+  height: 48px; border: 1.5px solid var(--field); border-radius: 8px; background: var(--paper);
+  padding: 0 14px; font: 400 16px var(--ui); color: var(--ink);
+}
+.field input[type="tel"] { direction: ltr; text-align: left; }
+.field input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.sim { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin-top: 4px; font-size: 13px; color: var(--ink-2); }
+.sim button {
+  min-height: 44px; padding: 0 12px; border: 1.5px solid var(--field); border-radius: 8px; background: transparent;
+  font: 500 13px var(--ui); color: var(--ink); cursor: pointer;
+}
+.sim button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.faq { display: grid; gap: 18px; }
+.faq__row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
+
+/* ── states strip ─────────────────────────────────────────────────────── */
+.strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 1px; background: var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--paper-shadow); }
+.st { display: grid; align-content: space-between; gap: 22px; padding: 26px 28px 26px; min-height: 160px; background: var(--paper); }
+.st__cap { display: flex; gap: 10px; align-items: baseline; font-size: 13px; color: var(--ink-2); }
+.st__cap b { color: var(--ink); font-weight: 600; }
+.st__cap i { font-style: normal; direction: ltr; font-variant-numeric: tabular-nums; }
+.st .key { justify-self: start; }
+@media (max-width: 600px) { .st { padding: 22px 16px; min-height: 0; } }
+
+.phone-col { width: 390px; max-width: 100%; background: var(--paper); box-shadow: var(--paper-shadow); border-radius: 4px; padding: 24px 16px; display: grid; gap: 18px; }
+.phone-col .st__cap { margin-bottom: -10px; }
+
+/* ── the wall question ──────────────────────────────────────────────── */
+.walls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 1px; background: var(--line); border-radius: 4px; overflow: hidden; box-shadow: var(--paper-shadow); }
+.walls .st { min-height: 0; gap: 18px; }
+.walls .pair { display: flex; flex-wrap: wrap; gap: 18px; align-items: start; }
+.key[data-wall="3"] { --travel: 3px; --face-h: 53px; }
+.ask { margin: 14px 0 0; max-width: 70ch; font-size: 15px; color: var(--ink); }
+
+/* ── build note ─────────────────────────────────────────────────────────── */
+.build { font-size: 14px; line-height: 1.75; color: var(--ink-2); max-width: 80ch; }
+.build code, .build pre { direction: ltr; unicode-bidi: isolate; font-family: ui-monospace, Consolas, monospace; font-size: 12.5px; color: var(--ink); }
+.build pre { text-align: left; background: var(--paper); padding: 16px 18px; border-radius: 4px; overflow-x: auto; box-shadow: var(--paper-shadow); line-height: 1.55; }
+.build h3 { color: var(--ink); font-size: 15px; margin: 22px 0 6px; }
+.build ul { padding-inline-start: 20px; margin: 0; }
+</style>
+</head>
+<body>
+<!-- the two shared SVG legends -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- ↵ as printed on the Enter key. It points left, which is "forward" in RTL, so it is not mirrored. -->
+  <symbol id="enter" viewBox="0 0 12 10"><path d="M10.6 1v4.6H1.8M4.4 3 1.8 5.6l2.6 2.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="check" viewBox="0 0 12 10"><path d="M1.5 5.4 4.4 8.2 10.5 1.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- one print of the face; the template stamps it twice (the face, and the render copy) -->
+<template id="key-print">
+  <span class="key__label"><span class="key__mark" aria-hidden="true">!</span><span class="key__text"></span></span>
+  <span class="key__legend" aria-hidden="true">
+    <span class="key__led"></span>
+    <span class="lg-rest"><span class="lg-word">Enter</span><svg class="key__glyph"><use href="#enter"/></svg></span>
+    <span class="lg-run"><span class="key__tc">00:00:00</span></span>
+    <span class="lg-done"><svg class="key__glyph"><use href="#check"/></svg></span>
+  </span>
+</template>
+
+<main class="page">
+
+  <header class="head">
+    <h1 class="head__name">המקש</h1>
+    <p class="head__idea">כל כפתור הוא מקש מהמקלדת של המחשב שעל השולחן, ובעיקר מקש ה-Enter: המקש שמריץ, שולח ומאשר. לוחצים, והוא באמת יורד עד הסוף.</p>
+    <div class="head__meta">
+      <span><b>מאיפה זה בא:</b></span>
+      <span class="w"><i>W01</i> עמודת מספרי השורות</span>
+      <span class="w"><i>W08</i> טיימקוד</span>
+      <span class="w"><i>W09</i> קאט</span>
+      <span class="w"><i>W10</i> פריים</span>
+      <span class="w"><i>W11</i> רינדור</span>
+      <span class="w"><i>W12</i> עלה לאוויר</span>
+      <span class="w"><i>W16</i> וואטסאפ</span>
+    </div>
+    <p class="head__why">למה רק MediaWave: זה מקש של מקלדת עברית, עם התווית העברית למטה מימין ו-Enter הלועזי למעלה משמאל, כמו על המקלדת שבה האתרים נכתבים. כשהוא מוחזק הוא מרנדר וסופר פריימים ב-25 לשנייה (PAL), כמו טיימליין של עורך וידאו; וכשההודעה נשלחה הוא נשאר נעול למטה עם נורית דולקת, כמו Caps Lock.</p>
+  </header>
+
+  <!-- ── LIVE ── -->
+  <section class="sec" aria-labelledby="s-live">
+    <span class="sec__no">01</span>
+    <h2 class="sec__title" id="s-live">חי: לגעת, לרחף, ללחוץ, Tab ו-Enter</h2>
+    <div class="sec__body">
+      <div class="live">
+        <div>
+          <p class="cell-cap">(א) כפתור ההירו, מקש דיו על דף נייר</p>
+          <div class="sheet hero-sheet">
+            <a class="key" data-size="lg" href="#wa" data-label="בואו נדבר על הפרויקט שלכם"></a>
+          </div>
+        </div>
+        <div style="display:grid; gap:28px; align-content:start">
+          <div>
+            <p class="cell-cap">(ב) הכפתור הקטן בכותרת, מקש נייר על השולחן</p>
+            <div class="bar">
+              <span class="logo">MediaWave</span>
+              <a class="key key--paper" data-size="sm" href="#wa" data-label="בואו נדבר"></a>
+            </div>
+          </div>
+          <div>
+            <p class="cell-cap">(ד) סוף השאלות הנפוצות, והקישור השקט</p>
+            <div class="sheet faq" style="padding:32px">
+              <div class="faq__row">
+                <a class="key" data-size="lg" href="#wa" data-label="צרו קשר"></a>
+                <a class="qlink" href="#services">לשירותים שלנו</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:28px; max-width:560px">
+        <p class="cell-cap">(ג) טופס: כפתור השליחה ברוחב מלא</p>
+        <form class="sheet form" id="demo-form" novalidate>
+          <!-- [קופי: נתי] field labels and the demo controls below are page scaffolding -->
+          <div class="field"><label for="f-name">שם</label><input id="f-name" autocomplete="off"></div>
+          <div class="field"><label for="f-tel">טלפון</label><input id="f-tel" type="tel" autocomplete="off"></div>
+          <button class="key" type="submit" data-size="lg" data-block data-label="שליחת הודעה"></button>
+          <!-- the announcement lives beside the button, not inside it: a live region inside a button whose name changes is read unreliably -->
+          <span class="sr-only" role="status" id="send-status"></span>
+          <div class="sim">
+            <span>הדגמה:</span>
+            <button type="button" data-run="sent">שליחה שמצליחה</button>
+            <button type="button" data-run="error">שליחה שנכשלת</button>
+            <button type="button" data-run="reset">איפוס</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATES ── -->
+  <section class="sec" aria-labelledby="s-states" id="states">
+    <span class="sec__no">02</span>
+    <h2 class="sec__title" id="s-states">כל המצבים, זה לצד זה</h2>
+    <div class="sec__body">
+      <div class="strip" id="strip">
+        <div class="st"><span class="st__cap"><i>01</i><b>מנוחה</b> rest</span><button class="key" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>02</i><b>ריחוף</b> hover</span><button class="key" data-force="hover" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>03</i><b>פוקוס</b> focus</span><button class="key" data-force="focus" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>04</i><b>לחיצה</b> pressed</span><button class="key" data-force="pressed" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>05</i><b>טעינה</b> loading</span><button class="key" data-state="loading" data-freeze data-tc="00:01:11" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>06</i><b>נשלח</b> sent</span><button class="key" data-state="sent" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>07</i><b>שגיאה</b> error</span><button class="key" data-state="error" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+        <div class="st"><span class="st__cap"><i>08</i><b>מושבת</b> disabled</span><button class="key" disabled data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div>
+      </div>
+      <p class="note">שורה 05 מוקפאת על פריים אחד של מעבר הרינדור. מקש הנייר (כותרת, שאלות) עובר את אותם מצבים בגוון הפוך; הרינדור שלו בדיו, והתווית מתהפכת ללבן בתוך המעבר.</p>
+
+      <p class="cell-cap" style="margin-top:36px">עמודה ברוחב 390, ברוחב מלא (block)</p>
+      <div class="phone-col" id="phone-col">
+        <span class="st__cap"><i>01</i><b>מנוחה</b></span><button class="key" data-block data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>02</i><b>ריחוף</b></span><button class="key" data-block data-force="hover" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>03</i><b>פוקוס</b></span><button class="key" data-block data-force="focus" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>04</i><b>לחיצה</b></span><button class="key" data-block data-force="pressed" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>05</i><b>טעינה</b></span><button class="key" data-block data-state="loading" data-freeze data-tc="00:01:11" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>06</i><b>נשלח</b></span><button class="key" data-block data-state="sent" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>07</i><b>שגיאה</b></span><button class="key" data-block data-state="error" data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>08</i><b>מושבת</b></span><button class="key" data-block disabled data-label="שליחת הודעה" tabindex="-1"></button>
+        <span class="st__cap"><i>09</i><b>מקש נייר, מנוחה</b></span><button class="key key--paper" data-block data-label="צרו קשר" tabindex="-1"></button>
+        <span class="st__cap"><i>10</i><b>מקש נייר, טעינה</b></span><button class="key key--paper" data-block data-state="loading" data-freeze data-tc="00:00:19" data-label="צרו קשר" tabindex="-1"></button>
+        <span class="st__cap"><i>11</i><b>מקש נייר, נשלח</b></span><button class="key key--paper" data-block data-state="sent" data-label="צרו קשר" tabindex="-1"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE WALL ── -->
+  <section class="sec" aria-labelledby="s-wall">
+    <span class="sec__no">03</span>
+    <h2 class="sec__title" id="s-wall">שאלה לנתי: הדופן של המקש</h2>
+    <div class="sec__body">
+      <div class="walls">
+        <div class="st"><span class="st__cap"><i>3px</i><b>דופן נמוכה</b> מנוחה / לחיצה</span>
+          <div class="pair"><button class="key" data-wall="3" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button><button class="key" data-wall="3" data-force="pressed" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div></div>
+        <div class="st"><span class="st__cap"><i>7px</i><b>דופן מלאה (המוצע)</b> מנוחה / לחיצה</span>
+          <div class="pair"><button class="key" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button><button class="key" data-force="pressed" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1"></button></div></div>
+      </div>
+      <p class="ask">הפס הכהה בתחתית הוא הצד של המקש, לא קו מתחת לתווית: הוא לא נוגע בטקסט, יש לו פינות מעוגלות כמו לפנים, ובלחיצה הפנים יורדות ומכסות אותו. ב-3px הלחיצה כמעט לא נראית; ב-7px היא נקראת ממבט ראשון. צריך ממך אישור מפורש שזה לא נופל תחת "אין קו מתחת לכפתור".</p>
+    </div>
+  </section>
+
+  <!-- ── BUILD ── -->
+  <section class="sec" aria-labelledby="s-build">
+    <span class="sec__no">04</span>
+    <h2 class="sec__title" id="s-build">איך בונים את זה על StateButton</h2>
+    <div class="sec__body build">
+      <p>משפחה חדשה <code>KeyButton.tsx</code> + <code>key-button.css</code>, בדיוק כמו <code>IrisButton</code>: <code>cls="key"</code>, ו-render שמחזיר את שכבות המקש. כמו באיריס, הפנים מודפסות פעמיים: פעם על המקש, ופעם בתוך שכבת הרינדור בצבעים הפוכים, כך שהתווית קריאה בכל פריים.</p>
+<pre>render={(label, state) =&gt; (&lt;&gt;
+  &lt;span className="key__shadow" aria-hidden /&gt;      {/* opacity only */}
+  &lt;span className="key__skirt"  aria-hidden /&gt;      {/* static side wall + ink rim */}
+  &lt;span className="key__cap"&gt;                        {/* transform only */}
+    &lt;KeyPrint label={label} state={state} /&gt;        {/* label + aria-hidden legend */}
+    &lt;span className="key__render" aria-hidden&gt;      {/* clip-path, loading only */}
+      &lt;KeyPrint label={label} state={state} /&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+&lt;/&gt;)}
+// paper tone: &lt;KeyButton className="key--paper" …&gt;  (no engine change)</pre>
+      <h3>CSS</h3>
+      <ul>
+        <li>הכפתור עצמו שקוף, עם <code>padding-bottom: var(--travel)</code>. lg: פנים 49 + נסיעה 7 = מקש של 56. sm: פנים 40 + נסיעה 5 = 45. לחיצה = <code>translateY(var(--travel))</code> על <code>.key__cap</code>, והצל נעלם לגמרי: המקש בתוך השולחן.</li>
+        <li>הדופן היא דיו בשקיפות (<code>rgba(27,29,33,.78)</code>) עם שפה של דיו מלא בתחתית, והפנים צרות ממנה ב-1px מכל צד, כך שהיא נקראת כצד של מקש ולא כצל. אין <code>color-mix</code> ואין גוון חדש.</li>
+        <li>תזמונים: נגיעה 2px ב-150ms; לחיצה 60ms <code>cubic-bezier(.5,0,1,1)</code>; שחרור 300ms <code>cubic-bezier(.25,1.75,.45,1)</code>; נשלח 380ms קפיץ עד נעילה ב-2px, הנורית נדלקת אחרי 150ms; שגיאה 320ms בלי קפיץ.</li>
+        <li>רינדור: <code>steps(15)</code> לכל חצי של 600ms, כתוב בתוך ה-keyframes (<code>animation-timing-function</code> לכל פריים מפתח), כך ש-1200ms = 30 פריימים = 25 לשנייה באמת. במקש דיו המעבר ב-#6B717B (3.4:1 מול הפנים, תווית 4.9:1); במקש נייר בדיו (16:1), והעותק של התווית בלבן.</li>
+        <li>reduced motion: אין transform; לחיצה = הדופן והצל נעלמים (opacity); הרינדור הוא מילוי סטטי. <code>html.motion-calm</code> ו-<code>html.disable-animations</code> עוצרים את הרינדור ואת הנורית, כמו ב-iris-button.css.</li>
+      </ul>
+      <h3>שינויים במנוע (שלושה, קטנים)</h3>
+      <ul>
+        <li>החזקה מינימלית של 90ms ל-<code>pressed</code>, כדי שטאפ מהיר עדיין ייראה כמו מקש שירד. שתי שורות ב-<code>onPointerUp</code>.</li>
+        <li>ההכרזה: <code>live</code> מרנדר <code>&lt;span role="status" className="sr-only"&gt;</code> אח לכפתור, מחוץ לו, עם הטקסט של <code>STATE_LABEL</code>, במקום <code>aria-live</code> בתוך התווית. תיקון שמשרת את כל המשפחות.</li>
+        <li>רווח לוחץ רק על <code>&lt;button&gt;</code>; על <code>&lt;a&gt;</code> רק Enter, כי רווח לא מפעיל קישור ומקש שיורד בלי לעשות כלום מטעה.</li>
+        <li>טיימקוד: <code>KeyPrint</code> מקבל מספר פריים מ-rAF אחד שכותב רק כשהפריים מתחלף (<code>Math.floor(ms/40)</code>), כלומר 25 כתיבות בשנייה ולא 60. ב-sent אין זמן, רק ✓ ונורית. אין רטט ואין מעקב אחרי העכבר.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const LABEL = { loading: 'שולחים', sent: 'נשלח. נחזור אליכם היום', error: 'לא נשלח. נסו שוב' }; // StateButton STATE_LABEL
+  const tpl = document.getElementById('key-print');
+  const pad = n => String(n).padStart(2, '0');
+  const tcOf = f => `${pad(Math.floor(f / 1500))}:${pad(Math.floor(f / 25) % 60)}:${pad(f % 25)}`; // MM:SS:FF, 25 fps
+  const setText = (k, s) => k.querySelectorAll('.key__text').forEach(n => { n.textContent = s; });
+  const setTc = (k, s) => k.querySelectorAll('.key__tc').forEach(n => { n.textContent = s; });
+
+  // build every key: wall, shadow, the face, and the render copy of the face
+  document.querySelectorAll('.key').forEach(k => {
+    if (!k.dataset.size) k.dataset.size = 'lg';
+    const mk = cls => Object.assign(document.createElement('span'), { className: cls });
+    const shadow = mk('key__shadow'), skirt = mk('key__skirt'), cap = mk('key__cap'), render = mk('key__render');
+    shadow.setAttribute('aria-hidden', 'true'); skirt.setAttribute('aria-hidden', 'true'); render.setAttribute('aria-hidden', 'true');
+    cap.appendChild(tpl.content.cloneNode(true));
+    render.appendChild(tpl.content.cloneNode(true));
+    cap.appendChild(render);
+    k.append(shadow, skirt, cap);
+    k.dataset.idle = k.dataset.label;
+    const st = k.dataset.state;
+    setText(k, st && LABEL[st] ? LABEL[st] : k.dataset.label);
+    if (k.dataset.tc) setTc(k, k.dataset.tc);
+    if (k.dataset.force === 'pressed') k.setAttribute('data-pressed', '');
+    if (k.disabled) k.setAttribute('aria-disabled', 'true');
+    if (st === 'loading') k.setAttribute('aria-busy', 'true');
+  });
+
+  // press engine: min hold so even a quick tap reads as a key going down
+  const HOLD = 90;
+  document.querySelectorAll('.key:not([data-force]):not([data-state]):not([tabindex="-1"])').forEach(k => {
+    let at = 0, t = 0;
+    const busy = () => k.disabled || k.dataset.state === 'loading';
+    const press = () => { if (busy()) return; clearTimeout(t); at = performance.now(); k.setAttribute('data-pressed', ''); };
+    const release = () => { if (!k.hasAttribute('data-pressed')) return; clearTimeout(t); t = setTimeout(() => k.removeAttribute('data-pressed'), Math.max(0, HOLD - (performance.now() - at))); };
+    k.addEventListener('pointerdown', e => { if (e.button > 0) return; press(); });
+    ['pointerup', 'pointercancel', 'pointerleave', 'blur', 'keyup'].forEach(ev => k.addEventListener(ev, release));
+    // Enter activates both; Space activates only a <button>, so only a <button> goes down on Space
+    k.addEventListener('keydown', e => { if (e.repeat) return; if (e.key === 'Enter' || (e.key === ' ' && k.tagName === 'BUTTON')) press(); });
+    if (k.tagName === 'A') k.addEventListener('click', e => e.preventDefault()); // study page: links go nowhere
+  });
+
+  // the form: loading counts real elapsed frames, then sent or error
+  const form = document.getElementById('demo-form');
+  const btn = form.querySelector('.key');
+  const status = document.getElementById('send-status');
+  let raf = 0, timer = 0, t0 = 0, last = -1, next = 'sent';
+  const set = s => {
+    btn.dataset.state = s;
+    const text = s === 'idle' ? btn.dataset.idle : LABEL[s];
+    setText(btn, text);                                   // a cut, on the frame (W09)
+    status.textContent = s === 'idle' ? '' : text;        // announced from outside the button
+    if (s === 'loading') btn.setAttribute('aria-busy', 'true'); else btn.removeAttribute('aria-busy');
+  };
+  const tick = () => {
+    const f = Math.floor((performance.now() - t0) / 40);
+    if (f !== last) { last = f; setTc(btn, tcOf(f)); }  // write only when the frame changes: 25 writes a second
+    raf = requestAnimationFrame(tick);
+  };
+  const stop = () => { clearTimeout(timer); cancelAnimationFrame(raf); };
+  const run = outcome => {
+    if (btn.dataset.state === 'loading') return;
+    stop();
+    btn.removeAttribute('data-pressed');
+    t0 = performance.now(); last = -1;
+    set('loading'); tick();
+    timer = setTimeout(() => { cancelAnimationFrame(raf); set(outcome); }, 2300);
+  };
+  form.addEventListener('submit', e => { e.preventDefault(); run(next); next = 'sent'; });
+  form.querySelectorAll('[data-run]').forEach(b => b.addEventListener('click', () => {
+    const r = b.dataset.run;
+    if (r === 'reset') { stop(); set('idle'); return; }
+    run(r);
+  }));
+  window.__keyDemo = { run, set };
+})();
+</script>
+</body>
+</html>

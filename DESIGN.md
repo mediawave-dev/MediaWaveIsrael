@@ -1,111 +1,104 @@
 ---
 name: MediaWave Israel
-description: Hebrew RTL site for a one-developer web studio - "launch night": a Klein-blue night stage and a paper void that alternate as you scroll, a website that builds itself on the stage screen and launches the real film, two held scenes, the Horizon logo, a Rive companion on the contact form
+description: Hebrew RTL site for a one-developer web studio - "one shot" (shot): one camera move over Nati's desk, a grey table, white paper, ink; the site's sheets land on the table one by one, a closed laptop opens and builds this very site, and the camera pulls back until the whole site is one phone on the desk. Mobile first.
 colors:
-  klein: "#002FA7"
-  klein-night: "#00113D"
-  paper: "#FAFAF7"
-  paper-2: "#ECECE6"
-  stage-ink: "#FFFFFF"
-  stage-ink-2: "#A3AFD6"
-  stage-line: "#1D2A5A"
-  void-ink: "#0E1016"
-  void-ink-2: "#4E5468"
-  void-line: "#DCDCD4"
-  logo-b-on-dark: "#6E8CFF"
-  logo-tag-on-dark: "#8E9CC8"
-  lens-on-dark: "#D5DEFF"
-  lens-on-light: "#2457E6"
-  err-on-dark: "#FF6961"
-  err-on-light: "#B3261E"
+  table: "#ECEEF1"
+  paper: "#FFFFFF"
+  ink: "#1B1D21"
+  ink-2: "#4A4F57"
+  line: "rgba(27, 29, 33, 0.14)"
+  line-ui: "rgba(27, 29, 33, 0.62)"
+  logo-a: "#1B1D21"
+  logo-b: "#00248A"
+  logo-tag: "#4A4F57"
+  logo-b-on-ink: "#6E8CFF"
   face: "#FFFFFF"
 typography:
   display:
-    fontFamily: "MW Display = EFT Betaamango (Hebrew) + Outfit 500 (Latin, digits), Arial metric fallback"
-    fontWeight: 400
-    lineHeight: 1.02-1.15
+    fontFamily: "MW Noto = Noto Sans Hebrew variable (Hebrew + Latin), MW Noto Fallback (Arial, metric-matched)"
+    fontWeight: 800
+    fontStretch: "75%"
+    lineHeight: 1.02-1.2
   body:
-    fontFamily: "MW Text = IBM Plex Sans Hebrew 400 (Hebrew + Plex Latin), Arial metric fallback"
-    fontSize: "1rem-1.3rem"
+    fontFamily: "MW Noto"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.65
   ui:
-    fontFamily: "MW Text"
-    fontWeight: 600
+    fontFamily: "MW Noto"
+    fontWeight: 700
 components:
-  button-on-stage:
-    backgroundColor: "#FFFFFF"
-    textColor: "{colors.klein}"
-    rounded: "12px"
-  button-in-void:
-    backgroundColor: "{colors.klein}"
+  key-button:
+    backgroundColor: "{colors.ink}"
     textColor: "#FFFFFF"
-    rounded: "12px"
+    rounded: "2px"
+  key-button-paper:
+    backgroundColor: "#FFFFFF"
+    textColor: "{colors.ink}"
+    rounded: "2px"
 ---
 
-# Design System: MediaWave Israel (October 2026, "launch night")
+# Design System: MediaWave Israel (October 2026, "one shot")
 
-Source of truth for tokens: `src/look/looks.css`. Decisions: `DECISIONS.rtl.md` #47-#59. Concept and scroll score: `design/CONCEPT.md`, `design/SCROLL-SCORE.md`.
+Source of truth for tokens: `src/look/looks.css` (the `html[data-look="shot"]` block). Decisions: `DECISIONS.rtl.md` D81-D89. Spec and story: `design/shot/SPEC.md`, `design/shot/storyboard.rtl.md`. Production is **shot** (`npm run build`); K, M and KM stay buildable for comparison (`build:k`, `build:m`, `build:km`); the previous production (KM, "launch night") is the tag `prod-before-shot`.
 
 ## 1. Overview
 
-The site is a product launch for the visitor's business. A deep Klein-blue night stage (the keynote) alternates with a paper void where the tools of the trade float (the workshop). One codebase builds three looks (`npm run build:k | build:m | build:km`); production is **KM** (`npm run build`), the other two stay for comparison.
+One camera move over Nati's desk (D83). The page is one grey table from top to bottom; every surface is a white sheet of paper lying on it; text and buttons are ink. Chapters, top to bottom: the hero sheet with the lens (the dive), why us (screens that light one at a time), services (the old site's tools on the desk), the build (the closed laptop opens and builds this site, then the four steps on an ink line), the FAQ notepad, the big word, the contact letter with the Rive companion, the pull-back into one phone, the footer sign-off.
 
-Sacred: the hero video (laptops and coffee), the 13 Lotties, the URLs, one H1 "העסק שלכם / המומחיות שלנו", the H2 order, every conversion path and `track()` call. No invented proof: testimonials stay hidden while the list is empty.
+Mobile first (D84): every rule is written for 390px, then widened. Sacred: the hero video (inside the lens), the 13 Lotties, the URLs and anchors (#top #why-us #services #process #faq #contact), one H1, every `track()` call.
 
-## 2. Colour: "Klein" (DECISIONS #58)
+## 2. Colour (D81, D86)
 
 | Token | Value | Where |
 |---|---|---|
-| `--stage` | `#00113D` | Klein night: the hero, why us, the launch hold, contact, footer |
-| `--void` | `#FAFAF7` | paper: the flight hold, FAQ, inner pages |
-| `--klein` | `#002FA7` | the one colour: logo lower half on light, buttons in the void, floating objects' bodies, links on inner pages |
-| ink / ink-2 | `#FFFFFF` / `#A3AFD6` on the stage, `#0E1016` / `#4E5468` in the void | text |
-| `--lens` | `#D5DEFF` stage, `#2457E6` void | the lens button's disc (a lighter tone under the label) |
+| `--table` | `#ECEEF1` | the ground, everywhere |
+| `--paper` | `#FFFFFF` | every sheet, card, field, the menu, the cookie strip |
+| `--ink` | `#1B1D21` | text, buttons, the objects' bodies; 14.5:1 on the table |
+| `--ink-2` | `#4A4F57` | secondary text; 7.1:1 on the table, 8.2:1 on paper |
+| `--line` / `--line-ui` | ink at 14% / 62% | hairlines / field borders (4.8:1 on paper); never a new grey |
+| `--logo-a` / `--logo-b` | `#1B1D21` / `#00248A` | the Horizon logo: ink above the wave, deep Klein below. The page's only colour lives in the logo |
 
-Every text and control pair is AA or better: `design/audit/klein-contrast.md` (0 failures). The logo's palette and files: `scripts/brand-palette.mjs` rewrites every SVG in `logos/horizon` and re-renders the PNG icons from vector; `logos/horizon/README.md` has the brand rules.
+Shadows are ink at an alpha (`--paper-shadow`). No gradients, glow or glass. Errors are never colour-only.
 
-Named rules: one colour, used for action and for the brand only. No gradients, glow or glass (no `backdrop-filter` anywhere). Shadows only under floating objects, tinted Klein (`--obj-shadow`).
+## 3. Typography (D81)
 
-## 3. Typography (DECISIONS #59)
+One family, Noto Sans Hebrew (variable, self-hosted in `public/fonts/noto/`), with a metric-matched Arial fallback (`src/look/shot/shot-fonts.css`). Headings 800 at 75% width; text 400; UI 700. Hebrew rules: no letter-spacing, no italics, no en or em dash or maqaf in copy, no hyphen where words can carry the meaning ("2 עד 3 שבועות", "בחיפושי AI").
 
-- **Display:** EFT Betaamango (the live site's face, licensed) for every heading, with Outfit 500 for Latin and digits, and Plex 600 for the geresh and gershayim (Betaamango's free edition has neither). One weight, so the family declares 100-900: no synthetic bold.
-- **Text and UI:** IBM Plex Sans Hebrew 400 / 600, with Plex's own Latin.
-- All self-hosted in `public/fonts`; the display face is preloaded (the H1 is the LCP). Metric-matched fallbacks (`design/fonts/mw-*-fallback.css`): no rewrap at 340 and 680 px.
-- Hebrew rules: no letter-spacing, no italics, no em/en dash or maqaf, motion enters from the right, splits by words or lines.
+## 4. Motion (D83, SPEC 1.4-1.7)
 
-## 4. Motion
-
-Engine: `src/motion/` (GSAP ScrollTrigger + Lenis on desktop only). Policy: REDUCE (the accessibility widget's stop switch, prerender) shows every scene's last frame; CALM (the OS reduced-motion flag) keeps scroll-driven scenes and drops autonomous loops; `?motion=full` overrides for QA.
+Engine: `src/motion/` (GSAP ScrollTrigger, Lenis on desktop). Camera helpers: `src/look/shot/camera.ts` (`dive`, `land`, `docTop`, `landRange`, `exitRange`), moves: `moves.ts` (`setDown`, `openLaptop`, `orbit`, `inkLine`, `pullBackMatched`). Every move is a transform on one layer, scrubbed by scroll, with a CALM version (OS reduced motion: small angles) and nothing under REDUCE (the accessibility stop switch, `?reduce=1`, the prerender), where the last frame is the layout itself.
 
 | Moment | Where | Move |
 |---|---|---|
-| Hero | stage | on the stage's big screen a website builds itself (Rive, once per visit); the site's button is clicked and the film starts in its hero slot; scrolling moves the screen toward you (`design/rive/hero/CONTRACT.md`) |
-| Theme flips | KM | fixed layers crossfade stage and void; text follows the body class |
-| Flight | services, void | sticky stage: you fly into six floating tools, one service each |
-| Launch | process, stage | sticky stage: the laptop opens and turns, one step per announcement |
-| Giant word | before contact | ink fill |
-| Rive companion | contact form | the hero's laptop writes the message, folds it into the horizon while sending, fills into the mark when sent (`design/rive/companion/CONTRACT.md`) |
-| Logo ident | header once per visit, footer scrubbed | drop, disc, slosh, name rise, droplet onto the i (`src/components/ui/logo-motion.ts`) |
+| The dive | hero, 200svh hold (230 from 1100px) | the camera comes down onto the hero sheet; the desk objects (closed laptop with the logo lid, cassette, loupe) leave the frame as it lands; the lens's iris opens over the last 30% |
+| Landings | every sheet | a sheet comes in lying on the desk, flat before its first text line reaches the reading band; tips away only after its bottom passed the top 18% |
+| The build | process, 300svh hold (350) | the closed laptop turns frontal and opens; this site builds itself on its screen (Rive, scrubbed); an ink line leaves for the steps |
+| The pull-back | after contact, 200svh (240) | from the phone's screen, as close as the real letter, back to one phone on the desk with the props |
+| Lotties | screens and tools | one at a time, the one in the eye band (36-62%); a poster of its fullest frame until it plays and after (`scripts/lottie-posters.mjs`) |
 
-Holds are sticky stages, never GSAP pins. Only transform and opacity per frame. Only the Lottie on stage plays (`LottieIcon active/load`), and Lotties render at their own frame rate. The hero video pauses out of view and does not play under the OS flag.
+Holds are sticky stages, never pins. Chapters below the first view build their scenes within 1.5 viewports (`near.ts`). The lens's Rive loads on the first interaction (D88).
 
 ## 5. Components
 
-- **Buttons:** KM and M use the lens (`src/look/buttons/LensButton.tsx`): solid button, a lighter disc follows the pointer and fills on press; seven states (idle, hover, pressed, focus, loading, sent, error) at `/states?look=` in dev. K uses the product button (tilt and press). No line under any label.
-- **Header:** compact Horizon logo 26 px (24 on phones), nav, the look's button; on phones the button lives in the menu sheet.
-- **Footer:** columns, then the Horizon sign-off scrubbed by scroll.
-- **Floating objects** (`src/look/parts/Things.tsx`): laptop, phone, loupe, chat bubble, cassette, frame; Klein bodies with white faces where the Lotties live.
-- **Contact:** labelled fields, errors on the field, the Rive companion; LeadModal on the look's tokens (it never opens while the visitor is typing or navigating by keyboard).
+- **Buttons, "the key" (D87):** `src/look/buttons/KeyButton.tsx` on the StateButton engine: a keycap over a skirt, the Hebrew label printed on the cap, an `Enter ↵` legend; seven states (idle, hover, pressed, focus, loading, sent, error). Ink on paper and table, a paper key in the header. No line under any label.
+- **Header:** the compact Horizon logo, four chapter links from 1100px, the paper key "בואו נדבר", the accessibility button; on phones and tablets a burger.
+- **Menu sheet (D89):** a white sheet: the five chapters as a ruled index, the chapter in view marked with an ink dot, then "בואו נדבר", WhatsApp, phone, email. Escape closes, focus returns to the burger.
+- **Dock (SPEC 1.12):** one bar at the near edge, WhatsApp at the inline start (thumb reach), the chat trigger at the inline end; it steps aside over the hero CTAs, #contact, the footer, the cookie strip and any dialog. `--safe-b` reserves its band.
+- **Cookie strip:** a paper strip in the same band; the first paint already reserves it (`consent-pending`), so nothing moves when it arrives or leaves.
+- **Lead dialog:** a bottom sheet of paper (70svh, scrolls inside), opened by intent only (`src/utils/lead-intent.js`), never over another dialog.
+- **Desk objects:** `src/look/parts/Things.tsx` and `Laptop.tsx` in ink with white faces; the laptop's lid carries the Horizon mark in its dark-ground tones.
 
 ## 6. Rules that do not move
 
-- Nothing steps on anything: `scripts/overlap-audit.mjs` must report 0 (zones text / art / ui, five widths).
-- AA contrast, visible focus, keyboard paths; a11y settings never persist.
+- Nothing steps on anything: `scripts/overlap-audit.mjs` reports 0 (zones text / art / ui) at 320, 390, 768, 1024 and 1440.
+- AA contrast, a 3px ink focus ring, keyboard paths, focus never hidden under the dock (`scroll-padding-bottom: var(--safe-b)`); accessibility settings never persist.
+- Tap targets 44px at rest (the overview pose shrinks them while the camera is far, by design).
 - Copy: Hebrew, direct, no invented proof; new lines are marked `[קופי: נתי]` until approved.
+- A rule meant for chapters selects chapters (`main > :is(section, .shot-bw)`), never every child of main: main also holds fixed layers.
 
 ## 7. How to extend
 
-- New colour: change `--klein` and the stage/void tokens in `looks.css`, then `PALETTE` in `scripts/brand-palette.mjs` and `COL` in `design/rive/companion/build-scene.mjs`; run `node scripts/brand-palette.mjs`, `npm run generate:favicons`, `npm run generate:og`, `npm run rive:companion`; re-run the contrast script and the overlap audit.
-- New section: give it `data-theme="dark|light"` (KM), mark text `data-zone="text"` and art `data-zone="art"`, and let the engine's `reveal()` handle routine entrances.
-- Verify: `npm run build`, the overlap audit, pattern-breaker `gates.mjs`, `motion-audit.mjs --budget-cls 0.05`, Lighthouse mobile.
+- A new chapter: a `<section>` straight into `<main>` from `ShotHome.tsx`, lazy, with its fallback height in `shot-base.css`; mark text `data-zone="text"`, art `data-zone="art"`; land its sheet with `land()`; build its scene with `useSceneNear`.
+- A new colour is a decision (D81 locks grey, white and ink); the logo palette lives in `scripts/brand-palette.mjs`.
+- Verify: `npm run build`, the overlap audit, pattern-breaker `gates.mjs`, `motion-audit.mjs --budget-cls 0.05`, the mobile audit (`design/audit/impeccable/`), Lighthouse mobile.

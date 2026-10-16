@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>הפריסה · משפחת כפתורים</title>
+<style>
+/* ---------------------------------------------------------------------------------------------
+   shot · button family "the deploy" (הפריסה). Palette locked by D81: table #ECEEF1, paper #FFFFFF,
+   ink #1B1D21, secondary #4A4F57, hairline #D3D7DC (decoration only), field border #6B717B.
+   W06 says "green = live"; the palette has no green, so live is an ink dot inside an ink ring.
+   --------------------------------------------------------------------------------------------- */
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Noto"; src: url("/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  --table: #ECEEF1; --paper: #FFFFFF; --ink: #1B1D21; --ink-2: #4A4F57; --hair: #D3D7DC; --field: #6B717B;
+  --ui: "MW Noto", Arial, sans-serif;
+  --paper-shadow: 0 1px 0 rgba(27,29,33,.05), 0 18px 30px -22px rgba(27,29,33,.45);
+
+  /* motion vocabulary of the family */
+  --ease-out: cubic-bezier(.2, 0, 0, 1);         /* decisive arrivals: press, commit, sent */
+  --ease-ship: cubic-bezier(.62, 0, .22, 1);     /* the run leaving: slow start, clean exit */
+  --ease-stage: cubic-bezier(.65, 0, .35, 1);    /* fallback for the staged preview below */
+  --ease-creep: cubic-bezier(.08, .75, .2, 1);   /* fallback for the honest creep below */
+  --t-preview: 560ms;  /* hover / focus: the dry run */
+  --t-press: 170ms;    /* press commits whatever is left of the preview */
+  --t-out: 400ms;      /* the run clears out to the left */
+  --t-ship: 320ms;     /* the preview ships before the real run starts */
+  --t-creep: 9s;       /* loading: never reaches the end on its own */
+  --t-land: 260ms;     /* sent: the last stretch, decisive */
+}
+/* Two short holds, like a real deploy pausing between build, upload and propagate. */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-stage: linear(0, .1 7%, .32 22%, .345 32%, .63 50%, .655 60%, .9 78%, .985 91%, 1);
+    --ease-creep: linear(0, .4 8%, .46 19%, .74 31%, .79 50%, .93 71%, 1);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--table); color: var(--ink);
+  font: 400 1rem/1.7 var(--ui);
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* ============================== THE FAMILY ============================== */
+.dw {
+  --bg: var(--ink); --fg: var(--paper); --rim: var(--ink);
+  --h: 56px; --px: 26px; --fs: 1.125rem; --r: 6px; --glyph: 11px;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-grid; place-items: center;
+  min-height: var(--h); padding: 0 var(--px); margin: 0;
+  border: 0; border-radius: var(--r);
+  background: var(--bg); color: var(--fg);
+  font-family: var(--ui); font-weight: 620; font-size: var(--fs); line-height: 1.2; font-stretch: 92%;
+  text-decoration: none; white-space: nowrap;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  /* the release: a small overshoot, like a key coming back up */
+  transition: transform 280ms cubic-bezier(.2, 1.6, .4, 1);
+}
+.dw[data-size="sm"] { --h: 44px; --px: 16px; --fs: .97rem; --r: 5px; --glyph: 9px; }
+.dw[data-block] { display: grid; width: 100%; }
+/* secondary: paper with an ink rim; its run fills in ink */
+.dw--line { --bg: var(--paper); --fg: var(--ink); }
+
+.dw__label { position: relative; display: inline-flex; align-items: center; gap: .6em; }
+.dw__glyph { width: var(--glyph); height: var(--glyph); flex: none; overflow: visible; display: block; }
+.dw__glyph circle { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.dw__glyph .g-ring, .dw__glyph .g-gap { transition: opacity 160ms linear; }
+.dw__glyph .g-gap { opacity: 0; }
+.dw__glyph .g-core { fill: currentColor; stroke: none; transform-box: fill-box; transform-origin: center; transform: scale(0);
+  transition: transform 340ms cubic-bezier(.3, 1.9, .5, 1) 150ms; }
+.dw__glyph .g-ping { transform-box: fill-box; transform-origin: center; opacity: 0; }
+
+/* the run: two clip layers. .dw__fill owns the leading edge, .dw__run the trailing edge, so the
+   bar enters from the right and also leaves to the left: every sweep reads right to left. */
+.dw__run { position: absolute; inset: 0; z-index: 1; pointer-events: none; clip-path: inset(0 0 0 0); }
+.dw__fill {
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 0 var(--px);
+  background: var(--fg); color: var(--bg);
+  clip-path: inset(0 0 0 100%);
+}
+/* the rim keeps the button's edge when the paper-coloured run fills it */
+.dw::after, .dw::before { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; }
+.dw::after { box-shadow: inset 0 0 0 1.5px var(--rim); }
+/* the press: the rim thickens, as if the key went down into the sheet */
+.dw::before { box-shadow: inset 0 0 0 3px var(--rim); opacity: 0; transition: opacity 200ms linear; }
+
+/* preview: hover (JS writes data-run), keyboard focus, press, forced */
+.dw[data-run="in"] .dw__fill, .dw[data-run="out"] .dw__fill, .dw[data-run="ship"] .dw__fill,
+.dw:focus-visible .dw__fill, .dw[data-pressed] .dw__fill, .dw[data-force] .dw__fill { clip-path: inset(0 0 0 0); }
+.dw[data-run="in"] .dw__fill, .dw:focus-visible .dw__fill { transition: clip-path var(--t-preview) var(--ease-stage); }
+.dw[data-run="in"] .dw__run { transition: clip-path 240ms var(--ease-out); }
+.dw[data-run="out"] .dw__fill, .dw[data-run="ship"] .dw__fill { transition: clip-path 260ms var(--ease-out); }
+.dw[data-run="out"] .dw__run { clip-path: inset(0 100% 0 0); transition: clip-path var(--t-out) var(--ease-ship); }
+.dw[data-run="ship"] .dw__run { clip-path: inset(0 100% 0 0); transition: clip-path var(--t-ship) var(--ease-ship); }
+.dw[data-pressed] .dw__fill { transition: clip-path var(--t-press) var(--ease-out); }
+.dw[data-pressed], .dw[data-force="pressed"] { transform: translateY(1px) scale(.985); transition: transform 70ms var(--ease-out); }
+.dw[data-pressed]::before, .dw[data-force="pressed"]::before { opacity: 1; transition-duration: 50ms; }
+/* reset: both edges jump home while nothing is visible (between two runs) */
+.dw.dw[data-run="reset"] .dw__fill { clip-path: inset(0 0 0 100%); transition: none; }
+.dw.dw[data-run="reset"] .dw__run { clip-path: inset(0 0 0 0); transition: none; }
+
+.dw:focus-visible, .dw[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* loading: an honest build. It runs fast, holds, runs, holds, and creeps toward 86%, never the
+   end: only the server's answer finishes it. No loop, no spinner. */
+.dw.dw[data-state="loading"] { cursor: progress; }
+.dw.dw[data-state="loading"] .dw__fill { clip-path: inset(0 0 0 14%); transition: clip-path var(--t-creep) var(--ease-creep); }
+/* sent: the last stretch lands, the dot fills its ring and pings once. Live. */
+.dw.dw[data-state="sent"] { cursor: default; }
+.dw.dw[data-state="sent"] .dw__fill { clip-path: inset(0 0 0 0); transition: clip-path var(--t-land) var(--ease-out); }
+.dw.dw[data-state="sent"] .g-core { transform: scale(1); }
+.dw.dw[data-state="sent"] .g-ping { animation: dw-ping 900ms cubic-bezier(.2, .6, .3, 1) 380ms 1 forwards; }
+@keyframes dw-ping { from { transform: scale(1); opacity: .85; } to { transform: scale(1.75); opacity: 0; } }
+/* error: the run rolls back frame by frame (W10), the ring is left open. Calm: no shake, no red. */
+/* 99.99%, not 100%: a target equal to the creep's start counts as a reversal, and the browser would
+   shorten the rollback to the creep's progress. A distinct end keeps all six frames. */
+.dw.dw[data-state="error"]:not([data-run]) .dw__fill { clip-path: inset(0 0 0 99.99%); transition: clip-path 300ms steps(6, end); }
+.dw[data-state="error"] .g-ring { opacity: 0; }
+.dw[data-state="error"] .g-gap { opacity: 1; }
+
+.dw:disabled { --bg: var(--table); --fg: var(--ink-2); --rim: var(--hair); cursor: not-allowed; transform: none; }
+.dw:disabled .dw__run { display: none; }
+
+/* the quiet link: no line at rest; on hover a line runs in from the right and leaves to the left */
+.qlink {
+  position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px;
+  color: var(--ink); font: 560 1rem/1.4 var(--ui); text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.qlink__run { position: absolute; inset-inline: 2px; bottom: 9px; height: 1.5px; pointer-events: none; clip-path: inset(0 0 0 0); }
+.qlink__bar { position: absolute; inset: 0; background: currentColor; clip-path: inset(0 0 0 100%); }
+.qlink[data-run="in"] .qlink__bar, .qlink[data-run="out"] .qlink__bar, .qlink:focus-visible .qlink__bar, .qlink[data-force] .qlink__bar { clip-path: inset(0 0 0 0); }
+.qlink[data-run="in"] .qlink__bar, .qlink:focus-visible .qlink__bar { transition: clip-path 460ms var(--ease-stage); }
+.qlink[data-run="out"] .qlink__bar { transition: clip-path 200ms var(--ease-out); }
+.qlink[data-run="in"] .qlink__run { transition: clip-path 200ms var(--ease-out); }
+.qlink[data-run="out"] .qlink__run { clip-path: inset(0 100% 0 0); transition: clip-path 360ms var(--ease-ship); }
+.qlink:focus-visible, .qlink[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+/* still frames for the states strip: no transitions, chosen frames */
+.dw[data-still], .dw[data-still] *, .dw[data-still]::before, .dw[data-still]::after { transition: none !important; animation: none !important; }
+.dw.dw[data-still][data-state="loading"] .dw__fill { clip-path: inset(0 0 0 42%); }
+.dw.dw[data-still][data-frame="mid"] .dw__fill { clip-path: inset(0 0 0 54%); }
+
+/* reduced motion: nothing moves. States change at once, only opacity may fade. */
+@media (prefers-reduced-motion: reduce) {
+  .dw, .dw *, .dw::before, .dw::after, .qlink, .qlink * { transition-property: opacity !important; transition-duration: 120ms !important; transition-delay: 0s !important; animation: none !important; }
+  .dw[data-pressed], .dw[data-force="pressed"] { transform: none; }
+  .dw.dw.dw[data-state="loading"] .dw__fill { clip-path: inset(0 0 0 100%); }
+  .dw.dw[data-state="loading"] .dw__glyph { opacity: .5; }
+  /* there is no mid-run frame without motion: the forced tile shows the end of the preview */
+  .dw.dw.dw[data-frame="mid"] .dw__fill { clip-path: inset(0 0 0 0); }
+}
+
+/* ============================== THE PAGE ============================== */
+.page { max-width: 1200px; margin: 0 auto; padding: 56px 32px 96px; }
+.sheet { background: var(--paper); border-radius: 2px; box-shadow: var(--paper-shadow); }
+.mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+.cap { color: var(--ink-2); font-size: .8125rem; line-height: 1.5; }
+.cap code, .code { direction: ltr; unicode-bidi: isolate; font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: .75rem; color: var(--ink-2); }
+
+.head { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 40px; align-items: end; padding-bottom: 40px; }
+.head h1 { margin: 0; font-size: clamp(2.6rem, 6vw, 4.5rem); line-height: 1; font-weight: 800; font-stretch: 78%; }
+.head .kicker { margin: 0 0 14px; color: var(--ink-2); font-size: .875rem; }
+.head .idea { margin: 18px 0 0; font-size: 1.125rem; line-height: 1.7; max-width: 34em; }
+.head dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: .875rem; color: var(--ink-2); }
+.head dt { color: var(--ink); font-weight: 650; }
+.head dd { margin: 0; }
+
+.sec-title { display: flex; align-items: baseline; gap: 14px; margin: 64px 0 18px; font-size: 1.25rem; font-weight: 720; }
+.sec-title .ln { color: var(--ink-2); font-weight: 450; font-size: .8125rem; }
+
+.live { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.live > * { min-width: 0; }
+.hero-sheet { grid-column: 1 / -1; padding: 72px 48px 56px; display: grid; justify-items: start; gap: 22px; }
+.tag { margin: 0; color: var(--ink-2); font-size: .8125rem; }
+.table-bar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 4px; }
+.logo { direction: ltr; font-weight: 760; font-size: 1.125rem; font-stretch: 85%; color: var(--ink); }
+.form-sheet, .faq-sheet { padding: 36px 32px; }
+.field { display: grid; gap: 6px; margin-bottom: 18px; }
+.field label { font-size: .875rem; font-weight: 560; }
+.field input {
+  font: 400 1rem/1.4 var(--ui); color: var(--ink); background: var(--paper);
+  min-height: 48px; padding: 0 14px; border: 1.5px solid var(--field); border-radius: 4px;
+}
+.field input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.field input[type="tel"] { direction: ltr; text-align: left; }
+.ctl-row { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 14px; }
+.ctl {
+  font: 500 .8125rem/1 var(--ui); color: var(--ink); background: transparent; cursor: pointer;
+  min-height: 44px; padding: 0 12px; border: 1px solid var(--field); border-radius: 4px;
+}
+.ctl:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.log { margin: 12px 0 0; min-height: 1.5em; font-size: .8125rem; color: var(--ink-2); }
+.faq-sheet { display: grid; align-content: start; gap: 18px; justify-items: start; }
+.faq-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+
+.strip { padding: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+.tile { display: grid; grid-template-rows: 1fr auto; gap: 14px; justify-items: center; padding: 30px 12px 18px; min-height: 172px; }
+.tile:not(:nth-child(3n+1)) { border-inline-start: 1px solid var(--hair); }
+.tile:nth-child(n+4) { border-top: 1px solid var(--hair); }
+.tile .slot { display: grid; place-items: center; width: 100%; }
+.tile figcaption { display: flex; gap: 10px; align-items: baseline; }
+.tile figcaption b { font-weight: 650; color: var(--ink); }
+.tile { margin: 0; }
+
+.phone-wrap { display: grid; grid-template-columns: 390px minmax(0, 1fr); gap: 40px; align-items: start; }
+.phone { width: 390px; padding: 28px 16px 32px; display: grid; gap: 22px; }
+.phone .row { display: grid; gap: 8px; }
+.phone-note { color: var(--ink-2); font-size: .9375rem; max-width: 34em; }
+.phone-note p { margin: 0 0 12px; }
+
+.notes { padding: 32px; }
+.notes h3 { margin: 0 0 8px; font-size: 1rem; }
+.notes p { margin: 0 0 14px; max-width: 60em; }
+.notes pre { margin: 0 0 18px; padding: 18px; background: var(--table); border-radius: 4px; overflow-x: auto; direction: ltr; text-align: left;
+  font: .78rem/1.6 ui-monospace, "Cascadia Mono", Consolas, monospace; color: var(--ink); }
+
+@media (max-width: 960px) {
+  .head { grid-template-columns: 1fr; }
+  .phone-wrap { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .page { padding: 32px 16px 72px; }
+  .head { gap: 28px; padding-bottom: 8px; }
+  .sec-title { margin-top: 48px; }
+  .live { grid-template-columns: 1fr; }
+  .hero-sheet { padding: 40px 20px 32px; }
+  .form-sheet, .faq-sheet { padding: 28px 20px; }
+  .hero-sheet .dw { width: 100%; display: grid; }
+  .strip { grid-template-columns: 1fr; padding: 8px 16px; }
+  .tile { border-inline-start: 0 !important; min-height: 0; padding: 24px 0 16px; }
+  .tile:nth-child(n+2) { border-top: 1px solid var(--hair); }
+  .phone { width: 100%; }
+  .notes { padding: 22px 16px; }
+}
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- 1 · HEAD -->
+  <header class="head">
+    <div>
+      <p class="kicker">משפחת כפתורים · שוט אחד · רעיון לבדיקה</p>
+      <h1>הפריסה</h1>
+      <p class="idea">הכפתור הוא שורת סטטוס של פריסה. ריחוף מריץ תצוגה מקדימה בלי להתחיל, לחיצה שולחת, פס הבנייה מתמלא מימין לשמאל מאחורי הטקסט והופך אותו, והסוף נוחת כ"באוויר": נקודה שמתמלאת בתוך טבעת דיו.</p>
+    </div>
+    <dl>
+      <dt>מהעולם</dt><dd>W11 רינדור · W12 עלה לאוויר · W10 פריים · W22 השורה שאחרי דיפלוי · W16 וואטסאפ · W01 מספרי שורות (במספור הלוח)</dd>
+      <dt>למה רק שלנו</dt><dd>הלקוח קונה מנתי את הרגע שבו האתר יוצא מהמחשב לאוויר. הכפתור עושה את הרגע הזה בעצמו, בכל לחיצה, ובלי צבע אחד מחוץ לפלטה.</dd>
+      <dt>פלטה</dt><dd>נעולה (D81). W06 אומר ירוק = עבר, אבל אין ירוק: "באוויר" הוא נקודת דיו בתוך טבעת דיו.</dd>
+    </dl>
+  </header>
+
+  <!-- 2 · LIVE -->
+  <h2 class="sec-title"><span class="ln mono">01</span>חי: לרחף, לטאב, ללחוץ</h2>
+  <section class="live" aria-label="כפתורים חיים">
+    <div class="sheet hero-sheet" id="hero">
+      <p class="tag">(א) ההירו, על גיליון נייר</p>
+      <a class="dw" href="#contact" data-demo-link data-label="בואו נדבר על הפרויקט שלכם"></a>
+    </div>
+
+    <div class="table-bar" id="header">
+      <span class="logo">MediaWave</span>
+      <a class="dw" href="#contact" data-size="sm" data-demo-link data-label="בואו נדבר"></a>
+    </div>
+
+    <form class="sheet form-sheet" id="contact" novalidate>
+      <p class="tag" style="margin-bottom:16px">(ג) הטופס</p>
+      <div class="field"><label for="f-name">שם</label><input id="f-name" name="name" autocomplete="off"></div>
+      <div class="field"><label for="f-phone">טלפון</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="off"></div>
+      <button class="dw" id="submit" type="submit" data-block data-live data-label="שליחת הודעה"></button>
+      <!-- the W22 line: real clock time of each event, nothing invented. aria-hidden: the button announces. -->
+      <p class="log mono" id="log" aria-hidden="true"></p>
+      <div class="ctl-row">
+        <button class="ctl" type="button" data-demo="sent">הדמיה: טעינה ואז נשלח</button>
+        <button class="ctl" type="button" data-demo="error">הדמיה: טעינה ואז שגיאה</button>
+      </div>
+    </form>
+
+    <div class="sheet faq-sheet" id="faq">
+      <p class="tag">(ד) סוף השאלות הנפוצות</p>
+      <div class="faq-actions">
+        <a class="dw dw--line" href="#contact" data-demo-link data-label="צרו קשר"></a>
+        <a class="qlink" href="#services" data-demo-link><span>לשירותים שלנו</span><span class="qlink__run" aria-hidden="true"><span class="qlink__bar"></span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · STATES STRIP (inert: forced frames for screenshots) -->
+  <h2 class="sec-title"><span class="ln mono">02</span>כל המצבים, בבת אחת</h2>
+  <section class="sheet strip" id="strip" inert aria-label="לוח מצבים">
+    <figure class="tile"><div class="slot"><a class="dw" data-still data-label="בואו נדבר על הפרויקט שלכם"></a></div><figcaption class="cap"><span class="mono">01</span><b>מנוחה</b><code>idle</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><a class="dw" data-still data-force="hover" data-frame="mid" data-label="בואו נדבר על הפרויקט שלכם"></a></div><figcaption class="cap"><span class="mono">02</span><b>ריחוף, באמצע הריצה</b><code>hover · 46%</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><a class="dw" data-still data-force="hover" data-label="בואו נדבר על הפרויקט שלכם"></a></div><figcaption class="cap"><span class="mono">03</span><b>ריחוף</b><code>hover</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><a class="dw" data-still data-force="focus" data-label="בואו נדבר על הפרויקט שלכם"></a></div><figcaption class="cap"><span class="mono">04</span><b>פוקוס מקלדת</b><code>focus</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><a class="dw" data-still data-force="pressed" data-label="בואו נדבר על הפרויקט שלכם"></a></div><figcaption class="cap"><span class="mono">05</span><b>לחיצה</b><code>pressed</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><button class="dw" type="button" data-still data-state="loading" data-label="שליחת הודעה"></button></div><figcaption class="cap"><span class="mono">06</span><b>טעינה</b><code>loading</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><button class="dw" type="button" data-still data-state="sent" data-label="שליחת הודעה"></button></div><figcaption class="cap"><span class="mono">07</span><b>נשלח, באוויר</b><code>sent</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><button class="dw" type="button" data-still data-state="error" data-label="שליחת הודעה"></button></div><figcaption class="cap"><span class="mono">08</span><b>שגיאה</b><code>error</code></figcaption></figure>
+    <figure class="tile"><div class="slot"><button class="dw" type="button" data-still disabled data-label="שליחת הודעה"></button></div><figcaption class="cap"><span class="mono">09</span><b>מושבת</b><code>disabled</code></figcaption></figure>
+  </section>
+
+  <!-- 3b · 390 COLUMN -->
+  <h2 class="sec-title"><span class="ln mono">03</span>בטור של 390</h2>
+  <div class="phone-wrap">
+    <section class="sheet phone" id="col390" inert aria-label="המצבים ברוחב 390">
+      <div class="row"><span class="cap"><span class="mono">01</span> מנוחה</span><a class="dw" data-block data-still data-label="בואו נדבר על הפרויקט שלכם"></a></div>
+      <div class="row"><span class="cap"><span class="mono">02</span> ריחוף, באמצע</span><a class="dw" data-block data-still data-force="hover" data-frame="mid" data-label="בואו נדבר על הפרויקט שלכם"></a></div>
+      <div class="row"><span class="cap"><span class="mono">03</span> ריחוף</span><a class="dw" data-block data-still data-force="hover" data-label="בואו נדבר על הפרויקט שלכם"></a></div>
+      <div class="row"><span class="cap"><span class="mono">04</span> פוקוס</span><a class="dw" data-block data-still data-force="focus" data-label="בואו נדבר על הפרויקט שלכם"></a></div>
+      <div class="row"><span class="cap"><span class="mono">05</span> לחיצה</span><a class="dw" data-block data-still data-force="pressed" data-label="בואו נדבר על הפרויקט שלכם"></a></div>
+      <div class="row"><span class="cap"><span class="mono">06</span> טעינה</span><button class="dw" type="button" data-block data-still data-state="loading" data-label="שליחת הודעה"></button></div>
+      <div class="row"><span class="cap"><span class="mono">07</span> נשלח</span><button class="dw" type="button" data-block data-still data-state="sent" data-label="שליחת הודעה"></button></div>
+      <div class="row"><span class="cap"><span class="mono">08</span> שגיאה</span><button class="dw" type="button" data-block data-still data-state="error" data-label="שליחת הודעה"></button></div>
+      <div class="row"><span class="cap"><span class="mono">09</span> מושבת</span><button class="dw" type="button" data-block data-still disabled data-label="שליחת הודעה"></button></div>
+    </section>
+    <div class="phone-note">
+      <p><b>הסיפור של לחיצה אחת.</b> ריחוף מריץ את הפס מימין לשמאל בשני עצירות קצרות, כמו בנייה, העלאה והפצה (560ms). עזבתם באמצע? הפס לא חוזר אחורה: הוא ממשיך ויוצא שמאלה, כמו חבילה שיצאה לדרך (400ms).</p>
+      <p><b>לחיצה</b> מורידה את הכפתור פיקסל אחד, מעבה את המסגרת ומשלימה את הפס (170ms). השחרור קופץ חזרה עם עודף קטן.</p>
+      <p><b>שליחה:</b> התצוגה המקדימה יוצאת שמאלה (320ms), ומיד מתחילה ריצה אמיתית מאפס: מהירה, עוצרת, ממשיכה, ונזחלת לעבר 86% בלי להגיע לסוף. רק תשובת השרת מסיימת אותה. זה הפס הכי כן שיש: הוא לא מעמיד פנים שהוא יודע כמה נשאר.</p>
+      <p><b>נשלח:</b> הקטע האחרון נוחת בהחלטיות (260ms), הנקודה מתמלאת בתוך הטבעת עם קפיצה קטנה, וטבעת אחת יוצאת ממנה פעם אחת ונעלמת. באוויר.</p>
+      <p><b>שגיאה:</b> הפס מתגלגל אחורה בשישה פריימים (300ms, W10) והטבעת נשארת פתוחה. בלי רעד, בלי אדום. מרחפים עליה, והיא מציעה ריצה חדשה.</p>
+    </div>
+  </div>
+
+  <!-- 4 · HOW TO BUILD IT ON StateButton -->
+  <h2 class="sec-title"><span class="ln mono">04</span>איך זה נבנה על StateButton</h2>
+  <section class="sheet notes" id="notes">
+    <p>מבנה אחד, תכונה אחת לכל שכבה: <span class="code">.dw__fill</span> מחזיקה את הקצה המוביל (clip-path), <span class="code">.dw__run</span> את הקצה הנגרר (clip-path), הכפתור עצמו את הלחיצה (transform). התווית מצוירת פעמיים, והעותק שבתוך הפס בצבע ההפוך, כך שאף אות לא מוסתרת באף פריים.</p>
+<pre>// src/look/buttons/DeployButton.tsx
+export function DeployButton(props: LookButtonProps) {
+  const ref = useRef&lt;HTMLElement | null&gt;(null)
+  useDeployRun(ref, props.state ?? 'idle')       // ship -&gt; reset -&gt; creep, see below
+  return (
+    &lt;StateButton {...props} cls="dw"
+      onPoint={(el, p) =&gt; p ? runIn(el) : runOut(el)}   // fine pointers only (StateButton)
+      render={(label, state) =&gt; (&lt;&gt;
+        &lt;span className="dw__label"&gt;&lt;Glyph /&gt;{label}&lt;/span&gt;
+        &lt;span className="dw__run" aria-hidden="true"&gt;
+          &lt;span className="dw__fill"&gt;&lt;span className="dw__label"&gt;&lt;Glyph /&gt;{label}&lt;/span&gt;&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/&gt;)} /&gt;
+  )
+}
+// Glyph = &lt;svg viewBox="0 0 12 12"&gt; ring (r 5) · gap ring (pathLength 100, dasharray 74 26)
+//         · core (r 2.4, scale 0 -&gt; 1 on sent) · ping (r 5, one 900ms ping on sent)
+
+CSS states (deploy-button.css, all in this file's &lt;style&gt;):
+  rest            fill inset(0 0 0 100%)   run inset(0)              no transition
+  [data-run=in]   fill inset(0)  560ms linear() with two holds  (hover / :focus-visible)
+  [data-run=out]  run  inset(0 100% 0 0)  400ms                 (leave: exits to the left)
+  [data-pressed]  fill inset(0) 170ms; transform translateY(1px) scale(.985) 70ms; ::before rim opacity
+  loading         fill inset(0 0 0 14%) 9s creep, no loop
+  sent            fill inset(0) 260ms; core scale(1) +150ms; ping once +380ms
+  error           fill inset(0 0 0 100%) steps(6) 300ms; ring -&gt; open ring (opacity)
+  reduced motion  transition-property: opacity only; loading = empty fill + dimmed ring
+
+JS (three small pieces, one attribute write per event):
+  1. runIn / runOut: write data-run="in" | "out"; 400ms after "out" remove it (both edges jump home
+     while nothing is visible). Touch: pointerdown sets "in" (with data-pressed), pointerup "out".
+     Blur keeps the run if the pointer is still over the button; leave keeps it if it has focus.
+  2. useDeployRun(state): idle -&gt; loading while the preview is showing:
+     data-run="ship" (320ms) -&gt; data-run="reset" -&gt; force a reflow -&gt; remove data-run, so the
+     creep starts from zero. sent -&gt; idle: data-run="out" (the full bar exits left).
+  3. Hover on error is allowed (it is a retry): the error rule applies only without data-run.
+No pointer position is needed: the run always reads right to left, wherever the cursor enters.</pre>
+    <p class="cap">שמות הסטטוס שבכפתור באים כמו שהם מ-STATE_LABEL: "שולחים", "נשלח. נחזור אליכם היום", "לא נשלח. נסו שוב". לא נוסף אף טקסט חדש לתוך הכפתור. שורת היומן מתחת לטופס מציגה רק שעה אמיתית ואת אותן מילים.</p>
+  </section>
+</main>
+
+<script>
+(() => {
+  const STATE_LABEL = { loading: 'שולחים', sent: 'נשלח. נחזור אליכם היום', error: 'לא נשלח. נסו שוב' };
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const T = { out: 400, ship: 320 };
+  const ms = (v) => (reduce.matches ? 0 : v);
+
+  const glyph = () =>
+    '<svg class="dw__glyph" viewBox="0 0 12 12" aria-hidden="true" focusable="false">' +
+    '<circle class="g-ring" cx="6" cy="6" r="5"/>' +
+    '<circle class="g-gap" cx="6" cy="6" r="5" pathLength="100" stroke-dasharray="74 26" transform="rotate(-62 6 6)"/>' +
+    '<circle class="g-core" cx="6" cy="6" r="2.4"/>' +
+    '<circle class="g-ping" cx="6" cy="6" r="5"/></svg>';
+
+  // render(label, state): the label twice, the second copy inside the run, in the inverse colour
+  function mount(el) {
+    const state = el.dataset.state || 'idle';
+    el.dataset.state = state;
+    const text = state === 'idle' ? el.dataset.label : STATE_LABEL[state];
+    const live = el.hasAttribute('data-live') ? ' aria-live="polite"' : '';
+    el.innerHTML =
+      '<span class="dw__label">' + glyph() + '<span class="dw__text"' + live + '></span></span>' +
+      '<span class="dw__run" aria-hidden="true"><span class="dw__fill"><span class="dw__label">' + glyph() +
+      '<span class="dw__text"></span></span></span></span>';
+    setText(el, text);
+  }
+  const setText = (el, text) => el.querySelectorAll('.dw__text').forEach((n) => { n.textContent = text; });
+  const busy = (el) => el.disabled || el.dataset.state === 'loading' || el.dataset.state === 'sent';
+
+  function runIn(el) {
+    if (busy(el)) return;
+    clearTimeout(el._t);
+    el.dataset.run = 'in';
+  }
+  function settle(el, wait) {
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { if (el.dataset.run === 'out') delete el.dataset.run; }, ms(wait));
+  }
+  // leaving: the pointer left (keep the run if the element still has keyboard focus);
+  // otherwise focus left (keep it if the pointer is still over the element)
+  function runOut(el, leaving) {
+    if (el.dataset.run !== 'in') return;
+    if (leaving && el.matches(':focus-visible')) return;
+    if (!leaving && fine.matches && el.matches(':hover')) return;
+    el.dataset.run = 'out';
+    settle(el, T.out);
+  }
+  const fillShowing = (el) => el.dataset.run === 'in' || el.dataset.run === 'out' || el.hasAttribute('data-pressed') || el.matches(':focus-visible');
+
+  function setState(el, state) {
+    clearTimeout(el._t);
+    setText(el, state === 'idle' ? el.dataset.label : STATE_LABEL[state]);
+    if (state === 'loading') el.setAttribute('aria-busy', 'true'); else el.removeAttribute('aria-busy');
+    if (state === 'loading' && fillShowing(el)) {
+      // the preview ships to the left, then the real run starts from zero
+      el.dataset.run = 'ship';
+      el._t = setTimeout(() => {
+        el.dataset.run = 'reset';
+        void el.offsetWidth;
+        delete el.dataset.run;
+        el.dataset.state = 'loading';
+      }, ms(T.ship));
+      return;
+    }
+    if (state === 'idle' && el.dataset.state === 'sent') {
+      el.dataset.state = 'idle';
+      el.dataset.run = 'out';
+      settle(el, T.out);
+      return;
+    }
+    delete el.dataset.run;
+    el.dataset.state = state;
+  }
+
+  function wire(el) {
+    el.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch' && fine.matches) runIn(el); });
+    el.addEventListener('pointerleave', () => { delete el.dataset.pressed; runOut(el, true); });
+    el.addEventListener('pointerdown', (e) => {
+      if (busy(el) || e.button > 0) return;
+      el.dataset.pressed = '';
+      if (e.pointerType === 'touch') runIn(el);
+    });
+    el.addEventListener('pointerup', (e) => { delete el.dataset.pressed; if (e.pointerType === 'touch') runOut(el, true); });
+    el.addEventListener('pointercancel', () => { delete el.dataset.pressed; runOut(el, true); });
+    el.addEventListener('focus', () => { if (el.matches(':focus-visible')) runIn(el); });
+    el.addEventListener('blur', () => { delete el.dataset.pressed; runOut(el, false); });
+    el.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'Enter') && !busy(el)) el.dataset.pressed = ''; });
+    el.addEventListener('keyup', () => { delete el.dataset.pressed; });
+    el.addEventListener('contextmenu', () => { delete el.dataset.pressed; });
+  }
+
+  document.querySelectorAll('.dw').forEach(mount);
+  document.querySelectorAll('.dw, .qlink').forEach((el) => { if (!el.closest('[inert]')) wire(el); });
+
+  // links: in the site they open WhatsApp in a new tab; here the run just ships
+  document.querySelectorAll('[data-demo-link]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (a.dataset.run === 'in' || a.matches(':focus-visible')) { a.dataset.run = 'out'; settle(a, T.out); }
+  }));
+
+  // the form demo
+  const submit = document.getElementById('submit');
+  const log = document.getElementById('log');
+  const clock = () => new Date().toLocaleTimeString('he-IL', { hour12: false });
+  const note = (word) => { log.textContent = clock() + ' · ' + word; };
+  let timers = [];
+  function demo(outcome) {
+    if (submit.dataset.state === 'loading') return;
+    timers.forEach(clearTimeout);
+    timers = [];
+    setState(submit, 'loading');
+    note(STATE_LABEL.loading);
+    timers.push(setTimeout(() => {
+      setState(submit, outcome);
+      note(outcome === 'sent' ? 'נשלח' : 'לא נשלח');
+      if (outcome === 'sent') timers.push(setTimeout(() => setState(submit, 'idle'), 4600));
+    }, 2600));
+  }
+  document.getElementById('contact').addEventListener('submit', (e) => { e.preventDefault(); demo('sent'); });
+  document.querySelectorAll('[data-demo]').forEach((b) => b.addEventListener('click', () => demo(b.dataset.demo)));
+
+  // test hook for the screenshot script only
+  window.__dw = { setState, runIn, runOut };
+})();
+</script>
+</body>
+</html>

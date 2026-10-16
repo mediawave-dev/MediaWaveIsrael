@@ -1,0 +1,138 @@
+{
+  "name": "Link To Live",
+  "lane": "transformation",
+  "idea": "On his site you shrink the page into a phone with your own finger, then watch a real client's site get built inside that phone, step by step, until it turns green and goes live, and the last link on the page is the one you send him.",
+  "subject_world": [
+    "materials: the staging link sent over WhatsApp, a client's first-version screenshot, the production address, a VHS cassette with a handwritten label, raw clips",
+    "tools: Chrome DevTools device mode (drag handle, rulers, the 390 x 844 readout), the address bar and its thin load bar, the Lighthouse gauge, an editing timeline with a playhead",
+    "rituals: send the link, the client opens it on his phone, he circles what bothers him and sends it back, fix, measure, deploy",
+    "insider words: סטייג'ינג, לעלות לאוויר, דיפלוי, רספונסיבי, 'תבדוק בטלפון', קאט, טיימקוד"
+  ],
+  "dossier": [
+    "W02: the hero interaction and the instrument face: a width handle, px rulers and a live dimension readout around the column",
+    "W19: the grid unit is the 390 column; on desktop it stays centred and the copy sits in the ground beside it, aligned to ruler ticks",
+    "W03: the motif: an address line heads each chapter with that chapter's path; its load bar doubles as the progress track",
+    "W04: the persistent object: on desktop a 390 column, on a phone the visitor's own screen (no mockup), holding one client site through its states",
+    "W07: the address line's load bar is the playhead track; the video service shows a real timeline with a playhead",
+    "W08: chapters are stamped with timecode, taken from the visitor's own elapsed time on the page, not invented numbers",
+    "W09: every state change inside the phone is a hard cut on a scroll frame, never a crossfade",
+    "W17: the fix chapter: a finger-drawn circle on a first-version screenshot, then a cut to the corrected version",
+    "W05/W06: colour exists only as a verdict: red and orange only inside the gauge and the circle, green only for live",
+    "W12/W20: the main peak: the staging host is replaced by the real address and a green dot lights",
+    "W21: after live, a hard cut swaps a second, different real client site into the same phone",
+    "W14: the tape service enters the phone as a labelled cassette and comes out as a file playing"
+  ],
+  "pinned": "The column/phone never leaves the screen from the hero to the contact chapter and carries one real client site through link sent > first version > circled fix > measured > live (green dot), in that order; the hero is device mode, with the visitor narrowing the page to 390.",
+  "tradition": "The instrument UI of browser developer tools (device toolbar, rulers, dimension readout) and the non-linear editor (timecode, playhead, hard cut), borrowed only as chrome and marking, never as decoration.",
+  "transformation": "First viewport: a wide desktop page on a staging address with a width readout of 1440. Last viewport: the same column at 390, live on its real address with a green dot, holding a prefilled message to Nati; the link the visitor received at the top becomes the link the visitor sends at the bottom.",
+  "palette": [
+    { "name": "ground", "hex": "#ECEEF1", "role": "page ground: the cool device-mode backdrop around the emulated screen; a neutral frame so the client's site is the only colour" },
+    { "name": "ink", "hex": "#1B1D21", "role": "text, rulers, buttons, readouts (about 14:1 on ground)" },
+    { "name": "screen", "hex": "#FFFFFF", "role": "the phone screen / the client's page surface; the client's own palette lives inside it" },
+    { "name": "live", "hex": "#0CCE6B", "role": "accent: Lighthouse pass, meaning 'passed / live'; only the live dot and the gauge's green arc; under 1% of the area; never used as text" },
+    { "name": "not-yet", "hex": "#FF4E42", "role": "Lighthouse fail and the client's circled correction, both meaning 'not yet'; strokes only, the gauge and the fix chapter only" },
+    { "name": "almost", "hex": "#FFA400", "role": "Lighthouse average band; appears only in the gauge arc while it climbs" }
+  ],
+  "type": {
+    "display": "Noto Sans Hebrew variable, wght 800, wdth 62.5-75 (condensed cut)",
+    "text": "Noto Sans Hebrew variable, wght 400/600, wdth 100, tabular figures for timecode and readouts (no mono anywhere)",
+    "hebrew_support": "native",
+    "why": "Noto Sans Hebrew is the Hebrew font the client's Android phone renders by default, and its width axis lets the headline narrow with the page during the device-mode drag (the reflow done by the type itself)."
+  },
+  "hero_ascii": "staging-link/your-site      1440 x 900\n+--------------------------------+|\n|  [ hero film, 16:9 ]           ||\n|  H1 (approved copy)            ||<\n|  [ WhatsApp ]   tel            ||<\n+--------------------------------+|\n   drag the edge  <---  to 390\n        +----------+  390 x 844\n        | reflowed |  film: 9:19.5\n        +----------+",
+  "motif": {
+    "what": "The address line (W03): host + chapter path, a status chip (grey 'staging' until the deploy, then the green dot), and a 2px load bar that is also the playhead.",
+    "jobs": [
+      "preloader: the staging link types in while the Horizon ident plays in its favicon slot",
+      "section marker: each chapter's path plus a timecode stamp of when the visitor reached it",
+      "progress: the load bar fills along the whole story (W07)",
+      "state: the staging chip becomes the green live dot at the deploy",
+      "call to action: in the last chapter the line shows the WhatsApp link the button opens"
+    ]
+  },
+  "signature_moments": [
+    {
+      "where": "hero (#top), held stage 1; the Horizon ident is folded in here as the load-in",
+      "sentence": "H1 (approved copy) + [קופי: נתי] a single line saying every site starts at the width of a phone",
+      "move": "The visitor drags the page edge (scroll and a keyboard slider drive it too) from desktop width to 390; the H1 rewraps and condenses on its width axis, the hero film reframes from 16:9 to portrait along its subject, and the readout counts down to 390 x 844. On a phone the readout shows the visitor's own measured screen size.",
+      "why_only_here": "Narrowing to a phone is Nati's literal first act on every project (W02/W19); only here does the visitor do the studio's work with their own hand."
+    },
+    {
+      "where": "#process, the fix chapter",
+      "sentence": "[קופי: נתי] the client circles what bothers him on his phone, and it gets fixed",
+      "move": "A real first-version screenshot sits in the phone; a red finger stroke circles one element at hand speed; on the next scroll frame a hard cut swaps in the corrected version with the circle gone.",
+      "why_only_here": "The circled screenshot is the real artefact clients send back (W17); it proves 'he listens' without a testimonial."
+    },
+    {
+      "where": "#process end, held stage 2 (measure > live), the page's main peak (W20)",
+      "sentence": "approved copy: it goes live only when it is fast on a phone",
+      "move": "The Lighthouse gauge sweeps through red and orange to the real measured mobile score; on the frame it crosses 90, a hard cut replaces the staging host with the real address and lights the green dot, the only green on the page.",
+      "why_only_here": "Going live is the state every client waits for, and the measured score is the one claim the site can prove about itself (W05/W12)."
+    }
+  ],
+  "motion_grammar": {
+    "verbs": ["narrow", "cut", "pass"],
+    "easing_character": "Instrument-true: linear scrub for widths and the gauge so the values read honestly, zero-duration cuts on frame boundaries, and only the circle stroke is eased, at hand speed.",
+    "scroll_model": "Lenis 1.3 on gsap.ticker + ScrollTrigger reading two CSS-sticky stages on desktop (no transform pin, for CLS); native scroll with CSS sticky on phones",
+    "intensity": "orchestrated"
+  },
+  "scroll_outline": [
+    "act 1, 0-2 vp (#top, held): the staging link loads, the Horizon ident plays, the visitor narrows the page to 390; the column becomes the phone",
+    "act 2, 2-3 vp (#process): cut, a message bubble delivers the staging link and the phone opens a real client site; the address line shows the staging path, timecode stamped",
+    "act 3, 3-4.5 vp: first version, the client site scrolls inside the phone; copy beside it on the ground",
+    "act 4, 4.5-5.5 vp: the fix, circle stroke, then a hard cut to the corrected screen",
+    "act 5, 5.5-7 vp (held): measure > live, the gauge climbs to the real score, the address swaps and the green dot lights; then a cut to a second, different client site in the same phone (W21)",
+    "act 6, 7-9 vp (#services): the same phone takes three inputs in sequence, a link (site), raw clips on a timeline with a playhead (video), a labelled VHS (tape), each cut to its output playing; the 13 Lotties live inside these screens",
+    "act 7, 9-10.5 vp (#faq): the 13 entries as native details/summary at the 390 column; address path /faq",
+    "act 8, 10.5-12 vp (#contact): the address line shows the WhatsApp link; the phone shows the prefilled message; WhatsApp primary, tel, form fallback, all with track() calls"
+  ],
+  "reflex_hits": [
+    { "item": "Layer 0: the system font as the brand voice (Noto Sans Hebrew is Android's Hebrew system face)", "reason": "Brief-specific: the claim is 'your site on your phone', so the page speaks in the face the client's phone uses, and its wdth axis performs the W02 reflow." },
+    { "item": "2026-10 note: a variable-width display that swells as you scroll", "reason": "The width axis moves only during the hero's device-mode drag, tied to the real column width, never scrubbed by scroll elsewhere." },
+    { "item": "Layer 2: rough-notation circles (scrapbook kit)", "reason": "One recorded finger stroke on a real screenshot, the literal W17 artefact, used once; no handwriting font, no tape, no polaroids." },
+    { "item": "Probes 1 and 2: phone mockups with portfolio screenshots", "reason": "The phone is pinned by the brief; here it holds a site changing state over time, and on phones there is no mockup, because the visitor's screen is the phone." },
+    { "item": "Probes: WhatsApp green #25D366 as accent; pill buttons", "reason": "Remove: green is Lighthouse 'pass' and appears only at live; buttons are 4px rectangles like device-toolbar inputs." },
+    { "item": "Layer 2: the stat-hero (a big number with a small label)", "reason": "The number appears once, inside its own gauge, and is the real measured mobile score injected at build time, never a round stat." },
+    { "item": "Ambition probe: timecode counter and playhead", "reason": "These are dossier items W07/W08 from Nati's answers; here they stamp chapters with the visitor's real time and track progress, with no restoration scrub." },
+    { "item": "Cluster 5: '01 / 02 / 03' and a mono face for small labels", "reason": "Remove: timecode replaces numerals, and readouts use the text face's tabular figures." },
+    { "item": "Layer 2: the dev-tool dark kit (near-black, masked grid)", "reason": "Avoided: a light ground with no grid or dot field; rulers only flank the column on desktop." },
+    { "item": "KM palette (Klein night / paper / Klein blue) and EFT Betaamango", "reason": "Remove: recent portfolio line; nothing reused." }
+  ],
+  "assets_needed": [
+    "consent and choice of two real client sites (yaelevy, Ben-David Judaica?) plus their first-version and corrected states",
+    "one real client screenshot with a circled correction, or a faithful recreation approved by that client",
+    "one finger-drawn circle recorded as an SVG path on a real phone",
+    "the real staging URL format Nati sends, and the production address for the swap",
+    "a portrait reframe of the hero film (keyframed crop path) plus a portrait encode",
+    "a licence-checked free photo of a VHS cassette with a handwritten label (W14)",
+    "a build-time script that injects the current measured mobile Lighthouse score",
+    "self-hosted Noto Sans Hebrew variable subset (wght + wdth)",
+    "raw-clip timeline frames from Nati's own non-client footage for the video service"
+  ],
+  "risks": [
+    "Animating the real layout width per frame in the hero is expensive (reflow, INP and CLS); it needs a fixed-height sticky stage with container queries, and no width animation on phones",
+    "The H1 must be the LCP and fully readable at first paint, before any narrowing",
+    "The drag handle may go unnoticed; scroll must drive it too, and reduced motion opens at 390 with the readout already set",
+    "The fixed address line on phones is floating chrome that can sit over headings; the overlap audit must stay at 0 at 320/390",
+    "A cool grey ground can read clinical; the warmth depends entirely on real client material that is not yet confirmed",
+    "Without client consent the phone would hold a demo site, which must then be labelled as a demo (no invented proof)",
+    "'Under construction' states could make MediaWave itself look unfinished, so the MediaWave chrome must always look complete",
+    "Lighthouse green #0CCE6B fails contrast as text; the word 'live' stays in ink and the dot carries the colour",
+    "13 Lotties inside a 390 column risk crowding and TBT; mount lazily and pause them offscreen",
+    "The Horizon ident folded into the address-line load-in may undersell a sacred asset; giving it its own moment would make a fourth signature moment and needs a decision row",
+    "A displayed Lighthouse score that drops after a deploy turns the proof into a lie; hide the gauge if the injected run is under 90",
+    "The visitor-time timecode stamps can feel watched; compute them locally and never send them to analytics",
+    "Moving #services after #process changes the current section order (the anchors themselves remain)"
+  ],
+  "facts_to_verify": [
+    "Noto Sans Hebrew (Google Fonts) has a wdth axis of 62.5-100 and a Latin subset with tabular figures",
+    "Android's default Hebrew system font is Noto Sans Hebrew",
+    "Chrome DevTools device mode lists a 390 x 844 device, and the colour of its light-theme backdrop and rulers",
+    "Current Lighthouse gauge colours (pass #0CCE6B vs #00CC66, average #FFA400, fail #FF4E42 vs #FF3333)",
+    "The exact staging URL format Nati sends clients (Cloudflare pages.dev preview or another)",
+    "That the live mobile Lighthouse score is still 96",
+    "Which client sites may be shown, and whether a real circled screenshot exists",
+    "That the hero film's subject survives a portrait reframe",
+    "The WhatsApp prefilled link format and the number used by the existing track() calls"
+  ]
+}

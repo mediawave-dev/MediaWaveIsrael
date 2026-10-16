@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הסימון · משפחת כפתורים</title>
+<!--
+  Family "הסימון" (the selection), look "shot". One idea: the code editor's text selection (W01).
+  Hover / focus: a selection sweeps over the label from right to left (Shift+End in an RTL line),
+  inverting it exactly like a real selection. Focus adds the caret at the selection's end, blinking
+  at the editor's real rate (530 ms on / 530 ms off) five times and then holding solid (no loop at rest).
+  Press: the selection grows to the whole line (triple-click), the line sinks 1px. Loading: the
+  selection grows in frames, Shift+Left on key-repeat, while the gutter shows the unsaved dot.
+  Sent: the whole line stays selected and the gutter draws a check: the job is committed.
+  Error: the selection rewinds once (undo) and the gutter carries a diagnostic "!".
+  Palette locked (D81): #ECEEF1 #FFFFFF #1B1D21 #4A4F57 #D3D7DC(decoration) #6B717B(field borders).
+  Animated properties: transform, opacity, clip-path only.
+-->
+<style>
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  src: url("/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
+}
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  src: url("/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 62.5% 100%; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+:root {
+  --table: #ECEEF1; --paper: #FFFFFF; --ink: #1B1D21; --ink-2: #4A4F57; --line: #D3D7DC; --field: #6B717B;
+  --face: "Noto Sans Hebrew", system-ui, sans-serif;
+  /* timing: one frame of film = 41.667ms (24 fps); the editor caret blinks 530ms on / 530ms off */
+  --t-sel: 360ms;                                   /* hover / focus selection sweep */
+  --e-sel: cubic-bezier(0.22, 0.86, 0.24, 1);       /* fast hand, careful landing: a drag-select */
+  --t-off: 150ms;                                   /* deselect: quicker than select, like a click away */
+  --e-off: cubic-bezier(0.5, 0, 0.75, 0);
+  --t-press: 120ms;  --e-press: cubic-bezier(0.25, 0.8, 0.3, 1);
+  --paper-shadow: 0 1px 0 rgba(27,29,33,.05), 0 18px 30px -22px rgba(27,29,33,.45);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--table); color: var(--ink);
+  font: 400 1rem/1.7 var(--face); font-stretch: 100%;
+}
+.wrap { max-width: 1360px; margin: 0 auto; padding: 56px 40px 96px; }
+@media (max-width: 600px) { .wrap { padding: 28px 16px 64px; } }
+
+/* ---------- page head ---------- */
+.head { display: grid; gap: 14px; max-width: 760px; margin-bottom: 44px; }
+.eyebrow { font: 500 .8rem/1 var(--face); color: var(--ink-2); font-stretch: 87.5%; }
+.eyebrow b { font-weight: 600; color: var(--ink); }
+h1 { margin: 0; font: 800 clamp(2.6rem, 6vw, 4.4rem)/1.02 var(--face); font-stretch: 87.5%; }
+.head p { margin: 0; font-size: 1.125rem; color: var(--ink); max-width: 62ch; }
+.head p.why { color: var(--ink-2); font-size: 1rem; }
+.w { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
+.w li { font: 500 .8rem/1 var(--face); padding: 7px 10px; border-radius: 4px; background: var(--paper); color: var(--ink-2); }
+.w li b { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+h2 { margin: 0 0 6px; font: 700 1.35rem/1.25 var(--face); font-stretch: 87.5%; }
+.sub { margin: 0 0 22px; color: var(--ink-2); font-size: .95rem; }
+section { margin-top: 56px; }
+
+/* ---------- surfaces ---------- */
+.sheet { background: var(--paper); border-radius: 4px; box-shadow: var(--paper-shadow); padding: 36px; }
+@media (max-width: 600px) { .sheet { padding: 24px 18px; } }
+.live { display: grid; gap: 22px; grid-template-columns: 1.2fr 1fr; align-items: start; }
+.col { display: grid; gap: 22px; align-content: start; }
+@media (max-width: 960px) { .live { grid-template-columns: 1fr; } }
+.cap { font: 500 .78rem/1.3 var(--face); color: var(--ink-2); margin: 0 0 14px; }
+.hero-sheet h3 { margin: 0 0 10px; font: 800 clamp(1.8rem, 3.4vw, 2.6rem)/1.1 var(--face); font-stretch: 87.5%; max-width: 16ch; }
+.hero-sheet p { margin: 0 0 28px; color: var(--ink-2); max-width: 44ch; }
+.hero-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
+
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 4px; }
+.logo { font: 800 1.15rem/1 var(--face); font-stretch: 87.5%; direction: ltr; }
+.on-table { padding: 8px 0 0; }
+
+.form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field span { font: 600 .9rem/1.3 var(--face); }
+.field input {
+  font: 400 1rem/1.4 var(--face); color: var(--ink); background: var(--paper);
+  min-height: 48px; padding: 10px 14px; border: 1.5px solid var(--field); border-radius: 6px;
+}
+.field input[type="tel"] { direction: ltr; text-align: left; }
+.field input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.ctrls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.ctl {
+  font: 500 .82rem/1 var(--face); color: var(--ink); background: var(--table);
+  border: 1px solid var(--field); border-radius: 4px; min-height: 36px; padding: 8px 12px; cursor: pointer;
+}
+.ctl:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.faq-end { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+.faq-end p { margin: 0 0 16px; flex-basis: 100%; color: var(--ink-2); }
+
+/* =====================================================================
+   THE FAMILY: .sel  (render(label, state) -> gutter + line + selection + caret + commit)
+   ===================================================================== */
+.sel {
+  --bg: var(--ink); --fg: var(--paper); --ln: var(--table); --rim: transparent;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: flex-start; gap: .85em;
+  min-height: 56px; padding-block: 0; padding-inline: 1.05em 1.5em;   /* start = the gutter side (right) */
+  border: 0; border-radius: 6px; margin: 0;
+  background: var(--bg); color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--rim);
+  font: 600 1.0625rem/1.25 var(--face); font-stretch: 100%;
+  text-decoration: none; white-space: nowrap; cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  transition: transform 260ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.sel[data-tone="paper"] { --bg: var(--paper); --fg: var(--ink); --ln: var(--ink-2); --rim: var(--field); }
+.sel[data-size="sm"] { min-height: 44px; font-size: .95rem; gap: .7em; padding-inline: .85em 1.15em; border-radius: 5px; }
+.sel[data-block] { display: flex; width: 100%; }
+
+/* the gutter: W01's line-number column, on the right as in an RTL editor */
+.sel__gutter {
+  position: relative; display: inline-grid; place-items: center; min-width: 1.45em; height: 1em;
+  color: var(--ln); font: 500 .7em/1 var(--face); font-stretch: 75%; font-variant-numeric: tabular-nums lining-nums;
+  direction: ltr;
+}
+.sel__gutter > * { grid-area: 1 / 1; }
+.sel__mark { width: 1.15em; height: 1.15em; display: none; overflow: visible; }
+.sel[data-state="loading"] .sel__ln, .sel[data-state="sent"] .sel__ln, .sel[data-state="error"] .sel__ln { visibility: hidden; }
+.sel[data-state="loading"] .sel__mark--dirty,
+.sel[data-state="sent"] .sel__mark--done,
+.sel[data-state="error"] .sel__mark--err { display: block; }
+
+/* the line: the real label, plus one copy inside the selection */
+.sel__line { position: relative; display: inline-grid; }
+.sel__text { display: block; }
+.sel__hl {
+  position: absolute; inset: -.2em -.38em; padding: .2em .38em; z-index: 1;
+  display: grid; border-radius: 2px;
+  background: var(--fg); color: var(--bg);
+  clip-path: inset(0 0 0 100%);                      /* collapsed on the right edge: the caret's start */
+  transition: clip-path var(--t-off) var(--e-off);
+  pointer-events: none;
+}
+/* the caret: parked just past the end of the line (the left), never over a letter */
+.sel__caret {
+  position: absolute; z-index: 3; left: calc(-.38em - 4px); top: -.34em; bottom: -.34em; width: 2px;
+  background: var(--fg); opacity: 0; pointer-events: none;
+  transition: opacity 0s linear 0s;
+}
+/* the commit: the whole line selected (press, sent). A full copy of the row, clipped. */
+.sel__commit {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: inherit; gap: inherit; padding: inherit;
+  background: var(--fg); color: var(--bg); border-radius: 3px;
+  clip-path: inset(3px 3px 3px calc(100% - 3px) round 3px);
+  transition: clip-path 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.sel__commit .sel__gutter { color: var(--bg); }
+
+/* ---- hover (fine pointers) / focus / forced: select the label, right to left ---- */
+@media (hover: hover) and (pointer: fine) {
+  .sel:not(:disabled):not([data-state="loading"]):not([data-state="sent"]):hover .sel__hl {
+    clip-path: inset(0); transition: clip-path var(--t-sel) var(--e-sel);
+  }
+}
+.sel:not(:disabled):not([data-state="loading"]):not([data-state="sent"]):is(:focus-visible, [data-force]) .sel__hl {
+  clip-path: inset(0); transition: clip-path var(--t-sel) var(--e-sel);
+}
+/* focus: the caret arrives when the sweep lands, blinks five times, then holds still */
+.sel:not(:disabled):not([data-state="loading"]):is(:focus-visible, [data-force="focus"]) .sel__caret {
+  opacity: 1; transition: opacity 0s linear var(--t-sel);
+  animation: sel-blink 1060ms steps(1, end) var(--t-sel) 5;
+}
+@keyframes sel-blink { 0% { opacity: 1; } 50% { opacity: 0; } }
+.sel:focus { outline: none; }
+.sel:focus-visible, .sel[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* ---- press: the selection becomes the whole line, and the line sinks ---- */
+.sel[data-pressed]:not(:disabled):not([data-state="loading"]):not([data-state="sent"]) .sel__commit {
+  clip-path: inset(3px round 3px); transition: clip-path var(--t-press) var(--e-press);
+}
+.sel[data-pressed]:not(:disabled):not([data-state="loading"]):not([data-state="sent"]) {
+  transform: translateY(1px) scale(0.985); transition: transform 90ms cubic-bezier(0.3, 0, 0.5, 1);
+}
+.sel[data-pressed] .sel__caret { opacity: 0 !important; animation: none; transition: none; }
+
+/* ---- loading: the line being saved. Shift+Left on key-repeat, in frames; gutter = unsaved dot ---- */
+.sel[data-state="loading"] { cursor: progress; }
+.sel[data-state="loading"] .sel__hl { transition: none; animation: sel-keyrepeat 1500ms infinite; }
+@keyframes sel-keyrepeat {
+  0%   { clip-path: inset(0 0 0 100%); animation-timing-function: steps(10, end); }
+  76%  { clip-path: inset(0); }
+  100% { clip-path: inset(0); }
+}
+
+/* ---- sent: the whole line stays selected, a check is drawn in the gutter (in six frames) ---- */
+.sel[data-state="sent"] { cursor: default; }
+.sel[data-state="sent"] .sel__hl { clip-path: inset(0 0 0 100%); transition: none; animation: none; }
+.sel[data-state="sent"] .sel__commit {
+  clip-path: inset(0 round 6px); box-shadow: inset 0 0 0 1.5px var(--bg);
+  transition: clip-path 300ms var(--e-sel);
+}
+.sel[data-state="sent"] .sel__commit .sel__mark--done { animation: sel-draw 250ms steps(6, end) 260ms both; }
+@keyframes sel-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+.sel[data-state="sent"] .sel__caret { background: var(--bg); opacity: 0; transition: none; animation: sel-blink 1060ms steps(1, end) 560ms 3; }
+
+/* ---- error: the selection rewinds once (undo), the gutter carries the diagnostic ---- */
+.sel[data-state="error"] .sel__hl { animation: sel-undo 210ms steps(5, end) 1; }
+@keyframes sel-undo { from { clip-path: inset(0); } to { clip-path: inset(0 0 0 100%); } }
+.sel__mark--err rect.chip { fill: var(--fg); }
+.sel__mark--err .bang { fill: var(--bg); }
+.sel__commit .sel__mark--err rect.chip { fill: var(--bg); }
+.sel__commit .sel__mark--err .bang { fill: var(--fg); }
+
+/* ---- disabled: read-only line ---- */
+.sel:disabled { --bg: var(--paper); --fg: var(--ink-2); --ln: var(--ink-2); --rim: var(--line); cursor: not-allowed; }
+
+/* ---- the quiet link: same selection, no button, no line under it ---- */
+.q {
+  position: relative; display: inline-flex; align-items: baseline; gap: .55em; min-height: 44px; align-items: center;
+  color: var(--ink); text-decoration: none; font: 600 1rem/1.25 var(--face);
+  --bg: var(--paper); --fg: var(--ink); -webkit-tap-highlight-color: transparent;
+}
+.q .sel__path { font: 500 .72rem/1 var(--face); font-stretch: 75%; color: var(--ink-2); direction: ltr; }
+@media (hover: hover) and (pointer: fine) { .q:hover .sel__hl { clip-path: inset(0); transition: clip-path var(--t-sel) var(--e-sel); } }
+.q:is(:focus-visible, [data-force]) .sel__hl { clip-path: inset(0); transition: clip-path var(--t-sel) var(--e-sel); }
+.q:is(:focus-visible, [data-force="focus"]) .sel__caret { opacity: 1; transition: opacity 0s linear var(--t-sel); animation: sel-blink 1060ms steps(1, end) var(--t-sel) 5; }
+.q:focus { outline: none; }
+.q:focus-visible, .q[data-force="focus"] { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+.q[data-pressed] .sel__hl { clip-path: inset(0); }
+.q[data-pressed] .sel__line { transform: translateY(1px); }
+
+/* strip only: hold an animated state on a telling frame */
+[data-freeze] .sel__hl { animation-play-state: paused !important; animation-delay: -700ms !important; }
+[data-freeze] .sel__caret { animation: none !important; transition: none !important; }
+[data-freeze] .sel__commit, [data-freeze] .sel__commit * { transition: none !important; animation: none !important; }
+
+/* ---- reduced motion: nothing moves; states change by opacity only ---- */
+@media (prefers-reduced-motion: reduce) {
+  .sel, .q, .sel *, .q * { animation: none !important; }
+  .sel, .q .sel__line { transform: none !important; transition: none !important; }
+  .sel__hl { clip-path: inset(0) !important; opacity: 0; transition: opacity 120ms linear !important; }
+  .sel__commit { clip-path: inset(3px round 3px) !important; opacity: 0; transition: opacity 90ms linear !important; }
+  @media (hover: hover) and (pointer: fine) {
+    .sel:not(:disabled):not([data-state="loading"]):not([data-state="sent"]):hover .sel__hl, .q:hover .sel__hl { opacity: 1; }
+  }
+  .sel:not(:disabled):not([data-state="sent"]):is(:focus-visible, [data-force]) .sel__hl,
+  .q:is(:focus-visible, [data-force], [data-pressed]) .sel__hl,
+  .sel[data-state="loading"] .sel__hl { opacity: 1; }
+  .sel[data-pressed]:not(:disabled):not([data-state="loading"]):not([data-state="sent"]) .sel__commit { opacity: 1; }
+  .sel[data-state="sent"] .sel__commit { clip-path: inset(0 round 6px) !important; opacity: 1; }
+  .sel[data-state="error"] .sel__hl { opacity: 0; }
+  .sel__caret { transition: none !important; }
+}
+
+/* ---------- states strip ---------- */
+.strip { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); }
+.cell { background: var(--paper); border-radius: 4px; box-shadow: var(--paper-shadow); padding: 18px 18px 16px; display: grid; gap: 14px; align-content: start; }
+.cell b { font: 600 .8rem/1 var(--face); color: var(--ink-2); }
+.cell b span { font-weight: 500; font-stretch: 75%; direction: ltr; unicode-bidi: isolate; margin-right: 8px; }
+.col390 { width: min(390px, 100%); background: var(--paper); box-shadow: var(--paper-shadow); border-radius: 4px; padding: 20px 16px; display: grid; gap: 12px; }
+.col390 b { font: 600 .78rem/1 var(--face); color: var(--ink-2); margin-top: 4px; }
+.duo { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.timing { flex: 1 1 320px; margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; font-size: .92rem; }
+.timing li { background: var(--paper); border-radius: 4px; padding: 12px 14px; box-shadow: var(--paper-shadow); }
+.timing li b { display: block; font-weight: 700; }
+.timing code, .note code { font: 500 .85em/1.4 ui-monospace, Consolas, monospace; direction: ltr; unicode-bidi: isolate; }
+
+.note { background: var(--paper); box-shadow: var(--paper-shadow); border-radius: 4px; padding: 28px; }
+.note pre { margin: 14px 0 0; padding: 16px; background: var(--table); border-radius: 4px; overflow-x: auto; direction: ltr; text-align: left;
+  font: 500 .8rem/1.6 ui-monospace, Consolas, monospace; color: var(--ink); }
+.note p, .note li { color: var(--ink); max-width: 80ch; }
+.note ul { padding-inline-start: 1.2em; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="head">
+    <div class="eyebrow"><b>משפחת כפתורים</b> · מראה "שוט אחד" · רעיון לבדיקה</div>
+    <h1>הסימון</h1>
+    <p>מצביעים על כפתור, והטקסט שלו מסומן מימין לשמאל, בדיוק כמו Shift+End בשורה בעורך הקוד. לחיצה מאשרת את הסימון לכל השורה, והשליחה נשמרת כמו שורה בקובץ.</p>
+    <ul class="w" aria-label="פריטי העולם">
+      <li><b>W01</b> עורך הקוד ועמודת מספרי השורות</li>
+      <li><b>W10</b> פריים: הטעינה זזה בצעדים</li>
+      <li><b>W16</b> הכפתור פותח שיחת וואטסאפ</li>
+      <li><b>W12</b> השליחה נוחתת כמו שמירה ועלייה לאוויר</li>
+    </ul>
+    <p class="why">למה רק של MediaWave: זה מה שקורה על המסך של נתי מאות פעמים ביום. מי שכותב אתרים בקוד מסמן, שומר ומתקן שורות, ורק הוא היה הופך את זה לכפתור.</p>
+  </header>
+
+  <!-- ================= LIVE ================= -->
+  <section aria-labelledby="live-h">
+    <h2 id="live-h">חי</h2>
+    <p class="sub">הכול אמיתי: עכבר, מקלדת (Tab, Enter, רווח) ומגע.</p>
+
+    <div class="live">
+      <div class="col">
+      <div class="sheet hero-sheet">
+        <p class="cap">הירו · CTA ראשי על גיליון נייר</p>
+        <h3>אתר שנבנה בקוד, ונשלח אליכם לטלפון</h3>
+        <p>מדמה את מיקום הכפתור בהירו. הלחיצה בהדגמה לא פותחת וואטסאפ.</p>
+        <div class="hero-row">
+          <a class="sel" data-sel data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa">בואו נדבר על הפרויקט שלכם</a>
+          <a class="q" data-q data-path="#services" href="#services">לשירותים שלנו</a>
+        </div>
+      </div>
+
+        <div class="sheet">
+          <p class="cap">סוף השאלות הנפוצות · כפתור משני וקישור שקט</p>
+          <div class="faq-end">
+            <p>לא מצאתם תשובה?</p><!-- [קופי: נתי] placeholder line for the demo only -->
+            <a class="sel" data-sel data-tone="paper" data-ln="03" data-label="צרו קשר" href="#wa">צרו קשר</a>
+            <a class="q" data-q data-path="#services" href="#services">לשירותים שלנו</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="cap">כותרת · CTA קטן על השולחן האפור</p>
+        <div class="bar on-table">
+          <span class="logo">MediaWave</span>
+          <a class="sel" data-sel data-size="sm" data-ln="01" data-label="בואו נדבר" href="#wa">בואו נדבר</a>
+        </div>
+
+      <div class="sheet">
+        <p class="cap">טופס · כפתור שליחה ברוחב מלא</p>
+        <form class="form" id="demo-form" novalidate>
+          <label class="field"><span>שם</span><!-- [קופי: נתי] --><input name="n" autocomplete="off"></label>
+          <label class="field"><span>טלפון</span><!-- [קופי: נתי] --><input name="p" type="tel" autocomplete="off"></label>
+          <button class="sel" data-sel data-block data-live data-ln="04" data-label="שליחת הודעה" type="submit">שליחת הודעה</button>
+          <div class="ctrls" aria-label="הדמיה">
+            <button class="ctl" type="button" data-run="sent">הדמיה: שולחים, ואז נשלח</button><!-- [קופי: נתי] demo control -->
+            <button class="ctl" type="button" data-run="error">הדמיה: שולחים, ואז שגיאה</button><!-- [קופי: נתי] demo control -->
+            <button class="ctl" type="button" data-run="idle">איפוס</button><!-- [קופי: נתי] demo control -->
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATES STRIP ================= -->
+  <section aria-labelledby="strip-h" id="strip">
+    <h2 id="strip-h">כל המצבים</h2>
+    <p class="sub">הכפתור הראשי בכל מצב, מאולץ עם data-state ו-data-force כמו ב-StateButton.</p>
+    <div class="strip">
+      <div class="cell"><b>מנוחה<span>idle</span></b><a class="sel" data-sel data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a></div>
+      <div class="cell"><b>ריחוף<span>hover</span></b><a class="sel" data-sel data-force="hover" data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a></div>
+      <div class="cell"><b>פוקוס<span>focus</span></b><a class="sel" data-sel data-force="focus" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a></div>
+      <div class="cell"><b>לחיצה<span>pressed</span></b><a class="sel" data-sel data-force="pressed" data-pressed data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a></div>
+      <div class="cell"><b>שולחים<span>loading · frame 6/10</span></b><button class="sel" data-sel data-state="loading" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">בואו נדבר על הפרויקט שלכם</button></div>
+      <div class="cell"><b>נשלח<span>sent</span></b><button class="sel" data-sel data-state="sent" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">בואו נדבר על הפרויקט שלכם</button></div>
+      <div class="cell"><b>שגיאה<span>error</span></b><button class="sel" data-sel data-state="error" data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">בואו נדבר על הפרויקט שלכם</button></div>
+      <div class="cell"><b>מושבת<span>disabled</span></b><button class="sel" data-sel disabled data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">בואו נדבר על הפרויקט שלכם</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="col-h">
+    <h2 id="col-h">עמודת 390</h2>
+    <p class="sub">אותם מצבים ברוחב טלפון, ברוחב מלא (block).</p>
+    <div class="duo">
+      <div class="col390" id="col390">
+        <b>מנוחה</b><a class="sel" data-sel data-block data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a>
+        <b>ריחוף</b><a class="sel" data-sel data-block data-force="hover" data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a>
+        <b>פוקוס</b><a class="sel" data-sel data-block data-force="focus" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a>
+        <b>לחיצה</b><a class="sel" data-sel data-block data-force="pressed" data-pressed data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" href="#wa" tabindex="-1">בואו נדבר על הפרויקט שלכם</a>
+        <b>שולחים</b><button class="sel" data-sel data-block data-state="loading" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">x</button>
+        <b>נשלח</b><button class="sel" data-sel data-block data-state="sent" data-freeze data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">x</button>
+        <b>שגיאה</b><button class="sel" data-sel data-block data-state="error" data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">x</button>
+        <b>מושבת</b><button class="sel" data-sel data-block disabled data-ln="02" data-label="בואו נדבר על הפרויקט שלכם" tabindex="-1">x</button>
+      </div>
+      <ul class="timing" aria-label="תזמונים">
+        <li><b>ריחוף ופוקוס</b>הסימון נפרש מימין לשמאל ב-<code>360ms</code>, <code>cubic-bezier(.22,.86,.24,1)</code>: יד מהירה ונחיתה זהירה. ביטול הסימון מהיר יותר, <code>150ms</code>, כמו קליק במקום אחר.</li>
+        <li><b>הסמן</b>מופיע רק בפוקוס, רק כשהסימון נוחת, תמיד אחרי המילה האחרונה ולעולם לא מעל אות. מהבהב בקצב של עורך (<code>530ms</code> דולק, <code>530ms</code> כבוי) חמש פעמים, ואז נעצר דולק. אין לולאה במנוחה.</li>
+        <li><b>לחיצה</b>הסימון מתרחב לכל השורה ב-<code>120ms</code> והשורה שוקעת פיקסל (<code>scale .985</code>, <code>90ms</code>). נגיעה קצרה מחזיקה את הלחיצה לפחות <code>180ms</code>, כדי שגם אצבע תראה את האישור.</li>
+        <li><b>שולחים</b>Shift+← על חזרת מקש: הסימון גדל בעשרה צעדים של <code>114ms</code>, מחזיק <code>360ms</code>, וחוזר. בעמודה מופיעה נקודת "לא נשמר" של העורך.</li>
+        <li><b>נשלח</b>כל השורה נשארת מסומנת (<code>300ms</code>), ובעמודה נכתב סימן וי בשישה פריימים של <code>~42ms</code>. הסמן חונה אחרי המילה האחרונה ולא מהבהב: העבודה נגמרה.</li>
+        <li><b>שגיאה</b>הסימון מתגלגל אחורה פעם אחת, כמו ביטול (<code>210ms</code>, חמישה צעדים). בעמודה סימן אבחון. בלי רעידה ובלי צבע: הכפתור נשאר כפתור שאפשר ללחוץ עליו שוב.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= BUILD NOTE ================= -->
+  <section aria-labelledby="build-h">
+    <div class="note">
+      <h2 id="build-h">איך בונים את זה על StateButton</h2>
+      <ul>
+        <li><b>cls="sel"</b>. ה-render מחזיר שורה אחת: עמודה (מספר השורה וסימני המצב), הטקסט האמיתי, עותק בתוך הסימון, סמן, ועותק מלא של השורה בשכבת האישור. כל השכבות חוץ מהטקסט האמיתי <code>aria-hidden</code>.</li>
+        <li>אין צורך ב-onPoint: הסימון לא עוקב אחרי העכבר. כל המצבים הם CSS על <code>data-state</code>, <code>data-force</code>, <code>data-pressed</code>.</li>
+        <li>תוספת אחת ל-StateButton: לחיצה מינימלית של <code>180ms</code> (setTimeout ב-onPointerUp), ו-prop בשם <code>ln</code> למספר השורה. מספר השורה = הסדר של ה-CTA בעמוד מלמעלה. [להחלטה: נתי]</li>
+        <li>מאפיינים מונפשים: clip-path על <code>.sel__hl</code> ו-<code>.sel__commit</code>, opacity על <code>.sel__caret</code>, transform על הכפתור. כל שכבה עם בעלים אחד.</li>
+      </ul>
+<pre>// SelectButton.tsx
+export function SelectButton({ ln = '01', ...props }: LookButtonProps &amp; { ln?: string }) {
+  return (
+    &lt;StateButton {...props} cls="sel" render={(label, state) =&gt; {
+      const row = (copy: boolean) =&gt; (&lt;&gt;
+        &lt;span className="sel__gutter" aria-hidden="true"&gt;
+          &lt;span className="sel__ln"&gt;{ln}&lt;/span&gt;&lt;DirtyDot/&gt;&lt;Check/&gt;&lt;Bang/&gt;
+        &lt;/span&gt;
+        &lt;span className="sel__line"&gt;
+          {copy ? &lt;span className="sel__text"&gt;{label}&lt;/span&gt; : &lt;&gt;
+            &lt;span className="sel__text"&gt;{label}&lt;/span&gt;   {/* the real, announced label */}
+            &lt;span className="sel__hl" aria-hidden="true"&gt;&lt;span className="sel__text"&gt;{label}&lt;/span&gt;&lt;/span&gt;
+            &lt;span className="sel__caret" aria-hidden="true" /&gt;
+          &lt;/&gt;}
+        &lt;/span&gt;
+      &lt;/&gt;)
+      return (&lt;&gt;{row(false)}&lt;span className="sel__commit" aria-hidden="true"&gt;{row(true)}&lt;/span&gt;&lt;/&gt;)
+    }} /&gt;
+  )
+}
+// select-button.css = the ".sel" block of this page, as is. The copies inside .sel__hl / .sel__commit
+// get the label as plain text (aria-hidden), so only the real span carries aria-live.</pre>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const STATE_LABEL = { loading: 'שולחים', sent: 'נשלח. נחזור אליכם היום', error: 'לא נשלח. נסו שוב' };
+  const MIN_PRESS = 180;
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  const marks = () =>
+    '<svg class="sel__mark sel__mark--dirty" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3.25" fill="currentColor"/></svg>' +
+    '<svg class="sel__mark sel__mark--done" viewBox="0 0 12 12"><path d="M2.2 6.4 4.9 9 9.8 3.2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+    '<svg class="sel__mark sel__mark--err" viewBox="0 0 12 12"><rect class="chip" x="0.5" y="0.5" width="11" height="11" rx="2"/><rect class="bang" x="5.1" y="2.4" width="1.8" height="4.8" rx=".9"/><circle class="bang" cx="6" cy="9.1" r="1"/></svg>';
+
+  /* render(label, state): the row, the selection copy, the caret, and the commit copy */
+  function render(el) {
+    const st = el.dataset.state || 'idle';
+    if (el.querySelector('.sel__line')) {             /* already rendered: swap the text only, so the CSS states animate */
+      el.querySelectorAll('.sel__text').forEach((n) => { n.textContent = st === 'idle' ? el.dataset.label : STATE_LABEL[st]; });
+      if (el.tagName === 'BUTTON') el.toggleAttribute('aria-busy', st === 'loading');
+      return;
+    }
+    const label = esc(st === 'idle' ? el.dataset.label : STATE_LABEL[st]);
+    const ln = esc(el.dataset.ln || '');
+    const live = el.hasAttribute('data-live') ? ' aria-live="polite"' : '';
+    const gutter = `<span class="sel__gutter" aria-hidden="true"><span class="sel__ln">${ln}</span>${marks()}</span>`;
+    el.innerHTML =
+      gutter +
+      `<span class="sel__line"><span class="sel__text"${live}>${label}</span>` +
+      `<span class="sel__hl" aria-hidden="true"><span class="sel__text">${label}</span></span>` +
+      `<span class="sel__caret" aria-hidden="true"></span></span>` +
+      `<span class="sel__commit" aria-hidden="true">${gutter}<span class="sel__line"><span class="sel__text">${label}</span></span></span>`;
+    if (el.tagName === 'BUTTON') el.toggleAttribute('aria-busy', st === 'loading');
+  }
+  function renderQuiet(el) {
+    const label = esc(el.textContent.trim());
+    el.innerHTML =
+      `<span class="sel__line"><span class="sel__text">${label}</span>` +
+      `<span class="sel__hl" aria-hidden="true"><span class="sel__text">${label}</span></span>` +
+      `<span class="sel__caret" aria-hidden="true"></span></span>` +
+      `<span class="sel__path" aria-hidden="true">${esc(el.dataset.path || '')}</span>`;
+  }
+
+  /* the press engine, as StateButton does it, plus a minimum visible press for quick taps */
+  function wirePress(el) {
+    if (el.hasAttribute('data-force')) return;
+    let downAt = 0, t = 0;
+    const on = () => { clearTimeout(t); downAt = performance.now(); el.setAttribute('data-pressed', ''); };
+    const off = () => {
+      const left = Math.max(0, MIN_PRESS - (performance.now() - downAt));
+      clearTimeout(t); t = setTimeout(() => el.removeAttribute('data-pressed'), left);
+    };
+    el.addEventListener('pointerdown', on);
+    el.addEventListener('pointerup', off);
+    el.addEventListener('pointercancel', off);
+    el.addEventListener('pointerleave', off);
+    el.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) on(); });
+    el.addEventListener('keyup', off);
+    el.addEventListener('blur', () => { clearTimeout(t); el.removeAttribute('data-pressed'); });
+    el.addEventListener('click', (e) => { if (el.getAttribute('href')?.startsWith('#')) e.preventDefault(); });
+  }
+
+  document.querySelectorAll('[data-sel]').forEach((el) => { render(el); wirePress(el); });
+  document.querySelectorAll('[data-q]').forEach((el) => { renderQuiet(el); wirePress(el); });
+
+  /* the form: submit -> loading -> sent; the two controls force the two endings */
+  const form = document.getElementById('demo-form');
+  const submit = form.querySelector('button[type="submit"]');
+  let timer = 0;
+  const setState = (st) => { submit.dataset.state = st; render(submit); };
+  const run = (end) => {
+    clearTimeout(timer);
+    if (end === 'idle') return setState('idle');
+    setState('loading');
+    timer = setTimeout(() => setState(end), 2600);
+  };
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (submit.dataset.state === 'loading' || submit.dataset.state === 'sent') return;
+    run('sent');
+  });
+  form.querySelectorAll('[data-run]').forEach((b) => b.addEventListener('click', () => run(b.dataset.run)));
+  window.__sel = { setState, run };
+})();
+</script>
+</body>
+</html>

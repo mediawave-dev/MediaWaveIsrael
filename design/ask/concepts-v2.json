@@ -1,0 +1,28 @@
+{
+  "questions": [
+    {
+      "header": "כיוון חדש",
+      "question": "איזה כיוון ל-MediaWave? (הלוח החי פתוח בחלונית שבצד)",
+      "multiSelect": false,
+      "options": [
+        {
+          "label": "A רנטגן (מומלץ)",
+          "description": "עדשה שרואים דרכה איך האתר בנוי ואיך הוא נטען עכשיו אצל המבקר. הוכחה חיה, זול לביצוע, ובטלפון עובד כפס סורק.",
+          "preview": "DIR A  X-RAY  (palette locked)\n------------------------------\nHERO   lens follows the pointer\n       phone: fixed scan band\nUNDER  outline H1, real file\n       weights, the wa.me link\nPEAK   lens opens full screen:\n       live load time, KB, requests\n       measured on the visitor's\n       own device\nCUT    hard cut back to design\nPROOF  Performance API, live\nSWAP   other: breaks\n       same: lens yes, data no\nCOST   clip-path only, cheap"
+        },
+        {
+          "label": "B השיחה",
+          "description": "האתר נבנה מתוך שיחה עם נתי. כל בחירה של המבקר בונה אתר דוגמה אחר לגמרי, וצילום מסך מסומן עף ומתקן את האתר."
+        },
+        {
+          "label": "C שוט אחד",
+          "description": "מצלמה רציפה מעל דגם נייר לבן של אתר שלם, נוחתת על כל חלק, ובסוף הכל מתכווץ לטלפון. הכי קולנועי, הכי כבד בטלפון."
+        },
+        {
+          "label": "D גרסה אחרי גרסה",
+          "description": "קאטים חדים בין הגרסאות האמיתיות של האתר. הכי חזק במבחן ההחלפה, אבל מראה גם גרסאות פחות יפות."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>כיוונים חדשים · MediaWave</title>
+<style>
+@font-face { font-family: 'MW Proto'; src: url('/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: 'MW Proto'; src: url('/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; unicode-range: U+0000-00FF, U+2013-2014, U+2022, U+00D7; }
+@property --lx { syntax: '<percentage>'; inherits: true; initial-value: 30%; }
+@property --ly { syntax: '<percentage>'; inherits: true; initial-value: 40%; }
+:root { --ground: #ECEEF1; --ink: #1B1D21; --soft: #4A4F57; --line: #C9CDD3; --screen: #FFFFFF; --mono: ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--ground); color: var(--ink); font-family: 'MW Proto', system-ui, sans-serif; font-size: 17px; line-height: 1.6; font-feature-settings: 'tnum' 1; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 40px 24px 120px; }
+header h1 { font-weight: 800; font-stretch: 75%; font-size: clamp(40px, 6vw, 76px); line-height: 1; margin: 0 0 14px; }
+header p { max-width: 62ch; color: var(--soft); margin: 0 0 8px; }
+.locked { display: flex; gap: 10px; align-items: center; margin: 22px 0 0; font-size: 14px; color: var(--soft); flex-wrap: wrap; }
+.sw { width: 28px; height: 28px; border-radius: 4px; border: 1px solid var(--line); }
+.card { margin-top: 56px; background: var(--screen); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.card-head { display: flex; gap: 16px; align-items: baseline; padding: 22px 26px 6px; flex-wrap: wrap; }
+.card-head .k { font-weight: 800; font-size: 15px; border: 2px solid var(--ink); border-radius: 50%; width: 34px; height: 34px; display: grid; place-items: center; flex: none; }
+.card-head h2 { font-weight: 800; font-stretch: 75%; font-size: 40px; line-height: 1; margin: 0; }
+.card-head .tag { font-size: 14px; font-weight: 600; color: var(--soft); }
+.card-head .rec { font-size: 14px; font-weight: 700; background: var(--ink); color: #fff; padding: 2px 10px; border-radius: 4px; }
+.idea { padding: 0 26px 18px; font-size: 21px; font-weight: 600; max-width: 60ch; margin: 0; }
+.body { display: grid; grid-template-columns: 1.45fr 1fr; gap: 0; border-top: 1px solid var(--line); }
+.stage { position: relative; aspect-ratio: 16 / 10; background: var(--ground); overflow: hidden; border-inline-start: 1px solid var(--line); }
+.notes { padding: 20px 26px 24px; font-size: 15px; }
+.notes dl { margin: 0; display: grid; gap: 10px; }
+.notes dt { font-weight: 700; font-size: 13px; color: var(--soft); }
+.notes dd { margin: 0; }
+.cap { position: absolute; inset-block-end: 10px; inset-inline-start: 12px; font-size: 12px; font-weight: 600; color: var(--soft); background: rgba(236,238,241,.9); padding: 2px 8px; border-radius: 3px; z-index: 9; }
+@media (max-width: 860px) { .body { grid-template-columns: 1fr; } .stage { border-inline-start: 0; border-bottom: 1px solid var(--line); } }
+
+/* ---- shared mini page ---- */
+.page { position: absolute; inset: 6% 5%; background: var(--screen); border: 1px solid var(--line); display: grid; grid-template-columns: 1.1fr 1fr; gap: 5%; align-items: center; padding: 5%; }
+.page h3 { font-weight: 800; font-size: clamp(20px, 3.3vw, 42px); line-height: 1; margin: 0; }
+.page p { font-size: clamp(9px, 1vw, 13px); color: var(--soft); margin: 8px 0 12px; line-height: 1.5; }
+.page .btn { display: inline-block; background: var(--ink); color: #fff; font-size: clamp(8px, .9vw, 12px); font-weight: 600; padding: .7em 1.1em; border-radius: 4px; }
+.page .media { aspect-ratio: 1; background: #d6d9de center / cover; border-radius: 3px; overflow: hidden; }
+.page .media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---- A: X-ray lens ---- */
+.xr { --r: 17%; }
+.xr .ray { position: absolute; inset: 6% 5%; background: var(--ink); color: #D9DDE3; display: grid; grid-template-columns: 1.1fr 1fr; gap: 5%; align-items: center; padding: 5%; clip-path: circle(var(--r) at var(--lx) var(--ly)); font-family: var(--mono); font-size: clamp(7px, .82vw, 11px); line-height: 1.55; }
+.xr.auto .ray { animation: lens 9s ease-in-out infinite; }
+@keyframes lens { 0% { --lx: 78%; --ly: 30% } 22% { --lx: 70%; --ly: 52% } 40% { --lx: 64%; --ly: 76% } 58% { --lx: 28%; --ly: 48% } 78% { --lx: 40%; --ly: 30% } 100% { --lx: 78%; --ly: 30% } }
+.xr .ln { color: #7D848F; display: inline-block; width: 2.2em; text-align: end; margin-inline-end: .8em; }
+.xr .h { color: #fff; font-family: 'MW Proto'; font-weight: 800; font-size: clamp(20px, 3.3vw, 42px); line-height: 1; -webkit-text-stroke: 1px #fff; color: transparent; position: relative; }
+.xr .h::after { content: ''; position: absolute; inset-inline: 0; bottom: .08em; border-bottom: 1px dashed #7D848F; }
+.xr .box { aspect-ratio: 1; border: 1px dashed #9AA1AB; position: relative; display: grid; place-items: center; text-align: center; }
+.xr .box::before, .xr .box::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top left, transparent calc(50% - .5px), #5B616B 50%, transparent calc(50% + .5px)); }
+.xr .box::after { transform: scaleX(-1); }
+.xr .box span { position: relative; z-index: 1; background: var(--ink); padding: 2px 6px; }
+.xr .pad { display: inline-block; outline: 1px dashed #9AA1AB; outline-offset: 3px; padding: .7em 1.1em; color: #fff; font-family: var(--mono); font-size: clamp(8px, .9vw, 12px); }
+.xr .code { font-size: clamp(9px, 1vw, 13px); line-height: 1.5; margin: 8px 0 12px; white-space: nowrap; overflow: hidden; }
+.xr .live { position: absolute; inset-block-start: 9%; inset-inline-end: 7%; font-family: var(--mono); font-size: 11px; color: #fff; background: #000; padding: 3px 8px; border-radius: 3px; }
+
+/* ---- B: built from the conversation ---- */
+.chat { position: absolute; inset-block: 6%; inset-inline-start: 4%; width: 34%; display: flex; flex-direction: column; gap: 8px; justify-content: flex-end; font-size: clamp(9px, .95vw, 13px); }
+.bub { background: var(--screen); border: 1px solid var(--line); border-radius: 12px; padding: 7px 11px; max-width: 92%; opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; }
+.bub.in { opacity: 1; transform: none; }
+.bub.me { align-self: flex-end; background: var(--ink); color: #fff; border-color: var(--ink); }
+.bub small { display: block; font-size: .8em; color: var(--soft); font-weight: 600; }
+.bub.me small { color: #B9BEC6; }
+.chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.chips i { font-style: normal; border: 1px solid var(--ink); border-radius: 99px; padding: 1px 8px; font-size: .9em; }
+.chips i.on { background: var(--ink); color: #fff; }
+.bub.me .chips i { border-color: #fff; } .bub.me .chips i.on { background: #fff; color: var(--ink); }
+.shot { width: 100%; aspect-ratio: 16/10; background: var(--ground); border-radius: 6px; position: relative; margin-top: 4px; }
+.shot::after { content: ''; position: absolute; width: 46%; height: 30%; inset-inline-end: 8%; inset-block-end: 14%; border: 2px solid var(--ink); border-radius: 50%; transform: rotate(-6deg); }
+.site { position: absolute; inset-block: 6%; inset-inline-end: 4%; width: 56%; background: var(--screen); border: 1px solid var(--line); padding: 5%; display: flex; flex-direction: column; justify-content: center; gap: 10px; transition: background .0s; }
+.site .t { font-weight: 800; line-height: .95; font-size: clamp(22px, 3.4vw, 44px); opacity: 0; }
+.site .s { font-size: clamp(9px, .95vw, 13px); color: var(--soft); opacity: 0; }
+.site .b { align-self: flex-start; font-size: clamp(9px, .9vw, 12px); font-weight: 700; padding: .6em 1em; border: 2px solid var(--ink); border-radius: 4px; opacity: 0; }
+.site.built .t, .site.built .s, .site.built .b { opacity: 1; }
+.site.fixed .b { background: var(--ink); color: #fff; }
+.site .url { position: absolute; inset-block-start: 8px; inset-inline-start: 10px; font-family: var(--mono); font-size: 10px; color: var(--soft); }
+.site .demo { position: absolute; inset-block-start: 8px; inset-inline-end: 10px; font-size: 10px; font-weight: 700; border: 1px solid var(--line); padding: 0 6px; }
+.site[data-trade='barber'] .t { font-stretch: 62.5%; font-size: clamp(28px, 4.6vw, 60px); letter-spacing: -.01em; }
+.site[data-trade='clinic'] .t { font-weight: 300; }
+.site[data-trade='bakery'] { background: #F6F6F4; }
+.site[data-trade='bakery'] .t { font-weight: 900; font-stretch: 100%; }
+.site[data-trade='lawyer'] .t { font-weight: 500; font-stretch: 87.5%; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+.fly { position: absolute; z-index: 5; background: var(--screen); border: 1px solid var(--ink); border-radius: 6px; width: 16%; aspect-ratio: 16/10; transition: transform .7s cubic-bezier(.7,0,.2,1), opacity .3s; pointer-events: none; opacity: 0; transform-origin: 0 0; }
+
+/* ---- C: one shot over a paper model ---- */
+.cam { position: absolute; inset: 0; perspective: 900px; perspective-origin: 50% 30%; }
+.model { position: absolute; width: 34%; inset-inline-start: 33%; top: 6%; transform-style: preserve-3d; animation: oner 11s cubic-bezier(.65,0,.35,1) infinite; transform-origin: 50% 30%; }
+.model > div { background: var(--screen); margin-bottom: 7px; box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 10px 18px -12px rgba(27,29,33,.45); padding: 8%; transform: translateZ(6px); }
+.model .m-hero { aspect-ratio: 16/11; display: grid; grid-template-columns: 1fr 1fr; gap: 8%; align-items: center; }
+.model .m-hero b { font-weight: 800; font-size: clamp(9px, 1.2vw, 15px); line-height: 1; }
+.model .m-hero span { aspect-ratio: 1; background: url('/images/lens-poster.webp') center / cover; }
+.model .m-row { height: 34px; display: grid; gap: 4px; align-content: center; }
+.model .m-row i { display: block; height: 4px; background: var(--ink); width: 70%; } .model .m-row i + i { width: 46%; background: var(--line); }
+.model .m-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 6%; }
+.model .m-cards i { aspect-ratio: 1; background: var(--ground); display: block; }
+.model .m-end { height: 30px; background: var(--ink) !important; }
+@keyframes oner {
+  0%   { transform: translateY(0) rotateX(62deg) rotateZ(-24deg) scale(.95); }
+  28%  { transform: translateY(-12%) rotateX(52deg) rotateZ(-10deg) scale(1.15); }
+  48%  { transform: translateY(-4%) rotateX(0deg) rotateZ(0deg) scale(2.55); }
+  66%  { transform: translateY(-4%) rotateX(0deg) rotateZ(0deg) scale(2.55); }
+  86%  { transform: translateY(18%) rotateX(0deg) rotateZ(0deg) scale(.42); }
+  100% { transform: translateY(0) rotateX(62deg) rotateZ(-24deg) scale(.95); }
+}
+.phone-out { position: absolute; width: 15%; aspect-ratio: 9/19; inset-inline-start: 42.5%; top: 18%; border: 3px solid var(--ink); border-radius: 14px; opacity: 0; animation: phone 11s steps(1) infinite; }
+@keyframes phone { 0%, 79% { opacity: 0 } 80%, 95% { opacity: 1 } 96%, 100% { opacity: 0 } }
+
+/* ---- D: version after version ---- */
+.ver { position: absolute; inset: 6% 5%; border: 1px solid var(--line); background: #000; overflow: hidden; }
+.ver img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.ver img.on { opacity: 1; }
+.ver-l { position: absolute; inset-block-end: 9%; inset-inline-end: 7%; background: var(--ink); color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 3px; z-index: 3; }
+.ver-l span { font-weight: 400; color: #B9BEC6; margin-inline-start: 8px; }
+
+/* ---- S: the safe card ---- */
+.safe { opacity: .78; }
+.safe .stage { display: grid; place-items: center; }
+.safe .tpl { width: 80%; background: var(--screen); border: 1px solid var(--line); padding: 5% 6%; text-align: center; }
+.safe .tpl b { display: block; font-size: clamp(16px, 2.4vw, 30px); font-weight: 700; }
+.safe .tpl .two { display: flex; gap: 8px; justify-content: center; margin: 12px 0; }
+.safe .tpl .two i { width: 70px; height: 20px; border: 1px solid var(--ink); display: block; } .safe .tpl .two i:first-child { background: var(--ink); }
+.safe .tpl .logos { display: flex; gap: 12px; justify-content: center; margin: 10px 0; } .safe .tpl .logos i { width: 40px; height: 8px; background: var(--line); display: block; }
+.safe .tpl .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } .safe .tpl .three i { height: 54px; background: var(--ground); display: block; }
+.safe h2 { text-decoration: line-through; text-decoration-thickness: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .xr.auto .ray, .model, .phone-out { animation: none; }
+  .xr .ray { --lx: 30%; --ly: 45%; --r: 26%; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>ארבעה כיוונים חדשים</h1>
+    <p>העיצוב נשאר כמו שאהבת: רקע אפור, משטחים לבנים, דיו שחור, פונט אחד. מה שמתחלף הוא הרעיון. הטלפון, הגרירה ל-390, מחוון הציון והטיימקוד מהסבב הקודם פסולים, וגם גל וים.</p>
+    <p>כל כרטיס מריץ את הרגע המרכזי שלו בלולאה. בכרטיס הראשון אפשר להזיז את העכבר על הבמה.</p>
+    <div class="locked"><span class="sw" style="background:#ECEEF1"></span>#ECEEF1 רקע <span class="sw" style="background:#FFFFFF"></span>#FFFFFF משטח <span class="sw" style="background:#1B1D21"></span>#1B1D21 דיו <span>· נעול לפי בחירתך (15.10.2026)</span></div>
+  </header>
+
+  <!-- A -->
+  <section class="card" aria-labelledby="a-t">
+    <div class="card-head"><span class="k">A</span><h2 id="a-t">רנטגן</h2><span class="tag">חומר: האתר עצמו</span><span class="rec">ההמלצה שלי</span></div>
+    <p class="idea">העמוד שקוף. עדשה עוברת על האתר, ומתחתיו רואים איך הוא בנוי ואיך הוא נטען ברגע זה, בטלפון של מי שגולש.</p>
+    <div class="body">
+      <div class="stage xr auto" id="xr">
+        <div class="page" aria-hidden="true">
+          <div><h3>העסק שלכם<br>המומחיות שלנו</h3><p>בונים לכם אתר שמביא פניות. מדברים ישירות עם המפתח, בלי מתווכים.</p><span class="btn">בואו נדבר על הפרויקט שלכם</span></div>
+          <div class="media"><video src="/videos/lens.mp4" poster="/images/lens-poster.webp" muted playsinline loop autoplay></video></div>
+        </div>
+        <div class="ray" aria-hidden="true">
+          <div>
+            <div class="h">העסק שלכם<br>המומחיות שלנו</div>
+            <div class="code" dir="ltr"><span class="ln">14</span>&lt;h1&gt; Noto Sans Hebrew 800<br><span class="ln">15</span>&lt;p&gt; 17px / 1.6 · max 34ch</div>
+            <span class="pad" dir="ltr">wa.me/972528731808</span>
+          </div>
+          <div class="box"><span dir="ltr">lens.mp4 · 720×720<br>7.6 s · H.264 · 723 KB</span></div>
+        </div>
+        <div class="live" id="xr-live" dir="rtl">נטען אצלך ב-... </div>
+        <span class="cap">הלולאה: העדשה עוברת על ההירו · עכבר: העדשה עוקבת</span>
+      </div>
+      <div class="notes"><dl>
+        <dt>ההירו</dt><dd>עדשה עגולה עוקבת אחרי העכבר. בתוכה אותו הירו בנגטיב: הכותרת כקו מתאר עם קו בסיס, הסרטון כמסגרת עם המשקל האמיתי שלו, הכפתור עם הקישור שהוא פותח. בטלפון: פס סורק קבוע באמצע המסך, והעמוד עובר דרכו בגלילה.</dd>
+        <dt>הרגע המרכזי</dt><dd>בפרק "מודדים" העדשה נפתחת לכל המסך, וכל העמוד הופך לרנטגן עם המספרים שנמדדו עכשיו במכשיר של המבקר: זמן טעינה, משקל, כמה בקשות. קאט חד חזרה לעיצוב.</dd>
+        <dt>ההוכחה</dt><dd>מספרים חיים מהדפדפן של המבקר (Performance API), לא מספר שכתבנו. המספר בפינה של הבמה הזאת נמדד עכשיו, על הדף הזה, אצלך.</dd>
+        <dt>הקדושים</dt><dd>הסרטון מתנגן בהירו כרגיל, וברנטגן רואים את הנתונים שלו. 13 הלוטים: בעדשה רואים את קווי הציור שלהם.</dd>
+        <dt>מבחן החלפה</dt><dd>מקצוע אחר: נשבר. מתחרה בתחום: יכול להעתיק את העדשה, אבל לא את מה שמתחתיה.</dd>
+        <dt>סיכון</dt><dd>שזה ייראה כמו כלי מפתחים. לכן מעט קוד, קריא, ותמיד בעברית כשאפשר.</dd>
+      </dl></div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="card" aria-labelledby="b-t">
+    <div class="card-head"><span class="k">B</span><h2 id="b-t">השיחה</h2><span class="tag">רגע: הלקוח מדבר עם מי שבונה</span></div>
+    <p class="idea">האתר נבנה מתוך שיחה. כל הודעה שהלקוח שולח לנתי עפה מהשיחה ונהיית חלק מהאתר, מול העיניים.</p>
+    <div class="body">
+      <div class="stage" id="talk">
+        <div class="chat" aria-hidden="true">
+          <div class="bub" data-s="1"><small>נתי</small>היי, מה העסק שלכם?</div>
+          <div class="bub me" data-s="2"><div class="chips"><i data-t="barber">מספרה</i><i data-t="clinic">קליניקה</i><i data-t="bakery">מאפייה</i><i data-t="lawyer">משרד עו"ד</i></div></div>
+          <div class="bub me" data-s="4"><small>אתם</small>אפשר שהכפתור יהיה מלא?<div class="shot"></div></div>
+          <div class="bub" data-s="6"><small>נתי</small><span dir="ltr">your-site.co.il</span> · באוויר</div>
+        </div>
+        <div class="site" id="site" aria-hidden="true"><span class="url"><bdi dir="ltr" id="url">localhost</bdi></span><span class="demo">הדגמה</span><div class="t" id="tt">מספרה</div><div class="s" id="ts"></div><div class="b">קביעת תור</div></div>
+        <div class="fly" id="fly"></div>
+        <span class="cap">כל לולאה: עסק אחר, אתר אחר לגמרי</span>
+      </div>
+      <div class="notes"><dl>
+        <dt>ההירו</dt><dd>שיחה ריקה. נתי שואל "מה העסק שלכם?" והמבקר בוחר: מספרה, קליניקה, מאפייה, משרד עורכי דין. ההירו של אתר דוגמה נבנה מהתשובה, וכל בחירה נראית אחרת לגמרי (מסומן "הדגמה").</dd>
+        <dt>הרגע המרכזי</dt><dd>צילום מסך עם עיגול של לקוח עף מהשיחה, נוחת על האתר, והחלק המסומן מתוקן. בסוף: הקישור נשלח, והאתר באוויר.</dd>
+        <dt>ההוכחה</dt><dd>מי שעונה בשיחה הוא מי שכותב את הקוד. החשש "שזה ייראה כמו תבנית" נענה בארבעה עסקים וארבעה אתרים שונים.</dd>
+        <dt>הקדושים</dt><dd>הסרטון הוא ההירו של אתר הדוגמה הראשון. הלוטים הם האיורים שנכנסים לאתר שנבנה.</dd>
+        <dt>מבחן החלפה</dt><dd>מקצוע אחר: חלקית. מתחרה: חלקית; מה ששורד הוא "נתי עונה בעצמו".</dd>
+        <dt>סיכון</dt><dd>להיראות כמו וואטסאפ (מותג של אחרים): בלי ירוק ובלי הבועות שלהם. ארבעה עיצובי דוגמה הם עבודה.</dd>
+      </dl></div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="card" aria-labelledby="c-t">
+    <div class="card-head"><span class="k">C</span><h2 id="c-t">שוט אחד</h2><span class="tag">מסורת: שוט ארוך בלי קאט, מעולם העריכה</span></div>
+    <p class="idea">כל העמוד הוא שוט אחד בלי קאט: מצלמה טסה מעל דגם נייר לבן של אתר שלם, נוחתת על כל חלק עד שהוא הופך למסך, ובסוף מתרחקת עד שהכל נכנס לטלפון אחד.</p>
+    <div class="body">
+      <div class="stage">
+        <div class="cam" aria-hidden="true"><div class="model"><div class="m-hero"><b>העסק שלכם<br>המומחיות שלנו</b><span></span></div><div class="m-row"><i></i><i></i></div><div class="m-cards"><i></i><i></i><i></i></div><div class="m-row"><i></i><i></i></div><div class="m-row"><i></i><i></i></div><div class="m-end"></div></div></div>
+        <div class="phone-out" aria-hidden="true"></div>
+        <span class="cap">מבט על > נחיתה על ההירו > התרחקות לטלפון</span>
+      </div>
+      <div class="notes"><dl>
+        <dt>ההירו</dt><dd>מבט מלמעלה על שולחן אפור, ועליו דגם נייר של אתר שלם: חלקים לבנים, כותרות בשחור, הסרטון מתנגן על פיסת נייר. גוללים, המצלמה יורדת ומתיישרת, והדגם נהיה העמוד האמיתי.</dd>
+        <dt>הרגע המרכזי</dt><dd>בסוף העמוד המצלמה מתרחקת, וכל מה שעברתם מתכווץ לגודל של טלפון. שוט אחד, מההתחלה ועד הסוף.</dd>
+        <dt>ההוכחה</dt><dd>העבודה עצמה: תנועת מצלמה רציפה בלי קפיצות היא הדגמה של עריכה ושל קוד גם יחד.</dd>
+        <dt>הקדושים</dt><dd>הסרטון על פיסת הנייר של ההירו, הלוטים על פיסות הנייר של השירותים.</dd>
+        <dt>מבחן החלפה</dt><dd>מקצוע אחר (אדריכלות): חלקית. מתחרה: חלקית.</dd>
+        <dt>סיכון</dt><dd>תלת-ממד ב-CSS כבד בטלפון. בטלפון: אותו דגם במבט קבוע, בלי טיסה.</dd>
+      </dl></div>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="card" aria-labelledby="d-t">
+    <div class="card-head"><span class="k">D</span><h2 id="d-t">גרסה אחרי גרסה</h2><span class="tag">מסמך: ההיסטוריה של האתר הזה</span></div>
+    <p class="idea">האתר מראה את ההיסטוריה של עצמו. גוללים ועוברים בקאטים חדים בין הגרסאות האמיתיות של mediawave.co.il, עד היום. רק הכותרת לא השתנתה.</p>
+    <div class="body">
+      <div class="stage">
+        <div class="ver" id="ver" aria-hidden="true">
+          <img src="v2/v-2026-09.jpg" alt="" data-l="6.9.2026"><img src="v2/v-2026-10-k.jpg" alt="" data-l="13.10.2026 · K"><img src="v2/v-2026-10-km.jpg" alt="" data-l="13.10.2026 · KM"><img src="v2/v-2026-10-15.jpg" alt="" data-l="15.10.2026 · אפור">
+        </div>
+        <div class="ver-l" id="ver-l">גרסה<span></span></div>
+        <span class="cap">צילומי מסך אמיתיים של האתר, מהארכיון של הפרויקט</span>
+      </div>
+      <div class="notes"><dl>
+        <dt>ההירו</dt><dd>ההירו מתחלף בקאטים בין גרסאות אמיתיות, עם תאריך לכל אחת. הכותרת "העסק שלכם / המומחיות שלנו" שרדה את כולן, והיא מה שהמבקר זוכר.</dd>
+        <dt>הרגע המרכזי</dt><dd>פרק "מתקנים": תיקון אמיתי מההיסטוריה, לפני ואחרי, עם הסיבה במילים של נתי.</dd>
+        <dt>ההוכחה</dt><dd>הכל אמיתי: צילומים, תאריכים ושינויים מתוך ההיסטוריה של הפרויקט.</dd>
+        <dt>הקדושים</dt><dd>הסרטון והלוגו הם מה שנשאר קבוע בין הגרסאות. הלוטים מופיעים בגרסאות שבהן הם חיו.</dd>
+        <dt>מבחן החלפה</dt><dd>מקצוע אחר: נשבר. מתחרה: נשבר. לאף אחד אחר אין את ההיסטוריה הזאת.</dd>
+        <dt>סיכון</dt><dd>גרסאות ישנות פחות יפות, ושזה ייקרא כמו "מחליפים דעה כל שבוע". הניסוח: לא עוצרים בגרסה הראשונה.</dd>
+      </dl></div>
+    </div>
+  </section>
+
+  <!-- S -->
+  <section class="card safe" aria-labelledby="s-t">
+    <div class="card-head"><span class="k">S</span><h2 id="s-t">תבנית סוכנות אפורה</h2><span class="tag">הכיוון הבטוח · נפסל</span></div>
+    <p class="idea">כותרת ממורכזת, שני כפתורים, פס לוגואים, שלושה כרטיסים, באותם צבעים. נפסל כי זה נראה כמו כל סוכנות שהלקוח כבר השווה, ומסתיר את מה שרק MediaWave עושה.</p>
+    <div class="body">
+      <div class="stage"><div class="tpl" aria-hidden="true"><b>בונים אתרים לעסקים</b><div class="two"><i></i><i></i></div><div class="logos"><i></i><i></i><i></i><i></i></div><div class="three"><i></i><i></i><i></i></div></div></div>
+      <div class="notes"><dl><dt>למה הוא כאן</dt><dd>כדי שיהיה ברור מה נפסל ולמה. הוא לא מומלץ.</dd></dl></div>
+    </div>
+  </section>
+</div>
+<script>
+// A: the lens follows the pointer; the number in the corner is this page's real load time on this device.
+(function () {
+  const st = document.getElementById('xr');
+  st.addEventListener('pointermove', (e) => {
+    const r = st.getBoundingClientRect();
+    st.classList.remove('auto');
+    st.style.setProperty('--lx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+    st.style.setProperty('--ly', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+  });
+  st.addEventListener('pointerleave', () => { st.style.removeProperty('--lx'); st.style.removeProperty('--ly'); st.classList.add('auto'); });
+  const show = () => {
+    const nav = performance.getEntriesByType('navigation')[0];
+    const res = performance.getEntriesByType('resource');
+    const kb = Math.round(((nav ? nav.transferSize : 0) + res.reduce((s, x) => s + (x.transferSize || 0), 0)) / 1024);
+    const ms = nav ? Math.round(nav.loadEventEnd || performance.now()) : Math.round(performance.now());
+    document.getElementById('xr-live').textContent = 'הדף הזה נטען אצלך ב-' + (ms / 1000).toFixed(2) + ' שניות · ' + (res.length + 1) + ' בקשות · ' + kb + ' KB';
+  };
+  if (document.readyState === 'complete') setTimeout(show, 50); else addEventListener('load', () => setTimeout(show, 50));
+})();
+
+// B: a scripted conversation; each loop picks another trade, so the built hero looks different every time.
+(function () {
+  const trades = [
+    { t: 'barber', h: 'מספרה', s: 'תור בשלוש לחיצות, בלי לחכות על הקו.', b: 'קביעת תור', u: 'barber.co.il' },
+    { t: 'clinic', h: 'קליניקה', s: 'טיפול שקט, בזמן שמתאים לכם.', b: 'לקביעת טיפול', u: 'clinic.co.il' },
+    { t: 'bakery', h: 'מאפייה', s: 'עוגה בהזמנה, מוכנה בשעה שביקשתם.', b: 'להזמנת עוגה', u: 'bakery.co.il' },
+    { t: 'lawyer', h: 'משרד עו"ד', s: 'שיחת היכרות ראשונה, בלי התחייבות.', b: 'לתיאום שיחה', u: 'law.co.il' },
+  ];
+  const stage = document.getElementById('talk'), site = document.getElementById('site');
+  const bubs = [...stage.querySelectorAll('.bub')], chips = [...stage.querySelectorAll('.chips i')], fly = document.getElementById('fly');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let k = 0;
+  const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
+  async function loop() {
+    const T = trades[k % trades.length]; k++;
+    bubs.forEach((b) => b.classList.remove('in')); chips.forEach((c) => c.classList.remove('on'));
+    site.classList.remove('built', 'fixed'); site.dataset.trade = T.t; document.getElementById('url').textContent = 'localhost';
+    document.getElementById('tt').textContent = T.h; document.getElementById('ts').textContent = T.s; site.querySelector('.b').textContent = T.b;
+    await wait(500); bubs[0].classList.add('in');
+    await wait(900); bubs[1].classList.add('in');
+    await wait(900); chips.find((c) => c.dataset.t === T.t).classList.add('on');
+    await wait(500); site.classList.add('built');
+    await wait(1300); bubs[2].classList.add('in');
+    await wait(900);
+    // the screenshot flies from the chat onto the button it circles
+    const s = stage.getBoundingClientRect(), a = bubs[2].querySelector('.shot').getBoundingClientRect(), b = site.querySelector('.b').getBoundingClientRect();
+    fly.style.transition = 'none'; fly.style.left = (a.left - s.left) + 'px'; fly.style.top = (a.top - s.top) + 'px'; fly.style.transform = 'none'; fly.style.opacity = '1';
+    fly.getBoundingClientRect();
+    fly.style.transition = '';
+    fly.style.transform = `translate(${b.left - a.left}px, ${b.top - a.top}px) scale(.6)`;
+    await wait(750); fly.style.opacity = '0'; site.classList.add('fixed');
+    await wait(900); bubs[3].querySelector('span').textContent = T.u; bubs[3].classList.add('in'); document.getElementById('url').textContent = T.u;
+    await wait(2200); loop();
+  }
+  loop();
+})();
+
+// D: hard cuts between real versions, never a crossfade.
+(function () {
+  const imgs = [...document.querySelectorAll('#ver img')], lab = document.querySelector('#ver-l span');
+  let i = 0;
+  const step = () => { imgs.forEach((im, j) => im.classList.toggle('on', j === i)); lab.textContent = imgs[i].dataset.l; i = (i + 1) % imgs.length; };
+  step();
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(step, 1400);
+})();
+</script>
+</body>
+</html>

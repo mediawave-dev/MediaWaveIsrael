@@ -1,0 +1,26 @@
+{
+ "page_bg": "#0B1020",
+ "text": "#F4F1EA",
+ "accent": "#25D366",
+ "display_font": "Rubik",
+ "body_font": "Heebo",
+ "hero": "אתר שנבנה בקוד, בשבילך בלבד, לא תבנית",
+ "sections": [
+  "Hero",
+  "Services",
+  "Portfolio",
+  "Process",
+  "About",
+  "FAQ",
+  "Contact"
+ ],
+ "motion": [
+  "fade-up on scroll",
+  "hover lift on cards",
+  "floating WhatsApp button pulse"
+ ],
+ "buttons": "rounded pill",
+ "labels": "short uppercase-style bold labels",
+ "imagery": "real project screenshots in phone mockups",
+ "_note": "probe ran as a workflow agent with CLAUDE.md loaded (pb-reflex-probe agent not installed); effort low"
+}

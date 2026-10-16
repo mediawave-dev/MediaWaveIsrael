@@ -1,0 +1,132 @@
+{
+  "name": "Made to Measure",
+  "lane": "tradition",
+  "idea": "He builds your site the way a tailor makes a suit: at every stage you get a fitting on your own phone, you mark what to change, and it is only sewn shut (live) once it fits and is fast.",
+  "subject_world": [
+    "materials: pattern tissue, tailor's chalk, basting thread, the client's real site screens, a VHS cassette with a handwritten label",
+    "tools: browser device mode and its width handle, the Lighthouse speed test, the client's own phone",
+    "rituals: the staging link sent at each stage, the fitting on the phone, the screenshot sent back with a circle on it, going live",
+    "insider words: staging, deploy, 390, mobile first; take in, basting, fitting, size line, piece number"
+  ],
+  "dossier": [
+    "W02 device mode 390 x 844: decides grid and hero interaction; the sheet's size lines are the widths 320/390/768/1024/1440 at real CSS px, numbers at the line ends",
+    "W19 mobile first: decides nesting order; 390 is the base pattern, larger sizes are graded outward from it, and on desktop the 390 outline stays centred",
+    "W04 the client's phone: decides shape; the persistent object is the 390 outline drawn as a pattern piece (no glossy bezel) holding a real client site through its fittings",
+    "W03 the link under construction: decides type placement; each chapter's address runs along that chapter's top line, as pattern labels run along the line they name",
+    "W17 circled correction: decides the fix interaction; one tailor's-chalk ring on a real screenshot, then the circled block is cut out and replaced by the corrected one",
+    "W05/W06 Lighthouse score and bands: decides colour and content; the measure step is a Burda size table (columns = widths) with the real 96 in the 390 column, green only for passed/live",
+    "W12 going live: decides the last state; basting pulled out, staging address cut and replaced by the real one, green dot",
+    "W20 the client sees it on his phone: decides the main peak; the fitting that ends the #process hold",
+    "W09 the cut: decides transitions; chapters change by a hard cut along a drawn cut line, never a crossfade",
+    "W21 fear of a template: decides the proof; two real client sites printed on one sheet, each in that client's own brand ink, as Burda prints overlapping patterns in different inks",
+    "W14 VHS cassette label: decides the tape piece; the cassette is a pattern piece with its real mm dimensions written along its edges"
+  ],
+  "pinned": "The 390 size line IS the client's phone: innermost line of the hero sheet, the held centrepiece of #process (pattern with staging link on its top edge > basted first version > chalk-circled fixes > measured > live with basting pulled, real address, green dot), then back finished at #contact; the hero is W02 exactly, the visitor takes the page in from 1440 to 390 as Nati does in device mode.",
+  "tradition": "Burda Moden pattern supplement sheet (Schnittmusterbogen), West German home dressmaking, c.1950s-1990s. Borrowed grid: every piece drawn once at full scale with all sizes nested inside each other, each size in its own line style. Borrowed type behaviour: labels set along the lines they name, size numbers at line ends, piece numbers in circles, a title block, a narrow instruction column. Borrowed colour logic: one ink per pattern so overlapping patterns stay separable. Translation: sizes become device widths at real CSS px, patterns become client sites in each client's own ink, and the fitting ritual (pattern, basted fitting, chalk marks, finished) maps onto staging link, first version, circled fixes, live.",
+  "transformation": "From a sheet of five nested, unfitted size lines with the hero film lying in the widest like uncut cloth, to one solid 390 outline with no basting left, the real address on its top line, a green dot and the maker's label (Horizon ident): from every size to your size, from pattern to finished garment.",
+  "palette": [
+    { "name": "tissue", "hex": "#F0F1EC", "role": "ground: the thin pattern sheet itself; one sheet for the whole page, zero theme changes (cool grey-white, C about 0.004, not cream)" },
+    { "name": "ink", "hex": "#1C1E26", "role": "text and the active size line: MediaWave's single print ink, as each Burda pattern has one; WhatsApp and tel buttons are ink, not green" },
+    { "name": "tracing", "hex": "#868983", "role": "the other sizes' lines and inactive outlines: lines only, never text (3.1:1 on tissue meets the 3:1 non-text bar)" },
+    { "name": "chalk", "hex": "#4A5D9C", "role": "blue tailor's chalk: only the client's correction ring in the fix state; under 1% of area, a mark not an accent (5.5:1 on tissue)" },
+    { "name": "live", "hex": "#0CCE6B", "role": "accent: Lighthouse pass green, means passed/live and nothing else (green dot, the passing size-table cell, the outline after basting is pulled); max 2% of area, always with an ink ring and an ink label" }
+  ],
+  "type": {
+    "display": "Miriam Libre 700: size numbers, piece numbers, labels along lines, the title-block H1",
+    "text": "Assistant 400/600: instruction-column body, 16 px minimum on phones",
+    "hebrew_support": "native",
+    "why": "Pattern sheets print a plain technical sans small along the lines and the numbers large; Miriam Libre's monoline drafting build carries the numbers and labels, Assistant is a compact Hebrew grotesk for the narrow instruction column; neither is saturated nor in the last portfolio line."
+  },
+  "hero_ascii": "1440 ┌──────────────────────────────┐\n1024 │ ┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐ │\n 768 │ ╎ ┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┐ ╎ │\n 390 │ ╎ ┆ ┌··················┐ ┆ ╎ │\n     │ ╎ ┆ ┆ H1  title block  ┆ ┆ ╎ │\n     │ ╎ ┆ ┆ [WhatsApp] [tel] ┆ ┆ ╎ │\n     │ ╎ ┆ └··················┘ ┆ ╎ │\n     │ ╎ └┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┘ ╎ │\n◄ drag edge or scroll: take in to 390\nfilm = cloth in 1440; link on top line",
+  "motif": {
+    "what": "The size line: nested outlines whose line style names a real width (solid 1440, long dash 1024, dash-dot 768, dot 390, dash-dot-dot 320), numbered at their ends like a pattern sheet's sizes.",
+    "jobs": [
+      "hero interaction: the lines the page is taken in through",
+      "chapter head: each chapter's address (W03) runs along its top line",
+      "process state: long basting dashes = staging, solid line = live",
+      "chapter transition: the hard cut happens along a drawn cut line (W09)",
+      "contained button hover: the button's stitch line tightens from dash to solid inside its edge, nothing under the label",
+      "keyboard focus ring: the dotted 390 line at 3:1 or better",
+      "FAQ open state: the answer opens inside a piece outline",
+      "no preloader: the 390 line ships in the prerendered HTML as an SVG stroke"
+    ]
+  },
+  "signature_moments": [
+    {
+      "where": "hero (#top, held about 1.5 vp)",
+      "sentence": "אני מראה לך את האתר שלך בטלפון שלך, לפני שהוא עולה [קופי: נתי]",
+      "move": "Desktop: five nested size lines with the hero film filling the 1440 one; dragging the edge handle (or scrolling) takes the real layout in line by line, snapping at each width as the H1 rewraps and the buttons stack, passed lines dropping to tracing grey, ending at the centred 390 phone. Phone: the sheet in miniature inside the screen, same take-in, last label shows the visitor's real viewport width.",
+      "why_only_here": "Device mode is how Nati actually checks every client site, and a pattern sheet is the one tradition where a single drawing shows every size at once."
+    },
+    {
+      "where": "end of #process held scene (W20 main peak)",
+      "sentence": "עולה לאוויר רק כשהוא מהיר בטלפון [קופי: נתי]",
+      "move": "After pattern, basting, the chalk ring and its cut-in correction, and 96 written into the 390 column of the size table (the cell turns green), the basting thread is pulled: the dashes run round the outline to one corner and leave in about 600 ms, the outline stays solid, the staging address on the top line is cut and replaced by the real one, and the green dot appears, the only time green touches the phone.",
+      "why_only_here": "This is the one true claim, staging to live on a phone in the real order, and pulling the basting is the tailor's most literal sign for 'finished'."
+    },
+    {
+      "where": "#contact (the logo ident counts as the third)",
+      "sentence": "the approved contact line, with WhatsApp, tel and form",
+      "move": "The sacred Horizon ident plays once inside a small maker's label tacked at the hem of the finished 390 outline, right above the conversion buttons.",
+      "why_only_here": "A maker's label goes in only once the garment is finished; it frames the existing ident instead of adding a new device."
+    }
+  ],
+  "motion_grammar": {
+    "verbs": ["trace", "take in", "cut"],
+    "easing_character": "A tape measure, not a spring: traces run at constant pen speed (linear), take-in snaps to each size line with expo-out and zero overshoot, cuts take one frame; no crossfades, no bounce.",
+    "scroll_model": "Lenis 1.3.26 on gsap.ticker with two ScrollTrigger sticky stages (hero take-in, #process fitting); everything else is native flow with one-shot triggered traces",
+    "intensity": "orchestrated"
+  },
+  "scroll_outline": [
+    "act 1 (0-2 vp, held): the sheet's title block (one H1, WhatsApp, tel) with five size lines, the film as cloth in 1440; take in to 390; cut along the cut line",
+    "act 2 #services (2-4.5 vp): the piece list; all 13 Lotties as numbered pattern pieces of different sizes in three clusters (site, video, tape) on one sheet, labels along their edges, the VHS piece with its real mm dimensions; pieces trace in on enter",
+    "act 3 #process (4.5-8.5 vp, held): the centred 390 phone with a real client site going through pattern > basted > chalk-circled fix > measured (size table, 96 green) > live (basting pulled, real address, green dot)",
+    "act 4 proof (8.5-9.5 vp): two real client sites overlapping on one sheet, each in its own brand ink; scrolling follows one line until the other drops away, then the other",
+    "act 5 #faq (9.5-11 vp): the 13 entries as a narrow instruction column, unnumbered; each opens inside a piece outline",
+    "act 6 #contact (11-12 vp): the finished 390 outline with green dot, the Horizon ident as maker's label, WhatsApp, tel and form with their track() calls"
+  ],
+  "reflex_hits": [
+    { "item": "cream / paper page (Layer 1 warm editorial)", "reason": "Keep: the ground is literally the pattern sheet the tradition is printed on, taken cool and near-neutral (#F0F1EC), named tissue, never warm." },
+    { "item": "hairline rules (broadsheet)", "reason": "Keep: every line is an outline that names a real width or a cut, never a column divider." },
+    { "item": "Klein blue on off-white (Layer 2)", "reason": "Keep only as chalk: a low-chroma blue #4A5D9C for blue tailor's chalk, under 1% area, one job; never an accent or a fill." },
+    { "item": "rough-notation circles (scrapbook kit)", "reason": "Keep one: W17 is literally a circled screenshot; exactly one chalk ring per page with a chalk-wedge edge, no other hand marks." },
+    { "item": "01 / 02 / 03 on content that is not a sequence", "reason": "Piece numbers on the 13 Lotties are lookup IDs tying a drawing to its label, as on a pattern sheet; the FAQ stays unnumbered." },
+    { "item": "stat-hero (big number with small label)", "reason": "Remove: the real 96 sits in one cell of a size table; the large numbers on the page are widths on their own lines." },
+    { "item": "probe accent green #25D366 (both reflex probes)", "reason": "Different green with a different job: Lighthouse pass green for passed/live only (W05/W06); the WhatsApp button is ink." },
+    { "item": "probe: real screenshots in phone mockups", "reason": "Pinned by the brief (W04); drawn as the 390 pattern outline at real CSS px, no rendered device mockup." },
+    { "item": "probe: sticky WhatsApp button pulse", "reason": "Remove: floating WhatsApp sits in the sheet margin and never pulses." },
+    { "item": "a variable-width display that swells as you scroll (2026-10 addition)", "reason": "Remove: the layout is taken in, never the type; no width axis is animated." }
+  ],
+  "assets_needed": [
+    "Two real client sites at 390 (screens or a short recording of each) with permission, plus each one's brand hex taken from its live site",
+    "One real circled-correction screenshot from a client, with consent; failing that, the fix state uses MediaWave's own site and says so",
+    "A VHS cassette with a handwritten label: licence-checked free media or Nati's own photo, never presented as a client's tape",
+    "The dated Lighthouse mobile report behind the 96 (device, URL, date) to print in the size table",
+    "A poster frame of the hero film cropped to 390 x 844 for LCP",
+    "SVG line set drawn in code: five size outlines, cut line, piece circles, grain arrows, notches, basting dashes, maker's label"
+  ],
+  "risks": [
+    "Tailoring may read as a fashion or sewing business to a skimming phone visitor; every outline must hold real web content and the copy stays plainly about sites",
+    "A dense multi-line sheet can turn 'busy' on a 390 screen; cap it at three visible size lines on phones",
+    "Phone visitors (the main audience) cannot drag a width handle; the miniature sheet inside the screen must stay legible, and the real-width label needs JS (390 without it)",
+    "Animating the real layout width reflows every frame and endangers INP, CLS and Lighthouse 95; snap between five container-query states instead of a continuous width",
+    "Live green #0CCE6B is about 1.8:1 on tissue, so the dot needs an ink ring and an ink label to pass non-text contrast",
+    "Miriam Libre may read as a dated Windows/Word form face rather than drafting; Assistant is common on Israeli sites; both need a rendered specimen check",
+    "Rotated Hebrew labels along vertical lines are hard to read; only Latin widths and numbers rotate, Hebrew stays horizontal",
+    "The cut line can slide into the coupon-scissors cliche; no scissors icon anywhere",
+    "Act 4 collapses if the two client sites are not approved; the fix state weakens without a real correction screenshot",
+    "The sacred hero film may not read once cropped from 16:9 into the narrower lines",
+    "Two held scenes again, like the previous KM line's portfolio device; acceptable only because the content differs and services is not held this time",
+    "Reduced motion (CALM tier) must show the finished 390 state with every size line static and all copy readable"
+  ],
+  "facts_to_verify": [
+    "Burda pattern sheets: sizes told apart by line style and overlapping patterns by ink colour, pieces at full scale; which inks and which era",
+    "Miriam Libre: on Google Fonts, Hebrew + Latin, weight 700 available, designer and OFL licence",
+    "Assistant: on Google Fonts, Hebrew-native, OFL, weights 400/600",
+    "Lighthouse gauge colours: pass #0CCE6B, average #FFA400, fail #FF4E42",
+    "MediaWave mobile Lighthouse 96 on 2026-10-13: which URL and device, so it can be printed as measured",
+    "VHS cassette outer dimensions 187 x 103 x 25 mm",
+    "Which two client sites may be shown, and their brand colours",
+    "Whether a Hebrew Burda edition was sold in Israel (local resonance, not relied on)"
+  ]
+}

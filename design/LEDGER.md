@@ -37,3 +37,71 @@ Brief: .context/REDESIGN-PROMPT.md (2026-10-12) + the three-looks prompt (2026-1
 - 2026-10-13 overlap audit run 2: 0 counted (3 looks x 320/390/768/1024/1440, 2 % page steps, 5 % hold steps)
 - 2026-10-13 logo: header 214x26 / 198x24, footer sign-off scrubbed 1:1, ident ends exactly on the design (all transforms cleared), favicon light/dark verified; builds clean
 - 2026-10-13 overlap audit run 1: 48 counted (KM process copy vs the chat button at 320 while the cookie banner lifts it; flight captions vs the cookie card at 1024; H1 vs the accessibility tab at 320) → fixed with --safe-b, captions on top, H1 size under 360 px
+
+## site-director round (2026-10-15): direction C "link to live", D65-D80
+
+### Open
+- [x] Stage 2 gate (2026-10-15, Nati): round-1 ideas rejected, palette kept (D81, D82). Second round: four directions on design/ideas/directions-v2.html; Nati chose C "one shot", mobile first (D83, D84).
+- [ ] /proto-c (dev only): mobile-first prototype of "one shot": hero dive, steps on landing sheets, pull-back into a phone. Waiting for Nati's reaction.
+- [ ] Critic M1 high: the persistent phone "never leaves the screen" contradicts 2 holds / 33% held. Plan: the phone scrolls away between two holds; recompute the held share.
+- [ ] Critic M1 high: CONCEPT puts hold 2 on measure > launch, the storyboard on build. Plan: hold measure > launch (the peak); build becomes free-scroll cuts.
+- [ ] Critic M1 high: the 96 (this site, 13.10 build) was shown inside a "client" phone, and the gauge staged a red phase. Fixed in /proto: the phone shows mediawave.co.il, the arc fills in ink and turns green only at the real value.
+- [ ] Critic M1 high: build cycles six services and 13 Lotties through one client's phone. Plan: build shows one site's sections appearing; the Lotties stay (sacred) as illustrations beside the steps, not as proof; video and tape get their own short proof outside the phone.
+- [ ] Critic M1 high: no real client site is confirmed for the phone. Needs Nati: which client sites may be shown.
+- [ ] Critic M1 high: the concept repeats lab/prior.md almost item by item. Plan: list the prior hits in the reflex check with brief-specific reasons; report the count to Nati.
+- [ ] Critic M1 medium: dead tail 8.5-12 vp; ident placement differs between CONCEPT and storyboard (budget 4/3); CTA and WhatsApp button colour unstated; timecode reason (D76) partly false; motif mixes load bar and playhead; mobile object invisible. Plan: contact closes the loop (the hero's link returns as the WhatsApp link), ident folded into the hero load (3/3), CTA and WhatsApp in ink, fixed story timecodes or none, one meaning for the address line, design 390 first.
+
+### Done
+- [x] /proto (dev only): hero narrowing 1392 > 390 on the engine's hold, slider handle (role=slider, keys and drag move the scroll), measure chapter with honest proof; shots design/shots/proto-v1 (1440x900, 1440x700, 390, motion + reduced), 0 page errors (2026-10-15)
+- [x] Smart lead popup on intent (D79), commit 6bc7ac2 (2026-10-15)
+
+## shot · QA round (2026-10-16)
+
+### Done
+- [x] Overlap audit shot: 0 counted at 320/390/768/1024/1440 (114 positions each, holds dive/build/pullback; 40-79 passing per width, so the zones are present). Before and after the fixes below.
+- [x] Gates on the build (dist-shot): axe 0 at 390 and 1440; overflow 0 at 320-1440; no-JS shows the page (H1 visible); forms OK. Two expected false positives: /api/event 404 (the analytics Pages Function does not exist under vite preview) and the "#main-content" anchor (it sits at y 0; the 32px is the H1 inside the dive's overview pose).
+- [x] CLS 0.154 -> 0.0007 at 390 / 4x CPU / 1.6 Mbps: a phone zoomed the page out to 520px because the desk objects showed at their natural size before the chapters' own stylesheets arrived; fixed with overflow-x: clip on the root (a clip on main or on each chapter did not help); every chapter is now the containing block of its art (an ink line drew full height over the hero); the hero fills the first view before boot; the sub's width in rem (ch changed with the font swap). body.mw-consent-open no longer freezes into the prerender (CookieConsent skips under __PRERENDER__).
+- [x] LCP element is the H1 (was the lens poster): the H1's two lines are one block with <br> (one 33k px² candidate instead of two 22k ones that lost to the 25k poster).
+- [x] Lighthouse TBT 2.6 s -> 0.30 s: the lens's Rive no longer loads and plays its opening right after load (D88: on the first interaction); chapter scenes below the first view are built when within 1.5 viewports (src/look/shot/near.ts; ?at= still builds everything for the QA hooks).
+- [x] camera.ts land()/setDown measured transform-free (docTop/landRange/exitRange): a refresh mid-landing had moved starts by ~28px and exits by ~370px.
+- [x] Lotties: rest on their finished frame until they first play (draw-on files were empty at frame 0); under ?reduce=1 every Lottie is frozen (they all played before); no <video> element under ?reduce=1; the contact form's 4.2 s reset timer is cleared on a new send.
+- [x] Fallback heights re-measured (390 and 1440x900).
+
+### Measured (same machine, alternating runs, the side pane on a static page)
+| | shot | KM |
+|---|---|---|
+| Lighthouse mobile, median of 5 | 67 (LCP 4.86 s sim, TBT 302 ms, CLS 0) | 73 (LCP 4.72 s sim, TBT 333 ms, CLS 0.006) |
+| Lighthouse, reduced motion, median of 3 | 64 (TBT 382 ms) | 69 (TBT 636 ms) |
+| rum.mjs (real Chrome, 390, 4x CPU, slow 4G), median of 3 | LCP 2.34 s (H1), CLS 0.000, blocking 1.30 s | LCP 2.19 s (image), CLS 0.005, blocking 1.21 s |
+Lighthouse on this machine is noisy (the same build gave TBT 0.26-3.4 s across runs while the pane played video); only alternating, same-session runs compare. The 96 in HANDOFF was another day's conditions.
+
+### Open
+- [ ] Real-world Lighthouse: PageSpeed Insights on a Cloudflare preview deploy (needs Nati's OK for a preview deploy).
+- [ ] D88 (lens without the load-time opening) needs Nati's OK.
+
+## shot · impeccable audit and the critic fixes (2026-10-16)
+
+Report: design/audit/impeccable/AUDIT.rtl.md (14/20 before the fixes). Evidence: design/audit/impeccable/mobile-audit*.md (G:/tmp/mobile-audit.mjs: tap targets, text under 12px, sideways overflow, fixed layers, fields, headings, axe at 320/390/768 in both visit states).
+
+### Done
+- [x] P0 the lead dialog rendered inside the page (a block at the top of main, pushing the page ~400px down, the form cut mid-field, the menu able to open over it): the shot rule main > * { position: relative } also caught the fixed dialog. Now main > :is(section, .shot-bw).
+- [x] P1 the --safe-b probe measured 0 under the same rule (an inline <i> ignores height): landings and the pull-back ignored the dock and the cookie strip. Fixed by the same change (the probe reads 64 / 104).
+- [x] P1 critic #1, the hero overview at 390/768: the closed laptop, the cassette and the loupe lie whole in the table the overview shows (below 1100px they were past the stage edges, black wedges), the dive pushes them out of the frame (yPercent, measured on refresh), nothing is left at the release. The closed laptop is seen from above (rotateX -55, as in S4: +55 was a camera under the table) with the Horizon mark on its lid; at 1100+ its lid sits just past the stage bottom.
+- [x] P2 the hero lens lies on the sheet edge again below 1100px (display: flow-root; the lens margin collapsed through the sheet, so the paper rose to the lens top).
+- [x] P1 critic #5, the pull-back: its first frame is the phone screen at the real letter width, centred in the band above the dock line (it opened on the bezel and two screens of bare table).
+- [x] D89 the menu (Nati, 16.10): five chapters in page order, the chapter in view marked (aria-current, an ink dot), WhatsApp in the foot; the desktop bar shows four. Fits 320x568.
+- [x] Focus never hides under the dock or the strip: scroll-padding-bottom: var(--safe-b) (WCAG 2.4.11). The skip link in ink on paper (it was sky on sky ink, 3.4:1). The cookie strip privacy link has a 44px tap height. The key legend 12px. The two key-spring curves carry an impeccable-disable comment (D87).
+- [x] Number ranges in the copy: 2 עד 3 שבועות and the like (faqs, services, Terms, the legacy FAQ), per the no-unnecessary-hyphen rule.
+- [x] DESIGN.md now documents shot (it described KM; the detector flagged 27 colours and 3 fonts as undocumented).
+- [x] False positives in the audit: the 41px and 35px hero link is 44px at rest (the overview pose scales it); the 43px service links are mid-landing; the FAQ questions already compute ink.
+
+### Verified on the production build (npm run build, served by vite preview, 2026-10-16)
+- Overlap audit: 0 counted at 320/390/768/1024/1440, 114 positions each (design/audit/shot-overlap-3).
+- Gates: axe 0 at 390 and 1440, overflow 0 at 320-1440, no-JS shows the page (H1 visible), the form has a receiver and labels (design/audit/shot-gates-final). The two FAILs are the known false positives: /api/event 404 under vite preview, #main-content 5-32px apart because of the dive overview pose.
+- Mobile audit after the fixes: axe 0, no text under 12px, no sideways overflow at 320 and 390 in both visit states; the menu fits 320x568 (design/audit/impeccable/mobile-audit-after-*.md).
+- tsc 0; the build prerenders 11 pages with data-look="shot".
+
+### Open
+- [ ] Critic #11, desktop: the overview at 0.64 renders the sub and the CTA small; a larger pose needs the bottom props re-placed with an exit (as below 1100px).
+- [ ] Critic #6 (the self-building site reads as a template), #7 (no ink spine through meet and choose), #8 (blank faces on some props), #12 (every paper surface is the same card): design work, for Nati.
+- [ ] FAQ answers are centred (D61); a 4-line centred paragraph reads worse than start-aligned: Nati.
