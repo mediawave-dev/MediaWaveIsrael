@@ -572,3 +572,8 @@ html[data-look="shot"] .shot-hero + * {
   position: relative; z-index: 1; background: var(--table);
   margin-top: calc(-1 * max(0px, var(--hero-slack, 0px) - 40px));
 }
+/* tablets (768-1023px): the closed laptop and the cassette are still leaving through the stage's
+   bottom when the cream would rise over it (overlap audit at 768), so the bridge stays off there */
+@media (min-width: 768px) and (max-width: 1023px) {
+  html[data-look="shot"] .shot-hero + * { margin-top: 0; }
+}
