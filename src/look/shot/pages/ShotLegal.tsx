@@ -38,7 +38,9 @@ export default function ShotLegal({ name, description, path, updated, children }
     <div className="sp sl">
       <SEO title={name} description={description} canonical={path} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
-      <Trail items={[{ label: 'דף הבית', href: '/' }, { label: name }]} />
+      <div className="sp-top sp-top--hang">
+        <Trail items={[{ label: 'דף הבית', href: '/' }, { label: name }]} />
+      </div>
       <article className="sl-sheet" aria-labelledby="sl-title">
         <header className="sl-head">
           <h1 id="sl-title" className="sp-h1" data-zone="text">{name}</h1>

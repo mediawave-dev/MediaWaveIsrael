@@ -58,7 +58,12 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
 // BELOW the fold while the route chunk loads. The 50vh default put the footer
 // at mid-screen and the arriving content pushed it 4000px+ down — a measured
 // CLS of exactly 0.50 on cold route loads (footer impact 0.5 x distance 1.0).
-const PageFallback = () => <SectionFallback height="120vh" />
+const PRERENDERED = typeof document !== 'undefined'
+  ? { path: window.location.pathname, html: document.getElementById('main-content')?.innerHTML ?? '' }
+  : { path: '', html: '' }
+const PageFallback = () => (PRERENDERED.html && PRERENDERED.path === window.location.pathname
+  ? <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: PRERENDERED.html }} />
+  : <SectionFallback height="120vh" />)
 
 const HOME_SEO = (
   <SEO

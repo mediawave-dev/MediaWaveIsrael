@@ -193,7 +193,9 @@ async function prerender() {
     // (later routes are served the already-rewritten home page, so drop earlier rewrites first)
     html = html.replace(/<noscript><link rel="stylesheet" href="\/assets\/[^"]+\.css"><\/noscript>/g, '')
     html = html.replace(/<link rel="stylesheet" crossorigin="" href="(\/assets\/(?!index-)[^"]+\.css)"(?: media="[^"]*")?(?: onload="[^"]*")?>/g,
-      (_, href) => `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
+      (_, href) => route !== '/' && /\/assets\/(shot-pages|ShotLegal)-/.test(href)
+        ? `<link rel="stylesheet" crossorigin="" href="${href}">`
+        : `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
 
     // Preload the look's display face (the H1), early in <head>
     const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'

@@ -4,7 +4,7 @@
 // ([data-dock-hide]), #contact and the footer, the cookie strip (which replaces it) and any
 // modal dialog. --safe-b never changes with it, so nothing on the page moves.
 import { useEffect, useState } from 'react'
-import { WHATSAPP_URLS } from '../../utils/whatsapp'
+import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { track } from '../../utils/analytics'
 // shot-dock.css is imported by ShotHome (the shot entry), not here: Layout imports this file in
 // every look, and a CSS import would put the dock's rules into the k, m and km bundles too.
@@ -93,6 +93,8 @@ export default function ShotDock({ chatOpen, onSlot, onShownChange }: ShotDockPr
       <a
         className="shot-dock__wa"
         href={WHATSAPP_URLS.general}
+        onPointerDown={(e) => { const m = document.querySelector<HTMLElement>('[data-wa]')?.dataset.wa; if (m) e.currentTarget.href = getWhatsAppUrl(m) }}
+        onFocus={(e) => { const m = document.querySelector<HTMLElement>('[data-wa]')?.dataset.wa; if (m) e.currentTarget.href = getWhatsAppUrl(m) }}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="כתבו לנו בוואטסאפ"

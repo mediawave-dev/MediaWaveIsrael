@@ -33,7 +33,7 @@ export default function ShotPortfolio() {
   }
 
   return (
-    <div ref={ref} className="sp sp--work">
+    <div ref={ref} className="sp sp--work" data-wa={wa}>
       <SEO title={ex.metaTitle} description={ex.metaDescription} canonical={`/portfolio/${ex.slug}`} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
       {ex.localVideoPath && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(video) }} />}

@@ -158,6 +158,9 @@ export default function ShotChoose() {
     <section ref={ref} id="services" className="shot-choose" data-chapter="choose" data-dossier="W04 W13 W14" aria-labelledby="services-title">
       <header className="shot-table-head">
         <h2 id="services-title" data-zone="text">מה אנחנו עושים</h2>
+        <ul className="shot-choose__index" aria-label="השירותים">
+          {SERVICES.map((s) => <li key={s.id}><a className="shot-link" href={s.href} data-zone="text">{s.title}</a></li>)}
+        </ul>
       </header>
       <ul className="shot-tools">
         {ITEMS.map((it, i) => <Tool key={it.id} it={it} i={i} eye={eye} />)}

@@ -523,3 +523,41 @@ html[data-look="shot"] .key__label:has(.key__dest) { display: flex; align-items:
   html[data-look="shot"] { --strip-h: 104px; }
   html[data-look="shot"] .mw-consent__text + div { flex-direction: column; gap: 4px; }
 }
+
+/* ── final jury (2026-10-18 night) ── */
+/* C/U/A/PH: the chevrons in physical borders (the logical ones mirrored in RTL and pointed backwards):
+   down for the page's own anchors, forward (left, in RTL) for another page */
+html[data-look="shot"] .shot-link::after,
+html[data-look="shot"] .shot-tool__label .shot-label__go::before {
+  border: 0; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(0.06em, -0.06em);
+}
+html[data-look="shot"] .shot-link[href^="#"]::after, html[data-look="shot"] .shot-link[href^="/#"]::after { transform: rotate(-45deg) translate(0.04em, -0.16em); }
+html[data-look="shot"] .shot-tool__label .shot-label__go::after { border: 0; transform: none; }
+/* D7/A6: the dock is two floating controls, not a cream bar across every band */
+html[data-look="shot"] .shot-dock { background: none; box-shadow: none; }
+html[data-look="shot"] .shot-dock__wa { box-shadow: 0 6px 18px -8px rgba(26, 25, 23, 0.55); }
+html[data-look="shot"] .shot-dock__chat-btn { box-shadow: 0 0 0 1px rgba(26, 25, 23, 0.12), 0 6px 18px -8px rgba(26, 25, 23, 0.45); }
+/* D2: the hero key sizes to its label from 1100px (the label ran past the cap) */
+@media (min-width: 1100px) {
+  html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 20px; min-width: max-content; }
+}
+/* D4/C4: the big word sits inside one continuous white band (it was a white box framed by cream) */
+html[data-look="shot"] .shot-bw { box-shadow: 0 0 0 100vmax #ffffff; clip-path: inset(-64px -100vmax 0 -100vmax); }
+/* D6: on the black desk the objects take the cream material (their faces stay white); the closed
+   laptop's lid is cream with its mark in the light-ground tones. No rims. */
+html[data-look="shot"] :is(.shot-hero, .sp-top) .thing { --obj: #ede7da; --obj-2: #b8b0a0; --obj-shadow: rgba(0, 0, 0, 0.55); }
+html[data-look="shot"] :is(.shot-hero, .sp-top) .thing__body { box-shadow: 0 2.6em 4em -1.8em rgba(0, 0, 0, 0.6); }
+html[data-look="shot"] .shot-hero .shot-lap .lap__lid { background: #ede7da; box-shadow: inset 0 0 0 1.5px #b8b0a0; }
+html[data-look="shot"] .shot-hero .shot-lap .lap__base { box-shadow: none; }
+/* A3: focus stays visible on black (the generic ink ring outranked the band's cream one) */
+html[data-look="shot"] :is(.sp-top, .shot-hero, .mw-foot) :focus-visible { outline-color: var(--cream); }
+html[data-look="shot"] :is(.sp-top .sp-hero, .shot-hero__sheet, .sl-sheet) :focus-visible { outline-color: var(--ink); }
+/* A7: the accessibility widget's high-contrast switch on the shot look: full ink, thicker lines */
+html.high-contrast[data-look="shot"] { --ink-2: var(--ink); --cream-2: var(--cream); --line: rgba(26, 25, 23, 0.9); --line-ui: var(--ink); }
+html.high-contrast[data-look="shot"] :is(.shot-sheet, .sp-sheet, .sl-sheet, .shot-label, .sp-pad, .sp-slip__paper) { box-shadow: inset 0 0 0 2px var(--ink); }
+/* U3: the six services by name under the heading, two ruled columns */
+.shot-choose__index { list-style: none; margin: 16px auto 0; padding: 0; max-width: 420px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); box-shadow: inset 0 1px 0 var(--line); }
+.shot-choose__index li { box-shadow: inset 0 -1px 0 var(--line); }
+.shot-choose__index .shot-link { width: 100%; justify-content: space-between; font-weight: 600; }
+@media (min-width: 1100px) { .shot-choose__index { max-width: 720px; grid-template-columns: repeat(3, minmax(0, 1fr)); } }

@@ -311,3 +311,22 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-top .sp-sample__frame { box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.8); }
 @media (min-width: 1100px) { .sp-top { padding-bottom: 72px; } }
 .sp-work__head .sp-kicker { margin-bottom: 14px; }
+
+/* ── final jury ── */
+/* D8: no cream seam between the black header and the black opening band */
+.sp:has(> .sp-top) { padding-top: 0; }
+.sp > .sp-top { margin-top: 0; }
+/* C1: the paper bridges the bands: the hero sheet (and the work sample's film) hangs over the black
+   band's edge into the cream, so the cut passes behind the paper, never through empty space */
+.sp--service .sp-top, .sp--work .sp-top { padding-bottom: 0; }
+.sp--service .sp-top > .sp-hero, .sp--work .sp-top > .sp-sample { position: relative; z-index: 1; margin-bottom: -72px; }
+.sp--service .sp-top + *, .sp--work .sp-top + * { margin-top: 128px; }
+.sp--work .sp-top { padding-bottom: 0; }
+/* the legal sheet starts on the black band and hangs into the cream */
+.sp-top--hang { padding-bottom: 96px; }
+.sp-top--hang + .sl-sheet { position: relative; z-index: 1; margin-top: -84px; }
+/* the 404 desk on black: the empty spot outlined in cream */
+.sp-lost__top { padding: 28px 0 40px; }
+.sp-lost__top .sp-lost__desk { margin-top: 12px; }
+.sp-lost__top .sp-lost__gap { border-color: rgba(237, 231, 218, 0.55); }
+.sp-lost__top .sp-lost__code { color: var(--cream-2); }

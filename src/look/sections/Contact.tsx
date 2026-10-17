@@ -147,7 +147,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
         <div className="ct__side">
           {kicker}
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
-          <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. המפתח עצמו קורא ועונה.</p>
+          <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. נתי, המפתח, קורא ועונה בעצמו.</p>
           <Card>
             <div className="ct__face" aria-hidden="true">
               <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />

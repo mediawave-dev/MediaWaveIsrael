@@ -74,7 +74,7 @@ export default function CookieConsent() {
           <div className="mw-consent p-3 sm:p-4">
             <div className="flex items-center gap-3 sm:flex-col sm:items-stretch sm:gap-0">
               <p className="mw-consent__text flex-1 text-sm leading-snug sm:leading-relaxed sm:mb-3">
-                האתר משתמש בעוגיות לשיפור החוויה.{' '}
+                האתר משתמש בעוגיות.{' '}
                 {/* Static underline is a WCAG 1.4.1 requirement for links inside
                     running text (axe link-in-text-block fired on every page) —
                     color alone (1.49:1 vs surrounding text) is not a valid cue */}

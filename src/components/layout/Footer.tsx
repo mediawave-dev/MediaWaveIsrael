@@ -30,7 +30,7 @@ export default function Footer() {
       return
     }
     const el = document.querySelector<HTMLElement>(href)
-    if (!el) return
+    if (!el) { window.location.assign('/' + href); return }
     el.scrollIntoView({ behavior: 'smooth' })
     // keyboard users continue from the section they asked for
     if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
@@ -66,7 +66,7 @@ export default function Footer() {
             <ul>
               {footerLinks.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>{link.label}</a>
+                  <a href={link.href.startsWith('#') && window.location.pathname !== '/' ? `/${link.href}` : link.href} onClick={(e) => handleLinkClick(e, link.href)}>{link.label}</a>
                 </li>
               ))}
             </ul>

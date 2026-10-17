@@ -117,27 +117,27 @@ export default function ShotService() {
   ]
 
   return (
-    <div ref={ref} className="sp sp--service" data-service={service.id}>
+    <div ref={ref} className="sp sp--service" data-service={service.id} data-wa={wa}>
       <SEO title={service.metaTitle} description={service.metaDescription} canonical={`/services/${service.slug}`} />
       {schema.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
 
       <div className="sp-top">
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: 'שירותים', href: '/#services' }, { label: service.title }]} />
 
-      <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title" data-dock-hide="">
+      <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title">
         <div className="sp-hero__obj"><DeskObject id={service.id} item={service.id === 'memory-videos' ? { ...item, image: '/videos/memory-video-poster-640.webp', lottie: undefined } : item} size={ART} /></div>
         <div className="sp-hero__copy">
           <h1 id="sp-title" className="sp-h1" data-zone="text">{service.title}</h1>
           <p className="sp-sub" data-zone="text">{service.heroSubtitle}</p>
+          <div className="sp-ctas" data-dock-hide="">
+            <WaKey text={wa} placement="service_hero" />
+            <a className="shot-link" href="#how" data-zone="text">איך זה עובד</a>
+          </div>
           {service.tags && (
             <ul className="sp-facts" aria-label="בקצרה">
               {service.tags.map((t) => <li key={t} data-zone="text">{t}</li>)}
             </ul>
           )}
-          <div className="sp-ctas" data-dock-hide="">
-            <WaKey text={wa} placement="service_hero" />
-            <a className="shot-link" href="#how" data-zone="text">איך זה עובד</a>
-          </div>
         </div>
       </article>
       </div>

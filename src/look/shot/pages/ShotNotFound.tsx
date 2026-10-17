@@ -14,11 +14,13 @@ export default function ShotNotFound() {
   return (
     <div className="sp sp--lost">
       <SEO title="העמוד לא נמצא (404)" description="העמוד שחיפשתם לא קיים, או שהכתובת השתנתה. מכאן חוזרים לדף הבית." noindex />
+      <div className="sp-top sp-lost__top">
       <div className="sp-lost__desk">
         <div className="sp-lost__gap" aria-hidden="true" data-zone="art">
           <span className="sp-lost__code">404</span>
         </div>
         <span className="sp-obj sp-obj--loupe sp-lost__loupe" aria-hidden="true" data-zone="art"><Thing kind="loupe" /></span>
+      </div>
       </div>
       <div className="sp-lost__copy">
         <h1 className="sp-h1" data-zone="text">העמוד הזה לא על השולחן</h1>
