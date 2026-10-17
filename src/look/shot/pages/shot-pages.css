@@ -330,3 +330,10 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-lost__top .sp-lost__desk { margin-top: 12px; }
 .sp-lost__top .sp-lost__gap { border-color: rgba(237, 231, 218, 0.55); }
 .sp-lost__top .sp-lost__code { color: var(--cream-2); }
+
+/* short phones (568-640px tall): the hero's object at 72%, so the title, the line under it and the
+   WhatsApp key come up out of the dock's band on the first screen (overlap audit, memory videos
+   at 320x568) */
+@media (max-width: 767px) and (max-height: 640px) {
+  .sp-hero__obj .sp-obj:not(.sp-obj--small) { font-size: calc(var(--fs, 4.6px) * 0.72); }
+}

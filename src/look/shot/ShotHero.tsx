@@ -75,6 +75,17 @@ export default function ShotHero() {
     diving.current = true
     const tl = dive(t, { hold, layer: model, id: 'dive' })
     const stage = hold.querySelector<HTMLElement>('.hold__stage')
+    // the black band ends with the stage, 120px (390) to 170px (1440) under the landed paper stack
+    // (review round 2, N4): the next chapter's cream comes up to 40px under the stack
+    // (--hero-slack, shot-base.css). Only while the dive runs: the hold keeps the next chapter far
+    // below the first view, so moving it never shifts what is on screen.
+    const slack = () => {
+      if (!stage) return
+      const below = stage.clientHeight - (model.offsetTop + sheet.offsetTop + sheet.offsetHeight) - 16
+      html.style.setProperty('--hero-slack', `${Math.max(0, Math.round(below))}px`)
+    }
+    slack()
+    window.addEventListener('resize', slack)
     // from 1100px the tools around the sheet lag the camera a little, each by its depth, and
     // settle again by the release (0 at both ends, so the first frame equals the painted pose)
     const half = tl.duration() / 2
@@ -120,7 +131,11 @@ export default function ShotHero() {
             end: () => 'bottom ' + Math.round(below()) + 'px',
           } })
     }
-    return () => { diving.current = false }
+    return () => {
+      diving.current = false
+      window.removeEventListener('resize', slack)
+      html.style.removeProperty('--hero-slack')
+    }
   }, [policy.short, policy.textScaled])
 
   return (

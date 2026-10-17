@@ -21,6 +21,56 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
 
 const EngineContext = createContext<MotionEngine | null>(null)
 
+/**
+ * Land on the URL's #hash once its target exists and the page above it has settled. The home's
+ * chapters are lazy chunks: on a deep link (/#faq) or right after a route change from an inner
+ * page the target is not in the DOM yet, and the chapters above it take their real height later
+ * (review round 2, N1: the old one-shot look-up gave up and left the visitor at the top, or the
+ * browser's own jump ended 1,400px short). Settled = no chapter fallback left (.shot-fb) and the
+ * target's offset unchanged for 300 ms; 5 s at most. Then one check 700 ms later. Returns a cancel.
+ */
+function landOnHash(engine: MotionEngine): () => void {
+  let id = ''
+  try { id = decodeURIComponent(window.location.hash.slice(1)) } catch { return () => {} }
+  if (!id) return () => {}
+  let cancelled = false
+  let raf = 0
+  let timer = 0
+  const t0 = performance.now()
+  let last = Number.NaN
+  let since = t0
+  const offsetOf = (el: HTMLElement) => el.getBoundingClientRect().top + window.scrollY
+  const land = (el: HTMLElement) => {
+    ScrollTrigger.refresh()
+    if (engine.lenis) { engine.lenis.resize(); engine.lenis.scrollTo(el, { immediate: true, force: true }) }
+    else el.scrollIntoView({ behavior: 'auto' })
+  }
+  const tick = () => {
+    if (cancelled) return
+    const now = performance.now()
+    const el = document.getElementById(id)
+    if (el) {
+      const top = offsetOf(el)
+      if (Math.abs(top - last) > 1) { last = top; since = now }
+    }
+    const pending = !!document.querySelector('#main-content .shot-fb')
+    if (el && ((!pending && now - since > 300) || now - t0 > 5000)) {
+      land(el)
+      // keyboard users continue from the section they asked for
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+      el.focus({ preventScroll: true })
+      // the scenes next to the target build when it comes near; land again if that moved it
+      const at = el.getBoundingClientRect().top
+      timer = window.setTimeout(() => { if (!cancelled && Math.abs(el.getBoundingClientRect().top - at) > 8) land(el) }, 700)
+      return
+    }
+    if (now - t0 > 8000) return
+    raf = requestAnimationFrame(tick)
+  }
+  raf = requestAnimationFrame(tick)
+  return () => { cancelled = true; cancelAnimationFrame(raf); clearTimeout(timer) }
+}
+
 /** Scroll to the element the URL hash names, instantly (deep links, route changes). */
 function hashTarget(): HTMLElement | null {
   if (!location.hash) return null
@@ -71,13 +121,11 @@ export function ScrollEngineProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!engine || landed.current) return
     landed.current = true
-    const target = hashTarget()
-    if (!target) return
-    engine.fontsReady.then(() => {
-      ScrollTrigger.refresh()
-      target.scrollIntoView({ behavior: 'auto' })
-      engine.lenis?.resize()
-    })
+    if (!window.location.hash) return
+    let cancel = () => {}
+    let live = true
+    engine.fontsReady.then(() => { if (live) cancel = landOnHash(engine) })
+    return () => { live = false; cancel() }
   }, [engine])
 
   // Route change: go to the top (or the new URL's #hash), then re-measure. Not on the first run.
@@ -90,7 +138,10 @@ export function ScrollEngineProvider({ children }: { children: ReactNode }) {
     else if (target) target.scrollIntoView({ behavior: 'auto' })
     else window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
     const id = requestAnimationFrame(() => ScrollTrigger.refresh())
-    return () => cancelAnimationFrame(id)
+    // a #hash whose target is not mounted yet (an inner page's link to a home chapter): land on it
+    // once it arrives
+    const cancel = !target && window.location.hash ? landOnHash(engine) : () => {}
+    return () => { cancelAnimationFrame(id); cancel() }
   }, [pathname, engine])
 
   return <EngineContext.Provider value={engine}>{children}</EngineContext.Provider>

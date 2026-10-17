@@ -106,9 +106,12 @@ html[data-look="shot"] :where(:focus-visible) { outline: 3px solid var(--ink); o
 /* a focused field or link is never scrolled under the dock or the cookie strip (WCAG 2.4.11): the
    browser keeps --safe-b clear at the bottom, as --head at the top */
 html[data-look="shot"] { scroll-padding-bottom: var(--safe-b); }
-/* the skip link (Layout's legacy utilities paint it sky on sky-ink, 3.4:1 and off-palette): ink and paper */
+/* the skip link (Layout's legacy utilities paint it sky on sky-ink, 3.4:1 and off-palette): a paper
+   tab under the black header row, ink text and a cream ring, never over the logo (review N7) */
 html[data-look="shot"] a[href="#main-content"]:focus {
-  background: var(--ink); color: var(--paper); border-radius: 2px; font: 700 1rem/1.4 var(--ui); text-decoration: none;
+  top: calc(var(--head, 64px) + 8px); background: var(--paper); color: var(--ink); border-radius: 2px;
+  font: 700 1rem/1.4 var(--ui); text-decoration: none; outline: 3px solid var(--cream); outline-offset: 0;
+  box-shadow: 0 0 0 5px var(--ink);
 }
 
 /* the probe JS reads to resolve --safe-b in px (camera.ts safeB(), ShotHome renders it once) */
@@ -534,10 +537,7 @@ html[data-look="shot"] .shot-tool__label .shot-label__go::before {
 }
 html[data-look="shot"] .shot-link[href^="#"]::after, html[data-look="shot"] .shot-link[href^="/#"]::after { transform: rotate(-45deg) translate(0.04em, -0.16em); }
 html[data-look="shot"] .shot-tool__label .shot-label__go::after { border: 0; transform: none; }
-/* D7/A6: the dock is two floating controls, not a cream bar across every band */
-html[data-look="shot"] .shot-dock { background: none; box-shadow: none; }
-html[data-look="shot"] .shot-dock__wa { box-shadow: 0 6px 18px -8px rgba(26, 25, 23, 0.55); }
-html[data-look="shot"] .shot-dock__chat-btn { box-shadow: 0 0 0 1px rgba(26, 25, 23, 0.12), 0 6px 18px -8px rgba(26, 25, 23, 0.45); }
+/* D7/A6: the dock is two floating controls, not a cream bar across every band (shot-dock.css) */
 /* D2: the hero key sizes to its label from 1100px (the label ran past the cap) */
 @media (min-width: 1100px) {
   html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 20px; min-width: max-content; }
@@ -559,5 +559,16 @@ html.high-contrast[data-look="shot"] :is(.shot-sheet, .sp-sheet, .sl-sheet, .sho
 /* U3: the six services by name under the heading, two ruled columns */
 .shot-choose__index { list-style: none; margin: 16px auto 0; padding: 0; max-width: 420px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); box-shadow: inset 0 1px 0 var(--line); }
 .shot-choose__index li { box-shadow: inset 0 -1px 0 var(--line); }
-.shot-choose__index .shot-link { width: 100%; justify-content: space-between; font-weight: 600; }
+/* the chevron follows its own label (spread to the cell's end it sat beside the next column's
+   label, review N5); one column under 360px, where the names wrapped */
+.shot-choose__index .shot-link { width: 100%; justify-content: flex-start; font-weight: 600; }
+@media (max-width: 359px) { .shot-choose__index { grid-template-columns: 1fr; max-width: 260px; } }
 @media (min-width: 1100px) { .shot-choose__index { max-width: 720px; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* review round 2, N4: the cream chapter after the hero comes up to 40px under the landed paper
+   stack, over the empty end of the black stage (ShotHero sets --hero-slack while the dive runs;
+   unset, nothing moves). The cut passes 40px under the paper, never through an empty slab. */
+html[data-look="shot"] .shot-hero + * {
+  position: relative; z-index: 1; background: var(--table);
+  margin-top: calc(-1 * max(0px, var(--hero-slack, 0px) - 40px));
+}

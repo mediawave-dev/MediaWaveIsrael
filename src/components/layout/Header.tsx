@@ -61,8 +61,9 @@ export default function Header() {
       el.focus({ preventScroll: true })
     }
     if (!isHomePage) {
-      navigate('/')
-      setTimeout(go, 100)
+      // the home's chapters are lazy: keep the hash, and the engine lands on it once it exists
+      setIsMobileMenuOpen(false)
+      navigate('/' + href)
     } else if (isMobileMenuOpen) {
       // the sheet locks the page: close it, let the lock go (an effect on the next commit), then scroll
       setIsMobileMenuOpen(false)
