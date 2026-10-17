@@ -40,8 +40,12 @@ const SHOT = {
   screen: '00FFFFFF', frame: '1A1917', frameLine: '1A1917', addr: '4D4942', dot: '4D4942', addrInk: 'EDE7DA',
   pageDark: 'EDE7DA', page: 'FFFFFF', wireFill: '331A1917', wireLine: '4D4942',
   ink: '1A1917', ink2: '4D4942', mute: '591A1917', line: '241A1917', klein: '1A1917', kleinTint: 'EDE7DA',
-  white: 'FFFFFF', logoA: '1A1917', logoB: '00248A', rule: '241A1917', cursorFill: '1A1917', cursorLine: 'FFFFFF',
+  white: 'FFFFFF', logoA: 'F4EFE4', logoB: '6E8CFF', rule: '00EDE7DA', cursorFill: '1A1917', cursorLine: 'FFFFFF',
 }
+// shot (D110): the built page has this site's bands, so the header sits on black in the header's
+// own tones (the mark in cream and light Klein, as in .mw-head)
+const BANDS = PALETTE_ARG() === 'shot'
+function PALETTE_ARG() { const i = process.argv.indexOf('--palette'); return i >= 0 ? process.argv[i + 1] : 'km' }
 const pi = process.argv.indexOf('--palette')
 const PALETTE = pi >= 0 ? process.argv[pi + 1] : 'km'
 if (!['km', 'shot'].includes(PALETTE)) throw new Error(`unknown --palette ${PALETTE} (km, shot)`)
@@ -104,9 +108,10 @@ const R = 1436 // the page's right margin (RTL start)
 const markNode = nid()
 const halves = markPaths().map((d, i) => ({ vs: vertices(cubics(d)), tone: i ? C.logoB : C.logoA }))
 const MARK = { cx: R - 15, cy: PAGE_Y + 36, s: 0.3 }
-block({ name: 'Brand', right: R - 44, cy: MARK.cy, w: 112, h: 14, r: 7, final: C.ink, f: 24 })
-;[0, 1, 2].forEach((i) => block({ name: `Nav ${i + 1}`, right: 1010 - i * 100, cy: MARK.cy, w: 70, h: 10, r: 5, final: C.ink2, f: 28 + i * 3 }))
-block({ name: 'Header button', right: 280, cy: MARK.cy, w: 124, h: 38, r: 19, final: C.klein, f: 36 })
+const HEAD = BANDS ? { brand: 'F4EFE4', nav: 'B8B0A0', btn: 'F4EFE4' } : { brand: C.ink, nav: C.ink2, btn: C.klein }
+block({ name: 'Brand', right: R - 44, cy: MARK.cy, w: 112, h: 14, r: 7, final: HEAD.brand, f: 24 })
+;[0, 1, 2].forEach((i) => block({ name: `Nav ${i + 1}`, right: 1010 - i * 100, cy: MARK.cy, w: 70, h: 10, r: 5, final: HEAD.nav, f: 28 + i * 3 }))
+block({ name: 'Header button', right: 280, cy: MARK.cy, w: 124, h: 38, r: 19, final: HEAD.btn, f: 36 })
 // hero text column
 block({ name: 'Headline 1', right: R, cy: 300, w: 520, h: 42, r: 8, final: C.ink, f: 32 })
 block({ name: 'Headline 2', right: R, cy: 358, w: 400, h: 42, r: 8, final: C.ink, f: 36 })
@@ -224,10 +229,31 @@ track(winNode, 'opacity', [[0, 0], [2, 0, 'out'], [22, 1]])
 track(winNode, 'y', [[0, 26], [2, 26, 'out'], [26, 0]])
 track(pageFill, 'colorValue', [[0, `${A(C.pageDark)}`], [PAINT0 - 4, `${A(C.pageDark)}`, 'soft'], [PAINT1 - 4, `${A(C.page)}`]], 'c')
 
+// the bands (shot, D110): black from the header to under the opening, the hero text on a white
+// sheet, cream under it for the cards. They take their colours with the page's paint.
+const BAND = { cut: 668, bottom: WIN.y + WIN.h }
+const SHEET = { x: 902, y: 248, w: 570, h: 344, r: 10 }
+let bandsXml = '', bandsSvg = ''
+if (BANDS) {
+  const black = nid(), sheet = nid()
+  bandsXml = `<Shape ${attrs({ x: SHEET.x + SHEET.w / 2, y: SHEET.y + SHEET.h / 2, name: 'Hero sheet' })}><Rectangle ${attrs({ width: SHEET.w, height: SHEET.h, cornerRadiusTL: SHEET.r, name: 'Path' })}/>
+      <Fill name="Fill"><SolidColor colorValue="${A(C.pageDark)}" name="C" id="${sheet}"/></Fill></Shape>
+    <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: (BAND.cut + BAND.bottom) / 2, name: 'Cream band' })}><Rectangle ${attrs({ width: WIN.w, height: BAND.bottom - BAND.cut, linkCornerRadius: 'false', cornerRadiusTL: 0, cornerRadiusTR: 0, cornerRadiusBR: WIN.r, cornerRadiusBL: WIN.r, name: 'Path' })}/>
+      <Fill name="Fill">${solid('EDE7DA')}</Fill></Shape>
+    <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: (PAGE_Y + BAND.cut) / 2, name: 'Black band' })}><Rectangle ${attrs({ width: WIN.w, height: BAND.cut - PAGE_Y, name: 'Path' })}/>
+      <Fill name="Fill"><SolidColor colorValue="${A(C.pageDark)}" name="C" id="${black}"/></Fill></Shape>`
+  track(black, 'colorValue', [[0, `${A(C.pageDark)}`], [PAINT0 - 4, `${A(C.pageDark)}`, 'soft'], [PAINT1 - 4, A(C.ink)]], 'c')
+  track(sheet, 'colorValue', [[0, `${A(C.pageDark)}`], [PAINT0 - 4, `${A(C.pageDark)}`, 'soft'], [PAINT1 - 4, A(C.white)]], 'c')
+  bandsSvg = `<rect x="${WIN.x}" y="${PAGE_Y}" width="${WIN.w}" height="${BAND.cut - PAGE_Y}" fill="${X(C.ink)}"/>
+<path d="M${WIN.x} ${BAND.cut}H${WIN.x + WIN.w}V${WIN.y + WIN.h - WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x + WIN.w - WIN.r} ${WIN.y + WIN.h}H${WIN.x + WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x} ${WIN.y + WIN.h - WIN.r}Z" fill="#EDE7DA"/>
+<rect x="${SHEET.x}" y="${SHEET.y}" width="${SHEET.w}" height="${SHEET.h}" rx="${SHEET.r}" fill="#FFFFFF"/>`
+}
+
 // the content rides with the window as it settles
 const site = `<Node ${attrs({ x: 0, y: 0, name: 'Site', id: nid() })}>
     ${blocks.join('\n    ')}
     ${markXml}
+    ${bandsXml}
   </Node>`
 
 // ---------------------------------------------------------------- the event and the machine
@@ -294,6 +320,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" wid
 <path d="M${WIN.x} ${PAGE_Y}H${WIN.x + WIN.w}V${WIN.y + WIN.h - WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x + WIN.w - WIN.r} ${WIN.y + WIN.h}H${WIN.x + WIN.r}A${WIN.r} ${WIN.r} 0 0 1 ${WIN.x} ${WIN.y + WIN.h - WIN.r}Z" fill="${X(C.page)}"/>
 ${[0, 1, 2].map((i) => `<circle cx="${WIN.x + 36 + i * 26}" cy="${WIN.y + WIN.bar / 2}" r="6.5" fill="${X(C.dot)}"/>`).join('')}
 <rect x="540" y="${WIN.y + WIN.bar / 2 - 15}" width="520" height="30" rx="15" fill="${X(C.addr)}"/><circle cx="1030" cy="${WIN.y + WIN.bar / 2}" r="5" fill="${X(C.addrInk)}"/><rect x="${1014 - 170}" y="${WIN.y + WIN.bar / 2 - 4}" width="170" height="8" rx="4" fill="${X(C.addrInk)}"/>
+${bandsSvg}
 ${svgFinal.join('\n')}
 </svg>
 `
