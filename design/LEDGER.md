@@ -123,7 +123,14 @@ Brief: `.context/SOTD-SESSION-PROMPT.md`. Research: `design/research/SYNTHESIS.m
 - [x] Home: chapter verbs (D95), build caption + end card (D96), desktop pose 0.74 (D97), desk faces (D98), FAQ start-aligned (D93), H1 12.6vw so "פניות לוואטסאפ" holds one line 320-430 (measured)
 - [x] Commit 5995687 (wave 1)
 
+- [x] Critic M1 (6.65) and its fixes (D101-D106); impeccable critique 28 then 29/40 (D111)
+- [x] Black, white and cream (D109), then four bands at Nati's request (D110); DESIGN.md updated
+- [x] Jury round 1 (weighted 6.5, phone 7.0, audit 13/20) and its fixes (D112); slash URLs, route-stamped first paint, the pull-back on the bands (D113); the build screen and the share image in the bands (D114)
+- [x] Fresh-eyes review round 2: weighted 6.9, phone 7.1, audit 13/20 (design/audit/SOTD-REVIEW.md); its P0 (cross-page chapter links) and P1s fixed after it (D115), cross-page probe 6/6
+- [x] Overlap audit 0 on all 12 routes at 320/390/768/1024/1440 (design/audit/sotd/overlap-home, overlap-inner); axe 0; CLS 0.000 on home and landing
+
 ### Open
-- [ ] Overlap audit home 5 widths, inner pages; gates; motion-audit CLS; Lighthouse; impeccable audit + critique; critic M1 fixes; SOTD review; deploy
-- [ ] Copy critic findings (design/audit/copy-critic.md)
-- [ ] For Nati: his photo; client sites for the portfolio; "from" prices; Terms 9.1 cancellation fee vs the consumer cap; logo work still offered?; video turnaround time
+- [ ] Home mobile performance (local Lighthouse median 52, best 81; Style & Layout 1.8-2.9 s)
+- [ ] Impeccable audit 13/20 (target 18) and critique 29/40 (target 32) not met
+- [ ] P2s from round 2: N6 (320 hero links without chevrons), N8 (Lottie starts from an empty frame), N9 (the big word's ink segment), the mini site is bars, the 360px cookie strip
+- [ ] For Nati: his photo; client sites; "from" prices; the accessibility statement (coordinator, date, standard); Terms 9.1 cancellation fee vs the consumer cap; logo work; video turnaround; the name in the letter (D112)

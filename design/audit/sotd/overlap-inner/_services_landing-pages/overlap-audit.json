@@ -1,0 +1,2340 @@
+{
+ "total": 0,
+ "runs": [
+  {
+   "look": "shot",
+   "vw": 320,
+   "holds": [],
+   "errors": [],
+   "results": [
+    {
+     "label": "page:0.00",
+     "y": 0,
+     "edge": true,
+     "zones": 8,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.02",
+     "y": 105,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.04",
+     "y": 209,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.06",
+     "y": 314,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.08",
+     "y": 418,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.10",
+     "y": 523,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.12",
+     "y": 628,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.14",
+     "y": 732,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.16",
+     "y": 837,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.18",
+     "y": 941,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.20",
+     "y": 1046,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.22",
+     "y": 1151,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.24",
+     "y": 1255,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.26",
+     "y": 1360,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.28",
+     "y": 1464,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.30",
+     "y": 1569,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.32",
+     "y": 1674,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.34",
+     "y": 1778,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.36",
+     "y": 1883,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.38",
+     "y": 1987,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.40",
+     "y": 2092,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.42",
+     "y": 2197,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.44",
+     "y": 2301,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.46",
+     "y": 2406,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.48",
+     "y": 2510,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.50",
+     "y": 2615,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.52",
+     "y": 2720,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.54",
+     "y": 2824,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.56",
+     "y": 2929,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.58",
+     "y": 3033,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.60",
+     "y": 3138,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.62",
+     "y": 3243,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.64",
+     "y": 3347,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.66",
+     "y": 3452,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.68",
+     "y": 3556,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.70",
+     "y": 3661,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.72",
+     "y": 3766,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.74",
+     "y": 3870,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.76",
+     "y": 3975,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.78",
+     "y": 4079,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.80",
+     "y": 4184,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.82",
+     "y": 4289,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.84",
+     "y": 4393,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.86",
+     "y": 4498,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.88",
+     "y": 4602,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.90",
+     "y": 4707,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.92",
+     "y": 4812,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.94",
+     "y": 4916,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.96",
+     "y": 5021,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.98",
+     "y": 5125,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:1.00",
+     "y": 5230,
+     "edge": true,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    }
+   ]
+  },
+  {
+   "look": "shot",
+   "vw": 390,
+   "holds": [],
+   "errors": [],
+   "results": [
+    {
+     "label": "page:0.00",
+     "y": 0,
+     "edge": true,
+     "zones": 11,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.02",
+     "y": 94,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.04",
+     "y": 188,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.06",
+     "y": 282,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.08",
+     "y": 377,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.10",
+     "y": 471,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.12",
+     "y": 565,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.14",
+     "y": 659,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.16",
+     "y": 753,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.18",
+     "y": 847,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.20",
+     "y": 942,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.22",
+     "y": 1036,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.24",
+     "y": 1130,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.26",
+     "y": 1224,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.28",
+     "y": 1318,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.30",
+     "y": 1412,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.32",
+     "y": 1507,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.34",
+     "y": 1601,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.36",
+     "y": 1695,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.38",
+     "y": 1789,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.40",
+     "y": 1883,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.42",
+     "y": 1977,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.44",
+     "y": 2072,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.46",
+     "y": 2166,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.48",
+     "y": 2260,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.50",
+     "y": 2354,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.52",
+     "y": 2448,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.54",
+     "y": 2542,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.56",
+     "y": 2636,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.58",
+     "y": 2731,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.60",
+     "y": 2825,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.62",
+     "y": 2919,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.64",
+     "y": 3013,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.66",
+     "y": 3107,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.68",
+     "y": 3201,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.70",
+     "y": 3296,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.72",
+     "y": 3390,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.74",
+     "y": 3484,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.76",
+     "y": 3578,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.78",
+     "y": 3672,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.80",
+     "y": 3766,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.82",
+     "y": 3861,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.84",
+     "y": 3955,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.86",
+     "y": 4049,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.88",
+     "y": 4143,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.90",
+     "y": 4237,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.92",
+     "y": 4331,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.94",
+     "y": 4426,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.96",
+     "y": 4520,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.98",
+     "y": 4614,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:1.00",
+     "y": 4708,
+     "edge": true,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    }
+   ]
+  },
+  {
+   "look": "shot",
+   "vw": 768,
+   "holds": [],
+   "errors": [],
+   "results": [
+    {
+     "label": "page:0.00",
+     "y": 0,
+     "edge": true,
+     "zones": 12,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.02",
+     "y": 87,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.04",
+     "y": 175,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.06",
+     "y": 262,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.08",
+     "y": 349,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.10",
+     "y": 437,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.12",
+     "y": 524,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.14",
+     "y": 611,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.16",
+     "y": 699,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.18",
+     "y": 786,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.20",
+     "y": 873,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.22",
+     "y": 961,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.24",
+     "y": 1048,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.26",
+     "y": 1135,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.28",
+     "y": 1223,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.30",
+     "y": 1310,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.32",
+     "y": 1397,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.34",
+     "y": 1485,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.36",
+     "y": 1572,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.38",
+     "y": 1659,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.40",
+     "y": 1747,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.42",
+     "y": 1834,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.44",
+     "y": 1921,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.46",
+     "y": 2009,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.48",
+     "y": 2096,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.50",
+     "y": 2184,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.52",
+     "y": 2271,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.54",
+     "y": 2358,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.56",
+     "y": 2446,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.58",
+     "y": 2533,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.60",
+     "y": 2620,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.62",
+     "y": 2708,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.64",
+     "y": 2795,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.66",
+     "y": 2882,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.68",
+     "y": 2970,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.70",
+     "y": 3057,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.72",
+     "y": 3144,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.74",
+     "y": 3232,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.76",
+     "y": 3319,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.78",
+     "y": 3406,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.80",
+     "y": 3494,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.82",
+     "y": 3581,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.84",
+     "y": 3668,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.86",
+     "y": 3756,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.88",
+     "y": 3843,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.90",
+     "y": 3930,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.92",
+     "y": 4018,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.94",
+     "y": 4105,
+     "edge": false,
+     "zones": 2,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.96",
+     "y": 4192,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.98",
+     "y": 4280,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:1.00",
+     "y": 4367,
+     "edge": true,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    }
+   ]
+  },
+  {
+   "look": "shot",
+   "vw": 1024,
+   "holds": [],
+   "errors": [],
+   "results": [
+    {
+     "label": "page:0.00",
+     "y": 0,
+     "edge": true,
+     "zones": 9,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.02",
+     "y": 82,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.04",
+     "y": 164,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.06",
+     "y": 247,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.08",
+     "y": 329,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.10",
+     "y": 411,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.12",
+     "y": 493,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.14",
+     "y": 576,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.16",
+     "y": 658,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.18",
+     "y": 740,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.20",
+     "y": 822,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.22",
+     "y": 905,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.24",
+     "y": 987,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.26",
+     "y": 1069,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.28",
+     "y": 1151,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.30",
+     "y": 1234,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.32",
+     "y": 1316,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.34",
+     "y": 1398,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.36",
+     "y": 1480,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.38",
+     "y": 1563,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.40",
+     "y": 1645,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.42",
+     "y": 1727,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.44",
+     "y": 1809,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.46",
+     "y": 1892,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.48",
+     "y": 1974,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.50",
+     "y": 2056,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.52",
+     "y": 2138,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.54",
+     "y": 2220,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.56",
+     "y": 2303,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.58",
+     "y": 2385,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.60",
+     "y": 2467,
+     "edge": false,
+     "zones": 14,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.62",
+     "y": 2549,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.64",
+     "y": 2632,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.66",
+     "y": 2714,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.68",
+     "y": 2796,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.70",
+     "y": 2878,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.72",
+     "y": 2961,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.74",
+     "y": 3043,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.76",
+     "y": 3125,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.78",
+     "y": 3207,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.80",
+     "y": 3290,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.82",
+     "y": 3372,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.84",
+     "y": 3454,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.86",
+     "y": 3536,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.88",
+     "y": 3619,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.90",
+     "y": 3701,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.92",
+     "y": 3783,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.94",
+     "y": 3865,
+     "edge": false,
+     "zones": 4,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.96",
+     "y": 3948,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.98",
+     "y": 4030,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:1.00",
+     "y": 4112,
+     "edge": true,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    }
+   ]
+  },
+  {
+   "look": "shot",
+   "vw": 1440,
+   "holds": [],
+   "errors": [],
+   "results": [
+    {
+     "label": "page:0.00",
+     "y": 0,
+     "edge": true,
+     "zones": 15,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.02",
+     "y": 63,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.04",
+     "y": 127,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.06",
+     "y": 190,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.08",
+     "y": 254,
+     "edge": false,
+     "zones": 16,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.10",
+     "y": 317,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.12",
+     "y": 381,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.14",
+     "y": 444,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.16",
+     "y": 508,
+     "edge": false,
+     "zones": 21,
+     "found": [],
+     "passing": 8,
+     "shot": null
+    },
+    {
+     "label": "page:0.18",
+     "y": 571,
+     "edge": false,
+     "zones": 21,
+     "found": [],
+     "passing": 10,
+     "shot": null
+    },
+    {
+     "label": "page:0.20",
+     "y": 634,
+     "edge": false,
+     "zones": 21,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.22",
+     "y": 698,
+     "edge": false,
+     "zones": 22,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.24",
+     "y": 761,
+     "edge": false,
+     "zones": 22,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.26",
+     "y": 825,
+     "edge": false,
+     "zones": 24,
+     "found": [],
+     "passing": 8,
+     "shot": null
+    },
+    {
+     "label": "page:0.28",
+     "y": 888,
+     "edge": false,
+     "zones": 22,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.30",
+     "y": 952,
+     "edge": false,
+     "zones": 24,
+     "found": [],
+     "passing": 8,
+     "shot": null
+    },
+    {
+     "label": "page:0.32",
+     "y": 1015,
+     "edge": false,
+     "zones": 23,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.34",
+     "y": 1078,
+     "edge": false,
+     "zones": 25,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.36",
+     "y": 1142,
+     "edge": false,
+     "zones": 26,
+     "found": [],
+     "passing": 6,
+     "shot": null
+    },
+    {
+     "label": "page:0.38",
+     "y": 1205,
+     "edge": false,
+     "zones": 27,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.40",
+     "y": 1269,
+     "edge": false,
+     "zones": 26,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.42",
+     "y": 1332,
+     "edge": false,
+     "zones": 26,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.44",
+     "y": 1396,
+     "edge": false,
+     "zones": 24,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.46",
+     "y": 1459,
+     "edge": false,
+     "zones": 22,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.48",
+     "y": 1523,
+     "edge": false,
+     "zones": 20,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.50",
+     "y": 1586,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 3,
+     "shot": null
+    },
+    {
+     "label": "page:0.52",
+     "y": 1649,
+     "edge": false,
+     "zones": 18,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.54",
+     "y": 1713,
+     "edge": false,
+     "zones": 19,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.56",
+     "y": 1776,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.58",
+     "y": 1840,
+     "edge": false,
+     "zones": 17,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.60",
+     "y": 1903,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.62",
+     "y": 1967,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.64",
+     "y": 2030,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.66",
+     "y": 2094,
+     "edge": false,
+     "zones": 15,
+     "found": [],
+     "passing": 7,
+     "shot": null
+    },
+    {
+     "label": "page:0.68",
+     "y": 2157,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.70",
+     "y": 2220,
+     "edge": false,
+     "zones": 13,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.72",
+     "y": 2284,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.74",
+     "y": 2347,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.76",
+     "y": 2411,
+     "edge": false,
+     "zones": 12,
+     "found": [],
+     "passing": 2,
+     "shot": null
+    },
+    {
+     "label": "page:0.78",
+     "y": 2474,
+     "edge": false,
+     "zones": 11,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.80",
+     "y": 2538,
+     "edge": false,
+     "zones": 10,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.82",
+     "y": 2601,
+     "edge": false,
+     "zones": 9,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.84",
+     "y": 2664,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.86",
+     "y": 2728,
+     "edge": false,
+     "zones": 8,
+     "found": [],
+     "passing": 1,
+     "shot": null
+    },
+    {
+     "label": "page:0.88",
+     "y": 2791,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.90",
+     "y": 2855,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:0.92",
+     "y": 2918,
+     "edge": false,
+     "zones": 7,
+     "found": [],
+     "passing": 5,
+     "shot": null
+    },
+    {
+     "label": "page:0.94",
+     "y": 2982,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.96",
+     "y": 3045,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 4,
+     "shot": null
+    },
+    {
+     "label": "page:0.98",
+     "y": 3109,
+     "edge": false,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    },
+    {
+     "label": "page:1.00",
+     "y": 3172,
+     "edge": true,
+     "zones": 6,
+     "found": [],
+     "passing": 0,
+     "shot": null
+    }
+   ]
+  }
+ ]
+}
