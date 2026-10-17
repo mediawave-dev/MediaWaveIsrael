@@ -1,8 +1,9 @@
 /**
- * The social share image (public/og-image.png, 1200x630): the Horizon logo, stacked version
- * (DECISIONS #52), on the stage's Klein night (#58) with the tagline in the display face (#59). No
- * gradient, no shadow, nothing behind the logo (brand rules); clear space well beyond half
- * the disc. Run: node scripts/generate-og-image.mjs
+ * The social share image (public/og-image.png, 1200x630), in the shot look's bands (D110): the
+ * Horizon logo, stacked version, on the black band in its dark tones (cream #F4EFE4 and light Klein
+ * #6E8CFF, as in the site's header), and a cream band under it with the H1 in Noto Sans Hebrew 800
+ * at 75% width, ink on cream. A hard cut between the bands, no gradient, no shadow, nothing behind
+ * the logo (brand rules); clear space well beyond half the disc. Run: node scripts/generate-og-image.mjs
  */
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
@@ -11,32 +12,33 @@ import puppeteer from 'puppeteer'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const OUTPUT = resolve(ROOT, 'public/og-image.png')
+// the dark lockup in the header's tones: cream for white, the tagline and its rules in cream-2
 const STACKED = readFileSync(resolve(ROOT, 'logos/horizon/mediawave-stacked-dark.svg'), 'utf8')
+  .replace('.a{fill:#FFFFFF}', '.a{fill:#F4EFE4}')
+  .replace('.t{fill:#8E9CC8}', '.t{fill:#B8B0A0}')
+  .replace('stroke:#8E9CC8', 'stroke:#B8B0A0')
 // inlined: a page set from a string may not load file:// fonts
-const pub = (f) => `data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts', f)).toString('base64')}`
+const pub = (f) => `data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts/noto', f)).toString('base64')}`
 
 const HTML = `<!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
 <style>
-  @font-face { font-family: 'MW Display'; src: url('${pub('EFT_Betaamango.woff2')}') format('woff2'); unicode-range: U+0590-05FF, U+20AA, U+FB1D-FB4F; }
-  @font-face { font-family: 'MW Display'; src: url('${pub('Outfit-Latin-500.woff2')}') format('woff2'); }
+  @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-hebrew-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; unicode-range: U+0590-05FF, U+20AA, U+FB1D-FB4F; }
+  @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-latin-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    width: 1200px; height: 630px; overflow: hidden; background: #00113D;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 72px; /* > half the disc (55 px): the logo's clear space */
-    font-family: 'MW Display', sans-serif; direction: rtl;
-  }
-  .logo { width: 400px; }
+  body { width: 1200px; height: 630px; overflow: hidden; font-family: 'MW Noto', sans-serif; direction: rtl; }
+  .top { height: 400px; background: #1A1917; display: grid; place-items: center; }
+  .logo { width: 360px; }
   .logo svg { display: block; width: 100%; height: auto; overflow: visible; }
-  .line { font-size: 46px; font-weight: 400; color: #FFFFFF; line-height: 1; }
-  .url { position: absolute; bottom: 40px; font-size: 22px; font-weight: 400; color: #8E9CC8; direction: ltr; }
+  .ask { position: relative; height: 230px; background: #EDE7DA; display: grid; place-items: center; }
+  .line { font-size: 76px; font-weight: 800; font-stretch: 75%; color: #1A1917; line-height: 1; }
+  .url { position: absolute; bottom: 22px; left: 40px; font-size: 22px; font-weight: 500; color: #4D4942; direction: ltr; }
 </style>
 </head>
 <body>
-  <div class="logo">${STACKED}</div>
-  <div class="line">פיתוח אתרים שמביא לקוחות</div>
-  <div class="url">mediawave.co.il</div>
+  <div class="top"><div class="logo">${STACKED}</div></div>
+  <div class="ask"><div class="line">אתר שמביא פניות לוואטסאפ</div><div class="url">mediawave.co.il</div></div>
 </body>
 </html>`
 
