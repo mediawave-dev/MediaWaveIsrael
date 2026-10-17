@@ -1,0 +1,92 @@
+      1 track('chat_handoff', { placement: 'chat_message'
+      1 track('chat_open', { placement: 'dock'
+      1 track('chat_open', { placement: 'floating'
+      1 track('cta_click', { placement: 'header'
+      4 track('cta_click', { placement: 'hero_contact'
+      4 track('cta_click', { placement: 'hero_services'
+      1 track('cta_click', { placement: 'mobile_menu'
+      1 track('cta_click', { placement: 'portfolio'
+      2 track('cta_click', { placement: 'process'
+      1 track('cta_click', { placement: 'service_page'
+      1 track('cta_click', { placement: 'services'
+      4 track('form_submit', { placement: 'contact_form'
+      2 track('instagram_click', { placement: 'contact_section'
+      1 track('instagram_click', { placement: 'footer'
+      2 track('lead_submit', { placement: 'lead_modal'
+      1 track('mailto_click', { placement: 'accessibility_page'
+      2 track('mailto_click', { placement: 'contact_section'
+      1 track('mailto_click', { placement: 'footer'
+      1 track('mailto_click', { placement: 'mobile_menu'
+      1 track('mailto_click', { placement: 'privacy_page'
+      1 track('mailto_click', { placement: 'terms_page'
+      1 track('tel_click', { placement: 'accessibility_page'
+      2 track('tel_click', { placement: 'contact_section'
+      1 track('tel_click', { placement: 'footer'
+      1 track('tel_click', { placement: 'mobile_menu'
+      1 track('tel_click', { placement: 'not_found'
+      1 track('tel_click', { placement: 'privacy_page'
+      1 track('tel_click', { placement: 'terms_page'
+      2 track('whatsapp_click', { placement: 'contact_error_alert'
+      2 track('whatsapp_click', { placement: 'contact_section'
+      2 track('whatsapp_click', { placement: 'floating'
+      1 track('whatsapp_click', { placement: 'footer'
+      1 track('whatsapp_click', { placement: 'lead_modal_error_alert'
+      1 track('whatsapp_click', { placement: 'mobile_menu'
+      1 track('whatsapp_click', { placement: 'portfolio'
+      1 track('whatsapp_click', { placement: 'privacy_page'
+      1 track('whatsapp_click', { placement: 'service_page'
+      1 track('whatsapp_click', { placement: 'terms_page'
+      1 100:track('whatsapp_click', { placement: 
+      1 105:track('form_submit', { placement: 
+      1 137:track('tel_click', { placement: 
+      1 139:track('cta_click', { placement: cta.placement
+      1 143:track('lead_submit', { placement: 
+      1 143:track('mailto_click', { placement: 
+      1 144:track('tel_click', { placement: 
+      1 149:track('mailto_click', { placement: 
+      1 154:track('whatsapp_click', { placement: 
+      1 155:track('cta_click', { placement: 
+      1 159:track('instagram_click', { placement: 
+      1 162:track('tel_click', { placement: 
+      1 163:track('cta_click', { placement: 
+      1 167:track('cta_click', { placement: 
+      1 170:track('cta_click', { placement: 
+      1 172:track('lead_submit', { placement: 
+      1 177:track('cta_click', { placement: cta.placement
+      1 177:track('whatsapp_click', { placement: 
+      1 186:track('whatsapp_click', { placement: 
+      1 221:track('whatsapp_click', { placement: 
+      1 230:track('cta_click', { placement: 
+      1 243:track('cta_click', { placement: 
+      1 243:track('whatsapp_click', { placement: 
+      1 252:track('tel_click', { placement: 
+      1 255:track('whatsapp_click', { placement: 
+      1 259:track('tel_click', { placement: 
+      1 260:track('mailto_click', { placement: 
+      1 269:track('mailto_click', { placement: 
+      1 279:track('chat_open', { placement: 
+      1 288:track('whatsapp_click', { placement: 
+      1 289:track('whatsapp_click', { placement: 
+      1 307:track('instagram_click', { placement: 
+      1 323:track('chat_open', { placement: 
+      1 330:track('cta_click', { placement: 
+      1 343:track('whatsapp_click', { placement: 
+      1 348:track('mailto_click', { placement: 
+      1 354:track('tel_click', { placement: 
+      1 365:track('whatsapp_click', { placement: 
+      1 369:track('mailto_click', { placement: 
+      2 36:track('cta_click', { placement: 
+      1 375:track('tel_click', { placement: 
+      1 386:track('whatsapp_click', { placement: 
+      2 39:track('cta_click', { placement: 
+      1 53:track('cta_click', { placement: 
+      1 56:track('cta_click', { placement: 
+      1 58:track('chat_handoff', { placement: 
+      1 64:track('form_submit', { placement: 
+      1 67:track('cta_click', { placement: 
+      1 80:track('tel_click', { placement: 
+      2 84:track('form_submit', { placement: 
+      1 85:track('whatsapp_click', { placement: 
+      1 87:track('cta_click', { placement: 
+      1 90:track('mailto_click', { placement: 
+      1 95:track('instagram_click', { placement: 

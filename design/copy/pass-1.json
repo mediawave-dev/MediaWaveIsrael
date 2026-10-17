@@ -1,0 +1,278 @@
+[
+ {
+  "file": "src/look/data.ts",
+  "oldS": "line1: 'העסק שלכם',",
+  "newS": "line1: 'אתר שמביא',",
+  "why": "H1: the old pair was a calque of \"Your business. Our expertise.\" and said nothing (critic #10, research 04 Part C option 1)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "line2: 'המומחיות שלנו',",
+  "newS": "line2: 'פניות לוואטסאפ',",
+  "why": "H1 second line: the outcome owners want, in the app 99% of Israelis use (research 01, 04)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "sub: 'בונים לכם אתר שמביא פניות. מדברים ישירות עם המפתח, בלי מתווכים.',",
+  "newS": "sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',",
+  "why": "the second sentence repeated the WhyUs card word for word (critic #10); two facts the visitor can hold us to instead (faqs.ts)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "cta: 'בואו נדבר על הפרויקט שלכם',",
+  "newS": "cta: 'ספרו לנו על העסק',",
+  "why": "\"פרויקט\" is agency talk and the label repeated the header (research 04 row 3)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "secondary: 'לשירותים שלנו',",
+  "newS": "secondary: 'מה אנחנו עושים',",
+  "why": "the chapter's own heading, no stacked possessive"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "websites: 'אתר שנבנה בקוד, נטען מהר ושייך לכם.',",
+  "newS": "websites: 'אתר שנבנה מאפס בשבילכם, ונשאר שלכם.',",
+  "why": "a triad and \"בקוד\" (jargon)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "seo: 'שימצאו אתכם בגוגל כשמחפשים את מה שאתם עושים.',",
+  "newS": "seo: 'עבודה חודשית כדי שימצאו אתכם בגוגל.',",
+  "why": "the same opener as the WhyUs title; says what the service is without a promise"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "'video-editing': 'מחומר גלם לסרטון שרואים עד הסוף, וקלטות ישנות לקובץ.',",
+  "newS": "'video-editing': 'מהצילומים שלכם לסרטון גמור, ומקלטות ישנות לקובץ.',",
+  "why": "\"חומר גלם\" is jargon, \"שרואים עד הסוף\" an unproven claim"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "{ id: 'call', title: 'שיחת היכרות', line: 'מבינים את העסק, היעדים והקהל שלכם',",
+  "newS": "{ id: 'call', title: 'שיחת היכרות', line: 'מספרים לנו על העסק, ומבינים יחד מה האתר צריך לעשות.',",
+  "why": "a triad and a cliché (\"היעדים והקהל\")"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "{ id: 'design', title: 'תכנון ועיצוב', line: 'מתכננים איך האתר ייראה ואיך יהיה נוח לגלוש בו',",
+  "newS": "{ id: 'design', title: 'עיצוב לאישור', line: 'רואים את העיצוב ומאשרים אותו לפני שבונים. עד שני סבבי תיקונים כלולים.',",
+  "why": "vague; the real fact is the approval and the two revision rounds (Terms 4.2)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "{ id: 'build', title: 'פיתוח ובנייה', line: 'בונים אתר מהיר ובטוח, מוכן לעבודה',",
+  "newS": "{ id: 'build', title: 'בנייה', line: 'מקבלים קישור לטלפון, ורואים את האתר נבנה. בודקים אותו יחד.',",
+  "why": "two synonyms in the title, filler pair; the link to the phone is Nati's own way of working (world dossier W03)"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "{ id: 'launch', title: 'השקה וליווי', line: 'משיקים, עוקבים אחרי ביצועים ומלווים לאורך זמן',",
+  "newS": "{ id: 'launch', title: 'השקה', line: 'האתר עולה לאוויר. בחודש הראשון התמיכה עלינו.',",
+  "why": "a triad, jargon (\"ביצועים\") and an open promise; the support is the first month (Terms 7.3)"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "line: 'נטען כמעט מיד ועובד חלק בכל טלפון ומחשב.' }",
+  "newS": "line: 'נפתח מהר בטלפון ובמחשב, בלי לחכות.' }",
+  "why": "a hedge (\"כמעט\") and filler (\"חלק\")"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "line: \"היום מחפשים לא רק בגוגל, גם אצל צ'אטבוטים. בונים אתר שיופיע בשני המקומות.\" }",
+  "newS": "line: 'יש מי שמחפש בגוגל ויש מי ששואל צ׳אטבוט. בונים את האתר כך ששניהם יבינו מה אתם עושים.' }",
+  "why": "\"לא רק ... גם\" is an AI tell, and \"שיופיע\" was a promise nobody can make (it contradicted the SEO FAQ)"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "<p className=\"why__lead\" data-zone=\"text\">שלושה דברים שמבדילים אותנו</p>",
+  "newS": "<p className=\"why__lead\" data-zone=\"text\">מה מקבלים כשעובדים איתנו</p>",
+  "why": "announced a triad and said nothing"
+ },
+ {
+  "file": "src/look/shot/ShotMeet.tsx",
+  "oldS": "<p data-zone=\"text\">שלושה דברים שמבדילים אותנו</p>",
+  "newS": "<p data-zone=\"text\">מה מקבלים כשעובדים איתנו</p>",
+  "why": "announced a triad and said nothing"
+ },
+ {
+  "file": "src/look/shot/ShotChoose.tsx",
+  "oldS": "onClick={() => track('cta_click', { placement: 'services' })}>מתחילים פרויקט</LookButton>",
+  "newS": "onClick={() => track('cta_click', { placement: 'services' })}>ספרו לנו מה צריך</LookButton>",
+  "why": "\"פרויקט\" is agency talk, and it clashed with \"מתחילים?\" below"
+ },
+ {
+  "file": "src/look/shot/ShotProcess.tsx",
+  "oldS": "onClick={() => track('cta_click', { placement: 'process' })}>דברו איתנו</LookButton>",
+  "newS": "onClick={() => track('cta_click', { placement: 'process' })}>כתבו לנו</LookButton>",
+  "why": "the same label sat on five buttons with three destinations; one verb per destination"
+ },
+ {
+  "file": "src/look/sections/Faq.tsx",
+  "oldS": "<p data-zone=\"text\">כל מה שרציתם לדעת על תהליך בניית האתר</p>",
+  "newS": "<p data-zone=\"text\">כמה זה עולה, כמה זמן זה לוקח ומה קורה אחר כך</p>",
+  "why": "a cliché, and the FAQ now opens with price, time and ownership"
+ },
+ {
+  "file": "src/look/sections/Faq.tsx",
+  "oldS": "<p>עדיין יש שאלות?</p>",
+  "newS": "<p>לא מצאתם תשובה?</p>",
+  "why": "plainer"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "<p className=\"ct__lead\" data-zone=\"text\">מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם</p>",
+  "newS": "<p className=\"ct__lead\" data-zone=\"text\">כתבו כמה מילים על העסק ומה חסר לו. המפתח עצמו קורא ועונה.</p>",
+  "why": "formal, filler (\"נשמח לשמוע\"), and narrow (only websites of six services)"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "<span>וואטסאפ</span><b>דברו איתנו</b>",
+  "newS": "<span>וואטסאפ</span><b>כתבו לנו</b>",
+  "why": "one verb per destination"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "setStatus('פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊')",
+  "newS": "setStatus('ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.')",
+  "why": "emoji, wordy"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "setStatus('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם')",
+  "newS": "setStatus('קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.')",
+  "why": "an exclamation mark and a vague \"בהקדם\"; one reply promise on the whole site (site.ts)"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "setFailure('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')",
+  "newS": "setFailure('ההודעה לא נשלחה. נסו שוב, או כתבו לנו ישר בוואטסאפ.')",
+  "why": "plainer"
+ },
+ {
+  "file": "src/data/site.ts",
+  "oldS": "responseTime: 'אנחנו מגיבים לפניות תוך 24 שעות בימי עסקים',",
+  "newS": "responseTime: 'עונים תוך 24 שעות בימי עסקים',",
+  "why": "bureaucratic; now the one reply promise everywhere"
+ },
+ {
+  "file": "src/look/buttons/StateButton.tsx",
+  "oldS": "sent: 'נשלח. נחזור אליכם היום', // [קופי: נתי] the promise needs his OK",
+  "newS": "sent: 'נשלח. נחזור תוך יום עסקים', // [קופי: נתי] the site's one reply promise (site.ts responseTime)",
+  "why": "\"היום\" conflicted with \"24 שעות בימי עסקים\"; one promise"
+ },
+ {
+  "file": "src/look/shot/ShotDock.tsx",
+  "oldS": "aria-label=\"דברו איתנו בוואטסאפ\"",
+  "newS": "aria-label=\"כתבו לנו בוואטסאפ\"",
+  "why": "one verb per destination"
+ },
+ {
+  "file": "src/look/shot/ShotDock.tsx",
+  "oldS": "<span>דברו איתנו</span>",
+  "newS": "<span>וואטסאפ</span>",
+  "why": "the visible label now says where the tap goes (research 04 rule 9)"
+ },
+ {
+  "file": "src/components/layout/Footer.tsx",
+  "oldS": "<p className=\"mw-foot__line\">עיצוב ופיתוח אתרים מקצועיים לעסקים</p>",
+  "newS": "<p className=\"mw-foot__line\">אתרים וסרטונים לעסקים קטנים, ישר מהמפתח.</p>",
+  "why": "\"מקצועיים\" is the category's cliché (critic #10, research 03 §3), and the studio sells video too"
+ },
+ {
+  "file": "src/config/navigation.ts",
+  "oldS": "{ label: 'צור קשר', href: '#contact', showInMenu: true, showInFooter: true },",
+  "newS": "{ label: 'יצירת קשר', href: '#contact', showInMenu: true, showInFooter: true },",
+  "why": "a masculine singular imperative; the footer heading's own form"
+ },
+ {
+  "file": "src/utils/whatsapp.ts",
+  "oldS": "general: 'היי, אני מתעניין/ת בבניית אתר ואשמח לשמוע פרטים נוספים 😊',",
+  "newS": "general: 'היי, אשמח לשמוע על אתר לעסק שלי.',",
+  "why": "a slash gender form in the visitor's own words, and an emoji"
+ },
+ {
+  "file": "src/utils/whatsapp.ts",
+  "oldS": "contact: 'היי, אני מתעניין/ת בבניית אתר ואשמח לשמוע פרטים נוספים 😊',",
+  "newS": "contact: 'היי, אשמח לשמוע על אתר לעסק שלי.',",
+  "why": "a slash gender form, and an emoji"
+ },
+ {
+  "file": "src/utils/whatsapp.ts",
+  "oldS": "footer: 'היי, אני מתעניין/ת בבניית אתר',",
+  "newS": "footer: 'היי, יש לי שאלה על אתר לעסק.',",
+  "why": "a slash gender form"
+ },
+ {
+  "file": "src/utils/validation.ts",
+  "oldS": "message: 'ההודעה חייבת להיות באורך של 10 עד 2000 תווים',",
+  "newS": "message: 'כתבו לפחות משפט אחד (10 תווים ומעלה)',",
+  "why": "robotic"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "const waMessage = `היי, אני ${formData.name.trim()} ואשמח לשיחת ייעוץ ללא עלות.\\nטלפון: ${formData.phone.trim()}`",
+  "newS": "const waMessage = `היי, אני ${formData.name.trim()}. אשמח שתחזרו אליי לשיחה.\\nטלפון: ${formData.phone.trim()}`",
+  "why": "the stock agency line inside the visitor's own words"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "setErrorMsg('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')",
+  "newS": "setErrorMsg('הפרטים לא נשלחו. נסו שוב, או כתבו לנו ישר בוואטסאפ.')",
+  "why": "plainer"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "<h3 id=\"lead-modal-title\">תודה!</h3>",
+  "newS": "<h3 id=\"lead-modal-title\">תודה.</h3>",
+  "why": "no exclamation marks"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊'",
+  "newS": "? 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.'",
+  "why": "emoji, wordy"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": ": 'הפרטים התקבלו, נחזור אליכם בהקדם.'}",
+  "newS": ": 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.'}",
+  "why": "\"בהקדם\" is vague; the one reply promise"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "tabIndex={-1}>השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!</h3>",
+  "newS": "tabIndex={-1}>רוצים שנחזור אליכם? השאירו שם וטלפון.</h3>",
+  "why": "\"שיחת ייעוץ ללא עלות\" is the stock agency popup line, with an exclamation mark"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.",
+  "newS": "קראתי את מדיניות הפרטיות של האתר והסכמתי לה.",
+  "why": "a slash gender form, and redundant"
+ },
+ {
+  "file": "src/App.tsx",
+  "oldS": "title=\"פיתוח אתרים ודפי נחיתה מותאמים לעסקים\"",
+  "newS": "title=\"בניית אתרים ודפי נחיתה לעסקים קטנים\"",
+  "why": "people search \"בניית\"; \"מותאמים\" is a cliché"
+ },
+ {
+  "file": "src/App.tsx",
+  "oldS": "description=\"שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל וקידום בגוגל. יותר פניות, יותר מכירות, יותר הצלחה.\"",
+  "newS": "description=\"בונים לעסקים קטנים אתרים ודפי נחיתה מאפס: נפתחים מהר בטלפון ומביאים פניות לוואטסאפ. אתר בסיסי תוך 2 עד 3 שבועות, ומדברים ישר עם המפתח.\"",
+  "why": "jargon (ממירים, אופטימיזציה), \"מקצועיים\", and a hype triad"
+ },
+ {
+  "file": "src/data/portfolio-examples.ts",
+  "oldS": "subtitle: 'חלק מסרטון שהפקנו לכבוד יום הולדת 60 הכולל זיכרונות מהילדות עד היום',",
+  "newS": "subtitle: 'קטע מסרטון שהכנו ליום הולדת 60: מהילדות ועד היום.',",
+  "why": "bureaucratic (\"הכולל\", \"לכבוד\")"
+ },
+ {
+  "file": "src/data/portfolio-examples.ts",
+  "oldS": "'לקחנו תמונות ישנות מאלבומים מגוונים ומיינו אותן לפי תקופות שונות בחיים — ילדות, נעורים, חתונה ואימהות. כל תמונה עברה הנפשה בבינה מלאכותית, הוספנו מוזיקה מתאימה וכיתובים קצרים לכל שלב. בערב האירוע הוקרן הסרטון ויצר רגע שכולם יזכרו.',",
+  "newS": "'לקחנו תמונות ישנות מכמה אלבומים, ומיינו אותן לפי תקופות בחיים: ילדות, נעורים, חתונה ואימהות. כל תמונה זזה בעזרת בינה מלאכותית, ולכל תקופה הוספנו מוזיקה וכיתוב קצר. בערב האירוע הסרטון הוקרן לכל המשפחה.',",
+  "why": "an em dash in live copy, and a cliché (\"רגע שכולם יזכרו\"); the plain fact instead"
+ }
+]

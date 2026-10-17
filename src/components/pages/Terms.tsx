@@ -72,6 +72,17 @@ export default function Terms() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="prose prose-lg max-w-none"
         >
+          <TermsBody />
+        </m.article>
+      </div>
+    </div>
+  )
+}
+
+/** The legal text itself (unchanged), shared with the shot look's own frame (D90). */
+export function TermsBody() {
+  return (
+    <>
           {/* Section 1 */}
           <section className="mb-10">
             <h2 className="text-[24px] font-headline font-bold text-brown-dark mb-4 pb-2 border-b border-cream-darker">
@@ -375,8 +386,6 @@ export default function Terms() {
           <div className="mt-12 pt-6 border-t border-cream-darker text-brown-muted text-sm">
             <p><strong>תאריך עדכון אחרון:</strong> ינואר 2026</p>
           </div>
-        </m.article>
-      </div>
-    </div>
+    </>
   )
 }

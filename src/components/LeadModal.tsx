@@ -139,7 +139,7 @@ export default function LeadModal() {
         // No endpoint configured — hand the lead off to WhatsApp with the details
         // prefilled. Never show a fake "received" state for data that went nowhere.
         if (!endpoint) {
-            const waMessage = `היי, אני ${formData.name.trim()} ואשמח לשיחת ייעוץ ללא עלות.\nטלפון: ${formData.phone.trim()}`
+            const waMessage = `היי, אני ${formData.name.trim()}. אשמח שתחזרו אליי לשיחה.\nטלפון: ${formData.phone.trim()}`
             track('lead_submit', { placement: 'lead_modal', mode: 'whatsapp_fallback' })
             window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
             setWaHandoff(true)
@@ -178,7 +178,7 @@ export default function LeadModal() {
             }, 3000)
 
         } catch {
-            setErrorMsg('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')
+            setErrorMsg('הפרטים לא נשלחו. נסו שוב, או כתבו לנו ישר בוואטסאפ.')
         } finally {
             setIsSubmitting(false)
         }
@@ -238,16 +238,16 @@ export default function LeadModal() {
                         {success ? (
                             <div className="lm__done">
                                 <span className="lm__check" aria-hidden="true">✓</span>
-                                <h3 id="lead-modal-title">תודה!</h3>
+                                <h3 id="lead-modal-title">תודה.</h3>
                                 <p>
                                     {waHandoff
-                                        ? 'פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊'
-                                        : 'הפרטים התקבלו, נחזור אליכם בהקדם.'}
+                                        ? 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.'
+                                        : 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.'}
                                 </p>
                             </div>
                         ) : (
                             <>
-                                <h3 id="lead-modal-title" ref={titleRef} tabIndex={-1}>השאירו פרטים ונחזור אליכם לשיחת ייעוץ ללא עלות!</h3>
+                                <h3 id="lead-modal-title" ref={titleRef} tabIndex={-1}>רוצים שנחזור אליכם? השאירו שם וטלפון.</h3>
                                 <div className="lm__face" aria-hidden="true">
                                     <LottieIcon
                                         animationPath="/animations/13%20Leave%20Details/contact%20us.json"
@@ -273,7 +273,7 @@ export default function LeadModal() {
                                             }}
                                         />
                                         <label htmlFor="privacy">
-                                            אני מאשר/ת שקראתי ואישרתי את תנאי מדיניות הפרטיות של האתר.
+                                            קראתי את מדיניות הפרטיות של האתר והסכמתי לה.
                                         </label>
                                     </div>
                                     {fieldErrors.privacy && (

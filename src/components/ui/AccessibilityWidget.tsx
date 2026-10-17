@@ -284,7 +284,7 @@ export default function AccessibilityWidget() {
           ref={buttonRef}
           onClick={handleToggle}
           className="mw-a11y-tab w-7 h-11 rounded-r-full bg-white/90 border border-l-0 border-cream-darker shadow-md flex items-center justify-center text-brown hover:text-orange hover:bg-white transition-colors"
-          aria-label="פתח תפריט נגישות"
+          aria-label="תפריט נגישות"
           aria-expanded={isOpen}
         >
           <AccessibilityIcon className="w-4 h-4 mr-0.5" />

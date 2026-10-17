@@ -10,8 +10,8 @@ import { LottieIcon } from '../../components/ui/LottieIcon'
 import './why.css'
 
 export const WHY_ITEMS = [
-  { id: 'tech', lottie: '/animations/2/computer%20technician.json', title: 'אתר מהיר שלא נתקע', line: 'נטען כמעט מיד ועובד חלק בכל טלפון ומחשב.' },
-  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'שימצאו אתכם, גם בחיפושי AI', line: "היום מחפשים לא רק בגוגל, גם אצל צ'אטבוטים. בונים אתר שיופיע בשני המקומות." },
+  { id: 'tech', lottie: '/animations/2/computer%20technician.json', title: 'אתר מהיר שלא נתקע', line: 'נפתח מהר בטלפון ובמחשב, בלי לחכות.' },
+  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'שימצאו אתכם, גם בחיפושי AI', line: 'יש מי שמחפש בגוגל ויש מי ששואל צ׳אטבוט. בונים את האתר כך ששניהם יבינו מה אתם עושים.' },
   { id: 'personal', lottie: '/animations/6%20personal/contact%20us.json', title: 'ליווי אישי', line: 'מדברים ישירות עם המפתח, בלי מתווכים.' },
 ]
 
@@ -38,7 +38,7 @@ export default function WhyUs() {
     <section ref={ref} id="why-us" className="why" aria-labelledby="why-title" data-theme="dark">
       <div className="why__in">
         <h2 id="why-title" data-zone="text">למה לעבוד איתנו?</h2>
-        <p className="why__lead" data-zone="text">שלושה דברים שמבדילים אותנו</p>
+        <p className="why__lead" data-zone="text">מה מקבלים כשעובדים איתנו</p>
         <ul className="why__list">
           {WHY_ITEMS.map((it, i) => {
             const on = !lit || lit[i]

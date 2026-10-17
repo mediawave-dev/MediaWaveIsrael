@@ -73,6 +73,17 @@ export default function Accessibility() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="prose prose-lg max-w-none"
         >
+          <AccessibilityBody />
+        </m.article>
+      </div>
+    </div>
+  )
+}
+
+/** The legal text itself (unchanged), shared with the shot look's own frame (D90). */
+export function AccessibilityBody() {
+  return (
+    <>
           {/* Section 1 - מחויבות לנגישות */}
           <section className="mb-10">
             <h2 className="text-[24px] font-headline font-bold text-brown-dark mb-4 pb-2 border-b border-cream-darker">
@@ -149,8 +160,6 @@ export default function Accessibility() {
               אנו מתחייבים לטפל בכל פנייה בנושא נגישות בתוך פרק זמן סביר.
             </p>
           </section>
-        </m.article>
-      </div>
-    </div>
+    </>
   )
 }

@@ -84,14 +84,17 @@ export default function ShotBuild() {
   return (
     <section ref={ref} id="process" className="shot-build" data-chapter="build" data-dossier="W01 W12 W19 W21" data-intent="interest" aria-labelledby="how-we-work-title">
       <div className="hold shot-build__hold" data-hold="build">
-        <div className="hold__stage shot-build__stage" aria-hidden="true" data-zone="art">
-          <div className="shot-build__cam">
+        <div className="hold__stage shot-build__stage">
+          {/* the scene's one caption: static (never moved by the camera), above the laptop, in the DOM
+              for every reader; the five held screens no longer carry nothing to read (walkthrough) */}
+          <p className="shot-build__cap" data-zone="text">על המסך נבנה האתר הזה. כשבונים את שלכם, מקבלים קישור ורואים אותו נבנה בטלפון.</p>
+          <div className="shot-build__cam" aria-hidden="true" data-zone="art">
             <Laptop className="shot-lap shot-build__lap" back={<Logo variant="mark" decorative />}>
               <span className="shot-lap__opening"><Logo variant="mark" decorative /></span>
               <HeroBuild ref={build} engine={engine} mode="scrub" src={BUILD_SRC} poster={POSTER} />
             </Laptop>
           </div>
-          <i className="shot-line shot-line--stub"><i className="shot-line__fill" /></i>
+          <i className="shot-line shot-line--stub" aria-hidden="true" data-zone="art"><i className="shot-line__fill" /></i>
         </div>
       </div>
       <ShotProcess />

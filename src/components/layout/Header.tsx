@@ -24,7 +24,7 @@ import AnimatedLogo from '../ui/AnimatedLogo'
 
 // One header for the three looks (DECISIONS #50): sticky, opaque in the look's ground (KM:
 // two layers that crossfade with the page's theme), the look's button family for
-// "בואו נדבר". Its height is --head, which every held stage and anchor respects.
+// "כתבו לנו". Its height is --head, which every held stage and anchor respects.
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const engine = useMotionEngine()
@@ -154,7 +154,7 @@ export default function Header() {
             className="mw-head__cta"
             onClick={(e) => { track('cta_click', { placement: 'header' }); handleNavClick(e as React.MouseEvent<HTMLAnchorElement>, '#contact') }}
           >
-            בואו נדבר
+            כתבו לנו
           </LookButton>
 
           {/* phones: the accessibility panel opens from here, not from a tab over the page (#63) */}
@@ -162,7 +162,7 @@ export default function Header() {
             type="button"
             className="mw-head__a11y"
             data-a11y-open=""
-            aria-label="פתח תפריט נגישות"
+            aria-label="תפריט נגישות"
             aria-haspopup="dialog"
             onClick={(e) => openAccessibility(e.currentTarget)}
           >
@@ -180,7 +180,7 @@ export default function Header() {
             type="button"
             onClick={openMenu}
             className="mw-head__burger"
-            aria-label="פתח תפריט"
+            aria-label="פתיחת התפריט"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"
           >
@@ -211,7 +211,7 @@ export default function Header() {
               type="button"
               onClick={() => setIsMobileMenuOpen(false)}
               className="mw-menu__close"
-              aria-label="סגור תפריט"
+              aria-label="סגירת התפריט"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                 <line x1="18" y1="6" x2="6" y2="18" />
@@ -245,7 +245,7 @@ export default function Header() {
                   setIsMobileMenuOpen(false)
                 }}
               >
-                בואו נדבר
+                כתבו לנו
               </LookButton>
               <a
                 className="mw-menu__wa"

@@ -60,6 +60,7 @@ export default function ShotProcess() {
     <div ref={ref} className="shot-process">
       <header className="shot-table-head shot-process__head">
         <i className="shot-line shot-line--head" aria-hidden="true" data-zone="art"><i className="shot-line__fill" /></i>
+        <p className="shot-kicker" data-zone="text"><b>03</b>בונים</p>
         <h2 id="how-we-work-title" data-zone="text">איך אנחנו עובדים</h2>
         <p className="shot-process__big" data-zone="text"><span>ארבעה צעדים</span> <span>מהשיחה ועד ההשקה</span></p>
       </header>
@@ -84,7 +85,7 @@ export default function ShotProcess() {
           })}
         </ol>
         <div className="shot-process__cta">
-          <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'process' })}>דברו איתנו</LookButton>
+          <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'process' })}>כתבו לנו</LookButton>
         </div>
       </div>
     </div>

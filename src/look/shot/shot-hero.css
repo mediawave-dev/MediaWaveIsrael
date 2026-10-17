@@ -165,7 +165,7 @@ html.text-scaled .shot-desk { display: none; }
   html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(18deg) scale(0.76); }
 }
 @media (min-height: 616px) and (min-width: 1100px) {
-  html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(20deg) scale(0.64); }
+  html[data-look="shot"].shot-dive .shot-hero__model { transform: perspective(1100px) rotateX(20deg) scale(0.74); }
 }
 @media (min-height: 616px) {
   html[data-look="shot"].shot-dive-calm .shot-hero__model { transform: perspective(1100px) rotateX(8deg) scale(0.94); }
@@ -198,7 +198,7 @@ html.text-scaled .shot-desk { display: none; }
      layout only: the lens itself is never transformed) */
   .shot-hero__lens { grid-column: 2; grid-row: 1; margin: calc(var(--lens-d) * -0.35) 0 0; inset-inline-start: calc(var(--lens-d) * 0.12); }
   .shot-hero__copy { grid-column: 1; grid-row: 1; padding: var(--copy-pad) 56px 48px; }
-  .shot-hero__sub { margin-inline: 0; max-width: 36ch; font-size: var(--shot-body); line-height: 1.7; }
+  .shot-hero__sub { margin-inline: 0; max-width: 34ch; font-size: 1.2rem; line-height: 1.65; }
   .shot-hero__ctas { flex-direction: row; align-items: center; gap: 24px; }
   /* the CTA keeps its own width in the row, whatever the button family (layout only; its skin is untouched) */
   .shot-hero__ctas > :first-child { width: auto; }

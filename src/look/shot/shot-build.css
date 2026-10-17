@@ -14,20 +14,20 @@
   /* on a phone the laptop is the screen's width and a little more (the base bleeds past the edges,
      a close-up): its screen is about 370px, so the site that builds on it reads (critic: 343px
      left 75% of the stage as bare table) */
-  --lap-w: max(150px, min(108vw, 430px, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55));
+  --lap-w: max(150px, min(108vw, 430px, (100svh - var(--head) - var(--safe-b) - 170px) * 1.55));
   --lap-h: calc(var(--lap-w) / 1.55);
   position: relative;
 }
 @media (min-width: 768px) and (max-width: 1099px) {
   .shot-build {
     --line-x: calc((100% - 588px) / 2 + 14px);
-    --lap-w: max(150px, min(72vw, 560px, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55));
+    --lap-w: max(150px, min(72vw, 560px, (100svh - var(--head) - var(--safe-b) - 170px) * 1.55));
   }
 }
 @media (min-width: 1100px) {
   .shot-build {
     --line-x: calc(50% - 1px);
-    --lap-w: max(150px, min(56vw, (100svh - var(--head) - var(--safe-b) - 120px) * 1.55, 860px));
+    --lap-w: max(150px, min(56vw, (100svh - var(--head) - var(--safe-b) - 170px) * 1.55, 860px));
   }
 }
 
@@ -105,3 +105,12 @@ html.disable-animations .shot-build .kh__slot-still { transition: none; }
 /* the browser window fills the screen's width (the artboard's margin around it is cropped by the
    screen): the site reads larger on a 343px laptop. The slot keeps its place (percentages of the box). */
 .shot-build .kh__build { width: 111%; }
+
+/* the caption: static text above the laptop (the 170px slack in --lap-w keeps the laptop clear of
+   it at 900 and 700 tall). In the flow without the engine, pinned to the stage's top with it. */
+.shot-build__cap {
+  position: relative; z-index: 1; box-sizing: border-box; width: min(100% - 2 * var(--gut), 34ch); margin: 0 auto 24px;
+  text-align: center; color: var(--ink); font: 600 1rem/1.6 var(--ui); text-wrap: balance;
+}
+html.motion-ready .shot-build__cap { position: absolute; top: 18px; left: 0; right: 0; margin: 0 auto; }
+@media (min-width: 1100px) { .shot-build__cap { width: min(100% - 2 * var(--gut), 64ch); font-size: 1.05rem; } }

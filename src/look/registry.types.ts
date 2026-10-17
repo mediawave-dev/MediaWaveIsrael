@@ -14,4 +14,9 @@ export interface LookRegistry {
   /** A look that composes the whole home page itself (shot): App renders it in place of the
       shared Hero / WhyUs / Services / Process / Faq / Contact order. Never lazy: it holds the H1. */
   Home?: ComponentType
+  /** A look's own inner pages (shot, D90): App renders each one in place of the shared legacy page,
+      and Layout drops the legacy palette remap for them. Lazy components; absent = the legacy page. */
+  pages?: Partial<Record<InnerPage, ComponentType>>
 }
+
+export type InnerPage = 'Service' | 'Portfolio' | 'Terms' | 'Privacy' | 'Accessibility' | 'NotFound'

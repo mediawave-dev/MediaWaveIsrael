@@ -161,3 +161,9 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 .shot-mini__writing > i { height: 1px; background: var(--ink-2); }
 .shot-mini__writing > i:nth-child(2) { width: 76%; }
 .shot-mini__writing > i:nth-child(3) { width: 48%; }
+
+/* ── the end card: on the table under the phone, before the footer's sign-off ── */
+.shot-end { position: relative; z-index: 1; box-sizing: border-box; width: min(100% - 2 * var(--gut), 640px); margin: 0 auto; padding: 40px 0 8px; text-align: center; }
+.shot-end__line { margin: 0; color: var(--ink); font: 800 var(--shot-big)/1.1 var(--display); font-stretch: 75%; text-wrap: balance; }
+.shot-end__key { width: min(100%, 366px); margin: 24px auto 0; }
+@media (min-width: 1100px) { .shot-end { padding-top: 56px; } }

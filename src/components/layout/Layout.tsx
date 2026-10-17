@@ -26,6 +26,8 @@ export default function Layout({ children }: LayoutProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
   // Inner pages are not rebuilt for the looks yet: they keep their old cream ground
   const isHome = useLocation().pathname === '/'
+  // a look with its own inner pages (shot, D90) paints them on its own tokens, not the legacy remap
+  const legacy = !isHome && !look.pages
 
   // Pointer-following sky glow on .spotlight-card surfaces (desktop pointers only)
   useEffect(() => installSpotlight(), [])
@@ -112,7 +114,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <Header />
 
-      <main id="main-content" className={isHome ? 'flex-1' : 'flex-1 legacy'} data-theme={isHome ? undefined : 'light'}>
+      <main id="main-content" className={legacy ? 'flex-1 legacy' : 'flex-1'} data-theme={legacy ? 'light' : undefined}>
         {children}
       </main>
 

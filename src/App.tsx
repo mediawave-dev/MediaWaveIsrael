@@ -19,13 +19,14 @@ const Faq = lazy(() => import('./look/sections/Faq'))
 const BigWord = lazy(() => import('./look/sections/BigWord'))
 const Contact = lazy(() => import('./look/sections/Contact'))
 
-// Pages: lazy load (rarely accessed)
-const Terms = lazy(() => import('./components/pages/Terms'))
-const Privacy = lazy(() => import('./components/pages/Privacy'))
-const Accessibility = lazy(() => import('./components/pages/Accessibility'))
-const ServicePage = lazy(() => import('./components/pages/ServicePage'))
-const PortfolioExample = lazy(() => import('./components/pages/PortfolioExample'))
-const NotFound = lazy(() => import('./components/pages/NotFound'))
+// Pages: lazy load (rarely accessed). A look with its own inner pages (shot, D90) replaces them.
+const P = look.pages ?? {}
+const Terms = P.Terms ?? lazy(() => import('./components/pages/Terms'))
+const Privacy = P.Privacy ?? lazy(() => import('./components/pages/Privacy'))
+const Accessibility = P.Accessibility ?? lazy(() => import('./components/pages/Accessibility'))
+const ServicePage = P.Service ?? lazy(() => import('./components/pages/ServicePage'))
+const PortfolioExample = P.Portfolio ?? lazy(() => import('./components/pages/PortfolioExample'))
+const NotFound = P.NotFound ?? lazy(() => import('./components/pages/NotFound'))
 
 // Style board (dev only): the redesign directions for Gate 1. Never built:
 // import.meta.env.DEV is a literal false in production, so Rollup drops the import.
@@ -61,8 +62,8 @@ const PageFallback = () => <SectionFallback height="120vh" />
 
 const HOME_SEO = (
   <SEO
-    title="פיתוח אתרים ודפי נחיתה מותאמים לעסקים"
-    description="שירותי פיתוח ועיצוב אתרים מקצועיים לעסקים. אתרי תדמית, דפי נחיתה ממירים, אופטימיזציה למובייל וקידום בגוגל. יותר פניות, יותר מכירות, יותר הצלחה."
+    title="בניית אתרים ודפי נחיתה לעסקים קטנים"
+    description="בונים לעסקים קטנים אתרים ודפי נחיתה מאפס: נפתחים מהר בטלפון ומביאים פניות לוואטסאפ. אתר בסיסי תוך 2 עד 3 שבועות, ומדברים ישר עם המפתח."
     canonical="/"
   />
 )

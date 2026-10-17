@@ -12,7 +12,7 @@ export type BtnForce = 'hover' | 'pressed' | 'focus' | undefined
 
 export const STATE_LABEL: Record<Exclude<BtnState, 'idle'>, string> = {
   loading: 'שולחים',
-  sent: 'נשלח. נחזור אליכם היום', // [קופי: נתי] the promise needs his OK
+  sent: 'נשלח. נחזור תוך יום עסקים', // [קופי: נתי] the site's one reply promise (site.ts responseTime)
   error: 'לא נשלח. נסו שוב',
 }
 

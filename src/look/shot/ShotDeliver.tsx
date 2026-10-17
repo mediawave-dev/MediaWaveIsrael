@@ -15,6 +15,10 @@ import { scrubbing } from './camera'
 import { useShotPolicy } from './policy'
 import { PHONE_URL } from './copy'
 import Mini from './Mini'
+import { DeskFace } from './Faces'
+import { LookButton } from '@look/button'
+import { getWhatsAppUrl } from '../../utils/whatsapp'
+import { track } from '../../utils/analytics'
 import './shot-deliver.css'
 
 const REAL_LETTER = '#contact .ct__form'
@@ -54,16 +58,16 @@ export default function ShotDeliver() {
   }, [short, textScaled, letterReady])
 
   return (
-    <section ref={ref} className="shot-deliver" data-chapter="deliver" data-dossier="W20 W04 W19" aria-hidden="true">
-      <div className="hold" data-hold="pullback">
+    <section ref={ref} className="shot-deliver" data-chapter="deliver" data-dossier="W20 W04 W19" aria-labelledby="end-title">
+      <div className="hold" data-hold="pullback" aria-hidden="true">
         <div className="hold__stage shot-deliver__stage" data-zone="art">
           <div className="shot-deliver__layer">
             <div className="shot-deliver__set">
               <div className="shot-desk shot-desk--end">
-                <span className="shot-deliver__prop shot-deliver__prop--loupe"><span><Thing kind="loupe" /></span></span>
-                <span className="shot-deliver__prop shot-deliver__prop--cassette"><span><Thing kind="cassette" /></span></span>
-                <span className="shot-deliver__prop shot-deliver__prop--bubble"><span><Thing kind="bubble" /></span></span>
-                <span className="shot-deliver__prop shot-deliver__prop--frame"><span><Thing kind="frame" /></span></span>
+                <span className="shot-deliver__prop shot-deliver__prop--loupe"><span><Thing kind="loupe"><DeskFace kind="loupe" /></Thing></span></span>
+                <span className="shot-deliver__prop shot-deliver__prop--cassette"><span><Thing kind="cassette"><DeskFace kind="cassette" /></Thing></span></span>
+                <span className="shot-deliver__prop shot-deliver__prop--bubble"><span><Thing kind="bubble"><DeskFace kind="bubble" /></Thing></span></span>
+                <span className="shot-deliver__prop shot-deliver__prop--frame"><span><Thing kind="frame"><DeskFace kind="frame" /></Thing></span></span>
               </div>
               <div className="shot-phone">
                 <Thing kind="phone">
@@ -73,6 +77,16 @@ export default function ShotDeliver() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      {/* the end card: the pull-back says what it means (critic #10, "the finale says nothing") and
+          offers the one action. The dock steps aside over it. */}
+      <div className="shot-end" data-dock-hide="">
+        <p className="shot-kicker" data-zone="text"><b>06</b>מקבלים</p>
+        <h2 id="end-title" className="shot-end__line" data-zone="text">את האתר הזה בנינו כאן. את שלכם נבנה באותה דרך.</h2>
+        <div className="shot-end__key">
+          <LookButton href={getWhatsAppUrl('היי, ראיתי את האתר ואשמח לשמוע על אתר לעסק שלי.')} target="_blank" rel="noopener noreferrer" block zone="text"
+            onClick={() => track('whatsapp_click', { placement: 'finale' })}>כתבו לנו בוואטסאפ</LookButton>
         </div>
       </div>
     </section>

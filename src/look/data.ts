@@ -4,21 +4,21 @@
 import { servicesData } from '../data/services'
 
 export const HERO = {
-  line1: 'העסק שלכם',
-  line2: 'המומחיות שלנו',
+  line1: 'אתר שמביא',
+  line2: 'פניות לוואטסאפ',
   /** [קופי: נתי] replaces "עם גישה אישית וליווי צמוד" (slop-scan flagged both) */
-  sub: 'בונים לכם אתר שמביא פניות. מדברים ישירות עם המפתח, בלי מתווכים.',
-  cta: 'בואו נדבר על הפרויקט שלכם',
-  secondary: 'לשירותים שלנו',
+  sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
+  cta: 'ספרו לנו על העסק',
+  secondary: 'מה אנחנו עושים',
 }
 
 /** One outcome line per service. [קופי: נתי] every line. */
 const LINES: Record<string, string> = {
-  websites: 'אתר שנבנה בקוד, נטען מהר ושייך לכם.',
+  websites: 'אתר שנבנה מאפס בשבילכם, ונשאר שלכם.',
   landing: 'דף אחד שהופך גולש לפנייה בוואטסאפ.',
-  seo: 'שימצאו אתכם בגוגל כשמחפשים את מה שאתם עושים.',
+  seo: 'עבודה חודשית כדי שימצאו אתכם בגוגל.',
   chatbots: 'עונה ללקוחות גם כשאתם בפגישה.',
-  'video-editing': 'מחומר גלם לסרטון שרואים עד הסוף, וקלטות ישנות לקובץ.',
+  'video-editing': 'מהצילומים שלכם לסרטון גמור, ומקלטות ישנות לקובץ.',
   'memory-videos': 'תמונות מהאלבום שחוזרות לזוז.',
 }
 
@@ -50,8 +50,8 @@ export const SERVICES: ShowItem[] = servicesData.map((s) => ({
 
 /** How we work: the four steps and their Lotties, unchanged from HowWeWork. */
 export const STEPS: ShowItem[] = [
-  { id: 'call', title: 'שיחת היכרות', line: 'מבינים את העסק, היעדים והקהל שלכם', lottie: '/animations/8 call/Call Center Support Lottie Animation.json' },
-  { id: 'design', title: 'תכנון ועיצוב', line: 'מתכננים איך האתר ייראה ואיך יהיה נוח לגלוש בו', lottie: '/animations/10 design/Web Design Illustration.json', renderer: 'canvas' },
-  { id: 'build', title: 'פיתוח ובנייה', line: 'בונים אתר מהיר ובטוח, מוכן לעבודה', lottie: '/animations/9 build/website build.json' },
-  { id: 'launch', title: 'השקה וליווי', line: 'משיקים, עוקבים אחרי ביצועים ומלווים לאורך זמן', lottie: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json' },
+  { id: 'call', title: 'שיחת היכרות', line: 'מספרים לנו על העסק, ומבינים יחד מה האתר צריך לעשות.', lottie: '/animations/8 call/Call Center Support Lottie Animation.json' },
+  { id: 'design', title: 'עיצוב לאישור', line: 'רואים את העיצוב ומאשרים אותו לפני שבונים. עד שני סבבי תיקונים כלולים.', lottie: '/animations/10 design/Web Design Illustration.json', renderer: 'canvas' },
+  { id: 'build', title: 'בנייה', line: 'מקבלים קישור לטלפון, ורואים את האתר נבנה. בודקים אותו יחד.', lottie: '/animations/9 build/website build.json' },
+  { id: 'launch', title: 'השקה', line: 'האתר עולה לאוויר. בחודש הראשון התמיכה עלינו.', lottie: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json' },
 ]

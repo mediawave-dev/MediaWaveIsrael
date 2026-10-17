@@ -21,6 +21,7 @@ import { HERO } from '../data'
 import { track } from '../../utils/analytics'
 import { DEPTH, dive, land, scrubbing } from './camera'
 import { useShotPolicy } from './policy'
+import { DeskFace } from './Faces'
 // the lens on the desk palette (design/rive/lens/build-lens.mjs --palette shot); the frames are
 // inline markup, never an <img>, so the H1 stays the LCP
 import lensRiv from '../parts/lens-shot.riv?url'
@@ -143,11 +144,11 @@ export default function ShotHero() {
               <span className="shot-desk__obj shot-desk__laptop" data-zone="art" data-depth="0.4">
                 <Laptop className="shot-lap shot-lap--closed" back={<Logo variant="mark" decorative />} />
               </span>
-              <span className="shot-desk__obj shot-desk__loupe" data-zone="art" data-depth="0.8"><Thing kind="loupe" /></span>
-              <span className="shot-desk__obj shot-desk__cassette" data-zone="art" data-depth="0.6"><Thing kind="cassette" /></span>
+              <span className="shot-desk__obj shot-desk__loupe" data-zone="art" data-depth="0.8"><Thing kind="loupe"><DeskFace kind="loupe" /></Thing></span>
+              <span className="shot-desk__obj shot-desk__cassette" data-zone="art" data-depth="0.6"><Thing kind="cassette"><DeskFace kind="cassette" /></Thing></span>
               {DESK_OBJECTS.map((o) => (
                 <span key={o.kind} className={`shot-desk__obj shot-desk__wide shot-desk__${o.kind}`} data-zone="art" data-depth={o.depth}>
-                  <Thing kind={o.kind} />
+                  <Thing kind={o.kind}><DeskFace kind={o.kind} /></Thing>
                 </span>
               ))}
             </div>

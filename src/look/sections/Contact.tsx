@@ -37,9 +37,11 @@ interface ContactProps {
   dossier?: string
   /** the companion's file and rest pose in another palette (passed through as Companion `src`) */
   pal?: { riv: string; rest: string }
+  /** a line above the heading (the shot's chapter verb) */
+  kicker?: ReactNode
 }
 
-export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps = {}) {
+export default function Contact({ chapter, dossier, pal: palSrc, kicker }: ContactProps = {}) {
   const engine = useMotionEngine()
   const [data, setData] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
@@ -83,7 +85,7 @@ export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps 
       const wa = `היי, אני ${data.name.trim()}.\n${data.message.trim()}\n(אימייל לחזרה: ${data.email.trim()})`
       track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(wa), '_blank', 'noopener')
-      setStatus('פתחנו לכם וואטסאפ עם ההודעה מוכנה, רק ללחוץ על שלח 😊')
+      setStatus('ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.')
       return
     }
 
@@ -104,12 +106,12 @@ export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps 
       })
       track('form_submit', { placement: 'contact_form', mode: 'endpoint' })
       setState('sent')
-      setStatus('ההודעה נשלחה בהצלחה! נחזור אליכם בהקדם')
+      setStatus('קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.')
       setData({ name: '', email: '', message: '' })
       timer.current = window.setTimeout(() => setState('idle'), 4200)
     } catch {
       setState('error')
-      setFailure('משהו השתבש בשליחה. נסו שוב, או דברו איתנו ישירות בוואטסאפ.')
+      setFailure('ההודעה לא נשלחה. נסו שוב, או כתבו לנו ישר בוואטסאפ.')
     }
   }
 
@@ -133,8 +135,9 @@ export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps 
     <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark" data-intent="contact" data-chapter={chapter} data-dossier={dossier}>
       <div className="ct__in">
         <div className="ct__side">
+          {kicker}
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
-          <p className="ct__lead" data-zone="text">מעוניינים באתר חדש? נשמח לשמוע על הפרויקט שלכם</p>
+          <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. המפתח עצמו קורא ועונה.</p>
           <Card>
             <div className="ct__face" aria-hidden="true">
               <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
@@ -152,7 +155,7 @@ export default function Contact({ chapter, dossier, pal: palSrc }: ContactProps 
               </li>
               <li>
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span>וואטסאפ</span><b>דברו איתנו</b>
+                  <span>וואטסאפ</span><b>כתבו לנו</b>
                 </a>
               </li>
               <li>

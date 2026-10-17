@@ -16,7 +16,7 @@ export const DEPTH = 1100
 export const DIVE_POSES = {
   phone: { rotateX: 16, scale: 0.88 }, // < 768px
   tablet: { rotateX: 18, scale: 0.76 }, // 768-1099px
-  desk: { rotateX: 20, scale: 0.64 }, // >= 1100px
+  desk: { rotateX: 20, scale: 0.74 }, // >= 1100px (0.64 rendered the sub and the CTA small: critic #11)
   calm: { rotateX: 8, scale: 0.94 }, // OS reduced motion, any width
 } as const
 

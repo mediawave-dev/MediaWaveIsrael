@@ -72,6 +72,17 @@ export default function Privacy() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="prose prose-lg max-w-none"
         >
+          <PrivacyBody />
+        </m.article>
+      </div>
+    </div>
+  )
+}
+
+/** The legal text itself (unchanged), shared with the shot look's own frame (D90). */
+export function PrivacyBody() {
+  return (
+    <>
           {/* Section 1 - מבוא */}
           <section className="mb-10">
             <h2 className="text-[24px] font-headline font-bold text-brown-dark mb-4 pb-2 border-b border-cream-darker">
@@ -397,8 +408,6 @@ export default function Privacy() {
             <p><strong>תאריך עדכון אחרון:</strong> ינואר 2026</p>
             <p className="mt-2">אנו מחויבים להגן על פרטיותך ולספק שירות שקוף ואמין.</p>
           </div>
-        </m.article>
-      </div>
-    </div>
+    </>
   )
 }

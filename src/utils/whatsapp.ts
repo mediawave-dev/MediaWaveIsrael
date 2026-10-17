@@ -3,9 +3,9 @@
 export const WHATSAPP_NUMBER = '972528731808'
 
 export const WHATSAPP_MESSAGES = {
-  general: 'היי, אני מתעניין/ת בבניית אתר ואשמח לשמוע פרטים נוספים 😊',
-  contact: 'היי, אני מתעניין/ת בבניית אתר ואשמח לשמוע פרטים נוספים 😊',
-  footer: 'היי, אני מתעניין/ת בבניית אתר',
+  general: 'היי, אשמח לשמוע על אתר לעסק שלי.',
+  contact: 'היי, אשמח לשמוע על אתר לעסק שלי.',
+  footer: 'היי, יש לי שאלה על אתר לעסק.',
 } as const
 
 /** Generate WhatsApp URL with encoded message */

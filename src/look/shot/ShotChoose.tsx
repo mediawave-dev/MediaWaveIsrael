@@ -17,6 +17,7 @@ import { land } from './camera'
 import { setDown, standUp, slideIn, reels, develop } from './moves'
 import { useEyeLine, EyeArt, type EyeLine } from './eye-line'
 import { SERVICE_ORDER, BOT_HINT } from './copy'
+import { vt } from './vt'
 import './shot-choose.css'
 
 /** Which Thing each service is on the desk; websites has none (its label carries a Lottie well). */
@@ -46,7 +47,7 @@ const ITEMS: ShowItem[] = [
 
 function Label({ it, well }: { it: ShowItem; well?: ReactNode }) {
   return (
-    <div className="shot-label shot-tool__label">
+    <div className="shot-label shot-tool__label" style={vt.sheet(it.id)}>
       {well}
       <h3 className="shot-tool__title" data-zone="text">{it.title}</h3>
       <p className="shot-tool__line" data-zone="text">{it.line}</p>
@@ -63,7 +64,7 @@ function Label({ it, well }: { it: ShowItem; well?: ReactNode }) {
 /** The object itself: the moved layer (data-move) around a static rest angle around the Thing. */
 function Obj({ it, kind, i, eye }: { it: ShowItem; kind: Kind; i: number; eye: EyeLine }) {
   return (
-    <span className="shot-tool__rest">
+    <span className="shot-tool__rest" style={vt.obj(it.id)}>
       <Thing kind={kind}>
         <span className="thing__art"><EyeArt eye={eye} i={i} item={it} size={ART_PX[it.id] ?? 160} /></span>
         {kind === 'frame' && <i className="shot-wash" />}
@@ -77,7 +78,7 @@ function Tool({ it, i, eye }: { it: ShowItem; i: number; eye: EyeLine }) {
   if (!kind) {
     // websites (or any service without an object): the label opens with its Lottie well
     const well = (
-      <div className="shot-label__well" aria-hidden="true" data-zone="art">
+      <div className="shot-label__well" aria-hidden="true" data-zone="art" style={vt.obj(it.id)}>
         <EyeArt eye={eye} i={i} item={it} size={ART_PX[it.id] ?? 180} />
       </div>
     )
@@ -154,13 +155,14 @@ export default function ShotChoose() {
   return (
     <section ref={ref} id="services" className="shot-choose" data-chapter="choose" data-dossier="W04 W13 W14" aria-labelledby="services-title">
       <header className="shot-table-head">
+        <p className="shot-kicker" data-zone="text"><b>02</b>בוחרים</p>
         <h2 id="services-title" data-zone="text">מה אנחנו עושים</h2>
       </header>
       <ul className="shot-tools">
         {ITEMS.map((it, i) => <Tool key={it.id} it={it} i={i} eye={eye} />)}
       </ul>
       <div className="shot-choose__cta">
-        <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'services' })}>מתחילים פרויקט</LookButton>
+        <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'services' })}>ספרו לנו מה צריך</LookButton>
       </div>
     </section>
   )

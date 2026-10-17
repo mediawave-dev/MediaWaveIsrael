@@ -9,6 +9,8 @@ import { m } from 'framer-motion'
 import { LookButton } from '@look/button'
 import { HtmlContent } from '../../components/HtmlContent'
 import { faqs } from '../../data/faqs'
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
+import { track } from '../../utils/analytics'
 import './faq.css'
 
 interface FaqProps {
@@ -18,9 +20,11 @@ interface FaqProps {
   dossier?: string
   /** rendered first inside .faq__in (the shot's margin line) */
   decor?: ReactNode
+  /** a line above the heading (the shot's chapter verb) */
+  kicker?: ReactNode
 }
 
-export default function Faq({ chapter, dossier, decor }: FaqProps = {}) {
+export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) {
   const [open, setOpen] = useState<number | null>(null)
   const schema = {
     '@context': 'https://schema.org',
@@ -36,8 +40,9 @@ export default function Faq({ chapter, dossier, decor }: FaqProps = {}) {
       <div className="faq__in">
         {decor}
         <div className="faq__head">
+          {kicker}
           <h2 id="faq-title" data-zone="text">שאלות נפוצות</h2>
-          <p data-zone="text">כל מה שרציתם לדעת על תהליך בניית האתר</p>
+          <p data-zone="text">כמה זה עולה, כמה זמן זה לוקח ומה קורה אחר כך</p>
         </div>
         <ul className="faq__list">
           {faqs.map((item, i) => {
@@ -72,8 +77,8 @@ export default function Faq({ chapter, dossier, decor }: FaqProps = {}) {
           })}
         </ul>
         <div className="faq__more">
-          <p>עדיין יש שאלות?</p>
-          <LookButton href="#contact" zone="text">צרו קשר</LookButton>
+          <p>לא מצאתם תשובה?</p>
+          <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'faq' })}>שאלו אותנו בוואטסאפ</LookButton>
         </div>
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
