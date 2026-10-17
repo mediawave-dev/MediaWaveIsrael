@@ -22,9 +22,8 @@ interface ShotDockProps {
 
 /** Is a cookie choice pending or a modal dialog open? Read from the DOM, cheap. */
 function isBusy() {
-  return document.documentElement.classList.contains('consent-pending')
-    || document.body.classList.contains('mw-consent-open')
-    || document.querySelector('[aria-modal="true"]') !== null
+  // a pending cookie choice no longer hides WhatsApp (critic M1 F1): the dock rises above the strip
+  return document.querySelector('[aria-modal="true"]') !== null
 }
 
 export default function ShotDock({ chatOpen, onSlot, onShownChange }: ShotDockProps) {

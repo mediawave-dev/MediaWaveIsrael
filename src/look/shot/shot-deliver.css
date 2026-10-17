@@ -170,3 +170,4 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 /* from 768 the end card stands alone on the table before the sign-off, like a title card before the
    credits: at the very end of the page it has left the screen, never half under the header */
 @media (min-width: 768px) { .shot-end { padding-bottom: max(96px, 32svh); } }
+

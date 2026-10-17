@@ -196,3 +196,9 @@ html[data-look="shot"] .ct__failure a { display: inline-flex; align-items: cente
 html.disable-animations[data-look="shot"] .faq__row,
 html.disable-animations[data-look="shot"] .faq__sign i,
 html.disable-animations[data-look="shot"] .faq__a-in { transition: none; }
+
+/* critic M1 F5: WhatsApp first in the card, an ink row */
+html[data-look="shot"] .ct__ways li.ct__way--wa a { background: var(--ink); padding-inline: 14px; }
+html[data-look="shot"] .ct__ways li.ct__way--wa a span { color: rgba(255, 255, 255, 0.82); }
+html[data-look="shot"] .ct__ways li.ct__way--wa a b { color: var(--paper); }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .ct__ways li.ct__way--wa a:hover { background: #2a2d33; } }

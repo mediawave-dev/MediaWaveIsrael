@@ -4,10 +4,10 @@
 // when scrolled back: the state is derived from the scroll position, never spent. Only the lit
 // screen in the eye band plays its Lottie (useEyeLine). REDUCE, prerender and no JS: all three on,
 // no landing. The copy and the Lottie paths are single-sourced in WhyUs.tsx (WHY_ITEMS).
-import { useEffect, useState, type RefObject } from 'react'
+import { useEffect, useState, type CSSProperties, type RefObject } from 'react'
 import { useSceneNear } from './near'
 import { WHY_ITEMS } from '../sections/WhyUs'
-import { EyeArt, useEyeLine } from './eye-line'
+import { EyeArt, useEyeLine, posterFor } from './eye-line'
 import { DEPTH, land, scrubbing } from './camera'
 import { SPEED_PROOF, speedLine } from './copy'
 import './shot-meet.css'
@@ -138,7 +138,7 @@ export default function ShotMeet() {
           return (
             <li key={it.id} className="shot-meet__item" data-on={on ? '' : undefined}>
               <div className="shot-screen" aria-hidden="true" data-zone="art">
-                <span className="shot-screen__well">
+                <span className="shot-screen__well" style={{ '--poster': posterFor(it.lottie) ? `url("${posterFor(it.lottie)!.src}")` : 'none' } as CSSProperties}>
                   <EyeArt eye={eye} i={i} item={it} size={size} lit={on} />
                 </span>
                 <i className="shot-screen__dot" />

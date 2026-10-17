@@ -87,7 +87,29 @@ Holds are sticky stages, never pins. Chapters below the first view build their s
 - **Dock (SPEC 1.12):** one bar at the near edge, WhatsApp at the inline start (thumb reach), the chat trigger at the inline end; it steps aside over the hero CTAs, #contact, the footer, the cookie strip and any dialog. `--safe-b` reserves its band.
 - **Cookie strip:** a paper strip in the same band; the first paint already reserves it (`consent-pending`), so nothing moves when it arrives or leaves.
 - **Lead dialog:** a bottom sheet of paper (70svh, scrolls inside), opened by intent only (`src/utils/lead-intent.js`), never over another dialog.
-- **Desk objects:** `src/look/parts/Things.tsx` and `Laptop.tsx` in ink with white faces; the laptop's lid carries the Horizon mark in its dark-ground tones.
+- **Desk objects:** `src/look/parts/Things.tsx` and `Laptop.tsx` in ink with white faces; the laptop's lid carries the Horizon mark in its dark-ground tones. The props' faces are drawn in ink lines (`src/look/shot/Faces.tsx`, D98).
+- **Chapter verbs (D95):** a number and a verb above each home chapter heading (01 מכירים to 06 מקבלים), `.shot-kicker`. A real sequence: the one long camera move gets places a visitor can name.
+
+## 5b. Inner pages (D90, D91, D92)
+
+Every inner page is the same desk, quieter: `src/look/shot/pages/` (kit.tsx, shot-pages.css), registered by the look (`registry.shot.ts` `pages`); K, M and KM keep the legacy pages.
+
+| Surface | Object | Where |
+|---|---|---|
+| The path | printed on the table, 44px links | every inner page |
+| Hero sheet | the service name, an outcome line, three facts, the WhatsApp key; the service's Thing on its top edge | service pages |
+| Prose | printed on the table, start-aligned (D92) | service pages |
+| Checklist | a ruled sheet with ink ticks | what you get |
+| Quote slip | a narrow slip with perforated ends (mask) and a drop shadow | what it costs |
+| Ink line | the home process line, drawing as you scroll | how it goes |
+| Notepad | punched holes, numbered ruled rows, details/summary | questions |
+| Film print | a paper frame around the video | memory videos, the sample |
+| Legal sheet | one plain sheet, 68ch measure, the legal text unchanged | /terms /privacy /accessibility |
+| Empty spot | a dashed outline where the page should lie, the loupe searching | 404 |
+
+Motion: sheets land at half strength (`camera.land`), the hero sheet tips away late, the ink line draws; REDUCE and no JS show the last frame.
+
+**The sheet becomes the page (D91):** cross-document View Transitions. The home service label and the service hero sheet share `view-transition-name: svc-<id>`, the desk object and the hero object `svc-obj-<id>`, the sample's film print `film-<slug>` (`src/look/shot/vt.ts`, rules at the end of `shot-base.css`). A plain link morphs one paper into the other; unsupported browsers and reduced motion get an ordinary page load.
 
 ## 6. Rules that do not move
 

@@ -16,7 +16,7 @@
 // Scrolling back runs it all backwards (the site unbuilds): nothing is played once or remembered.
 // CALM: the laptop lands from 20deg, no orbit, the build still follows the scroll. REDUCE (and no
 // JS, prerender): no hold, the laptop open and frontal with the finished site, the stub drawn.
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useMotionEngine } from '../../motion/ScrollEngineProvider'
 import { useSceneNear } from './near'
 import { Laptop } from '../parts/Laptop'
@@ -39,9 +39,16 @@ const BUILD_SPAN = 0.62
 const MARK_OUT = 0.31
 const STUB_AT = 0.9
 
+/** [קופי: נתי] what the screen shows, beat by beat (critic M1 F7): the skeleton, the content, the phone */
+const BEATS = ['קודם השלד: איפה כל דבר יושב בעמוד.', 'אחר כך המילים, התמונות והכפתור לוואטסאפ.', 'ובסוף הוא עולה לאוויר, ואתם רואים אותו בטלפון.'] as const
+/** the hold fraction where each beat starts (the laptop opens, the build starts, the build ends) */
+const BEAT_AT = [0, 0.42, 0.8]
+
 export default function ShotBuild() {
   const engine = useMotionEngine()
   const build = useRef<HeroBuildHandle>(null)
+  // the caption beat in view (REDUCE and no JS: the last one, the finished site)
+  const [beat, setBeat] = useState(BEATS.length - 1)
 
   const ref = useSceneNear<HTMLElement>((t, root) => {
     const setBuild = (p: number) => build.current?.setProgress(p)
@@ -62,7 +69,14 @@ export default function ShotBuild() {
     // trigger's refresh and update: a refresh (a deep link, ?at=, a resize) moves the timeline with
     // its events suppressed, so its own onUpdate alone could leave the screen a step behind.
     let tl: gsap.core.Timeline | null = null // the trigger may refresh inside holdTimeline, before tl is set
-    const sync = () => { if (tl) setBuild((tl.time() - BUILD_AT) / BUILD_SPAN) }
+    const sync = () => {
+      if (!tl) return
+      const time = tl.time()
+      setBuild((time - BUILD_AT) / BUILD_SPAN)
+      let b = 0
+      for (let i = 0; i < BEAT_AT.length; i++) if (time >= BEAT_AT[i]) b = i
+      setBeat((prev) => (prev === b ? prev : b))
+    }
     tl = t.holdTimeline(hold, {
       id: 'build', scrub: t.CALM ? true : 0.6,
       onToggle: (self) => toggle(self.isActive), onRefresh: sync, onUpdate: sync,
@@ -87,7 +101,12 @@ export default function ShotBuild() {
         <div className="hold__stage shot-build__stage">
           {/* the scene's one caption: static (never moved by the camera), above the laptop, in the DOM
               for every reader; the five held screens no longer carry nothing to read (walkthrough) */}
-          <p className="shot-build__cap" data-zone="text">על המסך נבנה האתר הזה. כשבונים את שלכם, מקבלים קישור ורואים אותו נבנה בטלפון.</p>
+          <div className="shot-build__cap">
+            <p className="shot-build__lead" data-zone="text">על המסך נבנה האתר הזה.</p>
+            <ol className="shot-build__beats">
+              {BEATS.map((b, i) => <li key={b} data-zone="text" data-on={i === beat ? '' : undefined}>{b}</li>)}
+            </ol>
+          </div>
           <div className="shot-build__cam" aria-hidden="true" data-zone="art">
             <Laptop className="shot-lap shot-build__lap" back={<Logo variant="mark" decorative />}>
               <span className="shot-lap__opening"><Logo variant="mark" decorative /></span>

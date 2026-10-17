@@ -9,6 +9,7 @@ import { useMotionEngine } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
+import { servicesData } from '../../data/services'
 
 /** The menu chapter in view: the last one whose top has passed 40% of the viewport (page order). */
 function chapterInView(): string | null {
@@ -232,29 +233,35 @@ export default function Header() {
                 >
                   {link.label}
                 </a>
-              ))}
+              )).flatMap((a, i) => menuLinks[i].href !== '#services' ? [a] : [a, (
+                <ul key="svc" className="mw-menu__svc" aria-label="השירותים">
+                  {servicesData.map((s) => (
+                    <li key={s.id}><a href={`/services/${s.slug}`} onClick={() => setIsMobileMenuOpen(false)}>{s.title}</a></li>
+                  ))}
+                </ul>
+              )])}
             </nav>
 
             <div className="mw-menu__foot">
               <LookButton
-                href="#contact"
-                block
-                onClick={(e) => {
-                  track('cta_click', { placement: 'mobile_menu' })
-                  handleNavClick(e as React.MouseEvent<HTMLAnchorElement>, '#contact')
-                  setIsMobileMenuOpen(false)
-                }}
-              >
-                ספרו לנו
-              </LookButton>
-              <a
-                className="mw-menu__wa"
                 href={WHATSAPP_URLS.general}
                 target="_blank"
                 rel="noopener noreferrer"
+                block
                 onClick={() => track('whatsapp_click', { placement: 'mobile_menu' })}
               >
-                וואטסאפ
+                כתבו לנו בוואטסאפ
+              </LookButton>
+              <a
+                className="mw-menu__wa"
+                href="#contact"
+                onClick={(e) => {
+                  track('cta_click', { placement: 'mobile_menu' })
+                  handleNavClick(e, '#contact')
+                  setIsMobileMenuOpen(false)
+                }}
+              >
+                ספרו לנו בטופס
               </a>
               <a href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} dir="ltr" onClick={() => track('tel_click', { placement: 'mobile_menu' })}>{SITE_CONTACT.phone}</a>
               <a href={`mailto:${SITE_CONTACT.email}`} dir="ltr" onClick={() => track('mailto_click', { placement: 'mobile_menu' })}>{SITE_CONTACT.email}</a>

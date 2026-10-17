@@ -44,8 +44,7 @@ export function DeskFace({ kind }: { kind: Kind }) {
     case 'loupe':
       return (
         <svg className="desk-face" viewBox="0 0 40 40" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <path {...S} strokeWidth={3} d="M9 16h22M9 24h15" />
-          <path {...S} strokeWidth={3} d="M28 24h3" opacity="0.4" />
+          <text x="20" y="28" textAnchor="middle" fill="currentColor" fontSize="24" fontWeight="800" style={{ fontFamily: "var(--display)" }}>א</text>
         </svg>
       )
     default:

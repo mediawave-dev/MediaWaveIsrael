@@ -143,6 +143,11 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
               <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
             </div>
             <ul className="ct__ways">
+              <li className="ct__way--wa">
+                <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
+                  <span>וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
+                </a>
+              </li>
               <li>
                 <a data-zone={Z} href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
                   <span>טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
@@ -151,11 +156,6 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
               <li>
                 <a data-zone={Z} href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
                   <span>אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
-                </a>
-              </li>
-              <li>
-                <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span>וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
                 </a>
               </li>
               <li>

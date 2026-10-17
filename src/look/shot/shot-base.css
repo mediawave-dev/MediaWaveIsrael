@@ -360,3 +360,35 @@ html[data-look="shot"] { --faq-align: start; --faq-justify: space-between; }
 html[data-look="shot"] .desk-face { position: absolute; inset: 10%; width: 80%; height: 80%; color: var(--ink); }
 html[data-look="shot"] .thing--frame .desk-face { inset: 22%; width: 56%; height: 56%; }
 html[data-look="shot"] .thing--cassette .desk-face { inset: 8% 6%; width: 88%; height: 84%; }
+
+/* ── critic M1 (2026-10-17) ── */
+/* F1: while a cookie choice is pending the dock is not hidden: it rises above the strip, and the
+   reserved band (--safe-b) holds both, so nothing reads under either (D101) */
+html[data-look="shot"].consent-pending,
+html[data-look="shot"] body.mw-consent-open { --safe-b: calc(var(--strip-h) + var(--dock-h) + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px)); }
+html[data-look="shot"].consent-pending .shot-dock,
+html[data-look="shot"] body.mw-consent-open .shot-dock {
+  bottom: calc(var(--strip-h) + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+  height: var(--dock-h); padding-block: 0;
+}
+/* F25: refusing cookies weighs the same as accepting: two keys of one size, ink and paper */
+html[data-look="shot"] .mw-consent__no { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); font: 700 1rem/1 var(--ui); }
+/* F17: the chapter verb is a paper index tab on the table, not a numbered eyebrow with a dash */
+.shot-kicker { display: flex; width: fit-content; margin: 0 auto 16px; padding: 4px 12px 5px; gap: 8px; background: var(--paper); box-shadow: 0 1px 0 rgba(27, 29, 33, 0.06), 0 6px 10px -8px rgba(27, 29, 33, 0.4); border-radius: 2px; color: var(--ink); font: 700 0.95rem/1.4 var(--ui); }
+.shot-kicker b { color: var(--ink-2); font-weight: 600; }
+.shot-kicker b::after { content: none; }
+html[data-look="shot"] .faq__head p.shot-kicker { margin: 0 auto 16px; max-width: none; color: var(--ink); font: 700 0.95rem/1.4 var(--ui); }
+/* F19: on touch screens the key keeps its glyph and LED; the Latin word "Enter" means nothing there */
+@media (hover: none) { html[data-look="shot"] .key .lg-word { display: none; } }
+/* F6: the menu's services sub-index, two ruled columns under the services link */
+html[data-look="shot"] .mw-menu .mw-menu__svc { list-style: none; margin: 0 0 6px; padding: 0 0 8px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; box-shadow: inset 0 -1px 0 var(--line); }
+html[data-look="shot"] .mw-menu .mw-menu__svc a { display: flex; align-items: center; min-height: 44px; box-shadow: none; color: var(--ink-2); font: 600 1rem/1.3 var(--ui); font-stretch: 100%; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-menu .mw-menu__svc a:hover { color: var(--ink); } }
+/* F9: under OS reduced motion the holds keep only their small moves, so they keep less scroll too */
+html[data-look="shot"].motion-calm .hold[data-hold="dive"] { --hold-h: 140svh; }
+html[data-look="shot"].motion-calm .hold[data-hold="build"] { --hold-h: 170svh; }
+html[data-look="shot"].motion-calm .hold[data-hold="pullback"] { --hold-h: 140svh; }
+/* F7: the build hold is shorter on phones (its caption now changes with the beats) */
+@media (max-width: 1099px) { html[data-look="shot"]:not(.motion-calm) .hold[data-hold="build"] { --hold-h: 240svh; } }
+.shot-fb--build { min-height: calc(240svh + 1991px); }
+@media (min-width: 1100px) { .shot-fb--build { min-height: calc(350svh + 1850px); } }

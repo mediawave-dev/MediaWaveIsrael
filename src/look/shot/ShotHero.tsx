@@ -19,6 +19,7 @@ import { Thing, type Kind } from '../parts/Things'
 import Logo from '../../components/ui/Logo'
 import { HERO } from '../data'
 import { track } from '../../utils/analytics'
+import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { DEPTH, dive, land, scrubbing } from './camera'
 import { useShotPolicy } from './policy'
 import { DeskFace } from './Faces'
@@ -165,12 +166,17 @@ export default function ShotHero() {
                 </h1>
                 <p className="shot-hero__sub" data-zone="text">{HERO.sub}</p>
                 <div className="shot-hero__ctas" data-dock-hide="">
-                  <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'hero_contact' })}>
+                  <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" block zone="text" onClick={() => track('whatsapp_click', { placement: 'hero' })}>
                     {HERO.cta}
                   </LookButton>
-                  <a className="shot-link" href="#services" data-zone="text" onClick={() => track('cta_click', { placement: 'hero_services' })}>
-                    {HERO.secondary}
-                  </a>
+                  <span className="shot-hero__links">
+                    <a className="shot-link" href="#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'hero_contact' })}>
+                      {HERO.contact}
+                    </a>
+                    <a className="shot-link" href="#services" data-zone="text" onClick={() => track('cta_click', { placement: 'hero_services' })}>
+                      {HERO.secondary}
+                    </a>
+                  </span>
                 </div>
               </div>
             </article>

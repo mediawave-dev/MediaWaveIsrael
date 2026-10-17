@@ -124,7 +124,7 @@ export default function ShotStart() {
         <i className="shot-line shot-line--to-word" aria-hidden="true"><i className="shot-line__fill" /></i>
         <BigWord start="top 80%" end={wordEnd} endTrigger="#contact .ct__card" />
       </div>
-      <Contact chapter="start" dossier="W16" pal={PAL} kicker={<p className="shot-kicker" data-zone="text"><b>05</b>כותבים</p>} />
+      <Contact chapter="start" dossier="W16" pal={PAL} />
       <StartMotion />
     </>
   )

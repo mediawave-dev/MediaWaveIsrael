@@ -17,7 +17,9 @@ import { land } from './camera'
 import { setDown, standUp, slideIn, reels, develop } from './moves'
 import { useEyeLine, EyeArt, type EyeLine } from './eye-line'
 import { SERVICE_ORDER, BOT_HINT } from './copy'
-import { vt } from './vt'
+import { vtMark } from './vt'
+import { Slip } from './pages/kit'
+import { PRICE_HOME } from './copy'
 import './shot-choose.css'
 
 /** Which Thing each service is on the desk; websites has none (its label carries a Lottie well). */
@@ -47,12 +49,12 @@ const ITEMS: ShowItem[] = [
 
 function Label({ it, well }: { it: ShowItem; well?: ReactNode }) {
   return (
-    <div className="shot-label shot-tool__label" style={vt.sheet(it.id)}>
+    <div className="shot-label shot-tool__label" {...vtMark.sheet(it.id)}>
       {well}
       <h3 className="shot-tool__title" data-zone="text">{it.title}</h3>
       <p className="shot-tool__line" data-zone="text">{it.line}</p>
       <p className={`shot-label__links${it.portfolio ? ' shot-label__links--two' : ''}`}>
-        {it.href && <a className="shot-link" href={it.href} aria-label={it.hrefLabel} data-zone="text">לפרטים</a>}
+        {it.href && <a className="shot-link shot-label__go" href={it.href} aria-label={it.hrefLabel} data-zone="text" {...vtMark.to(it.id)}>לפרטים</a>}
         {it.portfolio && (
           <a className="shot-link" href={it.portfolio} aria-label={`ראו דוגמה לפרויקט: ${it.title}`} data-zone="text">ראו דוגמה</a>
         )}
@@ -64,7 +66,7 @@ function Label({ it, well }: { it: ShowItem; well?: ReactNode }) {
 /** The object itself: the moved layer (data-move) around a static rest angle around the Thing. */
 function Obj({ it, kind, i, eye }: { it: ShowItem; kind: Kind; i: number; eye: EyeLine }) {
   return (
-    <span className="shot-tool__rest" style={vt.obj(it.id)}>
+    <span className="shot-tool__rest" {...vtMark.obj(it.id)}>
       <Thing kind={kind}>
         <span className="thing__art"><EyeArt eye={eye} i={i} item={it} size={ART_PX[it.id] ?? 160} /></span>
         {kind === 'frame' && <i className="shot-wash" />}
@@ -78,7 +80,7 @@ function Tool({ it, i, eye }: { it: ShowItem; i: number; eye: EyeLine }) {
   if (!kind) {
     // websites (or any service without an object): the label opens with its Lottie well
     const well = (
-      <div className="shot-label__well" aria-hidden="true" data-zone="art" style={vt.obj(it.id)}>
+      <div className="shot-label__well" aria-hidden="true" data-zone="art" {...vtMark.obj(it.id)}>
         <EyeArt eye={eye} i={i} item={it} size={ART_PX[it.id] ?? 180} />
       </div>
     )
@@ -161,6 +163,9 @@ export default function ShotChoose() {
       <ul className="shot-tools">
         {ITEMS.map((it, i) => <Tool key={it.id} it={it} i={i} eye={eye} />)}
       </ul>
+      <div className="shot-choose__price">
+        <Slip title="כמה זה עולה" lines={PRICE_HOME} />
+      </div>
       <div className="shot-choose__cta">
         <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'services' })}>ספרו לנו מה צריך</LookButton>
       </div>

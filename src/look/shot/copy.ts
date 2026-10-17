@@ -24,3 +24,11 @@ export const BOT_HINT = 'נסו את הבוט'
 
 /** [קופי: נתי] S9, the address bar of the phone the site ends in (art, aria-hidden, LTR). */
 export const PHONE_URL = 'mediawave.co.il'
+
+/** [קופי: נתי] critic M1 F11: the price signal on the home page (Terms 3.1, 3.2, 3.4, 7.1; faqs.ts) */
+export const PRICE_HOME: readonly string[] = [
+  'המחיר נקבע לפי מה שהאתר צריך לעשות, ומקבלים אותו בכתב לפני שמתחילים.',
+  'בכל אתר: עיצוב, בנייה, הדרכה ושנה ראשונה של אחסון ודומיין.',
+  'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
+  'המחיר כולל מע״מ.',
+]

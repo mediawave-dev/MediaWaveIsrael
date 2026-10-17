@@ -61,8 +61,7 @@ export default function ShotProcess() {
       <header className="shot-table-head shot-process__head">
         <i className="shot-line shot-line--head" aria-hidden="true" data-zone="art"><i className="shot-line__fill" /></i>
         <p className="shot-kicker" data-zone="text"><b>03</b>בונים</p>
-        <h2 id="how-we-work-title" data-zone="text">איך אנחנו עובדים</h2>
-        <p className="shot-process__big" data-zone="text"><span>ארבעה צעדים</span> <span>מהשיחה ועד ההשקה</span></p>
+        <h2 id="how-we-work-title" className="shot-process__h" data-zone="text">ארבעה צעדים, מהשיחה ועד שהאתר באוויר</h2>
       </header>
       <div className="shot-process__track">
         <i className="shot-line" aria-hidden="true" data-zone="art"><i className="shot-line__fill" /></i>

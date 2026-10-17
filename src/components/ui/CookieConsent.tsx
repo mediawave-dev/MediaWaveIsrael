@@ -19,7 +19,15 @@ export default function CookieConsent() {
       document.documentElement.classList.remove('consent-pending')
       setStatus(stored)
     } else {
-      // Show banner after short delay
+      // Show banner after short delay. Inner pages (the shot, D102): not over the first screen a
+      // visitor lands on from a search, but at the first scroll (or after 8 s), so it never covers
+      // the page's offer and its WhatsApp key at first sight; the home page reserves its band.
+      if (window.location.pathname !== '/') {
+        const show = () => setIsVisible(true)
+        const timer = setTimeout(show, 8000)
+        window.addEventListener('scroll', show, { once: true, passive: true })
+        return () => { clearTimeout(timer); window.removeEventListener('scroll', show) }
+      }
       const timer = setTimeout(() => setIsVisible(true), 1500)
       return () => clearTimeout(timer)
     }

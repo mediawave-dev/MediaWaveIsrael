@@ -19,6 +19,7 @@ import { inkLine } from '../moves'
 import { posterFor } from '../eye-line'
 import { Thing } from '../../parts/Things'
 import { Trail, WaKey, DeskObject, Checklist, Steps, Slip, Pad, OBJECT, vt } from './kit'
+import { vtMark } from '../vt'
 
 /** The hero object's artwork size in px at 390 (the CSS sizes the Thing; this seeds the Lottie box). */
 const ART = 220
@@ -54,8 +55,8 @@ function More({ current }: { current: string }) {
           const still = s.imageIcon ?? posterFor(item?.lottie)?.src
           return (
             <li key={s.id}>
-              <a href={`/services/${s.slug}`} className="sp-more__link">
-                <span className={`sp-obj sp-obj--${OBJECT[s.id]} sp-obj--small`} style={vt.obj(s.id)} aria-hidden="true">
+              <a href={`/services/${s.slug}`} className="sp-more__link" {...vtMark.to(s.id)}>
+                <span className={`sp-obj sp-obj--${OBJECT[s.id]} sp-obj--small`} {...vtMark.obj(s.id)} aria-hidden="true">
                   <Thing kind={OBJECT[s.id]}>
                     {still && <span className="thing__art"><img src={still} alt="" width="120" height="120" loading="lazy" decoding="async" /></span>}
                   </Thing>
@@ -139,7 +140,7 @@ export default function ShotService() {
         </div>
       </article>
 
-      <section className="sp-prose" aria-label={`על ${service.title}`}>
+      <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`}>
         {service.sections.map((s) => (
           <div key={s.heading} className="sp-prose__item">
             <h2 className="sp-h2" data-zone="text">{s.heading}</h2>
@@ -161,9 +162,10 @@ export default function ShotService() {
         {service.price && <Slip title="כמה זה עולה" lines={[...service.price, ...PRICE_COMMON]} />}
       </div>
 
-      {service.steps && <Steps title="איך זה עובד" steps={service.steps} time={service.time} />}
-
-      <Pad title="שאלות" items={service.faq} />
+      <div className="sp-flow">
+        {service.steps && <Steps title="איך זה עובד" steps={service.steps} time={service.time} />}
+        <Pad title="שאלות" items={service.faq} />
+      </div>
 
       <section className="sp-final" aria-labelledby="sp-final-title">
         <h2 id="sp-final-title" className="sp-big" data-zone="text">{service.cta}</h2>

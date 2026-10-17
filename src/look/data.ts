@@ -8,7 +8,10 @@ export const HERO = {
   line2: 'פניות לוואטסאפ',
   /** [קופי: נתי] replaces "עם גישה אישית וליווי צמוד" (slop-scan flagged both) */
   sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
-  cta: 'ספרו לנו על העסק',
+  /** [קופי: נתי] the primary key opens WhatsApp (critic M1 F1: the H1 promises WhatsApp) */
+  cta: 'כתבו לנו בוואטסאפ',
+  /** the form, now a quiet text link (keeps track cta_click hero_contact) */
+  contact: 'ספרו לנו על העסק',
   secondary: 'מה אנחנו עושים',
 }
 
@@ -50,7 +53,7 @@ export const SERVICES: ShowItem[] = servicesData.map((s) => ({
 
 /** How we work: the four steps and their Lotties, unchanged from HowWeWork. */
 export const STEPS: ShowItem[] = [
-  { id: 'call', title: 'שיחת היכרות', line: 'מספרים לנו על העסק, ומבינים יחד מה האתר צריך לעשות.', lottie: '/animations/8 call/Call Center Support Lottie Animation.json' },
+  { id: 'call', title: 'שיחת היכרות', line: 'מספרים לנו על העסק, ומקבלים הצעת מחיר בכתב.', lottie: '/animations/8 call/Call Center Support Lottie Animation.json' },
   { id: 'design', title: 'עיצוב לאישור', line: 'רואים את העיצוב ומאשרים אותו לפני שבונים. עד שני סבבי תיקונים כלולים.', lottie: '/animations/10 design/Web Design Illustration.json', renderer: 'canvas' },
   { id: 'build', title: 'בנייה', line: 'מקבלים קישור לטלפון, ורואים את האתר נבנה. בודקים אותו יחד.', lottie: '/animations/9 build/website build.json' },
   { id: 'launch', title: 'השקה', line: 'האתר עולה לאוויר. בחודש הראשון התמיכה עלינו.', lottie: '/animations/11 launch/web deployment - Isometric Concept Lottie Animations.json' },

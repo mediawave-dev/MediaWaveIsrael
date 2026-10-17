@@ -110,3 +110,6 @@ html.disable-animations .shot-step__paper > h3 { transition: none; }
   .shot-process__cta { width: min(100%, 360px); margin-inline: auto; }
   .shot-process__cta > * { width: 100%; }
 }
+
+/* critic M1 F12: one headline: the line is the H2 now */
+.shot-process__head > h2.shot-process__h { max-width: 16ch; margin-inline: auto; }
