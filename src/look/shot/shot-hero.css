@@ -245,3 +245,9 @@ html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 19px; }
   html[data-look="shot"] .shot-hero__links .shot-link { font-stretch: 82%; padding-inline: 2px; }
   html[data-look="shot"] .shot-hero__links .shot-link::after { content: none; }
 }
+/* short stages have no dive (no overview pose), so the links need only 44px, and the sub tightens a
+   little: the CTA group clears the cookie strip on a 320x568 phone */
+@media (max-height: 615px) and (max-width: 1099px) {
+  html[data-look="shot"] .shot-hero__links .shot-link { min-height: 44px; }
+  .shot-hero__sub { line-height: 1.5; }
+}

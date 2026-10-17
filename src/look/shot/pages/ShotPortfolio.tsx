@@ -57,7 +57,7 @@ export default function ShotPortfolio() {
       )}
       </div>
 
-      <section className="sp-sheet sp-note sp-land" aria-labelledby="sp-note-title">
+      <section className="sp-sheet sp-note sp-land" aria-labelledby="sp-note-title" data-dock-hide="">
         <h2 id="sp-note-title" className="sp-h2" data-zone="text">על הסרטון</h2>
         <p data-zone="text">{ex.description}</p>
         <ul className="sp-facts sp-note__facts" aria-label="מה יש בסרטון">

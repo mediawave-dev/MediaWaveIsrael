@@ -517,3 +517,9 @@ html[data-look="shot"] :is(#faq, .shot-bw, #contact, .shot-deliver) { --paper: #
 html[data-look="shot"] #contact :is(input, textarea) { background: #ffffff; }
 /* the WhatsApp mark sits on the label's line, before the words */
 html[data-look="shot"] .key__label:has(.key__dest) { display: flex; align-items: center; }
+/* 320-359px: the strip's text needs three lines beside the keys, so the strip keeps its two-row
+   height there (the band the hero reserves must hold the whole strip) */
+@media (max-width: 359px) {
+  html[data-look="shot"] { --strip-h: 104px; }
+  html[data-look="shot"] .mw-consent__text + div { flex-direction: column; gap: 4px; }
+}

@@ -310,3 +310,4 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-top .sp-work__head :is(.sp-sub, .sp-kicker) { color: var(--cream-2); }
 .sp-top .sp-sample__frame { box-shadow: 0 22px 40px -24px rgba(0, 0, 0, 0.8); }
 @media (min-width: 1100px) { .sp-top { padding-bottom: 72px; } }
+.sp-work__head .sp-kicker { margin-bottom: 14px; }
