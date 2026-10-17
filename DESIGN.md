@@ -1,16 +1,16 @@
 ---
 name: MediaWave Israel
-description: Hebrew RTL site for a one-developer web studio - "one shot" (shot): one camera move over Nati's desk, a grey table, white paper, ink; the site's sheets land on the table one by one, a closed laptop opens and builds this very site, and the camera pulls back until the whole site is one phone on the desk. Mobile first.
+description: Hebrew RTL site for a one-developer web studio - "one shot" (shot): one camera move over Nati's desk, a cream desk, white paper, black ink, the end credits on black; the site's sheets land on the table one by one, a closed laptop opens and builds this very site, and the camera pulls back until the whole site is one phone on the desk. Mobile first.
 colors:
-  table: "#ECEEF1"
+  table: "#EDE7DA"
   paper: "#FFFFFF"
-  ink: "#1B1D21"
-  ink-2: "#4A4F57"
-  line: "rgba(27, 29, 33, 0.14)"
-  line-ui: "rgba(27, 29, 33, 0.62)"
-  logo-a: "#1B1D21"
+  ink: "#1A1917"
+  ink-2: "#4D4942"
+  line: "rgba(26, 25, 23, 0.14)"
+  line-ui: "rgba(26, 25, 23, 0.62)"
+  logo-a: "#1A1917"
   logo-b: "#00248A"
-  logo-tag: "#4A4F57"
+  logo-tag: "#4D4942"
   logo-b-on-ink: "#6E8CFF"
   face: "#FFFFFF"
 typography:
@@ -48,16 +48,19 @@ One camera move over Nati's desk (D83). The page is one grey table from top to b
 
 Mobile first (D84): every rule is written for 390px, then widened. Sacred: the hero video (inside the lens), the 13 Lotties, the URLs and anchors (#top #why-us #services #process #faq #contact), one H1, every `track()` call.
 
-## 2. Colour (D81, D86)
+## 2. Colour (D109, D86; D81 was the grey version)
+
+Black, white and cream (Nati, 17.10.2026), each a material: cream is the desk, white is what carries content (paper, screens), black is the ink, the keys, the objects and the end credits (the footer is black: the shot ends, the credits roll).
 
 | Token | Value | Where |
 |---|---|---|
-| `--table` | `#ECEEF1` | the ground, everywhere |
+| `--table` / `--cream` | `#EDE7DA` | the desk: the ground of every page |
 | `--paper` | `#FFFFFF` | every sheet, card, field, the menu, the cookie strip |
-| `--ink` | `#1B1D21` | text, buttons, the objects' bodies; 14.5:1 on the table |
-| `--ink-2` | `#4A4F57` | secondary text; 7.1:1 on the table, 8.2:1 on paper |
+| `--ink` | `#1A1917` | text, keys, the objects' bodies, the footer ground; 14.1:1 on cream |
+| `--ink-2` | `#4D4942` | secondary text; 7.2:1 on cream, 9.0:1 on paper |
+| `--cream-2` | `#B8B0A0` | secondary text on the black footer; 8.1:1 |
 | `--line` / `--line-ui` | ink at 14% / 62% | hairlines / field borders (4.8:1 on paper); never a new grey |
-| `--logo-a` / `--logo-b` | `#1B1D21` / `#00248A` | the Horizon logo: ink above the wave, deep Klein below. The page's only colour lives in the logo |
+| `--logo-a` / `--logo-b` | `#1A1917` / `#00248A` (footer: `#F4EFE4` / `#6E8CFF`) | the Horizon logo: ink above the wave, deep Klein below. The page's only colour lives in the logo |
 
 Shadows are ink at an alpha (`--paper-shadow`). No gradients, glow or glass. Errors are never colour-only.
 

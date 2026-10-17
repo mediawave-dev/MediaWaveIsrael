@@ -5,7 +5,7 @@
    .key__cap     the face with the printed legends. Transform only. It travels down over its own wall.
    .key__render  the render pass (loading): an inverted copy of the face, revealed by clip-path,
                  frame by frame at 25 fps. The label is printed twice, so it is never hidden.
-   Palette (D81): #ECEEF1 / #FFFFFF / #1B1D21 / #4A4F57 only. The lab's #D3D7DC and #6B717B are
+   Palette (D81): #EDE7DA / #FFFFFF / #1A1917 / #4D4942 only. The lab's #D3D7DC and #6B717B are
    re-expressed as ink or paper at alpha over the face they sit on (same pixels, no new tone);
    opaque layers stack the alpha over a palette colour. The wall is the cap's side, not a line
    under the label: it never touches the text and the face covers it when pressed. */
@@ -13,14 +13,14 @@
   /* sizes: face 49 + travel 7 = a 56px key */
   --k-face-h: 49px; --k-travel: 7px; --k-r: 10px; --k-pad: 20px; --k-fs: 17px; --k-taper: 1px;
   /* tone: ink cap, paper legends (primary) */
-  --k-face: #1B1D21; --k-on: #FFFFFF; --k-legend: rgba(255, 255, 255, 0.82); --k-led: #FFFFFF;
-  --k-skirt: rgba(27, 29, 33, 0.78);                                /* ink at alpha over the desk */
-  --k-skirt-rim: inset 0 -1px 0 #1B1D21, inset 0 0 0 1px rgba(27, 29, 33, 0.55);
+  --k-face: #1A1917; --k-on: #FFFFFF; --k-legend: rgba(255, 255, 255, 0.82); --k-led: #FFFFFF;
+  --k-skirt: rgba(26, 25, 23, 0.78);                                /* ink at alpha over the desk */
+  --k-skirt-rim: inset 0 -1px 0 #1A1917, inset 0 0 0 1px rgba(26, 25, 23, 0.55);
   --k-rim: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.07); /* a concave cap */
   /* the render pass: paper at .37 over ink (3.4:1 against the face, the label 4.9:1 on it) */
-  --k-render: linear-gradient(rgba(255, 255, 255, 0.37), rgba(255, 255, 255, 0.37)) #1B1D21;
+  --k-render: linear-gradient(rgba(255, 255, 255, 0.37), rgba(255, 255, 255, 0.37)) #1A1917;
   --k-render-on: #FFFFFF; --k-render-legend: #FFFFFF;
-  --k-ring: #1B1D21;
+  --k-ring: #1A1917;
   /* timing */
   /* impeccable-disable-next-line bounce-easing: a keycap's spring return (DECISIONS #87), a few px */
   --k-t-release: 300ms cubic-bezier(0.25, 1.75, 0.45, 1);  /* the key spring: a small overshoot past rest */
@@ -40,19 +40,19 @@
 .key:hover { color: var(--k-on); text-decoration: none; }
 /* paper cap, ink legends: the header (sm default), or tone="paper" / className="key--paper" */
 .key--paper {
-  --k-face: #FFFFFF; --k-on: #1B1D21; --k-legend: #4A4F57; --k-led: #1B1D21;
-  --k-skirt: linear-gradient(rgba(27, 29, 33, 0.18), rgba(27, 29, 33, 0.18)) #FFFFFF;
-  --k-skirt-rim: inset 0 -1px 0 rgba(27, 29, 33, 0.6), inset 0 0 0 1px rgba(27, 29, 33, 0.2);
-  --k-rim: inset 0 0 0 1px rgba(27, 29, 33, 0.18);
+  --k-face: #FFFFFF; --k-on: #1A1917; --k-legend: #4D4942; --k-led: #1A1917;
+  --k-skirt: linear-gradient(rgba(26, 25, 23, 0.18), rgba(26, 25, 23, 0.18)) #FFFFFF;
+  --k-skirt-rim: inset 0 -1px 0 rgba(26, 25, 23, 0.6), inset 0 0 0 1px rgba(26, 25, 23, 0.2);
+  --k-rim: inset 0 0 0 1px rgba(26, 25, 23, 0.18);
   /* ink pass: 16:1 against paper */
-  --k-render: #1B1D21; --k-render-on: #FFFFFF; --k-render-legend: rgba(255, 255, 255, 0.82);
+  --k-render: #1A1917; --k-render-on: #FFFFFF; --k-render-legend: rgba(255, 255, 255, 0.82);
 }
 .key[data-size="sm"] { --k-face-h: 40px; --k-travel: 5px; --k-r: 8px; --k-pad: 13px; --k-fs: 15px; }
 .key[data-block] { display: grid; width: 100%; }
 
 .key__shadow {
   position: absolute; z-index: -2; inset: var(--k-travel) 3px 0; border-radius: var(--k-r);
-  box-shadow: 0 9px 14px -8px rgba(27, 29, 33, 0.55), 0 2px 2px -1px rgba(27, 29, 33, 0.22);
+  box-shadow: 0 9px 14px -8px rgba(26, 25, 23, 0.55), 0 2px 2px -1px rgba(26, 25, 23, 0.22);
   transition: opacity var(--k-t-release);
 }
 .key__skirt {
@@ -187,7 +187,7 @@
 }
 
 /* ── disabled: a key that is not connected, sitting flat, no legend, no LED ── */
-.key:disabled, .key[aria-disabled="true"] { cursor: not-allowed; --k-face: #ECEEF1; --k-on: #4A4F57; --k-rim: inset 0 0 0 1px rgba(27, 29, 33, 0.11); }
+.key:disabled, .key[aria-disabled="true"] { cursor: not-allowed; --k-face: #EDE7DA; --k-on: #4D4942; --k-rim: inset 0 0 0 1px rgba(26, 25, 23, 0.11); }
 .key:disabled .key__cap, .key[aria-disabled="true"] .key__cap { transform: translateY(var(--k-travel)); }
 .key:disabled .key__shadow, .key[aria-disabled="true"] .key__shadow,
 .key:disabled .key__skirt, .key[aria-disabled="true"] .key__skirt { opacity: 0; }

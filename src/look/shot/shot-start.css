@@ -32,8 +32,8 @@ html[data-look="shot"] .faq__list::before {
   content: ""; display: block; height: 64px;
   /* the binding strip along the top edge, then a row of punched holes */
   background:
-    radial-gradient(circle, rgba(27, 29, 33, 0.18) 0 5px, transparent 5.5px) center 34px / 28px 14px repeat-x,
-    linear-gradient(rgba(27, 29, 33, 0.14), rgba(27, 29, 33, 0.14)) top / 100% 14px no-repeat;
+    radial-gradient(circle, rgba(26, 25, 23, 0.18) 0 5px, transparent 5.5px) center 34px / 28px 14px repeat-x,
+    linear-gradient(rgba(26, 25, 23, 0.14), rgba(26, 25, 23, 0.14)) top / 100% 14px no-repeat;
   box-shadow: inset 0 -1px 0 var(--line);
 }
 html[data-look="shot"] .faq__row {
@@ -55,7 +55,7 @@ html[data-look="shot"] .faq__q {
 /* the hover stays inside the row, no underline (contained hovers, fine pointer only) */
 html[data-look="shot"] .faq__q:hover span:first-child { text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .faq__q:hover { background: rgba(27, 29, 33, 0.04); }
+  html[data-look="shot"] .faq__q:hover { background: rgba(26, 25, 23, 0.04); }
 }
 html[data-look="shot"] .faq__q:focus-visible { outline-offset: -3px; }
 html[data-look="shot"] .faq__sign { inset-inline-end: 14px; }
@@ -134,7 +134,7 @@ html[data-look="shot"] .ct__ways a span { color: var(--ink-2); font: 400 0.9rem/
 html[data-look="shot"] .ct__ways a b { color: var(--ink); font: 700 1rem/1.5 var(--ui); }
 html[data-look="shot"] .ct__ways a:hover b { text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .ct__ways a:hover { background: rgba(27, 29, 33, 0.04); }
+  html[data-look="shot"] .ct__ways a:hover { background: rgba(26, 25, 23, 0.04); }
 }
 html[data-look="shot"] .ct__ways a:focus-visible { outline-offset: -3px; }
 html[data-look="shot"] .ct__time { margin: 24px 0 0; color: var(--ink-2); text-align: center; font: 400 0.9rem/1.6 var(--text); }
@@ -152,7 +152,7 @@ html[data-look="shot"] .ct__form {
 html[data-look="shot"] .ct__form::before {
   content: ""; position: absolute; z-index: 0; top: calc(var(--pal-h) * 2 / 3 - 7px); inset-inline: 0; margin-inline: auto;
   width: calc(var(--pal-w) * 0.96); height: 14px; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(27, 29, 33, 0.3), transparent);
+  background: radial-gradient(closest-side, rgba(26, 25, 23, 0.3), transparent);
   opacity: var(--pal-shadow, 1);
 }
 html[data-look="shot"] .ct__pal {
@@ -201,7 +201,6 @@ html.disable-animations[data-look="shot"] .faq__a-in { transition: none; }
 html[data-look="shot"] .ct__ways li.ct__way--wa a { background: var(--ink); padding-inline: 14px; }
 html[data-look="shot"] .ct__ways li.ct__way--wa a span { color: rgba(255, 255, 255, 0.82); }
 html[data-look="shot"] .ct__ways li.ct__way--wa a b { color: var(--paper); }
-@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .ct__ways li.ct__way--wa a:hover { background: #2a2d33; } }
 
 /* the WhatsApp row's hover stays in the palette (ink-2) */
 @media (hover: hover) and (pointer: fine) { html[data-look="shot"] .ct__ways li.ct__way--wa a:hover { background: var(--ink-2); } }

@@ -7,9 +7,9 @@
 .sl-sheet {
   box-sizing: border-box; width: min(100% - 2 * var(--gut), 860px); margin: 28px auto 0; padding: 32px 20px 36px;
   background: var(--paper); color: var(--ink); box-shadow: var(--paper-shadow); border-radius: 2px;
-  --color-cream: #ffffff; --color-cream-dark: #eceef1; --color-cream-darker: rgba(27, 29, 33, 0.14);
-  --color-brown: #1b1d21; --color-brown-light: #4a4f57; --color-brown-dark: #1b1d21; --color-brown-muted: #4a4f57;
-  --color-sky-ink: #1b1d21; --color-sky-ink-strong: #1b1d21; --color-orange: #1b1d21;
+  --color-cream: #ffffff; --color-cream-dark: #ede7da; --color-cream-darker: rgba(26, 25, 23, 0.14);
+  --color-brown: #1a1917; --color-brown-light: #4d4942; --color-brown-dark: #1a1917; --color-brown-muted: #4d4942;
+  --color-sky-ink: #1a1917; --color-sky-ink-strong: #1a1917; --color-orange: #1a1917;
 }
 .sl-head { padding-bottom: 20px; box-shadow: inset 0 -1px 0 var(--line); }
 .sl-head .sp-h1 { font-size: clamp(2.2rem, 10.4vw, 3.2rem); }
@@ -44,5 +44,5 @@
 .sl-toc ol { list-style: none; margin: 0; padding: 0; columns: 2 220px; column-gap: 24px; }
 .sl-toc li { break-inside: avoid; box-shadow: inset 0 -1px 0 var(--line); }
 .sl-toc a { display: flex; align-items: center; min-height: 44px; padding-inline: 4px; color: var(--ink); font: 600 1rem/1.35 var(--ui); text-decoration: none; }
-@media (hover: hover) and (pointer: fine) { .sl-toc a:hover { background: rgba(27, 29, 33, 0.05); } }
+@media (hover: hover) and (pointer: fine) { .sl-toc a:hover { background: rgba(26, 25, 23, 0.05); } }
 .sl-body section > h2 { scroll-margin-top: calc(var(--head) + 16px); }

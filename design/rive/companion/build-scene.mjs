@@ -39,9 +39,9 @@ const PALETTES = {
   // base with an ink-alpha edge instead of aluminium (the CSS laptop skin in shot-base.css), and
   // no red: the error dot is ink (the form's alert carries the meaning)
   shot: {
-    ink: '1B1D21', words: '4A4F57', logoA: '1B1D21', logoB: '00248A', ui: 'ECEEF1', hair: '241B1D21',
-    edge: '4A4F57', lid: '1B1D21', screen: 'FFFFFF', cam: '4A4F57', notch: 'ECEEF1', err: '1B1D21',
-    base: 'FFFFFF', baseEdge: '241B1D21',
+    ink: '1A1917', words: '4D4942', logoA: '1A1917', logoB: '00248A', ui: 'EDE7DA', hair: '241A1917',
+    edge: '4D4942', lid: '1A1917', screen: 'FFFFFF', cam: '4D4942', notch: 'EDE7DA', err: '1A1917',
+    base: 'FFFFFF', baseEdge: '241A1917',
   },
 }
 const COL = PALETTES[PALETTE]

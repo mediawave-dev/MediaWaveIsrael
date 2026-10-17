@@ -7,7 +7,7 @@ export const HERO = {
   line1: 'אתר שמביא',
   line2: 'פניות לוואטסאפ',
   /** [קופי: נתי] replaces "עם גישה אישית וליווי צמוד" (slop-scan flagged both) */
-  sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
+  sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
   /** [קופי: נתי] the primary key opens WhatsApp (critic M1 F1: the H1 promises WhatsApp) */
   cta: 'כתבו לנו בוואטסאפ',
   /** the form, now a quiet text link (keeps track cta_click hero_contact) */

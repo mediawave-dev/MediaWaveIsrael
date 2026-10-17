@@ -37,10 +37,10 @@ const KM = {
 // site); the film's slot and the card icons read as the table (the poster still sits on the slot);
 // the cursor is ink with a paper edge; the mark in deep Klein (D86).
 const SHOT = {
-  screen: '00FFFFFF', frame: '1B1D21', frameLine: '1B1D21', addr: '4A4F57', dot: '4A4F57', addrInk: 'ECEEF1',
-  pageDark: 'ECEEF1', page: 'FFFFFF', wireFill: '331B1D21', wireLine: '4A4F57',
-  ink: '1B1D21', ink2: '4A4F57', mute: '591B1D21', line: '241B1D21', klein: '1B1D21', kleinTint: 'ECEEF1',
-  white: 'FFFFFF', logoA: '1B1D21', logoB: '00248A', rule: '241B1D21', cursorFill: '1B1D21', cursorLine: 'FFFFFF',
+  screen: '00FFFFFF', frame: '1A1917', frameLine: '1A1917', addr: '4D4942', dot: '4D4942', addrInk: 'EDE7DA',
+  pageDark: 'EDE7DA', page: 'FFFFFF', wireFill: '331A1917', wireLine: '4D4942',
+  ink: '1A1917', ink2: '4D4942', mute: '591A1917', line: '241A1917', klein: '1A1917', kleinTint: 'EDE7DA',
+  white: 'FFFFFF', logoA: '1A1917', logoB: '00248A', rule: '241A1917', cursorFill: '1A1917', cursorLine: 'FFFFFF',
 }
 const pi = process.argv.indexOf('--palette')
 const PALETTE = pi >= 0 ? process.argv[pi + 1] : 'km'

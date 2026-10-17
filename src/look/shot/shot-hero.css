@@ -60,7 +60,7 @@ html[data-look="shot"].consent-pending .shot-hero { --hero-reserve: var(--strip-
 /* a short contact shadow on the desk and the paper under the lens (static) */
 .shot-hero__lens::before {
   content: ""; position: absolute; z-index: -1; inset: 10% -3% -7% -3%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(27, 29, 33, 0.18), rgba(27, 29, 33, 0.07) 72%, transparent);
+  background: radial-gradient(closest-side, rgba(26, 25, 23, 0.18), rgba(26, 25, 23, 0.07) 72%, transparent);
   pointer-events: none;
 }
 
@@ -228,3 +228,15 @@ html.text-scaled .shot-desk { display: none; }
 /* 44px even in the overview pose (scale 0.88 on phones, 0.74 from 1100px) */
 .shot-hero__links .shot-link { min-height: 50px; }
 @media (min-width: 1100px) { .shot-hero__links .shot-link { min-height: 60px; } }
+/* the two links hold one row down to 320 (the second one sat under the cookie strip at 320x568) */
+@media (max-width: 359px) {
+  .shot-hero__links { gap: 0; }
+  html[data-look="shot"] .shot-hero__links .shot-link { padding-inline: 2px; font-size: 0.9rem; }
+}
+/* the hero's actions read at 16px or more in the overview pose too (it scales the sheet to about
+   0.94 on phones and 0.79 from 1100px): the key and the two links are set larger to compensate */
+html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 19px; }
+@media (min-width: 1100px) {
+  html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 22px; }
+  html[data-look="shot"] .shot-hero__links .shot-link { font-size: 1.15rem; }
+}

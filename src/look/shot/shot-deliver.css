@@ -89,7 +89,7 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 }
 .shot-mini > * { flex: none; }
 .shot-mini i { display: block; }
-.shot-mini__sheet { box-sizing: border-box; width: 94cqw; background: var(--paper); border-radius: 0.6cqw; box-shadow: 0 0.4cqw 1.2cqw -0.6cqw rgba(27, 29, 33, 0.45); }
+.shot-mini__sheet { box-sizing: border-box; width: 94cqw; background: var(--paper); border-radius: 0.6cqw; box-shadow: 0 0.4cqw 1.2cqw -0.6cqw rgba(26, 25, 23, 0.45); }
 .shot-mini__bar { height: 3cqw; border-radius: 0.6cqw; background: var(--ink); margin-inline: auto; }
 
 /* hero: the lens on the sheet's top edge (a third of it on the table), H1 bars, the CTA */
@@ -136,11 +136,11 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 /* process: the ink line down the inline-start side and four sheets beside it */
 .shot-mini__steps { position: relative; width: 94cqw; box-sizing: border-box; padding-inline-start: 12cqw; display: grid; gap: 1.2cqw; }
 .shot-mini__line { position: absolute; top: 0; bottom: 0; inset-inline-start: 5cqw; width: 0.8cqw; background: var(--ink); }
-.shot-mini__step { height: 2.6cqw; width: 66cqw; background: var(--paper); border-radius: 0.4cqw; box-shadow: 0 0.3cqw 0.8cqw -0.4cqw rgba(27, 29, 33, 0.45); }
+.shot-mini__step { height: 2.6cqw; width: 66cqw; background: var(--paper); border-radius: 0.4cqw; box-shadow: 0 0.3cqw 0.8cqw -0.4cqw rgba(26, 25, 23, 0.45); }
 
 /* the pad: a binding band and ruled lines */
 .shot-mini__pad { padding: 0 4cqw 1.6cqw; }
-.shot-mini__pad::before { content: ""; display: block; height: 2.6cqw; margin: 0 -4cqw 0.4cqw; background: rgba(27, 29, 33, 0.14); border-radius: 0.6cqw 0.6cqw 0 0; }
+.shot-mini__pad::before { content: ""; display: block; height: 2.6cqw; margin: 0 -4cqw 0.4cqw; background: rgba(26, 25, 23, 0.14); border-radius: 0.6cqw 0.6cqw 0 0; }
 .shot-mini__pad > i { height: 2.4cqw; box-shadow: inset 0 -1px 0 var(--line); }
 
 /* 'מתחילים?' on the table: one ink bar */
@@ -149,7 +149,7 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 /* the card: its art band and two rows */
 .shot-mini__card { display: grid; justify-items: center; gap: 1.2cqw; padding: 2cqw 6cqw 2.2cqw; }
 .shot-mini__card-face { width: 7cqw; height: 7cqw; border-radius: 50%; box-sizing: border-box; border: 1cqw solid var(--ink); }
-.shot-mini__card-row { width: 100%; height: 1.6cqw; border-radius: 0.4cqw; background: rgba(27, 29, 33, 0.14); }
+.shot-mini__card-row { width: 100%; height: 1.6cqw; border-radius: 0.4cqw; background: rgba(26, 25, 23, 0.14); }
 
 /* the letter (the match target): the small laptop a third above its top edge, fields, send */
 .shot-mini__letter { --pal: 22cqw; position: relative; display: grid; gap: 1.2cqw; margin-top: calc(var(--pal) * 0.6452 / 3); padding: calc(var(--pal) * 0.6452 * 2 / 3 + 2cqw) 6cqw 3cqw; }

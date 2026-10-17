@@ -161,39 +161,39 @@ html[data-look="km"]:not(.motion-ready) [data-theme] { background: var(--ground)
 
 /* shot · one shot (DECISIONS #81-#84): Nati's desk. One ground from top to bottom (the grey table),
    white paper for every surface, ink for text and buttons, one face (Noto Sans Hebrew). No theme
-   layers, no flips. Contrast (computed): ink on the table 14.5:1, ink-2 #4A4F57 on the table 7.1:1, on paper 8.2:1. */
+   layers, no flips. Contrast (computed): ink on the table 14.5:1, ink-2 #4D4942 on the table 7.1:1, on paper 8.2:1. */
 html[data-look="shot"] {
   --head: 56px;
-  --table: #eceef1;
+  --table: #ede7da;
   --paper: #ffffff;
   --ground: var(--table);
-  --ink: #1b1d21;
-  --ink-2: #4a4f57;
-  --line: rgba(27, 29, 33, 0.14);       /* hairlines are ink at an alpha (D81), never a new grey */
-  --line-ui: rgba(27, 29, 33, 0.62);    /* field borders: 4.8:1 on paper, 4.0:1 on the table (WCAG 1.4.11) */
-  --btn-bg: #1b1d21;
+  --ink: #1a1917;
+  --ink-2: #4d4942;
+  --line: rgba(26, 25, 23, 0.14);       /* hairlines are ink at an alpha (D81), never a new grey */
+  --line-ui: rgba(26, 25, 23, 0.62);    /* field borders: 4.8:1 on paper, 4.0:1 on the table (WCAG 1.4.11) */
+  --btn-bg: #1a1917;
   --btn-fg: #ffffff;
-  --lens: #eceef1;
+  --lens: #ede7da;
   --err: var(--ink);                    /* [לבירור: נתי] red #b3261e only if Nati rules for it; the error is never colour-only */
   --display: "MW Noto", "MW Noto Fallback", sans-serif;
   --display-w: 800;
   --text: "MW Noto", "MW Noto Fallback", sans-serif;
   --ui: "MW Noto", "MW Noto Fallback", sans-serif;
   --ui-w: 700;
-  --focus-ring: #1b1d21;
+  --focus-ring: #1a1917;
   /* Horizon in deep Klein (DECISIONS #86, Nati 15.10): ink above the wave, a half-step darker
      Klein below ("Wave" 11.2:1 on the table). The page's only colour stays in the logo. */
-  --logo-a: #1b1d21;
+  --logo-a: #1a1917;
   --logo-b: #00248a;
-  --logo-tag: #4a4f57;
-  --paper-shadow: 0 1px 0 rgba(27, 29, 33, 0.05), 0 18px 30px -22px rgba(27, 29, 33, 0.45);
+  --logo-tag: #4d4942;
+  --paper-shadow: 0 1px 0 rgba(26, 25, 23, 0.05), 0 18px 30px -22px rgba(26, 25, 23, 0.45);
   /* The old site's objects (Things, the laptop) keep their shapes on the desk, in ink with white
      faces instead of Klein: D81 locks the palette to grey, white and ink. */
-  --obj: #1b1d21;
-  --obj-2: #4a4f57;
-  --obj-shadow: rgba(27, 29, 33, 0.35);
+  --obj: #1a1917;
+  --obj-2: #4d4942;
+  --obj-shadow: rgba(26, 25, 23, 0.35);
   --face: #ffffff;
-  --void-2: #eceef1;                    /* the reels and wells read as the table */
+  --void-2: #ede7da;                    /* the reels and wells read as the table */
   --field-line: var(--line-ui);         /* kept as an alias: #6b717b was a new grey (D81) */
   /* layout: the table's side margin, the dock and the cookie strip at the near edge. --safe-b is
      the only source of the bottom band's height (storyboard rule 7); it never changes when the

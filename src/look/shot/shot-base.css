@@ -99,7 +99,7 @@ html[data-look="shot"] .is-scrubbing { will-change: transform; }
   display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding-inline: 10px;
   color: var(--ink); font: 700 1rem/1.2 var(--ui); text-decoration: none; border-radius: 2px;
 }
-@media (hover: hover) and (pointer: fine) { .shot-link:hover { color: var(--ink); background: rgba(27, 29, 33, 0.06); text-decoration: none; } }
+@media (hover: hover) and (pointer: fine) { .shot-link:hover { color: var(--ink); background: rgba(26, 25, 23, 0.06); text-decoration: none; } }
 
 /* focus (SPEC 1.15): a 3px ink ring. :where keeps it at the lowest weight, so IrisButton keeps its 4px. */
 html[data-look="shot"] :where(:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
@@ -218,7 +218,7 @@ html[data-look="shot"] .mw-foot__col h2 { font: 700 1rem/1.4 var(--ui); }
 html[data-look="shot"] .mw-foot__col ul { gap: 0; }
 html[data-look="shot"] .mw-foot a { padding-inline: 10px; border-radius: 2px; font-size: 1rem; line-height: 1.6; }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .mw-foot a:hover { color: var(--ink); text-decoration: none; background: rgba(27, 29, 33, 0.06); }
+  html[data-look="shot"] .mw-foot a:hover { color: var(--ink); text-decoration: none; background: rgba(26, 25, 23, 0.06); }
   html[data-look="shot"] .mw-foot a.mw-foot__sign:hover { background: none; }
 }
 html[data-look="shot"] .mw-foot__base { font-size: 0.9rem; line-height: 1.6; color: var(--ink-2); align-items: center; }
@@ -235,7 +235,7 @@ html[data-look="shot"] body.mw-consent-open .mw-foot__bottom { padding-bottom: c
 .shot-lap .lap__screen { background: var(--paper); }
 .shot-lap .lap__cam { background: var(--ink-2); }
 .shot-lap .lap__base { background: var(--paper); box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow); }
-.shot-lap .lap__notch { background: rgba(27, 29, 33, 0.08); }
+.shot-lap .lap__notch { background: rgba(26, 25, 23, 0.08); }
 /* closed, seen from above (the hero's overview), the pose the build hold starts from: the top
    tilted toward the viewer, so the folded lid shows its outer side (+55 was a camera under the
    table, which saw the lid's inner side) */
@@ -268,7 +268,7 @@ html[data-look="shot"] .mw-consent__no { flex: none; min-height: 44px; padding: 
 html[data-look="shot"] .mw-consent__ok { background: var(--ink); color: var(--paper); font: 700 1rem/1 var(--ui); }
 html[data-look="shot"] .mw-consent__no { background: none; color: var(--ink-2); font: 600 1rem/1 var(--text); }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .mw-consent__no:hover { color: var(--ink); background: rgba(27, 29, 33, 0.06); text-decoration: none; }
+  html[data-look="shot"] .mw-consent__no:hover { color: var(--ink); background: rgba(26, 25, 23, 0.06); text-decoration: none; }
 }
 @media (min-width: 640px) {
   html[data-look="shot"] .mw-consent { padding: 12px 20px; }
@@ -279,24 +279,24 @@ html[data-look="shot"] .mw-consent__no { background: none; color: var(--ink-2); 
    table, paper and ink, only inside the two panels (the inner pages keep theirs). ── */
 html[data-look="shot"] #accessibility-panel,
 html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] {
-  --color-cream: #eceef1;
-  --color-cream-dark: #eceef1;
-  --color-cream-darker: rgba(27, 29, 33, 0.14);
-  --color-brown: #1b1d21;
-  --color-brown-light: #4a4f57;
-  --color-brown-dark: #1b1d21;
-  --color-brown-muted: #4a4f57;
-  --color-orange: #1b1d21;
-  --color-orange-light: #eceef1;
-  --color-orange-dark: #4a4f57;
-  --color-sky-ink: #1b1d21;
-  --color-sky-ink-strong: #1b1d21;
-  --color-terracotta: #1b1d21;
-  --color-coral: #1b1d21;
-  --color-sage: #1b1d21;
-  --color-sage-light: #eceef1;
-  --color-sage-dark: #1b1d21;
-  --focus-ring: #1b1d21;
+  --color-cream: #ede7da;
+  --color-cream-dark: #ede7da;
+  --color-cream-darker: rgba(26, 25, 23, 0.14);
+  --color-brown: #1a1917;
+  --color-brown-light: #4d4942;
+  --color-brown-dark: #1a1917;
+  --color-brown-muted: #4d4942;
+  --color-orange: #1a1917;
+  --color-orange-light: #ede7da;
+  --color-orange-dark: #4d4942;
+  --color-sky-ink: #1a1917;
+  --color-sky-ink-strong: #1a1917;
+  --color-terracotta: #1a1917;
+  --color-coral: #1a1917;
+  --color-sage: #1a1917;
+  --color-sage-light: #ede7da;
+  --color-sage-dark: #1a1917;
+  --focus-ring: #1a1917;
   font-family: var(--text);
 }
 
@@ -374,7 +374,7 @@ html[data-look="shot"] body.mw-consent-open .shot-dock {
 /* F25: refusing cookies weighs the same as accepting: two keys of one size, ink and paper */
 html[data-look="shot"] .mw-consent__no { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); font: 700 1rem/1 var(--ui); }
 /* F17: the chapter verb is a paper index tab on the table, not a numbered eyebrow with a dash */
-.shot-kicker { display: flex; width: fit-content; margin: 0 auto 16px; padding: 4px 12px 5px; gap: 8px; background: var(--paper); box-shadow: 0 1px 0 rgba(27, 29, 33, 0.06), 0 6px 10px -8px rgba(27, 29, 33, 0.4); border-radius: 2px; color: var(--ink); font: 700 0.95rem/1.4 var(--ui); }
+.shot-kicker { display: flex; width: fit-content; margin: 0 auto 16px; padding: 4px 12px 5px; gap: 8px; background: var(--paper); box-shadow: 0 1px 0 rgba(26, 25, 23, 0.06), 0 6px 10px -8px rgba(26, 25, 23, 0.4); border-radius: 2px; color: var(--ink); font: 700 0.95rem/1.4 var(--ui); }
 .shot-kicker b { color: var(--ink-2); font-weight: 600; }
 .shot-kicker b::after { content: none; }
 html[data-look="shot"] .faq__head p.shot-kicker { margin: 0 auto 16px; max-width: none; color: var(--ink); font: 700 0.95rem/1.4 var(--ui); }
@@ -426,3 +426,30 @@ html[data-look="shot"].consent-later .mw-foot__bottom { padding-bottom: calc(24p
   .shot-fb--start { min-height: 2182px; }
   .shot-fb--deliver { min-height: calc(240svh + 551px); }
 }
+
+/* ── D109 (Nati, 17.10 night): black, white and cream. Each tone is a material, never decoration:
+   cream is the desk (matte, warm, the ground of every page), white is what carries content (the
+   paper and the screens: the brightest things on the desk), black is the ink, the keys and the
+   objects, and the end credits: every page ends on black, as a film's single shot ends and the
+   credits roll (the footer). No gradients, no grain, no accent colour: the only colour is still
+   the Horizon logo's deep Klein (D86). Contrast (computed): ink #1A1917 on cream #EDE7DA 14.1:1,
+   ink-2 #4D4942 on cream 7.2:1 and on paper 9.0:1; cream on ink 14.1:1, #B8B0A0 on ink 8.1:1. ── */
+html[data-look="shot"] {
+  --cream: #ede7da;
+  --cream-2: #b8b0a0;
+  --paper-shadow: 0 0 0 1px rgba(26, 25, 23, 0.05), 0 1px 0 rgba(26, 25, 23, 0.05), 0 18px 30px -22px rgba(26, 25, 23, 0.42);
+}
+html[data-look="shot"] ::selection { background: var(--ink); color: var(--cream); }
+/* the end credits: the footer is the black after the shot, cream type, the logo in its dark-ground tones */
+html[data-look="shot"] .mw-foot {
+  --logo-a: #f4efe4; --logo-b: #6e8cff; --logo-tag: var(--cream-2);
+  background: var(--ink); color: var(--cream-2);
+}
+html[data-look="shot"] .mw-foot :is(h2, .mw-foot__line) { color: var(--cream); }
+html[data-look="shot"] .mw-foot a { color: var(--cream-2); }
+html[data-look="shot"] .mw-foot__base, html[data-look="shot"] .mw-foot__base a, html[data-look="shot"] .mw-foot__base p { color: var(--cream-2); }
+html[data-look="shot"] .mw-foot__base { box-shadow: inset 0 1px 0 rgba(237, 231, 218, 0.16); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .mw-foot a:hover { color: var(--cream); background: rgba(237, 231, 218, 0.08); }
+}
+html[data-look="shot"] .mw-foot :focus-visible { outline-color: var(--cream); }

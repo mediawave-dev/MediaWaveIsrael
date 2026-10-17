@@ -22,7 +22,7 @@
 .sp-trail li + li::before { content: "/"; content: "/" / ""; margin-inline: 2px; color: var(--ink-2); }
 .sp-trail a, .sp-trail span { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 8px; border-radius: 2px; color: var(--ink-2); text-decoration: none; }
 .sp-trail span[aria-current] { color: var(--ink); font-weight: 600; }
-@media (hover: hover) and (pointer: fine) { .sp-trail a:hover { color: var(--ink); background: rgba(27, 29, 33, 0.06); } }
+@media (hover: hover) and (pointer: fine) { .sp-trail a:hover { color: var(--ink); background: rgba(26, 25, 23, 0.06); } }
 
 /* ── paper ── */
 .sp-sheet {
@@ -86,7 +86,7 @@
 
 /* the quote slip: a narrow paper slip with perforated ends (the mask cuts the holes; the shadow is
    a drop-shadow on the wrapper, because a mask clips box-shadow) */
-.sp-slip { justify-self: center; width: min(100%, 380px); filter: drop-shadow(0 12px 16px rgba(27, 29, 33, 0.14)); }
+.sp-slip { justify-self: center; width: min(100%, 380px); filter: drop-shadow(0 12px 16px rgba(26, 25, 23, 0.14)); }
 .sp-slip__paper {
   --hole: radial-gradient(circle 5px at 50% 0, transparent 96%, var(--ink) 100%) 50% 0 / 18px 51% repeat-x,
           radial-gradient(circle 5px at 50% 100%, transparent 96%, var(--ink) 100%) 50% 100% / 18px 51% repeat-x;
@@ -94,7 +94,7 @@
   padding: 30px 22px 28px; background: var(--paper); text-align: center;
 }
 .sp-slip ul { list-style: none; margin: 16px 0 0; padding: 0; text-align: start; }
-.sp-slip li { padding: 12px 0; border-top: 1px dashed rgba(27, 29, 33, 0.32); color: var(--ink); font: 400 1rem/1.6 var(--text); }
+.sp-slip li { padding: 12px 0; border-top: 1px dashed rgba(26, 25, 23, 0.32); color: var(--ink); font: 400 1rem/1.6 var(--text); }
 .sp-slip li:last-child { font-weight: 700; }
 
 /* ── the steps on the ink line ── */
@@ -136,7 +136,7 @@ html.motion-ready .sp-step__node:not(.is-reached) { background: var(--table); co
 .sp-pad summary::-webkit-details-marker { display: none; }
 .sp-pad summary::before { content: counter(q); content: counter(q) / ""; flex: none; min-width: 1.4em; color: var(--ink-2); font: 400 0.9rem/1 var(--ui); font-variant-numeric: tabular-nums; }
 .sp-pad summary:focus-visible { outline-offset: -3px; }
-@media (hover: hover) and (pointer: fine) { .sp-pad summary:hover { background: rgba(27, 29, 33, 0.04); } }
+@media (hover: hover) and (pointer: fine) { .sp-pad summary:hover { background: rgba(26, 25, 23, 0.04); } }
 .sp-pad__sign { position: absolute; inset-inline-end: 18px; top: 50%; width: 16px; height: 16px; margin-top: -8px; }
 .sp-pad__sign::before, .sp-pad__sign::after { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: var(--ink); transition: transform 160ms var(--ease-out); }
 .sp-pad__sign::after { transform: rotate(90deg); }
@@ -161,7 +161,7 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 }
 .sp-more__name { font: 700 1rem/1.35 var(--ui); }
 @media (hover: hover) and (pointer: fine) {
-  .sp-more__link:hover { background: rgba(27, 29, 33, 0.05); }
+  .sp-more__link:hover { background: rgba(26, 25, 23, 0.05); }
   .sp-more__link:hover .thing__body { transform: translateY(-2px); }
   .sp-more__link .thing__body { transition: transform 160ms var(--ease-out); }
 }
@@ -218,7 +218,7 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-lost__desk { position: relative; display: flex; justify-content: center; margin: 40px auto 0; width: min(100% - 2 * var(--gut), 420px); }
 .sp-lost__gap {
   box-sizing: border-box; display: grid; place-items: center; width: 62%; aspect-ratio: 3 / 4;
-  border: 2px dashed rgba(27, 29, 33, 0.38); border-radius: 2px;
+  border: 2px dashed rgba(26, 25, 23, 0.38); border-radius: 2px;
 }
 .sp-lost__code { color: var(--ink-2); font: 800 clamp(2.6rem, 14vw, 4rem)/1 var(--display); font-stretch: 75%; font-variant-numeric: tabular-nums; }
 .sp-lost__loupe { position: absolute; inset-inline-start: 4%; bottom: -6%; --fs: 2.6px; }
@@ -291,3 +291,5 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-lost__more .shot-link { min-height: 44px; }
 .sp-ctas .shot-link { min-height: 48px; }
 .sp-try .shot-link { display: inline-flex; min-height: 44px; padding: 0 4px; vertical-align: middle; }
+/* the chatbot line is a plain line on the sheet, not a box inside it (a box in a sheet reads as a nested card) */
+.sp-try { box-shadow: none; padding: 4px 0 0; border-radius: 0; }
