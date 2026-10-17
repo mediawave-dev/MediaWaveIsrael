@@ -123,8 +123,8 @@ export default function ShotService() {
 
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: 'שירותים', href: '/#services' }, { label: service.title }]} />
 
-      <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title">
-        <div className="sp-hero__obj"><DeskObject id={service.id} item={item} size={ART} /></div>
+      <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title" data-dock-hide="">
+        <div className="sp-hero__obj"><DeskObject id={service.id} item={service.id === 'memory-videos' ? { ...item, image: '/videos/memory-video-poster-640.webp', lottie: undefined } : item} size={ART} /></div>
         <div className="sp-hero__copy">
           <h1 id="sp-title" className="sp-h1" data-zone="text">{service.title}</h1>
           <p className="sp-sub" data-zone="text">{service.heroSubtitle}</p>
@@ -159,7 +159,7 @@ export default function ShotService() {
 
       <div className="sp-pair">
         <Checklist title="מה מקבלים" items={service.features} />
-        {service.price && <Slip title="כמה זה עולה" lines={[...service.price, ...PRICE_COMMON]} />}
+        {service.price && <Slip title="איך נקבע המחיר" lines={[...service.price, ...PRICE_COMMON]} />}
       </div>
 
       <div className="sp-flow">

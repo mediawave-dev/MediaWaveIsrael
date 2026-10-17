@@ -23,7 +23,7 @@ export default function ShotNotFound() {
       <div className="sp-lost__copy">
         <h1 className="sp-h1" data-zone="text">העמוד הזה לא על השולחן</h1>
         <p className="sp-sub" data-zone="text">אולי הכתובת השתנתה, אולי היא נכתבה עם טעות. כל השאר כאן:</p>
-        <div className="sp-final__keys">
+        <div className="sp-final__keys" data-dock-hide="">
           <LookButton href="/" block zone="text">חזרה לדף הבית</LookButton>
           <a className="shot-link" href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" data-zone="text"
             onClick={() => track('whatsapp_click', { placement: 'not_found' })}>כתבו לנו בוואטסאפ</a>

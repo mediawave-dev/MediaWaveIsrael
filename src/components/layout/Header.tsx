@@ -143,7 +143,7 @@ export default function Header() {
 
           <nav className="mw-head__nav" aria-label="ניווט ראשי">
             {headerLinks.map((link) => (
-              <a key={link.href} href={link.href} onClick={(e) => handleNavClick(e, link.href)}>
+              <a key={link.href} href={isHomePage ? link.href : `/${link.href}`} onClick={(e) => handleNavClick(e, link.href)}>
                 {link.label}
               </a>
             ))}
@@ -224,7 +224,7 @@ export default function Header() {
               {menuLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={link.href}
+                  href={isHomePage ? link.href : `/${link.href}`}
                   aria-current={here === link.href ? 'location' : undefined}
                   onClick={(e) => {
                     handleNavClick(e, link.href)

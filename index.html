@@ -48,7 +48,7 @@
         var d = document.documentElement, shot = d.getAttribute('data-look') === 'shot';
         var full = /[?&]motion=full(&|$)/.test(location.search);
         var calm = !full && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (shot && location.pathname === '/') { try { if (!localStorage.getItem('mw_cookie_consent')) d.classList.add('consent-pending'); } catch (e) {} }
+        if (shot) { try { if (!localStorage.getItem('mw_cookie_consent')) d.classList.add(location.pathname === '/' ? 'consent-pending' : 'consent-later'); } catch (e) {} }
         if (/[?&]reduce=1(&|$)/.test(location.search)) return;
         if (shot && location.pathname === '/') {
           d.classList.add('shot-dive'); if (calm) d.classList.add('shot-dive-calm');

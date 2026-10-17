@@ -75,14 +75,16 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
     setStatus('')
     setFailure('')
     if (!isValidName(data.name)) return setErrors({ name: validationErrors.name })
-    if (!isValidEmail(data.email)) return setErrors({ email: validationErrors.email })
+    // no form endpoint: the message goes to WhatsApp, so the email is optional (an address only helps)
+    const needEmail = !!import.meta.env.VITE_CONTACT_ENDPOINT
+    if ((needEmail || data.email.trim()) && !isValidEmail(data.email)) return setErrors({ email: validationErrors.email })
     if (!isValidMessage(data.message)) return setErrors({ message: validationErrors.message })
     setErrors({})
 
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
     // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
     if (!endpoint) {
-      const wa = `היי, אני ${data.name.trim()}.\n${data.message.trim()}\n(אימייל לחזרה: ${data.email.trim()})`
+      const wa = `היי, אני ${data.name.trim()}.\n${data.message.trim()}` + (data.email.trim() ? `\n(אימייל לחזרה: ${data.email.trim()})` : '')
       track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(wa), '_blank', 'noopener')
       setStatus('ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.')
@@ -119,7 +121,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
     const id = `contact-${f}`
     const err = errors[f]
     const shared = {
-      id, name: f, value: data[f], required: true, onChange: change(f),
+      id, name: f, value: data[f], required: f !== 'email' || !!import.meta.env.VITE_CONTACT_ENDPOINT, onChange: change(f),
       'aria-invalid': err ? true : undefined, 'aria-describedby': err ? `${id}-err` : undefined, ...props,
     }
     return (
@@ -171,7 +173,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
         <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
           <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />
           {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
-          {field('email', 'אימייל', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
+          {field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {field('message', 'הודעה', {}, true)}
           {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (

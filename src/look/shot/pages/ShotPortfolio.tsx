@@ -58,7 +58,7 @@ export default function ShotPortfolio() {
       <section className="sp-sheet sp-note sp-land" aria-labelledby="sp-note-title">
         <h2 id="sp-note-title" className="sp-h2" data-zone="text">על הסרטון</h2>
         <p data-zone="text">{ex.description}</p>
-        <ul className="sp-note__tags" aria-label="מה יש בסרטון">
+        <ul className="sp-facts sp-note__facts" aria-label="מה יש בסרטון">
           {ex.tags.map((t) => <li key={t} data-zone="text">{t}</li>)}
         </ul>
       </section>

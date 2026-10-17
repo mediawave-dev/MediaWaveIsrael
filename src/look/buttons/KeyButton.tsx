@@ -74,14 +74,28 @@ const CheckGlyph = () => (
   </svg>
 )
 
+// where the key goes, printed in the legend: WhatsApp (leaves the site), down the page, or Enter
+const WaGlyph = () => (
+  <svg className="key__glyph key__glyph--wa" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+    <path d="M6 1.2a4.8 4.8 0 0 0-4.1 7.3L1.3 10.7l2.3-.6A4.8 4.8 0 1 0 6 1.2Z" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+  </svg>
+)
+const DownGlyph = () => (
+  <svg className="key__glyph" viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+    <path d="M6 1.5v8.4M2.6 6.6 6 10l3.4-3.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+type Dest = 'wa' | 'down' | 'enter'
+const destOf = (href?: string): Dest => (!href ? 'enter' : href.includes('wa.me') ? 'wa' : href.startsWith('#') || href.startsWith('/#') ? 'down' : 'enter')
+
 /** One print of the face: the label and the aria-hidden Latin legend. Stamped twice (face, render). */
-function KeyPrint({ label, tc }: { label: ReactNode; tc: RefObject<HTMLSpanElement> }) {
+function KeyPrint({ label, tc, dest = 'enter' }: { label: ReactNode; tc: RefObject<HTMLSpanElement>; dest?: Dest }) {
   return (
     <>
       <span className="key__label"><span className="key__mark" aria-hidden="true">!</span>{label}</span>
       <span className="key__legend" aria-hidden="true">
         <span className="key__led" />
-        <span className="lg-rest"><span className="lg-word">Enter</span><EnterGlyph /></span>
+        <span className="lg-rest">{dest === 'wa' ? <WaGlyph /> : dest === 'down' ? <DownGlyph /> : <><span className="lg-word">Enter</span><EnterGlyph /></>}</span>
         <span className="lg-run"><span className="key__tc" ref={tc}>00:00:00</span></span>
         <span className="lg-done"><CheckGlyph /></span>
       </span>
@@ -108,9 +122,9 @@ export function KeyButton({ tone, className = '', ...props }: KeyButtonProps) {
           <span className="key__shadow" aria-hidden="true" />
           <span className="key__skirt" aria-hidden="true" />
           <span className="key__cap">
-            <KeyPrint label={label} tc={faceTc} />
+            <KeyPrint label={label} tc={faceTc} dest={destOf(props.href)} />
             <span className="key__render" aria-hidden="true">
-              <KeyPrint label={label} tc={renderTc} />
+              <KeyPrint label={label} tc={renderTc} dest={destOf(props.href)} />
             </span>
           </span>
         </>

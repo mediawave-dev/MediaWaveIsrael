@@ -202,3 +202,6 @@ html[data-look="shot"] .ct__ways li.ct__way--wa a { background: var(--ink); padd
 html[data-look="shot"] .ct__ways li.ct__way--wa a span { color: rgba(255, 255, 255, 0.82); }
 html[data-look="shot"] .ct__ways li.ct__way--wa a b { color: var(--paper); }
 @media (hover: hover) and (pointer: fine) { html[data-look="shot"] .ct__ways li.ct__way--wa a:hover { background: #2a2d33; } }
+
+/* the WhatsApp row's hover stays in the palette (ink-2) */
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .ct__ways li.ct__way--wa a:hover { background: var(--ink-2); } }

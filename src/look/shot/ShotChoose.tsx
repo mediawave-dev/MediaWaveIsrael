@@ -157,14 +157,13 @@ export default function ShotChoose() {
   return (
     <section ref={ref} id="services" className="shot-choose" data-chapter="choose" data-dossier="W04 W13 W14" aria-labelledby="services-title">
       <header className="shot-table-head">
-        <p className="shot-kicker" data-zone="text"><b>02</b>בוחרים</p>
         <h2 id="services-title" data-zone="text">מה אנחנו עושים</h2>
       </header>
       <ul className="shot-tools">
         {ITEMS.map((it, i) => <Tool key={it.id} it={it} i={i} eye={eye} />)}
       </ul>
       <div className="shot-choose__price">
-        <Slip title="כמה זה עולה" lines={PRICE_HOME} />
+        <Slip title="איך נקבע המחיר" lines={PRICE_HOME} />
       </div>
       <div className="shot-choose__cta">
         <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'services' })}>ספרו לנו מה צריך</LookButton>

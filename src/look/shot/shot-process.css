@@ -113,3 +113,6 @@ html.disable-animations .shot-step__paper > h3 { transition: none; }
 
 /* critic M1 F12: one headline: the line is the H2 now */
 .shot-process__head > h2.shot-process__h { max-width: 16ch; margin-inline: auto; }
+
+/* the process line is a sub under the heading, at body size (one headline per screen) */
+.shot-process .shot-process__sub { margin: 12px auto 0; max-width: 30ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); text-align: center; }

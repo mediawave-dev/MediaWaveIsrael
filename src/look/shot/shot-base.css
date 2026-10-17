@@ -392,3 +392,37 @@ html[data-look="shot"].motion-calm .hold[data-hold="pullback"] { --hold-h: 140sv
 @media (max-width: 1099px) { html[data-look="shot"]:not(.motion-calm) .hold[data-hold="build"] { --hold-h: 240svh; } }
 .shot-fb--build { min-height: calc(240svh + 1991px); }
 @media (min-width: 1100px) { .shot-fb--build { min-height: calc(350svh + 1850px); } }
+
+/* ── impeccable critique and gates (2026-10-17 night) ── */
+/* a key's label never wraps (A: "כתבו לנו / בוואטסאפ" in the desktop overview) */
+html[data-look="shot"] .key__label { white-space: nowrap; }
+/* the header key's label at the 16px floor */
+html[data-look="shot"] .key[data-size="sm"] { --k-fs: 16px; }
+/* the accessibility button is a 44px square */
+html[data-look="shot"] .mw-head__a11y { width: 44px; }
+/* the WhatsApp glyph in a key's legend */
+html[data-look="shot"] .key__glyph--wa { width: 12px; height: 12px; }
+/* phones (D108): the dive, the build and the pull-back keep less scroll (A: 17.8 screens on a phone) */
+@media (max-width: 1099px) {
+  html[data-look="shot"]:not(.motion-calm) .hold[data-hold="dive"] { --hold-h: 150svh; }
+  html[data-look="shot"]:not(.motion-calm) .hold[data-hold="build"] { --hold-h: 190svh; }
+  html[data-look="shot"]:not(.motion-calm) .hold[data-hold="pullback"] { --hold-h: 150svh; }
+}
+/* inner pages before a cookie choice: the footer base clears the strip that comes at the first scroll */
+html[data-look="shot"].consent-later .mw-foot__bottom { padding-bottom: calc(24px + var(--strip-h) + var(--dock-h) + env(safe-area-inset-bottom, 0px)); }
+/* the hero's two quiet links fit one row on the narrowest phones */
+@media (max-width: 359px) { html[data-look="shot"] .shot-hero__links .shot-link { padding-inline: 6px; font-size: 0.95rem; } }
+
+/* Suspense fallbacks re-measured 2026-10-17 night (390x844, 1440x900) after the shorter phone holds */
+.shot-fb--meet { min-height: 1301px; }
+.shot-fb--choose { min-height: 3374px; }
+.shot-fb--build { min-height: calc(190svh + 1936px); }
+.shot-fb--start { min-height: 2626px; }
+.shot-fb--deliver { min-height: calc(150svh + 247px); }
+@media (min-width: 1100px) {
+  .shot-fb--meet { min-height: 1310px; }
+  .shot-fb--choose { min-height: 2003px; }
+  .shot-fb--build { min-height: calc(350svh + 1719px); }
+  .shot-fb--start { min-height: 2182px; }
+  .shot-fb--deliver { min-height: calc(240svh + 551px); }
+}

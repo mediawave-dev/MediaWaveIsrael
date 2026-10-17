@@ -42,7 +42,6 @@ export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) 
         <div className="faq__head">
           {kicker}
           <h2 id="faq-title" data-zone="text">שאלות נפוצות</h2>
-          <p data-zone="text">מה ששואלים אותנו לפני שמתחילים</p>
         </div>
         <ul className="faq__list">
           {faqs.map((item, i) => {

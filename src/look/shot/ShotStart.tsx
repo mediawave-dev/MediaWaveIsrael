@@ -117,7 +117,6 @@ export default function ShotStart() {
       <Faq
         chapter="start"
         dossier="W01"
-        kicker={<p className="shot-kicker" data-zone="text"><b>04</b>שואלים</p>}
         decor={<i className="shot-line shot-line--margin" aria-hidden="true" data-zone="art"><i className="shot-line__fill" /></i>}
       />
       <div className="shot-bw" data-chapter="start" data-zone="art">

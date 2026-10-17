@@ -270,3 +270,24 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
 .sp-lost__loupe { inset-inline-start: auto; inset-inline-end: 2%; bottom: 4%; }
 /* a closed question's answer takes no box at all (some engines still report its line boxes) */
 .sp-pad details:not([open]) > p { display: none; }
+
+/* ── impeccable critique, gates and overlap (2026-10-17 night) ── */
+/* text printed on the table keeps 20px from the edge on phones (B: 12px gutter) */
+.sp { --sp-gut: max(var(--gut), 20px); }
+.sp-steps__track, .sp-time { width: min(100% - 2 * var(--sp-gut), 560px); }
+.sp-final, .sp-head, .sp-work__head, .sp-lost__copy, .sp-lost__more, .sp-trail { width: min(100% - 2 * var(--sp-gut), 720px); }
+.sp-trail { width: min(100% - 2 * var(--sp-gut), 1160px); }
+/* the chatbot page's try line never forces the sheet wider than the phone (gates) */
+.sp-prose { grid-template-columns: minmax(0, 1fr); }
+.sp-try .shot-link { display: inline; min-height: 0; padding: 0; }
+@media (min-width: 1100px) { .sp-prose { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* at the page end on wide screens, the strip of other services has left the screen before the
+   footer fills it (never half under the header) */
+@media (min-width: 768px) { .sp { padding-bottom: max(72px, calc(100svh - 700px)); } }
+/* the portfolio's facts */
+.sp-note__facts { margin: 18px 0 0; max-width: none; }
+/* the 404's links keep 24px targets apart on desktop */
+.sp-lost__more ul { gap: 8px 12px; }
+.sp-lost__more .shot-link { min-height: 44px; }
+.sp-ctas .shot-link { min-height: 48px; }
+.sp-try .shot-link { display: inline-flex; min-height: 44px; padding: 0 4px; vertical-align: middle; }

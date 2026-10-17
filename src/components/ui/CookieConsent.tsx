@@ -16,7 +16,7 @@ export default function CookieConsent() {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
     const stored = localStorage.getItem(CONSENT_KEY)
     if (stored === 'accepted' || stored === 'rejected') {
-      document.documentElement.classList.remove('consent-pending')
+      document.documentElement.classList.remove('consent-pending', 'consent-later')
       setStatus(stored)
     } else {
       // Show banner after short delay. Inner pages (the shot, D102): not over the first screen a

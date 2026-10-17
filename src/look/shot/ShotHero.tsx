@@ -162,7 +162,7 @@ export default function ShotHero() {
                     lines together, about 33k px² at 390). As two block spans each line was its own
                     candidate (22k) and the lens poster (25k) won the LCP (measured on the build). */}
                 <h1 id="hero-title" className="shot-hero__title" data-zone="text">
-                  {HERO.line1}<br />{HERO.line2}
+                  {HERO.line1}{' '}<br />{HERO.line2}
                 </h1>
                 <p className="shot-hero__sub" data-zone="text">{HERO.sub}</p>
                 <div className="shot-hero__ctas" data-dock-hide="">
