@@ -1,0 +1,2 @@
+# shell scripts run under Git Bash: keep LF on checkout
+*.sh text eol=lf
