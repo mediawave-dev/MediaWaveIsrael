@@ -29,45 +29,38 @@ fast (Lighthouse desktop >= 95, mobile >= 70) and read effortlessly in Hebrew.
 
 ## Brand Personality
 
-"מעבדת הגלים" (The Wave Lab): precise, alive, coastal-cool. Three words:
-**crafted, honest, flowing**. The interface should evoke calm confidence -
-water in motion, never chaos. Professional but warm; Hebrew-native, zero
-corporate stiffness, zero hype. Motion is part of the brand voice (living
-waves between sections, kinetic hero), not decoration.
+Updated 2026-10-17 (the "one shot" redesign, DECISIONS D81-D108). One developer's desk: a grey
+table, white paper, ink. Three words: **direct, crafted, honest**. The page is one camera move over
+that desk, and every inner page is the same desk, quieter. Hebrew-native, zero agency talk, zero
+hype; the copy says what the client gets (design/copy/CHANGELOG.rtl.md, research/04-hebrew-copy.md).
 
 ## Anti-references
 
-- **AI slop**: uniform fade-in-on-scroll everywhere, purple/violet gradients,
-  glassmorphism-by-default, hero-metric templates, identical icon-card grids.
-- **The site's own past**: the warm watercolor palette (orange #F5A623 /
-  cream / terracotta) is HISTORICAL. Never restore it; legacy token NAMES
-  still carry it (--color-orange = sky #7DD3FC now).
-- Royal-blue corporate look (#0055AA-style); navy is allowed only as a dark
-  *surface*, never as an accent.
-- Static underlined links scattered through UI ("קו מתחת לכל מילה").
-- Magnetic/displacing hover gimmicks that move elements toward neighbors.
-- Invented social proof: fake client counts, fake testimonials, unlabeled
-  demo material. Honesty is a hard line.
+- **AI slop**: uniform fade-in-on-scroll, purple gradients, glass, hero-metric templates, identical
+  icon-card grids, numbered eyebrows over every section.
+- **Agency clichés** in copy: מקצועי, חכם, מותאם אישית, פתרונות דיגיטליים, 24/7, promises of rankings
+  or leads.
+- **The site's own past looks** (watercolor, sky, KM launch night): history, never restored.
+- Static underlined UI links; magnetic or displacing hovers.
+- Invented social proof: client counts, testimonials, prices or awards that do not exist.
 
 ## Design Principles
 
-1. **The site is the portfolio.** Every interaction is a live demo of
-   capability; if it would not impress a prospective client, cut it.
-2. **Readability is sacred.** WCAG AA contrast everywhere (axe-core gate =
-   0 violations); pastel sky is a fill, sky-ink (#0369A1) is the text voice.
-3. **One accent, one easing.** The sky family (#7DD3FC..#075985) is the only
-   accent; EASE_BRAND cubic-bezier(0.16,1,0.3,1) is the only signature curve.
-4. **Honest by default.** Only verifiable numbers and real assets; demos are
-   labeled as demos ("הדגמה"); forms hand off to WhatsApp transparently.
-5. **Motion is brand, never a barrier.** Ambient brand motion never freezes
-   (waves/marquee/micro-loops); OS reduced-motion slows it, the on-site
-   accessibility switch kills it completely, and hovers stay contained.
+1. **The site is the portfolio.** The laptop on the desk builds this very site; the claim is shown.
+2. **Phone first, intuitive first.** WhatsApp is reachable on every screen of a first visit; one
+   verb per destination; every inner page answers what, how, how the price is set, and who answers.
+3. **One ground, one ink.** Table #ECEEF1, paper #FFFFFF, ink #1B1D21 and ink-2 #4A4F57; the only
+   colour lives in the Horizon logo and the owner's 13 Lotties (D81, D86).
+4. **Honest by default.** Facts trace to the Terms and the FAQ; demos are labelled; forms say they
+   open WhatsApp.
+5. **Motion is the camera, never a barrier.** Scrubbed by scroll, a CALM version for OS reduced
+   motion with shorter holds, nothing under the accessibility stop switch, contained hovers.
 
 ## Accessibility & Inclusion
 
-WCAG 2.1 AA target, enforced by an axe-core contrast gate across all 7 pages
+WCAG 2.2 AA target, enforced by axe-core (0 violations) across all 12 routes at 390 and 1440
 plus widget/high-contrast/chat/mobile-menu states. On-site accessibility
-widget (text scale at the root, high-contrast palette in the sky family,
+widget (text scale at the root, high-contrast palette in ink and paper,
 full animation kill-switch); settings intentionally do NOT persist between
 visits. Hebrew RTL throughout: logical properties, no italic, no
 letter-spacing, headline animations split by words only (letter-splitting
