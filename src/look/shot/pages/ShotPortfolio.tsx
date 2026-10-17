@@ -38,6 +38,7 @@ export default function ShotPortfolio() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbs) }} />
       {ex.localVideoPath && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(video) }} />}
 
+      <div className="sp-top">
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: ex.serviceTitle, href: `/services/${ex.serviceSlug}` }, { label: 'דוגמה' }]} />
 
       <header className="sp-work__head">
@@ -54,6 +55,7 @@ export default function ShotPortfolio() {
           </div>
         </figure>
       )}
+      </div>
 
       <section className="sp-sheet sp-note sp-land" aria-labelledby="sp-note-title">
         <h2 id="sp-note-title" className="sp-h2" data-zone="text">על הסרטון</h2>

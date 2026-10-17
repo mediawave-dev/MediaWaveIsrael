@@ -85,6 +85,12 @@ const DownGlyph = () => (
     <path d="M6 1.5v8.4M2.6 6.6 6 10l3.4-3.4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
+/** the WhatsApp mark at label size, printed before the label of a key that opens WhatsApp */
+const WaMark = () => (
+  <svg className="key__dest" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M12 2.2a9.7 9.7 0 0 0-8.3 14.8L2.4 21.6l4.7-1.2A9.7 9.7 0 1 0 12 2.2Zm0 17.6c-1.5 0-2.9-.4-4.2-1.1l-.3-.2-2.8.7.8-2.7-.2-.3A7.9 7.9 0 1 1 12 19.8Zm4.4-5.9c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.6-.2Z" />
+  </svg>
+)
 type Dest = 'wa' | 'down' | 'enter'
 const destOf = (href?: string): Dest => (!href ? 'enter' : href.includes('wa.me') ? 'wa' : href.startsWith('#') || href.startsWith('/#') ? 'down' : 'enter')
 
@@ -92,7 +98,7 @@ const destOf = (href?: string): Dest => (!href ? 'enter' : href.includes('wa.me'
 function KeyPrint({ label, tc, dest = 'enter' }: { label: ReactNode; tc: RefObject<HTMLSpanElement>; dest?: Dest }) {
   return (
     <>
-      <span className="key__label"><span className="key__mark" aria-hidden="true">!</span>{label}</span>
+      <span className="key__label"><span className="key__mark" aria-hidden="true">!</span>{dest === 'wa' && <WaMark />}{label}</span>
       <span className="key__legend" aria-hidden="true">
         <span className="key__led" />
         <span className="lg-rest">{dest === 'wa' ? <WaGlyph /> : dest === 'down' ? <DownGlyph /> : <><span className="lg-word">Enter</span><EnterGlyph /></>}</span>

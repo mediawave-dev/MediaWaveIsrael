@@ -74,11 +74,19 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
     if (state === 'loading') return
     setStatus('')
     setFailure('')
-    if (!isValidName(data.name)) return setErrors({ name: validationErrors.name })
+    // every error at once, focus on the first (one at a time took three submits to find three)
     // no form endpoint: the message goes to WhatsApp, so the email is optional (an address only helps)
     const needEmail = !!import.meta.env.VITE_CONTACT_ENDPOINT
-    if ((needEmail || data.email.trim()) && !isValidEmail(data.email)) return setErrors({ email: validationErrors.email })
-    if (!isValidMessage(data.message)) return setErrors({ message: validationErrors.message })
+    const errs: Partial<Record<Field, string>> = {}
+    if (!isValidName(data.name)) errs.name = validationErrors.name
+    if ((needEmail || data.email.trim()) && !isValidEmail(data.email)) errs.email = validationErrors.email
+    if (!isValidMessage(data.message)) errs.message = validationErrors.message
+    const first = (['name', 'email', 'message'] as Field[]).find((f) => errs[f])
+    if (first) {
+      setErrors(errs)
+      requestAnimationFrame(() => document.getElementById(`contact-${first}`)?.focus())
+      return
+    }
     setErrors({})
 
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT

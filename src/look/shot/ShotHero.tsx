@@ -95,7 +95,6 @@ export default function ShotHero() {
       const el = root.querySelector<HTMLElement>(sel)
       if (!el || !stage) return
       const pct = () => {
-        if (window.innerWidth >= 1100) return 0
         const top = model.offsetTop + el.offsetTop
         const h = el.offsetHeight || 1
         return ((dir > 0 ? stage.clientHeight - top + 24 : -(top + h + 24)) / h) * 100

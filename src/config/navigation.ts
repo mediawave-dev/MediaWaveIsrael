@@ -14,10 +14,10 @@ export interface NavLink {
 export const navigation: NavLink[] = [
   { label: 'דף הבית', href: '#top', showInFooter: true },
   { label: 'למה לעבוד איתנו', href: '#why-us', showInHeader: true, showInMenu: true },
-  { label: 'שירותים', href: '#services', showInHeader: true, showInMenu: true, showInFooter: true },
+  { label: 'מה אנחנו עושים', href: '#services', showInHeader: true, showInMenu: true, showInFooter: true },
   { label: 'איך אנחנו עובדים', href: '#process', showInHeader: true, showInMenu: true },
   { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInMenu: true, showInFooter: true },
-  { label: 'יצירת קשר', href: '#contact', showInMenu: true, showInFooter: true },
+  { label: 'דברו איתנו', href: '#contact', showInMenu: true, showInFooter: true },
 ]
 
 export const headerLinks = navigation.filter((n) => n.showInHeader)

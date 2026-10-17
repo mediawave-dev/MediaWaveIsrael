@@ -50,7 +50,7 @@ Mobile first (D84): every rule is written for 390px, then widened. Sacred: the h
 
 ## 2. Colour (D109, D86; D81 was the grey version)
 
-Black, white and cream (Nati, 17.10.2026), each a material: cream is the desk, white is what carries content (paper, screens), black is the ink, the keys, the objects and the end credits (the footer is black: the shot ends, the credits roll).
+Black, white and cream (Nati, 17.10.2026), each a material, laid out in four bands with a hard cut between them (D110): black at the top (the header and the opening: a white sheet lit on a black desk; objects there carry a thin cream rim), cream in the middle (why us, services, the build, the steps), white for the ask (questions, the big word, the letter, the pull-back; the paper turns cream there), black at the end (the credits). Inner pages: a black opening band (the path, the hero sheet and its object), then cream, then the black footer. In words: cream is the desk, white is what carries content (paper, screens), black is the ink, the keys, the objects and the end credits (the footer is black: the shot ends, the credits roll).
 
 | Token | Value | Where |
 |---|---|---|
@@ -91,7 +91,7 @@ Holds are sticky stages, never pins. Chapters below the first view build their s
 - **Cookie strip:** a paper strip in the same band; the first paint already reserves it (`consent-pending`), so nothing moves when it arrives or leaves.
 - **Lead dialog:** a bottom sheet of paper (70svh, scrolls inside), opened by intent only (`src/utils/lead-intent.js`), never over another dialog.
 - **Desk objects:** `src/look/parts/Things.tsx` and `Laptop.tsx` in ink with white faces; the laptop's lid carries the Horizon mark in its dark-ground tones. The props' faces are drawn in ink lines (`src/look/shot/Faces.tsx`, D98).
-- **Chapter verbs (D95):** a number and a verb above each home chapter heading (01 מכירים to 06 מקבלים), `.shot-kicker`. A real sequence: the one long camera move gets places a visitor can name.
+- **Where a control goes (critique round 2):** a key that opens WhatsApp carries the WhatsApp mark before its label and a WhatsApp glyph in its legend; a key or text link that moves down the page carries a down chevron; a link to another page a forward chevron (left, in RTL). One name per chapter: the menu label is the heading (D107).
 
 ## 5b. Inner pages (D90, D91, D92)
 

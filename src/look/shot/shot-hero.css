@@ -240,3 +240,8 @@ html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 19px; }
   html[data-look="shot"] .shot-hero__ctas .key { --k-fs: 22px; }
   html[data-look="shot"] .shot-hero__links .shot-link { font-size: 1.15rem; }
 }
+/* 320-359px: the two links narrow on Noto's width axis (no chevrons) so they hold one row above the strip */
+@media (max-width: 359px) {
+  html[data-look="shot"] .shot-hero__links .shot-link { font-stretch: 82%; padding-inline: 2px; }
+  html[data-look="shot"] .shot-hero__links .shot-link::after { content: none; }
+}

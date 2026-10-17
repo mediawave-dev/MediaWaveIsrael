@@ -121,6 +121,7 @@ export default function ShotService() {
       <SEO title={service.metaTitle} description={service.metaDescription} canonical={`/services/${service.slug}`} />
       {schema.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
 
+      <div className="sp-top">
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: 'שירותים', href: '/#services' }, { label: service.title }]} />
 
       <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title" data-dock-hide="">
@@ -139,6 +140,7 @@ export default function ShotService() {
           </div>
         </div>
       </article>
+      </div>
 
       <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`}>
         {service.sections.map((s) => (

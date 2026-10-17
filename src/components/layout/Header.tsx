@@ -63,6 +63,10 @@ export default function Header() {
     if (!isHomePage) {
       navigate('/')
       setTimeout(go, 100)
+    } else if (isMobileMenuOpen) {
+      // the sheet locks the page: close it, let the lock go (an effect on the next commit), then scroll
+      setIsMobileMenuOpen(false)
+      setTimeout(() => requestAnimationFrame(go), 60)
     } else go()
   }
 

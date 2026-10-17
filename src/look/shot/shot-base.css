@@ -453,3 +453,67 @@ html[data-look="shot"] .mw-foot__base { box-shadow: inset 0 1px 0 rgba(237, 231,
   html[data-look="shot"] .mw-foot a:hover { color: var(--cream); background: rgba(237, 231, 218, 0.08); }
 }
 html[data-look="shot"] .mw-foot :focus-visible { outline-color: var(--cream); }
+
+/* ── critique round 2 (2026-10-17 night) ── */
+/* the WhatsApp mark at label size, before the label (the key says it leaves the site) */
+html[data-look="shot"] .key__dest { width: 1.05em; height: 1.05em; margin-inline-end: 0.4em; vertical-align: -0.16em; flex: none; }
+/* a text link says where it goes: an ink chevron down for the page's own anchors, forward
+   (left, in RTL) for another page. No underline (the taste rule); contained, nothing moves. */
+html[data-look="shot"] .shot-link::after {
+  content: ""; flex: none; width: 0.42em; height: 0.42em; margin-inline-start: 0.45em;
+  border-inline-start: 2px solid currentColor; border-block-end: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-0.12em);
+}
+html[data-look="shot"] .shot-link[href^="#"]::after, html[data-look="shot"] .shot-link[href^="/#"]::after { transform: rotate(-45deg) translate(0.06em, -0.12em); }
+html[data-look="shot"] button.shot-link::after, html[data-look="shot"] .shot-label__go::after { content: none; }
+html[data-look="shot"] .shot-tool__label .shot-label__go::after { content: ""; border: 0; transform: none; width: auto; height: auto; margin: 0; }
+html[data-look="shot"] .shot-link[dir="ltr"]::after, html[data-look="shot"] .shot-link[href^="tel:"]::after, html[data-look="shot"] .shot-link[href*="wa.me"]::after { content: none; }
+/* P2: the cookie strip in one row on phones (text beside two equal keys), so a first visit gives
+   less of the screen to chrome */
+@media (max-width: 639px) {
+  html[data-look="shot"] { --strip-h: 76px; }
+  html[data-look="shot"] .mw-consent__text + div { flex-direction: row; gap: 6px; }
+  html[data-look="shot"] .mw-consent__ok, html[data-look="shot"] .mw-consent__no { padding: 0 12px; min-width: 64px; }
+}
+/* "לפרטים" keeps its forward chevron on ::before (its ::after is the label's stretched link) */
+html[data-look="shot"] .shot-tool__label .shot-label__go::before {
+  content: ""; order: 2; flex: none; width: 0.42em; height: 0.42em; margin-inline-start: 0.45em;
+  border-inline-start: 2px solid currentColor; border-block-end: 2px solid currentColor; transform: rotate(45deg) translateY(-0.12em);
+}
+
+/* ── D110 (Nati, 17.10 night): the bands. Black at the top (the header and the opening: a white sheet
+   lit on a black desk), cream in the middle (the desk in daylight: why us, services, the build, the
+   steps), white for the ask (questions, "מתחילים?", the letter and the pull-back into the phone, where
+   the paper turns cream so a notepad and a letter still read as paper), black at the end (the
+   credits). A band changes on a hard cut at a chapter's edge, never mid-text, never a crossfade. ── */
+html[data-look="shot"] { background: var(--ink); } /* the overscroll above the header and below the credits */
+html[data-look="shot"] body { background: var(--table); }
+
+/* the header is the black band's top edge on every page */
+html[data-look="shot"] .mw-head {
+  --logo-a: #f4efe4; --logo-b: #6e8cff; --logo-tag: var(--cream-2);
+  background: var(--ink); color: var(--cream); box-shadow: none;
+}
+html[data-look="shot"] .mw-head__nav a { color: var(--cream-2); }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-head__nav a:hover { color: var(--cream); } }
+html[data-look="shot"] .mw-head__nav a[aria-current] { color: var(--cream); }
+html[data-look="shot"] :is(.mw-head__a11y, .mw-head__burger) { color: var(--cream); }
+html[data-look="shot"] .mw-head__burger i { background: currentColor; }
+html[data-look="shot"] .mw-head :focus-visible { outline-color: var(--cream); }
+
+/* the home opening: the dive happens over a black desk */
+html[data-look="shot"] .shot-hero { background: var(--ink); }
+/* objects that lie on black keep their ink bodies and gain a thin cream rim, so they read as lit
+   objects on a dark desk (the faces stay white) */
+html[data-look="shot"] :is(.shot-hero, .sp-top) .thing__body { box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.62), 0 2.6em 4em -1.8em rgba(0, 0, 0, 0.6); }
+html[data-look="shot"] .shot-hero .shot-lap .lap__lid { box-shadow: inset 0 0 0 1.5px rgba(237, 231, 218, 0.62); }
+html[data-look="shot"] .shot-hero .shot-lap .lap__base { box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.4); }
+/* the lens's rim over the black desk */
+html[data-look="shot"] .shot-hero__lens::after { content: ""; position: absolute; inset: -1px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.5); pointer-events: none; z-index: 2; }
+html[data-look="shot"] .shot-hero .shot-desk__sheet { box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.08), 0 18px 30px -20px rgba(0, 0, 0, 0.7); }
+
+/* the ask, on white: questions, the big word, the letter, the pull-back */
+html[data-look="shot"] :is(#faq, .shot-bw, #contact, .shot-deliver) { --paper: #ede7da; background: #ffffff; }
+html[data-look="shot"] #contact :is(input, textarea) { background: #ffffff; }
+/* the WhatsApp mark sits on the label's line, before the words */
+html[data-look="shot"] .key__label:has(.key__dest) { display: flex; align-items: center; }
