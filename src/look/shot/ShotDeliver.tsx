@@ -83,7 +83,7 @@ export default function ShotDeliver() {
           offers the one action. The dock steps aside over it. */}
       <div className="shot-end" data-dock-hide="">
         <p className="shot-kicker" data-zone="text"><b>06</b>מקבלים</p>
-        <h2 id="end-title" className="shot-end__line" data-zone="text">את האתר הזה בנינו כאן. את שלכם נבנה באותה דרך.</h2>
+        <h2 id="end-title" className="shot-end__line" data-zone="text">את האתר הזה בנה המפתח שיבנה גם את שלכם.</h2>
         <div className="shot-end__key">
           <LookButton href={getWhatsAppUrl('היי, ראיתי את האתר ואשמח לשמוע על אתר לעסק שלי.')} target="_blank" rel="noopener noreferrer" block zone="text"
             onClick={() => track('whatsapp_click', { placement: 'finale' })}>כתבו לנו בוואטסאפ</LookButton>

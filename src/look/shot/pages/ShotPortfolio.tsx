@@ -41,7 +41,7 @@ export default function ShotPortfolio() {
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: ex.serviceTitle, href: `/services/${ex.serviceSlug}` }, { label: 'דוגמה' }]} />
 
       <header className="sp-work__head">
-        <p className="sp-kicker" data-zone="text">דוגמה אמיתית מעבודה ללקוח</p>
+        <p className="sp-kicker" data-zone="text">דוגמה אמיתית</p>
         <h1 className="sp-h1" data-zone="text">{ex.title}</h1>
         <p className="sp-sub" data-zone="text">{ex.subtitle}</p>
       </header>
@@ -68,8 +68,8 @@ export default function ShotPortfolio() {
         <p className="sp-final__line" data-zone="text">שולחים תמונות בוואטסאפ, ומקבלים סרטון לאירוע. עונים תוך 24 שעות בימי עסקים.</p>
         <div className="sp-final__keys" data-dock-hide="">
           <WaKey text={wa} placement="portfolio" />
-          <a className="shot-link" href="/#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'portfolio' })}>או השאירו הודעה בטופס</a>
-          <a className="shot-link" href={`/services/${ex.serviceSlug}`} data-zone="text">איך זה עובד ומה זה עולה</a>
+          <a className="shot-link" href="/#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'portfolio' })}>או ספרו לנו בטופס</a>
+          <a className="shot-link" href={`/services/${ex.serviceSlug}`} data-zone="text">איך זה עובד ואיך נקבע המחיר</a>
         </div>
       </section>
     </div>

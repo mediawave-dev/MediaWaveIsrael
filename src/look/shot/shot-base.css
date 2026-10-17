@@ -348,7 +348,7 @@ html[data-look="shot"] .mw-head { view-transition-name: mw-head; }
 /* ── the chapter verbs (critic #10; research 02 Methods 3, 8): a number and a verb above each
    chapter heading, so the one long camera move has places a visitor can name. A sequence, so the
    numbers are honest. No letter-spacing, no caps (Hebrew has none). ── */
-.shot-kicker { display: flex; align-items: baseline; justify-content: center; gap: 10px; margin: 0 0 10px; color: var(--ink-2); font: 700 0.95rem/1.4 var(--ui); }
+.shot-kicker { display: flex; align-items: baseline; justify-content: center; gap: 10px; margin: 0 0 16px; color: var(--ink-2); font: 700 0.95rem/1.4 var(--ui); }
 .shot-kicker b { color: var(--ink); font: 800 0.95rem/1.4 var(--ui); font-variant-numeric: tabular-nums; }
 .shot-kicker b::after { content: ""; display: inline-block; width: 18px; height: 2px; margin-inline-start: 10px; vertical-align: 0.3em; background: var(--ink); }
 

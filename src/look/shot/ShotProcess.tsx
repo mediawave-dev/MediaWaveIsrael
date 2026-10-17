@@ -85,7 +85,7 @@ export default function ShotProcess() {
           })}
         </ol>
         <div className="shot-process__cta">
-          <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'process' })}>כתבו לנו</LookButton>
+          <LookButton href="#contact" block zone="text" onClick={() => track('cta_click', { placement: 'process' })}>ספרו לנו על העסק</LookButton>
         </div>
       </div>
     </div>

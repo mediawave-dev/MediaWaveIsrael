@@ -167,3 +167,6 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
 .shot-end__line { margin: 0; color: var(--ink); font: 800 var(--shot-big)/1.1 var(--display); font-stretch: 75%; text-wrap: balance; }
 .shot-end__key { width: min(100%, 366px); margin: 24px auto 0; }
 @media (min-width: 1100px) { .shot-end { padding-top: 56px; } }
+/* from 768 the end card stands alone on the table before the sign-off, like a title card before the
+   credits: at the very end of the page it has left the screen, never half under the header */
+@media (min-width: 768px) { .shot-end { padding-bottom: max(96px, 32svh); } }

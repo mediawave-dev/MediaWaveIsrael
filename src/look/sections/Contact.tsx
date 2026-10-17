@@ -155,7 +155,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
               </li>
               <li>
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span>וואטסאפ</span><b>כתבו לנו</b>
+                  <span>וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
                 </a>
               </li>
               <li>
@@ -180,7 +180,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
               <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
             </p>
           )}
-          <LookButton type="submit" block state={state} live zone="text">שליחת הודעה</LookButton>
+          <LookButton type="submit" block state={state} live zone="text">{import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'}</LookButton>
         </form>
       </div>
     </section>

@@ -110,3 +110,20 @@ Report: design/audit/impeccable/AUDIT.rtl.md (14/20 before the fixes). Evidence:
 - [ ] Critic #11, desktop: the overview at 0.64 renders the sub and the CTA small; a larger pose needs the bottom props re-placed with an exit (as below 1100px).
 - [ ] Critic #6 (the self-building site reads as a template), #7 (no ink spine through meet and choose), #8 (blank faces on some props), #12 (every paper surface is the same card): design work, for Nati.
 - [ ] FAQ answers are centred (D61); a 4-line centred paragraph reads worse than start-aligned: Nati.
+
+## SOTD round (2026-10-16/17): research, copy, inner pages, the sheet that becomes the page
+
+Brief: `.context/SOTD-SESSION-PROMPT.md`. Research: `design/research/SYNTHESIS.md`. Plan: `design/CONTENT-PLAN.md`. Copy log: `design/copy/CHANGELOG.rtl.md`. Decisions D90-D100 (DECISIONS.rtl.md).
+
+### Done
+- [x] Research dossier: 01 conversion, 02 Awwwards, 03 Israeli market, 04 Hebrew copy (+ the second session's live mobile walkthrough), SYNTHESIS ranked per page (2026-10-17)
+- [x] Inner pages in the shot system (D90): src/look/shot/pages (ShotService, ShotPortfolio, ShotLegal + Terms/Privacy/Accessibility, ShotNotFound), registered by registry.shot.ts `pages`; Layout drops the legacy remap when a look has pages; legal text extracted unchanged into TermsBody/PrivacyBody/AccessibilityBody
+- [x] D91 cross-document view transitions (vt.ts, shot-base.css): verified in Chrome 145 (pagereveal.viewTransition = true on home label -> /services/landing-pages)
+- [x] Copy rewrite (46 home/chrome lines + services.ts + faqs.ts), changelog generated
+- [x] Home: chapter verbs (D95), build caption + end card (D96), desktop pose 0.74 (D97), desk faces (D98), FAQ start-aligned (D93), H1 12.6vw so "פניות לוואטסאפ" holds one line 320-430 (measured)
+- [x] Commit 5995687 (wave 1)
+
+### Open
+- [ ] Overlap audit home 5 widths, inner pages; gates; motion-audit CLS; Lighthouse; impeccable audit + critique; critic M1 fixes; SOTD review; deploy
+- [ ] Copy critic findings (design/audit/copy-critic.md)
+- [ ] For Nati: his photo; client sites for the portfolio; "from" prices; Terms 9.1 cancellation fee vs the consumer cap; logo work still offered?; video turnaround time

@@ -10,6 +10,7 @@
    heading segment and the steps' line (shot-process.css) share it, so the line is one stroke. */
 
 .shot-build {
+  --cap-h: 132px; /* the caption band: four lines at 320, three at 390 */
   --line-x: calc(var(--gut) + 14px);
   /* on a phone the laptop is the screen's width and a little more (the base bleeds past the edges,
      a close-up): its screen is about 370px, so the site that builds on it reads (critic: 343px
@@ -40,9 +41,10 @@
   perspective: 1100px;
 }
 html.motion-ready .shot-build__stage {
-  --lap-bottom: calc((100% - var(--safe-b)) / 2 + var(--lap-h) / 2);
+  /* the caption reserves --cap-h at the top; the laptop centres in what is left above the dock line */
+  --lap-bottom: calc(var(--cap-h) + (100% - var(--safe-b) - var(--cap-h)) / 2 + var(--lap-h) / 2);
   justify-content: center;
-  padding-block: 0 var(--safe-b);
+  padding-block: var(--cap-h) var(--safe-b);
 }
 
 /* the camera: it turns around the laptop (orbit). preserve-3d so the laptop's own tilt is seen
@@ -114,3 +116,5 @@ html.disable-animations .shot-build .kh__slot-still { transition: none; }
 }
 html.motion-ready .shot-build__cap { position: absolute; top: 18px; left: 0; right: 0; margin: 0 auto; }
 @media (min-width: 1100px) { .shot-build__cap { width: min(100% - 2 * var(--gut), 64ch); font-size: 1.05rem; } }
+@media (min-width: 768px) { .shot-build { --cap-h: 104px; } }
+@media (min-width: 1100px) { .shot-build { --cap-h: 76px; } }

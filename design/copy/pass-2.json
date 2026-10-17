@@ -1,0 +1,350 @@
+[
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "title: 'שימצאו אתכם, גם בחיפושי AI'",
+  "newS": "title: 'אתר שגם צ׳אטבוט יכול לקרוא'",
+  "why": "critic #1 (P0): the title promised a place in AI answers"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "line: 'יש מי שמחפש בגוגל ויש מי ששואל צ׳אטבוט. בונים את האתר כך ששניהם יבינו מה אתם עושים.' }",
+  "newS": "line: 'יש מי שמחפש בגוגל ויש מי ששואל צ׳אטבוט. הטקסט באתר בנוי כך ששניהם יכולים לקרוא אותו.' }",
+  "why": "critic #1: says what is built, not what others will do"
+ },
+ {
+  "file": "src/data/faqs.ts",
+  "oldS": "answer: 'אם יש לכם, עובדים איתם. אם אין, עוזרים לכתוב ולבחור תמונות.' }",
+  "newS": "answer: 'אם יש לכם, עובדים איתם. אם אין, אפשר לעזור בכתיבה ובבחירת תמונות, בתשלום נוסף.' }",
+  "why": "critic #2 (P0): Terms 4.3, writing help costs extra"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'תבנית נבנתה בשביל כולם, ולכן היא נראית כמו כולם. אתר שנבנה מאפס נראה כמו העסק שלכם, נפתח מהר כי אין בו תוספים מיותרים, ואף אחד לא צריך לרדוף אחרי עדכוני אבטחה.',",
+  "newS": "'תבנית נבנתה בשביל כולם, ולכן היא נראית כמו כולם. אתר שנבנה מאפס נראה כמו העסק שלכם, ונפתח מהר כי אין בו שום דבר מיותר.',",
+  "why": "critic #3 (P0): contradicted the maintenance package (Terms 7.3); \"תוספים\" is jargon"
+ },
+ {
+  "file": "src/look/shot/pages/ShotPortfolio.tsx",
+  "oldS": "<p className=\"sp-kicker\" data-zone=\"text\">דוגמה אמיתית מעבודה ללקוח</p>",
+  "newS": "<p className=\"sp-kicker\" data-zone=\"text\">דוגמה אמיתית</p>",
+  "why": "critic #4 (P0): \"ללקוח\" implied a paying client with no source [לבירור: נתי]"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "landing: 'דף אחד שהופך גולש לפנייה בוואטסאפ.',",
+  "newS": "landing: 'דף אחד עם הצעה אחת, שמוביל ישר לוואטסאפ.',",
+  "why": "critic #6: promised conversion; \"גולש\" is agency talk"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "shortDescription: 'דף אחד שהופך גולש לפנייה בוואטסאפ.',",
+  "newS": "shortDescription: 'דף אחד עם הצעה אחת, שמוביל ישר לוואטסאפ.',",
+  "why": "critic #6"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "heroSubtitle: 'אתר שנבנה מאפס בשביל העסק שלכם, ומביא פניות ישר לוואטסאפ.',",
+  "newS": "heroSubtitle: 'אתר שנבנה מאפס בשביל העסק שלכם, וכל פנייה ממנו מגיעה ישר לוואטסאפ.',",
+  "why": "critic #7: say where enquiries go, not that they will come"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'בניית אתר לעסק, מאפס ובלי תבנית: נראה טוב בטלפון, נפתח מהר ומביא פניות לוואטסאפ. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות, והאתר שלכם.',",
+  "newS": "'בניית אתר לעסק, מאפס ובלי תבנית, עם כל פנייה ישר לוואטסאפ. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות, והוא שלכם אחרי התשלום.',",
+  "why": "critic #7: a triad and a lead promise in the meta"
+ },
+ {
+  "file": "src/look/sections/Faq.tsx",
+  "oldS": "<p data-zone=\"text\">כמה זה עולה, כמה זמן זה לוקח ומה קורה אחר כך</p>",
+  "newS": "<p data-zone=\"text\">מה ששואלים אותנו לפני שמתחילים</p>",
+  "why": "critic #11: a rhythmic triad"
+ },
+ {
+  "file": "src/data/faqs.ts",
+  "oldS": "answer: 'עיצוב, בנייה, שנה של אחסון ודומיין, אבטחה, הופעה בגוגל והדרכה. הכל בפנים.' }",
+  "newS": "answer: 'עיצוב, בנייה, הדרכה, ושנה ראשונה של אחסון ודומיין עם גיבויים. כתיבת תוכן וקידום חודשי הם בתשלום נפרד.' }",
+  "why": "critic #12: \"הכל בפנים\" overclaimed next to the content help that costs extra"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'לא, ואף אחד לא יכול. מה שאנחנו כן מתחייבים אליו: עבודה שקופה, ודוח חודשי שמראה מה השתנה.',",
+  "newS": "'לא, ואף אחד לא יכול. מה שכן: כל חודש מקבלים דוח על מה עבדנו ומה השתנה.',",
+  "why": "critic #13: translationese, \"עבודה שקופה\" is agency talk"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'אף אחד לא יכול להבטיח מקום ראשון בגוגל. מה שכן: עבודה שקופה, ודוח חודשי שמראה מה השתנה.',",
+  "newS": "'אף אחד לא יכול להבטיח מקום ראשון בגוגל, וגם אנחנו לא מבטיחים.',",
+  "why": "critic #13: the same clause twice on one page"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "heading: 'הבינה המלאכותית מזיזה. הסיפור נבחר ביד',",
+  "newS": "heading: 'את הסיפור בוחרים אנחנו',",
+  "why": "critic #14: a calque (\"נבחר ביד\") and a verb with no object"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'איזו תמונה, באיזה סדר ועל איזה שיר: את זה בוחרים בעצמנו, תמונה אחרי תמונה. ככה יוצא סרטון של המשפחה שלכם, ולא מצגת.',",
+  "newS": "'הבינה המלאכותית מזיזה את התמונות. איזו תמונה באה אחרי איזו, ועל איזה שיר, את זה בוחרים בעצמנו, תמונה אחרי תמונה.',",
+  "why": "critic #14: \"X, ולא Y\" is banned; a triad"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'שולחים את מה שצילמתם, בטלפון או במצלמה. מקבלים סרטון גמור: חיתוכים, מוזיקה, כתוביות ומעברים. לאירוע, לעסק או למשפחה.',",
+  "newS": "'שולחים את מה שצילמתם, בטלפון או במצלמה, ומקבלים סרטון גמור עם חיתוכים, מוזיקה, כתוביות ומעברים, לאירוע משפחתי או לעסק.',",
+  "why": "critic #15: a rhythmic triad at the end"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'לקוחות שואלים את אותן שאלות: שעות, מחירים, איך מגיעים. הבוט עונה עליהן מיד, אוסף שם וטלפון ממי שמתעניין, ושולח אליכם את מה שצריך אדם.',",
+  "newS": "'לקוחות שואלים את אותן שאלות: שעות, מחירים, איך מגיעים. הבוט עונה עליהן מיד. מה שרק אתם יכולים לענות עליו, הוא מעביר אליכם עם שם וטלפון.',",
+  "why": "critic #16: a triad of verbs, an ambiguous phrase"
+ },
+ {
+  "file": "src/data/portfolio-examples.ts",
+  "oldS": "tags: ['הנפשת AI', 'מוזיקה מותאמת', 'כתוביות אישיות', 'אירוע משפחתי'],",
+  "newS": "tags: ['כל תמונה זזה', 'מוזיקה שנבחרה לסרטון', 'כיתוב לכל תקופה', 'אירוע משפחתי'],",
+  "why": "critic #17: Latin \"AI\", filler from the \"מותאם אישית\" family"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "tags: ['מוכן תוך 5 עד 7 ימי עבודה', 'כפתור וואטסאפ עם הודעה מוכנה', 'המחיר כולל מע״מ'],",
+  "newS": "tags: ['מוכן תוך 5 עד 7 ימי עבודה', 'כפתור וואטסאפ עם הודעה מוכנה', 'כותבים את הטקסט יחד'],",
+  "why": "critic #18: the VAT line twice on the page"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "tags: ['בוט בסיסי תוך שבוע', 'באתר, בוואטסאפ ובפייסבוק', 'המחיר כולל מע״מ'],",
+  "newS": "tags: ['בוט בסיסי תוך שבוע', 'עונה גם בלילה', 'באתר, בוואטסאפ, בפייסבוק ובאינסטגרם'],",
+  "why": "critic #18, #33: a duplicate VAT line; one channel list"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "tags: ['קובץ MP4 לכל מכשיר', 'עד שני סבבי תיקונים', 'המחיר כולל מע״מ'],",
+  "newS": "tags: ['קובץ MP4 לכל מכשיר', 'עד שני סבבי תיקונים', 'המרת קלטות VHS לקובץ'],",
+  "why": "critic #18"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "{ title: 'שולחים תמונות', line: '15 עד 30 תמונות לסרטון של 2 עד 3 דקות.' },",
+  "newS": "{ title: 'שולחים תמונות', line: 'תמונות מהאלבום או מהטלפון, בקישור או בוואטסאפ.' },",
+  "why": "critic #19: the same sentence as the FAQ"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "heading: 'איך זה עובד',\n        content:\n          'שולחים תמונות, ישנות או חדשות,",
+  "newS": "heading: 'מה קורה לתמונות',\n        content:\n          'שולחים תמונות, ישנות או חדשות,",
+  "why": "critic #20: \"איך זה עובד\" twice as a heading on one page"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "tags: ['דוח כל חודש', 'בלי הבטחות למקום ראשון', 'כולל הפרופיל בגוגל מפות'],",
+  "newS": "tags: ['דוח כל חודש', 'בלי הבטחות למקום ראשון', 'גם הפרופיל שלכם בגוגל מפות'],",
+  "why": "critic #21: a broken definite object"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "<p className=\"why__lead\" data-zone=\"text\">מה מקבלים כשעובדים איתנו</p>",
+  "newS": "<p className=\"why__lead\" data-zone=\"text\">מה מקבלים, בקצרה</p>",
+  "why": "critic #22: repeated the heading's \"איתנו\""
+ },
+ {
+  "file": "src/look/shot/ShotMeet.tsx",
+  "oldS": "<p data-zone=\"text\">מה מקבלים כשעובדים איתנו</p>",
+  "newS": "<p data-zone=\"text\">מה מקבלים, בקצרה</p>",
+  "why": "critic #22"
+ },
+ {
+  "file": "src/look/sections/WhyUs.tsx",
+  "oldS": "line: 'נפתח מהר בטלפון ובמחשב, בלי לחכות.' }",
+  "newS": "line: 'נפתח מהר, גם בטלפון.' }",
+  "why": "critic #23: \"מהר\" and \"בלי לחכות\" said the same thing"
+ },
+ {
+  "file": "src/look/data.ts",
+  "oldS": "seo: 'עבודה חודשית כדי שימצאו אתכם בגוגל.',",
+  "newS": "seo: 'עבודה חודשית על האתר, ודוח שמראה מה השתנה.',",
+  "why": "critic #24: the card promised more than its own page"
+ },
+ {
+  "file": "src/data/faqs.ts",
+  "oldS": "answer: 'כן. כל אתר נבנה כך שגוגל מוצא אותו ומציג אותו. רוצים לטפס גבוה יותר? יש קידום חודשי נפרד.' }",
+  "newS": "answer: 'כן. כל אתר נבנה כך שגוגל יכול למצוא אותו ולהבין מה יש בו. רוצים לטפס גבוה יותר? יש קידום חודשי נפרד.' }",
+  "why": "critic #25: whether Google shows a page is Google's decision"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'בנוי כך שגוגל ימצא ויציג אותו',",
+  "newS": "'בנוי כך שגוגל יכול למצוא אותו',",
+  "why": "critic #25"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "      {\n        question: 'כמה זמן זה לוקח?',\n        answer:\n          'אתר בסיסי 2 עד 3 שבועות, אתר גדול יותר 4 עד 6. כשהטקסטים והתמונות מוכנים מראש, זה מהיר יותר.',\n      },",
+  "newS": "      {\n        question: 'מה יכול לעכב?',\n        answer:\n          'בעיקר חומרים ואישורים. כשהטקסטים והתמונות מוכנים, ועל כל גרסה עונים תוך 7 ימי עסקים, לוח הזמנים נשמר.',\n      },",
+  "why": "critic #26: the FAQ repeated the time line; Terms 6.2 and 4.3 give a new fact"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "      {\n        question: 'כמה זמן זה לוקח?',\n        answer:\n          'דף רגיל מוכן תוך 5 עד 7 ימי עבודה. דף עם אנימציות מיוחדות לוקח עד שבועיים.',\n      },\n",
+  "newS": "(הוסר)",
+  "why": "critic #26: the FAQ repeated the time line"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "      {\n        question: 'כמה זמן זה לוקח?',\n        answer:\n          'בוט בסיסי מוכן תוך שבוע. בוט שמתחבר למערכות שלכם מוכן תוך 2 עד 3 שבועות.',\n      },\n",
+  "newS": "(הוסר)",
+  "why": "critic #26: the FAQ repeated the time line"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "    time: 'תוצאות ראשונות בדרך כלל אחרי 2 עד 3 חודשים, ותוצאות של ממש אחרי 4 עד 6.',\n",
+  "newS": "(הוסר)",
+  "why": "critic #26: the time line repeated the first FAQ"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'אתר שנראה טוב בטלפון ובמחשב, כפתור וואטסאפ וטופס פנייה, ואתר שגוגל מוצא. שנה ראשונה של אחסון ודומיין כלולה, ואחרי תשלום מלא העיצוב והקוד עוברים אליכם.',",
+  "newS": "'אתר שנראה טוב בטלפון ובמחשב, עם כפתור וואטסאפ וטופס פנייה, וגוגל יכול למצוא אותו.',",
+  "why": "critic #27: \"אתר... ואתר\", and ownership and hosting already appear four times on the page"
+ },
+ {
+  "file": "src/data/faqs.ts",
+  "oldS": "answer: 'עד 5 עמודים שנראים טוב בטלפון ובמחשב, כפתור וואטסאפ וטופס פנייה. מוכן תוך 2 עד 3 שבועות.' }",
+  "newS": "answer: 'עד 5 עמודים שנראים טוב בטלפון ובמחשב, עם כפתור וואטסאפ וטופס פנייה.' }",
+  "why": "critic #28: \"2 עד 3 שבועות\" three times on the home page"
+ },
+ {
+  "file": "src/data/faqs.ts",
+  "oldS": "answer: 'מלמדים אתכם לנהל את האתר, והתמיכה בחודש הראשון עלינו. בא לכם שמישהו ימשיך לשמור עליו? יש חבילת תחזוקה חודשית.' }",
+  "newS": "answer: 'מלמדים אתכם לנהל את האתר. בא לכם שמישהו ימשיך לשמור עליו? יש חבילת תחזוקה חודשית.' }",
+  "why": "critic #28: first-month support said twice on the home page"
+ },
+ {
+  "file": "src/look/shot/ShotDeliver.tsx",
+  "oldS": "את האתר הזה בנינו כאן. את שלכם נבנה באותה דרך.",
+  "newS": "את האתר הזה בנה המפתח שיבנה גם את שלכם.",
+  "why": "critic #29: \"בנינו כאן\" was vague, and \"נבנה\" read two ways"
+ },
+ {
+  "file": "src/look/shot/pages/ShotService.tsx",
+  "oldS": ">עוד דברים שעושים כאן</h2>",
+  "newS": ">עוד שירותים</h2>",
+  "why": "critic #30: a vague \"כאן\""
+ },
+ {
+  "file": "src/look/shot/pages/ShotService.tsx",
+  "oldS": "הבוט שעונה באתר הזה נבנה כאן.",
+  "newS": "את הבוט שעונה באתר הזה בנינו בעצמנו.",
+  "why": "critic #31: a vague \"כאן\", passive"
+ },
+ {
+  "file": "src/look/shot/pages/ShotPortfolio.tsx",
+  "oldS": ">איך זה עובד ומה זה עולה</a>",
+  "newS": ">איך זה עובד ואיך נקבע המחיר</a>",
+  "why": "critic #32: the page has no price, only how it is set"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'עובד באתר, בוואטסאפ ובפייסבוק',",
+  "newS": "'עובד באתר, בוואטסאפ, בפייסבוק ובאינסטגרם',",
+  "why": "critic #33: one channel list"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'כותרת שאומרת מה מקבלים, למי זה מתאים ולמה לבחור בכם. תשובות להתלבטויות שעולות לפני שכותבים לכם. וכפתור וואטסאפ שזמין מכל מקום בדף.',",
+  "newS": "'כותרת שאומרת מה מקבלים ולמי זה מתאים. תשובות לשאלות שעולות לפני שכותבים לכם. וכפתור וואטסאפ שאפשר ללחוץ עליו בכל שלב.',",
+  "why": "critic #35: a triad and a calque (\"זמין מכל מקום\")"
+ },
+ {
+  "file": "src/look/shot/pages/ShotService.tsx",
+  "oldS": "כותבים בוואטסאפ, ועונה לכם מי שעושה את העבודה. תוך 24 שעות בימי עסקים.",
+  "newS": "כותבים בוואטסאפ, ומי שעושה את העבודה עונה תוך 24 שעות בימי עסקים.",
+  "why": "critic #37: a stranded fragment"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'קידום אורגני בגוגל לעסקים קטנים: בודקים מה הלקוחות שלכם מחפשים, מסדרים את האתר, כותבים עמודים ומדווחים כל חודש. בלי הבטחות למקום ראשון, עם נתונים.',",
+  "newS": "'קידום אורגני בגוגל לעסקים קטנים: בודקים מה הלקוחות שלכם מחפשים, מסדרים את האתר, כותבים עמודים ומדווחים כל חודש עם נתונים.',",
+  "why": "critic #38: the \"בלי X, עם Y\" cadence"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "heroSubtitle: 'עבודה חודשית כדי שמי שמחפש בגוגל את מה שאתם עושים, יגיע אליכם.',",
+  "newS": "heroSubtitle: 'עבודה חודשית, כדי שמי שמחפש בגוגל את מה שאתם עושים יגיע אליכם.',",
+  "why": "critic #39: a comma between subject and verb"
+ },
+ {
+  "file": "src/data/services.ts",
+  "oldS": "'יום הולדת עגול, חתונה, פרישה או ערב משפחתי. בערב יום הולדת 60 הסרטון בדוגמה הוקרן לכל המשפחה, ואפשר לראות ממנו חלק כאן.',",
+  "newS": "'יום הולדת עגול, חתונה, פרישה או ערב משפחתי. הסרטון שמתחת הוקרן בערב יום הולדת 60.',",
+  "why": "critic #40: an embellishment (\"לכל המשפחה\") and a repeat of the caption"
+ },
+ {
+  "file": "src/components/layout/Header.tsx",
+  "oldS": "            כתבו לנו\n          </LookButton>\n\n          {/* phones",
+  "newS": "            ספרו לנו\n          </LookButton>\n\n          {/* phones",
+  "why": "critic #10: one verb for the form"
+ },
+ {
+  "file": "src/components/layout/Header.tsx",
+  "oldS": "                כתבו לנו\n              </LookButton>",
+  "newS": "                ספרו לנו\n              </LookButton>",
+  "why": "critic #10: one verb for the form"
+ },
+ {
+  "file": "src/look/shot/ShotProcess.tsx",
+  "oldS": "onClick={() => track('cta_click', { placement: 'process' })}>כתבו לנו</LookButton>",
+  "newS": "onClick={() => track('cta_click', { placement: 'process' })}>ספרו לנו על העסק</LookButton>",
+  "why": "critic #10: one verb for the form"
+ },
+ {
+  "file": "src/look/shot/pages/ShotService.tsx",
+  "oldS": ">או השאירו הודעה בטופס</a>",
+  "newS": ">או ספרו לנו בטופס</a>",
+  "why": "critic #10: one verb for the form"
+ },
+ {
+  "file": "src/look/shot/pages/ShotPortfolio.tsx",
+  "oldS": ">או השאירו הודעה בטופס</a>",
+  "newS": ">או ספרו לנו בטופס</a>",
+  "why": "critic #10: one verb for the form"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "<span>וואטסאפ</span><b>כתבו לנו</b>",
+  "newS": "<span>וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>",
+  "why": "critic #10: the WhatsApp row names WhatsApp"
+ },
+ {
+  "file": "src/data/portfolio-examples.ts",
+  "oldS": "בערב האירוע הסרטון הוקרן לכל המשפחה.",
+  "newS": "בערב האירוע הסרטון הוקרן.",
+  "why": "critic #40"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "קראתי את מדיניות הפרטיות של האתר והסכמתי לה.",
+  "newS": "קראתי את מדיניות הפרטיות (קישור לדף) של האתר והסכמתי לה.",
+  "why": "critic #5 (P0): consent to a policy the popup never linked to"
+ },
+ {
+  "file": "src/components/LeadModal.tsx",
+  "oldS": "תחזרו אליי",
+  "newS": "שליחה בוואטסאפ (כל עוד אין שרת טפסים; עם שרת: תחזרו אליי)",
+  "why": "critic #9: the button opens WhatsApp, so it says so"
+ },
+ {
+  "file": "src/look/sections/Contact.tsx",
+  "oldS": "שליחת הודעה",
+  "newS": "שליחה בוואטסאפ (כל עוד אין שרת טפסים; עם שרת: שליחת הודעה)",
+  "why": "critic #8: the button opens WhatsApp, so it says so"
+ },
+ {
+  "file": "src/data/portfolio-examples.ts",
+  "oldS": "דוגמה לסרטון זיכרונות שהוכן ליום הולדת 60. תמונות משפחתיות ישנות שהונפשו עם מוזיקה מותאמת וכיתובים אישיים.",
+  "newS": "דוגמה לסרטון זיכרונות ליום הולדת 60: תמונות משפחתיות ישנות שזזות, עם מוזיקה וכיתוב לכל תקופה.",
+  "why": "critic #17: passive, filler"
+ }
+]

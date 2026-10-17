@@ -273,7 +273,7 @@ export default function LeadModal() {
                                             }}
                                         />
                                         <label htmlFor="privacy">
-                                            קראתי את מדיניות הפרטיות של האתר והסכמתי לה.
+                                            קראתי את <a href="/privacy" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</a> של האתר והסכמתי לה.
                                         </label>
                                     </div>
                                     {fieldErrors.privacy && (
@@ -293,7 +293,7 @@ export default function LeadModal() {
                                         </p>
                                     )}
                                     <LookButton type="submit" block live state={isSubmitting ? 'loading' : errorMsg ? 'error' : 'idle'}>
-                                        תחזרו אליי
+                                        {endpoint ? 'תחזרו אליי' : 'שליחה בוואטסאפ'}
                                     </LookButton>
                                 </form>
                             </>

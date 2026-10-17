@@ -154,7 +154,7 @@ export default function Header() {
             className="mw-head__cta"
             onClick={(e) => { track('cta_click', { placement: 'header' }); handleNavClick(e as React.MouseEvent<HTMLAnchorElement>, '#contact') }}
           >
-            כתבו לנו
+            ספרו לנו
           </LookButton>
 
           {/* phones: the accessibility panel opens from here, not from a tab over the page (#63) */}
@@ -245,7 +245,7 @@ export default function Header() {
                   setIsMobileMenuOpen(false)
                 }}
               >
-                כתבו לנו
+                ספרו לנו
               </LookButton>
               <a
                 className="mw-menu__wa"

@@ -128,7 +128,7 @@ export default function ShotMeet() {
       <header className="shot-table-head">
         <p className="shot-kicker" data-zone="text"><b>01</b>מכירים</p>
         <h2 id="why-title" data-zone="text">למה לעבוד איתנו?</h2>
-        <p data-zone="text">מה מקבלים כשעובדים איתנו</p>
+        <p data-zone="text">מה מקבלים, בקצרה</p>
       </header>
       {WHY_ITEMS.map((it) => <i key={it.id} className="shot-meet__mark" aria-hidden="true" />)}
       <ul className="shot-sheet shot-meet__sheet">

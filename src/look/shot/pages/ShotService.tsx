@@ -27,6 +27,10 @@ const ART = 220
 export function usePageMotion(key: string) {
   return useScene<HTMLDivElement>((t, root) => {
     root.querySelectorAll('.sp-land').forEach((el) => land(t, el, { strength: 0.5, exit: false }))
+    // the hero sheet starts flat (it is the paper that arrived from the home page) and tips away
+    // late, once its bottom has passed the top 18%, as the home page's sheets do (rule 3)
+    const hero = root.querySelector('.sp-hero')
+    if (hero) land(t, hero, { enter: false, strength: 0.5 })
     const trackEl = root.querySelector<HTMLElement>('.sp-steps__track')
     const fill = trackEl?.querySelector<HTMLElement>('.shot-line__fill')
     if (!trackEl || !fill) return
@@ -43,7 +47,7 @@ function More({ current }: { current: string }) {
   const others = servicesData.filter((s) => s.id !== current)
   return (
     <nav className="sp-more" aria-labelledby="sp-more-title">
-      <h2 id="sp-more-title" className="sp-h2" data-zone="text">עוד דברים שעושים כאן</h2>
+      <h2 id="sp-more-title" className="sp-h2" data-zone="text">עוד שירותים</h2>
       <ul>
         {others.map((s) => {
           const item = SERVICES.find((x) => x.id === s.id)
@@ -144,7 +148,7 @@ export default function ShotService() {
         ))}
         {service.id === 'chatbots' && (
           <p className="sp-try" data-zone="text">
-            הבוט שעונה באתר הזה נבנה כאן.{' '}
+            את הבוט שעונה באתר הזה בנינו בעצמנו.{' '}
             <button type="button" className="shot-link" onClick={() => openChat('service_chatbots')}>נסו אותו עכשיו</button>
           </p>
         )}
@@ -163,10 +167,10 @@ export default function ShotService() {
 
       <section className="sp-final" aria-labelledby="sp-final-title">
         <h2 id="sp-final-title" className="sp-big" data-zone="text">{service.cta}</h2>
-        <p className="sp-final__line" data-zone="text">כותבים בוואטסאפ, ועונה לכם מי שעושה את העבודה. תוך 24 שעות בימי עסקים.</p>
+        <p className="sp-final__line" data-zone="text">כותבים בוואטסאפ, ומי שעושה את העבודה עונה תוך 24 שעות בימי עסקים.</p>
         <div className="sp-final__keys" data-dock-hide="">
           <WaKey text={wa} placement="service_page" />
-          <a className="shot-link" href="/#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'service_page' })}>או השאירו הודעה בטופס</a>
+          <a className="shot-link" href="/#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'service_page' })}>או ספרו לנו בטופס</a>
         </div>
       </section>
 
