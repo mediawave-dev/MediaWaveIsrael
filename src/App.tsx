@@ -58,9 +58,17 @@ const SectionFallback = ({ height = '50vh' }: { height?: string }) => (
 // BELOW the fold while the route chunk loads. The 50vh default put the footer
 // at mid-screen and the arriving content pushed it 4000px+ down — a measured
 // CLS of exactly 0.50 on cold route loads (footer impact 0.5 x distance 1.0).
-const PRERENDERED = typeof document !== 'undefined'
-  ? { path: window.location.pathname, html: document.getElementById('main-content')?.innerHTML ?? '' }
-  : { path: '', html: '' }
+// The prerendered <main> is reused only for the route it was painted for (the prerender stamps
+// data-route; "*" is the 404, served for any unknown path). /studio and slash-less URLs under a
+// static preview get the home shell, whose main must not stand in for another page.
+const PRERENDERED = (() => {
+  if (typeof document === 'undefined') return { path: '', html: '' }
+  const main = document.getElementById('main-content')
+  const here = window.location.pathname.replace(/\/+$/, '') || '/'
+  const route = main?.dataset.route
+  const html = main && route && (route === '*' || route === here) ? main.innerHTML : ''
+  return { path: window.location.pathname, html }
+})()
 const PageFallback = () => (PRERENDERED.html && PRERENDERED.path === window.location.pathname
   ? <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: PRERENDERED.html }} />
   : <SectionFallback height="120vh" />)

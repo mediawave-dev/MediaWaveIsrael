@@ -37,7 +37,7 @@ export default function ShotNotFound() {
         <h2 id="sp-lost-more" className="sp-h3" data-zone="text">אולי חיפשתם את אחד מאלה</h2>
         <ul>
           {servicesData.map((s) => (
-            <li key={s.id}><a className="shot-link" href={`/services/${s.slug}`} data-zone="text">{s.title}</a></li>
+            <li key={s.id}><a className="shot-link" href={`/services/${s.slug}/`} data-zone="text">{s.title}</a></li>
           ))}
         </ul>
       </nav>

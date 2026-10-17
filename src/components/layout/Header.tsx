@@ -240,7 +240,7 @@ export default function Header() {
               )).flatMap((a, i) => menuLinks[i].href !== '#services' ? [a] : [a, (
                 <ul key="svc" className="mw-menu__svc" aria-label="השירותים">
                   {servicesData.map((s) => (
-                    <li key={s.id}><a href={`/services/${s.slug}`} onClick={() => setIsMobileMenuOpen(false)}>{s.title}</a></li>
+                    <li key={s.id}><a href={`/services/${s.slug}/`} onClick={() => setIsMobileMenuOpen(false)}>{s.title}</a></li>
                   ))}
                 </ul>
               )])}

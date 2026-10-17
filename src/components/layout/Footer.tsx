@@ -106,9 +106,9 @@ export default function Footer() {
       <div className="mw-foot__bottom">
         <div className="mw-foot__base">
           <nav aria-label="מסמכים">
-            <a href="/terms" data-zone={zone} target="_blank" rel="noopener noreferrer">תקנון שימוש</a>
-            <a href="/privacy" data-zone={zone} target="_blank" rel="noopener noreferrer">מדיניות פרטיות</a>
-            <a href="/accessibility" data-zone={zone} target="_blank" rel="noopener noreferrer">הצהרת נגישות</a>
+            <a href="/terms/" data-zone={zone} target="_blank" rel="noopener noreferrer">תקנון שימוש</a>
+            <a href="/privacy/" data-zone={zone} target="_blank" rel="noopener noreferrer">מדיניות פרטיות</a>
+            <a href="/accessibility/" data-zone={zone} target="_blank" rel="noopener noreferrer">הצהרת נגישות</a>
           </nav>
           <p dir="ltr" data-zone={zone}>© {currentYear} MediaWave Israel</p>
         </div>

@@ -5,6 +5,8 @@
 // the laptop that built the site, the ink line and its four steps, the pad, the word in ink, the
 // card and, last, the letter with the small laptop at its head (.shot-mini__letter, the match
 // target pullBackMatched measures). Sized in cqw of the column, so it scales with the phone.
+// The chapters sit on the site's own bands (D110): black for the opening, cream for the desk in
+// daylight, white for the ask, where the paper turns cream.
 import { Laptop } from '../parts/Laptop'
 
 // The built site's still in the shot palette, once the generator has written it (SPEC section 3).
@@ -32,6 +34,7 @@ function Built() {
 export default function Mini() {
   return (
     <div className="shot-mini" aria-hidden="true">
+      <div className="shot-mini__band shot-mini__band--top">
       {/* hero: the lens on the sheet's top edge, the two H1 lines, the CTA */}
       <div className="shot-mini__sheet shot-mini__hero">
         <img className="shot-mini__lens" src={POSTER} alt="" loading="lazy" decoding="async" />
@@ -40,6 +43,9 @@ export default function Mini() {
         <i className="shot-mini__bar shot-mini__bar--cta" />
       </div>
 
+      </div>
+
+      <div className="shot-mini__band shot-mini__band--day">
       {/* meet: three screens on one sheet */}
       <div className="shot-mini__sheet shot-mini__meet">
         <i /><i /><i />
@@ -65,6 +71,9 @@ export default function Mini() {
         <i className="shot-mini__step" /><i className="shot-mini__step" /><i className="shot-mini__step" /><i className="shot-mini__step" />
       </div>
 
+      </div>
+
+      <div className="shot-mini__band shot-mini__band--ask">
       {/* start: the pad with its binding, the word in ink, the card */}
       <div className="shot-mini__sheet shot-mini__pad">
         <i /><i /><i />
@@ -86,6 +95,7 @@ export default function Mini() {
         <i className="shot-mini__field" />
         <i className="shot-mini__field shot-mini__field--area" />
         <i className="shot-mini__send" />
+      </div>
       </div>
     </div>
   )

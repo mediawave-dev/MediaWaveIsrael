@@ -1,6 +1,6 @@
 // shot · S9 deliver, the pull-back into one phone (SPEC S9; storyboard 16.05-18.05). All art, no
 // heading, no anchor, no data-intent (lead-intent's "end" lives on the footer). The camera layer
-// starts as close as the real letter (#contact .ct__form): the miniature letter inside the phone at
+// starts as close as the real letter (#contact .ct__form), at most 1.8x: the miniature letter inside the phone at
 // the real letter's width, the phone's screen centred in the band above the dock line
 // (pullBackMatched), then the camera pulls back until the whole site is one phone on the desk.
 // Nothing fades: the phone body and the props enter the frame from outside it.

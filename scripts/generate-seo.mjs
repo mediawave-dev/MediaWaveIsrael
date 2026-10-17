@@ -52,7 +52,7 @@ function generateSitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allPages.map((page) => `  <url>
-    <loc>${SITE_URL}${page.loc}</loc>
+    <loc>${SITE_URL}${page.loc === '/' ? '/' : `${page.loc}/`}</loc>
     <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>

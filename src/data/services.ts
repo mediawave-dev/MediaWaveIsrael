@@ -388,7 +388,7 @@ export const servicesData: ServicePageData[] = [
     metaDescription:
       'סרטון זיכרונות מתמונות ישנות מהאלבום: כל תמונה זזה, עם מוזיקה וכיתובים, להקרנה ביום הולדת, בחתונה או באירוע משפחתי. מוכן תוך 5 עד 7 ימי עבודה.',
     heroSubtitle: 'שולחים תמונות מהאלבום, ומקבלים סרטון שבו הן זזות, עם מוזיקה וכיתובים.',
-    portfolioLink: '/portfolio/memory-videos',
+    portfolioLink: '/portfolio/memory-videos/',
     imageIcon: '/animations/photo%20edit.svg',
     lottieSize: 180,
     tags: ['מוכן תוך 5 עד 7 ימי עבודה', '15 עד 30 תמונות לסרטון', 'דוגמה אמיתית מיום הולדת 60'],

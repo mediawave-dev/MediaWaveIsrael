@@ -160,20 +160,24 @@ export interface PullBackMatchedOpts {
 
 /**
  * S9, the pull-back: at progress 0 the camera is as close as the real letter's width (the miniature
- * letter at the real letter's width and centre) and looks at the middle of the phone's screen, in
+ * letter at the real letter's width and centre), capped at PULL_MAX (the jury, 17.10: from 2.8x the
+ * first screens were a blurred blow-up of a wireframe letter; at 1.8x the whole screen of the phone
+ * reads as the page just scrolled), and looks at the middle of the phone's screen, in
  * the band above the dock line; then it pulls back to scale 1, with a rotateX bump 0 → 10 → 0 (not
  * under CALM). Matching the letter's bottom to the stage's top edge (the first version) left the
  * first two screens of the hold on the phone's bezel and the bare table under it (critic and
  * audit, 16.10). No opacity anywhere. Everything is measured on refresh from the offset chain
  * (transforms ignored). Callers return before this under REDUCE and the short policy.
  */
+const PULL_MAX = 1.8
+
 export function pullBackMatched(t: MotionEngine, o: PullBackMatchedOpts) {
   const { layer, real, mini } = o
   const stage = (layer.parentElement ?? layer) as El
   let m: { s0: number; ox: number; oy: number; x0: number; y0: number } | null = null
   const get = () => {
     if (m) return m
-    const s0 = real.offsetWidth / (mini.offsetWidth || 1)
+    const s0 = Math.min(real.offsetWidth / (mini.offsetWidth || 1), PULL_MAX)
     const lx = offsetIn(layer, stage, 'offsetLeft')
     const ly = topIn(layer, stage)
     const ox = stage.clientWidth / 2 - lx

@@ -55,7 +55,7 @@ function More({ current }: { current: string }) {
           const still = s.imageIcon ?? posterFor(item?.lottie)?.src
           return (
             <li key={s.id}>
-              <a href={`/services/${s.slug}`} className="sp-more__link" {...vtMark.to(s.id)}>
+              <a href={`/services/${s.slug}/`} className="sp-more__link" {...vtMark.to(s.id)}>
                 <span className={`sp-obj sp-obj--${OBJECT[s.id]} sp-obj--small`} {...vtMark.obj(s.id)} aria-hidden="true">
                   <Thing kind={OBJECT[s.id]}>
                     {still && <span className="thing__art"><img src={still} alt="" width="120" height="120" loading="lazy" decoding="async" /></span>}
@@ -94,7 +94,7 @@ export default function ShotService() {
   if (!service) return <Navigate to="/404" replace />
 
   const item = SERVICES.find((s) => s.id === service.id)!
-  const url = `${SITE_URL}/services/${service.slug}`
+  const url = `${SITE_URL}/services/${service.slug}/`
   const wa = service.waText ?? 'היי, אשמח לשמוע פרטים.'
   const schema = [
     {

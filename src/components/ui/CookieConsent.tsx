@@ -79,7 +79,7 @@ export default function CookieConsent() {
                     running text (axe link-in-text-block fired on every page) —
                     color alone (1.49:1 vs surrounding text) is not a valid cue */}
                 <a
-                  href="/privacy"
+                  href="/privacy/"
                   className="mw-consent__link underline underline-offset-2 whitespace-nowrap"
                 >
                   מדיניות פרטיות

@@ -43,7 +43,7 @@ export const SERVICES: ShowItem[] = servicesData.map((s) => ({
   id: s.id,
   title: s.title,
   line: LINES[s.id] ?? s.heroSubtitle,
-  href: `/services/${s.slug}`,
+  href: `/services/${s.slug}/`,
   hrefLabel: `לפרטים על ${s.title}`,
   portfolio: s.portfolioLink,
   lottie: s.lottieAnimation,

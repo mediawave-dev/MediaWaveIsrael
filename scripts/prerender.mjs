@@ -201,6 +201,10 @@ async function prerender() {
     const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'
     html = html.replace('<title>', `${fontPreloadLinks(look)}<title>`)
 
+    // Stamp the route on <main>: the app reuses this markup as the first render's fallback only
+    // on the route it was painted for ("*" = the 404 page, served for any unknown path)
+    html = html.replace('<main id="main-content"', `<main id="main-content" data-route="${route === NOT_FOUND_ROUTE ? '*' : route}"`)
+
     // Write the prerendered HTML
     const outPath = route === '/'
       ? resolve(DIST, 'index.html')

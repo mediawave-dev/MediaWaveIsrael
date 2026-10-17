@@ -171,3 +171,19 @@ html .shot-deliver .shot-desk.shot-desk--end { display: block; } /* beats shot-h
    credits: at the very end of the page it has left the screen, never half under the header */
 @media (min-width: 768px) { .shot-end { padding-bottom: max(96px, 32svh); } }
 
+
+/* ── the jury (17.10): the miniature on the site's bands (D110). The column keeps its padding (its
+   cqw stay the same, so the chapters keep their size); each band bleeds to the screen's edges over
+   that padding. The opening is black (the hero sheet lit on it, the lens with a cream rim), the desk
+   cream, the ask white with the paper turned cream. ── */
+.shot-mini { padding-block: 0; justify-content: flex-start; }
+.shot-mini__band {
+  box-sizing: border-box; flex: none; align-self: stretch;
+  width: calc(100% + 3.8em); margin-inline: -1.9em; padding: 0 1.9em;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; gap: 1.2cqw;
+}
+.shot-mini__band > * { flex: none; }
+.shot-mini__band--top { background: var(--ink); padding-block: 0.8em 2.6cqw; }
+.shot-mini__band--top .shot-mini__lens { box-shadow: 0 0 0 0.9cqw var(--ink), 0 0 0 1.3cqw rgba(237, 231, 218, 0.55); }
+.shot-mini__band--day { flex: 1 1 auto; background: var(--table); padding-block: 2cqw; }
+.shot-mini__band--ask { flex: 1 1 auto; --paper: #ede7da; background: #ffffff; padding-block: 2cqw 1.2em; }

@@ -22,8 +22,8 @@ export default function ShotPortfolio() {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'ראשי', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: ex.serviceTitle, item: `${SITE_URL}/services/${ex.serviceSlug}` },
-      { '@type': 'ListItem', position: 3, name: ex.title, item: `${SITE_URL}/portfolio/${ex.slug}` },
+      { '@type': 'ListItem', position: 2, name: ex.serviceTitle, item: `${SITE_URL}/services/${ex.serviceSlug}/` },
+      { '@type': 'ListItem', position: 3, name: ex.title, item: `${SITE_URL}/portfolio/${ex.slug}/` },
     ],
   }
   const video = {
@@ -39,7 +39,7 @@ export default function ShotPortfolio() {
       {ex.localVideoPath && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(video) }} />}
 
       <div className="sp-top">
-      <Trail items={[{ label: 'דף הבית', href: '/' }, { label: ex.serviceTitle, href: `/services/${ex.serviceSlug}` }, { label: 'דוגמה' }]} />
+      <Trail items={[{ label: 'דף הבית', href: '/' }, { label: ex.serviceTitle, href: `/services/${ex.serviceSlug}/` }, { label: 'דוגמה' }]} />
 
       <header className="sp-work__head">
         <p className="sp-kicker" data-zone="text">דוגמה אמיתית</p>
@@ -71,7 +71,7 @@ export default function ShotPortfolio() {
         <div className="sp-final__keys" data-dock-hide="">
           <WaKey text={wa} placement="portfolio" />
           <a className="shot-link" href="/#contact" data-zone="text" onClick={() => track('cta_click', { placement: 'portfolio' })}>או ספרו לנו בטופס</a>
-          <a className="shot-link" href={`/services/${ex.serviceSlug}`} data-zone="text">איך זה עובד ואיך נקבע המחיר</a>
+          <a className="shot-link" href={`/services/${ex.serviceSlug}/`} data-zone="text">איך זה עובד ואיך נקבע המחיר</a>
         </div>
       </section>
     </div>

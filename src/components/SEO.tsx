@@ -32,7 +32,8 @@ export default function SEO({
   // Israel" on 7 pages (up to 82 chars, so Google truncated the tail). Append
   // only when the brand is not already the title's suffix.
   const fullTitle = title.trimEnd().endsWith(SITE_NAME) ? title.trimEnd() : `${title} | ${SITE_NAME}`
-  const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : undefined
+  // the slash form is the one Cloudflare Pages serves (/services/x answers with a 308 to /services/x/)
+  const canonicalUrl = canonical ? `${SITE_URL}${canonical === '/' || canonical.endsWith('/') ? canonical : `${canonical}/`}` : undefined
 
   return (
     <Helmet>

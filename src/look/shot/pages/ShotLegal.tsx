@@ -31,7 +31,7 @@ export default function ShotLegal({ name, description, path, updated, children }
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'ראשי', item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name, item: `${SITE_URL}${path}` },
+      { '@type': 'ListItem', position: 2, name, item: `${SITE_URL}${path}/` },
     ],
   }
   return (
