@@ -56,7 +56,7 @@ export default function Footer() {
       {signFirst && sign}
       <div className="mw-foot__in">
         <div className="mw-foot__brand">
-          <p className="mw-foot__line">אתרים וסרטונים לעסקים קטנים, ישר מהמפתח.</p>
+          <p className="mw-foot__line">אתרים וסרטונים לעסקים, ישר מהמפתח.</p>
         </div>
 
         {/* h2: the page h1 comes first, footer headings must not skip levels */}

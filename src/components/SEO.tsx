@@ -2,7 +2,8 @@ import { Helmet } from 'react-helmet-async'
 
 const SITE_URL = 'https://mediawave.co.il'
 const SITE_NAME = 'MediaWave Israel'
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`
+// versioned: the share card changed (18.10.2026) and social networks cache previews by URL
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.png?v=20261018`
 
 interface SEOProps {
   title: string
@@ -47,6 +48,8 @@ export default function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={ogImage} />
+      {ogImage === DEFAULT_IMAGE && <meta property="og:image:width" content="1200" />}
+      {ogImage === DEFAULT_IMAGE && <meta property="og:image:height" content="630" />}
       <meta property="og:image:alt" content={fullTitle} />
       <meta property="og:site_name" content={SITE_NAME} />
       <meta property="og:locale" content="he_IL" />

@@ -43,3 +43,7 @@ html[data-look="m"] .ct__field input, html[data-look="m"] .ct__field textarea { 
 @media (max-width: 860px) {
   .ct__face { width: 132px; }
 }
+
+/* the label line is a glyph (Nati, 18.10.2026): the same height as the old label, in the label's colour */
+.ct__ways a .ct__ico { display: inline-flex; align-items: center; justify-content: center; height: 1.5em; }
+.ct__ways a .ct__ico svg { display: block; width: 22px; height: 22px; }

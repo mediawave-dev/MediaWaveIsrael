@@ -7,6 +7,10 @@ import './styles/index.css'
 import './look/looks.css'
 import { stampLook } from './look/look'
 import App from './App.tsx'
+import { installStaleChunkReload } from './utils/stale-chunk'
+
+// a tab from before a deploy reloads once instead of failing on chunks that are gone
+installStaleChunkReload()
 
 // dev ?look= override (production HTML already carries data-look from the build)
 stampLook()

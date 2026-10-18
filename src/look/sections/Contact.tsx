@@ -21,6 +21,7 @@ import { SITE_CONTACT } from '../../data/site'
 import { track } from '../../utils/analytics'
 import { LOOK } from '../look'
 import './contact.css'
+import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -155,22 +156,22 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
             <ul className="ct__ways">
               <li className="ct__way--wa">
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span>וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
+                  <span className="ct__ico"><WaIcon /></span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
-                  <span>טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
+                  <span className="ct__ico"><PhoneIcon /></span><span className="sr-only">טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
-                  <span>אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
+                  <span className="ct__ico"><MailIcon /></span><span className="sr-only">אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" onClick={() => track('instagram_click', { placement: 'contact_section' })}>
-                  <span>אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
+                  <span className="ct__ico"><InstagramIcon /></span><span className="sr-only">אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
                 </a>
               </li>
             </ul>

@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react'
+import { isStaleChunkError, reloadOnStaleChunk } from '../utils/stale-chunk'
 
 interface Props {
   children: ReactNode
@@ -8,16 +9,20 @@ interface Props {
 interface State {
   hasError: boolean
   error?: Error
+  /** a chunk of the previous build is gone: the page is reloading, so nothing is drawn */
+  stale?: boolean
 }
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false }
 
   static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error }
+    return { hasError: true, error, stale: isStaleChunkError(error) }
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // after a deploy: reload once onto the new build; if that did not help, show the page below
+    if (isStaleChunkError(error) && !reloadOnStaleChunk()) this.setState({ stale: false })
     // Log error only in development
     if (import.meta.env.DEV) {
       console.error('Error caught by boundary:', error, errorInfo)
@@ -26,6 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   render() {
+    if (this.state.hasError && this.state.stale) return null
     if (this.state.hasError) {
       return this.props.fallback || (
         <div className="min-h-screen flex items-center justify-center bg-cream" dir="rtl">

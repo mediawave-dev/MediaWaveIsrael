@@ -1,7 +1,7 @@
 // shot · faces for the desk props (critic #8: some props had blank white faces). Each prop shows
 // what it is for, drawn in ink lines on its white face: the phone a small site, the bubble a reply
-// being typed, the frame a photo of a horizon, the cassette a handwritten label, the loupe a
-// magnified line of text. Decorative only (the props are aria-hidden), no text, no colour.
+// being typed, the frame a photo of a horizon, the cassette a handwritten label, the loupe its
+// glass with a glint (no letter: Nati, 18.10.2026). Decorative only (the props are aria-hidden), no text, no colour.
 import type { Kind } from '../parts/Things'
 
 const S = { fill: 'none', stroke: 'currentColor', strokeWidth: 2.2, strokeLinecap: 'round', strokeLinejoin: 'round' } as const
@@ -44,7 +44,8 @@ export function DeskFace({ kind }: { kind: Kind }) {
     case 'loupe':
       return (
         <svg className="desk-face" viewBox="0 0 40 40" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <text x="20" y="28" textAnchor="middle" fill="currentColor" fontSize="24" fontWeight="800" style={{ fontFamily: "var(--display)" }}>א</text>
+          <path {...S} strokeWidth={2.4} d="M11 20a9 9 0 0 1 9-9" opacity="0.3" />
+          <path {...S} strokeWidth={2.4} d="M11.6 25.4a9 9 0 0 1-.4-1.6" opacity="0.3" />
         </svg>
       )
     default:
