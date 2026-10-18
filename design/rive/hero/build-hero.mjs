@@ -215,11 +215,12 @@ track(cursorNode, 'opacity', [[0, 0], [128, 0, 'out'], [140, 1], [236, 1, 'soft'
 
 // ---------------------------------------------------------------- the window and the page ground
 const pageFill = nid(), winNode = nid()
-const chrome = `<Node ${attrs({ x: 0, y: 0, name: 'Window', id: winNode })}>
+let chrome = `<Node ${attrs({ x: 0, y: 0, name: 'Window', id: winNode })}>
     ${[0, 1, 2].map((i) => `<Shape ${attrs({ x: WIN.x + 36 + i * 26, y: WIN.y + WIN.bar / 2, name: `Dot ${i + 1}` })}><Ellipse width="13" height="13" name="Path"/><Fill name="Fill">${solid(C.dot)}</Fill></Shape>`).join('\n    ')}
     <Shape ${attrs({ x: 800, y: WIN.y + WIN.bar / 2, name: 'Address' })}><Rectangle ${attrs({ width: 520, height: 30, cornerRadiusTL: 15, name: 'Path' })}/><Fill name="Fill">${solid(C.addr)}</Fill></Shape>
     <Shape ${attrs({ x: 800 + 230, y: WIN.y + WIN.bar / 2, name: 'Address lock' })}><Ellipse width="10" height="10" name="Path"/><Fill name="Fill">${solid(C.addrInk)}</Fill></Shape>
     <Shape ${attrs({ x: 800 + 214, y: WIN.y + WIN.bar / 2, name: 'Address text' })}><Rectangle ${attrs({ width: 170, height: 8, originX: 1, cornerRadiusTL: 4, name: 'Path' })}/><Fill name="Fill">${solid(C.addrInk)}</Fill></Shape>
+    <!--BANDS-->
     <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: PAGE_Y + (WIN.h - WIN.bar) / 2, name: 'Page' })}><Rectangle ${attrs({ width: WIN.w, height: WIN.h - WIN.bar, linkCornerRadius: 'false', cornerRadiusTL: 0, cornerRadiusTR: 0, cornerRadiusBR: WIN.r, cornerRadiusBL: WIN.r, name: 'Path' })}/>
       <Fill name="Fill"><SolidColor colorValue="${A(C.pageDark)}" name="C" id="${pageFill}"/></Fill></Shape>
     <Shape ${attrs({ x: WIN.x + WIN.w / 2, y: WIN.y + WIN.h / 2, name: 'Frame' })}><Rectangle ${attrs({ width: WIN.w, height: WIN.h, cornerRadiusTL: WIN.r, name: 'Path' })}/>
@@ -249,11 +250,14 @@ if (BANDS) {
 <rect x="${SHEET.x}" y="${SHEET.y}" width="${SHEET.w}" height="${SHEET.h}" rx="${SHEET.r}" fill="#FFFFFF"/>`
 }
 
+// the bands are the page's ground: in the Window node, drawn over the Page fill (a node's first
+// child draws on top), so they fade in and settle with the window and never cover the opening mark
+chrome = chrome.replace('<!--BANDS-->', bandsXml)
+
 // the content rides with the window as it settles
 const site = `<Node ${attrs({ x: 0, y: 0, name: 'Site', id: nid() })}>
     ${blocks.join('\n    ')}
     ${markXml}
-    ${bandsXml}
   </Node>`
 
 // ---------------------------------------------------------------- the event and the machine

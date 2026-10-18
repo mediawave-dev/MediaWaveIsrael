@@ -11,7 +11,7 @@ import { LOGO_ART, type LogoPart } from './logo-paths'
  *   --logo-b    Wave, the drop on the i and the lower half
  *   --logo-tag  the tagline and its rules
  * Cyanotype palette (D117; was Klein #58): on dark #F4EFE4 / #79A0C5 / #B8B0A0 · on light #1A1917 / #225079 /
- * #4E5468 (src/look/looks.css, scripts/brand-palette.mjs).
+ * #4D4942 (src/look/looks.css, scripts/brand-palette.mjs).
  *
  * Brand rules: never change the geometry or the space between the mark and the name, never
  * swap the two tones, no shadow, frame or gradient. Keep clear space of half the disc's
