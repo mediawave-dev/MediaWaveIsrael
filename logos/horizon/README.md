@@ -1,4 +1,4 @@
-# MediaWave logo: "Horizon" (chosen 2026-10-13, palette "Klein" chosen the same day)
+# MediaWave logo: "Horizon" (chosen 2026-10-13; palette "Cyanotype" since 2026-10-18, before that "Klein")
 
 A disc split by a wave into two tones, the MediaWave wordmark with a drop on the i, and the tagline "Web Development". This folder is the source of truth: every file here is final, vector, and drawn once. Copy the files; never redraw, retype or trace them.
 
@@ -23,11 +23,11 @@ Each SVG paints its parts with four classes: `.a` (Media and the upper half of t
 
 | Palette | `.a` | `.b` | `.t` / `.l` | Background it is made for |
 |---|---|---|---|---|
-| dark | `#FFFFFF` | `#6E8CFF` | `#8E9CC8` (rules at 55 % opacity) | Klein night `#00113D`, or black |
-| light | `#0E1016` | `#002FA7` (International Klein Blue) | `#4E5468` (rules at 55 % opacity) | paper `#FAFAF7`, or white |
+| dark | `#F4EFE4` | `#79A0C5` | `#B8B0A0` (rules at 55 % opacity) | the black desk `#1A1917`, or any dark ground |
+| light | `#1A1917` | `#225079` (Prussian blue) | `#4D4942` (rules at 55 % opacity) | white `#FFFFFF`, or the cream desk `#EDE7DA` |
 | black / white | one colour for everything | | | print, photos |
 
-The brand's one colour is International Klein Blue `#002FA7`: buttons and accents on light grounds. On dark grounds buttons are white with Klein-blue text. The palette lives in `scripts/brand-palette.mjs`, which rewrites these files and re-renders the PNG icons from vector.
+The brand's one colour is the Cyanotype blue: Prussian blue `#225079` on light grounds and `#79A0C5` on dark ones (a cyanotype is a sheet of paper laid in the light; the site's opening is a white sheet lit on a black desk). It lives in the logo; buttons stay ink. The favicon is the mark on a dark rounded tile, so its two tones separate on any tab bar. The palette lives in `scripts/brand-palette.mjs`, which rewrites these files and re-renders the PNG icons from vector.
 
 ## Rules
 

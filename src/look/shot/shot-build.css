@@ -102,7 +102,7 @@ html.disable-animations .shot-build .kh__slot-still { transition: none; }
   position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
   backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
 }
-.shot-build .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #ffffff; --logo-b: #6e8cff; }
+.shot-build .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #f4efe4; --logo-b: #79a0c5; }
 
 /* the browser window fills the screen's width (the artboard's margin around it is cropped by the
    screen): the site reads larger on a 343px laptop. The slot keeps its place (percentages of the box). */

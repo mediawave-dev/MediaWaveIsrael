@@ -10,7 +10,7 @@ import { LOGO_ART, type LogoPart } from './logo-paths'
  *   --logo-a    Media and the upper half of the mark
  *   --logo-b    Wave, the drop on the i and the lower half
  *   --logo-tag  the tagline and its rules
- * Klein palette (#58): on dark #FFFFFF / #6E8CFF / #8E9CC8 · on light #0E1016 / #002FA7 /
+ * Cyanotype palette (D117; was Klein #58): on dark #F4EFE4 / #79A0C5 / #B8B0A0 · on light #1A1917 / #225079 /
  * #4E5468 (src/look/looks.css, scripts/brand-palette.mjs).
  *
  * Brand rules: never change the geometry or the space between the mark and the name, never

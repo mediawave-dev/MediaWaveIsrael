@@ -9,9 +9,9 @@ colors:
   line: "rgba(26, 25, 23, 0.14)"
   line-ui: "rgba(26, 25, 23, 0.62)"
   logo-a: "#1A1917"
-  logo-b: "#00248A"
+  logo-b: "#225079"
   logo-tag: "#4D4942"
-  logo-b-on-ink: "#6E8CFF"
+  logo-b-on-ink: "#79A0C5"
   face: "#FFFFFF"
 typography:
   display:
@@ -60,7 +60,7 @@ Black, white and cream (Nati, 17.10.2026), each a material, laid out in four ban
 | `--ink-2` | `#4D4942` | secondary text; 7.2:1 on cream, 9.0:1 on paper |
 | `--cream-2` | `#B8B0A0` | secondary text on the black footer; 8.1:1 |
 | `--line` / `--line-ui` | ink at 14% / 62% | hairlines / field borders (4.8:1 on paper); never a new grey |
-| `--logo-a` / `--logo-b` | `#1A1917` / `#00248A` (footer: `#F4EFE4` / `#6E8CFF`) | the Horizon logo: ink above the wave, deep Klein below. The page's only colour lives in the logo |
+| `--logo-a` / `--logo-b` | `#1A1917` / `#225079` (on black: `#F4EFE4` / `#79A0C5`) | the Horizon logo in Cyanotype (D117): ink above the wave, Prussian blue below; on the black bands cream and the same blue at a lighter strength. The page's only colour lives in the logo |
 
 Shadows are ink at an alpha (`--paper-shadow`). No gradients, glow or glass. Errors are never colour-only.
 
@@ -85,7 +85,7 @@ Holds are sticky stages, never pins. Chapters below the first view build their s
 ## 5. Components
 
 - **Buttons, "the key" (D87):** `src/look/buttons/KeyButton.tsx` on the StateButton engine: a keycap over a skirt, the Hebrew label printed on the cap, an `Enter ↵` legend; seven states (idle, hover, pressed, focus, loading, sent, error). Ink on paper and table, a paper key in the header. No line under any label.
-- **Header:** the top edge of the black band on every page (D110): the compact Horizon logo in its dark-ground tones (cream and light Klein #6E8CFF), four chapter links from 1100px, the key "ספרו לנו", the accessibility button; on phones and tablets a burger.
+- **Header:** the top edge of the black band on every page (D110): the compact Horizon logo in its dark-ground tones (cream and light Prussian blue #79A0C5), four chapter links from 1100px, the key "ספרו לנו", the accessibility button; on phones and tablets a burger.
 - **Menu sheet (D89):** a white sheet: the five chapters as a ruled index, the chapter in view marked with an ink dot, then "בואו נדבר", WhatsApp, phone, email. Escape closes, focus returns to the burger.
 - **Dock (SPEC 1.12):** two floating controls at the near edge, no bar across the bands (jury D7): WhatsApp at the inline start (thumb reach), the chat trigger at the inline end. WhatsApp is there on every first visit, above the cookie strip (D101); its message is the page's own (`data-wa`). It steps aside only over the key it would cover, #contact, the end card, the footer and any dialog. `--safe-b` reserves its band.
 - **Cookie strip:** a paper strip in the same band, one row on phones; `--strip-h` matches its measured height (76px on phones, 104px under 360px, where it stacks), and the first paint already reserves it (`consent-pending`), so nothing moves when it arrives or leaves. Inner pages show it on the first scroll or after 8 seconds (D102).

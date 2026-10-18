@@ -39,7 +39,7 @@ const PALETTES = {
   // base with an ink-alpha edge instead of aluminium (the CSS laptop skin in shot-base.css), and
   // no red: the error dot is ink (the form's alert carries the meaning)
   shot: {
-    ink: '1A1917', words: '4D4942', logoA: '1A1917', logoB: '00248A', ui: 'EDE7DA', hair: '241A1917',
+    ink: '1A1917', words: '4D4942', logoA: '1A1917', logoB: '225079', ui: 'EDE7DA', hair: '241A1917',
     edge: '4D4942', lid: '1A1917', screen: 'FFFFFF', cam: '4D4942', notch: 'EDE7DA', err: '1A1917',
     base: 'FFFFFF', baseEdge: '241A1917',
   },

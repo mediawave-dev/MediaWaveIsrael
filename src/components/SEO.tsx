@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 const SITE_URL = 'https://mediawave.co.il'
 const SITE_NAME = 'MediaWave Israel'
 // versioned: the share card changed (18.10.2026) and social networks cache previews by URL
-const DEFAULT_IMAGE = `${SITE_URL}/og-image.png?v=20261018`
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.png?v=20261018c`
 
 interface SEOProps {
   title: string

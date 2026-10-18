@@ -143,7 +143,7 @@ html.text-scaled .shot-desk { display: none; }
   position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
   backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
 }
-.shot-desk__laptop .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #ffffff; --logo-b: #6e8cff; }
+.shot-desk__laptop .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #1a1917; --logo-b: #225079; }
 /* the folded lid lies in front of the hinge, below the box it stood in: the laptop is drawn up by
    most of its box, so the lid (not the empty box above the hinge) lies where the box says */
 .shot-desk__laptop .shot-lap--closed { transform: translateY(-80%) rotateX(-55deg) rotateZ(-9deg); }

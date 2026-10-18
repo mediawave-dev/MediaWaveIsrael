@@ -15,10 +15,11 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const BRAND = resolve(ROOT, 'logos/horizon')
 
 export const PALETTE = {
-  // for dark grounds (the stage, Klein night #00113D)
-  dark: { ground: '#00113D', a: '#FFFFFF', b: '#6E8CFF', t: '#8E9CC8' },
-  // for light grounds (the void, paper #FAFAF7)
-  light: { ground: '#FAFAF7', a: '#0E1016', b: '#002FA7', t: '#4E5468' },
+  // D117 "Cyanotype" (Nati, 18.10.2026): one Prussian blue at two strengths.
+  // for dark grounds (the black desk #1A1917)
+  dark: { ground: '#1A1917', a: '#F4EFE4', b: '#79A0C5', t: '#B8B0A0' },
+  // for light grounds (white paper, the cream desk)
+  light: { ground: '#FFFFFF', a: '#1A1917', b: '#225079', t: '#4D4942' },
 }
 
 const classes = (p) => `.a{fill:${p.a}}.b{fill:${p.b}}.t{fill:${p.t}}.l{fill:none;stroke:${p.t};stroke-width:1.6;stroke-opacity:0.55}`
@@ -46,7 +47,8 @@ for (const k of ['dark', 'light']) {
 const [favA, favB] = disc('favicon.svg')
 const { dark: D, light: L } = PALETTE
 writeFileSync(resolve(BRAND, 'favicon.svg'),
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><style>.a{fill:${L.a}}.b{fill:${L.b}}@media (prefers-color-scheme:dark){.a{fill:${D.a}}.b{fill:${D.b}}}</style><path class="a" d="${favA}"/><path class="b" d="${favB}"/></svg>`)
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="${D.ground}"/><g transform="translate(4 4) scale(0.75)"><path fill="${D.a}" d="${favA}"/><path fill="${D.b}" d="${favB}"/></g></svg>`)
+void L
 console.log('  favicon.svg')
 
 // 3. rasters, rendered from vector at high density then downsampled (never recoloured pixels)

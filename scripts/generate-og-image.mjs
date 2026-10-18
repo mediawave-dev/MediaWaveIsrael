@@ -1,7 +1,7 @@
 /**
  * The social share image (public/og-image.png, 1200x630), in the shot look's bands (D110): the
- * Horizon logo, stacked version, on the black band in its dark tones (cream #F4EFE4 and light Klein
- * #6E8CFF, as in the site's header), and a cream band under it with the H1 in Noto Sans Hebrew 800
+ * Horizon logo, stacked version, on the black band in its dark tones (cream #F4EFE4 and light
+ * Prussian blue #79A0C5, as in the site's header), and a cream band under it with the H1 in Noto Sans Hebrew 800
  * at 75% width, ink on cream. A hard cut between the bands, no gradient, no shadow, nothing behind
  * the logo (brand rules); clear space well beyond half the disc. Run: node scripts/generate-og-image.mjs
  */
@@ -12,11 +12,8 @@ import puppeteer from 'puppeteer'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const OUTPUT = resolve(ROOT, 'public/og-image.png')
-// the dark lockup in the header's tones: cream for white, the tagline and its rules in cream-2
+// the dark lockup, in the palette scripts/brand-palette.mjs writes into it (Cyanotype, D117)
 const STACKED = readFileSync(resolve(ROOT, 'logos/horizon/mediawave-stacked-dark.svg'), 'utf8')
-  .replace('.a{fill:#FFFFFF}', '.a{fill:#F4EFE4}')
-  .replace('.t{fill:#8E9CC8}', '.t{fill:#B8B0A0}')
-  .replace('stroke:#8E9CC8', 'stroke:#B8B0A0')
 // inlined: a page set from a string may not load file:// fonts
 const pub = (f) => `data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts/noto', f)).toString('base64')}`
 

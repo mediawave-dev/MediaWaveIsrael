@@ -181,10 +181,10 @@ html[data-look="shot"] {
   --ui: "MW Noto", "MW Noto Fallback", sans-serif;
   --ui-w: 700;
   --focus-ring: #1a1917;
-  /* Horizon in deep Klein (DECISIONS #86, Nati 15.10): ink above the wave, a half-step darker
-     Klein below ("Wave" 11.2:1 on the table). The page's only colour stays in the logo. */
+  /* Horizon in Cyanotype (D117, Nati 18.10): ink above the wave, Prussian blue below (#225079,
+     7.3:1 on white). The page's only colour stays in the logo. */
   --logo-a: #1a1917;
-  --logo-b: #00248a;
+  --logo-b: #225079;
   --logo-tag: #4d4942;
   --paper-shadow: 0 1px 0 rgba(26, 25, 23, 0.05), 0 18px 30px -22px rgba(26, 25, 23, 0.45);
   /* The old site's objects (Things, the laptop) keep their shapes on the desk, in ink with white

@@ -445,7 +445,7 @@ html[data-look="shot"] {
 html[data-look="shot"] ::selection { background: var(--ink); color: var(--cream); }
 /* the end credits: the footer is the black after the shot, cream type, the logo in its dark-ground tones */
 html[data-look="shot"] .mw-foot {
-  --logo-a: #f4efe4; --logo-b: #6e8cff; --logo-tag: var(--cream-2);
+  --logo-a: #f4efe4; --logo-b: #79a0c5; --logo-tag: var(--cream-2);
   background: var(--ink); color: var(--cream-2);
 }
 html[data-look="shot"] .mw-foot :is(h2, .mw-foot__line) { color: var(--cream); }
@@ -494,7 +494,7 @@ html[data-look="shot"] body { background: var(--table); }
 
 /* the header is the black band's top edge on every page */
 html[data-look="shot"] .mw-head {
-  --logo-a: #f4efe4; --logo-b: #6e8cff; --logo-tag: var(--cream-2);
+  --logo-a: #f4efe4; --logo-b: #79a0c5; --logo-tag: var(--cream-2);
   background: var(--ink); color: var(--cream); box-shadow: none;
 }
 html[data-look="shot"] .mw-head__nav a { color: var(--cream-2); }

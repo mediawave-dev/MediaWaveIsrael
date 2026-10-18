@@ -40,7 +40,7 @@ const SHOT = {
   screen: '00FFFFFF', frame: '1A1917', frameLine: '1A1917', addr: '4D4942', dot: '4D4942', addrInk: 'EDE7DA',
   pageDark: 'EDE7DA', page: 'FFFFFF', wireFill: '331A1917', wireLine: '4D4942',
   ink: '1A1917', ink2: '4D4942', mute: '591A1917', line: '241A1917', klein: '1A1917', kleinTint: 'EDE7DA',
-  white: 'FFFFFF', logoA: 'F4EFE4', logoB: '6E8CFF', rule: '00EDE7DA', cursorFill: '1A1917', cursorLine: 'FFFFFF',
+  white: 'FFFFFF', logoA: 'F4EFE4', logoB: '79A0C5', rule: '00EDE7DA', cursorFill: '1A1917', cursorLine: 'FFFFFF',
 }
 // shot (D110): the built page has this site's bands, so the header sits on black in the header's
 // own tones (the mark in cream and light Klein, as in .mw-head)
