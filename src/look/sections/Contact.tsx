@@ -150,7 +150,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
         <div className="ct__side">
           {kicker}
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
-          <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. נתי, המפתח, קורא ועונה בעצמו.</p>
+          <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. המפתח קורא ועונה בעצמו.</p>
           <Card>
             {art && (
               <div className="ct__face" aria-hidden="true">
