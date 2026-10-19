@@ -50,16 +50,21 @@
         var calm = !full && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (shot) { try { if (!localStorage.getItem('mw_cookie_consent')) d.classList.add(location.pathname === '/' ? 'consent-pending' : 'consent-later'); } catch (e) {} }
         if (/[?&]reduce=1(&|$)/.test(location.search)) return;
-        if (shot && location.pathname === '/') {
-          d.classList.add('shot-dive'); if (calm) d.classList.add('shot-dive-calm');
-          setTimeout(function () { d.classList.remove('shot-dive', 'shot-dive-calm'); }, 10000);
+        // the sea (D131, D133): the held stages (the laptop, the services) are laid out from the first
+        // frame, so nothing below them moves when the field starts; field.ts drops it without WebGL
+        if (shot) d.classList.add('sea-held');
+        // the sea (D131): chapter type rises into place as it arrives (not under OS reduced motion);
+        // the safety net shows everything if the app never boots
+        if (shot && !calm) {
+          d.classList.add('sea-reveal');
+          setTimeout(function () { if (!d.classList.contains('motion-ready') && !window.__seaUp) d.classList.remove('sea-reveal'); }, 9000);
         }
-        // the wave's opening (D129): once per visit, home page only; it also stands in for the logo ident.
-        // Under OS reduced motion it is the calm version (no slides); ?reduce=1 returned above.
-        if (shot && location.pathname === '/' && !sessionStorage.getItem('mw-wv-intro')) {
-          d.classList.add('wv-opening'); if (calm) d.classList.add('wv-opening-calm');
-          sessionStorage.setItem('mw-wv-intro', '1'); sessionStorage.setItem('mw-logo-ident', '1');
-          setTimeout(function () { d.classList.remove('wv-opening', 'wv-opening-calm'); }, 7000);
+        // the sea's opening (D129, D131): once per visit, home page only; it also stands in for the logo
+        // ident. Under OS reduced motion it is the calm version (nothing rises); ?reduce=1 returned above.
+        if (shot && location.pathname === '/' && !sessionStorage.getItem('mw-sea-intro')) {
+          d.classList.add('sea-opening'); if (calm) d.classList.add('sea-opening-calm');
+          sessionStorage.setItem('mw-sea-intro', '1'); sessionStorage.setItem('mw-logo-ident', '1');
+          setTimeout(function () { d.classList.remove('sea-opening', 'sea-opening-calm', 'sea-hold', 'sea-out'); }, 7000);
           return;
         }
         if (calm) return;

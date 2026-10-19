@@ -11,6 +11,8 @@ import { installSpotlight } from '../../utils/spotlight'
 import { LOOK } from '../../look/look'
 import ShotDock from '../../look/shot/ShotDock'
 import TrackingTrail from '../../look/shot/TrackingTrail'
+import SeaField from '../../look/sea/SeaField'
+import SeaCursor from '../../look/sea/SeaCursor'
 import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
 
 // Lazy load widgets for code splitting
@@ -18,6 +20,8 @@ const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))
 const ChatWidget = lazy(() => import('../ui/ChatWidget'))
 const CookieConsent = lazy(() => import('../ui/CookieConsent'))
 const PreviewBanner = lazy(() => import('../ui/PreviewBanner'))
+
+const TRAIL_T3 = typeof window !== 'undefined' && /[?&]trail=t3(&|$)/.test(window.location.search)
 
 interface LayoutProps {
   children: ReactNode
@@ -99,6 +103,8 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen flex flex-col relative">
       {/* KM: the stage and the void, crossfading behind the page */}
       {look.ThemeLayers && <look.ThemeLayers />}
+      {/* shot (D131): the dot field, fixed behind every page */}
+      {shot && <SeaField />}
 
       {/* Preview mode banner */}
       <Suspense fallback={null}>
@@ -129,8 +135,10 @@ export default function Layout({ children }: LayoutProps) {
         {shot
           ? <ShotDock chatOpen={isChatOpen} onSlot={setDockSlot} onShownChange={setDockShown} />
           : <FloatingWhatsApp isChatOpen={isChatOpen} />}
-        {/* T3, the tracking-line trail (D120): a fixed canvas that draws only while the pointer moves */}
-        {shot && <TrackingTrail />}
+        {/* T3, the tracking-line trail (D120): in the sea the field's ripple is the pointer's trail, so
+            T3 is the review option ?trail=t3 (the prompt's rule: at most one trail; Nati picks) */}
+        {shot && TRAIL_T3 && <TrackingTrail />}
+        {shot && <SeaCursor />}
 
         {/* Widgets — mounted after idle (see widgetsReady above).
             ONE BOUNDARY EACH, deliberately. These are three separate lazy()

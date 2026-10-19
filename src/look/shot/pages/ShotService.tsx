@@ -20,6 +20,7 @@ import { posterFor } from '../eye-line'
 import { Thing } from '../../parts/Things'
 import { Trail, WaKey, DeskObject, Checklist, Steps, Slip, Pad, OBJECT, vt } from './kit'
 import { vtMark } from '../vt'
+import SeaShape from '../../sea/SeaShape'
 
 /** The hero object's artwork size in px at 390 (the CSS sizes the Thing; this seeds the Lottie box). */
 const ART = 220
@@ -122,6 +123,8 @@ export default function ShotService() {
       {schema.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
 
       <div className="sp-top">
+      {/* the sea (D133): the field draws this service's object behind the first screen */}
+      <SeaShape id={service.id} />
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: 'שירותים', href: '/#services' }, { label: service.title }]} />
 
       <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title">
@@ -142,7 +145,7 @@ export default function ShotService() {
       </article>
       </div>
 
-      <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`}>
+      <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`} data-scene="quiet">
         {service.sections.map((s) => (
           <div key={s.heading} className="sp-prose__item">
             <h2 className="sp-h2" data-zone="text">{s.heading}</h2>

@@ -55,7 +55,12 @@ function fontPreloadLinks(look) {
     console.log(`    (look ${look}: ${DISPLAY_FONT} missing from the build, no preload)`)
     return ''
   }
-  return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>`
+  // the sea (D133): the hero's line carries digits ("2 עד 3"), which live in Noto's Latin subset, and the
+  // largest text at first paint can be that line: preload the Latin subset too, so it never waits
+  const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
+    ? `
+    <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>` : ''
+  return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>${extra}`
 }
 
 /** Serve dist/ as a static file server */

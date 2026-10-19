@@ -22,6 +22,8 @@ function chapterInView(): string | null {
 }
 import Logo from '../ui/Logo'
 import AnimatedLogo from '../ui/AnimatedLogo'
+import SoundToggle from '../../look/sea/SoundToggle'
+import WaDots from '../../look/sea/WaDots'
 
 // One header for the three looks (DECISIONS #50): sticky, opaque in the look's ground (KM:
 // two layers that crossfade with the page's theme), the look's button family for
@@ -163,6 +165,9 @@ export default function Header() {
             ספרו לנו
           </LookButton>
 
+          {/* the sea (D137): the soundscape's one control, off by default */}
+          {LOOK === 'shot' && <SoundToggle />}
+
           {/* phones: the accessibility panel opens from here, not from a tab over the page (#63) */}
           <button
             type="button"
@@ -193,6 +198,26 @@ export default function Header() {
             <span aria-hidden="true"><i /><i /><i /></span>
           </button>
         </div>
+        {/* the sea (D131): Lama Lama's contact card at the top corner, wide screens; the ink spreads
+            from where the pointer came in (sea-site.css) */}
+        {LOOK === 'shot' && (
+          <a
+            className="sea-card"
+            href={WHATSAPP_URLS.general}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-zone="ui"
+            onPointerEnter={(e) => {
+              const r = e.currentTarget.getBoundingClientRect()
+              e.currentTarget.style.setProperty('--x', `${e.clientX - r.left}px`)
+              e.currentTarget.style.setProperty('--y', `${e.clientY - r.top}px`)
+            }}
+            onClick={() => track('whatsapp_click', { placement: 'header_card' })}
+          >
+            <span className="sea-card__dot" aria-hidden="true"><WaDots /></span>
+            כתבו לנו בוואטסאפ
+          </a>
+        )}
       </header>
 
       {/* Mobile menu: a full sheet in the look's ground (z-60: above the cookie banner) */}

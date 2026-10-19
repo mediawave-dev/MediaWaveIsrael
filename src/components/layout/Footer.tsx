@@ -52,7 +52,7 @@ export default function Footer() {
   )
 
   return (
-    <footer className="mw-foot" data-theme="dark" data-intent="end">
+    <footer className="mw-foot" data-theme="dark" data-intent="end" data-scene={LOOK === 'shot' ? 'quiet' : undefined}>
       {signFirst && sign}
       <div className="mw-foot__in">
         <div className="mw-foot__brand">

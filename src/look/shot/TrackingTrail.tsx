@@ -11,8 +11,8 @@ import { useAmbientMotion, useReducedMotion } from '../../hooks/useReducedMotion
 
 const LIFE_MS = 450
 const MAX_LINES = 40
-/** the bands that are black (home opening, inner-page opening, header, footer) */
-const DARK = '.shot-hero, .sp-top, .mw-head, .mw-foot'
+/** the bands that are black: since D131 the whole site is on the dark ground */
+const DARK = 'body'
 
 interface Line { x: number; y: number; len: number; born: number; dark: boolean }
 

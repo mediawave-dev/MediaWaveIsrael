@@ -1,0 +1,358 @@
+/* sea · the whole site on the dark ground (D131). The shot look's tokens are remapped here, so every
+   shared part (keys, menu, dialogs, forms, the cookie strip, the inner pages) follows the material:
+   a near-black ground, cream type, one blue that means the sea (the Horizon's lower half), and one
+   living dot field behind everything (SeaField). Lama Lama's structure in our words: a title pill at
+   the top centre, a contact card at the top corner, bracketed mono labels.
+   Contrast (computed on #0F1011): cream #EDE7DA 15.9:1, mute #A39D90 7.0:1, blue #79A0C5 6.9:1;
+   ink #0F1011 on cream 15.9:1 and on blue 6.9:1. Imported by SeaHome (the shot entry), so it ships
+   with every page of the shot build. */
+
+html[data-look="shot"] {
+  --sea-bg: #0f1011;
+  --sea-card: #17191b;
+  --sea-cream: #ede7da;
+  --sea-mute: #a39d90;
+  --sea-blue: #79a0c5;
+  --sea-rule: rgba(237, 231, 218, 0.14);
+  --sea-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --sea-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --sea-halo: 0 0 1px rgba(15, 16, 17, 0.7), 0 1px 16px rgba(15, 16, 17, 0.8);
+  /* the shot's tokens on the dark ground */
+  --table: #0f1011;
+  --paper: #17191b;
+  --ground: #0f1011;
+  --ink: #ede7da;
+  --ink-2: #a39d90;
+  --cream: #ede7da;
+  --cream-2: #a39d90;
+  --line: rgba(237, 231, 218, 0.14);
+  --line-ui: rgba(237, 231, 218, 0.52);
+  --btn-bg: #ede7da;
+  --btn-fg: #0f1011;
+  --focus-ring: #ede7da;
+  --logo-a: #ede7da;
+  --logo-b: #79a0c5;
+  --logo-tag: #a39d90;
+  --paper-shadow: 0 0 0 1px rgba(237, 231, 218, 0.08);
+  --head: 80px;
+  background: #0f1011;
+  color: #ede7da;
+  color-scheme: dark;
+}
+html[data-look="shot"] body { background: #0f1011; color: #ede7da; }
+html[data-look="shot"] ::selection { background: #79a0c5; color: #0f1011; }
+html[data-look="shot"] :where(:focus-visible) { outline-color: #ede7da; }
+
+/* ── the field's layer: fixed behind everything; its own background is the no-WebGL still ── */
+.sea-field {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.1) 0 1px, transparent 1.5px) 0 0 / 9px 9px;
+}
+@media (max-width: 767px) { .sea-field { background-size: 7px 7px; } }
+.sea-field canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+html.sea-gl .sea-field { background: none; }
+html[data-look="shot"] :is(#main-content, .mw-foot) { position: relative; z-index: 1; }
+
+/* ── the title pill (Lama Lama's structure): the header floats; the page runs under it ── */
+html[data-look="shot"] .mw-head {
+  height: var(--head); background: transparent; box-shadow: none; color: #ede7da; pointer-events: none;
+  --logo-a: #ede7da; --logo-b: #79a0c5; --logo-tag: #a39d90;
+}
+html[data-look="shot"] .mw-head__bar {
+  pointer-events: auto; height: 56px; margin-top: 12px; width: min(100% - 2 * var(--gut, 16px), 560px); max-width: none;
+  padding-inline: 14px 6px; gap: 10px; background: #17191b; border-radius: 6px; box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.07);
+}
+html[data-look="shot"] .mw-head__nav, html[data-look="shot"] .mw-head__cta { display: none; }
+html[data-look="shot"] .mw-head__a11y { display: inline-flex; margin-inline-start: 0; margin-inline-end: 0; order: 2; color: #a39d90; }
+/* the sound's control (D137): four bars, flat when off, breathing when on */
+.mw-head__sound {
+  display: inline-grid; place-items: center; order: 1; margin-inline-start: auto; width: 44px; height: 44px;
+  background: none; border: 0; border-radius: 4px; color: #a39d90; cursor: pointer;
+}
+.mw-head__sound[aria-pressed="true"] { color: #79a0c5; }
+@media (hover: hover) and (pointer: fine) { .mw-head__sound:hover { color: #ede7da; } .mw-head__sound[aria-pressed="true"]:hover { color: #9dbcd8; } }
+.sea-eq { display: flex; align-items: center; gap: 3px; height: 16px; }
+.sea-eq i { display: block; width: 2px; height: 3px; border-radius: 1px; background: currentColor; transition: height 0.3s var(--sea-ease); }
+.mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(1) { height: 8px; }
+.mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(2) { height: 15px; }
+.mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(3) { height: 11px; }
+.mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(4) { height: 6px; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.disable-animations) .mw-head__sound[aria-pressed="true"][data-live] .sea-eq i { animation: sea-eq 1.1s ease-in-out infinite alternate; transform-origin: 50% 50%; }
+  html:not(.disable-animations) .mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(2) { animation-delay: -0.4s; }
+  html:not(.disable-animations) .mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(3) { animation-delay: -0.8s; }
+  html:not(.disable-animations) .mw-head__sound[aria-pressed="true"] .sea-eq i:nth-child(4) { animation-delay: -0.2s; }
+}
+@keyframes sea-eq { to { transform: scaleY(0.35); } }
+html[data-look="shot"] .mw-head__burger { display: inline-flex; margin-inline-start: 0; order: 3; color: #ede7da; }
+html[data-look="shot"] .mw-head__burger i { background: currentColor; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-head__a11y:hover { color: #ede7da; } }
+html[data-look="shot"] .mw-head :focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
+html[data-look="shot"] .mw-head__logo .mw-logo { height: 24px; }
+@media (max-width: 429px) { html[data-look="shot"] .mw-head__logo .mw-logo { height: 20px; } html[data-look="shot"] .mw-head__bar { padding-inline: 12px 4px; gap: 6px; } }
+@media (max-width: 379px) { html[data-look="shot"] .mw-head__logo .mw-logo { height: 16px; } html[data-look="shot"] .mw-head__bar { padding-inline: 10px 2px; gap: 2px; } }
+
+/* the contact card at the top corner (wide screens): the ink spreads from where the pointer came in */
+.sea-card {
+  position: absolute; top: 12px; left: var(--gut, 40px); z-index: 2; pointer-events: auto;
+  display: none; align-items: center; gap: 12px; height: 56px; padding: 0 18px 0 10px; border-radius: 6px;
+  background: #ede7da; color: #0f1011; text-decoration: none; font: 700 15px/1 var(--ui);
+  overflow: hidden; isolation: isolate;
+}
+.sea-card__dot { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 4px; background: #0f1011; color: #ede7da; flex: none; }
+.sea-card__dot .wa-dots { width: 30px; height: 30px; }
+.sea-card::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: radial-gradient(circle at center, #79a0c5 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px, #ede7da;
+  --kdot: 0.6px; transition: clip-path 0.56s var(--sea-ease), --kdot 0s linear 0.56s;
+  clip-path: circle(0 at var(--x, 10%) var(--y, 50%)); transition: clip-path 0.55s var(--sea-ease);
+}
+@media (hover: hover) and (pointer: fine) { .sea-card:hover::before { clip-path: circle(150% at var(--x, 10%) var(--y, 50%)); --kdot: 5.4px; transition: clip-path 0.64s var(--sea-ease), --kdot 0.72s cubic-bezier(0.5, 0, 0.3, 1) 0.08s; } }
+.sea-card:focus-visible { outline: 3px solid #ede7da; outline-offset: 3px; }
+.sea-card:focus-visible::before { clip-path: circle(150% at 50% 50%); --kdot: 5.4px; }
+@media (min-width: 1100px) { .sea-card { display: inline-flex; } }
+html.disable-animations .sea-card::before { transition: none; }
+
+/* ── the menu sheet on the dark ground ── */
+html[data-look="shot"] .mw-menu { background: #0f1011; color: #ede7da; }
+html[data-look="shot"] .mw-menu nav a { color: #ede7da; box-shadow: inset 0 -1px 0 var(--sea-rule); }
+html[data-look="shot"] .mw-menu .mw-menu__svc a { color: #a39d90; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-menu .mw-menu__svc a:hover { color: #ede7da; } }
+html[data-look="shot"] .mw-menu__foot, html[data-look="shot"] .mw-menu__foot > a[dir="ltr"], html[data-look="shot"] .mw-menu__foot > .mw-menu__wa { color: #ede7da; }
+html[data-look="shot"] .mw-menu__close { color: #ede7da; }
+
+/* ── the key (H2, D121; redrawn for the sea, D134): the contact card's material. A cream card with a
+   dark square chip at the start for where it goes (WhatsApp, down the page, forward), the label
+   beside it, no keycap legend. The ink is the field's own: blue halftone dots spread from the point
+   the pointer came in and grow until they merge into a solid face that says what will happen
+   (the ink print). A phone fills it on the press, the keyboard on focus. ── */
+@property --kdot { syntax: '<length>'; inherits: false; initial-value: 0.6px; }
+html[data-look="shot"] .key {
+  --k-face-h: 56px; --k-travel: 0px; --k-r: 6px; --k-pad: 22px;
+  --k-face: #ede7da; --k-on: #0f1011; --k-legend: rgba(15, 16, 17, 0.62); --k-led: #0f1011;
+  --k-rim: none; --k-ring: #ede7da;
+  --k-ink: #79a0c5; --k-ink-on: #0f1011; --k-ink-legend: rgba(15, 16, 17, 0.7);
+  --k-render: #17191b; --k-render-on: #ede7da; --k-render-legend: #a39d90;
+  --k-chip: #0f1011; --k-chip-on: #ede7da;
+  font-weight: 700;
+}
+html[data-look="shot"] .key--paper {
+  --k-face: #17191b; --k-on: #ede7da; --k-legend: #a39d90; --k-led: #ede7da;
+  --k-rim: inset 0 0 0 1px rgba(237, 231, 218, 0.18);
+  --k-ink: #ede7da; --k-ink-on: #0f1011; --k-ink-legend: rgba(15, 16, 17, 0.7);
+  --k-chip: #ede7da; --k-chip-on: #0f1011;
+}
+html[data-look="shot"] .key :is(.key__shadow, .key__skirt) { display: none; }
+html[data-look="shot"] .key[data-size="sm"] { --k-face-h: 44px; }
+/* one print: the chip and the label, centred in the card; the legend stays only for the states */
+html[data-look="shot"] .key :is(.key__cap, .key__ink, .key__render) {
+  grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "label legend"; align-items: center;
+  padding-inline: 8px 20px; column-gap: 10px;
+}
+html[data-look="shot"] .key__cap { box-shadow: var(--k-rim); }
+html[data-look="shot"] .key__label {
+  display: flex; align-items: center; gap: 12px; align-self: center; padding: 0; line-height: 1.2;
+  font: 700 var(--k-fs)/1.2 var(--ui); white-space: nowrap;
+}
+html[data-look="shot"] .key[data-block] .key__label { align-self: center; padding: 0; }
+html[data-look="shot"] .key__legend { margin: 0; align-self: center; }
+html[data-look="shot"] .key[data-state="idle"] .key__legend, html[data-look="shot"] .key:not([data-state]) .key__legend { display: none; }
+html[data-look="shot"] .key .key__dest, html[data-look="shot"] .key__label:not(:has(.key__dest))::before {
+  flex: none; box-sizing: border-box; width: 40px; height: 40px; margin: 0; padding: 10px; border-radius: 4px;
+  background: var(--k-chip); color: var(--k-chip-on); vertical-align: middle;
+}
+html[data-look="shot"] .key__label:not(:has(.key__dest))::before {
+  content: ""; padding: 0;
+  /* a forward arrow (left, in RTL), drawn by the chip's own background */
+  background: center / 16px 16px no-repeat var(--k-chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%23ede7da' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html[data-look="shot"] a.key:is([href^="#"], [href^="/#"]) .key__label:not(:has(.key__dest))::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3v10m-4-4 4 4 4-4' fill='none' stroke='%23ede7da' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html[data-look="shot"] .key--paper .key__label:not(:has(.key__dest))::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%230f1011' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+html[data-look="shot"] .key[data-size="sm"] :is(.key__dest, .key__label:not(:has(.key__dest))::before) { width: 32px; height: 32px; padding: 8px; }
+/* the ink: halftone dots from the entry point, growing into a solid face */
+html[data-look="shot"] .key__ink {
+  background: radial-gradient(circle at center, var(--k-ink) 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px, var(--k-face);
+  transition: clip-path 560ms var(--sea-ease), --kdot 0s linear 560ms;
+}
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .key:hover .key__ink { --kdot: 5.4px; transition: clip-path 640ms var(--sea-ease), --kdot 720ms cubic-bezier(0.5, 0, 0.3, 1) 80ms; }
+}
+html[data-look="shot"] .key:focus-visible .key__ink, html[data-look="shot"] .key[data-force="hover"] .key__ink { --kdot: 5.4px; }
+html[data-look="shot"] .key[data-pressed] .key__ink { clip-path: circle(150% at var(--kx, 50%) var(--ky, 50%)); --kdot: 5.4px; transition: clip-path 420ms var(--sea-ease), --kdot 420ms ease; }
+html[data-look="shot"] .key__ink .key__dest { background: var(--k-chip); color: var(--k-chip-on); }
+/* the surprise (D136): the WhatsApp chip flies in from the key's edge with a small overshoot, and the
+   label becomes a chat bubble holding the message the link will send */
+html[data-look="shot"] .key__ink .key__dest { transform: translateX(72px) rotate(28deg); transition: transform 0s linear 560ms; }
+html[data-look="shot"] .key__msg {
+  flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  max-width: 24ch; padding: 5px 10px; border-radius: 11px; border-end-start-radius: 3px; background: #ede7da; color: #0f1011;
+  font: 600 12.5px/1.22 var(--ui); transform-origin: 100% 100%; transform: scale(0.4); opacity: 0;
+  transition: transform 0s linear 560ms, opacity 0s linear 560ms;
+}
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .key:hover .key__ink .key__dest { transform: none; transition: transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1) 90ms; }
+  html[data-look="shot"] .key:hover .key__msg { transform: none; opacity: 1; transition: transform 460ms cubic-bezier(0.34, 1.4, 0.64, 1) 300ms, opacity 160ms linear 300ms; }
+}
+html[data-look="shot"] .key:is(:focus-visible, [data-pressed], [data-force="hover"]) .key__ink .key__dest { transform: none; transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+html[data-look="shot"] .key:is(:focus-visible, [data-pressed], [data-force="hover"]) .key__msg { transform: none; opacity: 1; transition: transform 360ms cubic-bezier(0.34, 1.4, 0.64, 1) 120ms, opacity 120ms linear 120ms; }
+@media (prefers-reduced-motion: reduce) { html[data-look="shot"] .key__ink :is(.key__dest, .key__msg) { transition-duration: 0s !important; transition-delay: 0s !important; } }
+html[data-look="shot"] .key:hover .key__cap, html[data-look="shot"] .key[data-force="hover"] .key__cap { transform: none; }
+html[data-look="shot"] .key[data-pressed] .key__cap { transform: scale(0.98); transition: transform 80ms ease; }
+html[data-look="shot"] .key:focus-visible { outline: 2px solid #ede7da; outline-offset: 4px; }
+html:is(.disable-animations, .motion-reduced) .key__ink { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { html[data-look="shot"] .key__ink { transition-duration: 0s !important; } }
+
+/* ── the dock (phones and tablets): the WhatsApp pill in cream; wide screens have the contact card ── */
+html[data-look="shot"] .shot-dock__wa { background: #ede7da; color: #0f1011; border-radius: 6px; padding-inline: 6px 16px; gap: 10px; }
+html[data-look="shot"] .shot-dock__wa-icon { box-sizing: border-box; width: 36px; height: 36px; padding: 4px; border-radius: 4px; background: #0f1011; color: #ede7da; }
+html[data-look="shot"] .shot-dock__chat-btn { background: #17191b; color: #ede7da; box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.16); }
+html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn):focus-visible { outline-color: #ede7da; }
+@media (min-width: 1100px) { html[data-look="shot"] .shot-dock__wa { display: none; } }
+
+/* ── the cursor's label ── */
+.sea-cursor {
+  position: fixed; top: 0; left: 0; z-index: 70; pointer-events: none;
+  padding: 7px 10px; border-radius: 3px; background: #ede7da; color: #0f1011;
+  font: 700 12px/1 var(--sea-mono); letter-spacing: 0.04em; white-space: nowrap;
+  opacity: 0; transition: opacity 0.18s linear; will-change: transform;
+}
+.sea-cursor::before { content: "[ "; }
+.sea-cursor::after { content: " ]"; }
+.sea-cursor.is-on { opacity: 1; }
+@media (hover: none), (pointer: coarse) { .sea-cursor { display: none; } }
+
+/* ── the end credits: the footer on the field (no slab), the logo in the sea's tones ── */
+html[data-look="shot"] .mw-foot { background: transparent; color: #a39d90; --logo-a: #ede7da; --logo-b: #79a0c5; --logo-tag: #a39d90; }
+html[data-look="shot"] .mw-foot :is(h2, .mw-foot__line) { color: #ede7da; }
+html[data-look="shot"] .mw-foot a, html[data-look="shot"] .mw-foot__base :is(a, p) { color: #a39d90; }
+html[data-look="shot"] .mw-foot__base { box-shadow: inset 0 1px 0 var(--sea-rule); }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-foot a:hover { color: #ede7da; background: rgba(237, 231, 218, 0.07); } }
+
+/* ── the questions and the letter (the shared Faq and Contact) on the dark ground ── */
+html[data-look="shot"] :is(#faq, #contact, .shot-bw, .shot-deliver) { --paper: #17191b; background: none; }
+html[data-look="shot"] #contact :is(input, textarea) { background: #17191b; }
+.sea-faq .faq, .sea-faq .faq__in, .sea-contact .ct, .sea-contact .ct__in {
+  background: none; box-shadow: none; border: 0; padding: 0; margin: 0; max-width: none; color: #ede7da; text-align: start;
+}
+.sea-faq .faq__in { display: block; }
+.sea-faq .faq__head, .sea-contact .ct__side > h2 { margin: 0 0 36px; text-align: start; }
+.sea-faq .faq__head { display: grid; gap: 18px; justify-items: start; }
+.sea-faq .faq__head h2, .sea-contact .ct h2 {
+  margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%;
+  font-size: clamp(40px, 10.6vw, 120px); line-height: 0.94; color: #ede7da; text-align: start; text-shadow: var(--sea-halo);
+  padding-bottom: 0.08em; margin-bottom: 0.22em;
+}
+@media (min-width: 1100px) { .sea-faq .faq__head h2, .sea-contact .ct h2 { font-size: min(7vw, 112px); } }
+.sea-faq .faq__list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); box-shadow: none; max-width: none; }
+.sea-faq .faq__row { border-top: 1px solid var(--sea-rule); background: none; box-shadow: none; border-radius: 0; margin: 0; padding: 0; }
+.sea-faq .faq__row h3 { margin: 0; }
+.sea-faq .faq__q {
+  display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; padding: 18px 0;
+  background: none; border: 0; color: #ede7da; font: 700 1.125rem/1.45 var(--text); text-align: start; cursor: pointer;
+}
+.sea-faq .faq__q:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) { .sea-faq .faq__q:hover { color: #79a0c5; } }
+.sea-faq .faq__sign { position: relative; inset: auto; margin: 0; flex: none; width: 16px; height: 16px; }
+.sea-faq .faq__sign i { color: #79a0c5; background: currentColor; }
+.sea-faq .faq__a-in { margin-inline: 0; padding: 0 0 24px; max-width: 62ch; color: #a39d90; line-height: 1.75; text-align: start; }
+.sea-faq .faq__a-in .prose-hebrew, .sea-faq .faq__a-in .prose-hebrew * { color: #a39d90; font-size: 1.0625rem; }
+.sea-faq .faq__more { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 32px 0 0; justify-content: flex-start; text-align: start; }
+.sea-faq .faq__more p { margin: 0; color: #a39d90; }
+
+.sea-contact .ct__in { display: grid; gap: 48px; }
+.sea-contact .ct__side { display: grid; justify-items: start; gap: 0; }
+.sea-contact .ct__side > .sea-tag { margin-block-end: 18px; }
+.sea-contact .ct__lead { margin: 0 0 28px; max-width: 36ch; color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-align: start; text-shadow: var(--sea-halo); }
+.sea-contact :is(.ct__face, .ct__pal) { display: none; }
+.sea-contact .ct__card { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; width: 100%; }
+.sea-contact .ct__ways { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); display: block; }
+.sea-contact .ct__ways li { border-top: 1px solid var(--sea-rule); margin: 0; }
+.sea-contact .ct__ways a {
+  display: flex; flex-direction: row; align-items: center; gap: 14px; min-height: 60px; padding: 10px 0;
+  color: #ede7da; text-decoration: none; justify-content: flex-start; text-align: start; background: none;
+}
+.sea-contact .ct__ways a b { font: 700 1.0625rem/1.4 var(--text); }
+.sea-contact .ct__ways .ct__ico { display: inline-grid; place-items: center; width: 22px; height: 22px; color: #79a0c5; background: none; }
+.sea-contact .ct__ways .ct__ico svg { width: 22px; height: 22px; }
+@media (hover: hover) and (pointer: fine) { .sea-contact .ct__ways a:hover { color: #79a0c5; } }
+.sea-contact .ct__ways a:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
+.sea-contact .ct__time { margin: 14px 0 0; color: #a39d90; text-align: start; }
+.sea-contact .ct__form { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; display: grid; gap: 18px; }
+.sea-contact .ct__field label { display: block; margin: 0 0 8px; font: 700 0.9375rem/1.3 var(--text); color: #ede7da; text-align: start; }
+.sea-contact .ct__field :is(input, textarea) {
+  width: 100%; box-sizing: border-box; padding: 14px; border: 1.5px solid rgba(237, 231, 218, 0.52); border-radius: 4px;
+  background: #17191b; color: #ede7da; font: 400 1rem/1.5 var(--text);
+}
+.sea-contact .ct__field :is(input, textarea):focus-visible { outline: 3px solid #79a0c5; outline-offset: 1px; border-color: #ede7da; }
+.sea-contact .ct__field textarea { min-height: 140px; resize: vertical; }
+.sea-contact :is(.ct__err, .ct__status, .ct__failure) { color: #ede7da; }
+
+/* ── the inner pages on the field (D131, D133). shot-pages.css is a lazy chunk that lands after this
+   file, hence html[data-look] on every rule. Content stays on cards in the pill's material (they keep
+   long reading off the dots); the first screen of a service page is the service's own object. ── */
+html[data-look="shot"] .sp { color: #ede7da; }
+html[data-look="shot"] .sp-top { position: relative; background: none; color: #ede7da; }
+.sea-shape { position: absolute; top: 0; inset-inline: 0; height: 1px; pointer-events: none; }
+html[data-look="shot"] .sp-sheet { background: #17191b; box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.07); border-radius: 6px; }
+html[data-look="shot"] .sp-top .sp-hero { box-shadow: none; }
+html[data-look="shot"] .sp-top :focus-visible, html[data-look="shot"] .sp-top .sp-hero :focus-visible { outline-color: #ede7da; }
+html[data-look="shot"] .sp-trail { width: min(100% - 2 * var(--gut, 16px), 1360px); }
+html[data-look="shot"] .sp-trail ol { justify-content: flex-start; }
+html[data-look="shot"] .sp-top .sp-trail :is(li, a, span, li + li::before) { color: #a39d90; }
+html[data-look="shot"] .sp-top .sp-trail span[aria-current] { color: #ede7da; }
+/* a service page's first screen: its object above (phone) or beside (wide) the words */
+html[data-look="shot"] .sp--service .sp-top {
+  min-height: calc(100svh - var(--head)); display: grid; grid-template-rows: auto 1fr; padding-bottom: calc(var(--safe-b, 64px) + 8px);
+}
+html[data-look="shot"] .sp--service .sp-top > .sp-hero {
+  align-self: end; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 0 auto; padding: 0; background: none; text-align: start;
+}
+html[data-look="shot"] .sp--service .sp-hero__obj { display: none; }
+html[data-look="shot"] .sp--service .sp-hero__copy { margin: 0; }
+html[data-look="shot"] .sp--service .sp-h1 { font-size: clamp(40px, 11.4vw, 120px); line-height: 0.96; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-sub { margin-inline: 0; max-width: 36ch; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-ctas { justify-items: start; margin-inline: 0; }
+html[data-look="shot"] .sp--service .sp-facts { margin-inline: 0; }
+html[data-look="shot"] .sp--service .sp-top + * { margin-top: 64px; }
+@media (min-width: 1100px) {
+  html[data-look="shot"] .sp--service .sp-top > .sp-hero { align-self: center; }
+  html[data-look="shot"] .sp--service .sp-hero__copy { max-width: 58%; }
+  html[data-look="shot"] .sp--service .sp-h1 { font-size: min(7vw, 112px); }
+}
+/* the other services: a ruled index of names (their objects live on their own pages) */
+html[data-look="shot"] .sp-more .sp-obj { display: none; }
+html[data-look="shot"] .sp-more ul { grid-template-columns: 1fr; gap: 0; width: min(100% - 2 * var(--gut, 16px), 720px); margin-inline: auto; border-bottom: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp-more li { border-top: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp-more__link { display: flex; justify-content: flex-start; align-items: center; min-height: 56px; padding: 12px 0; background: none; box-shadow: none; border-radius: 0; color: #ede7da; text-decoration: none; }
+html[data-look="shot"] .sp-more__name { font: 800 1.35rem/1.2 var(--display); font-stretch: 80%; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .sp-more__link:hover { color: #79a0c5; } }
+/* the 404: the desk's gap and loupe give way to the field */
+html[data-look="shot"] .sp-lost__top .sp-lost__gap { border-color: rgba(237, 231, 218, 0.4); }
+html[data-look="shot"] .sp-lost__top .sp-lost__code { color: #a39d90; }
+
+/* ── the WhatsApp mark in dots (D138) ── */
+.wa-dots { display: block; overflow: visible; }
+.wa-dots circle { fill: currentColor; transform-box: fill-box; transform-origin: center; }
+html[data-look="shot"] .key .wa-dots.key__dest { padding: 5px; }
+/* hover: the dots burst a little apart and snap back into the mark */
+@keyframes wa-burst {
+  0% { transform: none; }
+  38% { transform: translate(calc(var(--dx) * 1.1px), calc(var(--dy) * 1.1px)) scale(0.4); }
+  100% { transform: none; }
+}
+/* at rest: a slow ripple runs out from the centre every seven seconds, as through the field */
+@keyframes wa-ripple { 0%, 14%, 100% { transform: none; } 7% { transform: scale(1.4); } }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.disable-animations):not(.motion-reduced) :is(.sea-card, .shot-dock__wa, .key__cap > .key__label) .wa-dots circle {
+    animation: wa-ripple 7s ease-in-out calc(2.4s + var(--d) * 45ms) infinite;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  html:not(.disable-animations):not(.motion-reduced) :is(.sea-card:hover, .key:hover .key__ink) .wa-dots circle {
+    animation: wa-burst 0.75s cubic-bezier(0.3, 0.7, 0.2, 1) calc(var(--d) * 24ms) both;
+  }
+}
