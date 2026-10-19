@@ -1,3 +1,21 @@
+# HANDOFF: night round (20-21.10.2026): back fix, sample link, end credits, finger ripples, exact laptop (D163-D164)
+
+## Completed
+- D163 live earlier (f915497): the promise in an 11.5 s loop, drawings centred on a dot column and lines a dot thick, a water drop under the finger.
+- D164 (this round):
+  - Back from the browser's cache no longer leaves the page cream: `SeaTurn.tsx` `pageshow` (persisted) reveals or clears the canvas cover (`field.turnUp/turnClear/turnColour`). Test: `G:/tmp/lama-tools/back-test.mjs`.
+  - "דוגמה אמיתית מיום הולדת 60" links to `/portfolio/memory-videos/` with `( לצפייה + )` (`ShotService.tsx`, `.sp-fact-link`).
+  - Footer for the shot look = end credits in the sea's language (`Footer.tsx` LOOK === 'shot' branch, `.sea-foot*` in `sea-site.css`); dot icons (DotGlyph wa/phone/mail/insta) on the contact rows; two-line contact rows; other looks unchanged.
+  - Phone finger: no squares trail on touch (fine pointers only); the drop has a hairline rim and ripples spread from the path (`uRip[6]`, field.ts `ripPush`).
+  - Laptop: screen content drawn with per-axis dot sizes (`gCV`, `rimBox`), card outlines meet; the lid taper under three dots a side is drawn straight.
+- site-director: page-transitions.md QA row and media-material.md pitfall for the cache case; media-material §6-§7 updated.
+
+## Next steps
+1. Nati's verdict in the morning (phone): back navigation, footer, ripples, laptop.
+2. Performance round (card task_c78309fc); Lighthouse this round (mobile, median of 3, local build): home 55 (LCP 4.08 s, TBT 1035 ms, CLS 0.036), /services/memory-videos/ 87; unchanged from before.
+
+---
+
 # HANDOFF: precision round (20.10.2026, night): the promise in a loop, exact drawings, the finger (D163)
 
 ## Completed

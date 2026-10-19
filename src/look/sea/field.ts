@@ -30,8 +30,8 @@ const T3 = /[?&]trail=t3(&|$)/.test(params())
 const rootHas = (c: string) => typeof document !== 'undefined' && document.documentElement.classList.contains(c)
 const GRAIN = () => rootHas('sea-grain-on')
 const RIPPLE = () => rootHas('sea-trail-ripple')
-/** the trail of small squares (D162, Lama's own); since D163 the finger draws it too */
-const SQUARES = () => rootHas('sea-trail-squares')
+/** the trail of small squares (D162, Lama's own): fine pointers only; a finger gets ripples (D164) */
+const SQUARES = () => rootHas('sea-trail-squares') && window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
 export function tier(): Tier {
   if (typeof window === 'undefined') return 'still'
@@ -95,6 +95,33 @@ let DPR = 1
 const ptr = { x: -9999, y: -9999, tx: -9999, ty: -9999, e: 0 }
 /** the finger on a touch screen (D163): where it lands and moves the field swells like a drop of water */
 const press = { x: 0, y: 0, tx: 0, ty: 0, on: 0, e: 0 }
+/** ripples from the finger's path (D164): a few at a time, each 0.9 s */
+const N_RIP = 6
+const RIP_MS = 900
+const rips = Array.from({ length: N_RIP }, () => ({ x: 0, y: 0, at: -1e9, s: 0 }))
+let ripI = 0
+const ripLast = { x: -1e9, y: -1e9, at: 0 }
+const RIP = new Float32Array(N_RIP * 4)
+function ripPush(x: number, y: number, s: number) {
+  const now = performance.now()
+  const far = Math.hypot(x - ripLast.x, y - ripLast.y)
+  if (s < 1 && (far < 46 || now - ripLast.at < 110)) return
+  const r = rips[ripI]
+  ripI = (ripI + 1) % N_RIP
+  r.x = x; r.y = y; r.at = now; r.s = s
+  ripLast.x = x; ripLast.y = y; ripLast.at = now
+}
+function ripUpload(now: number): boolean {
+  let live = false
+  for (let i = 0; i < N_RIP; i++) {
+    const r = rips[i]
+    const age = (now - r.at) / RIP_MS
+    const on = age < 1 && mode === 'full'
+    if (on) live = true
+    RIP.set([r.x * DPR, (H - r.y) * DPR, on ? age : 1, on ? r.s : 0], i * 4)
+  }
+  return live
+}
 const type = { e: 0, t: 0, until: 0 }
 /** the music (D142): its level, and the last bell's ring */
 const note = { x: 0, y: 0, e: 0, at: 0 }
@@ -259,7 +286,7 @@ function setup(): boolean {
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
   U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
-    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
+    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uRip', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
   // each film's texture: one frame at a time from its video (or its poster), clamped, no mipmaps
   for (let u = 0; u < MAX_FILMS; u++) {
@@ -485,6 +512,9 @@ function draw() {
   gl.uniform1f(U.uGrainPx, Math.max(2, Math.round(2 * DPR)))
   gl.uniform1f(U.uTrail, mode === 'full' && SQUARES() && !document.documentElement.classList.contains('disable-animations') ? 1 : 0)
   gl.uniform4f(U.uPress, press.x * DPR, (H - press.y) * DPR, mode === 'full' && !document.documentElement.classList.contains('disable-animations') ? press.e : 0, 64 * DPR)
+  ripBusy = ripUpload(performance.now()) && !document.documentElement.classList.contains('disable-animations')
+  if (document.documentElement.classList.contains('disable-animations')) RIP.fill(0)
+  gl.uniform4fv(U.uRip, RIP)
   gl.uniform1f(U.uScrollV, scrollV)
   drawImgs()
   gl.uniform4fv(U.uGnd, gnd)
@@ -530,7 +560,7 @@ function frame(now: number) {
   press.y = lerp(press.y, press.ty, kf)
   press.e += (press.on - press.e) * (1 - Math.pow(1 - (press.on ? 0.16 : 0.07), dt * 60))
   if (!press.on && press.e < 0.004) press.e = 0
-  if (press.e > 0) moving = true
+  if (press.e > 0 || ripBusy) moving = true
   // the music moves the dots only in full motion (calm: the music plays, the field keeps still)
   const heard = mode === 'full' && !stopped ? Math.min(1, sound.level() * 4) : 0
   lvl = lerp(lvl, heard, 1 - Math.pow(1 - 0.2, dt * 60))
@@ -575,10 +605,12 @@ const onPtr = (x: number, y: number) => {
   if (mode === 'full') wake()
 }
 const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') onPtr(e.clientX, e.clientY) }
+let ripBusy = false
 const onTouch = (e: TouchEvent) => {
   const t = e.touches[0]
   if (!t) return
   press.tx = t.clientX; press.ty = t.clientY
+  if (mode === 'full') ripPush(t.clientX, t.clientY, 0.75)
   onPtr(t.clientX, t.clientY)
 }
 const onTouchStart = (e: TouchEvent) => {
@@ -587,6 +619,7 @@ const onTouchStart = (e: TouchEvent) => {
   press.tx = t.clientX; press.ty = t.clientY
   if (press.e < 0.02) { press.x = t.clientX; press.y = t.clientY }
   press.on = 1
+  ripPush(t.clientX, t.clientY, 1)
   wake()
 }
 const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) { press.on = 0; wake() } }
@@ -890,6 +923,12 @@ export function turnCover(x: number, y: number, col: [number, number, number], m
 }
 
 /** ...and on the new page, the dots shrink away from the centre outward. */
+/** The turn's cover is up: a page the browser restores from its cache comes back as it was left. */
+export const turnUp = () => turn.cover > 0.001 || turn.anim !== null
+export const turnColour = () => turn.col as [number, number, number]
+/** Take the cover down at once (when the field cannot animate it). */
+export function turnClear() { turn.anim = null; turn.cover = 0; turn.reveal = 0; dirty = true; wake() }
+
 export function turnReveal(col: [number, number, number], ms = 640): Promise<void> {
   if (!gl) return Promise.resolve()
   turn.col = col; turn.cover = 1; turn.reveal = 0

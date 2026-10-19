@@ -241,12 +241,81 @@ html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn):focus-visible {
 .sea-cursor.is-on { opacity: 1; }
 @media (hover: none), (pointer: coarse) { .sea-cursor { display: none; } }
 
-/* ── the end credits: the footer on the field (no slab), the logo in the sea's tones ── */
+/* ── the end credits (D164): the footer on the field (no slab) in the page's own language: a mono
+   label, the line in the display face, numbered rows on hairlines with ( + ), contact rows keyed in
+   mono, the logo's ident, the documents in brackets. Mobile first; two columns from 900px. Contained
+   hovers, no underlines, every row 56px tall. ── */
 html[data-look="shot"] .mw-foot { background: transparent; color: #a39d90; --logo-a: #ede7da; --logo-b: #79a0c5; --logo-tag: #a39d90; }
-html[data-look="shot"] .mw-foot :is(h2, .mw-foot__line) { color: #ede7da; }
-html[data-look="shot"] .mw-foot a, html[data-look="shot"] .mw-foot__base :is(a, p) { color: #a39d90; }
-html[data-look="shot"] .mw-foot__base { box-shadow: inset 0 1px 0 var(--sea-rule); }
-@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .mw-foot a:hover { color: #ede7da; background: rgba(237, 231, 218, 0.07); } }
+html[data-look="shot"] .sea-foot { font-family: var(--text); }
+.sea-foot__in { max-width: calc(1360px + 2 * var(--gut, 16px)); margin-inline: auto; padding: 72px var(--gut, 16px) 0; display: grid; gap: 44px; }
+.sea-foot__head { display: grid; gap: 16px; justify-items: start; }
+.sea-foot__line {
+  margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: clamp(34px, 9vw, 88px);
+  line-height: 0.98; color: #ede7da; text-shadow: var(--sea-halo); text-wrap: balance;
+}
+.sea-foot__cols { display: grid; gap: 40px; }
+.sea-foot__col { display: grid; gap: 14px; align-content: start; min-width: 0; }
+html[data-look="shot"] .sea-foot__col h2 { margin: 0; color: #a39d90; }
+.sea-foot__col h2.sea-tag--he::before { content: "[ "; }
+.sea-foot__col h2.sea-tag--he::after { content: " ]"; }
+.sea-foot__rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
+.sea-foot__rows li { border-top: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sea-foot a.sea-foot__row {
+  display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  min-height: 56px; padding: 10px 6px; border-radius: 2px; color: #ede7da; text-decoration: none; font-size: inherit; line-height: 1.2;
+  transition: background-color 0.3s var(--sea-ease, ease);
+}
+.sea-foot__k { justify-self: start; display: inline-flex; align-items: center; gap: 10px; font: 600 12px/1 var(--sea-mono); letter-spacing: 0.08em; color: #79a0c5; direction: ltr; text-align: start; }
+.sea-foot__ico { display: inline-block; flex: none; width: 24px; height: 24px; color: #ede7da; }
+.sea-foot__ico .dot-glyph { width: 100%; height: 100%; }
+/* contact rows: the drawing and the key on a small line, the value under it across the row, at every
+   width (an email address never breaks, down to 320px) */
+html[data-look="shot"] .sea-foot__rows--contact a.sea-foot__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "k plus" "t t"; row-gap: 8px; padding-block: 12px 14px; }
+.sea-foot__rows--contact .sea-foot__k { grid-area: k; }
+.sea-foot__rows--contact .sea-foot__plus { grid-area: plus; }
+.sea-foot__rows--contact .sea-foot__t { grid-area: t; }
+.sea-foot__t[dir="ltr"] { font-size: clamp(18px, 5.6vw, 30px); white-space: nowrap; overflow-wrap: normal; }
+@media (hover: hover) and (pointer: fine) {
+  html:not(.disable-animations):not(.motion-reduced) .sea-foot a.sea-foot__row:hover .sea-foot__ico > .dot-glyph { animation: dg-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+}
+.sea-foot__t {
+  min-width: 0; overflow-wrap: anywhere; font-family: var(--display); font-weight: 800; font-stretch: 80%;
+  font-size: clamp(22px, 5.6vw, 32px); line-height: 1.12; color: #ede7da; text-shadow: var(--sea-halo);
+}
+.sea-foot__t[dir="ltr"] { text-align: end; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+.sea-foot__plus { font: 600 12px/1 var(--sea-mono); color: #a39d90; direction: ltr; white-space: nowrap; transition: color 0.3s ease; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .sea-foot a.sea-foot__row:hover { background: rgba(237, 231, 218, 0.05); color: #ede7da; }
+  html[data-look="shot"] .sea-foot a.sea-foot__row:hover .sea-foot__plus { color: #79a0c5; }
+  html[data-look="shot"] .sea-foot a.mw-foot__sign:hover { background: none; }
+}
+html[data-look="shot"] .sea-foot a:focus-visible { outline: 3px solid #ede7da; outline-offset: -3px; }
+.sea-foot__base {
+  max-width: calc(1360px + 2 * var(--gut, 16px)); margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 4px 20px; padding: 14px var(--gut, 16px) calc(20px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+  box-shadow: inset 0 1px 0 var(--sea-rule);
+}
+html[data-look="shot"].consent-pending .sea-foot__base { padding-bottom: calc(var(--safe-b, 0px) + 20px); }
+.sea-foot__base nav { display: flex; flex-wrap: wrap; gap: 0 18px; }
+html[data-look="shot"] .sea-foot__base a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; border-radius: 2px;
+  font: 700 13px/1.3 var(--text); color: #a39d90; text-decoration: none;
+}
+.sea-foot__base a::before { content: "[ "; font-family: var(--sea-mono); font-weight: 600; }
+.sea-foot__base a::after { content: " ]"; font-family: var(--sea-mono); font-weight: 600; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .sea-foot__base a:hover { color: #ede7da; background: rgba(237, 231, 218, 0.05); } }
+html[data-look="shot"] .sea-foot__base p { margin: 0; font: 600 12px/44px var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; }
+/* phones: the key and the sign on a small line, the value below it across the row (an email never breaks) */
+@media (max-width: 599px) {
+  html[data-look="shot"] .sea-foot a.sea-foot__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "k plus" "t t"; row-gap: 8px; padding-block: 12px 14px; }
+  .sea-foot__k { grid-area: k; }
+  .sea-foot__plus { grid-area: plus; }
+  .sea-foot__t { grid-area: t; overflow-wrap: normal; }
+}
+@media (min-width: 900px) {
+  .sea-foot__in { padding-top: 120px; gap: 64px; }
+  .sea-foot__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(40px, 6vw, 120px); }
+}
 
 /* ── the questions and the letter (the shared Faq and Contact) on the dark ground ── */
 html[data-look="shot"] :is(#faq, #contact, .shot-bw, .shot-deliver) { --paper: #17191b; background: none; }
@@ -333,6 +402,17 @@ html[data-look="shot"] .sp--service .sp-h1 { font-size: clamp(40px, 11.4vw, 120p
 html[data-look="shot"] .sp--service .sp-sub { margin-inline: 0; max-width: 36ch; text-shadow: var(--sea-halo); }
 html[data-look="shot"] .sp--service .sp-ctas { justify-items: start; margin-inline: 0; }
 html[data-look="shot"] .sp--service .sp-facts { margin-inline: 0; }
+/* a fact that is a page (D164): the whole row is the link, with the site's ( view + ) notation */
+html[data-look="shot"] .sp-facts a.sp-fact-link {
+  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 48px; padding: 2px 4px; margin-inline: -4px;
+  border-radius: 2px; color: #ede7da; text-decoration: none; font: inherit;
+}
+.sp-fact-link__go { font: 600 12px/1 var(--sea-mono); color: #79a0c5; white-space: nowrap; transition: color 0.3s ease; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .sp-facts a.sp-fact-link:hover { background: rgba(237, 231, 218, 0.06); }
+  html[data-look="shot"] .sp-facts a.sp-fact-link:hover .sp-fact-link__go { color: #ede7da; }
+}
+html[data-look="shot"] .sp-facts a.sp-fact-link:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
 html[data-look="shot"] .sp--service .sp-top + * { margin-top: 64px; }
 @media (min-width: 1100px) {
   html[data-look="shot"] .sp--service .sp-top > .sp-hero { align-self: center; }

@@ -136,8 +136,22 @@ export default function SeaTurn() {
       turnThen(e.clientX, e.clientY, () => window.location.assign(url.href), 'page')
     }
     window.addEventListener('click', onClick)
-    // back from the cache: never leave a cover up
-    const onShow = (e: PageTransitionEvent) => { if (e.persisted) document.documentElement.classList.remove('sea-turning', 'sea-turn-in') }
+    // back (or forward) from the browser's page cache: the page returns exactly as it was left, covered by
+    // the turn, field and all (D164: Nati found the home page cream and washed out after going back).
+    // Open it the way a page is revealed; where the field cannot animate, take the cover down at once
+    const onShow = (e: PageTransitionEvent) => {
+      if (!e.persisted) return
+      const html = document.documentElement
+      document.body.style.pointerEvents = ''
+      html.classList.remove('sea-turn-in', 'sea-turn-fade')
+      try { sessionStorage.removeItem(KEY) } catch { /* private mode */ }
+      spa = false
+      if (!field.turnUp()) { html.classList.remove('sea-turning', 'sea-turn-rev'); return }
+      if (!enabled()) { field.turnClear(); html.classList.remove('sea-turning', 'sea-turn-rev'); return }
+      html.classList.add('sea-turning', 'sea-turn-rev')
+      runTc()
+      void field.turnReveal(field.turnColour(), 620).then(() => html.classList.remove('sea-turning', 'sea-turn-rev'))
+    }
     window.addEventListener('pageshow', onShow)
     return () => { window.removeEventListener('click', onClick); window.removeEventListener('pageshow', onShow) }
   }, [])

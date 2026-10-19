@@ -7,6 +7,7 @@ import AnimatedLogo from '../ui/AnimatedLogo'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { LOOK } from '../../look/look'
 import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
+import DotGlyph from '../../look/sea/DotGlyph'
 
 const currentYear = new Date().getFullYear()
 
@@ -53,6 +54,70 @@ export default function Footer() {
       <AnimatedLogo variant={phone ? 'stacked' : 'horizontal'} mode="scroll" live decorative />
     </a>
   )
+
+  // the sea (D164): the end credits in the page's own language, never a generic footer. A mono label,
+  // the line in the display face, numbered rows on hairlines with ( + ) (the work rows, Lama's rows),
+  // contact rows keyed in mono, the logo's ident as the sign-off, and the documents in brackets.
+  // [קופי: נתי] the label END CREDITS and the keys TEL, WHATSAPP, MAIL, INSTAGRAM
+  if (LOOK === 'shot') {
+    const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => handleLinkClick(e, href)
+    const contact = [
+      { k: 'TEL', g: 'phone', t: SITE_CONTACT.phone, href: `tel:${SITE_CONTACT.phone}`, ltr: true, ev: 'tel_click' as const, ext: false },
+      { k: 'WHATSAPP', g: 'wa', t: 'וואטסאפ', href: WHATSAPP_URLS.footer, ltr: false, ev: 'whatsapp_click' as const, ext: true },
+      { k: 'MAIL', g: 'mail', t: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}`, ltr: true, ev: 'mailto_click' as const, ext: false },
+      { k: 'INSTAGRAM', g: 'insta', t: 'אינסטגרם', href: SITE_CONTACT.instagramUrl, ltr: false, ev: 'instagram_click' as const, ext: true },
+    ]
+    return (
+      <footer className="mw-foot sea-foot" data-theme="dark" data-intent="end">
+        <div className="sea-foot__in">
+          <div className="sea-foot__head">
+            <span className="sea-tag">END CREDITS</span>
+            <p className="sea-foot__line">אתרים וסרטונים לעסקים,<br />ישר מהמפתח.</p>
+          </div>
+          <div className="sea-foot__cols">
+            <nav className="sea-foot__col" aria-labelledby="sea-foot-nav">
+              <h2 id="sea-foot-nav" className="sea-tag sea-tag--he">קישורים מהירים</h2>
+              <ul className="sea-foot__rows">
+                {footerLinks.map((link, i) => (
+                  <li key={link.href}>
+                    <a className="sea-foot__row" href={link.href.startsWith('#') && window.location.pathname !== '/' ? `/${link.href}` : link.href} onClick={(e) => go(e, link.href)}>
+                      <span className="sea-foot__k" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="sea-foot__t">{link.label}</span>
+                      <span className="sea-foot__plus" aria-hidden="true">( + )</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="sea-foot__col">
+              <h2 className="sea-tag sea-tag--he">יצירת קשר</h2>
+              <ul className="sea-foot__rows sea-foot__rows--contact">
+                {contact.map((c) => (
+                  <li key={c.k}>
+                    <a className="sea-foot__row" href={c.href} {...(c.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})} onClick={() => track(c.ev, { placement: 'footer' })}>
+                      {/* the contact's own drawing in dots (Nati: "it was beautiful"), then its key */}
+                      <span className="sea-foot__k" aria-hidden="true"><span className="sea-foot__ico"><DotGlyph name={c.g} /></span>{c.k}</span>
+                      <span className="sea-foot__t" dir={c.ltr ? 'ltr' : undefined}>{c.t}</span>
+                      <span className="sea-foot__plus" aria-hidden="true">{c.ext ? '( ↗ )' : '( + )'}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {sign}
+        <div className="sea-foot__base">
+          <nav aria-label="מסמכים">
+            <a href="/terms/" data-zone={zone} target="_blank" rel="noopener noreferrer">תקנון שימוש</a>
+            <a href="/privacy/" data-zone={zone} target="_blank" rel="noopener noreferrer">מדיניות פרטיות</a>
+            <a href="/accessibility/" data-zone={zone} target="_blank" rel="noopener noreferrer">הצהרת נגישות</a>
+          </nav>
+          <p dir="ltr" data-zone={zone}>© {currentYear} MEDIAWAVE ISRAEL</p>
+        </div>
+      </footer>
+    )
+  }
 
   return (
     <footer className="mw-foot" data-theme="dark" data-intent="end">

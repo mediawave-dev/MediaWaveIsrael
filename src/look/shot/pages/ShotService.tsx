@@ -139,7 +139,14 @@ export default function ShotService() {
           </div>
           {service.tags && (
             <ul className="sp-facts" aria-label="בקצרה">
-              {service.tags.map((t) => <li key={t} data-zone="text">{t}</li>)}
+              {service.tags.map((t) => (
+                <li key={t} data-zone="text">
+                  {/* the sample is a real page: the fact that names it goes there (D164) */}
+                  {service.portfolioLink && /דוגמה/.test(t)
+                    ? <a className="sp-fact-link" href={service.portfolioLink} onClick={() => track('cta_click', { placement: 'service_fact_sample' })}>{t}<span className="sp-fact-link__go" aria-hidden="true">( לצפייה + )</span></a>
+                    : t}
+                </li>
+              ))}
             </ul>
           )}
         </div>

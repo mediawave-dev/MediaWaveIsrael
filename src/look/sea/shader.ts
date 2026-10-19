@@ -65,6 +65,7 @@ uniform float uFlowR;   // the wake's reach (device px)
 uniform float uGrainPx; // the material's squares (device px, 2 CSS px)
 uniform float uTrail;   // the pointer's trail of squares on (D162)
 uniform vec4 uPress;    // the finger (D163): x, y (device px), strength 0..1, radius (device px)
+uniform vec4 uRip[6];   // ripples from the finger's path (D164): x, y (device px), age 0..1, strength
 uniform float uScrollV;
 uniform sampler2D uAtlas; // live pictures (D158): eight cells of 512 x 320
 uniform vec4 uImgR[8];  // each picture's frame: left, bottom, width, height (device px, y up)
@@ -88,12 +89,19 @@ const vec3 INKBLUE = vec3(0.133, 0.314, 0.475); // the logo's blue on light grou
 // one dot's width in the current drawing's units (slot() sets it before each drawing): thin lines and
 // outlines are never thinner than a dot, so every row and column of a line gets exactly its dot (D163)
 float gCU = 0.05;
+// the same per axis: inside the laptop's screen a dot is wider in screen units one way than the other
+vec2 gCV = vec2(0.05);
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float h1(float n) { return fract(sin(n * 91.345) * 47453.5453); }
 float box(vec2 p, vec2 b, float r) { vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
 float inside(float d) { return 1.0 - step(0.0, d); }
 float rim(float d, float w) { float ww = max(w * 0.6, 0.55 * gCU); return 1.0 - smoothstep(ww * 0.7, ww, abs(d)); }
-float bar(vec2 q, vec2 c, vec2 h) { h = max(h, vec2(0.5 * gCU)); return step(abs(q.x - c.x), h.x) * step(abs(q.y - c.y), h.y); }
+float bar(vec2 q, vec2 c, vec2 h) { h = max(h, 0.5 * gCV); return step(abs(q.x - c.x), h.x) * step(abs(q.y - c.y), h.y); }
+/** a rectangle's outline, square-cornered, its sides t thick on each side of the edge: the corners meet */
+float rimBox(vec2 p, vec2 b, vec2 t) {
+  vec2 a = abs(p);
+  return step(a.x, b.x + t.x) * step(a.y, b.y + t.y) * (1.0 - step(a.x, b.x - t.x) * step(a.y, b.y - t.y));
+}
 /** a bar that grows from the inline start (the right, in Hebrew) by k */
 float barR(vec2 q, vec2 c, vec2 h, float k) { return bar(q, c, h) * step(c.x + h.x - 2.0 * h.x * k, q.x); }
 float tri(vec2 p, vec2 a, vec2 b, vec2 c) {
@@ -141,7 +149,7 @@ vec2 screenPage(vec2 s, float t) {
   float indent = step(0.55, h1(r + 3.0)) * 0.18 + step(0.85, h1(r + 9.0)) * 0.18;
   float len = (0.25 + 0.95 * h1(r + 1.0)) * clamp(typed - r, 0.0, 1.0);
   float x0 = -0.86 + indent;
-  float onRow = step(abs(s.y - ry), 0.07) * step(x0, s.x) * step(s.x, x0 + len * 1.45);
+  float onRow = step(abs(s.y - ry), max(0.07, 0.5 * gCV.y)) * step(x0, s.x) * step(s.x, x0 + len * 1.45);
   float kw = step(s.x, x0 + 0.24) * step(0.4, h1(r + 5.0));
   float code = onRow * mix(0.62, 0.9, kw);
   // the site replaces the code from the top down, then scrolls up with the reader
@@ -149,7 +157,7 @@ vec2 screenPage(vec2 s, float t) {
   vec2 p = vec2(s.x, s.y - scroll * 1.7);
   float site = 0.0;
   float sb = 0.0;
-  float logo = 1.0 - step(0.08, length(p - vec2(0.8, 0.86)));
+  float logo = bar(p, vec2(0.8, 0.86), vec2(0.08, 0.06));
   site = max(site, logo * 0.9); sb = max(sb, logo);
   for (int k = 0; k < 3; k++) site = max(site, bar(p, vec2(-0.78 + float(k) * 0.24, 0.86), vec2(0.08, 0.04)) * 0.5);
   float hero = bar(p, vec2(0.0, 0.45), vec2(0.9, 0.26));
@@ -161,7 +169,7 @@ vec2 screenPage(vec2 s, float t) {
   site = max(site, key * 0.88); sb = max(sb, key);
   for (int k = 0; k < 3; k++) {
     vec2 cc = p - vec2(0.6 - float(k) * 0.6, -0.98);
-    site = max(site, max(rim(box(cc, vec2(0.25, 0.25), 0.04), 0.05) * 0.62, bar(cc, vec2(0.0, 0.08), vec2(0.15, 0.045)) * 0.42));
+    site = max(site, max(rimBox(cc, vec2(0.25, 0.25), max(vec2(0.025), 0.5 * gCV)) * 0.62, bar(cc, vec2(0.0, 0.08), vec2(0.15, 0.045)) * 0.42));
   }
   float band = bar(p, vec2(0.0, -1.85), vec2(1.0, 0.34));
   float key2 = inside(box(p - vec2(0.0, -1.85), vec2(0.44, 0.13), 0.12));
@@ -193,7 +201,11 @@ vec2 laptop(vec2 q, float t) {
   float blue = 0.0;
   // the lid
   float lv = (q.y - HY) / (e.x - HY);
-  float lhw = mix(HW, e.y, lv);
+  // its taper in whole dots (D164): up to two dots a side is drawn straight, or each side breaks into
+  // two parallel runs a column apart; a real taper (the lid opening) stays an even diagonal
+  float tq = floor(abs(e.y - HW) / gCU + 0.5);
+  float ey = tq < 3.0 ? HW : HW + sign(e.y - HW) * tq * gCU;
+  float lhw = mix(HW, ey, lv);
   float ls = q.x / lhw;
   float inLid = step(0.0, lv) * step(lv, 1.0) * step(abs(ls), 1.0);
   if (inLid > 0.5) {
@@ -211,7 +223,15 @@ vec2 laptop(vec2 q, float t) {
     } else {
       float inScr = step(0.07, lv) * step(lv, 0.93) * step(abs(ls), 0.93);
       vec2 s = vec2(ls / 0.93, (lv - 0.5) / 0.43);
+      // the screen's units: x spans 0.93 of the lid's half-width, y 0.43 of its height (D164: its lines
+      // were thinner than a dot and fell apart)
+      float g0 = gCU;
+      vec2 v0 = gCV;
+      gCV = gCU / vec2(0.93 * lhw, 0.43 * max(abs(e.x - HY), 0.001));
+      gCU = max(gCV.x, gCV.y);
       vec2 pg = screenPage(s, t);
+      gCU = g0;
+      gCV = v0;
       v = mix(0.86, pg.x, inScr);
       blue = pg.y * inScr;
     }
@@ -679,7 +699,7 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
 
 // a drawing's centre sits on a column of dots, so its left and right halves fall on the grid alike and
 // every symmetric drawing stays symmetric (D163: the laptop's screen had stepped out at different heights)
-vec4 slot(vec4 s) { s.x = (floor(s.x / uCell) + 0.5) * uCell; gCU = uCell / max(s.z, 1.0); return s; }
+vec4 slot(vec4 s) { s.x = (floor(s.x / uCell) + 0.5) * uCell; gCU = uCell / max(s.z, 1.0); gCV = vec2(gCU); return s; }
 
 void main() {
   vec2 px = gl_FragCoord.xy;
@@ -797,17 +817,27 @@ void main() {
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
   // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid
   if (uTrail > 0.5 && fl.w > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), fl.w * 1.2));
-  // the finger's dome: lit on the side that faces the light (upper start), shaded on the other, and a
-  // thin ring of small squares where it meets the glass; it swells in as the finger lands and settles
-  // out when it lifts
+  // the finger's drop (D163, D164): lit on the side that faces the light, shaded on the other, a
+  // hairline of light where it meets the glass; as the finger moves, thin ripples spread from its path
+  // and fade, like a fingertip drawn across water (no squares on a phone: they were too heavy)
+  float px1 = 0.5 * uGrainPx;
+  float hl = 0.0;
   if (uPress.z > 0.001) {
     float facing = dot(domeU, vec2(0.6, 0.8));
     outc *= 1.0 + 0.32 * facing;
     outc += vec3(0.05, 0.05, 0.045) * max(0.0, facing) * uPress.z;
-    float rr0 = length(p0 - uPress.xy) / (uPress.w * (0.72 + 0.28 * uPress.z));
-    float band = smoothstep(0.86, 1.0, rr0) * (1.0 - smoothstep(1.0, 1.18, rr0));
-    outc = mix(outc, CREAM, sq7(rankAt(p0), band * uPress.z * 0.48) * 0.8);
+    float R0 = uPress.w * (0.78 + 0.22 * uPress.z);
+    hl += uPress.z * 0.42 * (1.0 - smoothstep(0.2 * px1, 1.3 * px1, abs(length(p0 - uPress.xy) - R0)));
   }
+  for (int i = 0; i < 6; i++) {
+    vec4 rp = uRip[i];
+    if (rp.w < 0.01) continue;
+    float grow = 1.0 - (1.0 - rp.z) * (1.0 - rp.z);
+    float rad = uPress.w * (0.55 + 1.25 * grow);
+    float a = rp.w * 0.34 * (1.0 - rp.z) * (1.0 - rp.z);
+    hl += a * (1.0 - smoothstep(0.15 * px1, 1.1 * px1, abs(length(p0 - rp.xy) - rad)));
+  }
+  if (hl > 0.001) outc = mix(outc, CREAM, min(hl, 0.6));
   // rewind tint: the deck's red and teal on the slipping rows
   if (uRew > 0.001 && slip > 0.0) outc += uRew * vec3(0.08, -0.02, 0.05) * step(0.5, fract(row * 0.5));
   // the page turn (lab gate: turn): dots of the turn's colour swell out from where the visitor clicked
