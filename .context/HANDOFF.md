@@ -7,31 +7,31 @@ changes at the edge, do it in many shapes and elements"; "the big dots: every sh
 varying in size"; "notice small details I did not"; deploy (performance later).
 
 ## Completed (live: main = 5af130f, rollback tag prod-before-squares = a07cf41)
-- D161 (63fa5f5):  +  quiet lines,  revealed word by word (SeaHome , sea.css ).
-- D162 (a83d35a): read lamalama.com's public shaders (scratch : shaders.txt, shaders2.txt,
-  GPU frames shots/, gf/) and rebuilt the material in : one grid of 2 CSS px
-  squares, 4x4 per cell, our order (first seven = Horizon glyph); hero lower third breaks into holes
-  that keep the take's colour; each live picture breaks on its own side (id % 4); veil styles 0 holes,
-  1 material, 2 rows, 3 backdrop; reel changes through the squares; trail of squares (fine pointers,
-  lab , hairline = ); big drawn dots vary in size; softer text dimming.
-  Code-level notes:  §13.
+- D161 (63fa5f5): `sub` + `sub2` quiet lines, `pro` revealed word by word (SeaHome `Promise`, sea.css `sea-word`).
+- D162 (a83d35a): read lamalama.com's public shaders (scratch `G:/tmp/lama-src/`: shaders.txt,
+  shaders2.txt, GPU frames in shots/ and gf/) and rebuilt the material in `src/look/sea/shader.ts`: one
+  grid of 2 CSS px squares, 4x4 per cell, our order (the first seven draw the Horizon glyph); the hero's
+  lower third breaks into holes that keep the take's colour; each live picture breaks on its own side
+  (id % 4); veil styles 0 holes, 1 material, 2 rows, 3 backdrop; reel changes through the squares; a
+  trail of squares (fine pointers; lab `trail=squares`, the hairline is `trail=line`); the big drawn dots
+  vary in size; softer text dimming. Code-level notes: `design/harvest/lamalama-deep.rtl.md` §13.
 - Merged Moria's a07cf41 (Search Console file) before the push.
 - Checks: build ok; overlap 0 (320-1440); all-pages 12 routes x 390/1440 clean; WebGL starts in
-  Chromium/Firefox/WebKit; GPU shots of dev, build and live.
-- site-director skill updated (backup ): new
-  references/fidelity.md, references/media-material.md, assets/motion/squares.glsl,
-  scripts/gpu-frames.mjs; harvest/lamalama.md corrected; details-layer, human-eye, media-sourcing,
+  Chromium, Firefox and WebKit; GPU shots of dev, build and live.
+- site-director skill updated (backup `G:/tmp/skill-backup/site-director-20261020`): new
+  `references/fidelity.md`, `references/media-material.md`, `assets/motion/squares.glsl`,
+  `scripts/gpu-frames.mjs`; `harvest/lamalama.md` corrected; details-layer, human-eye, media-sourcing,
   SKILL.md (router, frontmatter now 1391/1536), GUIDE.rtl.md, evals (4). Auditor: 0 errors.
 
 ## Known issues
 - Lighthouse not re-measured (mobile median was 55 before D160-D162); Nati deferred perf; card task_c78309fc.
--  answers 308 to the extensionless path (Pages pretty URLs); if Search
-  Console refuses the file, verify by DNS TXT or add a  exception.
+- `/googlec374d3e971c6eda7.html` answers 308 to the extensionless path (Pages pretty URLs); if Search
+  Console refuses the file, verify by DNS TXT or serve the file without the redirect.
 - On dark takes the hero's square band is subtle on phones (the band sits under the CTA's dimming).
 
 ## Next steps
-1. Nati's verdict on the squares (phone first); tune band depth (field.ts  0.3, width 0.26)
-   or the order glyph (shader ) if asked.
+1. Nati's verdict on the squares (phone first); tune the band (field.ts `reel.edge` 0.3, width 0.26) or
+   the glyph order (shader `rankAt`) if asked.
 2. Performance round (separate session).
 
 ---
