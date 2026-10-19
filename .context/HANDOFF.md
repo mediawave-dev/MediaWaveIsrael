@@ -1,3 +1,43 @@
+# HANDOFF: the Lama Lama round (20.10.2026): deep harvest, lab, dots everywhere (branch, NOT deployed)
+
+## Goal
+Nati: break lamalama.com down to the smallest detail and build its mechanisms into mediawave.co.il in
+our own material, as intuitive and beautiful as theirs; mid-session: no header that follows the scroll
+(the visitor chooses), the Google mark and an AI sign in dots, dots everywhere it fits.
+
+## Completed (branch `redesign/elegant-20261019`, on top of 47aa022 = production)
+- Harvest: `design/harvest/lamalama-deep.rtl.md` (facts, mechanism table with timings and easings, colour
+  map, image treatments, small elements, mobile, principles, translations). Films and frame sheets
+  outside the repo: `G:/Projects/moment-library/films/lamalama/` and `films/lamalama-interact/`;
+  5 new entries in `G:/Projects/moment-library/INDEX.md`. Their code (text only): `G:/tmp/harvest/lamalama/`.
+- Lab, each gate a switch (`?lab=1` shows the panel; `src/look/sea/lab.ts` holds the defaults):
+  head (SeaIsland: the header folds into an island, speaks a line per chapter, opens on tap, pin),
+  film (SeaFilm + field: the desk film in dots, develops under the pointer or on a tap),
+  ground (field: services under the horizon in deep blue, the letter on paper, dotted edges),
+  turn (SeaTurn + field: dots swell from the click, timecode, reveal from the centre; index.html
+  starts a turned-to page covered).
+- Dots everywhere: decode.ts (labels, clock, cursor label), the Google mark in the results object and
+  island, the AI spark (chat object, dock launcher "AI", island, menu), DotGlyph (ticks, plus, contact
+  icons, menu objects), step rings, the 404 horizon.
+- Decisions D143-D151 in DECISIONS.rtl.md.
+
+## Waiting for Nati
+- The four gates (head, film, ground, turn): defaults are the recommendations (island, touch, both, cream).
+- New copy marked [קופי: נתי] (chapter lines in SeaWay.tsx, the film chapter, the AI launcher label).
+- D149: Google's brand rules forbid altering its mark; Nati asked for it; alternative = same shape in our blue.
+
+## Next steps
+- QA results below; films side by side with theirs; then Nati approves and it deploys (mediawave-dev
+  helper, tag a rollback point first).
+
+## Important files
+- `src/look/sea/SeaIsland.tsx`, `SeaWay.tsx`, `way-icons.ts`: the header island and its icons
+- `src/look/sea/SeaFilm.tsx`, `SeaTurn.tsx`, `SeaLab.tsx`, `lab.ts`, `decode.ts`, `DotGlyph.tsx`
+- `src/look/sea/field.ts` (film texture, grounds, turn) and `shader.ts` (gmark, spark, ground, turn)
+- Test scripts (scratchpad of this session): `lab-check.mjs`, `turn-film.mjs`, `shoot.mjs`, `film-scroller.mjs`
+
+---
+
 # HANDOFF (19.10.2026, late night): live = main after the D139-D143 round
 
 The next session starts from `.context/NEXT-SESSION-PROMPT-LAMALAMA.rtl.md` (a deep teardown of lamalama.com,

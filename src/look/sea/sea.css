@@ -377,6 +377,9 @@ html.sea-gnd-deep #services :is(.sea-svc__title, .sea-svc__line, .sea-h2) { text
 
 html.sea-gnd-paper .sea-contact { padding-block-end: clamp(64px, 12vh, 140px); color: #0f1011; --sea-rule: rgba(15, 16, 17, 0.18); }
 html.sea-gnd-paper:not(.sea-gl) .sea-contact { background: #ede7da; }
+/* the letter itself sits on real paper too (the field's dotted edge stays in the padding around it),
+   so its contrast holds for every reader and every checker, with or without WebGL */
+html.sea-gnd-paper .sea-contact #contact { background: #ede7da; }
 html.sea-gnd-paper .sea-contact :is(h2, h3, .ct__ways a, .ct__ways a b, .ct__field label, .ct__err, .ct__status, .ct__failure) { color: #0f1011; text-shadow: none; }
 html.sea-gnd-paper .sea-contact :is(.ct__lead, .ct__time, .sea-tag) { color: #4d4942; text-shadow: none; }
 html.sea-gnd-paper .sea-contact .ct__ways .ct__ico { color: #225079; }
