@@ -1,3 +1,12 @@
+# HANDOFF (19.10.2026, late night): live = main after the D139-D143 round
+
+The next session starts from `.context/NEXT-SESSION-PROMPT-LAMALAMA.rtl.md` (a deep teardown of lamalama.com,
+mechanisms only, rebuilt in our material). Since the first sea release: shapes live in layout slots and
+never sit under text (D139), keys are symmetric dotted capsules (D140), the H1 is "העסק שלכם, המומחיות שלנו"
+(D141), the music is an original lo-fi track the dots pulse to (D142, D143). Rollback: tag prod-before-dots.
+
+---
+
 # HANDOFF: the sea of dots, built and shipped (19.10.2026, night): LIVE on mediawave.co.il (main ee37a37)
 
 ## Goal
