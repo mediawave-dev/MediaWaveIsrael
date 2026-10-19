@@ -19,12 +19,12 @@ our own material, as intuitive and beautiful as theirs; mid-session: no header t
 - Dots everywhere: decode.ts (labels, clock, cursor label), the Google mark in the results object and
   island, the AI spark (chat object, dock launcher "AI", island, menu), DotGlyph (ticks, plus, contact
   icons, menu objects), step rings, the 404 horizon.
-- Decisions D143-D151 in DECISIONS.rtl.md.
+- Decisions D144-D152 in DECISIONS.rtl.md.
 
 ## Waiting for Nati
 - The four gates (head, film, ground, turn): defaults are the recommendations (island, touch, both, cream).
 - New copy marked [קופי: נתי] (chapter lines in SeaWay.tsx, the film chapter, the AI launcher label).
-- D149: Google's brand rules forbid altering its mark; Nati asked for it; alternative = same shape in our blue.
+- D150: Google's brand rules forbid altering its mark; Nati asked for it; alternative = same shape in our blue.
 
 ## Next steps
 - QA results below; films side by side with theirs; then Nati approves and it deploys (mediawave-dev
