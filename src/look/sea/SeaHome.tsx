@@ -30,8 +30,9 @@ import './sea-site.css'
 
 function Hero() {
   return (
-    <section id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero" data-scene="horizon">
-      <DiscStill />
+    <section id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
+      {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them */}
+      <span className="sea-spot sea-spot--hero" data-spot="horizon" aria-hidden="true"><DiscStill /></span>
       <div className="sea-in">
         <Tag he className="sea-up">סטודיו לאתרים ולווידאו · ישראל</Tag>
         {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
@@ -59,7 +60,7 @@ function Hero() {
 
 function Websites() {
   return (
-    <section className="sea-ch sea-web" aria-labelledby="web-title" data-chapter="websites" data-scene="laptop">
+    <section className="sea-ch sea-web" aria-labelledby="web-title" data-chapter="websites">
       <SeaLaptop>
         <div className="sea-in" data-reveal="">
           <Tag className="sea-fade">01 · WEBSITES</Tag>
@@ -73,7 +74,7 @@ function Websites() {
 
 function Why() {
   return (
-    <section id="why-us" className="sea-ch sea-why" aria-labelledby="why-title" data-chapter="why" data-scene-m="quiet">
+    <section id="why-us" className="sea-ch sea-why" aria-labelledby="why-title" data-chapter="why">
       <header className="sea-head" data-reveal="">
         <Tag className="sea-fade">WHY</Tag>
         <h2 id="why-title" className="sea-h3" data-zone="text"><Lines lines={['למה לעבוד איתנו?']} /></h2>
@@ -93,7 +94,7 @@ function Why() {
 
 function Process() {
   return (
-    <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process" data-scene="quiet">
+    <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
       <header className="sea-head" data-reveal="">
         <Tag className="sea-fade">03 · PROCESS</Tag>
         <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={['איך אנחנו', 'עובדים']} /></h2>
@@ -118,9 +119,6 @@ export default function SeaHome() {
   useEffect(() => {
     const onInput = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) field.typed() }
     document.addEventListener('input', onInput)
-    // below 1100px the shape sits above the text: the form scrolls over a quiet field
-    document.querySelector('#contact .ct__card')?.setAttribute('data-scene-m', 'quiet')
-    field.refresh()
     return () => document.removeEventListener('input', onInput)
   }, [])
 
@@ -132,10 +130,11 @@ export default function SeaHome() {
       <Why />
       <SeaServices />
       <Process />
-      <div className="sea-ch sea-faq" data-scene="quiet">
+      <div className="sea-ch sea-faq">
         <Faq chapter="faq" kicker={<Tag>04 · FAQ</Tag>} />
       </div>
-      <div className="sea-ch sea-contact" data-scene="bubble">
+      <div className="sea-ch sea-contact">
+        <span className="sea-spot sea-spot--contact" data-spot="bubble" aria-hidden="true" />
         <Contact chapter="contact" art={false} kicker={<Tag>05 · CONTACT</Tag>} />
       </div>
       <SeaRewind />

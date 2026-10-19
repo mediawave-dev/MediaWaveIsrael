@@ -94,21 +94,30 @@ html[data-look="shot"] .mw-head__logo .mw-logo { height: 24px; }
 
 /* the contact card at the top corner (wide screens): the ink spreads from where the pointer came in */
 .sea-card {
-  position: absolute; top: 12px; left: var(--gut, 40px); z-index: 2; pointer-events: auto;
-  display: none; align-items: center; gap: 12px; height: 56px; padding: 0 18px 0 10px; border-radius: 6px;
-  background: #ede7da; color: #0f1011; text-decoration: none; font: 700 15px/1 var(--ui);
-  overflow: hidden; isolation: isolate;
+  position: absolute; top: 14px; left: var(--gut, 40px); z-index: 2; pointer-events: auto;
+  display: none; align-items: center; justify-content: center; gap: 10px; height: 52px; padding: 0 24px; border-radius: 999px;
+  background: rgba(15, 16, 17, 0.74); color: #ede7da; text-decoration: none; font: 700 15px/1 var(--ui);
+  overflow: hidden; isolation: isolate; transition: color 0.25s linear;
 }
-.sea-card__dot { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 4px; background: #0f1011; color: #ede7da; flex: none; }
-.sea-card__dot .wa-dots { width: 30px; height: 30px; }
+.sea-card::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: inherit; padding: 3px;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.sea-card__dot { display: block; width: 24px; height: 24px; flex: none; color: currentColor; }
+.sea-card__dot .wa-dots { width: 24px; height: 24px; }
 .sea-card::before {
   content: ""; position: absolute; inset: 0; z-index: -1;
-  background: radial-gradient(circle at center, #79a0c5 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px, #ede7da;
-  --kdot: 0.6px; transition: clip-path 0.56s var(--sea-ease), --kdot 0s linear 0.56s;
-  clip-path: circle(0 at var(--x, 10%) var(--y, 50%)); transition: clip-path 0.55s var(--sea-ease);
+  background: radial-gradient(circle at center, #ede7da 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px;
+  --kdot: 0.6px; clip-path: circle(0 at var(--x, 10%) var(--y, 50%));
+  transition: clip-path 0.56s var(--sea-ease), --kdot 0s linear 0.56s;
 }
-@media (hover: hover) and (pointer: fine) { .sea-card:hover::before { clip-path: circle(150% at var(--x, 10%) var(--y, 50%)); --kdot: 5.4px; transition: clip-path 0.64s var(--sea-ease), --kdot 0.72s cubic-bezier(0.5, 0, 0.3, 1) 0.08s; } }
-.sea-card:focus-visible { outline: 3px solid #ede7da; outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .sea-card:hover { color: #0f1011; transition: color 0.2s linear 0.3s; }
+  .sea-card:hover::before { clip-path: circle(150% at var(--x, 10%) var(--y, 50%)); --kdot: 5.4px; transition: clip-path 0.64s var(--sea-ease), --kdot 0.64s cubic-bezier(0.5, 0, 0.3, 1) 0.06s; }
+}
+.sea-card:focus-visible { outline: 2px solid #ede7da; outline-offset: 4px; color: #0f1011; }
 .sea-card:focus-visible::before { clip-path: circle(150% at 50% 50%); --kdot: 5.4px; }
 @media (min-width: 1100px) { .sea-card { display: inline-flex; } }
 html.disable-animations .sea-card::before { transition: none; }
@@ -121,94 +130,91 @@ html[data-look="shot"] .mw-menu .mw-menu__svc a { color: #a39d90; }
 html[data-look="shot"] .mw-menu__foot, html[data-look="shot"] .mw-menu__foot > a[dir="ltr"], html[data-look="shot"] .mw-menu__foot > .mw-menu__wa { color: #ede7da; }
 html[data-look="shot"] .mw-menu__close { color: #ede7da; }
 
-/* ── the key (H2, D121; redrawn for the sea, D134): the contact card's material. A cream card with a
-   dark square chip at the start for where it goes (WhatsApp, down the page, forward), the label
-   beside it, no keycap legend. The ink is the field's own: blue halftone dots spread from the point
-   the pointer came in and grow until they merge into a solid face that says what will happen
-   (the ink print). A phone fills it on the press, the keyboard on focus. ── */
+/* ── the key (D140): a capsule drawn by a ring of halftone dots, the site's own material, with the
+   dotted WhatsApp mark (or a small arrow) and the label centred as one group: symmetric, no chip, no
+   keycap legend. Hover, focus or a press: the dots grow from where the pointer came in until the
+   capsule is cream (the ink), the label turns ink, and the WhatsApp mark flies in from the edge and its
+   dots burst and settle. What the link will send shows in the cursor's label, not on the key. ── */
 @property --kdot { syntax: '<length>'; inherits: false; initial-value: 0.6px; }
 html[data-look="shot"] .key {
-  --k-face-h: 56px; --k-travel: 0px; --k-r: 6px; --k-pad: 22px;
-  --k-face: #ede7da; --k-on: #0f1011; --k-legend: rgba(15, 16, 17, 0.62); --k-led: #0f1011;
+  --k-face-h: 56px; --k-travel: 0px; --k-r: 999px; --k-pad: 28px; --k-fs: 17px;
+  --k-face: rgba(15, 16, 17, 0.74); --k-on: #ede7da; --k-legend: #a39d90; --k-led: #ede7da;
   --k-rim: none; --k-ring: #ede7da;
-  --k-ink: #79a0c5; --k-ink-on: #0f1011; --k-ink-legend: rgba(15, 16, 17, 0.7);
-  --k-render: #17191b; --k-render-on: #ede7da; --k-render-legend: #a39d90;
-  --k-chip: #0f1011; --k-chip-on: #ede7da;
+  --k-ink: #ede7da; --k-ink-on: #0f1011; --k-ink-legend: rgba(15, 16, 17, 0.7);
+  --k-render: #ede7da; --k-render-on: #0f1011; --k-render-legend: rgba(15, 16, 17, 0.7);
+  --k-dots: rgba(237, 231, 218, 0.9);
   font-weight: 700;
 }
-html[data-look="shot"] .key--paper {
-  --k-face: #17191b; --k-on: #ede7da; --k-legend: #a39d90; --k-led: #ede7da;
-  --k-rim: inset 0 0 0 1px rgba(237, 231, 218, 0.18);
-  --k-ink: #ede7da; --k-ink-on: #0f1011; --k-ink-legend: rgba(15, 16, 17, 0.7);
-  --k-chip: #ede7da; --k-chip-on: #0f1011;
-}
+html[data-look="shot"] .key--paper { --k-face: rgba(15, 16, 17, 0.74); --k-on: #ede7da; --k-ink: #ede7da; --k-ink-on: #0f1011; }
 html[data-look="shot"] .key :is(.key__shadow, .key__skirt) { display: none; }
-html[data-look="shot"] .key[data-size="sm"] { --k-face-h: 44px; }
-/* one print: the chip and the label, centred in the card; the legend stays only for the states */
+html[data-look="shot"] .key[data-size="sm"] { --k-face-h: 44px; --k-pad: 18px; --k-fs: 15px; }
 html[data-look="shot"] .key :is(.key__cap, .key__ink, .key__render) {
-  grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "label legend"; align-items: center;
-  padding-inline: 8px 20px; column-gap: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 0 var(--k-pad); border-radius: 999px;
 }
-html[data-look="shot"] .key__cap { box-shadow: var(--k-rim); }
+html[data-look="shot"] .key__cap { min-width: 0; box-shadow: none; }
+/* the ring: one row of cream dots around the capsule, over the ink so the edge always reads as dots */
+html[data-look="shot"] .key__cap::before {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; padding: 3px;
+  background: radial-gradient(circle at center, var(--k-dots) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
 html[data-look="shot"] .key__label {
-  display: flex; align-items: center; gap: 12px; align-self: center; padding: 0; line-height: 1.2;
+  display: inline-flex; align-items: center; gap: 10px; align-self: center; padding: 0;
   font: 700 var(--k-fs)/1.2 var(--ui); white-space: nowrap;
 }
-html[data-look="shot"] .key[data-block] .key__label { align-self: center; padding: 0; }
-html[data-look="shot"] .key__legend { margin: 0; align-self: center; }
-html[data-look="shot"] .key[data-state="idle"] .key__legend, html[data-look="shot"] .key:not([data-state]) .key__legend { display: none; }
-html[data-look="shot"] .key .key__dest, html[data-look="shot"] .key__label:not(:has(.key__dest))::before {
-  flex: none; box-sizing: border-box; width: 40px; height: 40px; margin: 0; padding: 10px; border-radius: 4px;
-  background: var(--k-chip); color: var(--k-chip-on); vertical-align: middle;
-}
+html[data-look="shot"] .key[data-block] .key__label { align-self: center; padding: 0; line-height: 1.2; }
+html[data-look="shot"] .key__legend { display: none; }
+html[data-look="shot"] .key:is([data-state="loading"], [data-state="sent"], [data-state="error"]) .key__legend { display: inline-flex; margin: 0; align-self: center; }
+/* the WhatsApp mark in dots, at label size, in the label's colour */
+html[data-look="shot"] .key .key__dest { flex: none; box-sizing: border-box; width: 26px; height: 26px; margin: 0; padding: 0; background: none; color: currentColor; border-radius: 0; }
+html[data-look="shot"] .key[data-size="sm"] .key__dest { width: 22px; height: 22px; }
+/* a key that does not open WhatsApp: a small arrow in the label's colour (down for the page's own anchors) */
 html[data-look="shot"] .key__label:not(:has(.key__dest))::before {
-  content: ""; padding: 0;
-  /* a forward arrow (left, in RTL), drawn by the chip's own background */
-  background: center / 16px 16px no-repeat var(--k-chip) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%23ede7da' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  content: ""; flex: none; width: 15px; height: 15px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 html[data-look="shot"] a.key:is([href^="#"], [href^="/#"]) .key__label:not(:has(.key__dest))::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3v10m-4-4 4 4 4-4' fill='none' stroke='%23ede7da' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3v10m-4-4 4 4 4-4' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 3v10m-4-4 4 4 4-4' fill='none' stroke='%23000' stroke-width='1.9' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-html[data-look="shot"] .key--paper .key__label:not(:has(.key__dest))::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M13 8H3m4-4L3 8l4 4' fill='none' stroke='%230f1011' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-html[data-look="shot"] .key[data-size="sm"] :is(.key__dest, .key__label:not(:has(.key__dest))::before) { width: 32px; height: 32px; padding: 8px; }
-/* the ink: halftone dots from the entry point, growing into a solid face */
+/* the ink: cream halftone dots from the entry point, growing into a solid face */
 html[data-look="shot"] .key__ink {
   background: radial-gradient(circle at center, var(--k-ink) 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px, var(--k-face);
   transition: clip-path 560ms var(--sea-ease), --kdot 0s linear 560ms;
 }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .key:hover .key__ink { --kdot: 5.4px; transition: clip-path 640ms var(--sea-ease), --kdot 720ms cubic-bezier(0.5, 0, 0.3, 1) 80ms; }
+  html[data-look="shot"] .key:hover .key__ink { --kdot: 5.4px; transition: clip-path 640ms var(--sea-ease), --kdot 640ms cubic-bezier(0.5, 0, 0.3, 1) 60ms; }
 }
 html[data-look="shot"] .key:focus-visible .key__ink, html[data-look="shot"] .key[data-force="hover"] .key__ink { --kdot: 5.4px; }
-html[data-look="shot"] .key[data-pressed] .key__ink { clip-path: circle(150% at var(--kx, 50%) var(--ky, 50%)); --kdot: 5.4px; transition: clip-path 420ms var(--sea-ease), --kdot 420ms ease; }
-html[data-look="shot"] .key__ink .key__dest { background: var(--k-chip); color: var(--k-chip-on); }
-/* the surprise (D136): the WhatsApp chip flies in from the key's edge with a small overshoot, and the
-   label becomes a chat bubble holding the message the link will send */
-html[data-look="shot"] .key__ink .key__dest { transform: translateX(72px) rotate(28deg); transition: transform 0s linear 560ms; }
-html[data-look="shot"] .key__msg {
-  flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-  max-width: 24ch; padding: 5px 10px; border-radius: 11px; border-end-start-radius: 3px; background: #ede7da; color: #0f1011;
-  font: 600 12.5px/1.22 var(--ui); transform-origin: 100% 100%; transform: scale(0.4); opacity: 0;
-  transition: transform 0s linear 560ms, opacity 0s linear 560ms;
-}
+html[data-look="shot"] .key[data-pressed] .key__ink { clip-path: circle(150% at var(--kx, 50%) var(--ky, 50%)); --kdot: 5.4px; transition: clip-path 380ms var(--sea-ease), --kdot 380ms ease; }
+/* the surprise (D136): the ink's WhatsApp mark arrives from the key's edge with a small overshoot */
+html[data-look="shot"] .key__ink .key__dest { transform: translateX(64px) rotate(30deg); transition: transform 0s linear 560ms; }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .key:hover .key__ink .key__dest { transform: none; transition: transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1) 90ms; }
-  html[data-look="shot"] .key:hover .key__msg { transform: none; opacity: 1; transition: transform 460ms cubic-bezier(0.34, 1.4, 0.64, 1) 300ms, opacity 160ms linear 300ms; }
+  html[data-look="shot"] .key:hover .key__ink .key__dest { transform: none; transition: transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms; }
 }
 html[data-look="shot"] .key:is(:focus-visible, [data-pressed], [data-force="hover"]) .key__ink .key__dest { transform: none; transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
-html[data-look="shot"] .key:is(:focus-visible, [data-pressed], [data-force="hover"]) .key__msg { transform: none; opacity: 1; transition: transform 360ms cubic-bezier(0.34, 1.4, 0.64, 1) 120ms, opacity 120ms linear 120ms; }
-@media (prefers-reduced-motion: reduce) { html[data-look="shot"] .key__ink :is(.key__dest, .key__msg) { transition-duration: 0s !important; transition-delay: 0s !important; } }
 html[data-look="shot"] .key:hover .key__cap, html[data-look="shot"] .key[data-force="hover"] .key__cap { transform: none; }
 html[data-look="shot"] .key[data-pressed] .key__cap { transform: scale(0.98); transition: transform 80ms ease; }
-html[data-look="shot"] .key:focus-visible { outline: 2px solid #ede7da; outline-offset: 4px; }
-html:is(.disable-animations, .motion-reduced) .key__ink { transition: none !important; }
-@media (prefers-reduced-motion: reduce) { html[data-look="shot"] .key__ink { transition-duration: 0s !important; } }
+html[data-look="shot"] .key:focus-visible { outline: 2px solid #ede7da; outline-offset: 4px; border-radius: 999px; }
+html:is(.disable-animations, .motion-reduced) .key__ink, html:is(.disable-animations, .motion-reduced) .key__ink .key__dest { transition: none !important; }
+@media (prefers-reduced-motion: reduce) { html[data-look="shot"] .key__ink, html[data-look="shot"] .key__ink .key__dest { transition-duration: 0s !important; transition-delay: 0s !important; } }
 
 /* ── the dock (phones and tablets): the WhatsApp pill in cream; wide screens have the contact card ── */
-html[data-look="shot"] .shot-dock__wa { background: #ede7da; color: #0f1011; border-radius: 6px; padding-inline: 6px 16px; gap: 10px; }
-html[data-look="shot"] .shot-dock__wa-icon { box-sizing: border-box; width: 36px; height: 36px; padding: 4px; border-radius: 4px; background: #0f1011; color: #ede7da; }
+html[data-look="shot"] .shot-dock__wa {
+  position: relative; justify-content: center; gap: 10px; padding: 0 22px; border-radius: 999px;
+  background: rgba(15, 16, 17, 0.82); color: #ede7da; box-shadow: none;
+}
+html[data-look="shot"] .shot-dock__wa::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: 3px;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+html[data-look="shot"] .shot-dock__wa-icon { box-sizing: border-box; width: 24px; height: 24px; padding: 0; border-radius: 0; background: none; color: currentColor; }
 html[data-look="shot"] .shot-dock__chat-btn { background: #17191b; color: #ede7da; box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.16); }
 html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn):focus-visible { outline-color: #ede7da; }
 @media (min-width: 1100px) { html[data-look="shot"] .shot-dock__wa { display: none; } }
@@ -217,7 +223,7 @@ html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn):focus-visible {
 .sea-cursor {
   position: fixed; top: 0; left: 0; z-index: 70; pointer-events: none;
   padding: 7px 10px; border-radius: 3px; background: #ede7da; color: #0f1011;
-  font: 700 12px/1 var(--sea-mono); letter-spacing: 0.04em; white-space: nowrap;
+  font: 700 12px/1 var(--sea-mono), var(--ui); letter-spacing: 0.04em; white-space: nowrap;
   opacity: 0; transition: opacity 0.18s linear; will-change: transform;
 }
 .sea-cursor::before { content: "[ "; }
@@ -296,7 +302,7 @@ html[data-look="shot"] #contact :is(input, textarea) { background: #17191b; }
    long reading off the dots); the first screen of a service page is the service's own object. ── */
 html[data-look="shot"] .sp { color: #ede7da; }
 html[data-look="shot"] .sp-top { position: relative; background: none; color: #ede7da; }
-.sea-shape { position: absolute; top: 0; inset-inline: 0; height: 1px; pointer-events: none; }
+
 html[data-look="shot"] .sp-sheet { background: #17191b; box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.07); border-radius: 6px; }
 html[data-look="shot"] .sp-top .sp-hero { box-shadow: none; }
 html[data-look="shot"] .sp-top :focus-visible, html[data-look="shot"] .sp-top .sp-hero :focus-visible { outline-color: #ede7da; }
@@ -355,4 +361,17 @@ html[data-look="shot"] .key .wa-dots.key__dest { padding: 5px; }
   html:not(.disable-animations):not(.motion-reduced) :is(.sea-card:hover, .key:hover .key__ink) .wa-dots circle {
     animation: wa-burst 0.75s cubic-bezier(0.3, 0.7, 0.2, 1) calc(var(--d) * 24ms) both;
   }
+}
+
+/* a service page's slot (D139): between the trail and the words on a phone, the left column when wide */
+html[data-look="shot"] .sp--service .sp-top { grid-template-rows: auto minmax(180px, 1fr) auto; row-gap: 8px; }
+@media (min-width: 1100px) {
+  html[data-look="shot"] .sp--service .sp-top {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto 1fr; column-gap: 48px;
+    padding-inline: max(var(--gut, 16px), (100% - 1360px) / 2);
+  }
+  html[data-look="shot"] .sp--service .sp-top > .sp-trail { grid-column: 1 / -1; width: auto; margin: 0; }
+  html[data-look="shot"] .sp--service .sp-top > .sp-hero { grid-column: 1; grid-row: 2; width: auto; margin: 0; }
+  html[data-look="shot"] .sp--service .sp-hero__copy { max-width: none; }
+  html[data-look="shot"] .sp--service .sea-spot--page { grid-column: 2; grid-row: 2; height: min(60svh, 560px); align-self: center; }
 }

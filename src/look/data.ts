@@ -4,8 +4,9 @@
 import { servicesData } from '../data/services'
 
 export const HERO = {
-  line1: 'אתר שמביא',
-  line2: 'פניות לוואטסאפ',
+  /** Nati, 19.10 (D141): back to his line; "אתר שמביא פניות לוואטסאפ" read badly */
+  line1: 'העסק שלכם,',
+  line2: 'המומחיות שלנו',
   /** [קופי: נתי] replaces "עם גישה אישית וליווי צמוד" (slop-scan flagged both) */
   sub: 'נבנה מאפס בשביל העסק שלכם. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
   /** [קופי: נתי] the primary key opens WhatsApp (critic M1 F1: the H1 promises WhatsApp) */

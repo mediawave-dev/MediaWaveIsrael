@@ -28,6 +28,7 @@ export default function SeaServices() {
   const state = useRef<HTMLSpanElement>(null)
   const tape = useRef(reels())
   const shown = useRef(-1)
+  const spot = useRef<HTMLSpanElement>(null)
 
   useGear(run, (el, vh) => {
     const top = docTop(el)
@@ -38,6 +39,8 @@ export default function SeaServices() {
     if (active !== shown.current && list.current) {
       shown.current = active
       list.current.querySelectorAll('li').forEach((li, i) => li.classList.toggle('is-on', i === active))
+      // the stage's one slot takes the current service's scene; the last one fades out in place
+      if (spot.current) spot.current.dataset.spot = SCENE[SERVICES[active].id] ?? 'quiet'
       if (count.current) count.current.textContent = `${pad(active + 1)} / ${pad(N)}`
       sound.tick()
     }
@@ -52,10 +55,9 @@ export default function SeaServices() {
   return (
     <section id="services" className="sea-ch sea-svc" aria-labelledby="services-title" data-chapter="services">
       <div ref={run} className="sea-svc__run" style={{ ['--n' as string]: N }}>
-        {SERVICES.map((s, i) => (
-          <i key={s.id} className="sea-svc__mark" data-scene={SCENE[s.id] ?? 'quiet'} data-scene-fade={i ? '0.2' : undefined} style={{ ['--k' as string]: i }} aria-hidden="true" />
-        ))}
         <div className="sea-svc__stage">
+          {/* one slot for the six objects (D139): above the words on a phone, beside them when wide */}
+          <span ref={spot} className="sea-spot sea-spot--svc" data-spot={SCENE[SERVICES[0].id]} aria-hidden="true" />
           <header className="sea-head" data-reveal="">
             <Tag className="sea-fade">02 · SERVICES</Tag>
             <h2 id="services-title" className="sea-h2 sea-svc__h2" data-zone="text"><Lines lines={['מה אנחנו עושים']} /></h2>

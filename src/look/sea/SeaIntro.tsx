@@ -25,7 +25,7 @@ interface Dot { sx: number; sy: number; tx: number; ty: number; r: number; blue:
 function discDots(w: number, h: number): Dot[] {
   const dpr = field.dprCap()
   const cell = field.cellCss(w)
-  const s = field.shapeSpot(w, h)
+  const s = field.heroSpot()
   const dots: Dot[] = []
   const hDev = Math.round(h * dpr)
   const cDev = cell * dpr

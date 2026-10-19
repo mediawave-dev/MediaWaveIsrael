@@ -11,7 +11,7 @@
 //   seo      a results page: our result climbs from fourth place to first
 //   chat     a customer's question, the bot typing, the answer
 //   memory   a print that develops like a cyanotype, in the logo's blue
-// Shape-local coordinates are in units of the shape radius uR, y up, from uC.
+// Shape-local coordinates are in units of the slot's radius, y up, from the slot's centre (D139).
 
 export const VERT = `
 attribute vec2 p;
@@ -25,12 +25,12 @@ uniform float uCell;
 uniform float uTime;
 uniform vec2 uPtr;
 uniform float uPtrE;
-uniform vec4 uW;        // weights: horizon, laptop, reels, bubble
-uniform vec4 uW2;       // weights: landing, seo, chat, memory
+uniform vec4 uS[8];     // each scene's slot: x, y, radius (device px) and weight: horizon, laptop, reels,
+                        // bubble, landing, seo, chat, memory
 uniform vec4 uG;        // gears: landing, seo, chat, memory
 uniform float uAmb;     // the quiet field spreading out from the mark, 0..1
-uniform vec2 uC;
-uniform float uR;
+uniform vec2 uC;        // where the quiet field spreads from after the opening
+uniform float uR;       // the ripple's reach
 uniform float uLid;     // lid angle, radians (0 shut)
 uniform vec4 uScr;      // the screen: code typed, code to site, site scrolled, cursor and tap
 uniform float uLead;    // the lead rising out of the screen
@@ -38,6 +38,11 @@ uniform vec4 uReel;     // angle L, angle R, pack radius L, pack radius R
 uniform float uType;    // typing, 0..1
 uniform float uTypeT;   // the typing phase (advances only while someone types)
 uniform float uRew;     // rewind, 0..1
+uniform vec4 uTxt[16];  // the words on screen: centre and half-size, device px (D139)
+uniform float uNTxt;
+uniform float uPad;
+uniform float uLvl;     // the music's level, 0..1: the dots breathe with it (D142)
+uniform vec4 uNote;     // the last bell: x, y (device px), energy, the ring's radius now
 
 const vec3 BG = vec3(0.059, 0.063, 0.067);
 const vec3 CREAM = vec3(0.929, 0.906, 0.855);
@@ -344,23 +349,37 @@ void main() {
   px.x += slip;
   vec2 cell = floor(px / uCell);
   vec2 c = (cell + 0.5) * uCell;
-  vec2 q = (c - uC) / uR;
   vec2 f = vec2(0.0);
-  if (uW.x > 0.001) f += horizon(c, q, t) * uW.x;
-  if (uW.y > 0.001) f += laptop(q, t) * uW.y;
-  if (uW.z > 0.001) f += reels(q) * uW.z;
-  if (uW.w > 0.001) f += bubble(q) * uW.w;
-  if (uW2.x > 0.001) f += landing(q, uG.x) * uW2.x;
-  if (uW2.y > 0.001) f += seo(q, uG.y) * uW2.y;
-  if (uW2.z > 0.001) f += chat(q, uG.z) * uW2.z;
-  if (uW2.w > 0.001) f += memory(q, cell, uG.w) * uW2.w;
+  vec4 s;
+  s = uS[0]; if (s.w > 0.001) f += horizon(c, (c - s.xy) / s.z, t) * s.w;
+  s = uS[1]; if (s.w > 0.001) f += laptop((c - s.xy) / s.z, t) * s.w;
+  s = uS[2]; if (s.w > 0.001) f += reels((c - s.xy) / s.z) * s.w;
+  s = uS[3]; if (s.w > 0.001) f += bubble((c - s.xy) / s.z) * s.w;
+  s = uS[4]; if (s.w > 0.001) f += landing((c - s.xy) / s.z, uG.x) * s.w;
+  s = uS[5]; if (s.w > 0.001) f += seo((c - s.xy) / s.z, uG.y) * s.w;
+  s = uS[6]; if (s.w > 0.001) f += chat((c - s.xy) / s.z, uG.z) * s.w;
+  s = uS[7]; if (s.w > 0.001) f += memory((c - s.xy) / s.z, cell, uG.w) * s.w;
   // a quiet field everywhere, like grain on paper; after the opening it spreads out from the mark
   float reach = uAmb * length(uRes) * 1.1;
   float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC));
-  float v = max(f.x, amb);
+  // the words (D139): a safety net under every text block. It dims only what moves (a shape near the
+  // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line
+  float mask = 1.0;
+  for (int i = 0; i < 16; i++) {
+    if (float(i) >= uNTxt) break;
+    vec4 tr = uTxt[i];
+    vec2 dq = abs(c - tr.xy) - tr.zw;
+    float dist = length(max(dq, 0.0)) + min(max(dq.x, dq.y), 0.0);
+    mask = min(mask, smoothstep(-uPad * 0.3, uPad, dist));
+  }
+  float give = mix(0.1, 1.0, mask);
+  // the music: the shapes and the grain breathe with its level, and each bell sends a ring out
+  float v = max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl));
+  float nd = length(c - uNote.xy);
+  v += uNote.z * 0.36 * exp(-pow((nd - uNote.w) / (uCell * 4.0), 2.0)) * exp(-nd / (2.4 * uR)) * give;
   // the finger or the pointer ripples the dots like water
   float pd = length(c - uPtr);
-  v += uPtrE * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0));
+  v += uPtrE * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0)) * mix(0.3, 1.0, mask);
   v += uRew * step(0.93, slipH) * 0.35;
   v = clamp(v, 0.0, 1.0);
   float r = pow(v, 0.62) * uCell * 0.5;

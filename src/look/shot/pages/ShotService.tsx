@@ -123,9 +123,9 @@ export default function ShotService() {
       {schema.map((s, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />)}
 
       <div className="sp-top">
-      {/* the sea (D133): the field draws this service's object behind the first screen */}
-      <SeaShape id={service.id} />
       <Trail items={[{ label: 'דף הבית', href: '/' }, { label: 'שירותים', href: '/#services' }, { label: service.title }]} />
+      {/* the sea (D133, D139): this service's object, in its own slot, never under the words */}
+      <SeaShape id={service.id} />
 
       <article className="sp-sheet sp-hero" style={vt.sheet(service.id)} aria-labelledby="sp-title">
         <div className="sp-hero__obj"><DeskObject id={service.id} item={service.id === 'memory-videos' ? { ...item, image: '/videos/memory-video-poster-640.webp', lottie: undefined } : item} size={ART} /></div>
@@ -145,7 +145,7 @@ export default function ShotService() {
       </article>
       </div>
 
-      <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`} data-scene="quiet">
+      <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`}>
         {service.sections.map((s) => (
           <div key={s.heading} className="sp-prose__item">
             <h2 className="sp-h2" data-zone="text">{s.heading}</h2>

@@ -21,11 +21,9 @@ export interface KeyButtonProps extends LookButtonProps {
   next?: ReactNode
 }
 
-/** The ink face's words by destination [קופי: נתי]: a key says what will happen before the click. */
-const NEXT: Partial<Record<Dest, string>> = { wa: 'פותח וואטסאפ', down: 'גוללים למטה' }
 
-/** A WhatsApp key's ink face (D136): the very message the link will put in the chat, in a small bubble,
-    so the key shows what you are about to send instead of saying "opens WhatsApp". */
+/** A WhatsApp key shows, in the cursor's label (D136, D140), the very message the link will put in the
+    chat, so the visitor sees what they are about to send instead of "opens WhatsApp". */
 const waPreview = (href?: string) => {
   try { return href ? new URL(href).searchParams.get('text') : null } catch { return null }
 }
@@ -145,10 +143,10 @@ export function KeyButton({ tone, next, className = '', ...props }: KeyButtonPro
         <>
           <span className="key__shadow" aria-hidden="true" />
           <span className="key__skirt" aria-hidden="true" />
-          <span className="key__cap">
+          <span className="key__cap" data-cursor={dest === 'wa' ? waPreview(props.href) ?? undefined : undefined}>
             <KeyPrint label={label} tc={faceTc} dest={dest} />
             <span className="key__ink" aria-hidden="true">
-              <KeyPrint label={next ?? (dest === 'wa' && waPreview(props.href) ? <span className="key__msg">{waPreview(props.href)}</span> : NEXT[dest]) ?? label} tc={inkTc} dest={dest} />
+              <KeyPrint label={next ?? label} tc={inkTc} dest={dest} />
             </span>
             <span className="key__render" aria-hidden="true">
               <KeyPrint label={label} tc={renderTc} dest={dest} />

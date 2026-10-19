@@ -215,12 +215,26 @@ html.sea-held .sea-deck { display: flex; }
 }
 @media (min-width: 1100px) { .sea-end { align-content: center; } }
 .sea-rew {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 20px;
-  border: 1.5px solid rgba(237, 231, 218, 0.6); border-radius: 4px; background: rgba(15, 16, 17, 0.6); color: #ede7da;
-  font: 700 1rem var(--ui); cursor: pointer; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px;
+  border: 0; border-radius: 999px; background: rgba(15, 16, 17, 0.74); color: #ede7da;
+  font: 700 1rem var(--ui); cursor: pointer; overflow: hidden; isolation: isolate; transition: color 0.2s linear;
+}
+.sea-rew::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: 3px;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.sea-rew::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; --kdot: 0.6px;
+  background: radial-gradient(circle at center, #ede7da 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px;
+  clip-path: circle(0 at 50% 50%); transition: clip-path 0.5s var(--sea-ease), --kdot 0s linear 0.5s;
 }
 .sea-rew svg { width: 18px; height: 11px; fill: currentColor; }
-@media (hover: hover) and (pointer: fine) { .sea-rew:hover { background: #ede7da; color: #0f1011; border-color: #ede7da; } }
+@media (hover: hover) and (pointer: fine) {
+  .sea-rew:hover { color: #0f1011; transition: color 0.2s linear 0.28s; }
+  .sea-rew:hover::before { clip-path: circle(150% at 50% 50%); --kdot: 5.4px; transition: clip-path 0.6s var(--sea-ease), --kdot 0.6s cubic-bezier(0.5, 0, 0.3, 1) 0.06s; }
+}
 .sea-rew__hud {
   position: fixed; top: calc(var(--head) + 12px); right: var(--gut, 16px); z-index: 60; pointer-events: none;
   font: 700 14px/1 var(--sea-mono); direction: ltr; letter-spacing: 0.06em; background: #ede7da; color: #0f1011; padding: 7px 10px; border-radius: 3px;
@@ -272,3 +286,62 @@ html.sea-out .mw-head { animation: sea-fade-in 0.9s ease 0.5s both; }
 /* CALM: nothing rises, the parts only fade */
 html.sea-opening-calm .sea-h1__ln { animation: none !important; transform: none !important; }
 html.sea-opening-calm .sea-up { animation: none !important; transform: none !important; }
+
+/* ── the slots (D139, Nati: "don't put text over effects"): every shape has its own box, like an image.
+   Phones: the box takes the free space above its words. Wide screens: it is the left column beside
+   them. The field draws the shape inside the box and moves it with the box, so no line ever sits on a
+   shape. The quiet grain alone stays full-screen. ── */
+.sea-spot { position: relative; display: block; width: 100%; min-height: 0; pointer-events: none; container-type: size; }
+.sea-spot .sea-still {
+  --r: min(100cqw / 2.9, 100cqh / 2.25);
+  position: absolute; z-index: auto; left: calc(50% - var(--r)); top: calc(50% - var(--r)); width: calc(var(--r) * 2);
+}
+.sea-spot .sea-lap__still { position: absolute; z-index: auto; left: 50%; top: 50%; width: min(92%, 150cqh); transform: translate(-50%, -50%); }
+
+/* the opening */
+.sea-hero { grid-template-rows: minmax(110px, 1fr) auto; align-content: stretch; row-gap: 8px; }
+@media (min-width: 768px) and (max-width: 1099px) { .sea-h1 { font-size: min(9vw, 96px); } }
+@media (min-width: 1100px) {
+  .sea-hero { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: none; align-items: center; column-gap: 48px; }
+  .sea-hero > .sea-in { grid-column: 1; grid-row: 1; }
+  .sea-hero .sea-in > :is(.sea-h1, .sea-row) { max-width: none; }
+  .sea-spot--hero { grid-column: 2; grid-row: 1; height: min(62svh, 600px); }
+}
+
+/* 01 websites: the laptop's stage */
+.sea-lap__stage { grid-template-rows: minmax(200px, 1fr) auto; align-content: stretch; row-gap: 12px; }
+@media (min-width: 1100px) {
+  .sea-lap__stage { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: none; align-items: center; column-gap: 48px; }
+  .sea-lap__stage > .sea-in { grid-column: 1; grid-row: 1; }
+  .sea-lap__stage .sea-in > * { max-width: none; }
+  .sea-spot--lap { grid-column: 2; grid-row: 1; height: min(68svh, 620px); }
+}
+
+/* 02 services: one slot on the stage */
+html:not(.sea-held) .sea-svc .sea-spot { display: none; }
+html.sea-held .sea-svc__stage { grid-template-rows: minmax(160px, 1fr) auto auto; align-content: stretch; }
+@media (min-width: 1100px) {
+  html.sea-held .sea-svc__stage { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto auto; align-content: center; column-gap: 48px; }
+  html.sea-held .sea-svc__stage > :not(.sea-spot) { grid-column: 1; max-width: none; }
+  html.sea-held .sea-spot--svc { grid-column: 2; grid-row: 1 / span 2; height: min(64svh, 600px); align-self: center; max-width: none; }
+}
+
+/* 05 the letter: the bubble above the heading (phones), a sticky column beside the form (wide) */
+.sea-spot--contact { height: clamp(180px, 32svh, 300px); margin-bottom: 12px; }
+@media (max-width: 1099px) { .sea-contact { padding-top: 96px; } }
+@media (min-width: 1100px) {
+  .sea-contact { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 48px; align-items: start; }
+  .sea-contact > #contact { grid-column: 1; grid-row: 1; }
+  .sea-contact .ct__in { max-width: none; }
+  .sea-spot--contact { grid-column: 2; grid-row: 1; position: sticky; top: 18svh; height: 60svh; margin: 0; }
+}
+
+/* the end of the tape: the disc returns in its own slot */
+.sea-end { grid-template-rows: minmax(180px, 1fr) auto auto; align-content: stretch; }
+@media (min-width: 1100px) {
+  .sea-end { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto auto; align-content: center; column-gap: 48px; }
+  .sea-end > :not(.sea-spot) { grid-column: 1; }
+  .sea-end > .sea-tag { align-self: end; }
+  .sea-end > .sea-rew { align-self: start; }
+  .sea-spot--end { grid-column: 2; grid-row: 1 / span 2; height: min(54svh, 500px); }
+}

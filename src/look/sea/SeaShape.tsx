@@ -1,7 +1,7 @@
-// sea · a service page's own object (D133): the page's first screen marks the service's scene, and the
-// visitor's scroll through it winds the object's take (the same gears as on the home page), so every
-// service page opens on its own moving object: the laptop and its lead, the phone page, the ranking,
-// the chat, the cassette, the developing print. Its parent is the page's top block.
+// sea · a service page's own object (D133, D139): a slot in the page's first screen, between the trail
+// and the words on a phone and beside the words when wide, where the field draws the service's object;
+// the visitor's scroll through the first screen winds its take (the same gears as on the home page): the
+// laptop and its lead, the phone page, the ranking, the chat, the cassette, the developing print.
 import { useRef } from 'react'
 import { docTop, useGear } from '../wave/clock'
 import { SCENE, reels, serviceAt } from './gears'
@@ -20,5 +20,5 @@ export default function SeaShape({ id }: { id: string }) {
     else serviceAt(id, q)
   }, [id])
 
-  return <span ref={ref} className="sea-shape" data-scene={SCENE[id] ?? 'quiet'} aria-hidden="true" />
+  return <span ref={ref} className="sea-spot sea-spot--page" data-spot={SCENE[id] ?? 'quiet'} aria-hidden="true" />
 }

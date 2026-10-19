@@ -20,8 +20,11 @@ export default function SeaLaptop({ children }: { children: ReactNode }) {
   return (
     <div ref={run} className="sea-lap" data-cursor="גללו, והמחשב נפתח">
       <div className="sea-lap__stage">
+        {/* the laptop's slot (D139): above the words on a phone, beside them when wide */}
+        <span className="sea-spot sea-spot--lap" data-spot="laptop" aria-hidden="true">
+          <span className="sea-lap__still"><i /><i /><i /><b /></span>
+        </span>
         {children}
-        <span className="sea-lap__still" aria-hidden="true"><i /><i /><i /><b /></span>
       </div>
     </div>
   )
