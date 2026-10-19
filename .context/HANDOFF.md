@@ -1,4 +1,4 @@
-# HANDOFF: the Lama Lama round (20.10.2026): deep harvest, lab, dots everywhere (branch, NOT deployed)
+# HANDOFF: the Lama Lama round (20.10.2026): deep harvest, lab, dots everywhere: LIVE (main cce9659)
 
 ## Goal
 Nati: break lamalama.com down to the smallest detail and build its mechanisms into mediawave.co.il in
