@@ -7,7 +7,9 @@ import { useMotionEngine } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
 import { isCalm, isStill } from '../wave/clock'
 import * as field from './field'
-import { Tag } from './parts'
+import { Clock, Tag } from './parts'
+import { opt } from './lab'
+import { SITE_CONTACT } from '../../data/site'
 import * as sound from './sound'
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
@@ -45,6 +47,14 @@ export default function SeaRewind() {
         חזרה להתחלה
       </button>
       <div className={`sea-rew__hud${on ? ' is-on' : ''}`} aria-hidden="true">◀◀ REW <span ref={count}>0000</span></div>
+      {/* the meta bar comes back at the end (D155, gate `bar`): the line, the labels, the live clock */}
+      {opt('bar') === 'ends' && (
+        <div className="sea-meta sea-meta--end" data-reveal="">
+          <Clock />
+          <Tag he className="sea-meta__mid">סטודיו לאתרים ולווידאו · ישראל</Tag>
+          <a className="sea-tag sea-meta__link" href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="MediaWave באינסטגרם">INSTAGRAM +</a>
+        </div>
+      )}
     </div>
   )
 }

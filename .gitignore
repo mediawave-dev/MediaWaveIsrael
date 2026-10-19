@@ -65,3 +65,6 @@ design/ideas/*.png
 design/ideas/*.jpg
 design/ideas/buttons/*.png
 design/audit/impeccable/*.json
+
+# the media round's candidate board and search cache (third-party previews, never published)
+design/media/

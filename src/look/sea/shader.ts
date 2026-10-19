@@ -44,11 +44,32 @@ uniform float uPad;
 uniform float uLvl;     // the music's level, 0..1: the dots breathe with it (D142)
 uniform vec4 uNote;     // the last bell: x, y (device px), energy, the ring's radius now
 // the Lama Lama lab (design/harvest/lamalama-deep.rtl.md §9)
-uniform sampler2D uFilm; // the film: a frame of the video (or its poster), flipped so v runs up
-uniform vec4 uFilmR;    // its slot: left, bottom, width, height (device px, y up)
-uniform vec4 uFilmK;    // weight in view, developed (0..1), pointer mode (0|1), frame ready (0|1)
-uniform vec3 uFilmP;    // where the finger develops it: x, y (device px), energy
-uniform float uFilmA;   // the video's aspect (width / height)
+uniform sampler2D uFilm0; // the films (D154): a frame of each video (or its poster), flipped so v runs up
+uniform sampler2D uFilm1;
+uniform vec4 uFilmR[2]; // each slot: left, bottom, width, height (device px, y up)
+uniform vec4 uFilmK[2]; // weight in view, developed (0..1), pointer mode (0|1), frame ready (0|1)
+uniform vec3 uFilmP[2]; // where the finger develops it: x, y (device px), energy
+uniform float uFilmA[2]; // the video's aspect (width / height)
+uniform float uFilmS[2]; // the slot's shape: 0 its rectangle, 1 the disc inside it (the hero's horizon), 2 the chapter's ground
+uniform sampler2D uReel0; // the showreel (D157): the two takes
+uniform sampler2D uReel1;
+uniform vec4 uReelR;    // its chapter: left, bottom, width, height (device px, y up)
+uniform vec4 uReelK;    // weight, developed, the change (0..1), its type (0..7)
+uniform vec4 uReelS;    // the change: seed, origin x, origin y, angle
+uniform vec4 uReelV;    // its edge, how far the dots last below it, A's aspect, B's aspect
+uniform vec4 uReelX;    // A's drift, B's drift, which texture is A, a change is on (0|1)
+uniform float uGrain;
+uniform vec4 uFlowP[12]; // the pointer's wake (D158): its recent path, x, y (device px), speed x, y
+uniform vec4 uFlowE[3];  // their energies, four to a vector
+uniform float uFlowR;   // the wake's reach (device px)
+uniform float uGrainPx; // the dither's step (device px)
+uniform float uScrollV;
+uniform sampler2D uAtlas; // live pictures (D158): eight cells of 512 x 320
+uniform vec4 uImgR[8];  // each picture's frame: left, bottom, width, height (device px, y up)
+uniform vec4 uImgU[8];  // its cell in the atlas: u, v, width, height
+uniform vec4 uImgK[8];  // weight, developed (0..1), the way it develops (0 all over, 1 from a point, 2 top down), seed
+uniform vec4 uImgO[8];  // the point it develops from (uv), its drift in the frame, its zoom // the scroll's speed, -1..1 (phones stir the picture by scrolling)   // the quiet grain everywhere (D157: off, as Lama Lama's plain ground)
+uniform vec4 uFilmV[2]; // a ground (D156): its edge (0 bottom .. 1 top), how far below it the dots last, the picture's focus
 uniform vec4 uGnd[2];   // a chapter's own ground: top, bottom (device px, y up), kind (1 deep, 2 paper), on
 uniform float uGE;      // the depth of the dotted edge (device px)
 uniform vec4 uTurn;     // the page turn: x, y (device px), cover 0..1, reveal 0..1
@@ -385,6 +406,247 @@ vec2 memory(vec2 q, vec2 cell, float g) {
   return vec2(v, dev);
 }
 
+// one film in its slot: R = slot (left, bottom, width, height), K = weight, developed, pointer mode,
+// frame ready; P = the finger; A = the video's aspect; S = 1 for the disc inside the slot
+vec3 filmLayer(sampler2D tx, vec4 R, vec4 K, vec3 P, float A, float S, vec2 c, vec2 px, vec2 cell, float t, vec3 outc) {
+  vec2 fr = (c - R.xy) / R.zw;
+  vec2 fp = (px - R.xy) / R.zw;
+  // the disc: a cell joins by its centre, the developed colour by each pixel (a clean round edge)
+  float cin = step(0.0, fr.x) * step(fr.x, 1.0) * step(0.0, fr.y) * step(fr.y, 1.0);
+  float pin = step(0.0, fp.x) * step(fp.x, 1.0) * step(0.0, fp.y) * step(fp.y, 1.0);
+  if (S > 0.5) {
+    float rd = 0.5 * R.z;
+    cin = step(length((fr - 0.5) * R.zw), rd);
+    pin = 1.0 - smoothstep(rd - 1.0, rd + 0.5, length((fp - 0.5) * R.zw));
+  }
+  if (cin < 0.5 && pin <= 0.0) return outc;
+  // cover fit: the video fills the slot, cropped on the long side
+  float ra = R.z / R.w;
+  vec2 sc = ra > A ? vec2(1.0, A / ra) : vec2(ra / A, 1.0);
+  float pdf = length(c - uPtr);
+  vec2 wob = normalize(c - uPtr + 0.001) * uPtrE * 0.012 * exp(-pdf / (0.4 * uR)) * sin(pdf * 0.075 - t * 7.0);
+  vec2 uvC = clamp((fr - 0.5) * sc + 0.5 + wob, 0.0, 1.0);
+  vec2 uvP = clamp((fp - 0.5) * sc + 0.5, 0.0, 1.0);
+  vec3 vc = texture2D(tx, uvC).rgb;
+  float L = dot(vc, vec3(0.299, 0.587, 0.114));
+  float fv = clamp(L * 1.15 * K.w + 0.12 * (1.0 - K.w), 0.0, 1.0);
+  float frr = pow(fv, 0.62) * uCell * 0.5;
+  float fa = (1.0 - smoothstep(frr - 0.8, frr + 0.6, length(px - c))) * step(0.03, fv);
+  vec3 fcol = mix(BLUE, CREAM, smoothstep(0.2, 0.7, L));
+  vec3 dotted = cin > 0.5 ? mix(BG, fcol, fa * (0.35 + 0.65 * fv)) : outc;
+  float hc = hash(cell + 7.0);
+  float dev = step(hc * 0.98 + 0.01, K.y) * K.w;
+  float fdR = 0.36 * min(R.z, R.w);
+  dev = max(dev, K.z * K.w * P.z * (1.0 - smoothstep(fdR * 0.55, fdR, length(c - P.xy) + hc * fdR * 0.4)));
+  vec3 film = mix(dotted, texture2D(tx, uvP).rgb, dev * pin);
+  return mix(outc, film, K.x);
+}
+
+// ── Lama Lama's material, fine (D158): a picture comes and goes through a fine noisy dither, an
+// ordered pattern stirred by grain that turns slowly, a couple of pixels a step; on its way it passes
+// through its own muted grey "material". No coarse dots. ──
+const vec3 MAT = vec3(0.40, 0.385, 0.36);   // the material: the picture's light as a warm grey
+const vec3 LUM = vec3(0.299, 0.587, 0.114);
+float bayer2(vec2 a) { a = floor(a); return fract(dot(a, vec2(0.5, a.y * 0.75))); }
+float bayer4(vec2 a) { return bayer2(0.5 * a) * 0.25 + bayer2(a); }
+float bayer8(vec2 a) { return bayer4(0.5 * a) * 0.25 + bayer2(a); }
+// the threshold at this pixel: ordered dither (n = 0) to pure grain (n = 1); the grain turns at 12 fps
+float dith(vec2 px, float t, float n) {
+  vec2 q = floor(px / uGrainPx);
+  return mix(bayer8(q), hash(q + floor(t * 12.0) * 17.0), n);
+}
+// a feathered edge through the dither: 1 inside (m high), 0 outside, a fine grain in between
+float through(float m, float th) { return step(th, m); }
+// the pointer's wake (D159): its recent path, each point with its speed and energy. Like a fingertip
+// drawn through water, the picture is pushed a little away from the path and carried a little along the
+// motion (xy, device px), with a faint colour fringe where it bends (z: how much it bends here)
+vec3 flowAt(vec2 px) {
+  vec3 acc = vec3(0.0);
+  float r2 = uFlowR * uFlowR;
+  for (int i = 0; i < 12; i++) {
+    float e = dot(uFlowE[i / 4], vec4(equal(vec4(float(i - (i / 4) * 4)), vec4(0.0, 1.0, 2.0, 3.0))));
+    if (e < 0.01) continue;
+    vec2 d = px - uFlowP[i].xy;
+    float g = exp(-dot(d, d) / r2) * e;
+    acc += vec3((d / uFlowR) * 10.0 * g + uFlowP[i].zw * 0.3 * g, g);
+  }
+  return acc;
+}
+
+// ── a chapter's ground (D156, D158): the clip across the whole width; at its edges it gives way to its
+// material and then to the ground, each ground in its own way (style): 0 grain (Lama's noisy dither),
+// 1 ordered (a clean pattern, a wider grey band), 2 soft (a plain gradient, the lightest) ──
+vec3 veilLayer(sampler2D tx, vec4 R, vec4 K, float A, vec4 V, float style, vec2 px, float t, float soft, vec3 outc) {
+  vec2 fp = (px - R.xy) / R.zw;
+  if (fp.y < 0.0 || fp.y > 1.0) return outc;
+  float ra = R.z / R.w;
+  vec2 sc = ra > A ? vec2(1.0, A / ra) : vec2(ra / A, 1.0);
+  vec2 c0 = clamp(V.zw, sc * 0.5, 1.0 - sc * 0.5);
+  vec3 fl = flowAt(px);
+  vec2 sv = vec2(0.0, uScrollV * 0.012 * sin(fp.x * 9.0 + t * 1.3));
+  vec2 base = (fp - 0.5) * sc + c0 + sv;
+  vec2 off = fl.xy / R.zw * sc;
+  vec3 col = texture2D(tx, clamp(base - off, 0.0, 1.0)).rgb;
+  if (fl.z > 0.02) {
+    col.r = texture2D(tx, clamp(base - off * 1.35, 0.0, 1.0)).r;
+    col.b = texture2D(tx, clamp(base - off * 0.65, 0.0, 1.0)).b;
+    col += min(0.06, fl.z * 0.05);
+  }
+  float L = dot(col, LUM);
+  float e = V.x + 0.01 * sin(fp.x * 4.0 + t * 0.3);
+  float m = smoothstep(e - V.y - abs(uScrollV) * 0.05, e + 0.05, fp.y);
+  float wake = 0.0;
+  if (K.z > 0.0) m = min(m, smoothstep(1.0, 1.0 - K.z, fp.y));
+  // the picture, dimmed softly around any words
+  vec3 pic = col * mix(0.32, 1.0, soft);
+  float th = dith(px, t, style < 0.5 ? 0.5 : 0.0);
+  // 3 backdrop (Lama's backdrop behind a list): only the clip's material, half strength, quieter still
+  // under the words; the pointer's wake brightens it
+  if (style > 2.5) {
+    float th2 = dith(px, t, 0.5);
+    float a = through(L * (1.3 + wake * 0.6) * m, th2);
+    vec3 mc = mix(MAT, CREAM, 0.3 * wake);
+    return mix(outc, mix(outc, mc, 0.5 * mix(0.22, 1.0, soft)), a * K.x);
+  }
+  if (style > 1.5) {
+    vec3 sw = through(1.0 - wake * 0.85, th) > 0.5 ? pic : (through(L * 1.45, th) > 0.5 ? mix(MAT, CREAM, 0.3 * wake) : outc);
+    return mix(outc, sw, m * K.x);
+  }
+  float dv = K.y;
+  float showCol = through(m * (style < 0.5 ? 1.5 : 1.8) - (style < 0.5 ? 0.5 : 0.8), th) * through(dv * 1.2 - 0.1 + (fp.y - 0.5) * 0.15, th) * through(1.0 - wake * 0.85, th);
+  float showMat = through(L * 1.4 * max(smoothstep(0.0, style < 0.5 ? 0.6 : 0.85, m), wake * m), th);
+  vec3 mat = mix(MAT, CREAM, 0.3 * wake) * mix(0.3, 1.0, soft);
+  vec3 res = showCol > 0.5 ? pic : (showMat > 0.5 ? mat : outc);
+  return mix(outc, res, K.x);
+}
+
+// ── the hero's showreel (D157, D158): two takes, A on screen and B coming in through one of eight
+// smooth changes ──
+vec3 reelTex(float which, vec2 uv) { return which < 0.5 ? texture2D(uReel0, uv).rgb : texture2D(uReel1, uv).rgb; }
+vec2 reelUV(vec2 f, float asp, float s) {
+  float ra = uReelR.z / uReelR.w;
+  vec2 sc = ra > asp ? vec2(1.0, asp / ra) : vec2(ra / asp, 1.0);
+  return clamp((f - 0.5) * sc / s + 0.5, 0.001, 0.999);
+}
+vec3 reelColour(vec2 f, vec2 px, float t) {
+  float ty = uReelK.w;
+  float k = uReelK.z;
+  float sw = uReelX.z;
+  float sA = uReelX.x;
+  float sB = uReelX.y;
+  float ra = uReelR.z / uReelR.w;
+  vec2 fa = f;
+  vec2 fb = f;
+  bool tr = uReelX.w > 0.5;
+  float side = cos(uReelS.w) > 0.0 ? 1.0 : -1.0;
+  if (tr && ty > 2.5 && ty < 3.5) {
+    vec2 n = vec2(sin(f.y * 8.0 + uReelS.x + k * 4.0), cos(f.x * 6.0 + uReelS.x * 1.3 - k * 3.0));
+    fa += n * 0.05 * k;
+    fb -= n * 0.05 * (1.0 - k);
+  }
+  if (tr && ty > 3.5 && ty < 4.5) { sA *= 1.0 + 0.35 * k; sB *= 1.2 - 0.2 * k; }
+  if (tr && ty > 5.5 && ty < 6.5) { fa.x += side * k * 0.3; fb.x += -side * (1.0 - k); }
+  vec3 a = reelTex(sw, reelUV(fa, uReelV.z, sA));
+  if (!tr) return a;
+  vec3 b = reelTex(1.0 - sw, reelUV(fb, uReelV.w, sB));
+  float th = dith(px, t, 0.5);
+  // 0 grain: B comes through a fine noisy dither (Lama's dissolve)
+  if (ty < 0.5) return through(k, th) > 0.5 ? b : a;
+  // 1 bloom: B opens from a point, its rim a feathered grain
+  if (ty < 1.5) {
+    float d = length((f - uReelS.yz) * vec2(ra, 1.0));
+    float rr = k * (ra + 1.0) * 0.95;
+    return through(1.0 - smoothstep(rr - 0.14, rr, d), th) > 0.5 ? b : a;
+  }
+  // 2 wipe: at an angle, a soft front of grain sweeps B in
+  if (ty < 2.5) {
+    vec2 dir = vec2(cos(uReelS.w), sin(uReelS.w));
+    float s = 0.5 + dot((f - 0.5) * vec2(ra, 1.0), dir) / (0.5 * (ra + 1.0));
+    return through(clamp((k * 1.5 - 0.25 - s) / 0.25, 0.0, 1.0), th) > 0.5 ? b : a;
+  }
+  // 3 liquid: the picture flows into the next
+  if (ty < 3.5) return mix(a, b, smoothstep(0.12, 0.88, k));
+  // 4 push: A zooms through, B settles in
+  if (ty < 4.5) return mix(a, b, smoothstep(0.3, 0.7, k));
+  // 5 through the dark: B appears first where A is darkest
+  if (ty < 5.5) {
+    float L = dot(a, LUM);
+    return mix(a, b, smoothstep(L - 0.08, L, k * 1.16 - 0.08));
+  }
+  // 6 slide: B slides in from a side, A drifts away behind it, a soft shadow on the seam
+  if (ty < 6.5) {
+    float x = side > 0.0 ? f.x - (1.0 - k) : k - f.x;
+    float seam = exp(-abs(x) * 60.0) * 0.35 * step(0.0, x);
+    return x > 0.0 ? b * (1.0 - seam) : a * (1.0 - 0.3 * k);
+  }
+  // 7 material: A sinks into its grey grain, B rises out of it in colour (Lama's material to colour)
+  float h = k < 0.5 ? k * 2.0 : (k - 0.5) * 2.0;
+  vec3 src = k < 0.5 ? a : b;
+  float L = dot(src, LUM);
+  float colour = k < 0.5 ? through(1.0 - h, th) : through(h, th);
+  if (colour > 0.5) return src;
+  return through(L * 1.4 * (k < 0.5 ? 1.0 - 0.5 * h : 0.5 + 0.5 * h), th) > 0.5 ? MAT : BG;
+}
+vec3 reelLayer(vec2 px, float t, float soft, vec3 outc) {
+  vec2 fp = (px - uReelR.xy) / uReelR.zw;
+  if (fp.y < 0.0 || fp.y > 1.0) return outc;
+  vec3 fl = flowAt(px);
+  float wake = 0.0;
+  vec2 off = fl.xy / uReelR.zw;
+  vec2 fq = fp - off + vec2(0.0, uScrollV * 0.012 * sin(fp.x * 9.0 + t * 1.3));
+  vec3 col = reelColour(fq, px, t);
+  if (fl.z > 0.02) {
+    col.r = reelColour(fq - off * 0.35, px, t).r;
+    col.b = reelColour(fq + off * 0.35, px, t).b;
+    col += min(0.06, fl.z * 0.05);
+  }
+  float L = dot(col, LUM);
+  float th = dith(px, t, 0.5);
+  // the bottom: the picture gives way to its material, which thins out into the ground (and the edge
+  // climbs as the hero scrolls away)
+  float e = uReelV.x + 0.012 * sin(fp.x * 5.0 + t * 0.35);
+  float m = smoothstep(e - uReelV.y - abs(uScrollV) * 0.05, e + 0.05, fp.y);
+  // at the start it develops from the material into colour, from the top down; under the pointer's
+  // wake it breaks into bright grain and comes back
+  float showCol = through(m * 1.5 - 0.5, th) * through(uReelK.y * 1.2 - 0.1 + (fp.y - 0.5) * 0.18, th) * through(1.0 - wake * 0.85, th);
+  vec3 pic = col * mix(0.3, 1.0, soft) * mix(0.82, 1.0, smoothstep(0.0, 0.45, fp.y));
+  if (showCol > 0.5) return mix(outc, pic, uReelK.x);
+  vec3 res = through(L * 1.45 * max(smoothstep(0.0, 0.6, m), wake), th) > 0.5 ? mix(MAT, CREAM, 0.3 * wake) * mix(0.3, 1.0, soft) : outc;
+  return mix(outc, res, uReelK.x);
+}
+
+// ── live pictures (D158): at rest their material, developing into colour in their own way, stirred by
+// the pointer's wake, drifting inside their frames ──
+const vec3 TILE = vec3(0.07, 0.075, 0.08);
+vec3 imgLayer(vec2 px, float t, vec3 outc) {
+  for (int i = 0; i < 8; i++) {
+    vec4 K = uImgK[i];
+    if (K.x < 0.001) continue;
+    vec4 R = uImgR[i];
+    vec2 f = (px - R.xy) / R.zw;
+    if (f.x < 0.0 || f.x > 1.0 || f.y < 0.0 || f.y > 1.0) continue;
+    vec4 O = uImgO[i];
+    vec3 fl = flowAt(px);
+    vec2 off = fl.xy / R.zw;
+    vec2 g = clamp((f - 0.5) / O.w + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
+    vec3 col = texture2D(uAtlas, uImgU[i].xy + g * uImgU[i].zw).rgb;
+    if (fl.z > 0.02) {
+      col.r = texture2D(uAtlas, uImgU[i].xy + clamp(g - off * 0.35, 0.002, 0.998) * uImgU[i].zw).r;
+      col.b = texture2D(uAtlas, uImgU[i].xy + clamp(g + off * 0.35, 0.002, 0.998) * uImgU[i].zw).b;
+      col += min(0.06, fl.z * 0.05);
+    }
+    float L = dot(col, LUM);
+    float th = dith(px, t, 0.5);
+    float reach = K.y;
+    if (K.z > 0.5 && K.z < 1.5) reach = clamp(K.y * 1.8 - length((f - O.xy) * vec2(R.z / R.w, 1.0)) * 0.8, 0.0, 1.0);
+    if (K.z > 1.5) reach = clamp(K.y * 1.5 - (1.0 - f.y) * 0.5, 0.0, 1.0);
+    float wake = 0.0;
+    vec3 res = through(reach, th) * through(1.0 - wake * 0.85, th) > 0.5 ? col : (through(L * 1.3, th) > 0.5 ? mix(MAT, CREAM, 0.3 * wake) : TILE);
+    return mix(outc, res, K.x);
+  }
+  return outc;
+}
+
 void main() {
   vec2 px = gl_FragCoord.xy;
   float t = uTime;
@@ -407,22 +669,26 @@ void main() {
   s = uS[7]; if (s.w > 0.001) f += memory((c - s.xy) / s.z, cell, uG.w) * s.w;
   // a quiet field everywhere, like grain on paper; after the opening it spreads out from the mark
   float reach = uAmb * length(uRes) * 1.1;
-  float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC));
+  float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC)) * uGrain;
   // the words (D139): a safety net under every text block. It dims only what moves (a shape near the
   // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line
   float mask = 1.0;
+  float soft = 1.0;
   for (int i = 0; i < 16; i++) {
     if (float(i) >= uNTxt) break;
     vec4 tr = uTxt[i];
     vec2 dq = abs(c - tr.xy) - tr.zw;
     float dist = length(max(dq, 0.0)) + min(max(dq.x, dq.y), 0.0);
     mask = min(mask, smoothstep(-uPad * 0.3, uPad, dist));
+    // per pixel: over a picture a cell-sized step would show
+    vec2 dp = abs(px - tr.xy) - tr.zw;
+    soft = min(soft, smoothstep(-uPad, uPad * 4.0, length(max(dp, 0.0)) + min(max(dp.x, dp.y), 0.0)));
   }
   float give = mix(0.1, 1.0, mask);
   // the music: the shapes and the grain breathe with its level, and each bell sends a ring out
   float v = max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl));
   float nd = length(c - uNote.xy);
-  v += uNote.z * 0.36 * exp(-pow((nd - uNote.w) / (uCell * 4.0), 2.0)) * exp(-nd / (2.4 * uR)) * give;
+  v += uGrain * uNote.z * 0.36 * exp(-pow((nd - uNote.w) / (uCell * 4.0), 2.0)) * exp(-nd / (2.4 * uR)) * give;
   // the finger or the pointer ripples the dots like water
   float pd = length(c - uPtr);
   v += uPtrE * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0)) * mix(0.3, 1.0, mask);
@@ -460,34 +726,14 @@ void main() {
       outc = mix(outc, gm.yzw, gaa * (0.35 + 0.65 * gv));
     }
   }
-  // the film (lab gate: film): in its own slot, drawn in the sea's dots from the video's light, the
+  // the films (D146, D154): each in its own slot, drawn in the sea's dots from the video's light, the
   // finger's ripple moving it like water; cell by cell it develops into the real film, like a print
-  if (uFilmK.x > 0.001) {
-    vec2 fr = (c - uFilmR.xy) / uFilmR.zw;
-    vec2 fp = (px - uFilmR.xy) / uFilmR.zw;
-    if (fr.x >= 0.0 && fr.x <= 1.0 && fr.y >= 0.0 && fr.y <= 1.0) {
-      // cover fit: the video fills the slot, cropped on the long side
-      float ra = uFilmR.z / uFilmR.w;
-      vec2 sc = ra > uFilmA ? vec2(1.0, uFilmA / ra) : vec2(ra / uFilmA, 1.0);
-      float pdf = length(c - uPtr);
-      vec2 wob = normalize(c - uPtr + 0.001) * uPtrE * 0.012 * exp(-pdf / (0.4 * uR)) * sin(pdf * 0.075 - t * 7.0);
-      vec2 uvC = (fr - 0.5) * sc + 0.5 + wob;
-      vec2 uvP = (fp - 0.5) * sc + 0.5;
-      vec3 vc = texture2D(uFilm, uvC).rgb;
-      float L = dot(vc, vec3(0.299, 0.587, 0.114));
-      float fv = clamp(L * 1.15 * uFilmK.w + 0.12 * (1.0 - uFilmK.w), 0.0, 1.0);
-      float frr = pow(fv, 0.62) * uCell * 0.5;
-      float fa = (1.0 - smoothstep(frr - 0.8, frr + 0.6, length(px - c))) * step(0.03, fv);
-      vec3 fcol = mix(BLUE, CREAM, smoothstep(0.2, 0.7, L));
-      vec3 dotted = mix(BG, fcol, fa * (0.35 + 0.65 * fv));
-      float hc = hash(cell + 7.0);
-      float dev = step(hc * 0.98 + 0.01, uFilmK.y) * uFilmK.w;
-      float fdR = 0.36 * min(uFilmR.z, uFilmR.w);
-      dev = max(dev, uFilmK.z * uFilmK.w * uFilmP.z * (1.0 - smoothstep(fdR * 0.55, fdR, length(c - uFilmP.xy) + hc * fdR * 0.4)));
-      vec3 film = mix(dotted, texture2D(uFilm, uvP).rgb, dev);
-      outc = mix(outc, film, uFilmK.x);
-    }
-  }
+  // a ground dims its dots softly under the words
+  float giveV = mix(0.08, 1.0, soft);
+  if (uReelK.x > 0.001) outc = reelLayer(px, t, soft, outc);
+  outc = imgLayer(px, t, outc);
+  if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, soft, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
+  if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, soft, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
   // rewind tint: the deck's red and teal on the slipping rows
   if (uRew > 0.001 && slip > 0.0) outc += uRew * vec3(0.08, -0.02, 0.05) * step(0.5, fract(row * 0.5));
   // the page turn (lab gate: turn): dots of the turn's colour swell out from where the visitor clicked

@@ -25,9 +25,10 @@ const LINES: Record<string, string[]> = {
   process: ['ככה זה עובד', 'צעד אחרי צעד', 'בלי הפתעות'],
   faq: ['שאלתם, ענינו', 'לפני שכותבים', 'הכל על השולחן'],
   contact: ['רק תגידו שלום', 'המפתח קורא בעצמו', 'נדבר?'],
+  work: ['מהעבודה', 'עבודה אמיתית'],
 }
 const ICON: Record<string, string> = {
-  hero: 'horizon', websites: 'laptop', film: 'reels', why: 'why', services: 'laptop', process: 'process', faq: 'faq', contact: 'wa',
+  hero: 'horizon', websites: 'laptop', film: 'reels', why: 'why', services: 'laptop', process: 'process', faq: 'faq', contact: 'wa', work: 'laptop',
 }
 const SIZE = 30
 

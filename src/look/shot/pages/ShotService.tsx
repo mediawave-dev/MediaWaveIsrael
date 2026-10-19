@@ -21,6 +21,7 @@ import { Thing } from '../../parts/Things'
 import { Trail, WaKey, DeskObject, Checklist, Steps, Slip, Pad, OBJECT, vt } from './kit'
 import { vtMark } from '../vt'
 import SeaShape from '../../sea/SeaShape'
+import SeaClips from '../../sea/SeaClips'
 
 /** The hero object's artwork size in px at 390 (the CSS sizes the Thing; this seeds the Lottie box). */
 const ART = 220
@@ -144,6 +145,9 @@ export default function ShotService() {
         </div>
       </article>
       </div>
+
+      {/* the colour round (D154): the service's own clips, in the sea's dots until they develop */}
+      <SeaClips id={service.id} />
 
       <section className="sp-sheet sp-prose sp-land" aria-label={`על ${service.title}`}>
         {service.sections.map((s) => (

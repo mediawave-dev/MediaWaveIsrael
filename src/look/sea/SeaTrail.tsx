@@ -1,0 +1,134 @@
+// sea · the pointer's trail (D157, D159; gate `trail`). Nati: "a more beautiful, more elegant trail". A
+// hairline ribbon that follows the pointer and tapers into nothing a few tenths of a second behind it,
+// a soft point of light at its head, and now and then a speck of dust shed from the path that drifts
+// and fades (most cream, a few in the logo's light blue). The pointer is followed with a little ease,
+// so the line is always smooth. On its own canvas above everything, never in the way of a click. Fine
+// pointers and full motion only (no touch, no calm, no ?reduce=1, off with the widget's stop switch).
+import { useEffect, useRef } from 'react'
+import { tier } from './field'
+import { opt } from './lab'
+
+const LIFE = 420
+const CREAM = '237, 231, 218'
+const BLUE = '121, 160, 197'
+
+interface P { x: number; y: number; t: number }
+interface Dust { x: number; y: number; vx: number; vy: number; age: number; life: number; r: number; c: string }
+
+export default function SeaTrail() {
+  const cv = useRef<HTMLCanvasElement>(null)
+  const on = opt('trail') === 'dots'
+
+  useEffect(() => {
+    const el = cv.current
+    if (!on || !el || tier() !== 'full' || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const ctx = el.getContext('2d')
+    if (!ctx) return
+    const html = document.documentElement.classList
+    const ptr = { x: 0, y: 0, at: 0, seen: false }
+    const head = { x: 0, y: 0 }
+    let pts: P[] = []
+    let dust: Dust[] = []
+    let travel = 0
+    let glow = 0
+    let raf = 0
+    let last = 0
+    let dpr = 1
+    const size = () => {
+      dpr = Math.min(2, window.devicePixelRatio || 1)
+      el.width = Math.round(window.innerWidth * dpr)
+      el.height = Math.round(window.innerHeight * dpr)
+    }
+    const frame = (now: number) => {
+      raf = 0
+      const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016)
+      last = now
+      const stopped = html.contains('disable-animations')
+      // the head follows the pointer with a little ease
+      const k = 1 - Math.pow(1 - 0.38, dt * 60)
+      const hx = head.x + (ptr.x - head.x) * k
+      const hy = head.y + (ptr.y - head.y) * k
+      const step = Math.hypot(hx - head.x, hy - head.y)
+      head.x = hx
+      head.y = hy
+      if (step > 0.4) pts.push({ x: hx, y: hy, t: now })
+      pts = pts.filter((p) => now - p.t < LIFE)
+      // a speck of dust every so often along the path
+      travel += step
+      if (travel > 22 && !stopped) {
+        travel = 0
+        const a = Math.random() * Math.PI * 2
+        dust.push({ x: hx, y: hy, vx: Math.cos(a) * 9, vy: Math.sin(a) * 9 + 4, age: 0, life: 0.55 + Math.random() * 0.5, r: 0.6 + Math.random() * 0.8, c: Math.random() < 0.25 ? BLUE : CREAM })
+        if (dust.length > 60) dust.shift()
+      }
+      dust.forEach((d) => { d.age += dt; d.x += d.vx * dt; d.y += d.vy * dt; d.vx *= 0.96; d.vy *= 0.96 })
+      dust = dust.filter((d) => d.age < d.life)
+      const idle = now - ptr.at > 1100 || stopped
+      glow += ((idle ? 0 : 1) - glow) * (1 - Math.pow(0.88, dt * 60))
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ctx.clearRect(0, 0, el.width, el.height)
+      // the ribbon: thin and faint at the tail, a hairline brighter toward the head
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+      const n = pts.length
+      for (let i = 1; i < n; i++) {
+        const a = i / (n - 1)
+        const p0 = pts[i - 1]
+        const p1 = pts[i]
+        const m0x = i > 1 ? (pts[i - 2].x + p0.x) / 2 : p0.x
+        const m0y = i > 1 ? (pts[i - 2].y + p0.y) / 2 : p0.y
+        const m1x = (p0.x + p1.x) / 2
+        const m1y = (p0.y + p1.y) / 2
+        ctx.strokeStyle = `rgba(${CREAM}, ${(0.05 + 0.6 * Math.pow(a, 1.7)) * glow})`
+        ctx.lineWidth = 0.35 + 1.5 * Math.pow(a, 1.4)
+        ctx.beginPath()
+        ctx.moveTo(m0x, m0y)
+        ctx.quadraticCurveTo(p0.x, p0.y, m1x, m1y)
+        ctx.stroke()
+      }
+      // the head: a soft point of light
+      if (glow > 0.01) {
+        const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 7)
+        g.addColorStop(0, `rgba(${CREAM}, ${0.85 * glow})`)
+        g.addColorStop(0.28, `rgba(${CREAM}, ${0.32 * glow})`)
+        g.addColorStop(1, `rgba(${CREAM}, 0)`)
+        ctx.fillStyle = g
+        ctx.beginPath()
+        ctx.arc(head.x, head.y, 7, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      for (const d of dust) {
+        const f = 1 - d.age / d.life
+        ctx.fillStyle = `rgba(${d.c}, ${0.7 * f * f * glow})`
+        ctx.beginPath()
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      if (pts.length || dust.length || glow > 0.01) raf = requestAnimationFrame(frame)
+      else last = 0
+    }
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return
+      if (!ptr.seen) { head.x = e.clientX; head.y = e.clientY; ptr.seen = true }
+      ptr.x = e.clientX
+      ptr.y = e.clientY
+      ptr.at = performance.now()
+      if (!raf) raf = requestAnimationFrame(frame)
+    }
+    const onLeave = () => { ptr.at = 0 }
+    size()
+    window.addEventListener('resize', size)
+    window.addEventListener('pointermove', onMove, { passive: true })
+    document.documentElement.addEventListener('pointerleave', onLeave)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', size)
+      window.removeEventListener('pointermove', onMove)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
+    }
+  }, [on])
+
+  if (!on) return null
+  return <canvas ref={cv} className="sea-trail" aria-hidden="true" />
+}

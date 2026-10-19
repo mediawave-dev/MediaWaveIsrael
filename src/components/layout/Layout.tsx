@@ -15,6 +15,8 @@ import SeaField from '../../look/sea/SeaField'
 import SeaCursor from '../../look/sea/SeaCursor'
 import SeaTurn from '../../look/sea/SeaTurn'
 import SeaLab from '../../look/sea/SeaLab'
+import SeaStack from '../../look/sea/SeaStack'
+import SeaTrail from '../../look/sea/SeaTrail'
 import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
 
 // Lazy load widgets for code splitting
@@ -143,6 +145,8 @@ export default function Layout({ children }: LayoutProps) {
         {shot && <SeaCursor />}
         {/* the sea: the page turn's timecode (SeaTurn) and the lab's switches (?lab=1) */}
         {shot && <SeaTurn />}
+        {shot && <SeaStack />}
+        {shot && <SeaTrail />}
         {shot && <SeaLab />}
 
         {/* Widgets — mounted after idle (see widgetsReady above).

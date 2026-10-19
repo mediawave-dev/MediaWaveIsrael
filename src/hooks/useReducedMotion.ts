@@ -36,12 +36,13 @@ export function useReducedMotion(): boolean {
 
   useEffect(() => {
     // Check initial preference
+    // D160: every regular visit runs in full motion; ?calm=1 calms it (the widget's stop is apart)
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setPrefersReducedMotion(mediaQuery.matches)
+    setPrefersReducedMotion(/[?&]calm=1(&|$)/.test(window.location.search))
 
     // Listen for changes
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReducedMotion(event.matches)
+    const handleChange = () => {
+      setPrefersReducedMotion(/[?&]calm=1(&|$)/.test(window.location.search))
     }
 
     mediaQuery.addEventListener('change', handleChange)

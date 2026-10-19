@@ -33,7 +33,8 @@ export function isStill(): boolean {
 /** OS reduced motion (CALM): geared parts run, self-playing ones do not. ?motion=full overrides. */
 export function isCalm(): boolean {
   if (typeof window === 'undefined') return false
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]motion=full(&|$)/.test(window.location.search)
+  // the OS flag no longer calms the site (D160): ?calm=1 does
+  return /[?&]calm=1(&|$)/.test(window.location.search) && !/[?&]motion=full(&|$)/.test(window.location.search)
 }
 
 export const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)

@@ -393,3 +393,69 @@ html.sea-gnd-paper .sea-contact .key {
   --k-ink: #0f1011; --k-ink-on: #ede7da; --k-render: #0f1011; --k-render-on: #ede7da;
 }
 html.sea-gnd-paper .sea-contact .key:focus-visible { outline-color: #0f1011; }
+
+/* ── the colour round (D154): each service row's picture (gate `rows`), in the sea's dots until its
+   service is on the stage, then in colour (SeaDevelop). Only on the held stage; the plain index keeps
+   its words alone. Phones: beside the big title; wide: at the row's end, before the arrow. ── */
+.sea-svc__pic { grid-area: pic; display: none; width: 100%; align-self: center; }
+html.sea-held .sea-svc__pic { display: block; }
+@media (max-width: 1099px) {
+  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: minmax(0, 1fr) 96px 24px; grid-template-areas: "n n go" "title pic pic" "line line line" "deck deck deck"; }
+  html.sea-held .sea-svc__pic { width: 96px; justify-self: end; }
+}
+@media (min-width: 1100px) {
+  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: 3em minmax(0, 4fr) minmax(0, 5fr) 112px 32px; grid-template-areas: "n title line pic go"; }
+
+
+}
+/* the hero's sunset: its video is only the texture's source (2 px, never a paint candidate) */
+.sea-sun { position: absolute; top: 0; inset-inline-start: 0; width: 2px; height: 2px; opacity: 0.001; pointer-events: none; }
+
+/* ── work rows (D155, gate `work`, SeaWork.tsx): name | tags in boxes | ( view + ) | a strip of frames.
+   Phones: name and action on a line, the tags under them, the strip a row that scrolls sideways inside
+   the gutter. Wide: one line per work, the strip at the row's end. ── */
+.sea-work { display: grid; gap: 28px; }
+.sea-lede { position: relative; margin: 0; max-width: 34ch; font: 400 clamp(22px, 2.4vw, 36px)/1.34 var(--text); color: #ede7da; text-wrap: pretty; text-shadow: var(--sea-halo); }
+.sea-lede__tag { display: none; }
+/* the type gate: Lama's lede, its first line indented (from the right in Hebrew), a small tag in the indent */
+html.sea-type-lama .sea-lede { text-indent: 6.2em; }
+html.sea-type-lama .sea-lede__tag { display: block; position: absolute; right: 0; top: 0.62em; text-indent: 0; color: #79a0c5; }
+.sea-work__list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
+.sea-work__item { border-top: 1px solid var(--sea-rule); }
+.sea-work__row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title view" "tags tags" "strip strip";
+  gap: 12px 16px; align-items: center; padding-block: 22px; color: #ede7da; text-decoration: none;
+}
+.sea-work__row:focus-visible { outline: 3px solid #ede7da; outline-offset: 3px; }
+.sea-work__title { grid-area: title; font: 800 clamp(22px, 6vw, 34px)/1.15 var(--display); font-stretch: 80%; text-shadow: var(--sea-halo); }
+.sea-work__tags { grid-area: tags; display: flex; flex-wrap: wrap; gap: 6px; }
+.sea-box { font: 700 12px/1 var(--text); background: #ede7da; color: #0f1011; padding: 5px 7px 6px; border-radius: 2px; }
+.sea-work__view { grid-area: view; font: 600 12px/1 var(--sea-mono); color: #a39d90; white-space: nowrap; transition: color 0.3s ease; }
+.sea-work__strip { grid-area: strip; display: grid; grid-auto-flow: column; grid-auto-columns: 148px; gap: 6px; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.sea-work__strip::-webkit-scrollbar { display: none; }
+@media (hover: hover) and (pointer: fine) { .sea-work__row:hover .sea-work__view { color: #ede7da; } }
+@media (min-width: 1100px) {
+  .sea-work__row { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) auto minmax(0, 6fr); grid-template-areas: "title tags view strip"; gap: 24px; padding-block: 18px; }
+  .sea-work__strip { grid-auto-columns: minmax(0, 1fr); overflow: visible; }
+}
+/* the type gate: a chapter's small tag beside its heading's end, not above it (Lama's "WHAT WE DO." + tag) */
+html.sea-type-lama :is(.sea-why, .sea-proc, .sea-work) > .sea-head { display: flex; flex-wrap: wrap; align-items: flex-end; column-gap: 16px; }
+html.sea-type-lama :is(.sea-why, .sea-proc, .sea-work) > .sea-head > .sea-tag:first-child { order: 2; margin-block-end: 0.9em; }
+
+/* ── the meta bar at the end (D155, gate `bar`): the opening's line, labels and live clock come back at
+   the end of the tape; the line draws in from the right as it arrives ── */
+.sea-meta--end { position: relative; border-top: 0; grid-column: 1 / -1; margin-top: 28px; }
+.sea-meta--end::before { content: ""; position: absolute; top: 0; inset-inline: 0; height: 1px; background: var(--sea-rule); transform-origin: 100% 50%; }
+html.sea-reveal .sea-meta--end::before { transform: scaleX(0); transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1); }
+html.sea-reveal .sea-meta--end.on::before { transform: none; }
+.sea-meta__link { color: #ede7da; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; margin-block: -14px; }
+.sea-meta__link:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) { .sea-meta__link:hover { color: #79a0c5; } }
+@media (max-height: 700px) and (max-width: 767px) { .sea-meta--end { display: flex; } }
+@media (min-width: 1100px) { .sea-end > .sea-meta--end { grid-column: 1 / -1; grid-row: 3; } }
+
+/* ── the clips as grounds (D156, gate `bleed`): the field draws the clip across the chapter; the words
+   sit low, where it has already broken into dots ── */
+@media (min-width: 1100px) { html:is(.sea-hero-reel, .sea-hero-sea) .sea-hero { align-items: end; } }
+.sea-film--veil { position: relative; min-height: 100svh; display: grid; align-content: end; padding-bottom: clamp(48px, 9svh, 96px); }
+@media (min-width: 1100px) { .sea-film.sea-film--veil { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }

@@ -47,7 +47,10 @@
         if (window.__PRERENDER__) return;
         var d = document.documentElement, shot = d.getAttribute('data-look') === 'shot';
         var full = /[?&]motion=full(&|$)/.test(location.search);
-        var calm = !full && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // every regular visit sees the whole site in motion (D160, Nati: "on every regular visit all the
+        // effects must show"): the OS flag no longer calms it; ?calm=1 does, and the accessibility
+        // widget's stop (html.disable-animations) and ?reduce=1 stop everything
+        var calm = !full && /[?&]calm=1(&|$)/.test(location.search);
         if (shot) { try { if (!localStorage.getItem('mw_cookie_consent')) d.classList.add(location.pathname === '/' ? 'consent-pending' : 'consent-later'); } catch (e) {} }
         if (/[?&]reduce=1(&|$)/.test(location.search)) return;
         // the sea (D131, D133): the held stages (the laptop, the services) are laid out from the first
@@ -162,7 +165,7 @@
         <path data-logo="b" fill="#6E8CFF" d="M0.2 54.45A44.51 44.51 0 0 0 52.13 52.77A37.51 37.51 0 0 1 99.81 54.37A50 50 0 0 1 0.2 54.45Z"/>
       </svg>
       <style>
-        @media (prefers-reduced-motion: no-preference) {
+        @media all {
           #loader-mark { animation: lw-breathe 2.2s ease-in-out infinite; }
           @keyframes lw-breathe { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
         }

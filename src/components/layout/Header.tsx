@@ -236,6 +236,8 @@ export default function Header() {
         )}
       </header>
 
+      {/* the sea (D155, gate `menu`): the menu as a card under the pill, the page behind blurred */}
+      {LOOK === 'shot' && isMobileMenuOpen && <div className="mw-menu__veil" aria-hidden="true" onClick={() => setIsMobileMenuOpen(false)} />}
       {/* Mobile menu: a full sheet in the look's ground (z-60: above the cookie banner) */}
       <AnimatePresence>
         {isMobileMenuOpen && (

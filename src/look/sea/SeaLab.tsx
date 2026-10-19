@@ -4,12 +4,24 @@
 import { useEffect, useState } from 'react'
 import { GATES, labOpen, opt, pick, type Gate } from './lab'
 
-const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד' }
+const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד', sun: 'השקיעה בטבעת', rows: 'תמונה בשורת שירות', work: 'שורות עבודה', type: 'טיפוגרפיה', menu: 'התפריט', stack: 'ערימה בפינה', bar: 'הפס עם השעון', bleed: 'סרטון כרקע', hero: 'ההירו', grain: 'נקודות על כל האתר', trail: 'שובל העכבר', media: 'תמונות' }
 const LABELS: Record<string, string> = {
   'head.island': 'אי שנפתח במגע', 'head.away': 'נעלמת, חוזרת למעלה', 'head.sticky': 'צמודה כמו היום',
   'film.touch': 'מתפתח במגע', 'film.scroll': 'מתפתח בגלילה', 'film.time': 'מתפתח לבד', 'film.off': 'בלי',
   'ground.deep': 'שירותים מתחת לאופק', 'ground.paper': 'מכתב על נייר', 'ground.both': 'שניהם', 'ground.none': 'הכל כהה',
   'turn.cream': 'שמנת', 'turn.blue': 'כחול', 'turn.off': 'בלי',
+  'sun.time': 'מתפתחת לבד', 'sun.touch': 'מתפתחת במגע', 'sun.off': 'בלי, נקודות',
+  'rows.tile': 'תמונה לכל שורה', 'rows.none': 'בלי',
+  'work.rows': 'שתי עבודות אמיתיות', 'work.off': 'בלי',
+  'type.lama': 'תג ליד הכותרת, פסקה עם הזחה', 'type.now': 'כמו היום',
+  'menu.card': 'כרטיס מתחת לגלולה', 'menu.sheet': 'מסך מלא כמו היום',
+  'stack.on': 'כן', 'stack.off': 'בלי',
+  'bar.ends': 'בפתיחה ובסוף', 'bar.start': 'רק בפתיחה',
+  'bleed.veil': 'רקע שמתפרק לנקודות', 'bleed.slot': 'במסגרת משלו',
+  'hero.reel': 'שואוריל שלא חוזר על עצמו', 'hero.sea': 'השקיעה כרקע', 'hero.disc': 'השקיעה בטבעת',
+  'grain.off': 'בלי, קרקע נקייה', 'grain.on': 'כן',
+  'trail.dots': 'נקודות קטנות', 'trail.ripple': 'אדווה בשדה',
+  'media.colour': 'בצבע', 'media.develop': 'מנקודות לצבע',
 }
 
 export default function SeaLab() {

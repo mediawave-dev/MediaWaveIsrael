@@ -9,7 +9,7 @@
 // The H1 is the LCP and paints at first paint from the entry stylesheet (sea.css is eager).
 // Anchors kept: #why-us #services #process #faq #contact (Header, Footer and inner pages link to them).
 // [קופי: נתי] every new line: the hero's tag, the laptop chapter's line, the end of the tape.
-import { useEffect } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import { LookButton } from '@look/button'
 import { HERO, STEPS } from '../data'
 import { WHY_ITEMS } from '../sections/WhyUs'
@@ -22,7 +22,10 @@ import SeaLaptop from './SeaLaptop'
 import SeaServices from './SeaServices'
 import SeaRewind from './SeaRewind'
 import SeaFilm from './SeaFilm'
+import SeaWork from './SeaWork'
 import { opt } from './lab'
+import { CLIPS, posterOf, videoOf } from './media'
+import { useGround } from './SeaGround'
 import { Clock, DiscStill, Lines, Tag, useReveals } from './parts'
 import * as field from './field'
 import '../shot/shot-base.css'
@@ -30,13 +33,112 @@ import '../shot/shot-dock.css' // the dock's skin (ShotDock is mounted by Layout
 import './sea.css'
 import './sea-site.css'
 
+/** The sunset on the horizon (D154, Pexels 11335978): the disc's own sea becomes a real one. The field
+    draws it inside the disc in dots and develops it into colour a moment after the opening hands over
+    (gate `sun`). Its poster and loop load after the page has loaded and gone idle, never before the H1
+    (the LCP); the poster never enters the DOM and the video is a 2 px source for the texture, so neither
+    can become a paint candidate. Calm: the poster only; still or no WebGL: the dotted disc as before. */
+function useSun(spot: RefObject<HTMLSpanElement | null>, video: RefObject<HTMLVideoElement | null>) {
+  useEffect(() => {
+    const how = opt('sun')
+    if (opt('hero') !== 'disc' || how === 'off' || field.tier() === 'still') return
+    const full = field.tier() === 'full'
+    const sun = CLIPS['hero-sea']
+    let alive = true
+    let id: number | null = null
+    let idle = 0
+    const go = () => {
+      const el = spot.current
+      if (!alive || !el) return
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = posterOf(sun, !window.matchMedia('(min-width: 768px)').matches)
+      img.onload = () => {
+        if (!alive) return
+        const v = full ? video.current : null
+        if (v) { v.src = videoOf(sun); v.load() }
+        id = field.addFilm(el, v, img, { mode: how === 'touch' ? 'touch' : 'time', disc: true, after: true })
+      }
+    }
+    void field.ready.then((ok) => {
+      if (!alive || !ok) return
+      const later = () => { idle = window.requestIdleCallback ? window.requestIdleCallback(go, { timeout: 2500 }) : window.setTimeout(go, 600) }
+      if (document.readyState === 'complete') later()
+      else window.addEventListener('load', later, { once: true })
+    })
+    return () => {
+      alive = false
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle)
+      window.clearTimeout(idle)
+      field.dropFilm(id)
+    }
+  }, [spot, video])
+}
+
+/** The showreel's takes (public/media/reel, G:/tmp/mw-media/reel-clips.sh); the sea opens it. */
+const REEL = ['sea', 'fibres', 'desk', 'reels', 'city', 'print', 'tap', 'edit', 'tapes', 'hands', 'deck']
+
+/** The hero's showreel (D157, gate `hero`): Lama Lama's hero, our takes. The field plays it across the
+    hero behind the words, a take after a take, never the same change twice in a row (field.ts). It
+    loads after the page has loaded and gone idle, never before the H1 (the LCP); the poster never
+    enters the DOM and the two videos are 2 px sources for the textures. Calm: the first poster. */
+function useReel(section: RefObject<HTMLElement | null>, a: RefObject<HTMLVideoElement | null>, b: RefObject<HTMLVideoElement | null>, on: boolean) {
+  useEffect(() => {
+    if (!on || field.tier() === 'still') return
+    const full = field.tier() === 'full'
+    const phone = !window.matchMedia('(min-width: 768px)').matches
+    const webm = document.createElement('video').canPlayType('video/webm; codecs="vp9"') === 'probably'
+    const pool = REEL.map((n) => `/media/reel/${n}${phone ? '-m' : ''}.${webm ? 'webm' : 'mp4'}`)
+    let alive = true
+    let idle = 0
+    const go = () => {
+      const el = section.current
+      if (!alive || !el) return
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = `/media/reel/sea-poster${phone ? '-m' : ''}.webp`
+      img.onload = () => {
+        if (!alive) return
+        field.setReel(el, full && a.current && b.current ? [a.current, b.current] : null, img, pool)
+      }
+    }
+    void field.ready.then((ok) => {
+      if (!alive || !ok) return
+      const later = () => { idle = window.requestIdleCallback ? window.requestIdleCallback(go, { timeout: 2500 }) : window.setTimeout(go, 600) }
+      if (document.readyState === 'complete') later()
+      else window.addEventListener('load', later, { once: true })
+    })
+    return () => {
+      alive = false
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle)
+      window.clearTimeout(idle)
+      field.setReel(null, null, null)
+    }
+  }, [section, a, b, on])
+}
+
 function Hero() {
+  const section = useRef<HTMLElement>(null)
+  const spot = useRef<HTMLSpanElement>(null)
+  const video = useRef<HTMLVideoElement>(null)
+  // the sea as the hero's ground (D156, gate `bleed`): the real sea above the words breaks into the
+  // sea of dots at its bottom edge; otherwise the sunset inside the disc (useSun)
+  const take = useRef<HTMLVideoElement>(null)
+  const hero = opt('hero')
+  const veil = hero === 'sea'
+  useSun(spot, video)
+  useReel(section, video, take, hero === 'reel')
+  useGround(section, video, 'hero-veil', { on: veil, after: true, text: () => section.current?.querySelector<HTMLElement>('.sea-in') ?? null, focus: [0.6, 0.5] })
   return (
-    <section id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
-      {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them */}
-      <span className="sea-spot sea-spot--hero" data-spot="horizon" aria-hidden="true"><DiscStill /></span>
+    <section ref={section} id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
+      {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them.
+          With the ground the field draws no disc here; the opening still gathers its dots into it */}
+      <span ref={spot} className="sea-spot sea-spot--hero" data-spot={hero === 'disc' ? 'horizon' : undefined} data-intro="" aria-hidden="true">
+        <DiscStill />
+        <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
+        {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
+      </span>
       <div className="sea-in">
-        <Tag he className="sea-up">סטודיו לאתרים ולווידאו · ישראל</Tag>
         {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
         <h1 id="hero-title" className="sea-h1" data-zone="text" tabIndex={-1}>
           <span className="sea-h1__ln" style={{ ['--i' as string]: 0 }}>{HERO.line1}</span>{' '}<br />
@@ -153,6 +255,7 @@ export default function SeaHome() {
       <SeaFilm />
       <Why />
       <SeaServices />
+      {opt('work') === 'rows' && <SeaWork />}
       <Process />
       <div className="sea-ch sea-faq">
         <Faq chapter="faq" kicker={<Tag>04 · FAQ</Tag>} />

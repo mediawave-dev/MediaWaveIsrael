@@ -226,7 +226,7 @@ html:is(.disable-animations, .motion-reduced) .key__ink { transition: none; }
 }
 
 /* ── reduced motion: nothing moves; a press flattens the key by opacity ── */
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
   .key__cap, .key__shadow, .key__skirt, .key__glyph, .key__led::after { transition: none !important; }
   .key .key__cap, .key:hover .key__cap, .key .key__glyph, .key:hover .key__glyph { transform: none !important; }
   .key[data-pressed] .key__skirt, .key[data-state="loading"] .key__skirt { opacity: 0; }

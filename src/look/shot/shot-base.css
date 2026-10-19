@@ -188,7 +188,7 @@ html[data-look="shot"] .mw-menu__foot > a:not([dir="ltr"], .mw-menu__wa) { color
   html[data-look="shot"] .mw-menu__foot { gap: 6px; padding-top: 16px; }
 }
 /* the sheet settles 8px as it fades in (framer owns the 200ms opacity) */
-@media (prefers-reduced-motion: no-preference) {
+@media all { /* D160: full motion on every visit (was: prefers-reduced-motion: no-preference) */
   html[data-look="shot"]:not(.disable-animations) .mw-menu > nav,
   html[data-look="shot"]:not(.disable-animations) .mw-menu__foot { animation: shot-menu-in 200ms var(--ease-out) both; }
 }
@@ -343,7 +343,7 @@ html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] butt
    one into the other; the header stays put. Unsupported browsers and reduced motion get an
    ordinary page load. One curve, the brand's (--ease-out). ── */
 @view-transition { navigation: auto; }
-@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */ @view-transition { navigation: none; } }
 html[data-look="shot"] .mw-head { view-transition-name: mw-head; }
 ::view-transition-group(*) { animation-duration: 0.52s; animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.26s; }

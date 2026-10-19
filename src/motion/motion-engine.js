@@ -44,7 +44,8 @@ export function createMotionEngine(libs, options = {}) {
   const REDUCE = PRERENDER || FORCE_REDUCE || options.reduce === true || html.dataset.motion === 'off' ||
     html.classList.contains('disable-animations');
   const FORCE_FULL = new URLSearchParams(location.search).get('motion') === 'full';
-  const CALM = !REDUCE && !FORCE_FULL && media('(prefers-reduced-motion: reduce)');
+  // D160: the OS flag no longer calms the site; ?calm=1 does (the widget's stop is REDUCE above)
+  const CALM = !REDUCE && !FORCE_FULL && /[?&]calm=1(&|$)/.test(location.search);
   const FINE = media('(hover: hover) and (pointer: fine)');
   const RTL = (html.getAttribute('dir') || getComputedStyle(html).direction) === 'rtl';
   // Multiply every horizontal motion that follows the reading direction by DIR.

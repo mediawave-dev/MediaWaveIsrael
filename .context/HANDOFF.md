@@ -1,3 +1,63 @@
+# HANDOFF: the colour round (20.10.2026): free media, Lama Lama followed closely (D154-D160)
+
+## Goal
+Nati: bring licence-checked free images and video into mediawave.co.il so the colour reads as rich as
+lamalama.com, and close the remaining gaps; mid-session: "follow their site precisely: a showreel of many
+videos one after another, fast, the scenery always changing; a trail of small dots after the mouse; not
+everything with dots; smooth everywhere; transitions that never repeat"; then push to production.
+
+## Completed (branch `redesign/elegant-20261019`)
+- Media: 12 Pexels clips (Nati picked from a drawn board, one question): ledger `design/media-ledger.rtl.md`,
+  dossier W25-W30, catalogue `src/look/sea/media.ts`, files in `public/media/` (loops, posters, tiles) and
+  `public/media/reel/` (the showreel's 11 takes, wide + tall). Raw files and encoders: `G:/tmp/mw-media/`
+  (`enc.sh`, `enc-veil.sh`, `reel-clips.sh`). The candidate board: `design/media/` (git-ignored).
+- The hero is a showreel engine in the field (field.ts `setReel`, shader `reelLayer`): random take, start
+  point, hold (1.1-2.4 s) and one of eight transitions, never one of the last three; slow push-in;
+  develops from the material at load; its bottom breaks into dots and climbs on scroll; soft dimming
+  around the words. Loads after load+idle (the H1 stays the LCP).
+- Trail: `SeaTrail.tsx` (small soft dots after the mouse). The quiet grain is off (plain ground).
+- Pictures in colour: service rows' tiles (`SeaDevelop.tsx`), service pages' clips (`SeaClips.tsx`, the
+  main clip as a full-width ground with dotted edges), the film chapter's ground (`SeaGround.tsx`).
+- Gaps as lab gates (`?lab=1`): work rows (`SeaWork.tsx`, real work only), type (tag beside headings,
+  indented lede), menu as a card under the pill, corner stack (`SeaStack.tsx`, default off), the meta bar
+  back at the end. Not built: Lama's full-screen opener (would risk the H1 as LCP).
+- Then (D158, D159): every dissolve is a fine noisy dither (Bayer + slow grain, ~2 px) through a warm grey
+  "material", no coarse dots; each ground its own edge style; eight smooth reel transitions; live pictures
+  (`SeaImage.tsx`, an 8-cell atlas in the field: material at rest, colour when on, from where the pointer
+  came in); the services stage's backdrop is the active (or hovered) service's footage in grain; under
+  the pointer a thin refraction with a faint colour fringe; the trail is a hairline ribbon with a soft
+  head and dust (`SeaTrail.tsx`).
+- D160: full motion on every visit (the OS flag no longer calms the site; the widget's "ללא אנימציות" and
+  ?reduce=1 stop it; ?calm=1 calms it); autoplay retried on the first touch; the hero's tag moved to the
+  end bar and the delivery time left the opening line.
+- Decisions D154-D160 in DECISIONS.rtl.md.
+
+## Lab gates (defaults = recommendations; Nati picks on the live page with ?lab=1)
+hero reel|sea|disc · grain off|on · trail dots|ripple · media colour|develop · bleed veil|slot ·
+sun time|touch|off (disc only) · rows tile|none · work rows|off · type lama|now · menu card|sheet ·
+stack on|off (default off) · bar ends|start.
+
+## Known issues
+- Lighthouse mobile (local, brotli server) fell to about 55 (LCP 4.1s, TBT ~1s) with the reel, the
+  bigger shader and full motion for headless browsers too. Nati: deploy now, fix performance later.
+
+## Waiting for Nati
+- His verdict on the live site; lab picks; new copy marked [קופי: נתי] (D155: "מהעבודה.", the lede, the
+  rows' tags and actions, island lines, the stack's lines; D154: the tag "להמחשה").
+- After the picks: delete the losing options' code and media (hero-sea, hero-veil, film-tapes ...).
+
+## Rollback
+`git push origin prod-before-media:main --force-with-lease` (tag = cce9659), or the Cloudflare Pages
+dashboard (the previous production deployment).
+
+## Important files
+- `src/look/sea/field.ts` (films, grounds, the reel engine), `shader.ts` (filmLayer, veilLayer, reelLayer)
+- `src/look/sea/SeaHome.tsx` (useReel, REEL list), `SeaGround.tsx`, `SeaDevelop.tsx`, `SeaClips.tsx`,
+  `SeaTrail.tsx`, `SeaWork.tsx`, `SeaStack.tsx`, `lab.ts`, `SeaLab.tsx`
+- QA tools: `G:/tmp/lama-tools/` (seq.mjs, probe.mjs, trail-shot.mjs, menu-shot.mjs, shoot.mjs, serve-br.mjs)
+
+---
+
 # HANDOFF: the Lama Lama round (20.10.2026): deep harvest, lab, dots everywhere: LIVE (main cce9659)
 
 ## Goal

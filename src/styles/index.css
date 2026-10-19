@@ -372,7 +372,7 @@ button {
     animation-timing-function: var(--ease-brand);
   }
 
-  @media (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
 
     ::view-transition-old(root),
     ::view-transition-new(root) {
@@ -419,7 +419,7 @@ button {
   clip-path: inset(0 0 0 0);
 }
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
   .wipe-overlay {
     transition: none;
   }
@@ -495,7 +495,7 @@ button {
    These !important rules re-enable the wave loops that the global
    reduce block above kills; the accessibility widget's
    html.disable-animations (higher specificity) still stops everything. */
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
   .wave-slide-front {
     animation: waveSlideL 30s linear infinite !important;
   }
@@ -593,7 +593,7 @@ section[id] {
    Accessibility: Respect user's motion preferences
    ============================================ */
 
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
 
   *,
   *::before,
@@ -857,7 +857,7 @@ section[id] {
 }
 
 /* Smooth scrolling with reduced motion support */
-@media (prefers-reduced-motion: no-preference) {
+@media all { /* D160: full motion on every visit (was: prefers-reduced-motion: no-preference) */
   html {
     scroll-behavior: smooth;
   }
@@ -1286,7 +1286,7 @@ html.disable-animations .spotlight-card::before {
 /* The typewriter keeps typing under OS reduced-motion (decision 24: brand
    ambient motion never freezes), so its caret keeps blinking with it. The
    site's own switch is the full stop for both. */
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) and (scripting: none) { /* D160: only without JS; the widget stops motion */
   .typewriter-caret {
     animation-duration: 1.1s !important;
     animation-iteration-count: infinite !important;

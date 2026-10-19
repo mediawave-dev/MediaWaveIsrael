@@ -13,6 +13,34 @@ export const GATES = {
   ground: ['deep', 'paper', 'both', 'none'],
   /** the page turn's cover: cream (the inverse), the logo's blue, or none */
   turn: ['cream', 'blue', 'off'],
+  // ── the colour round (D154) ──
+  /** the hero's disc: the sunset develops by itself after the opening, under the pointer, or no sunset */
+  sun: ['time', 'touch', 'off'],
+  /** the services' rows: a picture per row that develops while its service is on the stage, or none */
+  rows: ['tile', 'none'],
+  // ── the remaining Lama Lama gaps (D155) ──
+  /** work rows with real work only (this site, the memories sample), or none */
+  work: ['rows', 'off'],
+  /** type: the tag beside the heading and the big lede with a tag in its indent, or as now */
+  type: ['lama', 'now'],
+  /** the menu: a card under the pill over a blurred page, or the full sheet as now */
+  menu: ['card', 'sheet'],
+  /** wide screens: the corner stack under the contact card collects what you passed, or none */
+  stack: ['on', 'off'],
+  /** the meta bar (line, labels, live clock): at the opening and again at the end, or the opening only */
+  bar: ['ends', 'start'],
+  // ── the clips as grounds (D156, Nati: "they really build the videos into the background") ──
+  /** veil: the clip across its chapter, breaking into dots at its bottom edge; slot: in its own frame */
+  bleed: ['veil', 'slot'],
+  // ── Lama Lama, followed closely (D157) ──
+  /** the hero: a showreel that never repeats, the one sunset as a ground, or the sunset in the disc */
+  hero: ['reel', 'sea', 'disc'],
+  /** the quiet dot grain over the whole site: off (Lama's plain ground) or on */
+  grain: ['off', 'on'],
+  /** the pointer's trail: small soft dots that follow it, or the field's ripple */
+  trail: ['dots', 'ripple'],
+  /** pictures in rows and pages: in colour from the start, or in dots that develop */
+  media: ['colour', 'develop'],
 } as const
 
 export type Gate = keyof typeof GATES
@@ -34,11 +62,17 @@ function read(): Partial<Record<Gate, string>> {
 
 const chosen = read()
 
-/** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'both', turn: 'cream' }
+/** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn.
+    The colour round's gates start on the recommendations. */
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'both', turn: 'cream', sun: 'time', rows: 'tile', work: 'rows', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'dots', media: 'colour' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>
+}
+
+// the gates the CSS reads, on the root from the start (type, menu, bar)
+if (typeof document !== 'undefined') {
+  document.documentElement.classList.add(`sea-type-${opt('type')}`, `sea-menu-${opt('menu')}`, `sea-bar-${opt('bar')}`, `sea-bleed-${opt('bleed')}`, `sea-hero-${opt('hero')}`, `sea-grain-${opt('grain')}`, `sea-trail-${opt('trail')}`, `sea-media-${opt('media')}`)
 }
 
 export const labOpen = () => typeof window !== 'undefined' && /[?&]lab=1(&|$)/.test(window.location.search)
