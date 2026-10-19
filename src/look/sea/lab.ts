@@ -34,8 +34,8 @@ function read(): Partial<Record<Gate, string>> {
 
 const chosen = read()
 
-/** The recommendation for each gate, until Nati picks. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'touch', ground: 'both', turn: 'cream' }
+/** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn. */
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'both', turn: 'cream' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>
