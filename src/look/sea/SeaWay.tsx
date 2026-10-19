@@ -9,7 +9,7 @@
 // [קופי: נתי] every line below.
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
-import { icon, GRID, type Dot } from './way-icons'
+import { icon, GRID, DOT_COLOURS, type Dot } from './way-icons'
 import { WA_DOTS } from './wa-dots-data'
 import { decode, undecode } from './decode'
 import { tier } from './field'
@@ -30,8 +30,6 @@ const ICON: Record<string, string> = {
   hero: 'horizon', websites: 'laptop', film: 'reels', why: 'why', services: 'laptop', process: 'process', faq: 'faq', contact: 'wa',
 }
 const SIZE = 30
-const CREAM = '#EDE7DA'
-const BLUE = '#79A0C5'
 
 const WA: Dot[] = WA_DOTS.map(([x, y, r]) => [(x * GRID) / 15, (y * GRID) / 15, (r * GRID) / 15, 0])
 const dotsOf = (name: string): Dot[] => (name === 'wa' ? WA : icon(name))
@@ -97,7 +95,7 @@ export default function SeaWay() {
         d.r = d.fr + (d.tr - d.fr) * k
         d.b = k > 0.5 ? d.tb : d.fb
         if (d.r < 0.04) continue
-        ctx.fillStyle = d.b ? BLUE : CREAM
+        ctx.fillStyle = DOT_COLOURS[d.b] ?? DOT_COLOURS[0]
         ctx.beginPath()
         ctx.arc(d.x * unit, d.y * unit, Math.max(0.5, d.r * unit * 0.92), 0, Math.PI * 2)
         ctx.fill()

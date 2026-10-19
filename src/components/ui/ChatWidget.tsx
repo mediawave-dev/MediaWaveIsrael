@@ -7,6 +7,8 @@ import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
 import { track } from '../../utils/analytics'
 import { CHAT_EVENT, takePendingChat } from './chat-event'
+import { LOOK } from '../../look/look'
+import DotGlyph from '../../look/sea/DotGlyph'
 
 // --- Typing Indicator ---
 
@@ -277,19 +279,21 @@ export default function ChatWidget({ onOpenChange, triggerSlot, triggerActive }:
       ref={triggerRef}
       type="button"
       onClick={() => { setIsOpen(true); track('chat_open', { placement: 'dock' }) }}
-      className="shot-dock__chat-btn"
-      aria-label="פתח צ'אט"
+      className={`shot-dock__chat-btn${LOOK === 'shot' ? ' is-ai' : ''}`}
+      aria-label={LOOK === 'shot' ? "פתח צ'אט עם הבוט (AI)" : "פתח צ'אט"}
       aria-expanded={isOpen}
       data-zone="ui"
+      data-cursor={LOOK === 'shot' ? 'שאלו את הבוט, הוא עונה מיד' : undefined}
     >
-      <LottieIcon
+      {/* the sea (Nati, 20.10): the AI's spark in dots and the two letters everyone reads as AI */}
+      {LOOK === 'shot' ? (<><DotGlyph name="ai" n={11} className="mw-ai" /><span className="mw-ai__t" aria-hidden="true">AI</span></>) : <LottieIcon
         animationPath="/animations/7%20chatbot/chatbot_header.json"
         size={36}
         loop={false}
         playOnHover={false}
         active={triggerActive}
         fallback={<MessageCircle size={22} aria-hidden="true" />}
-      />
+      />}
     </button>,
     triggerSlot,
   ) : null

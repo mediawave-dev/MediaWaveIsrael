@@ -26,6 +26,11 @@ import SoundToggle from '../../look/sea/SoundToggle'
 import WaDots from '../../look/sea/WaDots'
 import SeaWay from '../../look/sea/SeaWay'
 import SeaIsland from '../../look/sea/SeaIsland'
+import DotGlyph from '../../look/sea/DotGlyph'
+import { SCENE } from '../../look/sea/gears'
+
+/** the sea: each chapter in the menu with its object in dots (the header island's icons) */
+const MENU_ICON: Record<string, string> = { '#why-us': 'why', '#services': 'laptop', '#how-we-work-title': 'process', '#faq': 'faq', '#contact': 'bubble' }
 import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
 
 // One header for the three looks (DECISIONS #50): sticky, opaque in the look's ground (KM:
@@ -272,12 +277,13 @@ export default function Header() {
                     setIsMobileMenuOpen(false)
                   }}
                 >
+                  {LOOK === 'shot' && MENU_ICON[link.href] && <DotGlyph name={MENU_ICON[link.href]} className="mw-menu__ico" />}
                   {link.label}
                 </a>
               )).flatMap((a, i) => menuLinks[i].href !== '#services' ? [a] : [a, (
                 <ul key="svc" className="mw-menu__svc" aria-label="השירותים">
                   {servicesData.map((s) => (
-                    <li key={s.id}><a href={`/services/${s.slug}/`} onClick={() => setIsMobileMenuOpen(false)}>{s.title}</a></li>
+                    <li key={s.id}><a href={`/services/${s.slug}/`} onClick={() => setIsMobileMenuOpen(false)}>{LOOK === 'shot' && <DotGlyph name={SCENE[s.id] ?? 'horizon'} className="mw-menu__ico" colour />}{s.title}</a></li>
                   ))}
                 </ul>
               )])}

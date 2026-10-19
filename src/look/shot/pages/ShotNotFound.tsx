@@ -7,7 +7,6 @@ import { servicesData } from '../../../data/services'
 import { WHATSAPP_URLS } from '../../../utils/whatsapp'
 import { track } from '../../../utils/analytics'
 import { LookButton } from '@look/button'
-import { Thing } from '../../parts/Things'
 import './shot-pages.css'
 
 export default function ShotNotFound() {
@@ -15,12 +14,9 @@ export default function ShotNotFound() {
     <div className="sp sp--lost">
       <SEO title="העמוד לא נמצא (404)" description="העמוד שחיפשתם לא קיים, או שהכתובת השתנתה. מכאן חוזרים לדף הבית." noindex />
       <div className="sp-top sp-lost__top">
-      <div className="sp-lost__desk">
-        <div className="sp-lost__gap" aria-hidden="true" data-zone="art">
-          <span className="sp-lost__code">404</span>
-        </div>
-        <span className="sp-obj sp-obj--loupe sp-lost__loupe" aria-hidden="true" data-zone="art"><Thing kind="loupe" /></span>
-      </div>
+      {/* the sea: where the page should be, only the horizon (the field draws the disc in its slot) */}
+      <span className="sea-spot sea-spot--lost" data-spot="horizon" aria-hidden="true" />
+      <span className="sea-tag sp-lost__tag" aria-hidden="true">404 · NO SIGNAL</span>
       </div>
       <div className="sp-lost__copy">
         <h1 className="sp-h1" data-zone="text">העמוד הזה לא על השולחן</h1>

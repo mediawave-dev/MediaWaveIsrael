@@ -22,6 +22,8 @@ import { track } from '../../utils/analytics'
 import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
+import DotGlyph from '../sea/DotGlyph'
+import WaDots from '../sea/WaDots'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -160,22 +162,22 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
             <ul className="ct__ways">
               <li className="ct__way--wa">
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico"><WaIcon /></span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
+                  <span className="ct__ico">{LOOK === 'shot' ? <WaDots /> : <WaIcon />}</span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico"><PhoneIcon /></span><span className="sr-only">טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
+                  <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="phone" /> : <PhoneIcon />}</span><span className="sr-only">טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico"><MailIcon /></span><span className="sr-only">אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
+                  <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="mail" /> : <MailIcon />}</span><span className="sr-only">אימייל</span><b dir="ltr">{SITE_CONTACT.email}</b>
                 </a>
               </li>
               <li>
                 <a data-zone={Z} href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" onClick={() => track('instagram_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico"><InstagramIcon /></span><span className="sr-only">אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
+                  <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="insta" /> : <InstagramIcon />}</span><span className="sr-only">אינסטגרם</span><b dir="ltr">@mediawaveisrael</b>
                 </a>
               </li>
             </ul>

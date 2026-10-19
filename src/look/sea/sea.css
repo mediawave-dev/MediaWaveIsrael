@@ -382,9 +382,9 @@ html.sea-gnd-paper .sea-contact :is(.ct__lead, .ct__time, .sea-tag) { color: #4d
 html.sea-gnd-paper .sea-contact .ct__ways .ct__ico { color: #225079; }
 @media (hover: hover) and (pointer: fine) { html.sea-gnd-paper .sea-contact .ct__ways a:hover { color: #225079; } }
 html.sea-gnd-paper .sea-contact .ct__ways a:focus-visible { outline-color: #0f1011; }
-html.sea-gnd-paper .sea-contact .ct__field :is(input, textarea) { background: #f7f3ea; color: #0f1011; border-color: rgba(15, 16, 17, 0.55); }
-html.sea-gnd-paper .sea-contact .ct__field :is(input, textarea)::placeholder { color: #6b665c; }
-html.sea-gnd-paper .sea-contact .ct__field :is(input, textarea):focus-visible { outline-color: #225079; border-color: #0f1011; }
+html.sea-gnd-paper .sea-contact #contact .ct__field :is(input, textarea) { background: #f7f3ea; color: #0f1011; border-color: rgba(15, 16, 17, 0.55); }
+html.sea-gnd-paper .sea-contact #contact .ct__field :is(input, textarea)::placeholder { color: #6b665c; }
+html.sea-gnd-paper .sea-contact #contact .ct__field :is(input, textarea):focus-visible { outline-color: #225079; border-color: #0f1011; }
 html.sea-gnd-paper .sea-contact .key {
   --k-face: rgba(237, 231, 218, 0.6); --k-on: #0f1011; --k-ring: #0f1011; --k-dots: rgba(15, 16, 17, 0.88);
   --k-ink: #0f1011; --k-ink-on: #ede7da; --k-render: #0f1011; --k-render-on: #ede7da;

@@ -12,6 +12,8 @@ import { faqs } from '../../data/faqs'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { track } from '../../utils/analytics'
 import './faq.css'
+import DotGlyph from '../sea/DotGlyph'
+import { LOOK } from '../look'
 
 interface FaqProps {
   /** data-chapter on the section (the shot's chapter id) */
@@ -58,7 +60,7 @@ export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) 
                     onClick={() => setOpen(isOpen ? null : i)}
                   >
                     <span>{item.question}</span>
-                    <span className="faq__sign" aria-hidden="true"><i /><i /></span>
+                    <span className="faq__sign" aria-hidden="true">{LOOK === 'shot' ? <DotGlyph name="plus" n={9} /> : <><i /><i /></>}</span>
                   </button>
                 </h3>
                 <m.div

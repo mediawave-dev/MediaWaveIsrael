@@ -433,3 +433,70 @@ html:is(.sea-turning, .sea-turn-in):not(.sea-turn-rev) .sea-turn__tc { opacity: 
 .sea-lab__opts button { min-height: 32px; margin: 0; padding: 7px 11px; font: 600 12.5px/1 var(--text); color: #ede7da; background: none; border: 1px solid rgba(237, 231, 218, 0.28); border-radius: 999px; cursor: pointer; }
 .sea-lab__opts button[aria-pressed="true"] { background: #ede7da; color: #0f1011; border-color: #ede7da; }
 @media (max-width: 767px) { .sea-lab { bottom: 92px; } }
+
+/* ── glyphs in dots (DotGlyph.tsx): ticks, plus signs, the contact icons, the menu's objects. They
+   arrive from the centre outward when their block arrives, and burst and settle on hover ── */
+.dot-glyph { display: block; overflow: visible; }
+.dot-glyph circle { fill: currentColor; transform-box: fill-box; transform-origin: center; }
+html.sea-reveal .dot-glyph:not(.on) circle { transform: scale(0); }
+html.sea-reveal .dot-glyph.on circle { transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--d) * 55ms); }
+@media (hover: hover) and (pointer: fine) {
+  html:not(.disable-animations):not(.motion-reduced) :is(a, li, summary):hover > :is(.dot-glyph, .ct__ico > .dot-glyph, .ct__ico > .wa-dots) circle,
+  html:not(.disable-animations):not(.motion-reduced) :is(a, summary):hover :is(.ct__ico, .sp-pad__sign) circle {
+    animation: wa-burst 0.75s cubic-bezier(0.3, 0.7, 0.2, 1) calc(var(--d) * 24ms) both;
+  }
+}
+html[data-look="shot"] .sp-tick.dot-glyph { width: 22px; height: 22px; fill: none; stroke: none; color: #79a0c5; }
+html[data-look="shot"] .sp-pad__sign::before, html[data-look="shot"] .sp-pad__sign::after { content: none; }
+html[data-look="shot"] .sp-pad__sign .dot-glyph { width: 16px; height: 16px; color: currentColor; transition: transform 0.4s var(--sea-ease); }
+html[data-look="shot"] .sp-pad details[open] .sp-pad__sign .dot-glyph { transform: rotate(45deg); }
+html[data-look="shot"] .ct__ico :is(.dot-glyph, .wa-dots) { width: 22px; height: 22px; }
+.mw-menu__ico { display: inline-block; width: 22px; height: 22px; flex: none; margin-inline-end: 12px; vertical-align: -4px; color: #79a0c5; }
+html[data-look="shot"] .mw-menu nav > a { display: flex; align-items: center; }
+html[data-look="shot"] .mw-menu__svc a { display: inline-flex; align-items: center; }
+html[data-look="shot"] .mw-menu__svc .mw-menu__ico { width: 18px; height: 18px; margin-inline-end: 10px; color: #a39d90; }
+html:is(.disable-animations, .motion-reduced) .dot-glyph circle { transition: none !important; animation: none !important; transform: none !important; }
+
+/* ── the chatbot's launcher (Nati, 20.10: "everyone should see it is AI"): the AI's spark in dots and
+   "AI", in a capsule drawn by the keys' ring of dots (D140); the spark twinkles now and then ── */
+html[data-look="shot"] .shot-dock__chat:has(.is-ai) { width: auto; }
+html[data-look="shot"] .shot-dock__chat-btn.is-ai {
+  position: relative; width: auto; min-width: 44px; padding: 0 14px 0 12px; display: inline-flex; align-items: center; gap: 7px;
+  border-radius: 999px; background: rgba(15, 16, 17, 0.82); color: #ede7da; box-shadow: none; overflow: visible;
+}
+html[data-look="shot"] .shot-dock__chat-btn.is-ai::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: 3px;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.mw-ai { width: 24px; height: 24px; color: #9dbcd8; }
+.mw-ai__t { font: 700 13px/1 var(--sea-mono); letter-spacing: 0.06em; direction: ltr; }
+@keyframes ai-twinkle { 0%, 80%, 100% { transform: none; } 88% { transform: scale(1.45); } }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.disable-animations):not(.motion-reduced) .mw-ai circle { animation: ai-twinkle 4.2s ease-in-out calc(1.2s + var(--d) * 70ms) infinite; }
+}
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .shot-dock__chat-btn.is-ai:hover { background: #ede7da; color: #0f1011; box-shadow: none; }
+  html[data-look="shot"] .shot-dock__chat-btn.is-ai:hover .mw-ai { color: #225079; }
+  html:not(.disable-animations):not(.motion-reduced) .shot-dock__chat-btn.is-ai:hover .mw-ai circle { animation: wa-burst 0.75s cubic-bezier(0.3, 0.7, 0.2, 1) calc(var(--d) * 24ms) both; }
+}
+
+/* the home's questions: the plus in dots turns into a cross when the answer opens */
+html[data-look="shot"] .faq__sign .dot-glyph { width: 16px; height: 16px; color: #79a0c5; transition: transform 0.4s var(--sea-ease); }
+html[data-look="shot"] .faq__row[data-open] .faq__sign .dot-glyph { transform: rotate(45deg); }
+
+/* a service page's steps: each number in a ring of dots; reached, the ring fills with the ink */
+html[data-look="shot"] .sp-step__node { background: none; color: #ede7da; box-shadow: none; }
+html[data-look="shot"] .sp-step__node::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; padding: 3px; pointer-events: none;
+  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.1px, transparent 1.5px) 0 0 / 5px 5px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+html.motion-ready[data-look="shot"] .sp-step__node:not(.is-reached) { background: none; box-shadow: none; color: #a39d90; }
+html[data-look="shot"] .sp-step__node.is-reached, html:not(.motion-ready)[data-look="shot"] .sp-step__node { background: #ede7da; color: #0f1011; }
+
+/* the 404: the horizon where the page should be */
+.sea-spot--lost { height: clamp(200px, 36svh, 360px); }
+.sp-lost__tag { display: block; margin: 8px 0 0; color: #79a0c5; }

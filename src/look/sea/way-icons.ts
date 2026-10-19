@@ -1,7 +1,9 @@
 // sea · the header's mark in dots (the wayfinder): one 13 x 13 halftone icon per chapter, drawn from
 // the same objects the field draws (shader.ts), small. Each icon is a list of dots [x, y, r, blue] in
 // a 0..13 box; the header morphs from one list to the next by letting each dot travel (SeaWay.tsx).
+// The colour code: 0 cream, 1 the logo's blue; 2-5 the search engine's mark (red, yellow, green, blue).
 export type Dot = [number, number, number, number]
+export const DOT_COLOURS = ['#EDE7DA', '#79A0C5', '#EA4335', '#FBBC05', '#34A853', '#4285F4']
 type Fn = (x: number, y: number) => [number, number]
 
 const G = 13
@@ -44,18 +46,24 @@ const SHAPES: Record<string, Fn> = {
     if (box(x, y, 0, -0.55, 0.32, 0.12)) return [0.95, 1]
     return [box(x, y, 0, 0.05, 0.36, 0.7) ? (box(x, y, 0, 0.45, 0.3, 0.12) ? 0.8 : 0.3) : 0.92, 0]
   },
-  // a results page, ours on top
+  // the search engine's mark (the services' Google row and page): its ring and bar in its colours
   seo: (x, y) => {
-    for (let k = 0; k < 4; k++) {
-      const cy = 0.66 - k * 0.44
-      if (box(x, y, 0, cy, 0.9, 0.13)) return [k === 0 ? 0.95 : 0.55, k === 0 ? 1 : 0]
-    }
-    return [0, 0]
+    const r = Math.hypot(x, y)
+    const a = Math.atan2(y, x)
+    const ring = r >= 0.5 && r <= 0.97 && !(a > -0.05 && a < 0.62)
+    const bar = Math.abs(y) <= 0.17 && x >= -0.04 && x <= 0.97
+    if (!ring && !bar) return [0, 0]
+    if (bar && !ring) return [0.95, 5]
+    const c = a > 0.62 && a <= 2.5 ? 2 : a > 2.5 || a <= -2.35 ? 3 : a > -2.35 && a <= -0.72 ? 4 : 5
+    return [0.95, c]
   },
-  // a question and an answer
+  // the chatbots: the AI's spark, a four-pointed star and a small one beside it
   chat: (x, y) => {
-    if (box(x, y, 0.3, 0.45, 0.6, 0.3)) return [0.8, 0]
-    if (box(x, y, -0.3, -0.35, 0.6, 0.3)) return [0.85, 1]
+    const sv = (cx: number, cy: number, s: number) => 1 - (Math.sqrt(Math.abs((x - cx) / s)) + Math.sqrt(Math.abs((y - cy) / s)))
+    const big = sv(-0.12, -0.12, 0.92)
+    const small = sv(0.64, 0.64, 0.34)
+    if (big > 0.04) return [Math.min(1, big * 1.7), 1]
+    if (small > 0.04) return [Math.min(1, small * 1.7), 0]
     return [0, 0]
   },
   // a print developing, in the logo's blue

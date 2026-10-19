@@ -13,6 +13,7 @@ import { Art } from '../../parts/Art'
 import { posterFor } from '../eye-line'
 import type { ShowItem } from '../../data'
 import { vt } from '../vt'
+import DotGlyph from '../../sea/DotGlyph'
 import './shot-pages.css'
 
 export { vt }
@@ -89,7 +90,7 @@ export function Checklist({ title, kicker, items }: { title: string; kicker?: st
       <ul>
         {items.map((it) => (
           <li key={it} data-zone="text">
-            <svg className="sp-tick" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10.5l4.2 4.2L16.5 5.5" /></svg>
+            <DotGlyph name="check" className="sp-tick" />
             <span>{it}</span>
           </li>
         ))}
@@ -110,7 +111,7 @@ export function Pad({ title, kicker, items, id = 'sp-faq' }: { title: string; ki
         {items.map((q) => (
           <li key={q.question}>
             <details>
-              <summary data-zone="text"><span>{q.question}</span><i className="sp-pad__sign" aria-hidden="true" /></summary>
+              <summary data-zone="text"><span>{q.question}</span><i className="sp-pad__sign" aria-hidden="true"><DotGlyph name="plus" n={9} /></i></summary>
               <p data-zone="text">{q.answer}</p>
             </details>
           </li>

@@ -272,10 +272,10 @@ vec2 landing(vec2 q, float g) {
 
 // ── search: our result climbs from fourth place to first ──
 vec2 seo(vec2 q, float g) {
-  float sb = box(q - vec2(0.0, 0.72), vec2(1.12, 0.13), 0.13);
+  float sb = box(q - vec2(0.2, 0.72), vec2(0.92, 0.13), 0.13);
   float v = rim(sb, 0.03) * 0.9;
   v = max(v, rim(length(q - vec2(0.92, 0.72)) - 0.055, 0.022) * 0.95);
-  v = max(v, barR(q, vec2(0.48, 0.72), vec2(0.3, 0.02), 1.0) * 0.55);
+  v = max(v, barR(q, vec2(0.52, 0.72), vec2(0.28, 0.02), 1.0) * 0.55);
   float ours = 3.0 * (1.0 - smoothstep(0.06, 0.8, g));
   float b = 0.0;
   for (int k = 0; k < 4; k++) {
@@ -299,7 +299,38 @@ vec2 seo(vec2 q, float g) {
   return vec2(v, b);
 }
 
+// ── the search engine's mark in dots, at the start of the search bar: its ring sweeps round as the
+//    take begins, red, yellow, green, blue, and its bar closes it (Nati, 20.10) ──
+const vec3 G_BLUE = vec3(0.259, 0.522, 0.957);
+const vec3 G_RED = vec3(0.918, 0.263, 0.208);
+const vec3 G_YEL = vec3(0.984, 0.737, 0.020);
+const vec3 G_GRN = vec3(0.204, 0.659, 0.325);
+vec4 gmark(vec2 q, float g) {
+  vec2 p = (q - vec2(-1.02, 0.72)) / 0.25;
+  float r = length(p);
+  float ang = atan(p.y, p.x);
+  float onRing = step(0.56, r) * step(r, 1.0);
+  // the ring runs from the top right, counterclockwise, round to the bar
+  float s = mod(ang - 0.62, 6.28318) / (6.28318 - 0.62);
+  float drawn = smoothstep(0.02, 0.3, g);
+  float ring = onRing * step(s, drawn) * step(0.0, s) * (1.0 - step(1.0, s));
+  float bar = step(abs(p.y), 0.2) * step(-0.02, p.x) * step(p.x, 0.98) * smoothstep(0.28, 0.34, g);
+  float v = max(ring, bar) * 0.95;
+  vec3 col = G_BLUE;
+  if (ang > 0.62 && ang <= 2.5) col = G_RED;
+  else if (ang > 2.5 || ang <= -2.35) col = G_YEL;
+  else if (ang > -2.35 && ang <= -0.72) col = G_GRN;
+  return vec4(v, col);
+}
+
 // ── a chatbot: the question, the bot typing, the answer ──
+// the AI's spark (Nati, 20.10: "everyone should see it is AI"): a four-pointed star, the sign people
+// now read as AI, drawn in dots; our own, not any company's mark
+float spark(vec2 p, float s, float a) {
+  p = mat2(cos(a), sin(a), -sin(a), cos(a)) * p / s;
+  return clamp((1.0 - (sqrt(abs(p.x)) + sqrt(abs(p.y)))) * 1.7, 0.0, 1.0);
+}
+
 vec2 chat(vec2 q, float g) {
   float a1 = smoothstep(0.02, 0.22, g);
   vec2 c1 = q - vec2(0.42, 0.52);
@@ -310,12 +341,8 @@ vec2 chat(vec2 q, float g) {
   float typing = step(0.28, g) * (1.0 - step(0.6, g));
   vec2 c2 = q - vec2(-0.62, 0.02);
   float inT = inside(box(c2, vec2(0.36, 0.15), 0.15)) * typing;
-  float dots = 0.0;
-  for (int k = 0; k < 3; k++) {
-    float fk = float(k);
-    float bob = 0.05 * max(0.0, sin(g * 70.0 - fk * 0.9));
-    dots = max(dots, 1.0 - step(0.075, length(c2 - vec2(0.2 - fk * 0.2, bob))));
-  }
+  // the bot thinks: its spark turns and breathes inside the bubble (the scroll turns it)
+  float dots = spark(c2, 0.16 + 0.03 * sin(g * 60.0), g * 18.0);
   v = max(v, inT * mix(0.78, 0.1, dots));
   b = max(b, inT * (1.0 - dots));
   float a2 = smoothstep(0.6, 0.82, g);
@@ -330,6 +357,11 @@ vec2 chat(vec2 q, float g) {
   lines *= step(0.95, a2);
   v = max(v, in3 * mix(0.74, 0.12, lines));
   b = max(b, in3 * (1.0 - lines));
+  // the answer is signed with the spark, beside it, with a small one by its side
+  float sg = smoothstep(0.62, 0.86, g);
+  float sk = max(spark(q - vec2(-1.26, -0.06), 0.24 * sg + 0.001, 0.0), spark(q - vec2(-1.04, 0.16), 0.09 * sg + 0.001, 0.0)) * step(0.01, sg);
+  v = max(v, sk * 0.95);
+  b = max(b, sk);
   return vec2(v, b);
 }
 
@@ -418,6 +450,16 @@ void main() {
   }
   vec3 col = mix(mix(CREAM, BLUE, clamp(f.y, 0.0, 1.0)), mix(INK, INKBLUE, clamp(f.y, 0.0, 1.0)), onPaper);
   vec3 outc = mix(ground, col, a * (0.35 + 0.65 * v) * mix(1.0, 0.8, onPaper));
+  // the search engine's mark on the results page (its own colours, only there)
+  if (uS[5].w > 0.001) {
+    vec4 gm = gmark((c - uS[5].xy) / uS[5].z, uG.y);
+    if (gm.x > 0.01) {
+      float gv = gm.x * uS[5].w;
+      float grr = pow(gv, 0.62) * uCell * 0.5;
+      float gaa = (1.0 - smoothstep(grr - 0.8, grr + 0.6, length(px - c)));
+      outc = mix(outc, gm.yzw, gaa * (0.35 + 0.65 * gv));
+    }
+  }
   // the film (lab gate: film): in its own slot, drawn in the sea's dots from the video's light, the
   // finger's ripple moving it like water; cell by cell it develops into the real film, like a print
   if (uFilmK.x > 0.001) {
