@@ -1,11 +1,13 @@
 // sea · small glyphs in the field's material (Nati, 20.10: "everywhere it can be built in dots, build it
 // in dots, beautifully animated"): the tick, the plus, the phone, the envelope, the camera and the
 // chapters' objects, each sampled on a small grid with every dot sized by how much of its cell the shape
-// covers (like the WhatsApp mark, D138). Static SVG, so it prerenders; the motion is CSS (sea-site.css):
-// the dots arrive from the centre outward when their block arrives, and on hover they burst a little
-// apart and settle, like the WhatsApp mark. Decorative: aria-hidden, the text beside it says it.
+// covers (like the WhatsApp mark, D138). Static SVG, so it prerenders, and one path per colour (not a
+// node per dot: hundreds of dot nodes cost the first paint a second on a phone). The motion is CSS
+// (sea-site.css): the dots are revealed from the centre outward when their block arrives, and the glyph
+// pops a little on hover. Decorative: aria-hidden, the text beside it says it.
 import { useEffect, useRef } from 'react'
 import { icon, GRID, DOT_COLOURS } from './way-icons'
+import { WA_DOTS } from './wa-dots-data'
 
 // one observer for every glyph: a glyph arrives (its dots grow from the centre out) when it comes into
 // view; the menu's and the dock's are already in view when they mount
@@ -83,28 +85,26 @@ function glyph(name: string, n: number) {
   if (!cache.has(key)) {
     // the chapters' objects come from the header's icons (way-icons.ts)
     const own = Boolean(SHAPES[name] || VALUES[name])
-    cache.set(key, { n: own ? n : GRID, dots: own ? sample(name, n) : icon(name) })
+    if (name === 'wa') cache.set(key, { n: 15, dots: WA_DOTS.map(([x, y, r]) => [x, y, r, 0] as Dot) })
+    else cache.set(key, { n: own ? n : GRID, dots: own ? sample(name, n) : icon(name) })
   }
   return cache.get(key)!
 }
 
 export default function DotGlyph({ name, n = 11, className = '', colour = false }: { name: string; n?: number; className?: string; colour?: boolean }) {
   const g = glyph(name, n)
-  const c = g.n / 2
   const ref = useRef<SVGSVGElement>(null)
   useEffect(() => { if (ref.current) arrive(ref.current) }, [])
+  // one path per colour: every dot is two arcs
+  const groups = new Map<number, string>()
+  for (const [x, y, r, b] of g.dots) {
+    const k = colour ? b : 0
+    const d = `M${(x - r).toFixed(2)} ${y.toFixed(2)}a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(2 * r).toFixed(2)} 0a${r.toFixed(2)} ${r.toFixed(2)} 0 1 0 ${(-2 * r).toFixed(2)} 0`
+    groups.set(k, (groups.get(k) ?? '') + d)
+  }
   return (
     <svg ref={ref} className={`dot-glyph ${className}`.trim()} viewBox={`0 0 ${g.n} ${g.n}`} aria-hidden="true" focusable="false">
-      {g.dots.map(([x, y, r, b], i) => (
-        <circle
-          key={i}
-          cx={x}
-          cy={y}
-          r={r}
-          fill={colour && b ? DOT_COLOURS[b] : undefined}
-          style={{ ['--d' as string]: Math.hypot(x - c, y - c).toFixed(2), ['--dx' as string]: ((x - c) / c).toFixed(2), ['--dy' as string]: ((y - c) / c).toFixed(2) }}
-        />
-      ))}
+      {[...groups].map(([k, d]) => <path key={k} d={d} fill={k ? DOT_COLOURS[k] : undefined} />)}
     </svg>
   )
 }

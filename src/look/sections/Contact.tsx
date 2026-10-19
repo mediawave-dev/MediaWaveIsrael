@@ -23,7 +23,6 @@ import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
-import WaDots from '../sea/WaDots'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -162,7 +161,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
             <ul className="ct__ways">
               <li className="ct__way--wa">
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico">{LOOK === 'shot' ? <WaDots /> : <WaIcon />}</span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
+                  <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="wa" /> : <WaIcon />}</span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
                 </a>
               </li>
               <li>
