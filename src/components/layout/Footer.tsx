@@ -6,6 +6,7 @@ import { SITE_CONTACT } from '../../data/site'
 import AnimatedLogo from '../ui/AnimatedLogo'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { LOOK } from '../../look/look'
+import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
 
 const currentYear = new Date().getFullYear()
 
@@ -21,7 +22,9 @@ export default function Footer() {
     e.preventDefault()
     // Route link (e.g., /terms): ScrollEngineProvider handles the scroll reset
     if (href.startsWith('/')) {
-      navigate(href)
+      // the sea: the page turns in dots before the route changes (SeaTurn; off elsewhere)
+      const at = turnFrom(e)
+      turnThen(at.x, at.y, () => navigate(href), 'spa')
       return
     }
     if (href === '#top') {

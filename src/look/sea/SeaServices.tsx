@@ -42,6 +42,8 @@ export default function SeaServices() {
       // the stage's one slot takes the current service's scene; the last one fades out in place
       if (spot.current) spot.current.dataset.spot = SCENE[SERVICES[active].id] ?? 'quiet'
       if (count.current) count.current.textContent = `${pad(active + 1)} / ${pad(N)}`
+      // the header's mark follows the object on the stage (SeaWay)
+      window.dispatchEvent(new CustomEvent('sea:svc', { detail: SERVICES[active].id }))
       sound.tick()
     }
     // the websites row keeps the laptop where its chapter left it (open, the lead arrived)

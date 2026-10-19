@@ -5,6 +5,7 @@
 // without easing. [קופי: נתי] every data-cursor string.
 import { useEffect, useRef } from 'react'
 import { tier } from './field'
+import { decode } from './decode'
 
 export default function SeaCursor() {
   const ref = useRef<HTMLDivElement>(null)
@@ -29,7 +30,7 @@ export default function SeaCursor() {
       const label = document.documentElement.classList.contains('disable-animations') ? '' : t?.dataset.cursor ?? ''
       if (label !== shown) {
         shown = label
-        if (label) el.textContent = label
+        if (label) void decode(el, label)
         el.classList.toggle('is-on', Boolean(label))
         if (label && !el.dataset.placed) { pos.x = e.clientX + 18; pos.y = e.clientY + 22; el.dataset.placed = '1' }
       }

@@ -24,6 +24,9 @@ import Logo from '../ui/Logo'
 import AnimatedLogo from '../ui/AnimatedLogo'
 import SoundToggle from '../../look/sea/SoundToggle'
 import WaDots from '../../look/sea/WaDots'
+import SeaWay from '../../look/sea/SeaWay'
+import SeaIsland from '../../look/sea/SeaIsland'
+import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
 
 // One header for the three looks (DECISIONS #50): sticky, opaque in the look's ground (KM:
 // two layers that crossfade with the page's theme), the look's button family for
@@ -50,7 +53,9 @@ export default function Header() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     if (href.startsWith('/')) {
-      navigate(href)
+      // the sea: the page turns in dots before the route changes (SeaTurn; off elsewhere)
+      const at = turnFrom(e)
+      turnThen(at.x, at.y, () => navigate(href), 'spa')
       return
     }
     const go = () => {
@@ -141,11 +146,14 @@ export default function Header() {
             aria-label="MediaWave, חזרה לדף הבית"
             onClick={(e) => {
               e.preventDefault()
-              navigate('/')
-              window.scrollTo({ top: 0, behavior: 'smooth' })
+              const at = turnFrom(e)
+              if (location.pathname === '/') { navigate('/'); window.scrollTo({ top: 0, behavior: 'smooth' }); return }
+              turnThen(at.x, at.y, () => { navigate('/'); window.scrollTo({ top: 0 }) }, 'spa')
             }}
           >
             <AnimatedLogo variant="compact" mode="intro" live decorative />
+            {/* the sea: past the opening, the mark in dots and the chapter's line (lab gate `way`) */}
+            {LOOK === 'shot' && <SeaWay />}
           </a>
 
           <nav className="mw-head__nav" aria-label="ניווט ראשי">
@@ -197,6 +205,9 @@ export default function Header() {
           >
             <span aria-hidden="true"><i /><i /><i /></span>
           </button>
+
+          {/* the sea: the header folds into an island past the opening; the visitor opens or pins it */}
+          {LOOK === 'shot' && <SeaIsland />}
         </div>
         {/* the sea (D131): Lama Lama's contact card at the top corner, wide screens; the ink spreads
             from where the pointer came in (sea-site.css) */}

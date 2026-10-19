@@ -21,6 +21,8 @@ import SeaIntro from './SeaIntro'
 import SeaLaptop from './SeaLaptop'
 import SeaServices from './SeaServices'
 import SeaRewind from './SeaRewind'
+import SeaFilm from './SeaFilm'
+import { opt } from './lab'
 import { Clock, DiscStill, Lines, Tag, useReveals } from './parts'
 import * as field from './field'
 import '../shot/shot-base.css'
@@ -122,11 +124,33 @@ export default function SeaHome() {
     return () => document.removeEventListener('input', onInput)
   }, [])
 
+  // a chapter with its own ground (lab gate `ground`): the services under the horizon, the letter on paper
+  useEffect(() => {
+    const g = opt('ground')
+    const html = document.documentElement.classList
+    const deep = g === 'deep' || g === 'both'
+    const paper = g === 'paper' || g === 'both'
+    html.toggle('sea-gnd-deep', deep)
+    html.toggle('sea-gnd-paper', paper)
+    let alive = true
+    void field.ready.then((ok) => {
+      if (!alive || !ok) return
+      const list: { el: HTMLElement; kind: 1 | 2 }[] = []
+      const svc = document.getElementById('services')
+      const letter = document.querySelector<HTMLElement>('.sea-contact')
+      if (deep && svc) list.push({ el: svc, kind: 1 })
+      if (paper && letter) list.push({ el: letter, kind: 2 })
+      field.setGrounds(list)
+    })
+    return () => { alive = false; field.setGrounds([]); html.remove('sea-gnd-deep', 'sea-gnd-paper') }
+  }, [])
+
   return (
     <div className="sea">
       <SeaIntro />
       <Hero />
       <Websites />
+      <SeaFilm />
       <Why />
       <SeaServices />
       <Process />

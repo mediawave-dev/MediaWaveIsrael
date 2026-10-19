@@ -2,6 +2,7 @@
 // (Israel time, true data), the reveal observer and the no-WebGL still of the Horizon disc.
 import { useEffect, useRef, type ReactNode } from 'react'
 import { tier } from './field'
+import { decode, decodeTags } from './decode'
 
 /** A Lama-style label in brackets and mono (`he`: in Hebrew, in the text face). Decorative: the heading
     beside it says the same. */
@@ -29,11 +30,13 @@ export function Clock() {
   const ref = useRef<HTMLSpanElement>(null)
   useEffect(() => {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__ || !FMT) return
+    const now = () => FMT.format(new Date()).split(':').join(' : ')
     const tick = () => {
       if (document.documentElement.classList.contains('disable-animations')) return
-      if (ref.current) ref.current.textContent = FMT.format(new Date()).split(':').join(' : ')
+      if (ref.current) ref.current.textContent = now()
     }
-    tick()
+    // the first reading develops out of dots, like every label (decode.ts)
+    if (ref.current) void decode(ref.current, now(), 300)
     if (tier() === 'still') return
     const id = window.setInterval(tick, 1000)
     return () => window.clearInterval(id)
@@ -53,6 +56,7 @@ export function useReveals(deps: unknown[] = []) {
     const io = new IntersectionObserver((entries) => entries.forEach((e) => {
       if (!e.isIntersecting) return
       e.target.classList.add('on')
+      decodeTags(e.target)
       io.unobserve(e.target)
     }), { rootMargin: '0px 0px -12% 0px', threshold: 0.15 })
     els.forEach((el) => io.observe(el))

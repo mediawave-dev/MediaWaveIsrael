@@ -92,6 +92,18 @@ let lvl = 0
 let amb = 1
 let ambT = 1
 let dirty = true
+let tex: WebGLTexture | null = null
+
+// ── the Lama Lama lab's layers (design/harvest/lamalama-deep.rtl.md §9) ──
+type FilmMode = 'touch' | 'scroll' | 'time'
+const film = {
+  el: null as HTMLElement | null, video: null as HTMLVideoElement | null, poster: null as HTMLImageElement | null,
+  mode: 'touch' as FilmMode, w: 0, wt: 0, vis: 0, dev: 0, devT: 0, seenAt: 0, ready: 0, posterUp: false, aspect: 1920 / 1028,
+  r: [0, 0, 0, 0], pe: 0, px: 0, py: 0, inside: false, tapped: false, frameNew: true, playing: false,
+}
+const grounds: { el: HTMLElement; kind: 1 | 2 }[] = []
+const gnd = new Float32Array(8)
+const turn = { x: 0, y: 0, cover: 0, reveal: 0, col: [0.929, 0.906, 0.855], anim: null as null | { key: 'cover' | 'reveal'; t0: number; ms: number; done: () => void } }
 let resolveReady: (ok: boolean) => void = () => {}
 /** Resolves after the first frame (true) or when WebGL is not available (false). */
 export const ready: Promise<boolean> = new Promise((r) => { resolveReady = r })
@@ -139,8 +151,19 @@ function setup(): boolean {
   const loc = gl.getAttribLocation(prog, 'p')
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
-  U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote']
+  U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
+    'uFilm', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
+  // the film's texture: one frame at a time from the video (or its poster), clamped, no mipmaps
+  tex = gl.createTexture()
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, tex)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([15, 16, 17]))
+  gl.uniform1i(U.uFilm, 0)
   return true
 }
 
@@ -234,10 +257,35 @@ function readSpots() {
   }
 }
 
+/** The film's slot and the chapters with their own ground, in device px (y up). */
+function readLab() {
+  if (film.el) {
+    const r = film.el.getBoundingClientRect()
+    film.r = [r.left * DPR, (H - r.bottom) * DPR, r.width * DPR, r.height * DPR]
+    const vis = Math.max(0, Math.min(r.bottom, H) - Math.max(r.top, 0)) / Math.max(1, Math.min(r.height, H))
+    film.vis = vis
+    film.wt = r.height > 4 ? smooth(0.05, 0.5, vis) : 0
+    if (film.mode === 'scroll') film.devT = 1 - smooth(0.08, 0.34, Math.abs((r.top + r.height / 2) / H - 0.5))
+  }
+  let k = 0
+  gnd.fill(0)
+  for (const g of grounds) {
+    if (k > 1) break
+    const r = g.el.getBoundingClientRect()
+    if (r.bottom < -40 || r.top > H + 40) continue
+    gnd[k * 4] = (H - r.top) * DPR
+    gnd[k * 4 + 1] = (H - r.bottom) * DPR
+    gnd[k * 4 + 2] = g.kind
+    gnd[k * 4 + 3] = 1
+    k++
+  }
+}
+
 function measure() {
   watchSpots()
   watchText()
   readSpots()
+  readLab()
   dirty = true
 }
 
@@ -268,6 +316,15 @@ function draw() {
   gl.uniform1f(U.uPad, 20 * DPR)
   gl.uniform1f(U.uLvl, lvl)
   gl.uniform4f(U.uNote, note.x, note.y, note.e, ((performance.now() - note.at) / 1000) * 240 * DPR)
+  uploadFilm()
+  gl.uniform4f(U.uFilmR, film.r[0], film.r[1], Math.max(1, film.r[2]), Math.max(1, film.r[3]))
+  gl.uniform4f(U.uFilmK, film.el ? film.w : 0, film.dev, film.mode === 'touch' ? 1 : 0, film.ready)
+  gl.uniform3f(U.uFilmP, film.px * DPR, (H - film.py) * DPR, film.pe)
+  gl.uniform1f(U.uFilmA, film.aspect)
+  gl.uniform4fv(U.uGnd, gnd)
+  gl.uniform1f(U.uGE, Math.min(140, Math.max(64, H * 0.12)) * DPR)
+  gl.uniform4f(U.uTurn, turn.x * DPR, (H - turn.y) * DPR, turn.cover, turn.reveal)
+  gl.uniform3f(U.uTurnC, turn.col[0], turn.col[1], turn.col[2])
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
@@ -308,10 +365,11 @@ function frame(now: number) {
   note.e *= Math.pow(0.982, dt * 60)
   if (note.e < 0.01) note.e = 0
   if (lvl > 0 || note.e > 0) moving = true
+  if (stepLab(now, dt)) moving = true
   // full: halve the rate after 2.5s with nothing but the sea moving
   if (moving) idleSince = now
   // the words move with transitions too (reveals, the services stage): read them now and then
-  if (textDirty || (moving && ++textTick % 6 === 0)) { readText(); readSpots() }
+  if (textDirty || (moving && ++textTick % 6 === 0)) { readText(); readSpots(); readLab() }
   const idle = mode === 'full' && now - idleSince > 2500
   skip = idle ? !skip : false
   if (!skip) draw()
@@ -328,13 +386,18 @@ function wake() {
 }
 
 const onPtr = (x: number, y: number) => {
+  if (film.el) {
+    const r = film.el.getBoundingClientRect()
+    film.inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom
+    if (film.inside) { film.px = x; film.py = y }
+  }
   if (ptr.tx < -9000) { ptr.x = x; ptr.y = y }
   ptr.tx = x; ptr.ty = y; ptr.e = 1
   if (mode === 'full') wake()
 }
 const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') onPtr(e.clientX, e.clientY) }
 const onTouch = (e: TouchEvent) => { const t = e.touches[0]; if (t) onPtr(t.clientX, t.clientY) }
-const onScroll = () => { readSpots(); readText(); wake() }
+const onScroll = () => { readSpots(); readText(); readLab(); wake() }
 const onVisible = () => { if (!document.hidden) { last = 0; wake() } }
 let remeasureT = 0
 const remeasure = () => { window.clearTimeout(remeasureT); remeasureT = window.setTimeout(() => { measure(); wake() }, 60) }
@@ -439,3 +502,114 @@ export const running = () => gl !== null
 
 // dev only: drive the field from the console or a test (scratch state renders)
 if (import.meta.env.DEV && typeof window !== 'undefined') (window as unknown as { __seaField?: unknown }).__seaField = { set }
+
+// ── the lab's layers ──
+
+/** The film's frame into the texture: the poster once, then each new video frame while it plays. */
+function uploadFilm() {
+  if (!gl || !tex || !film.el) return
+  const v = film.video
+  const fromVideo = Boolean(v && v.readyState >= 2 && !v.paused && film.frameNew)
+  if (!fromVideo && (film.posterUp || !film.poster?.complete || !film.poster.naturalWidth)) return
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, tex)
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+  try {
+    if (fromVideo && v) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, v); film.frameNew = false }
+    else if (film.poster) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, film.poster); film.posterUp = true }
+    film.ready = 1
+  } catch { /* a broken frame: keep the last one */ }
+}
+
+const easeIO = (x: number) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2)
+
+/** One frame of the film's development and the page turn. Returns true while something moves. */
+function stepLab(now: number, dt: number): boolean {
+  let busy = false
+  if (film.el) {
+    const before = film.w
+    film.w = Math.abs(film.wt - film.w) < 0.002 ? film.wt : lerp(film.w, film.wt, 1 - Math.pow(0.9, dt * 60))
+    if (film.w !== before) busy = true
+    // time: it develops by itself after a moment fully in view, and goes back to dots when it leaves
+    if (film.mode === 'time') {
+      if (film.vis > 0.7) { if (!film.seenAt) film.seenAt = now } else film.seenAt = 0
+      film.devT = film.seenAt && now - film.seenAt > 900 ? 1 : 0
+      if (film.seenAt && film.dev < 1) busy = true
+    }
+    if (film.mode === 'touch') film.devT = film.tapped ? 1 : 0
+    const rate = film.devT > film.dev ? dt / 1.4 : dt / 0.8
+    const d0 = film.dev
+    film.dev = film.devT > film.dev ? Math.min(film.devT, film.dev + rate) : Math.max(film.devT, film.dev - rate)
+    if (film.dev !== d0) busy = true
+    // the finger develops the print around it; when it leaves, the dots come back
+    const pe0 = film.pe
+    film.pe = film.inside && mode === 'full' ? Math.min(1, film.pe + dt / 0.25) : Math.max(0, film.pe - dt / 0.9)
+    if (film.pe !== pe0) busy = true
+    // play only while it is on screen (and never in calm or still: nothing plays by itself there)
+    const v = film.video
+    if (v && mode === 'full') {
+      if (film.w > 0.02 && v.paused && !film.playing) { film.playing = true; v.play().catch(() => { film.playing = false }) }
+      if (film.w <= 0.02 && !v.paused) { v.pause(); film.playing = false }
+      if (!v.paused) busy = true
+    }
+  }
+  if (turn.anim) {
+    const a = turn.anim
+    const k = Math.min(1, (now - a.t0) / a.ms)
+    turn[a.key] = easeIO(k)
+    busy = true
+    if (k >= 1) { turn.anim = null; a.done() }
+  }
+  return busy
+}
+
+/** The film's slot, its video and poster, and how it develops (lab gate `film`). */
+export function setFilm(el: HTMLElement | null, video: HTMLVideoElement | null, poster: HTMLImageElement | null, how: FilmMode = 'touch') {
+  film.el = el
+  film.video = video
+  film.poster = poster
+  film.mode = how
+  film.posterUp = false
+  film.ready = 0
+  film.dev = 0
+  film.devT = 0
+  film.tapped = false
+  if (video) {
+    const vf = video as HTMLVideoElement & { requestVideoFrameCallback?: (cb: () => void) => number }
+    if (vf.requestVideoFrameCallback) {
+      const onFrame = () => { film.frameNew = true; if (film.video === video) vf.requestVideoFrameCallback!(onFrame) }
+      vf.requestVideoFrameCallback(onFrame)
+    } else film.frameNew = true
+    video.addEventListener('loadedmetadata', () => { if (video.videoWidth) film.aspect = video.videoWidth / video.videoHeight })
+  }
+  if (el) readLab()
+  wake()
+}
+
+/** A tap on the film develops all of it (or takes it back to dots), in the touch mode. */
+export function tapFilm() { film.tapped = !film.tapped; wake() }
+
+/** The chapters with their own ground (lab gate `ground`): 1 under the horizon, 2 paper. */
+export function setGrounds(list: { el: HTMLElement; kind: 1 | 2 }[]) {
+  grounds.length = 0
+  grounds.push(...list)
+  readLab()
+  wake()
+}
+
+/** The page turn: cover the page with dots from (x, y) in `col` (0..1 rgb). */
+export function turnCover(x: number, y: number, col: [number, number, number], ms = 520): Promise<void> {
+  if (!gl) return Promise.resolve()
+  turn.x = x; turn.y = y; turn.col = col; turn.reveal = 0
+  return new Promise((done) => { turn.anim = { key: 'cover', t0: performance.now(), ms, done }; wake() })
+}
+
+/** ...and on the new page, the dots shrink away from the centre outward. */
+export function turnReveal(col: [number, number, number], ms = 640): Promise<void> {
+  if (!gl) return Promise.resolve()
+  turn.col = col; turn.cover = 1; turn.reveal = 0
+  return new Promise((done) => {
+    turn.anim = { key: 'reveal', t0: performance.now(), ms, done: () => { turn.cover = 0; turn.reveal = 0; dirty = true; done() } }
+    wake()
+  })
+}

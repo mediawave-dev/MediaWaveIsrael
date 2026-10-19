@@ -43,10 +43,24 @@ uniform float uNTxt;
 uniform float uPad;
 uniform float uLvl;     // the music's level, 0..1: the dots breathe with it (D142)
 uniform vec4 uNote;     // the last bell: x, y (device px), energy, the ring's radius now
+// the Lama Lama lab (design/harvest/lamalama-deep.rtl.md §9)
+uniform sampler2D uFilm; // the film: a frame of the video (or its poster), flipped so v runs up
+uniform vec4 uFilmR;    // its slot: left, bottom, width, height (device px, y up)
+uniform vec4 uFilmK;    // weight in view, developed (0..1), pointer mode (0|1), frame ready (0|1)
+uniform vec3 uFilmP;    // where the finger develops it: x, y (device px), energy
+uniform float uFilmA;   // the video's aspect (width / height)
+uniform vec4 uGnd[2];   // a chapter's own ground: top, bottom (device px, y up), kind (1 deep, 2 paper), on
+uniform float uGE;      // the depth of the dotted edge (device px)
+uniform vec4 uTurn;     // the page turn: x, y (device px), cover 0..1, reveal 0..1
+uniform vec3 uTurnC;    // the turn's colour
 
 const vec3 BG = vec3(0.059, 0.063, 0.067);
 const vec3 CREAM = vec3(0.929, 0.906, 0.855);
 const vec3 BLUE = vec3(0.475, 0.627, 0.773);
+const vec3 DEEP = vec3(0.106, 0.243, 0.384);   // under the horizon: the logo's sea, deep (#1b3e62)
+const vec3 PAPER = vec3(0.929, 0.906, 0.855);  // the paper chapter (cream)
+const vec3 INK = vec3(0.059, 0.063, 0.067);
+const vec3 INKBLUE = vec3(0.133, 0.314, 0.475); // the logo's blue on light grounds (#225079)
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float h1(float n) { return fract(sin(n * 91.345) * 47453.5453); }
@@ -385,10 +399,67 @@ void main() {
   float r = pow(v, 0.62) * uCell * 0.5;
   float a = 1.0 - smoothstep(r - 0.8, r + 0.6, length(px - c));
   a *= step(0.02, v);
-  vec3 col = mix(CREAM, BLUE, clamp(f.y, 0.0, 1.0));
-  vec3 outc = mix(BG, col, a * (0.35 + 0.65 * v));
+  // a chapter's own ground (lab gate: ground): inside its box the ground is solid; along its top and
+  // bottom edges it arrives as dots of its colour that grow until they merge, the edge a slow swell
+  vec3 ground = BG;
+  float onPaper = 0.0;
+  for (int i = 0; i < 2; i++) {
+    vec4 gb = uGnd[i];
+    if (gb.w < 0.5) continue;
+    float inside = min(gb.x - c.y, c.y - gb.y);
+    if (inside <= 0.0) continue;
+    float swell = sin(c.x * 0.011 + t * 0.5) * 0.5 + sin(c.x * 0.027 - t * 0.8) * 0.3;
+    float cov = clamp(inside / uGE + swell * 0.16 - 0.08, 0.0, 1.0);
+    float gr = cov * uCell * 0.74;
+    float ga = cov > 0.995 ? 1.0 : (1.0 - smoothstep(gr - 0.8, gr + 0.6, length(px - c))) * step(0.02, cov);
+    vec3 gc = gb.z > 1.5 ? PAPER : DEEP;
+    ground = mix(ground, gc, ga);
+    onPaper = max(onPaper, ga * step(1.5, gb.z));
+  }
+  vec3 col = mix(mix(CREAM, BLUE, clamp(f.y, 0.0, 1.0)), mix(INK, INKBLUE, clamp(f.y, 0.0, 1.0)), onPaper);
+  vec3 outc = mix(ground, col, a * (0.35 + 0.65 * v) * mix(1.0, 0.8, onPaper));
+  // the film (lab gate: film): in its own slot, drawn in the sea's dots from the video's light, the
+  // finger's ripple moving it like water; cell by cell it develops into the real film, like a print
+  if (uFilmK.x > 0.001) {
+    vec2 fr = (c - uFilmR.xy) / uFilmR.zw;
+    vec2 fp = (px - uFilmR.xy) / uFilmR.zw;
+    if (fr.x >= 0.0 && fr.x <= 1.0 && fr.y >= 0.0 && fr.y <= 1.0) {
+      // cover fit: the video fills the slot, cropped on the long side
+      float ra = uFilmR.z / uFilmR.w;
+      vec2 sc = ra > uFilmA ? vec2(1.0, uFilmA / ra) : vec2(ra / uFilmA, 1.0);
+      float pdf = length(c - uPtr);
+      vec2 wob = normalize(c - uPtr + 0.001) * uPtrE * 0.012 * exp(-pdf / (0.4 * uR)) * sin(pdf * 0.075 - t * 7.0);
+      vec2 uvC = (fr - 0.5) * sc + 0.5 + wob;
+      vec2 uvP = (fp - 0.5) * sc + 0.5;
+      vec3 vc = texture2D(uFilm, uvC).rgb;
+      float L = dot(vc, vec3(0.299, 0.587, 0.114));
+      float fv = clamp(L * 1.15 * uFilmK.w + 0.12 * (1.0 - uFilmK.w), 0.0, 1.0);
+      float frr = pow(fv, 0.62) * uCell * 0.5;
+      float fa = (1.0 - smoothstep(frr - 0.8, frr + 0.6, length(px - c))) * step(0.03, fv);
+      vec3 fcol = mix(BLUE, CREAM, smoothstep(0.2, 0.7, L));
+      vec3 dotted = mix(BG, fcol, fa * (0.35 + 0.65 * fv));
+      float hc = hash(cell + 7.0);
+      float dev = step(hc * 0.98 + 0.01, uFilmK.y) * uFilmK.w;
+      float fdR = 0.36 * min(uFilmR.z, uFilmR.w);
+      dev = max(dev, uFilmK.z * uFilmK.w * uFilmP.z * (1.0 - smoothstep(fdR * 0.55, fdR, length(c - uFilmP.xy) + hc * fdR * 0.4)));
+      vec3 film = mix(dotted, texture2D(uFilm, uvP).rgb, dev);
+      outc = mix(outc, film, uFilmK.x);
+    }
+  }
   // rewind tint: the deck's red and teal on the slipping rows
   if (uRew > 0.001 && slip > 0.0) outc += uRew * vec3(0.08, -0.02, 0.05) * step(0.5, fract(row * 0.5));
+  // the page turn (lab gate: turn): dots of the turn's colour swell out from where the visitor clicked
+  // until they cover the page; on the next page they shrink away from the centre outward
+  if (uTurn.z > 0.0 || uTurn.w > 0.0) {
+    float big = length(uRes);
+    float hj = hash(cell + 3.0) * 0.12;
+    float kIn = clamp((uTurn.z * 1.3 - length(c - uTurn.xy) / big - hj) / 0.22, 0.0, 1.0);
+    float kOut = clamp((uTurn.w * 1.3 - length(c - uRes * 0.5) / big - hj) / 0.22, 0.0, 1.0);
+    float tc = kIn * (1.0 - kOut);
+    float trr = tc * uCell * 0.74;
+    float ta = tc > 0.995 ? 1.0 : (1.0 - smoothstep(trr - 0.8, trr + 0.6, length(px - c))) * step(0.02, tc);
+    outc = mix(outc, uTurnC, ta);
+  }
   gl_FragColor = vec4(outc, 1.0);
 }
 `

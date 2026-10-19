@@ -92,6 +92,16 @@ html[data-look="shot"] .mw-head__logo .mw-logo { height: 24px; }
 @media (max-width: 429px) { html[data-look="shot"] .mw-head__logo .mw-logo { height: 20px; } html[data-look="shot"] .mw-head__bar { padding-inline: 12px 4px; gap: 6px; } }
 @media (max-width: 379px) { html[data-look="shot"] .mw-head__logo .mw-logo { height: 16px; } html[data-look="shot"] .mw-head__bar { padding-inline: 10px 2px; gap: 2px; } }
 
+/* the wayfinder (SeaWay.tsx): past the opening the wordmark gives way to the mark in dots and the
+   chapter's line (how much of the pill shows is SeaIsland's, below) */
+html[data-look="shot"] .mw-head__logo { display: inline-flex; align-items: center; min-height: 44px; }
+.sea-way { display: none; align-items: center; gap: 10px; white-space: nowrap; min-width: 0; }
+.sea-way__mark { display: block; width: 30px; height: 30px; flex: none; }
+.sea-way__line { font-size: 15px; font-weight: 500; line-height: 1; color: #ede7da; min-width: 0; overflow: hidden; }
+html.sea-way-on .sea-way { display: inline-flex; }
+html.sea-way-on .mw-head__logo .mw-logo { display: none; }
+@media (max-width: 379px) { .sea-way__line { font-size: 14px; } .sea-way { gap: 8px; } }
+
 /* the contact card at the top corner (wide screens): the ink spreads from where the pointer came in */
 .sea-card {
   position: absolute; top: 14px; left: var(--gut, 40px); z-index: 2; pointer-events: auto;
@@ -375,3 +385,51 @@ html[data-look="shot"] .sp--service .sp-top { grid-template-rows: auto minmax(18
   html[data-look="shot"] .sp--service .sp-hero__copy { max-width: none; }
   html[data-look="shot"] .sp--service .sea-spot--page { grid-column: 2; grid-row: 2; height: min(60svh, 560px); align-self: center; }
 }
+
+/* ── the header past the opening (gate `head`, SeaIsland.tsx) ── */
+html[data-look="shot"] .mw-head__bar { position: relative; overflow: hidden; transition: width 0.55s var(--sea-ease), padding 0.55s var(--sea-ease), box-shadow 0.3s ease; }
+html[data-look="shot"] .mw-head__bar > * { transition: opacity 0.3s ease; }
+.sea-island__open { display: none; position: absolute; inset: 0; z-index: 2; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; border-radius: inherit; }
+.sea-island__pin { display: none; order: 4; width: 40px; height: 44px; place-items: center; margin: 0; padding: 0; background: none; border: 0; border-radius: 4px; color: #a39d90; cursor: pointer; }
+.sea-island__pin svg { width: 16px; height: 16px; fill: currentColor; }
+.sea-island__pin[aria-pressed="true"] { color: #79a0c5; }
+@media (hover: hover) and (pointer: fine) { .sea-island__pin:hover { color: #ede7da; } }
+html.sea-head-island.sea-under .sea-island__pin { display: inline-grid; }
+.sea-island__measure { position: absolute; top: 0; inset-inline-start: -9999px; visibility: hidden; pointer-events: none; white-space: nowrap; }
+/* folded: the mark alone, a small island at the top centre; tabbing in opens it (focus-within) */
+html.sea-fold .mw-head__bar:not(:focus-within) { width: 56px; padding-inline: 13px; gap: 0; }
+html.sea-fold .mw-head__bar:not(:focus-within) > :not(.mw-head__logo) { opacity: 0; pointer-events: none; }
+html.sea-fold .mw-head__bar:not(:focus-within) .sea-island__open { display: block; opacity: 1; pointer-events: auto; }
+html.sea-swallow .sea-island__open { display: block; opacity: 0; pointer-events: auto; }
+html.sea-fold .mw-head__bar:not(:focus-within) .mw-head__logo { pointer-events: none; }
+html.sea-fold:not(.sea-speak) .mw-head__bar:not(:focus-within) .sea-way__line { opacity: 0; }
+.sea-way__line { transition: opacity 0.25s ease; }
+/* speaking: just wide enough for the chapter's line, for a moment */
+html.sea-fold.sea-speak .mw-head__bar:not(:focus-within) { width: calc(26px + 30px + 10px + var(--speak-w, 120px)); }
+@media (hover: hover) and (pointer: fine) { html.sea-fold .mw-head__bar:not(:focus-within):hover { box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.34); } }
+/* away: the pill leaves on the way down and comes back on a deliberate scroll up */
+html.sea-head-away .mw-head { transition: transform 0.5s var(--sea-ease); }
+html.sea-gone .mw-head:not(:focus-within) { transform: translateY(-120%); }
+html:is(.disable-animations, .motion-reduced) .mw-head__bar { transition: none; }
+
+/* ── the page turn (gate `turn`, SeaTurn.tsx): the field rises over the page to draw the cover ── */
+html.sea-turning .sea-field { z-index: 44; }
+html.sea-turn-in::after { content: ""; position: fixed; inset: 0; z-index: 44; background: var(--turn-c, #ede7da); }
+html.sea-turn-fade::after { opacity: 0; transition: opacity 0.3s ease; }
+.sea-turn__tc { position: fixed; z-index: 46; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 12px/1 var(--sea-mono); letter-spacing: 0.1em; color: #0f1011; opacity: 0; pointer-events: none; direction: ltr; }
+html:is(.sea-turning, .sea-turn-in):not(.sea-turn-rev) .sea-turn__tc { opacity: 1; transition: opacity 0.2s ease 0.18s; }
+
+/* ── the lab's panel (?lab=1, review only) ── */
+.sea-lab {
+  position: fixed; z-index: 70; inset-inline-end: 12px; bottom: 12px; width: min(340px, calc(100vw - 24px)); box-sizing: border-box;
+  display: grid; gap: 10px; padding: 10px 12px 12px; background: #17191b; color: #ede7da; border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.18), 0 12px 40px rgba(0, 0, 0, 0.5); font: 500 13px/1.3 var(--text);
+}
+.sea-lab.is-folded { width: auto; padding: 6px; }
+.sea-lab__fold { justify-self: end; margin: 0; padding: 7px 10px; font: 600 11px/1 var(--sea-mono); color: #ede7da; background: none; border: 1px solid rgba(237, 231, 218, 0.3); border-radius: 4px; cursor: pointer; }
+.sea-lab__row { display: grid; gap: 6px; }
+.sea-lab__name { font: 700 12px/1 var(--text); color: #a39d90; }
+.sea-lab__opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.sea-lab__opts button { min-height: 32px; margin: 0; padding: 7px 11px; font: 600 12.5px/1 var(--text); color: #ede7da; background: none; border: 1px solid rgba(237, 231, 218, 0.28); border-radius: 999px; cursor: pointer; }
+.sea-lab__opts button[aria-pressed="true"] { background: #ede7da; color: #0f1011; border-color: #ede7da; }
+@media (max-width: 767px) { .sea-lab { bottom: 92px; } }

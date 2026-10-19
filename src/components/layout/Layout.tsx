@@ -13,6 +13,8 @@ import ShotDock from '../../look/shot/ShotDock'
 import TrackingTrail from '../../look/shot/TrackingTrail'
 import SeaField from '../../look/sea/SeaField'
 import SeaCursor from '../../look/sea/SeaCursor'
+import SeaTurn from '../../look/sea/SeaTurn'
+import SeaLab from '../../look/sea/SeaLab'
 import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
 
 // Lazy load widgets for code splitting
@@ -139,6 +141,9 @@ export default function Layout({ children }: LayoutProps) {
             T3 is the review option ?trail=t3 (the prompt's rule: at most one trail; Nati picks) */}
         {shot && TRAIL_T3 && <TrackingTrail />}
         {shot && <SeaCursor />}
+        {/* the sea: the page turn's timecode (SeaTurn) and the lab's switches (?lab=1) */}
+        {shot && <SeaTurn />}
+        {shot && <SeaLab />}
 
         {/* Widgets — mounted after idle (see widgetsReady above).
             ONE BOUNDARY EACH, deliberately. These are three separate lazy()

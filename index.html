@@ -67,6 +67,17 @@
           setTimeout(function () { d.classList.remove('sea-opening', 'sea-opening-calm', 'sea-hold', 'sea-out'); }, 7000);
           return;
         }
+        // the sea's page turn (lab gate turn): a page reached through the dots starts covered in the
+        // turn's colour from its first paint; SeaTurn reveals it (the safety net lifts it after 2.5s)
+        if (shot && !calm) { try {
+          var tn = JSON.parse(sessionStorage.getItem('mw-sea-turn') || 'null');
+          if (tn && Date.now() - tn.t < 4000) {
+            d.classList.add('sea-turn-in'); d.style.setProperty('--turn-c', tn.c);
+            setTimeout(function () { d.classList.remove('sea-turn-in'); }, 2500);
+            // the turn is this page's arrival: no logo ident on top of it
+            sessionStorage.setItem('mw-logo-ident', '1'); return;
+          }
+        } catch (e) {} }
         if (calm) return;
         if (!shot && location.pathname === '/' && !sessionStorage.getItem('mw-hero-iris')) { // shot: the dive opens the iris (D88)
           d.classList.add('hero-iris');
