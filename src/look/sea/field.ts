@@ -30,8 +30,8 @@ const T3 = /[?&]trail=t3(&|$)/.test(params())
 const rootHas = (c: string) => typeof document !== 'undefined' && document.documentElement.classList.contains(c)
 const GRAIN = () => rootHas('sea-grain-on')
 const RIPPLE = () => rootHas('sea-trail-ripple')
-/** the trail of small squares (D162, Lama's own): fine pointers only, as theirs */
-const SQUARES = () => rootHas('sea-trail-squares') && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+/** the trail of small squares (D162, Lama's own); since D163 the finger draws it too */
+const SQUARES = () => rootHas('sea-trail-squares')
 
 export function tier(): Tier {
   if (typeof window === 'undefined') return 'still'
@@ -93,6 +93,8 @@ let W = 0
 let H = 0
 let DPR = 1
 const ptr = { x: -9999, y: -9999, tx: -9999, ty: -9999, e: 0 }
+/** the finger on a touch screen (D163): where it lands and moves the field swells like a drop of water */
+const press = { x: 0, y: 0, tx: 0, ty: 0, on: 0, e: 0 }
 const type = { e: 0, t: 0, until: 0 }
 /** the music (D142): its level, and the last bell's ring */
 const note = { x: 0, y: 0, e: 0, at: 0 }
@@ -257,7 +259,7 @@ function setup(): boolean {
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
   U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
-    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
+    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
   // each film's texture: one frame at a time from its video (or its poster), clamped, no mipmaps
   for (let u = 0; u < MAX_FILMS; u++) {
@@ -482,6 +484,7 @@ function draw() {
   gl.uniform1f(U.uFlowR, 40 * DPR)
   gl.uniform1f(U.uGrainPx, Math.max(2, Math.round(2 * DPR)))
   gl.uniform1f(U.uTrail, mode === 'full' && SQUARES() && !document.documentElement.classList.contains('disable-animations') ? 1 : 0)
+  gl.uniform4f(U.uPress, press.x * DPR, (H - press.y) * DPR, mode === 'full' && !document.documentElement.classList.contains('disable-animations') ? press.e : 0, 64 * DPR)
   gl.uniform1f(U.uScrollV, scrollV)
   drawImgs()
   gl.uniform4fv(U.uGnd, gnd)
@@ -521,6 +524,13 @@ function frame(now: number) {
   if (type.e > 0) { type.t += dt; moving = true }
   if (amb !== ambT) { amb = Math.min(ambT, amb + dt / 1.4); moving = true }
   if (live.rew > 0 || ptr.e > 0) moving = true
+  // the finger's dome follows it with a little ease, swells in fast and settles out slowly
+  const kf = 1 - Math.pow(1 - 0.32, dt * 60)
+  press.x = lerp(press.x, press.tx, kf)
+  press.y = lerp(press.y, press.ty, kf)
+  press.e += (press.on - press.e) * (1 - Math.pow(1 - (press.on ? 0.16 : 0.07), dt * 60))
+  if (!press.on && press.e < 0.004) press.e = 0
+  if (press.e > 0) moving = true
   // the music moves the dots only in full motion (calm: the music plays, the field keeps still)
   const heard = mode === 'full' && !stopped ? Math.min(1, sound.level() * 4) : 0
   lvl = lerp(lvl, heard, 1 - Math.pow(1 - 0.2, dt * 60))
@@ -565,7 +575,21 @@ const onPtr = (x: number, y: number) => {
   if (mode === 'full') wake()
 }
 const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') onPtr(e.clientX, e.clientY) }
-const onTouch = (e: TouchEvent) => { const t = e.touches[0]; if (t) onPtr(t.clientX, t.clientY) }
+const onTouch = (e: TouchEvent) => {
+  const t = e.touches[0]
+  if (!t) return
+  press.tx = t.clientX; press.ty = t.clientY
+  onPtr(t.clientX, t.clientY)
+}
+const onTouchStart = (e: TouchEvent) => {
+  const t = e.touches[0]
+  if (!t || mode !== 'full') return
+  press.tx = t.clientX; press.ty = t.clientY
+  if (press.e < 0.02) { press.x = t.clientX; press.y = t.clientY }
+  press.on = 1
+  wake()
+}
+const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) { press.on = 0; wake() } }
 const onScroll = () => {
   // the scroll's speed stirs the pictures (phones have no pointer to stir them with)
   const now = performance.now()
@@ -618,6 +642,9 @@ function run(canvas: HTMLCanvasElement) {
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('pointermove', onPointer, { passive: true })
   window.addEventListener('touchmove', onTouch, { passive: true })
+  window.addEventListener('touchstart', onTouchStart, { passive: true })
+  window.addEventListener('touchend', onTouchEnd, { passive: true })
+  window.addEventListener('touchcancel', onTouchEnd, { passive: true })
   window.addEventListener('load', remeasure)
   document.addEventListener('visibilitychange', onVisible)
   document.fonts?.ready.then(remeasure)
@@ -649,6 +676,9 @@ export function stop() {
   spotIO?.disconnect()
   window.removeEventListener('pointermove', onPointer)
   window.removeEventListener('touchmove', onTouch)
+  window.removeEventListener('touchstart', onTouchStart)
+  window.removeEventListener('touchend', onTouchEnd)
+  window.removeEventListener('touchcancel', onTouchEnd)
   window.removeEventListener('load', remeasure)
   document.removeEventListener('visibilitychange', onVisible)
   ro?.disconnect()

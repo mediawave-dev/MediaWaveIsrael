@@ -64,6 +64,7 @@ uniform vec4 uFlowE[3];  // their energies, four to a vector
 uniform float uFlowR;   // the wake's reach (device px)
 uniform float uGrainPx; // the material's squares (device px, 2 CSS px)
 uniform float uTrail;   // the pointer's trail of squares on (D162)
+uniform vec4 uPress;    // the finger (D163): x, y (device px), strength 0..1, radius (device px)
 uniform float uScrollV;
 uniform sampler2D uAtlas; // live pictures (D158): eight cells of 512 x 320
 uniform vec4 uImgR[8];  // each picture's frame: left, bottom, width, height (device px, y up)
@@ -84,12 +85,15 @@ const vec3 PAPER = vec3(0.929, 0.906, 0.855);  // the paper chapter (cream)
 const vec3 INK = vec3(0.059, 0.063, 0.067);
 const vec3 INKBLUE = vec3(0.133, 0.314, 0.475); // the logo's blue on light grounds (#225079)
 
+// one dot's width in the current drawing's units (slot() sets it before each drawing): thin lines and
+// outlines are never thinner than a dot, so every row and column of a line gets exactly its dot (D163)
+float gCU = 0.05;
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float h1(float n) { return fract(sin(n * 91.345) * 47453.5453); }
 float box(vec2 p, vec2 b, float r) { vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
 float inside(float d) { return 1.0 - step(0.0, d); }
-float rim(float d, float w) { return 1.0 - smoothstep(0.0, w, abs(d)); }
-float bar(vec2 q, vec2 c, vec2 h) { return step(abs(q.x - c.x), h.x) * step(abs(q.y - c.y), h.y); }
+float rim(float d, float w) { float ww = max(w * 0.6, 0.55 * gCU); return 1.0 - smoothstep(ww * 0.7, ww, abs(d)); }
+float bar(vec2 q, vec2 c, vec2 h) { h = max(h, vec2(0.5 * gCU)); return step(abs(q.x - c.x), h.x) * step(abs(q.y - c.y), h.y); }
 /** a bar that grows from the inline start (the right, in Hebrew) by k */
 float barR(vec2 q, vec2 c, vec2 h, float k) { return bar(q, c, h) * step(c.x + h.x - 2.0 * h.x * k, q.x); }
 float tri(vec2 p, vec2 a, vec2 b, vec2 c) {
@@ -193,7 +197,9 @@ vec2 laptop(vec2 q, float t) {
   float ls = q.x / lhw;
   float inLid = step(0.0, lv) * step(lv, 1.0) * step(abs(ls), 1.0);
   if (inLid > 0.5) {
-    float lidRim = max(max(step(lv, 0.035), step(0.965, lv)), step(0.965, abs(ls)));
+    float tb = max(0.035, 0.75 * gCU / max(abs(e.x - HY), 0.001));
+    float sd = max(0.035, 0.75 * gCU / max(lhw, 0.001));
+    float lidRim = max(max(step(lv, tb), step(1.0 - tb, lv)), step(1.0 - sd, abs(ls)));
     if (e.x < HY) {
       // shut or nearly: the lid's back, with the Horizon disc
       float dq = length(vec2(ls / 0.34, (lv - 0.5) / 0.38));
@@ -389,7 +395,8 @@ vec2 chat(vec2 q, float g) {
 
 // ── a memory: a print that develops like a cyanotype ──
 vec2 memory(vec2 q, vec2 cell, float g) {
-  float an = -0.07;
+  // square to the grid (D163): a tilted print falls on the dots in steps
+  float an = 0.0;
   vec2 p = mat2(cos(an), sin(an), -sin(an), cos(an)) * q;
   float inP = inside(box(p, vec2(0.86, 0.98), 0.02));
   vec2 ip = p - vec2(0.0, 0.14);
@@ -670,8 +677,24 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
   return outc;
 }
 
+// a drawing's centre sits on a column of dots, so its left and right halves fall on the grid alike and
+// every symmetric drawing stays symmetric (D163: the laptop's screen had stepped out at different heights)
+vec4 slot(vec4 s) { s.x = (floor(s.x / uCell) + 0.5) * uCell; gCU = uCell / max(s.z, 1.0); return s; }
+
 void main() {
   vec2 px = gl_FragCoord.xy;
+  // the finger (D163): under it everything swells a little, like a drop of water on the glass. p0 keeps
+  // the straight pixel for the squares of its ring
+  vec2 p0 = px;
+  float dome = 0.0;
+  vec2 domeU = vec2(0.0);
+  if (uPress.z > 0.001) {
+    vec2 dd = px - uPress.xy;
+    float rr = length(dd) / uPress.w;
+    dome = uPress.z * exp(-rr * rr * 1.8);
+    px = uPress.xy + dd * (1.0 - 0.22 * dome);
+    domeU = rr > 0.001 ? dd / (rr * uPress.w) * (3.6 * rr * dome) : vec2(0.0);
+  }
   float t = uTime;
   // rewind: rows slip sideways like a deck's tracking
   float row = floor(px.y / uCell);
@@ -682,14 +705,14 @@ void main() {
   vec2 c = (cell + 0.5) * uCell;
   vec2 f = vec2(0.0);
   vec4 s;
-  s = uS[0]; if (s.w > 0.001) f += horizon(c, (c - s.xy) / s.z, t) * s.w;
-  s = uS[1]; if (s.w > 0.001) f += laptop((c - s.xy) / s.z, t) * s.w;
-  s = uS[2]; if (s.w > 0.001) f += reels((c - s.xy) / s.z) * s.w;
-  s = uS[3]; if (s.w > 0.001) f += bubble((c - s.xy) / s.z) * s.w;
-  s = uS[4]; if (s.w > 0.001) f += landing((c - s.xy) / s.z, uG.x) * s.w;
-  s = uS[5]; if (s.w > 0.001) f += seo((c - s.xy) / s.z, uG.y) * s.w;
-  s = uS[6]; if (s.w > 0.001) f += chat((c - s.xy) / s.z, uG.z) * s.w;
-  s = uS[7]; if (s.w > 0.001) f += memory((c - s.xy) / s.z, cell, uG.w) * s.w;
+  s = slot(uS[0]); if (s.w > 0.001) f += horizon(c, (c - s.xy) / s.z, t) * s.w;
+  s = slot(uS[1]); if (s.w > 0.001) f += laptop((c - s.xy) / s.z, t) * s.w;
+  s = slot(uS[2]); if (s.w > 0.001) f += reels((c - s.xy) / s.z) * s.w;
+  s = slot(uS[3]); if (s.w > 0.001) f += bubble((c - s.xy) / s.z) * s.w;
+  s = slot(uS[4]); if (s.w > 0.001) f += landing((c - s.xy) / s.z, uG.x) * s.w;
+  s = slot(uS[5]); if (s.w > 0.001) f += seo((c - s.xy) / s.z, uG.y) * s.w;
+  s = slot(uS[6]); if (s.w > 0.001) f += chat((c - s.xy) / s.z, uG.z) * s.w;
+  s = slot(uS[7]); if (s.w > 0.001) f += memory((c - s.xy) / s.z, cell, uG.w) * s.w;
   // a quiet field everywhere, like grain on paper; after the opening it spreads out from the mark
   float reach = uAmb * length(uRes) * 1.1;
   float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC)) * uGrain;
@@ -708,13 +731,12 @@ void main() {
     soft = min(soft, smoothstep(-uPad, uPad * 7.0, length(max(dp, 0.0)) + min(max(dp.x, dp.y), 0.0)));
   }
   float give = mix(0.1, 1.0, mask);
-  // the big dots (D162): every shape keeps its sharp silhouette (no dot outside it), but its dots are not
-  // one size: a broad light drifts across it, a slow noise turns in it, and each dot keeps a little size
-  // of its own
-  float sheen = 0.5 + 0.5 * sin((c.x * 0.6 + c.y * 0.8) / (uCell * 11.0) - t * 0.4);
-  float lit = clamp(0.5 + 0.5 * (0.55 * vn(c / (uCell * 6.5) + vec2(t * 0.05, -t * 0.03)) + 0.45 * sheen), 0.0, 1.0);
-  lit = (0.34 + 0.8 * lit) * (0.8 + 0.4 * hash(cell + 11.0));
-  f.x *= lit;
+  // the big dots (D162, D163): every outline, key and line of text keeps its full dots, so each drawing
+  // stays exact; only inside the fills do the dots grow and shrink, in order, under soft diagonal bands of
+  // light that drift slowly across the shape (never at random)
+  float light = 0.5 + 0.5 * sin(dot(c, vec2(-0.55, 0.83)) / (uCell * 13.0) - t * 0.35);
+  float fill = smoothstep(0.1, 0.2, f.x) * (1.0 - smoothstep(0.84, 0.9, f.x));
+  f.x *= mix(1.0, 0.68 + 0.32 * light, fill);
   // the music: the shapes and the grain breathe with its level, and each bell sends a ring out
   float v = max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl));
   float nd = length(c - uNote.xy);
@@ -738,7 +760,7 @@ void main() {
     if (inside <= 0.0) continue;
     float swell = sin(c.x * 0.011 + t * 0.5) * 0.5 + sin(c.x * 0.027 - t * 0.8) * 0.3;
     float cov = clamp(inside / uGE + swell * 0.16 - 0.08, 0.0, 1.0);
-    float gr = cov * uCell * 0.74 * mix(0.78, 1.18, hash(cell + 5.0));
+    float gr = cov * uCell * 0.74;
     float ga = cov > 0.995 ? 1.0 : (1.0 - smoothstep(gr - 0.8, gr + 0.6, length(px - c))) * step(0.02, cov);
     vec3 gc = gb.z > 1.5 ? PAPER : DEEP;
     ground = mix(ground, gc, ga);
@@ -748,7 +770,7 @@ void main() {
   vec3 outc = mix(ground, col, a * (0.35 + 0.65 * v) * mix(1.0, 0.8, onPaper));
   // the search engine's mark on the results page (its own colours, only there)
   if (uS[5].w > 0.001) {
-    vec4 gm = gmark((c - uS[5].xy) / uS[5].z, uG.y);
+    vec4 gm = gmark((c - slot(uS[5]).xy) / uS[5].z, uG.y);
     if (gm.x > 0.01) {
       float gv = gm.x * uS[5].w;
       float grr = pow(gv, 0.62) * uCell * 0.5;
@@ -759,14 +781,33 @@ void main() {
   // the films (D146, D154): each in its own slot, drawn in the sea's dots from the video's light, the
   // finger's ripple moving it like water; cell by cell it develops into the real film, like a print
   // a ground dims its dots softly under the words
+  // the drawings read clearly (D163): a ground's footage stays quiet around them
+  float near = 0.0;
+  for (int i = 0; i < 8; i++) {
+    vec4 sl = uS[i];
+    if (sl.w < 0.001) continue;
+    near = max(near, sl.w * (1.0 - smoothstep(1.25, 1.9, length(px - sl.xy) / max(sl.z, 1.0))));
+  }
+  float softV = min(soft, 1.0 - 0.72 * near);
   vec4 fl = flowAt(px);
   if (uReelK.x > 0.001) outc = reelLayer(px, t, soft, fl, outc);
   outc = imgLayer(px, t, fl, outc);
-  if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, soft, fl, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
-  if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, soft, fl, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
+  if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
+  if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
   // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid
-  if (uTrail > 0.5 && fl.w > 0.02) outc = mix(outc, CREAM, sq7(rankAt(px), fl.w * 1.2));
+  if (uTrail > 0.5 && fl.w > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), fl.w * 1.2));
+  // the finger's dome: lit on the side that faces the light (upper start), shaded on the other, and a
+  // thin ring of small squares where it meets the glass; it swells in as the finger lands and settles
+  // out when it lifts
+  if (uPress.z > 0.001) {
+    float facing = dot(domeU, vec2(0.6, 0.8));
+    outc *= 1.0 + 0.32 * facing;
+    outc += vec3(0.05, 0.05, 0.045) * max(0.0, facing) * uPress.z;
+    float rr0 = length(p0 - uPress.xy) / (uPress.w * (0.72 + 0.28 * uPress.z));
+    float band = smoothstep(0.86, 1.0, rr0) * (1.0 - smoothstep(1.0, 1.18, rr0));
+    outc = mix(outc, CREAM, sq7(rankAt(p0), band * uPress.z * 0.48) * 0.8);
+  }
   // rewind tint: the deck's red and teal on the slipping rows
   if (uRew > 0.001 && slip > 0.0) outc += uRew * vec3(0.08, -0.02, 0.05) * step(0.5, fract(row * 0.5));
   // the page turn (lab gate: turn): dots of the turn's colour swell out from where the visitor clicked
@@ -777,7 +818,7 @@ void main() {
     float kIn = clamp((uTurn.z * 1.3 - length(c - uTurn.xy) / big - hj) / 0.22, 0.0, 1.0);
     float kOut = clamp((uTurn.w * 1.3 - length(c - uRes * 0.5) / big - hj) / 0.22, 0.0, 1.0);
     float tc = kIn * (1.0 - kOut);
-    float trr = tc * uCell * 0.74 * mix(0.8, 1.16, hash(cell + 9.0));
+    float trr = tc * uCell * 0.74;
     float ta = tc > 0.995 ? 1.0 : (1.0 - smoothstep(trr - 0.8, trr + 0.6, length(px - c))) * step(0.02, tc);
     outc = mix(outc, uTurnC, ta);
   }

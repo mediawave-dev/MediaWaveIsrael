@@ -460,23 +460,26 @@ html.sea-reveal .sea-meta--end.on::before { transform: none; }
 .sea-film--veil { position: relative; min-height: 100svh; display: grid; align-content: end; padding-bottom: clamp(48px, 9svh, 96px); }
 @media (min-width: 1100px) { .sea-film.sea-film--veil { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
 
-/* ── the hero's promise (D161): two quiet sentences, then the promise on its own line, a word at a
-   time: each rises out of a soft blur after the one before it; when the last is in, a soft light runs
-   across the words from the right (Hebrew's reading direction). Without script, in calm or with the
-   widget's stop, the words simply stand. ── */
+/* ── the hero's promise (D161, D163): two quiet sentences, then the promise on its own line, a word at
+   a time: each rises out of a soft blur after the one before it (half a second apart); when the last is
+   in, a soft light runs across the words from the right (Hebrew's reading direction). They stay about
+   four seconds, leave in the same order, rising into a blur, and after a breath come again: an 11.5 s
+   loop. Without script, in calm or with the widget's stop, the words simply stand. ── */
 .sea-lead__ln { display: block; }
 .sea-lead__pro { display: block; margin-top: 10px; color: #ede7da; font-size: 1.18em; font-weight: 600; line-height: 1.45; letter-spacing: 0.005em; }
 .sea-word { display: inline-block; }
 @keyframes sea-word {
-  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; }
-  55% { opacity: 1; filter: blur(1.2px); }
-  100% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; }
+  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  11.3% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; }
+  64% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  72% { opacity: 0; transform: translateY(-0.28em); filter: blur(6px); letter-spacing: 0.03em; }
+  100% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; }
 }
-@keyframes sea-glint { 0%, 100% { color: #ede7da; text-shadow: var(--sea-halo); } 45% { color: #ffffff; text-shadow: 0 0 18px rgba(255, 255, 255, 0.38), var(--sea-halo); } }
+@keyframes sea-glint { 0%, 10%, 100% { color: #ede7da; text-shadow: var(--sea-halo); } 5% { color: #ffffff; text-shadow: 0 0 18px rgba(255, 255, 255, 0.38), var(--sea-halo); } }
 html.sea-reveal:not(.disable-animations) .sea-lead__pro .sea-word { opacity: 0; }
 html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on .sea-word {
   animation:
-    sea-word 0.95s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--w) * 0.36s) both,
-    sea-glint 0.95s ease-in-out calc(2.55s + var(--w) * 0.11s) 1;
+    sea-word 11.5s linear calc(var(--w) * 0.5s) infinite both,
+    sea-glint 11.5s ease-in-out calc(3.7s + var(--w) * 0.14s) infinite both;
 }
 @media (max-width: 767px) { .sea-lead__pro { margin-top: 8px; font-size: 1.12em; } }

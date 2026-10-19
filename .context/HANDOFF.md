@@ -1,3 +1,17 @@
+# HANDOFF: precision round (20.10.2026, night): the promise in a loop, exact drawings, the finger (D163)
+
+## Completed
+- The promise ("בצורה הכי מקצועית שקיימת בשוק."): an 11.5 s CSS loop, words 0.5 s apart, enter 1.3 s, hold about 4 s, leave in order into a blur, glint every cycle (`src/look/sea/sea.css` `sea-word`, `sea-glint`).
+- Drawings (`src/look/sea/shader.ts`): `slot()` snaps each drawing's centre to a dot column and sets `gCU` (one dot in the drawing's units); `rim()` and `bar()` are at least a dot thick; the laptop lid frame too; fill-only ordered light (no per-dot random size); the memory print is square to the grid; ground footage dims within about 1.9 radii of a drawing (`softV`).
+- Finger (field.ts `press`, shader `uPress`): a water-drop dome under the finger (up to 1.28x, radius 64 CSS px), lit above and shaded below, a thin ring of squares; follows with ease, in fast, out slow; the trail of squares now follows the finger too (`SQUARES()` no longer needs a fine pointer).
+- site-director: media-material.md §6-§7 and fidelity.md §7 carry the precision rules.
+
+## Next steps
+1. Nati's verdict on his phone (the finger, the drawings, the loop's pace).
+2. Performance round (separate session, card task_c78309fc).
+
+---
+
 # HANDOFF: the squares round (20.10.2026): Lama Lama's material read from its shaders (D161-D162)
 
 ## Goal
