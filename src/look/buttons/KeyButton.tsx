@@ -8,7 +8,7 @@
 // Tone: ink (lg, block) or paper (sm, the header) by default; `tone` or className="key--paper" picks.
 
 import { useEffect, useRef, type ReactNode, type RefObject } from 'react'
-import { StateButton, type BtnState, type LookButtonProps } from './StateButton'
+import { StateButton, type BtnState, type LookButtonProps, type Pointer } from './StateButton'
 import './key-button.css'
 
 export type KeyTone = 'ink' | 'paper'
@@ -16,6 +16,20 @@ export type KeyTone = 'ink' | 'paper'
 export interface KeyButtonProps extends LookButtonProps {
   /** ink cap with paper legends, or a paper cap with ink legends. Default: paper for sm, ink otherwise. */
   tone?: KeyTone
+  /** what the ink face says (D121): where the key goes. Default by destination; the label when unknown. */
+  next?: ReactNode
+}
+
+/** The ink face's words by destination [קופי: נתי]: a key says what will happen before the click. */
+const NEXT: Partial<Record<Dest, string>> = { wa: 'פותח וואטסאפ', down: 'גוללים למטה' }
+
+/** The ink spreads from where the pointer came in: the first point after a leave, as % of the key. */
+const inkFrom = (el: HTMLElement, p: Pointer | null) => {
+  if (!p) { el.removeAttribute('data-in'); return }
+  if (el.hasAttribute('data-in')) return
+  el.setAttribute('data-in', '')
+  el.style.setProperty('--kx', `${(p.x * 100).toFixed(1)}%`)
+  el.style.setProperty('--ky', `${(p.y * 100).toFixed(1)}%`)
 }
 
 /** A quick tap still reads as a key that went down (the lab's minimum hold). */
@@ -109,9 +123,11 @@ function KeyPrint({ label, tc, dest = 'enter' }: { label: ReactNode; tc: RefObje
   )
 }
 
-export function KeyButton({ tone, className = '', ...props }: KeyButtonProps) {
+export function KeyButton({ tone, next, className = '', ...props }: KeyButtonProps) {
   const faceTc = useRef<HTMLSpanElement>(null)
   const renderTc = useRef<HTMLSpanElement>(null)
+  const inkTc = useRef<HTMLSpanElement>(null)
+  const dest = destOf(props.href)
   const nodes = useRef([faceTc, renderTc]).current
   useTimecode(props.state ?? 'idle', nodes)
   const paper = (tone ?? (props.size === 'sm' ? 'paper' : 'ink')) === 'paper'
@@ -123,14 +139,18 @@ export function KeyButton({ tone, className = '', ...props }: KeyButtonProps) {
       cls="key"
       pressHold={PRESS_HOLD_MS}
       spaceOnLink={false}
+      onPoint={inkFrom}
       render={(label) => (
         <>
           <span className="key__shadow" aria-hidden="true" />
           <span className="key__skirt" aria-hidden="true" />
           <span className="key__cap">
-            <KeyPrint label={label} tc={faceTc} dest={destOf(props.href)} />
+            <KeyPrint label={label} tc={faceTc} dest={dest} />
+            <span className="key__ink" aria-hidden="true">
+              <KeyPrint label={next ?? NEXT[dest] ?? label} tc={inkTc} dest={dest} />
+            </span>
             <span className="key__render" aria-hidden="true">
-              <KeyPrint label={label} tc={renderTc} dest={destOf(props.href)} />
+              <KeyPrint label={label} tc={renderTc} dest={dest} />
             </span>
           </span>
         </>

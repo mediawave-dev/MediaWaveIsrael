@@ -1,16 +1,16 @@
-// shot · one shot (DECISIONS #83). Ships with build:shot and the plain build. The look composes the
+// shot · one shot (DECISIONS #83); since D118 the home page is the wave (wave/WaveHome). Ships with build:shot and the plain build. The look composes the
 // whole home page itself (Home), so the shared hero and holds are not used; ThemeLayers is null
 // because the page keeps one ground from top to bottom (#81). The inner pages are the shot's own
 // (D90): the same table, paper and ink, each one a lazy chunk with its own stylesheet.
 import { lazy } from 'react'
-import ShotHome from './shot/ShotHome'
+import WaveHome from './wave/WaveHome'
 import type { LookRegistry } from './registry.types'
 
 const Unused = () => null
 
 const registry: LookRegistry = {
   look: 'shot',
-  Home: ShotHome,
+  Home: WaveHome,
   Hero: Unused,
   Services: Unused,
   Process: Unused,

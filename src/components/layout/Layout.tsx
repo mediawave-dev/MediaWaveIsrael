@@ -10,6 +10,7 @@ import { track } from '../../utils/analytics'
 import { installSpotlight } from '../../utils/spotlight'
 import { LOOK } from '../../look/look'
 import ShotDock from '../../look/shot/ShotDock'
+import TrackingTrail from '../../look/shot/TrackingTrail'
 import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
 
 // Lazy load widgets for code splitting
@@ -128,6 +129,8 @@ export default function Layout({ children }: LayoutProps) {
         {shot
           ? <ShotDock chatOpen={isChatOpen} onSlot={setDockSlot} onShownChange={setDockShown} />
           : <FloatingWhatsApp isChatOpen={isChatOpen} />}
+        {/* T3, the tracking-line trail (D120): a fixed canvas that draws only while the pointer moves */}
+        {shot && <TrackingTrail />}
 
         {/* Widgets — mounted after idle (see widgetsReady above).
             ONE BOUNDARY EACH, deliberately. These are three separate lazy()

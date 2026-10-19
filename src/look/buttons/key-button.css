@@ -61,7 +61,7 @@
 }
 
 /* the face and its render copy share one grid, so the two prints line up to the pixel */
-.key__cap, .key__render {
+.key__cap, .key__render, .key__ink {
   display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label legend"; column-gap: 22px;
   padding: 0 var(--k-pad) 0 12px; border-radius: var(--k-r);
 }
@@ -77,12 +77,12 @@
 
 /* block (the form): both legends gather in the reading corner, the Latin one above the Hebrew,
    so the legend never floats 400px away on a wide face */
-.key[data-block] .key__cap, .key[data-block] .key__render { grid-template-columns: 1fr; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr; }
+.key[data-block] .key__cap, .key[data-block] .key__render, .key[data-block] .key__ink { grid-template-columns: 1fr; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr; }
 .key[data-block] .key__legend { justify-self: start; margin-top: 8px; }
 .key[data-block] .key__label { padding-bottom: 9px; line-height: 1.15; }
 
 /* small (the header): the legend stays printed in its corner, so ↵ reads as a keycap print, not an appended arrow */
-.key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render { padding: 0 var(--k-pad) 0 9px; column-gap: 14px; }
+.key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render, .key[data-size="sm"] .key__ink { padding: 0 var(--k-pad) 0 9px; column-gap: 14px; }
 .key[data-size="sm"] .key__cap { min-width: 0; }
 .key[data-size="sm"] .key__label { align-self: center; padding-bottom: 0; }
 .key[data-size="sm"] .key__legend { margin-top: 6px; }
@@ -109,14 +109,14 @@
 @media (max-width: 480px) {
   .key { --k-pad: 16px; --k-fs: 16px; }
   .key[data-size="sm"] { --k-fs: 15px; --k-pad: 12px; }
-  .key__cap, .key__render { column-gap: 14px; }
+  .key__cap, .key__render, .key__ink { column-gap: 14px; }
   .key:not([data-block]) .lg-word { display: none; }
 }
 /* the header key where the phone header leaves it ~84px (431-559px, beside the logo and two
    icons): the prints stack as on a real Israeli keycap, Latin top-left, Hebrew bottom-right,
    so "בואו נדבר" stays on one line instead of wrapping or being cut */
 @media (max-width: 559px) {
-  .key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render {
+  .key[data-size="sm"] .key__cap, .key[data-size="sm"] .key__render, .key[data-size="sm"] .key__ink {
     grid-template-columns: auto; grid-template-areas: "legend" "label"; grid-template-rows: auto 1fr;
     padding: 0 10px 0 9px;
   }
@@ -134,6 +134,28 @@
 .key__render .key__legend { color: var(--k-render-legend); }
 .key__render .key__led { box-shadow: inset 0 0 0 1.25px var(--k-render-legend); }
 .key__render .key__led::after { background: var(--k-render-on); box-shadow: none; }
+
+/* ── the ink (D121, details lab H2): a second, finished face under the label, spread from the point
+   where the pointer came in (--kx --ky, set by KeyButton) and drawn back to it on leave. It carries
+   the destination's words ("פותח וואטסאפ"), so the new text arrives with the ink's edge. Contained in
+   the cap (overflow hidden), under the render pass. Keyboard focus spreads it from the centre. ── */
+.key { --k-ink: #EDE7DA; --k-ink-on: #1A1917; --k-ink-legend: #4D4942; }
+.key--paper { --k-ink: #1A1917; --k-ink-on: #FFFFFF; --k-ink-legend: rgba(255, 255, 255, 0.82); }
+.key__ink {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: var(--k-ink); color: var(--k-ink-on);
+  clip-path: circle(0 at var(--kx, 50%) var(--ky, 50%));
+  transition: clip-path 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.key__ink .key__legend { color: var(--k-ink-legend); }
+.key__ink .key__led { box-shadow: inset 0 0 0 1.25px var(--k-ink-legend); }
+@media (hover: hover) and (pointer: fine) {
+  .key:hover .key__ink { clip-path: circle(150% at var(--kx, 50%) var(--ky, 50%)); transition-duration: 620ms; }
+}
+.key:focus-visible .key__ink,
+.key[data-force="hover"] .key__ink { clip-path: circle(150% at var(--kx, 50%) var(--ky, 50%)); }
+.key[data-state="loading"] .key__ink, .key[data-state="sent"] .key__ink, .key[data-state="error"] .key__ink { visibility: hidden; }
+html:is(.disable-animations, .motion-reduced) .key__ink { transition: none; }
 
 /* ── hover: a fingertip resting on the key (fine pointers only) ── */
 @media (hover: hover) and (pointer: fine) {
@@ -198,7 +220,7 @@
    { width: auto }, from 1100px). Layout only; remove once the chapter targets .key itself. */
 @media (min-width: 1100px) {
   .shot-hero__ctas .key[data-block] { display: inline-grid; width: auto; }
-  .shot-hero__ctas .key[data-block] .key__cap, .shot-hero__ctas .key[data-block] .key__render { grid-template-columns: 1fr auto; grid-template-areas: "label legend"; grid-template-rows: none; }
+  .shot-hero__ctas .key[data-block] .key__cap, .shot-hero__ctas .key[data-block] .key__render, .shot-hero__ctas .key[data-block] .key__ink { grid-template-columns: 1fr auto; grid-template-areas: "label legend"; grid-template-rows: none; }
   .shot-hero__ctas .key[data-block] .key__legend { justify-self: auto; }
   .shot-hero__ctas .key[data-block] .key__label { padding-bottom: 13px; line-height: 1.2; }
 }

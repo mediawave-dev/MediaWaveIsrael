@@ -54,6 +54,14 @@
           d.classList.add('shot-dive'); if (calm) d.classList.add('shot-dive-calm');
           setTimeout(function () { d.classList.remove('shot-dive', 'shot-dive-calm'); }, 10000);
         }
+        // the wave's opening (D129): once per visit, home page only; it also stands in for the logo ident.
+        // Under OS reduced motion it is the calm version (no slides); ?reduce=1 returned above.
+        if (shot && location.pathname === '/' && !sessionStorage.getItem('mw-wv-intro')) {
+          d.classList.add('wv-opening'); if (calm) d.classList.add('wv-opening-calm');
+          sessionStorage.setItem('mw-wv-intro', '1'); sessionStorage.setItem('mw-logo-ident', '1');
+          setTimeout(function () { d.classList.remove('wv-opening', 'wv-opening-calm'); }, 7000);
+          return;
+        }
         if (calm) return;
         if (!shot && location.pathname === '/' && !sessionStorage.getItem('mw-hero-iris')) { // shot: the dive opens the iris (D88)
           d.classList.add('hero-iris');

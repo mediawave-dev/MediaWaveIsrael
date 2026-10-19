@@ -38,6 +38,41 @@ components:
     rounded: "2px"
 ---
 
+# Design System: MediaWave Israel (19 October 2026, "the wave")
+
+Production since D124. Code: `src/look/wave/` (WaveHome, WaveLine, WaveLaptop, WaveTape, WaveServices, clock.ts, wave.css); the look id stays `shot` (registry.shot.ts renders WaveHome as the home page; inner pages keep their shot components in the wave's material). Decisions D118-D128. The sketches Nati picked from: `design/eye/` (bike-translations.html, details-lab.html).
+
+## The idea
+A gallery on cream. One thin Prussian line, the wave of the Horizon logo, runs from the laptop at the top of the home page to the "back to the start" key at the end, drawn by the scroll: its pen is always at the reader's eye (60% of the screen), so the line is as long as what has been read. On the way it draws the laptop that opens as you scroll (the hero film plays on its screen), a cassette whose reels turn with you (the smaller pack turns faster), and the process timeline. Nothing else moves on its own.
+
+## Tokens
+| Token | Value | Use |
+|---|---|---|
+| ground | `#F2EEE6` | every page, the header included |
+| ink | `#1A1917` | type, keys, the screen |
+| ink-2 | `#4D4942` | secondary type (7.9:1 on the ground) |
+| wave | `#225079` | the one colour, one meaning: the line, its pen, its drawings, chapter numbers |
+| rule | ink at 16% | hairlines between rows |
+| credits | ink ground, cream type | the footer only |
+
+Type: Noto Sans Hebrew. Display 800 at 75% width (H1 12.4vw on phones, 60-96px from 1100px; H2 10.5vw to 96px); text 400, 17px, 1.7; chapter numbers in a mono face, Latin digits.
+
+## Motion (D125)
+One clock (`clock.ts`): native scroll, eased once for the page, each part eased again toward its own target, fixed ratios. One requestAnimationFrame loop, only while something moves. Still mode (OS reduced motion, the widget's stop switch, `?reduce=1`, the prerender, no JS): every part at its last frame. The pre-paint class `html.shot-dive` (index.html) shows the shut laptop until the first geared frame.
+
+## Details (D120-D122)
+- Pointer trail T3: thin tracking lines (red and teal offsets), length = speed, 450ms; ink on the cream, cream on the black footer (`src/look/shot/TrackingTrail.tsx`, mounted by Layout).
+- Keys H2: a second face spreads from the point the pointer came in, carrying where the key goes ("פותח וואטסאפ"); keyboard focus spreads it from the centre (`KeyButton.tsx`, `key-button.css`).
+- Surprises: a mini site builds (בניית אתרים), a memory develops like a cyanotype (סרטוני זיכרונות), a cassette spins (עריכת וידאו); fine pointer on hover or focus, phones once as the row crosses the middle. Back to the start rewinds the page like a tape (REW overlay, the line draws itself back).
+- Restraint: at most one trail, three surprises, one key style and one scroll mechanic per page; every still frame must look calm.
+
+## Rules that do not move
+Overlap audit 0 at 320, 390, 768, 1024, 1440; axe 0 on every page; AA contrast; 44px targets; Hebrew typography rules (no letter-spacing on Hebrew, no italics, no long dashes); no invented facts; content visible without JS; the H1 is the LCP.
+
+---
+
+# History: "one shot" (16-19 October 2026)
+
 # Design System: MediaWave Israel (October 2026, "one shot")
 
 Source of truth for tokens: `src/look/looks.css` (the `html[data-look="shot"]` block). Decisions: `DECISIONS.rtl.md` D81-D89. Spec and story: `design/shot/SPEC.md`, `design/shot/storyboard.rtl.md`. Production is **shot** (`npm run build`); K, M and KM stay buildable for comparison (`build:k`, `build:m`, `build:km`); the previous production (KM, "launch night") is the tag `prod-before-shot`.

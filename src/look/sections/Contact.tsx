@@ -40,9 +40,11 @@ interface ContactProps {
   pal?: { riv: string; rest: string }
   /** a line above the heading (the shot's chapter verb) */
   kicker?: ReactNode
+  /** false: no Lottie face and no Rive companion (the wave home, D118: nothing loads that is not shown) */
+  art?: boolean
 }
 
-export default function Contact({ chapter, dossier, pal: palSrc, kicker }: ContactProps = {}) {
+export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = true }: ContactProps = {}) {
   const engine = useMotionEngine()
   const [data, setData] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
@@ -150,9 +152,11 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
           <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. נתי, המפתח, קורא ועונה בעצמו.</p>
           <Card>
-            <div className="ct__face" aria-hidden="true">
-              <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
-            </div>
+            {art && (
+              <div className="ct__face" aria-hidden="true">
+                <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
+              </div>
+            )}
             <ul className="ct__ways">
               <li className="ct__way--wa">
                 <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
@@ -180,7 +184,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker }: Conta
         </div>
 
         <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
-          <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />
+          {art && <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />}
           {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
           {field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {field('message', 'הודעה', {}, true)}

@@ -511,8 +511,6 @@ html[data-look="shot"] .shot-hero { background: var(--ink); }
 html[data-look="shot"] :is(.shot-hero, .sp-top) .thing__body { box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.62), 0 2.6em 4em -1.8em rgba(0, 0, 0, 0.6); }
 html[data-look="shot"] .shot-hero .shot-lap .lap__lid { box-shadow: inset 0 0 0 1.5px rgba(237, 231, 218, 0.62); }
 html[data-look="shot"] .shot-hero .shot-lap .lap__base { box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.4); }
-/* the lens's rim over the black desk */
-html[data-look="shot"] .shot-hero__lens::after { content: ""; position: absolute; inset: -1px; border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(237, 231, 218, 0.5); pointer-events: none; z-index: 2; }
 html[data-look="shot"] .shot-hero .shot-desk__sheet { box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.08), 0 18px 30px -20px rgba(0, 0, 0, 0.7); }
 
 /* the ask, on white: questions, the big word, the letter, the pull-back */

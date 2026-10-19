@@ -1,3 +1,32 @@
+# HANDOFF: the wave (19.10.2026)
+
+## Goal
+mediawave.co.il redesigned to Nati's eye (site-director eye round): a gallery on cream, one living line from top to bottom, mobile first, elegant and restrained. Nati asked to work autonomously up to production.
+
+## Completed (branch redesign/elegant-20261019, worktree .claude/worktrees/elegant-20261019, from origin/main 3ba6632)
+- New home page "the wave": `src/look/wave/` (WaveHome, WaveLine, WaveLaptop, WaveTape, WaveServices, clock.ts, wave.css). registry.shot.ts renders WaveHome. Decisions D118-D128, DESIGN.md top section.
+- Details: T3 tracking-line trail (`src/look/shot/TrackingTrail.tsx`, Layout), H2 ink keys (KeyButton), surprises S1-S3 in the services index, S5 rewind.
+- Inner pages flattened into the same material (override block at the end of wave.css). Contact `art={false}` on the home (no Lottie, no Rive).
+- site-director upgraded (eye round, details layer, restraint, lab template, harvests). Moment library `G:/Projects/moment-library/INDEX.md`.
+- Gates: overlap 0 (home at 5 widths, inner pages at 3), axe 0 everywhere, Lighthouse mobile local with brotli 70-75 (old site local 65, PSI 79), a11y/BP/SEO 100.
+
+## Open
+- D122: Nati picked 4 surprises; restraint rule is 3 per page (the rewind is site-wide, the 3 pops are in the services list).
+- D123: colours outside the logo (trail red/teal at low alpha).
+- Performance: react-vendor hydration and the lazy lottie chunk (chat trigger) drive TBT; a separate perf round could lift mobile further.
+- ShotHero/shot-hero.css carry the laptop-instead-of-lens change but are no longer rendered (kept for the shot look).
+
+## Next steps
+1. After the deploy: PageSpeed on the live home and one service page; compare with 79/95.
+2. Nati's eye on the live site: side-by-side gate for the laptop (vs Mr. Pandas) and the trail (vs Lama Lama).
+3. Rollback: tag `prod-before-wave` (3ba6632) or the Cloudflare dashboard deployment before it.
+
+## Tools that helped
+- Static server with brotli for local Lighthouse: scratchpad `serve-dist.mjs`; films: `film-hero.mjs`; the lab filmer is in site-director `assets/lab/lab-shots.mjs`.
+- Git Bash path conversion breaks "/" arguments: prefix MSYS_NO_PATHCONV=1.
+
+---
+
 # HANDOFF — MediaWave Israel
 
 > **לסשן הבא:** `.context/NEXT-SESSION-PROMPT.md` מכיל את כל הקונטקסט של סשן העיצוב מחדש (13/10/2026). המשימה הראשונה: Claude Design ו-`/design-sync`.

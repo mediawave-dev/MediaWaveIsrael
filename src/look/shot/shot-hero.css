@@ -52,37 +52,40 @@ html[data-look="shot"].consent-pending .shot-hero { --hero-reserve: var(--strip-
    through, and the paper would rise to the lens's top instead of the lens lying on its edge) */
 .shot-hero .shot-hero__sheet { position: relative; display: flow-root; text-align: center; }
 
-.shot-hero__lens {
+/* the laptop (D119): it takes the lens's box (--lens-d square, 35% of it on the table above the
+   sheet), so the H1 line and the camera's pivot keep their numbers. The laptop itself is wider than
+   the box and stands on its bottom, 14px above the sheet's text; the box's perspective looks down on
+   it from above, so the shut lid shows its back (the mark) and the open one the screen. */
+.shot-hero__lap {
   position: relative; z-index: 0;
   width: var(--lens-d); aspect-ratio: 1;
   margin: calc(var(--lens-d) * -0.35) auto 0;
+  perspective: 900px; perspective-origin: 50% -60%;
 }
-/* a short contact shadow on the desk and the paper under the lens (static) */
-.shot-hero__lens::before {
-  content: ""; position: absolute; z-index: -1; inset: 10% -3% -7% -3%; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(26, 25, 23, 0.18), rgba(26, 25, 23, 0.07) 72%, transparent);
+.shot-hero__laptop {
+  position: absolute; left: 50%; bottom: 14px;
+  width: min(calc(var(--lens-d) * 1.3), calc(100vw - 2 * var(--gut, 16px) - 24px));
+  translate: -50% 0;
+}
+/* the laptop's shadow on the paper, static, under the base */
+.shot-hero__lap::after {
+  content: ""; position: absolute; z-index: -1; left: 50%; bottom: 4px; translate: -50% 0;
+  width: min(calc(var(--lens-d) * 1.4), calc(100vw - 2 * var(--gut, 16px))); height: 22px;
+  background: radial-gradient(closest-side, rgba(26, 25, 23, 0.22), rgba(26, 25, 23, 0));
   pointer-events: none;
 }
-
-/* the lens itself (Lens.tsx). hero-lens.css belongs to KM's scene and is not in the shot build,
-   so the frame's layers are set here, under the hero's class (it also wins over KM's rules in dev). */
-.shot-hero__lens .kl__lens {
-  --d: auto;
-  position: relative; display: block; width: 100%; aspect-ratio: 1; margin: 0;
-  -webkit-tap-highlight-color: transparent;
+.shot-hero__laptop .lap__lid { transform-style: preserve-3d; }
+.shot-hero__laptop .lap__screen,
+.shot-hero__laptop .lap__cam { backface-visibility: hidden; transform: translateZ(0.5px); }
+.shot-hero__laptop .lap__screen { background: var(--ink); }
+.shot-hero__laptop .lap__back {
+  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
+  backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
 }
-.shot-hero__lens .kl__film { position: absolute; inset: 14.6%; border-radius: 50%; overflow: hidden; background: var(--ink); }
-.shot-hero__lens .kl__film .hero-media { background: var(--ink); }
-.shot-hero__lens .kl__still,
-.shot-hero__lens .kl__rive { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.shot-hero__lens .kl__still svg { display: block; width: 100%; height: 100%; }
-.shot-hero__lens .kl__still--closed { opacity: 0; }
-.shot-hero__lens .kl__rive { opacity: 0; }
-/* a first visit paints the iris closed; the canvas takes over in the same pose */
-html.hero-iris .shot-hero__lens .kl__still--rest { opacity: 0; }
-html.hero-iris .shot-hero__lens .kl__still--closed { opacity: 1; }
-.shot-hero__lens .kl__lens[data-live] .kl__rive { opacity: 1; }
-.shot-hero__lens .kl__lens[data-live] .kl__still { opacity: 0; }
+.shot-hero__laptop .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #1a1917; --logo-b: #225079; }
+.shot-hero__laptop .hero-media { background: var(--ink); }
+/* the pre-paint pose (html.shot-dive): the lid is shut, as GSAP's first frame has it */
+html:is(.shot-dive, .shot-dive-calm) .shot-hero__laptop .lap__lid { transform: rotateX(-86deg); }
 
 /* ── the copy: never transformed on its own (rule 4), the H1 never split, faded or balanced ── */
 /* 12px of paper at the sides: the H1's second line needs about 330px at 390 (13.8vw, 75% width) */
@@ -131,22 +134,6 @@ html.text-scaled .shot-desk { display: none; }
 .shot-hero { --stage-b: calc(100svh - var(--head) - 12px); }
 .shot-desk__wide { display: none; }
 
-/* the closed laptop on the table under the sheet's inline-end corner (the one laptop of the page:
-   it opens and builds the site in S4) */
-.shot-desk__laptop { top: calc(100% + 16px); left: 6%; width: 150px; perspective: 900px; rotate: 3deg; }
-/* closed: the lid lies on the deck, so the camera sees its ink back with the Horizon mark (as in
-   S4), not the paper screen */
-.shot-desk__laptop .lap__screen,
-.shot-desk__laptop .lap__cam { visibility: hidden; }
-.shot-desk__laptop .lap__lid { transform-style: preserve-3d; }
-.shot-desk__laptop .lap__back {
-  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none;
-  backface-visibility: hidden; transform: rotateX(180deg) translateZ(0.5px);
-}
-.shot-desk__laptop .lap__back .mw-logo { height: 34%; width: auto; --logo-a: #1a1917; --logo-b: #225079; }
-/* the folded lid lies in front of the hinge, below the box it stood in: the laptop is drawn up by
-   most of its box, so the lid (not the empty box above the hinge) lies where the box says */
-.shot-desk__laptop .shot-lap--closed { transform: translateY(-80%) rotateX(-55deg) rotateZ(-9deg); }
 /* the loupe on the table above the sheet's top inline-start corner, clear of the lens */
 .shot-desk__loupe { top: -62px; right: -10%; }
 .shot-desk__loupe .thing { transform: rotate(95deg); }
@@ -176,7 +163,6 @@ html.text-scaled .shot-desk { display: none; }
   .shot-hero { --sheet-w: 720px; }
   .shot-hero__copy { padding-inline: 40px; }
   .shot-hero__ctas { align-items: center; }
-  .shot-desk__laptop { top: calc(100% + 40px); width: 230px; left: 10%; rotate: 2deg; }
   .shot-desk { --thing-px: 3px; }
   .shot-desk__loupe { top: -70px; right: 4%; }
   .shot-desk__cassette { top: calc(100% + 52px); right: 14%; --thing-px: 3px; }
@@ -196,7 +182,9 @@ html.text-scaled .shot-desk { display: none; }
   }
   /* on the corner: 35% above the sheet's top edge, 12% past its inline-end edge (a relative offset,
      layout only: the lens itself is never transformed) */
-  .shot-hero__lens { grid-column: 2; grid-row: 1; margin: calc(var(--lens-d) * -0.35) 0 0; inset-inline-start: calc(var(--lens-d) * 0.12); }
+  .shot-hero__lap { grid-column: 2; grid-row: 1; margin: calc(var(--lens-d) * -0.35) 0 0; inset-inline-start: calc(var(--lens-d) * 0.12); }
+  .shot-hero__laptop { width: calc(var(--lens-d) * 1.12); }
+  .shot-hero__lap::after { width: calc(var(--lens-d) * 1.2); }
   .shot-hero__copy { grid-column: 1; grid-row: 1; padding: var(--copy-pad) 56px 48px; }
   .shot-hero__sub { margin-inline: 0; max-width: 34ch; font-size: 1.2rem; line-height: 1.65; }
   .shot-hero__ctas { flex-direction: row; align-items: center; gap: 24px; }
@@ -206,9 +194,7 @@ html.text-scaled .shot-desk { display: none; }
 
   .shot-desk { --thing-px: 3.4px; }
   .shot-desk__wide { display: block; }
-  /* the lid's near edge just past the stage's bottom (the laptop is drawn up by 80% of its box) */
-  .shot-desk__laptop { top: calc(var(--stage-b) - 24px); left: 18%; width: 340px; rotate: none; }
-  .shot-desk__loupe { top: 8%; right: auto; left: -200px; }
+    .shot-desk__loupe { top: 8%; right: auto; left: -200px; }
   .shot-desk__cassette { top: calc(var(--stage-b) + 40px); right: 20%; --thing-px: 3.4px; }
   .shot-desk__bubble { top: 4%; right: -210px; }
   .shot-desk__bubble .thing { transform: rotate(7deg); }

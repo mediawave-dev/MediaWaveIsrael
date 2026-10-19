@@ -1,20 +1,20 @@
-// shot · S1 the hero, the dive (SPEC S1, storyboard "hero", DECISIONS #64, #83). The camera starts
-// over the desk: the paper of the site lies there in an overview, the lens resting on the hero
-// sheet's top edge, the closed laptop, the loupe and the cassette at the table's edges. Scrolling
-// lowers the camera onto the sheet (camera.ts dive, about the H1's own line, never on Z) and the
-// iris opens 0.72 -> 1 over the last 30% of the hold. After the release the sheet only tips away
-// once its bottom has passed the top 18% (rule 3).
+// shot · S1 the hero, the dive (SPEC S1, storyboard "hero", DECISIONS #83, D118, D119). The camera
+// starts over the desk: the paper of the site lies there in an overview, the closed laptop resting on
+// the hero sheet's top edge (its lid shows the Horizon mark), the loupe and the cassette at the
+// table's edges. Scrolling lowers the camera onto the sheet (camera.ts dive, about the H1's own line,
+// never on Z) and opens the lid, geared to the same scrub (Mr. Pandas' bike: one eased number, a
+// fixed ratio), so the hero film plays on the screen as the camera lands. After the release the
+// sheet only tips away once its bottom has passed the top 18% (rule 3).
 //
 // The H1 is the LCP and paints at first paint. index.html paints the overview pose before the
 // app boots (html.shot-dive / shot-dive-calm, shot-hero.css) from the numbers GSAP starts from,
 // so nothing jumps; the scene removes both classes on every path, REDUCE included.
-// REDUCE, the prerender and no JS: a flat sheet, no hold, no desk props, the lens at rest.
+// REDUCE, the prerender and no JS: a flat sheet, no hold, no desk props, the laptop open.
 // Short stages (under 560px) and a scaled text size: no hold, only the late exit tilt.
-import { useRef } from 'react'
 import { LookButton } from '@look/button'
-import { useMotionEngine, useScene } from '../../motion/ScrollEngineProvider'
-import { Lens, type LensRange } from '../parts/Lens'
+import { useScene } from '../../motion/ScrollEngineProvider'
 import { Laptop } from '../parts/Laptop'
+import { HeroMedia } from '../parts/HeroMedia'
 import { Thing, type Kind } from '../parts/Things'
 import Logo from '../../components/ui/Logo'
 import { HERO } from '../data'
@@ -23,16 +23,13 @@ import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { DEPTH, dive, land, scrubbing } from './camera'
 import { useShotPolicy } from './policy'
 import { DeskFace } from './Faces'
-// the lens on the desk palette (design/rive/lens/build-lens.mjs --palette shot); the frames are
-// inline markup, never an <img>, so the H1 stays the LCP
-import lensRiv from '../parts/lens-shot.riv?url'
-import lensRest from '../parts/lens-shot-rest.svg?raw'
-import lensClosed from '../parts/lens-shot-closed.svg?raw'
 import './shot-hero.css'
 
-const LENS_SRC = { riv: lensRiv, rest: lensRest, closed: lensClosed }
-/** The film circle is 71% of the lens (SPEC S1). */
-const FILM_SIZES = '(max-width: 767px) 42vw, 330px'
+/** The screen is about 76% of the laptop, which is 1.3 lens boxes wide (shot-hero.css). */
+const SCREEN_SIZES = '(max-width: 767px) 80vw, 480px'
+/** Where the lid opens inside the dive: from 8% of the hold, over 70% of it (the film is on by the landing). */
+const LID_AT = 0.08
+const LID_SPAN = 0.7
 
 /** The tools around the sheet from 1100px, each lagging the camera by its depth (0.4-1). */
 const DESK_OBJECTS: { kind: Kind; depth: number }[] = [
@@ -42,18 +39,7 @@ const DESK_OBJECTS: { kind: Kind; depth: number }[] = [
 ]
 
 export default function ShotHero() {
-  const engine = useMotionEngine()
   const policy = useShotPolicy()
-  // the dive runs (a held stage) or not (REDUCE, a short stage, scaled text): read by the lens's
-  // range on every refresh, so the iris follows whichever scroll the sheet really has
-  const diving = useRef(false)
-  const holdRef = useRef<HTMLDivElement>(null)
-  const range = useRef<LensRange>({
-    trigger: () => holdRef.current,
-    start: 'top top',
-    end: () => (diving.current ? 'bottom bottom' : 'bottom top'),
-    from: 0.7,
-  }).current
 
   const ref = useScene<HTMLElement>((t, root) => {
     const html = document.documentElement
@@ -61,7 +47,6 @@ export default function ShotHero() {
     const hold = root.querySelector<HTMLElement>('.hold')
     const model = root.querySelector<HTMLElement>('.shot-hero__model')
     const sheet = root.querySelector<HTMLElement>('.shot-hero__sheet')
-    diving.current = false
     if (t.REDUCE || !hold || !model || !sheet) {
       clearPose()
       return
@@ -72,8 +57,13 @@ export default function ShotHero() {
       return
     }
 
-    diving.current = true
     const tl = dive(t, { hold, layer: model, id: 'dive' })
+    // the lid, geared to the dive's scrub: shut (-86deg, the pre-paint pose) to open (-6deg)
+    const lid = root.querySelector<HTMLElement>('.shot-hero__laptop .lap__lid')
+    if (lid) {
+      const d = tl.duration()
+      tl.fromTo(lid, { rotateX: -86 }, { rotateX: -6, ease: 'power2.inOut', duration: d * LID_SPAN, immediateRender: true }, d * LID_AT)
+    }
     const stage = hold.querySelector<HTMLElement>('.hold__stage')
     // the black band ends with the stage, 120px (390) to 170px (1440) under the landed paper stack
     // (review round 2, N4): the next chapter's cream comes up to 40px under the stack
@@ -112,7 +102,6 @@ export default function ShotHero() {
       }
       tl.fromTo(el, { yPercent: 0 }, { yPercent: pct, ease: 'power1.in', duration: tl.duration() - exitAt, immediateRender: false }, exitAt)
     }
-    leave('.shot-desk__laptop', 1)
     leave('.shot-desk__cassette', 1)
     leave('.shot-desk__loupe', -1)
     // the hero sheet never lands (it starts in the overview); it tips away late, once its bottom
@@ -132,7 +121,6 @@ export default function ShotHero() {
           } })
     }
     return () => {
-      diving.current = false
       window.removeEventListener('resize', slack)
       html.style.removeProperty('--hero-slack')
     }
@@ -147,7 +135,7 @@ export default function ShotHero() {
       data-dossier="W19 W20 W09"
       aria-labelledby="hero-title"
     >
-      <div ref={holdRef} className="hold" data-hold="dive">
+      <div className="hold" data-hold="dive">
         <div className="hold__stage shot-hero__stage">
           {/* the camera layer: the only transform of the dive */}
           <div className="shot-hero__model">
@@ -156,9 +144,6 @@ export default function ShotHero() {
             <div className="shot-desk" aria-hidden="true">
               <i className="shot-desk__sheet shot-desk__sheet--a" />
               <i className="shot-desk__sheet shot-desk__sheet--b" />
-              <span className="shot-desk__obj shot-desk__laptop" data-zone="art" data-depth="0.4">
-                <Laptop className="shot-lap shot-lap--closed" back={<Logo variant="mark" decorative />} />
-              </span>
               <span className="shot-desk__obj shot-desk__loupe" data-zone="art" data-depth="0.8"><Thing kind="loupe"><DeskFace kind="loupe" /></Thing></span>
               <span className="shot-desk__obj shot-desk__cassette" data-zone="art" data-depth="0.6"><Thing kind="cassette"><DeskFace kind="cassette" /></Thing></span>
               {DESK_OBJECTS.map((o) => (
@@ -168,13 +153,16 @@ export default function ShotHero() {
               ))}
             </div>
             <article className="shot-sheet shot-hero__sheet">
-              <div className="shot-hero__lens" data-zone="art">
-                <Lens engine={engine} range={range} startOnInteraction filmSizes={FILM_SIZES} src={LENS_SRC} />
+              <div className="shot-hero__lap" data-zone="art">
+                <Laptop className="shot-lap shot-hero__laptop" back={<Logo variant="mark" decorative />}>
+                  <HeroMedia sizes={SCREEN_SIZES} />
+                </Laptop>
               </div>
               <div className="shot-hero__copy">
                 {/* One block, two lines through <br>: the H1 is then ONE text candidate for LCP (its two
                     lines together, about 33k px² at 390). As two block spans each line was its own
-                    candidate (22k) and the lens poster (25k) won the LCP (measured on the build). */}
+                    candidate (22k) and the lens poster (25k) won the LCP (measured on the build). The laptop's
+                    poster is fetchpriority low and hidden behind the shut lid at first paint. */}
                 <h1 id="hero-title" className="shot-hero__title" data-zone="text">
                   {HERO.line1}{' '}<br />{HERO.line2}
                 </h1>
