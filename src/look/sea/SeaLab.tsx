@@ -20,7 +20,7 @@ const LABELS: Record<string, string> = {
   'bleed.veil': 'רקע שמתפרק לנקודות', 'bleed.slot': 'במסגרת משלו',
   'hero.reel': 'שואוריל שלא חוזר על עצמו', 'hero.sea': 'השקיעה כרקע', 'hero.disc': 'השקיעה בטבעת',
   'grain.off': 'בלי, קרקע נקייה', 'grain.on': 'כן',
-  'trail.dots': 'נקודות קטנות', 'trail.ripple': 'אדווה בשדה',
+  'trail.squares': 'ריבועים קטנים', 'trail.line': 'קו דק', 'trail.ripple': 'אדווה בשדה',
   'media.colour': 'בצבע', 'media.develop': 'מנקודות לצבע',
 }
 

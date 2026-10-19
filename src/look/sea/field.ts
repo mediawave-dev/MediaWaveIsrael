@@ -30,6 +30,8 @@ const T3 = /[?&]trail=t3(&|$)/.test(params())
 const rootHas = (c: string) => typeof document !== 'undefined' && document.documentElement.classList.contains(c)
 const GRAIN = () => rootHas('sea-grain-on')
 const RIPPLE = () => rootHas('sea-trail-ripple')
+/** the trail of small squares (D162, Lama's own): fine pointers only, as theirs */
+const SQUARES = () => rootHas('sea-trail-squares') && window.matchMedia('(hover: hover) and (pointer: fine)').matches
 
 export function tier(): Tier {
   if (typeof window === 'undefined') return 'still'
@@ -255,7 +257,7 @@ function setup(): boolean {
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
   U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
-    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
+    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
   // each film's texture: one frame at a time from its video (or its poster), clamped, no mipmaps
   for (let u = 0; u < MAX_FILMS; u++) {
@@ -478,7 +480,8 @@ function draw() {
   gl.uniform4fv(U.uFlowP, FLP)
   gl.uniform4fv(U.uFlowE, FLE)
   gl.uniform1f(U.uFlowR, 40 * DPR)
-  gl.uniform1f(U.uGrainPx, Math.max(2, Math.round(1.6 * DPR)))
+  gl.uniform1f(U.uGrainPx, Math.max(2, Math.round(2 * DPR)))
+  gl.uniform1f(U.uTrail, mode === 'full' && SQUARES() && !document.documentElement.classList.contains('disable-animations') ? 1 : 0)
   gl.uniform1f(U.uScrollV, scrollV)
   drawImgs()
   gl.uniform4fv(U.uGnd, gnd)
@@ -1015,7 +1018,7 @@ function readReel() {
   reel.vis = Math.max(0, Math.min(r.bottom, H) - Math.max(r.top, 0)) / Math.max(1, Math.min(r.height, H))
   reel.wt = r.height > 4 ? smooth(0, 0.06, reel.vis) : 0
   const lift = smooth(0, 1, (-r.top - r.height * 0.25) / Math.max(1, r.height * 0.7))
-  reel.edge = 0.12 + (1.14 - 0.12) * lift
+  reel.edge = 0.3 + (1.16 - 0.3) * lift
 }
 
 function drawReel() {
@@ -1028,7 +1031,7 @@ function drawReel() {
   gl.uniform4fv(U.uReelR, RR)
   gl.uniform4f(U.uReelK, reel.el ? reel.w : 0, reel.dev, reel.k, reel.type)
   gl.uniform4f(U.uReelS, reel.seed, reel.ox, reel.oy, reel.ang)
-  gl.uniform4f(U.uReelV, reel.edge, Math.max(0.12, reel.edge * 0.96), aspA, B?.aspect ?? 16 / 9)
+  gl.uniform4f(U.uReelV, reel.edge, Math.max(0.26, reel.edge * 0.9), aspA, B?.aspect ?? 16 / 9)
   gl.uniform4f(U.uReelX, scale(A), scale(B), reel.cur, reel.phase === 'trans' ? 1 : 0)
 }
 
@@ -1176,7 +1179,7 @@ function drawImgs() {
     if (!im) continue
     IMR.set(im.r, j * 4)
     IMU.set([(j % 4) * 0.25, Math.floor(j / 4) * 0.5, 0.25, 0.5], j * 4)
-    IMK.set([im.w, im.c, im.kind, im.seed], j * 4)
+    IMK.set([im.w, im.c, im.kind, im.id % 4], j * 4)
     IMO.set([im.ox, im.oy, im.par, 1.12], j * 4)
   }
   gl.uniform4fv(U.uImgR, IMR)

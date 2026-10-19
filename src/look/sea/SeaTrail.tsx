@@ -1,4 +1,5 @@
-// sea · the pointer's trail (D157, D159; gate `trail`). Nati: "a more beautiful, more elegant trail". A
+// sea · the hairline trail (D159), now the lab's `trail=line`; the default is Lama's trail of small squares,
+// drawn by the field's shader (D162). Nati: "a more beautiful, more elegant trail". A
 // hairline ribbon that follows the pointer and tapers into nothing a few tenths of a second behind it,
 // a soft point of light at its head, and now and then a speck of dust shed from the path that drifts
 // and fades (most cream, a few in the logo's light blue). The pointer is followed with a little ease,
@@ -17,7 +18,7 @@ interface Dust { x: number; y: number; vx: number; vy: number; age: number; life
 
 export default function SeaTrail() {
   const cv = useRef<HTMLCanvasElement>(null)
-  const on = opt('trail') === 'dots'
+  const on = opt('trail') === 'line'
 
   useEffect(() => {
     const el = cv.current
