@@ -1,3 +1,53 @@
+# HANDOFF: the sea of dots, built and shipped (19.10.2026, night): LIVE on mediawave.co.il (main ee37a37)
+
+## Goal
+Move the whole site to the approved "sea of dots" direction (D131) at SOTD level, home first then the
+inner pages, and ship it (Nati: "continue autonomously to full implementation and deploy").
+
+## Completed (branch `redesign/elegant-20261019`, commit ee37a37 on top of origin/main 3ba6632)
+- `src/look/sea/`: the WebGL dot field (field.ts + shader.ts, one fixed canvas in Layout), the home
+  (SeaHome), the opening (SeaIntro: timecode, dots converge on the field's grid into the disc, H1 rises),
+  the laptop chapter (its screen: code, site, scroll, tap, lead; D133), the six services in one held
+  stage with an object each (gears.ts), each service page opening on its object (SeaShape), the rewind,
+  the cursor label, the live clock, the keys in the sea's material with the WhatsApp surprise (D134,
+  D136), the WhatsApp mark in dots (WaDots, D138), the soundscape (sound.ts, on by default, armed until
+  the first gesture, D137). Site-wide dark layer: `sea-site.css`; home: `sea.css`.
+- Gates on the final build (served with brotli like Cloudflare): overlap 0 on the home at 320/390/768/
+  1024/1440 and on every inner page at 390/1440; axe 0, no sideways scroll, no errors on all 12 routes at
+  390 and 1440; cross-browser (Playwright 1.55: Chromium desktop and Android, Firefox, WebKit desktop and
+  iPhone): WebGL runs, opening ends, stages hold, services counter turns, key surprise, rewind, sound
+  (WebKit's Windows build has no WebAudio; real Safari does). Lighthouse mobile local: see Known issues.
+
+## Key decisions (DECISIONS.rtl.md D133-D138)
+- The laptop no longer plays the hero film: Nati asked for something smarter; the screen now tells the
+  H1's promise. The hero video is not loaded on the home (it stays in the code and the other looks).
+- One trail: the field's ripple; T3 is the review option `?trail=t3` (D135, for Nati to pick).
+- The shader compiles off the main thread (KHR_parallel_shader_compile): it was a 720ms long task on
+  Lighthouse's software GPU.
+- The hero's parts only move during the opening (no fade from 0), so the largest text at first paint is
+  the LCP at first paint.
+
+## Known issues
+- Lighthouse's simulated LCP stays around 3.6-3.8s: the largest first-paint text is the hero's line,
+  whose digits need Noto's Latin subset (now preloaded too). A real browser at 4x CPU / slow 4G measures
+  LCP = FCP (1.3-1.8s, scripts/qa/rum.mjs).
+- New copy is marked [קופי: נתי] in the decisions and the code (hero tag, laptop chapter line, cursor
+  labels, the sound label).
+
+## Next steps
+- Nati reviews the live site and the films; picks the trail (ripple or `?trail=t3`).
+- Inner pages: the cards could take more of the Lama Lama structure; the 404 could get the disc.
+
+## Important files
+- `src/look/sea/field.ts` the engine (tiers, markers, scenes, gears in, DPR cap, pause when hidden)
+- `src/look/sea/shader.ts` every shape; `gears.ts` how one scroll number winds each object
+- `src/look/sea/sea-site.css` the whole site's dark layer, the keys, the pill, the card, the inner pages
+- `index.html` the pre-paint classes: sea-held, sea-reveal, sea-opening(-calm)
+- Rollback: `git push origin prod-before-dots:main --force-with-lease` (tag = 3ba6632) or the Cloudflare
+  Pages dashboard (the previous production deployment).
+
+---
+
 # HANDOFF: the "sea of dots" direction (19.10.2026, evening)
 
 The next session starts from `.context/NEXT-SESSION-PROMPT.rtl.md` (paste it into a fresh session).
