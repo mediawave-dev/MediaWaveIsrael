@@ -7,8 +7,11 @@ export const HERO = {
   /** Nati, 19.10 (D141): back to his line; "אתר שמביא פניות לוואטסאפ" read badly */
   line1: 'העסק שלכם,',
   line2: 'המומחיות שלנו',
-  /** [קופי: נתי] replaces "עם גישה אישית וליווי צמוד" (slop-scan flagged both) */
-  sub: 'נבנה מאפס בשביל העסק שלכם.',
+  /** Nati's words, 20.10 (D161); the boards show the first line alone */
+  sub: 'אתר נבנה מאפס, בשביל העסק שלכם.',
+  sub2: 'אתר שנבנה כדי להביא לכם פניות.',
+  /** the promise, revealed a word at a time in the sea's hero */
+  pro: 'בצורה הכי מקצועית שקיימת בשוק.',
   /** [קופי: נתי] the primary key opens WhatsApp (critic M1 F1: the H1 promises WhatsApp) */
   cta: 'כתבו לנו בוואטסאפ',
   /** the form, now a quiet text link (keeps track cta_click hero_contact) */

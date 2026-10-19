@@ -9,7 +9,7 @@
 // The H1 is the LCP and paints at first paint from the entry stylesheet (sea.css is eager).
 // Anchors kept: #why-us #services #process #faq #contact (Header, Footer and inner pages link to them).
 // [קופי: נתי] every new line: the hero's tag, the laptop chapter's line, the end of the tape.
-import { useEffect, useRef, type RefObject } from 'react'
+import { Fragment, useEffect, useRef, type RefObject } from 'react'
 import { LookButton } from '@look/button'
 import { HERO, STEPS } from '../data'
 import { WHY_ITEMS } from '../sections/WhyUs'
@@ -73,6 +73,39 @@ function useSun(spot: RefObject<HTMLSpanElement | null>, video: RefObject<HTMLVi
       field.dropFilm(id)
     }
   }, [spot, video])
+}
+
+/** The promise (D161, Nati: "each word arriving after the other, beautifully and elegantly"): its own
+    line under the two sentences, a little larger and in cream; once the headline has landed each word
+    rises out of a soft blur, one after another, and a soft light runs across the words from the right
+    when the last one is in. Calm, the widget's stop, ?reduce=1 or no script: the line stands. */
+function Promise() {
+  const ref = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const html = document.documentElement.classList
+    if (!html.contains('sea-reveal')) { el.classList.add('is-on'); return }
+    let t = 0
+    const go = (ms: number) => { window.clearTimeout(t); t = window.setTimeout(() => el.classList.add('is-on'), ms) }
+    // after the opening hands over, or a moment after a return visit's first paint
+    let mo: MutationObserver | null = null
+    if (html.contains('sea-opening')) {
+      mo = new MutationObserver(() => {
+        if (html.contains('sea-out') || !html.contains('sea-opening')) { mo?.disconnect(); go(1150) }
+      })
+      mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    } else go(700)
+    return () => { mo?.disconnect(); window.clearTimeout(t) }
+  }, [])
+  const words = HERO.pro.split(' ')
+  return (
+    <span ref={ref} className="sea-lead__pro">
+      {words.map((w, i) => (
+        <Fragment key={i}><span className="sea-word" style={{ ['--w' as string]: i }}>{w}</span>{i < words.length - 1 ? ' ' : ''}</Fragment>
+      ))}
+    </span>
+  )
 }
 
 /** The showreel's takes (public/media/reel, G:/tmp/mw-media/reel-clips.sh); the sea opens it. */
@@ -145,7 +178,11 @@ function Hero() {
           <span className="sea-h1__ln" style={{ ['--i' as string]: 1 }}>{HERO.line2}</span>
         </h1>
         <div className="sea-row">
-          <p className="sea-sub sea-up" data-zone="text" style={{ ['--d' as string]: '0.1s' }}>{HERO.sub}</p>
+          <p className="sea-sub sea-lead sea-up" data-zone="text" style={{ ['--d' as string]: '0.1s' }}>
+            <span className="sea-lead__ln">{HERO.sub}</span>{' '}
+            <span className="sea-lead__ln">{HERO.sub2}</span>{' '}
+            <Promise />
+          </p>
           <div className="sea-up" style={{ ['--d' as string]: '0.2s' }} data-dock-hide="">
             <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'hero' })}>
               {HERO.cta}
