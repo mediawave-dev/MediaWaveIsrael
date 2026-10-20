@@ -1,3 +1,19 @@
+# HANDOFF: every chapter its own effect (21.10.2026 morning, D165) - live
+
+## Completed (main = 376e466, rollback tag prod-before-d165 = 58c0168)
+- Chapter effects in the shader (`chapterFx` in `src/look/sea/shader.ts`, measured by `readChapters()` in `field.ts`, uniforms `uCh[4]`, `uChK`): why = render lines while scrolling; process = editor's playhead with ticks and a cut at each step; FAQ = tape tracking bands; letter = the bubble gathers from its own dots (`uCh[3].w`).
+- The sea of dots (D131) is back as the ground of why and process (`sea` in main; the pointer and finger ripple it via `uPtrE * max(uRipAll, dg)`).
+- The letter (`.sea-contact` in `sea-site.css`) on the dark ground: big rows with dot drawings, fields framed in dots, labels in brackets (alt text "" for screen readers). Lab gate `ground` default is now `deep` (no cream band).
+- Footer contact rows: keys only (no drawings).
+- Checks: overlap 0; all-pages 12 routes at 320/390/1440 clean; WebGL in three engines; back from cache ok; Lighthouse home 57 (LCP 4.10 s, TBT 965 ms).
+- Previews: `design/compare/d165/`.
+
+## Next steps
+1. Nati's verdict on the effects on his phone; tune strengths in `chapterFx` if any feels too quiet or too loud.
+2. Performance round (card task_c78309fc).
+
+---
+
 # HANDOFF: night round (20-21.10.2026): back fix, sample link, end credits, finger ripples, exact laptop (D163-D164)
 
 ## Completed
