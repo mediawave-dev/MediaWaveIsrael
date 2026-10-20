@@ -14,6 +14,7 @@
 // the stills (html.sea-nogl).
 import { FRAG, VERT } from './shader'
 import * as sound from './sound'
+import { AREA, freshOf, paint, type Fresh, type Words } from './words'
 
 export type Tier = 'full' | 'calm' | 'still'
 type Scene = 'horizon' | 'laptop' | 'reels' | 'bubble' | 'landing' | 'seo' | 'chat' | 'memory' | 'quiet'
@@ -30,8 +31,13 @@ const T3 = /[?&]trail=t3(&|$)/.test(params())
 const rootHas = (c: string) => typeof document !== 'undefined' && document.documentElement.classList.contains(c)
 const GRAIN = () => rootHas('sea-grain-on')
 const RIPPLE = () => rootHas('sea-trail-ripple')
-/** the trail of small squares (D162, Lama's own): fine pointers only; a finger gets ripples (D164) */
-const SQUARES = () => rootHas('sea-trail-squares') && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+/** the trail of small squares (D162, Lama's own) after a mouse (gate `trail`), and since D168 after a
+    finger too, thinner (gate `finger`; Nati: "on mobile too, where the user touches, relatively thin") */
+let touchLast = false
+const SQUARES = () => rootHas(touchLast ? 'sea-finger-squares' : 'sea-trail-squares')
+/** the trail's width (gaussian radius, CSS px): about 58 px across after a mouse (its dense core about
+    32), 37 after a finger (core about 20); the old cloud was 150 px and more */
+const TRAIL_W = () => (touchLast ? 9.5 : 15)
 /** the water drop under the finger (D163-D164): the lab's finger=drop only since D166 (it pulled the eye
     off the content); the default finger is SeaTrail's hairline */
 const DROP = () => rootHas('sea-finger-drop')
@@ -185,9 +191,14 @@ const gnd = new Float32Array(8)
 const turn = { x: 0, y: 0, cover: 0, reveal: 0, col: [0.929, 0.906, 0.855], anim: null as null | { key: 'cover' | 'reveal'; t0: number; ms: number; done: () => void } }
 // ── the pointer's wake and the scroll's stir (D158; Lama Lama's velocity field) ──
 const N_FLOW = 12
-const flow = Array.from({ length: N_FLOW }, () => ({ x: 0, y: 0, vx: 0, vy: 0, at: -1e9 }))
+const flow = Array.from({ length: N_FLOW }, () => ({ x: 0, y: 0, vx: 0, vy: 0, at: -1e9, brk: false }))
 let flowI = 0
 const flowLast = { x: 0, y: 0, at: 0 }
+/** the next sample starts a new stroke: the trail draws no segment into it (D168) */
+let strokeNew = true
+/** the relief's resting term (D170): where the pointer last moved or the finger is down, the surface stays
+    raised a moment after the path has sunk (immersive-g keeps it for good; ours settles within a second) */
+const hover = { x: 0, y: 0, e: 0, at: -1e9, down: false }
 const FLP = new Float32Array(N_FLOW * 4)
 const FLE = new Float32Array(N_FLOW)
 let flowBusy = false
@@ -197,7 +208,7 @@ let svY = 0
 let svAt = 0
 function flowPush(x: number, y: number) {
   const now = performance.now()
-  if (!flowLast.at || now - flowLast.at > 300) { flowLast.x = x; flowLast.y = y; flowLast.at = now; return }
+  if (!flowLast.at || now - flowLast.at > 300) { flowLast.x = x; flowLast.y = y; flowLast.at = now; strokeNew = true; return }
   const dx = x - flowLast.x
   const dy = y - flowLast.y
   const dt = Math.max(8, now - flowLast.at)
@@ -205,18 +216,21 @@ function flowPush(x: number, y: number) {
   const p = flow[flowI]
   flowI = (flowI + 1) % N_FLOW
   const k = 16 / dt
-  p.x = x; p.y = y; p.vx = dx * k; p.vy = dy * k; p.at = now
+  p.x = x; p.y = y; p.vx = dx * k; p.vy = dy * k; p.at = now; p.brk = strokeNew
+  strokeNew = false
   flowLast.x = x; flowLast.y = y; flowLast.at = now
 }
+/** Upload the path oldest first, so the shader draws the trail as segments between neighbours; a
+    sample that starts a stroke carries + 2 on its energy (D168). */
 function flowUpload(now: number): boolean {
   let live = false
-  for (let i = 0; i < N_FLOW; i++) {
-    const p = flow[i]
+  for (let k = 0; k < N_FLOW; k++) {
+    const p = flow[(flowI + k) % N_FLOW]
     const sp = Math.min(1, Math.hypot(p.vx, p.vy) / 22)
     const e = mode === 'full' ? Math.exp(-((now - p.at) / 1000) / 0.5) * (0.3 + 0.7 * sp) : 0
-    FLE[i] = e < 0.01 ? 0 : e
-    if (FLE[i] > 0) live = true
-    FLP.set([p.x * DPR, (H - p.y) * DPR, p.vx * DPR, -p.vy * DPR], i * 4)
+    FLE[k] = (e < 0.01 ? 0 : e) + (p.brk ? 2 : 0)
+    if (e >= 0.01) live = true
+    FLP.set([p.x * DPR, (H - p.y) * DPR, p.vx * DPR, -p.vy * DPR], k * 4)
   }
   return live
 }
@@ -289,7 +303,7 @@ function setup(): boolean {
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
   U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
-    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uRip', 'uCh', 'uChK', 'uRipAll', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
+    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uTrailW', 'uWord', 'uWordK', 'uRelR', 'uRelS', 'uHover', 'uRel', 'uPress', 'uRip', 'uCh', 'uChK', 'uRipAll', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
   // each film's texture: one frame at a time from its video (or its poster), clamped, no mipmaps
   for (let u = 0; u < MAX_FILMS; u++) {
@@ -320,6 +334,7 @@ function setup(): boolean {
   gl.uniform1i(U.uReel0, 2)
   gl.uniform1i(U.uReel1, 3)
   setupAtlas()
+  setupWords()
   return true
 }
 
@@ -517,6 +532,14 @@ function draw() {
   gl.uniform4fv(U.uFlowP, FLP)
   gl.uniform4fv(U.uFlowE, FLE)
   gl.uniform1f(U.uFlowR, 40 * DPR)
+  gl.uniform1f(U.uTrailW, TRAIL_W() * DPR)
+  // the relief (D170): reach about 0.15 of the screen's height, depth about 0.07 of it; the hue fringe
+  // after a mouse only; off with the widget's stop switch and outside full motion
+  const still = mode !== 'full' || document.documentElement.classList.contains('disable-animations') || rootHas('sea-relief-off')
+  gl.uniform1f(U.uRelR, Math.max(90, Math.min(150, H * 0.15)) * DPR)
+  gl.uniform1f(U.uRelS, 0.02 * W * DPR)
+  gl.uniform3f(U.uHover, hover.x * DPR, (H - hover.y) * DPR, still ? 0 : hover.e)
+  gl.uniform4f(U.uRel, H * 0.07 * DPR, touchLast ? 0 : 1, 0.06, still ? 0 : 1)
   gl.uniform1f(U.uGrainPx, Math.max(2, Math.round(2 * DPR)))
   gl.uniform1f(U.uTrail, mode === 'full' && SQUARES() && !document.documentElement.classList.contains('disable-animations') ? 1 : 0)
   gl.uniform4f(U.uPress, press.x * DPR, (H - press.y) * DPR, mode === 'full' && !document.documentElement.classList.contains('disable-animations') ? press.e : 0, 64 * DPR)
@@ -526,6 +549,7 @@ function draw() {
   gl.uniform1f(U.uScrollV, scrollV)
   drawImgs()
   gl.uniform4fv(U.uGnd, gnd)
+  drawWords()
   gl.uniform1f(U.uGE, Math.min(140, Math.max(64, H * 0.12)) * DPR)
   gl.uniform4f(U.uTurn, turn.x * DPR, (H - turn.y) * DPR, turn.cover, turn.reveal)
   gl.uniform3f(U.uTurnC, turn.col[0], turn.col[1], turn.col[2])
@@ -569,6 +593,15 @@ function frame(now: number) {
   press.e += (press.on - press.e) * (1 - Math.pow(1 - (press.on ? 0.16 : 0.07), dt * 60))
   if (!press.on && press.e < 0.004) press.e = 0
   if (press.e > 0 || ripBusy || performance.now() - cutAt < 1200) moving = true
+  // the relief's resting term rises fast while the pointer moves (or the finger is down) and settles slowly
+  const held = hover.down || now - hover.at < 600 ? 1 : 0
+  hover.e += (held - hover.e) * (1 - Math.pow(1 - (held ? 0.2 : 0.035), dt * 60))
+  if (!held && hover.e < 0.004) hover.e = 0
+  if (hover.e > 0) moving = true
+  // the letter's words come in and go out with a short fade; a fresh letter burns for about 1.4 s
+  const said = word.v.name.trim() || word.v.email.trim() || word.v.message.trim() ? 1 : 0
+  if (word.k !== said) { word.k = Math.abs(said - word.k) < 0.01 ? said : lerp(word.k, said, 1 - Math.pow(1 - 0.12, dt * 60)); moving = true }
+  if (now - word.at < 1500) moving = true
   // the music moves the dots only in full motion (calm: the music plays, the field keeps still)
   const heard = mode === 'full' && !stopped ? Math.min(1, sound.level() * 4) : 0
   lvl = lerp(lvl, heard, 1 - Math.pow(1 - 0.2, dt * 60))
@@ -596,9 +629,12 @@ function frame(now: number) {
 let first = true
 let textTick = 0
 
+/** the program is linked and the field is running (before that a wake from the page would draw nothing
+    and the driver would complain: the shader takes seconds to compile on some Windows GPUs) */
+let linked = false
 function wake() {
   dirty = true
-  if (!raf && gl && !document.hidden) raf = requestAnimationFrame(frame)
+  if (!raf && gl && linked && !document.hidden) raf = requestAnimationFrame(frame)
 }
 
 const onPtr = (x: number, y: number) => {
@@ -610,9 +646,10 @@ const onPtr = (x: number, y: number) => {
   }
   if (ptr.tx < -9000) { ptr.x = x; ptr.y = y }
   ptr.tx = x; ptr.ty = y; ptr.e = 1
+  hover.x = x; hover.y = y; hover.at = performance.now()
   if (mode === 'full') wake()
 }
-const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') onPtr(e.clientX, e.clientY) }
+const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') { touchLast = false; onPtr(e.clientX, e.clientY) } }
 let ripBusy = false
 // ── the chapters with their own effect (D165): why, process, questions, letter ──
 const CH = new Float32Array(16)
@@ -629,17 +666,18 @@ function readChapters() {
     const wgt = r.height > 4 ? smooth(0, 0.12, vis / Math.min(r.height, H)) : 0
     CH.set([(H - r.top) * DPR, (H - r.bottom) * DPR, wgt, 0], i * 4)
   })
-  // the process's steps and the playhead (the middle of the screen) crossing one: a cut
-  const steps = document.querySelectorAll<HTMLElement>('#process .sea-list__item')
-  for (let k = 0; k < 4; k++) {
-    const st = steps[k]
-    if (!st) { CHK[k] = -1e6; continue }
-    const top = st.getBoundingClientRect().top
-    CHK[k] = (H - top) * DPR
+  // the process's steps and the playhead (the middle of the screen) crossing one: a cut. Two tracks since
+  // D173 (eight steps): every step cuts, and the four long marks follow the steps around the playhead
+  const steps = [...document.querySelectorAll<HTMLElement>('#process .sea-list__item')]
+  const tops = steps.map((st) => st.getBoundingClientRect().top)
+  tops.forEach((top, k) => {
     const prev = chPrev[k]
     if (prev !== undefined && (prev - H / 2) * (top - H / 2) < 0 && mode === 'full') cutAt = performance.now()
     chPrev[k] = top
-  }
+  })
+  const near = tops.findIndex((top) => top > H / 2)
+  const from = Math.max(0, Math.min(tops.length - 4, (near < 0 ? tops.length : near) - 2))
+  for (let k = 0; k < 4; k++) CHK[k] = tops[from + k] === undefined ? -1e6 : (H - tops[from + k]) * DPR
   // the letter's bubble gathers as its spot rises from the bottom of the screen to just above the middle
   const spot = document.querySelector<HTMLElement>('.sea-spot--contact')
   if (spot) {
@@ -657,6 +695,10 @@ const onTouch = (e: TouchEvent) => {
 }
 const onTouchStart = (e: TouchEvent) => {
   const t = e.touches[0]
+  // every touch starts its own stroke: no trail from where the last finger lifted (D168)
+  touchLast = true
+  flowLast.at = 0
+  if (t) { hover.x = t.clientX; hover.y = t.clientY; hover.at = performance.now(); hover.down = true }
   if (!t || mode !== 'full' || !DROP()) return
   press.tx = t.clientX; press.ty = t.clientY
   if (press.e < 0.02) { press.x = t.clientX; press.y = t.clientY }
@@ -664,7 +706,7 @@ const onTouchStart = (e: TouchEvent) => {
   ripPush(t.clientX, t.clientY, 1)
   wake()
 }
-const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) { press.on = 0; wake() } }
+const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) { press.on = 0; hover.down = false; wake() } }
 const onScroll = () => {
   // the scroll's speed stirs the pictures (phones have no pointer to stir them with)
   const now = performance.now()
@@ -709,6 +751,7 @@ export function start(canvas: HTMLCanvasElement): boolean {
 }
 
 function run(canvas: HTMLCanvasElement) {
+  linked = true
   const html = document.documentElement.classList
   html.add('sea-gl')
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stop(); html.remove('sea-gl'); html.add('sea-nogl') }, { once: true })
@@ -743,6 +786,7 @@ function run(canvas: HTMLCanvasElement) {
 }
 
 export function stop() {
+  linked = false
   cancelAnimationFrame(raf)
   raf = 0
   window.removeEventListener('resize', size)
@@ -771,6 +815,60 @@ export function set(patch: Partial<Live>) {
 export function typed() {
   type.until = performance.now() + 1100
   wake()
+}
+
+// ── the letter's words (D171, words.ts): what the visitor writes in the contact form, engraved into the
+// bubble's drawing; the letters just typed burn in and cool ──
+let wordTex: WebGLTexture | null = null
+let wordCv: HTMLCanvasElement | null = null
+const word = { v: { name: '', email: '', message: '' } as Words, fresh: null as Fresh | null, at: -1e9, dirty: false, k: 0, r: 0 }
+
+/** The form's values now (SeaHome reads them on every input). */
+export function words(v: Words) {
+  word.fresh = freshOf(word.v, v)
+  word.v = { ...v }
+  word.at = performance.now()
+  word.dirty = true
+  wake()
+}
+
+function setupWords() {
+  if (!gl) return
+  wordTex = gl.createTexture()
+  gl.activeTexture(gl.TEXTURE5)
+  gl.bindTexture(gl.TEXTURE_2D, wordTex)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 1, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0]))
+  gl.uniform1i(U.uWord, 5)
+  // the faces may arrive after the first words: paint again with them
+  void document.fonts?.ready.then(() => { word.dirty = true; wake() })
+}
+
+/** Paint and upload the words when they or the bubble's size changed; set their strength and age. */
+function drawWords() {
+  if (!gl || !wordTex) return
+  const has = Boolean(word.v.name.trim() || word.v.email.trim() || word.v.message.trim())
+  const r = S[SCENE_INDEX.bubble * 4 + 2]
+  if (r > 4 && Math.abs(r - word.r) > 2) { word.r = r; word.dirty = true }
+  if (word.dirty && word.r > 4 && (has || word.k > 0)) {
+    // the bubble's text area in device px, at most 1100 wide
+    const sc = Math.min(1, 1100 / (AREA.w * word.r))
+    const w = Math.max(8, Math.round(AREA.w * word.r * sc))
+    const h = Math.max(8, Math.round(AREA.h * word.r * sc))
+    wordCv ??= document.createElement('canvas')
+    // the sign's dots are 2.25 CSS px apart: a capital at least four of them tall (about 14.5 CSS px of type)
+    paint(wordCv, w, h, word.v, mode === 'full' ? word.fresh : null, ((4 * 2.25 * DPR) / 0.62) * sc)
+    gl.activeTexture(gl.TEXTURE5)
+    gl.bindTexture(gl.TEXTURE_2D, wordTex)
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, wordCv)
+    word.dirty = false
+  }
+  const age = mode === 'full' ? (performance.now() - word.at) / 1000 : 9
+  gl.uniform3f(U.uWordK, word.k, age, 1)
 }
 
 /** The opening: hold the quiet field back, then let it spread out from the mark. */

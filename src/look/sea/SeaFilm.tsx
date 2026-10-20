@@ -61,7 +61,8 @@ export default function SeaFilm() {
   }, [how, veil])
 
   if (how === 'off') return null
-  const hint = how === 'touch' ? 'געו בסרט, והוא מתפתח' : how === 'scroll' ? 'גללו, והסרט מתפתח' : 'רגע, והסרט מתפתח'
+  // by itself (the default) the film needs no hint (D168: "רגע, והסרט מתפתח" left)
+  const hint = how === 'touch' ? 'געו בסרט, והוא מתפתח' : how === 'scroll' ? 'גללו, והסרט מתפתח' : ''
   return (
     <section ref={section} className={`sea-ch sea-film${veil ? ' sea-film--veil' : ''}`} aria-labelledby="film-title" data-chapter="film">
       {veil && <GroundSource video={source} />}
@@ -98,7 +99,7 @@ export default function SeaFilm() {
         <Tag className="sea-fade">VIDEO · TAPES</Tag>
         <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={['סרטון לעסק,', 'וקלטות לזיכרון.']} /></h2>
         <p className="sea-sub sea-fade" data-zone="text">עורכים את הסרטונים של העסק, ומעבירים קלטות ישנות לקובץ שאפשר לשמור ולשתף.</p>
-        <Tag className="sea-fade sea-film__hint" he>{hint}</Tag>
+        {hint && <Tag className="sea-fade sea-film__hint" he>{hint}</Tag>}
       </div>
     </section>
   )

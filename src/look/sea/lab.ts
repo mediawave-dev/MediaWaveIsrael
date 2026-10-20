@@ -39,10 +39,13 @@ export const GATES = {
   grain: ['off', 'on'],
   /** the pointer's trail: Lama's ribbon of small squares, a hairline, or the field's ripple */
   trail: ['squares', 'line', 'ripple'],
-  /** the finger on a phone (D166): a hairline of light behind it, the water drop with ripples, or nothing */
-  finger: ['line', 'drop', 'none'],
+  /** the finger on a phone: the mouse's squares, thinner (D168), the streak of light (D166-D167), the water
+      drop with ripples, or nothing */
+  finger: ['squares', 'line', 'drop', 'none'],
   /** pictures in rows and pages: in colour from the start, or in dots that develop */
   media: ['colour', 'develop'],
+  /** the relief under the pointer and the finger (D170, after immersive-g.com), or the plain wake */
+  relief: ['on', 'off'],
 } as const
 
 export type Gate = keyof typeof GATES
@@ -66,7 +69,7 @@ const chosen = read()
 
 /** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn.
     The colour round's gates start on the recommendations. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'tile', work: 'rows', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'line', media: 'colour' }
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'tile', work: 'rows', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>
@@ -74,7 +77,7 @@ export function opt<G extends Gate>(g: G): Choice<G> {
 
 // the gates the CSS reads, on the root from the start (type, menu, bar)
 if (typeof document !== 'undefined') {
-  document.documentElement.classList.add(`sea-type-${opt('type')}`, `sea-menu-${opt('menu')}`, `sea-bar-${opt('bar')}`, `sea-bleed-${opt('bleed')}`, `sea-hero-${opt('hero')}`, `sea-grain-${opt('grain')}`, `sea-trail-${opt('trail')}`, `sea-finger-${opt('finger')}`, `sea-media-${opt('media')}`)
+  document.documentElement.classList.add(`sea-type-${opt('type')}`, `sea-menu-${opt('menu')}`, `sea-bar-${opt('bar')}`, `sea-bleed-${opt('bleed')}`, `sea-hero-${opt('hero')}`, `sea-grain-${opt('grain')}`, `sea-trail-${opt('trail')}`, `sea-finger-${opt('finger')}`, `sea-media-${opt('media')}`, `sea-relief-${opt('relief')}`)
 }
 
 export const labOpen = () => typeof window !== 'undefined' && /[?&]lab=1(&|$)/.test(window.location.search)

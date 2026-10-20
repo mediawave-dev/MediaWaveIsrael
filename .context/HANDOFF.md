@@ -1,3 +1,53 @@
+# HANDOFF: trail, relief, the letter, the work, more video, two tracks (20.10.2026, D168-D173)
+
+## Goal
+Nati's round of requests (one session, many messages): a thinner trail (and one under the finger); the AI
+spark that never showed; two lines out; the work chapter without our own site and without the cream boxes;
+the 3D feel under the pointer far more pronounced, after immersive-g.com; what the visitor types engraved in
+the bubble, written by its own dots; more video with nothing repeating; "how we work" in two tracks; then
+production.
+
+## Completed (branch redesign/elegant-20261019; release and tag: see the commit list below)
+- D168 trail: a thin ribbon along the path's segments (field.ts flowUpload oldest first, stroke breaks as
+  energy + 2; shader flowAt `trail`), ~58 px with a mouse, ~37 px with a finger (TRAIL_W); finger default
+  `finger=squares`. AI spark: DotGlyph arrives at once inside fixed chrome; parts.tsx sweeps what is on screen
+  after the scroll settles and at a page's end. Copy: the film hint and "המפתח קורא בעצמו" out.
+- D169 work: one row, four photos from our film come to life in turn (SeaWork.tsx, sea.css `.sea-life`,
+  clips public/media/work-life-*; encoder G:/tmp/mw-media/enc-memory-clips.sh). Old stills removed.
+- D170 relief (shader flowAt + reliefLit + lightOf, field uniforms uRelR/uRelS/uHover/uRel): media and dots
+  raised by their own light; lab gate `relief=on|off`. Harvest notes: G:/tmp/immersive-src/notes.md.
+- D171 the letter (words.ts paints the canvas; field.ts words/drawWords on TEXTURE5; shader sign block in
+  main): a fixed grid of 2.25 CSS px dots, the bubble's waiting dots, words lit in the dots, burn-in.
+  SeaHome passes the form's values on input.
+- D172 video: the showreel's own pool (SeaHome REEL; public/media/reel/*; G:/tmp/mw-media/enc-d172.sh),
+  svc-websites-2, svc-seo-2, svc-chat-2, svc-memories-3 (media.ts); the stage row tile is the service's
+  second clip. Ledger updated (design/media-ledger.rtl.md).
+- D173 process: the track line, the second lede and VIDEO_STEPS (SeaHome Process); the playhead follows a
+  window of four steps and cuts on all eight (field.ts readChapters).
+- Also: imgLayer's loop only finds the picture (the work is done once): the shader's compile time back to
+  production's; wake() waits for the linked program (no "no valid shader program" warnings).
+- Checks on the final build: overlap 0 (320-1440); all-pages 12 routes at 390 and 1440 clean (axe 0,
+  overflow 0, small 0, targets 0, errors 0); WebGL in Chromium, Firefox and WebKit; back from cache ok;
+  GPU shots: G:/tmp/d168/ (ab3 relief A/B, w4 the letter, proc2 process, r6 the finger).
+
+## Known issues
+- First-visit WebGL start on this laptop (Intel Iris Xe, D3D11, no shader cache): the program takes
+  ~8-10 s to compile (production was the same: 7.7-9.7 s measured in fresh profiles). Until then the hero
+  shows no reel. Later visits use Chrome's shader cache. The top item for the performance round
+  (split the program per region, or a light first program).
+- The finger's trail is thin and short by request; under text it thins further.
+- The relief is strong on structured pictures and gentle on smooth skies; tune depth (field.ts uRel.x,
+  0.07 of the height) or the light gains (shader reliefLit) if Nati wants more or less.
+- A long message on a phone is cut after about four lines (the letters' floor: four dots to a capital).
+
+## Next steps
+1. Nati's verdict on his phone: the trail, the relief, the letter, the work row, the new reel, the two tracks.
+2. If he is happy with the precision: build an effects skill (his words: "סקיל אפקטים, שאוכל תמיד להשתמש בו
+   בכל אתר"), from site-director's media-material.md, fidelity.md and this round's mechanisms.
+3. Performance round (shader compile time first; Lighthouse mobile ~57).
+
+---
+
 # HANDOFF: D167 live (21.10.2026): main = 0a459d4, rollback tag prod-before-d167 = efb3c5e
 
 - The legal links on one line ([ a · b · c ]), the V drawn dot by dot (way-icons pix V13/V11: header mark, menu, ticks), the finger streak (SeaTrail smoothPath + glow sprite). Verified live.

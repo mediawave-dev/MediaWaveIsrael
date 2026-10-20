@@ -36,18 +36,23 @@ export const CLIPS = {
   'svc-video-3': clip('svc-video-3', 1280, 720, 640, 'a tape inside an open video recorder'),
   'svc-memories': clip('svc-memories', 960, 720, 640, 'a print developing in a darkroom tray'),
   'svc-memories-2': clip('svc-memories-2', 1280, 720, 640, 'a wall of video tapes'),
+  // D172: a clip of its own for four more pages (G:/tmp/mw-media/enc-d172.sh)
+  'svc-websites-2': clip('svc-websites-2', 1280, 720, 640, 'colourful code on a monitor, close'),
+  'svc-seo-2': clip('svc-seo-2', 1280, 720, 640, 'gold lights glittering at night'),
+  'svc-chat-2': clip('svc-chat-2', 960, 540, 540, 'a burst of glowing pink fibres'),
+  'svc-memories-3': clip('svc-memories-3', 1280, 675, 640, 'film hanging to dry in a red darkroom'),
 } as const
 
 export type ClipKey = keyof typeof CLIPS
 
 /** Each service's clips: the first opens its page and fills its row on the home page. */
 export const SERVICE_MEDIA: Record<string, ClipKey[]> = {
-  websites: ['svc-websites'],
+  websites: ['svc-websites', 'svc-websites-2'],
   landing: ['svc-landing', 'svc-landing-2'],
-  seo: ['svc-seo'],
-  chatbots: ['svc-chat'],
+  seo: ['svc-seo', 'svc-seo-2'],
+  chatbots: ['svc-chat', 'svc-chat-2'],
   'video-editing': ['svc-video', 'svc-video-3', 'svc-video-2'],
-  'memory-videos': ['svc-memories', 'svc-memories-2'],
+  'memory-videos': ['svc-memories', 'svc-memories-2', 'svc-memories-3'],
 }
 
 const base = (c: Clip) => `/media/${c.key}`

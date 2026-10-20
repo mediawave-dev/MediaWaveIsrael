@@ -9,16 +9,28 @@ import { useEffect, useRef } from 'react'
 import { icon, pix, V11, GRID, DOT_COLOURS } from './way-icons'
 import { WA_DOTS } from './wa-dots-data'
 
-// one observer for every glyph: a glyph arrives (its dots grow from the centre out) when it comes into
-// view; the menu's and the dock's are already in view when they mount
+// a glyph arrives (its dots grow from the centre out) when it comes into view: on the page once it
+// passes a line a little above the bottom of the screen; in fixed chrome (the dock, the menu) as soon
+// as it shows, since the dock sits under that line for good and its AI spark never arrived (D168)
 let io: IntersectionObserver | null = null
+let ioFixed: IntersectionObserver | null = null
+const seen = (obs: () => IntersectionObserver | null) => (entries: IntersectionObserverEntry[]) => entries.forEach((e) => {
+  if (!e.isIntersecting) return
+  e.target.classList.add('on')
+  obs()?.unobserve(e.target)
+})
+function inFixed(el: Element) {
+  for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) if (getComputedStyle(p).position === 'fixed') return true
+  return false
+}
 function arrive(el: Element) {
   if (typeof IntersectionObserver === 'undefined') { el.classList.add('on'); return }
-  io ??= new IntersectionObserver((entries) => entries.forEach((e) => {
-    if (!e.isIntersecting) return
-    e.target.classList.add('on')
-    io?.unobserve(e.target)
-  }), { rootMargin: '0px 0px -8% 0px' })
+  if (inFixed(el)) {
+    ioFixed ??= new IntersectionObserver(seen(() => ioFixed))
+    ioFixed.observe(el)
+    return
+  }
+  io ??= new IntersectionObserver(seen(() => io), { rootMargin: '0px 0px -8% 0px' })
   io.observe(el)
 }
 

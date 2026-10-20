@@ -69,6 +69,13 @@ uniform vec4 uFlowE[3];  // their energies, four to a vector
 uniform float uFlowR;   // the wake's reach (device px)
 uniform float uGrainPx; // the material's squares (device px, 2 CSS px)
 uniform float uTrail;   // the pointer's trail of squares on (D162)
+uniform float uTrailW;  // its width: the gaussian radius across the path (device px, D168)
+uniform sampler2D uWord; // the letter's words (D171, words.ts): R the letters, B the letters just typed
+uniform vec3 uWordK;     // their strength 0..1, seconds since the last change, dots to a cell (1..4)
+uniform float uRelR;    // the relief's reach (D170): about 0.15 of the screen's height (device px)
+uniform float uRelS;    // the speed that counts as fast (device px per frame)
+uniform vec3 uHover;    // where the pointer rests or the finger is down: x, y (device px), presence 0..1
+uniform vec4 uRel;      // the relief: depth (device px), hue fringe on, swell, strength (0 off)
 uniform vec4 uPress;    // the finger (D163): x, y (device px), strength 0..1, radius (device px)
 uniform vec4 uRip[6];   // ripples from the finger's path (D164): x, y (device px), age 0..1, strength
 uniform float uScrollV;
@@ -279,17 +286,17 @@ vec2 reels(vec2 q) {
 }
 
 // ── the contact bubble ──
-vec2 bubble(vec2 q) {
+// the letter's words in the bubble's units (words.ts AREA: x -1.04..1.04, y -0.46..0.72)
+vec3 wordAt(vec2 q) {
+  vec2 uv = (q - vec2(-1.04, -0.46)) / vec2(2.08, 1.18);
+  if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return vec3(0.0);
+  return texture2D(uWord, uv).rgb;
+}
+// the letter's bubble: its shape (D165; drawn as a sign of fine dots in main, D171)
+float bubbleIn(vec2 q) {
   float bd = box(q - vec2(0.0, 0.1), vec2(1.2, 0.75), 0.35);
   float tail = tri(q, vec2(-0.45, -0.5), vec2(-0.95, -0.5), vec2(-1.12, -0.98));
-  float inB = 1.0 - smoothstep(-0.01, 0.01, min(bd, tail));
-  float typing = 0.0;
-  for (int k = 0; k < 3; k++) {
-    float fk = float(k);
-    float bob = 0.07 * uType * max(0.0, sin(uTypeT * 6.0 - fk * 0.9));
-    typing = max(typing, 1.0 - smoothstep(0.1, 0.12, length(q - vec2(0.45 - fk * 0.45, 0.1 + bob))));
-  }
-  return vec2(inB * mix(0.8, 0.07, typing), typing * (0.4 + 0.6 * uType));
+  return 1.0 - smoothstep(-0.01, 0.01, min(bd, tail));
 }
 
 // ── landing pages: a phone, one page, one button ──
@@ -515,20 +522,88 @@ float rowN(vec2 px, float r) {
 float lamaP(float p, float n) { return 1.0 - smoothstep(0.0, 1.0, (1.0 - p) * (1.0 + 0.5 * n)); }
 // a picture's edge: 1 inside past the band, 0 outside it; the band swells along the edge with the noise
 float edgeLv(float y, float e, float w, float n) { return smoothstep(e - w, e, y + w * 0.75 * n); }
-// the pointer's wake (D159) and trail (D162): its recent path, each point with its speed and energy. Like
-// a fingertip drawn through water, the picture is pushed a little away from the path and carried a little
-// along the motion (xy, device px); z: how much it bends here; w: the trail, fading twice as fast
-vec4 flowAt(vec2 px) {
-  vec4 acc = vec4(0.0);
-  float r2 = uFlowR * uFlowR;
+// a soft billowy noise for the relief's rim: value noise in three octaves, folded into ridges
+float billow(vec2 p) {
+  float v = vn(p) * 0.5714 + vn(p * 2.03 + 7.1) * 0.2857 + vn(p * 4.11 + 3.7) * 0.1429;
+  return 1.0 - abs(2.0 * v - 1.0);
+}
+// the pointer's path (D159, D162, D170): its recent samples, oldest first, each with its speed and energy.
+// The relief (D170, immersive-g.com read from its code: a field that inflates what is under the path): x
+// its height 0..1, saturating; yz its slope per device px; w the fast wake (the hue fringe lives there).
+// Half of each sample is plain presence and half its speed; where the pointer rests (or the finger is down)
+// the surface stays raised a moment; the rim is broken by a slow billowy noise. trail (D168, "too
+// thick"): a thin ribbon along the path's segments, the nearest one counting, narrowing to its oldest point
+vec4 flowAt(vec2 px, float t, out float trail) {
+  float s2 = uRelR * uRelR * 0.36;
+  float w2 = uTrailW * uTrailW;
+  float A = 0.0;
+  vec2 dA = vec2(0.0);
+  float wake = 0.0;
+  trail = 0.0;
+  vec2 pa = vec2(-1e5);
+  float ea = 0.0;
   for (int i = 0; i < 12; i++) {
-    float e = dot(uFlowE[i / 4], vec4(equal(vec4(float(i - (i / 4) * 4)), vec4(0.0, 1.0, 2.0, 3.0))));
-    if (e < 0.01) continue;
-    vec2 d = px - uFlowP[i].xy;
-    float g = exp(-dot(d, d) / r2);
-    acc += vec4((d / uFlowR) * 10.0 * g * e + uFlowP[i].zw * 0.3 * g * e, g * e, g * e * e);
+    float raw = dot(uFlowE[i / 4], vec4(equal(vec4(float(i - (i / 4) * 4)), vec4(0.0, 1.0, 2.0, 3.0))));
+    float e = raw - 2.0 * step(1.5, raw);
+    vec2 pb = uFlowP[i].xy;
+    if (e >= 0.01) {
+      vec2 d = px - pb;
+      float g = exp(-dot(d, d) / s2);
+      float sp = min(1.0, length(uFlowP[i].zw) / uRelS);
+      float m = 1.0 - (1.0 - sp) * (1.0 - sp);
+      float k = g * e * (0.5 + 0.5 * m);
+      A += k;
+      dA -= k * 2.0 * d / s2;
+      wake += g * e * m;
+      // a stroke's first point (+ 2) has no segment into it
+      if (ea >= 0.01 && raw < 1.5) {
+        vec2 ab = pb - pa;
+        float h = clamp(dot(px - pa, ab) / max(dot(ab, ab), 1.0), 0.0, 1.0);
+        vec2 q = px - pa - ab * h;
+        float es = mix(ea, e, h) * clamp((float(i) - 1.0 + h) / 3.0, 0.0, 1.0);
+        // as dense at its core as the old summed cloud (about 2.5 times one point), only narrower
+        trail = max(trail, min(1.0, 2.5 * es * es) * exp(-dot(q, q) / w2));
+      }
+    }
+    pa = pb;
+    ea = e;
   }
-  return acc;
+  vec2 dh = px - uHover.xy;
+  float kh = 0.5 * uHover.z * exp(-dot(dh, dh) / s2);
+  A += kh;
+  dA -= kh * 2.0 * dh / s2;
+  if (A < 0.002) return vec4(0.0);
+  float nz = 0.45 + 0.55 * smoothstep(0.3, 0.9, billow(px / (0.11 * uRes.y) + t * 0.09));
+  float sat = exp(-2.0 * A * nz);
+  return vec4(1.0 - sat, 2.0 * sat * dA * nz, wake) * vec4(uRel.w, uRel.w, uRel.w, 1.0);
+}
+// a picture raised by the field (D170): its height is its own softened light (h.x; h.yz its slope per
+// device px), so bright parts rise and dark ones stay low; the slope is lit from above and a little left,
+// on our dark ground as added light on the sides that face it and shade on the others; in a fast wake its
+// steep walls take a pastel hue of their slope (immersive-g's fringe; mouse only)
+const vec3 RL = vec3(-0.3197, 0.7791, 0.5394);
+const vec3 KH = vec3(0.57735);
+vec3 reliefLit(vec3 col, vec4 rf, vec3 h) {
+  if (rf.x < 0.003) return col;
+  float w = 0.18 + 0.82 * h.x;
+  // the field's own swell kept low, the picture's own forms carry the relief (a lit blob reads as a bubble)
+  vec2 dZ = uRel.x * (rf.yz * w * 0.4 + rf.x * 0.82 * h.yz);
+  vec3 n = normalize(vec3(-dZ, 1.0));
+  float dl = dot(n, RL) - RL.z;
+  col += max(dl, 0.0) * 0.6 * vec3(0.98, 0.96, 0.92);
+  col *= 1.0 + 1.1 * min(dl, 0.0);
+  if (uRel.y > 0.5 && rf.w > 0.1) {
+    float wall = smoothstep(0.5, 1.1, length(dZ));
+    float shad = 0.1 * (1.0 - smoothstep(-0.25, 0.0, dl));
+    vec3 hc = normalize(vec3(n.xy, n.z * 2.0)) * 0.5 + 0.5;
+    hc = hc * cos(-3.267) + cross(KH, hc) * sin(-3.267) + KH * dot(KH, hc) * (1.0 - cos(-3.267));
+    col = mix(col, hc * max(0.35, dot(col, LUM) * 1.4), max(wall, shad) * smoothstep(0.1, 0.6, rf.w) * 0.3);
+  }
+  return col;
+}
+// a picture's softened light and its slope from four taps s apart (in its own coordinates; s device px)
+vec3 lightOf(float l0, float lx1, float lx0, float ly1, float ly0, float s) {
+  return vec3((2.0 * l0 + lx1 + lx0 + ly1 + ly0) / 6.0, (lx1 - lx0) / (2.0 * s), (ly1 - ly0) / (2.0 * s));
 }
 
 // ── a chapter's ground (D156, D162): the clip across the whole width; at its edges it breaks into its own
@@ -543,12 +618,15 @@ vec3 veilLayer(sampler2D tx, vec4 R, vec4 K, float A, vec4 V, float style, vec2 
   vec2 c0 = clamp(V.zw, sc * 0.5, 1.0 - sc * 0.5);
   vec2 sv = vec2(0.0, uScrollV * 0.012 * sin(fp.x * 9.0 + t * 1.3));
   vec2 base = (fp - 0.5) * sc + c0 + sv;
-  vec2 off = fl.xy / R.zw * sc;
-  vec3 col = texture2D(tx, clamp(base - off, 0.0, 1.0)).rgb;
-  if (fl.z > 0.02) {
-    col.r = texture2D(tx, clamp(base - off * 1.35, 0.0, 1.0)).r;
-    col.b = texture2D(tx, clamp(base - off * 0.65, 0.0, 1.0)).b;
-    col += min(0.06, fl.z * 0.05);
+  // the relief (D170): the raised part swells a little away from the screen's centre, as under a camera
+  vec2 off = (px - 0.5 * uRes) * uRel.z * fl.x / R.zw * sc;
+  vec2 uv = clamp(base - off, 0.0, 1.0);
+  vec3 col = texture2D(tx, uv).rgb;
+  if (fl.x > 0.003) {
+    float s = 4.0 * uGrainPx;
+    vec2 du = s / R.zw * sc;
+    col = reliefLit(col, fl, lightOf(dot(col, LUM), dot(texture2D(tx, uv + vec2(du.x, 0.0)).rgb, LUM), dot(texture2D(tx, uv - vec2(du.x, 0.0)).rgb, LUM),
+      dot(texture2D(tx, uv + vec2(0.0, du.y)).rgb, LUM), dot(texture2D(tx, uv - vec2(0.0, du.y)).rgb, LUM), s));
   }
   float L = dot(col, LUM);
   float rk = rankAt(px);
@@ -641,16 +719,19 @@ vec3 reelColour(vec2 f, vec2 px, float t) {
   if (sq16(rk, lamaP(k < 0.5 ? 1.0 - h : h, n)) > 0.5) return src;
   return sq7(rk, L * 1.4 * (k < 0.5 ? 1.0 - 0.5 * h : 0.5 + 0.5 * h)) > 0.5 ? SQ : BG;
 }
+// the take on screen's light at f (for the relief's height)
+float reelL(vec2 f) { return dot(reelTex(uReelX.z, reelUV(f, uReelV.z, uReelX.x)), LUM); }
 vec3 reelLayer(vec2 px, float t, float soft, vec4 fl, vec3 outc) {
   vec2 fp = (px - uReelR.xy) / uReelR.zw;
   if (fp.y < 0.0 || fp.y > 1.0) return outc;
-  vec2 off = fl.xy / uReelR.zw;
+  vec2 off = (px - 0.5 * uRes) * uRel.z * fl.x / uReelR.zw;
   vec2 fq = fp - off + vec2(0.0, uScrollV * 0.012 * sin(fp.x * 9.0 + t * 1.3));
   vec3 col = reelColour(fq, px, t);
-  if (fl.z > 0.02) {
-    col.r = reelColour(fq - off * 0.35, px, t).r;
-    col.b = reelColour(fq + off * 0.35, px, t).b;
-    col += min(0.06, fl.z * 0.05);
+  // the relief (D170): its height from the take on screen, four taps around
+  if (fl.x > 0.003) {
+    float s = 4.0 * uGrainPx;
+    vec2 du = s / uReelR.zw;
+    col = reliefLit(col, fl, lightOf(dot(col, LUM), reelL(fq + vec2(du.x, 0.0)), reelL(fq - vec2(du.x, 0.0)), reelL(fq + vec2(0.0, du.y)), reelL(fq - vec2(0.0, du.y)), s));
   }
   float rk = rankAt(px);
   float n = cellN(px, t * 0.2);
@@ -671,48 +752,65 @@ vec3 reelLayer(vec2 px, float t, float soft, vec4 fl, vec3 outc) {
 // page, its own side (bottom, top, start, end) ──
 const vec3 TILE = vec3(0.07, 0.075, 0.08);
 vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
+  // the loop only finds the picture under this pixel (at most one); the work is done once after it, so
+  // the compiler does not copy it eight times (D172: the shader's compile time on Windows)
+  float hit = -1.0;
+  vec4 K = vec4(0.0);
+  vec4 R = vec4(1.0);
+  vec4 O = vec4(0.0);
+  vec4 U4 = vec4(0.0);
   for (int i = 0; i < 8; i++) {
-    vec4 K = uImgK[i];
-    if (K.x < 0.001) continue;
-    vec4 R = uImgR[i];
-    vec2 f = (px - R.xy) / R.zw;
-    if (f.x < 0.0 || f.x > 1.0 || f.y < 0.0 || f.y > 1.0) continue;
-    vec4 O = uImgO[i];
-    vec2 off = fl.xy / R.zw;
-    float isPrint = step(3.5, K.w);
-    vec2 g = clamp((f - 0.5) / (O.w * (1.0 + 0.05 * isPrint * (1.0 - K.y))) + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
-    vec3 col = texture2D(uAtlas, uImgU[i].xy + g * uImgU[i].zw).rgb;
-    if (fl.z > 0.02) {
-      col.r = texture2D(uAtlas, uImgU[i].xy + clamp(g - off * 0.35, 0.002, 0.998) * uImgU[i].zw).r;
-      col.b = texture2D(uAtlas, uImgU[i].xy + clamp(g + off * 0.35, 0.002, 0.998) * uImgU[i].zw).b;
-      col += min(0.06, fl.z * 0.05);
+    vec4 k = uImgK[i];
+    vec4 r = uImgR[i];
+    vec2 q = (px - r.xy) / r.zw;
+    if (hit < 0.0 && k.x >= 0.001 && q.x >= 0.0 && q.x <= 1.0 && q.y >= 0.0 && q.y <= 1.0) {
+      hit = float(i);
+      K = k;
+      R = r;
+      O = uImgO[i];
+      U4 = uImgU[i];
     }
-    float L = dot(col, LUM);
-    // a project (D166): not the squares but a print. At rest a cyanotype in the logo's blues; when it is
-    // on, its colour floods up from the bottom like developer in a tray, along a soft moving front with a
-    // faint bright meniscus, and the print settles out of a slight zoom
-    if (isPrint > 0.5) {
-      vec3 cyan = mix(vec3(0.06, 0.15, 0.27), vec3(0.86, 0.88, 0.86), smoothstep(0.04, 0.92, L));
-      float wave = 0.03 * sin(f.x * 9.0 + t * 1.2) + 0.015 * sin(f.x * 21.0 - t * 1.9);
-      float lvl = K.y * 1.25 - 0.12 + wave;
-      vec3 res = mix(cyan, col, smoothstep(f.y - 0.07, f.y + 0.03, lvl));
-      res += vec3(0.07) * (1.0 - smoothstep(0.0, 0.025, abs(lvl - f.y))) * step(0.01, K.y) * step(K.y, 0.99);
-      return mix(outc, res, K.x);
-    }
-    float rk = rankAt(px);
-    float n = cellN(px, t);
-    float reach = K.y;
-    if (K.z > 0.5 && K.z < 1.5) reach = clamp(K.y * 1.8 - length((f - O.xy) * vec2(R.z / R.w, 1.0)) * 0.8, 0.0, 1.0);
-    if (K.z > 1.5) reach = clamp(K.y * 1.5 - (1.0 - f.y) * 0.5, 0.0, 1.0);
-    vec3 res = sq16(rk, lamaP(reach, n)) > 0.5 ? col : (sq7(rk, L * 1.3) > 0.5 ? SQ : TILE);
-    float sd = mod(K.w, 4.0);
-    float y = sd < 0.5 ? f.y : (sd < 1.5 ? 1.0 - f.y : (sd < 2.5 ? f.x : 1.0 - f.x));
-    float lv = edgeLv(y, 0.2, 0.2, n);
-    float keep = sd < 1.5 ? sq16(rk, lv) : sq16(15.0 - rk, lv);
-    res = keep > 0.5 ? res * mix(0.55, 1.0, lv) : outc;
+  }
+  if (hit < 0.0) return outc;
+  vec2 f = (px - R.xy) / R.zw;
+  vec2 off = (px - 0.5 * uRes) * uRel.z * fl.x / R.zw;
+  float isPrint = step(3.5, K.w);
+  vec2 g = clamp((f - 0.5) / (O.w * (1.0 + 0.05 * isPrint * (1.0 - K.y))) + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
+  vec3 col = texture2D(uAtlas, U4.xy + g * U4.zw).rgb;
+  // the relief (D170): the picture's own light as its height, four taps around (inside its cell)
+  if (fl.x > 0.003) {
+    float s = 4.0 * uGrainPx;
+    vec2 dg = s / R.zw / O.w;
+    col = reliefLit(col, fl, lightOf(dot(col, LUM),
+      dot(texture2D(uAtlas, U4.xy + clamp(g + vec2(dg.x, 0.0), 0.002, 0.998) * U4.zw).rgb, LUM),
+      dot(texture2D(uAtlas, U4.xy + clamp(g - vec2(dg.x, 0.0), 0.002, 0.998) * U4.zw).rgb, LUM),
+      dot(texture2D(uAtlas, U4.xy + clamp(g + vec2(0.0, dg.y), 0.002, 0.998) * U4.zw).rgb, LUM),
+      dot(texture2D(uAtlas, U4.xy + clamp(g - vec2(0.0, dg.y), 0.002, 0.998) * U4.zw).rgb, LUM), s));
+  }
+  float L = dot(col, LUM);
+  // a project (D166): not the squares but a print. At rest a cyanotype in the logo's blues; when it is
+  // on, its colour floods up from the bottom like developer in a tray, along a soft moving front with a
+  // faint bright meniscus, and the print settles out of a slight zoom
+  if (isPrint > 0.5) {
+    vec3 cyan = mix(vec3(0.06, 0.15, 0.27), vec3(0.86, 0.88, 0.86), smoothstep(0.04, 0.92, L));
+    float wave = 0.03 * sin(f.x * 9.0 + t * 1.2) + 0.015 * sin(f.x * 21.0 - t * 1.9);
+    float lvl = K.y * 1.25 - 0.12 + wave;
+    vec3 res = mix(cyan, col, smoothstep(f.y - 0.07, f.y + 0.03, lvl));
+    res += vec3(0.07) * (1.0 - smoothstep(0.0, 0.025, abs(lvl - f.y))) * step(0.01, K.y) * step(K.y, 0.99);
     return mix(outc, res, K.x);
   }
-  return outc;
+  float rk = rankAt(px);
+  float n = cellN(px, t);
+  float reach = K.y;
+  if (K.z > 0.5 && K.z < 1.5) reach = clamp(K.y * 1.8 - length((f - O.xy) * vec2(R.z / R.w, 1.0)) * 0.8, 0.0, 1.0);
+  if (K.z > 1.5) reach = clamp(K.y * 1.5 - (1.0 - f.y) * 0.5, 0.0, 1.0);
+  vec3 res = sq16(rk, lamaP(reach, n)) > 0.5 ? col : (sq7(rk, L * 1.3) > 0.5 ? SQ : TILE);
+  float sd = mod(K.w, 4.0);
+  float y = sd < 0.5 ? f.y : (sd < 1.5 ? 1.0 - f.y : (sd < 2.5 ? f.x : 1.0 - f.x));
+  float lv = edgeLv(y, 0.2, 0.2, n);
+  float keep = sd < 1.5 ? sq16(rk, lv) : sq16(15.0 - rk, lv);
+  res = keep > 0.5 ? res * mix(0.55, 1.0, lv) : outc;
+  return mix(outc, res, K.x);
 }
 
 // ── each chapter its own effect on the screen (D165), all in the squares, all quiet at rest ──
@@ -799,6 +897,9 @@ void main() {
     domeU = rr > 0.001 ? dd / (rr * uPress.w) * (3.6 * rr * dome) : vec2(0.0);
   }
   float t = uTime;
+  // the pointer's path: the relief it raises (D170) and its trail of squares (D162, D168)
+  float trail;
+  vec4 fl = flowAt(p0, t, trail);
   // rewind: rows slip sideways like a deck's tracking
   float row = floor(px.y / uCell);
   float slipH = hash(vec2(row, floor(t * 24.0)));
@@ -813,10 +914,7 @@ void main() {
   s = slot(uS[2]); if (s.w > 0.001) f += reels((c - s.xy) / s.z) * s.w;
   // the letter's bubble (D165): each dot first samples the shape somewhere else, so the bubble is a loose
   // cloud of its own dots that gathers into its shape as the chapter arrives
-  s = slot(uS[3]); if (s.w > 0.001) {
-    vec2 scat = (vec2(hash(cell + 19.0), hash(cell + 23.0)) - 0.5) * s.z * 2.6 * (1.0 - uCh[3].w) * (1.0 - uCh[3].w);
-    f += bubble((c + scat - s.xy) / s.z) * s.w;
-  }
+  // the letter's bubble (slot 3) is a sign of fine dots of its own, drawn below
   s = slot(uS[4]); if (s.w > 0.001) f += landing((c - s.xy) / s.z, uG.x) * s.w;
   s = slot(uS[5]); if (s.w > 0.001) f += seo((c - s.xy) / s.z, uG.y) * s.w;
   s = slot(uS[6]); if (s.w > 0.001) f += chat((c - s.xy) / s.z, uG.z) * s.w;
@@ -869,7 +967,8 @@ void main() {
   float pd = length(c - uPtr);
   v += uPtrE * max(uRipAll, dg) * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0)) * mix(0.3, 1.0, mask);
   v += uRew * step(0.93, slipH) * 0.35;
-  v = clamp(v, 0.0, 1.0);
+  // the relief raises the dots too (D170): under the path each one swells into a bead
+  v = clamp(v + step(0.02, v) * fl.x * (0.3 + 0.45 * v), 0.0, 1.0);
   float r = pow(v, 0.62) * uCell * 0.5;
   float a = 1.0 - smoothstep(r - 0.8, r + 0.6, length(px - c));
   a *= step(0.02, v);
@@ -891,7 +990,51 @@ void main() {
     onPaper = max(onPaper, ga * step(1.5, gb.z));
   }
   vec3 col = mix(mix(CREAM, BLUE, clamp(f.y, 0.0, 1.0)), mix(INK, INKBLUE, clamp(f.y, 0.0, 1.0)), onPaper);
+  // ... and becomes a small bead, lit on the side that faces the light and shaded on the other
+  if (fl.x > 0.003) {
+    vec2 nd = (px - c) / max(r, 0.5);
+    vec3 bn = normalize(vec3(nd * 0.9, sqrt(max(0.0, 1.0 - dot(nd, nd))) + 0.1));
+    float bl = dot(bn, RL) - RL.z;
+    col = col * (1.0 + 0.9 * min(bl, 0.0) * fl.x) + max(bl, 0.0) * 0.5 * fl.x;
+  }
   vec3 outc = mix(ground, col, a * (0.35 + 0.65 * v) * mix(1.0, 0.8, onPaper));
+  // the letter's bubble (D165, D171): a sign of fine dots, always on the same grid, 2.25 CSS px apart (Nati:
+  // "the empty bubble and the written one should look the same"). Empty, its three dots wait, lit in the
+  // plate, and bob while the visitor types; written to, the words light up in its dots, smaller the more
+  // there is to say (words.ts). It gathers from a loose cloud of its own dots as the chapter arrives. A dot
+  // just typed burns in: it grows, one after another, in the logo's light blue, and cools to cream
+  if (uS[3].w > 0.001) {
+    vec4 sb = slot(uS[3]);
+    sb.y = (floor(sb.y / uCell) + 0.5) * uCell;
+    float pit = 1.125 * uGrainPx;
+    vec2 fi = floor((px - sb.xy) / pit + 0.5);
+    vec2 fc = sb.xy + fi * pit;
+    float loose = (1.0 - uCh[3].w) * (1.0 - uCh[3].w);
+    vec2 qc = (fc - sb.xy) / sb.z + (vec2(hash(fi + 19.0), hash(fi + 23.0)) - 0.5) * 2.6 * loose;
+    if (abs(qc.x) < 1.3 && qc.y > -1.05 && qc.y < 0.9) {
+      float inS = step(0.5, bubbleIn(qc));
+      float wait = 0.0;
+      for (int k = 0; k < 3; k++) {
+        float fk = float(k);
+        float bob = 0.07 * uType * max(0.0, sin(uTypeT * 6.0 - fk * 0.9));
+        wait = max(wait, 1.0 - smoothstep(0.1, 0.12, length(qc - vec2(0.45 - fk * 0.45, 0.1 + bob))));
+      }
+      wait *= 1.0 - uWordK.x;
+      // four samples inside the dot: its size follows how much of it the letter covers (a halftone), so
+      // the letters read even when they are only a few dots tall
+      vec2 qs = vec2(0.25 * pit / sb.z);
+      vec3 wd = uWordK.x > 0.001 ? 0.25 * (wordAt(qc + qs) + wordAt(qc - qs) + wordAt(qc + vec2(qs.x, -qs.y)) + wordAt(qc + vec2(-qs.x, qs.y))) : vec3(0.0);
+      float hot = step(0.3, wd.b);
+      float fresh = hot * (1.0 - smoothstep(0.25, 1.4, uWordK.y));
+      float grow = mix(1.0, smoothstep(0.0, 1.0, (uWordK.y - 0.28 * hash(fi + 31.0)) / 0.26), hot);
+      float on = max(smoothstep(0.1, 0.9, wd.r) * grow * uWordK.x, wait);
+      float val = inS * mix(0.36, 1.0, on);
+      float rr = pow(val, 0.62) * pit * 0.5;
+      float da = (1.0 - smoothstep(rr - 0.7, rr + 0.5, length(px - fc))) * step(0.02, val);
+      vec3 dc = mix(CREAM * 0.74, mix(CREAM * 1.04, vec3(0.70, 0.87, 1.0), fresh) * (1.0 + 0.25 * fresh), on);
+      outc = mix(outc, dc, da * sb.w);
+    }
+  }
   // the search engine's mark on the results page (its own colours, only there)
   if (uS[5].w > 0.001) {
     vec4 gm = gmark((c - slot(uS[5]).xy) / uS[5].z, uG.y);
@@ -913,15 +1056,15 @@ void main() {
     near = max(near, sl.w * (1.0 - smoothstep(1.25, 1.9, length(px - sl.xy) / max(sl.z, 1.0))));
   }
   float softV = min(soft, 1.0 - 0.72 * near);
-  vec4 fl = flowAt(px);
   if (uReelK.x > 0.001) outc = reelLayer(px, t, soft, fl, outc);
   outc = imgLayer(px, t, fl, outc);
   if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
   if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
   outc = chapterFx(p0, t, soft, outc);
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
-  // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid
-  if (uTrail > 0.5 && fl.w > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), fl.w * 1.2));
+  // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid. Under the words
+  // it thins out, so it never sits on what is being read (D168)
+  if (uTrail > 0.5 && trail > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), trail * 1.2 * mix(0.5, 1.0, soft)));
   // the finger's drop (D163, D164): lit on the side that faces the light, shaded on the other, a
   // hairline of light where it meets the glass; as the finger moves, thin ripples spread from its path
   // and fade, like a fingertip drawn across water (no squares on a phone: they were too heavy)

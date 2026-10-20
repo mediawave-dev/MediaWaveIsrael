@@ -60,7 +60,24 @@ export function useReveals(deps: unknown[] = []) {
       io.unobserve(e.target)
     }), { rootMargin: '0px 0px -12% 0px', threshold: 0.15 })
     els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
+    // a safety net (D168): a moment after the page stops, whatever is on the screen above the arrival line
+    // arrives (a fast flick can carry a block past the observer), and at the very end of a page everything
+    // on the screen does (the last blocks may sit under that line for good)
+    const sweep = () => {
+      const end = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4
+      const line = window.innerHeight * (end ? 1 : 0.92)
+      document.querySelectorAll<HTMLElement | SVGElement>('[data-reveal]:not(.on), .dot-glyph:not(.on)').forEach((el) => {
+        const r = el.getBoundingClientRect()
+        if (r.bottom <= 0 || r.top >= line || (r.width === 0 && r.height === 0)) return
+        el.classList.add('on')
+        if (el.hasAttribute('data-reveal')) { decodeTags(el as HTMLElement); io.unobserve(el) }
+      })
+    }
+    let settle = 0
+    const onScroll = () => { window.clearTimeout(settle); settle = window.setTimeout(sweep, 160) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    const first = window.setTimeout(sweep, 600)
+    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); window.clearTimeout(first); window.clearTimeout(settle) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }

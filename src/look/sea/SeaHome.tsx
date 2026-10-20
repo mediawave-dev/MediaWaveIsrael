@@ -109,7 +109,8 @@ function Promise() {
 }
 
 /** The showreel's takes (public/media/reel, G:/tmp/mw-media/reel-clips.sh); the sea opens it. */
-const REEL = ['sea', 'fibres', 'desk', 'reels', 'city', 'print', 'tap', 'edit', 'tapes', 'hands', 'deck']
+// the showreel's own pool (D172): clips that appear nowhere else on the site, so nothing shows twice
+const REEL = ['sea', 'sunset', 'burn', 'glow', 'library', 'code', 'lights', 'darkroom', 'tank', 'scroll']
 
 /** The hero's showreel (D157, gate `hero`): Lama Lama's hero, our takes. The field plays it across the
     hero behind the words, a take after a take, never the same change twice in a row (field.ts). It
@@ -233,22 +234,46 @@ function Why() {
   )
 }
 
+/** The second track (D173): video, a memories film, tapes. Its steps are the ones the two service pages
+    already promise (data/services.ts), nothing new. [קופי: נתי] */
+const VIDEO_STEPS = [
+  { id: 'send', title: 'שולחים חומר', line: 'צילומים, תמונות מהאלבום או הקלטות עצמן, בקישור או בוואטסאפ.' },
+  { id: 'story', title: 'עריכה, הנפשה או המרה', line: 'חותכים ומוסיפים מוזיקה, מנפישים כל תמונה ומסדרים לפי תקופות, או ממירים את הקלטות לקובץ.' },
+  { id: 'watch', title: 'צפייה ותיקונים', line: 'רואים את הסרטון לפני האירוע, ומבקשים שינויים.' },
+  { id: 'file', title: 'קובץ סופי', line: 'MP4 שנפתח בכל טלפון ומחשב, ומתאים גם להקרנה באולם.' },
+]
+
+function Steps({ steps, label }: { steps: { id: string; title: string; line: string }[]; label: string }) {
+  return (
+    <ol className="sea-list sea-list--steps" aria-label={label}>
+      {steps.map((s, i) => (
+        <li key={s.id} className="sea-list__item" data-reveal="">
+          <span className="sea-list__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 className="sea-list__title sea-fade" data-zone="text">{s.title}</h3>
+          <p className="sea-list__line sea-fade" data-zone="text">{s.line}</p>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+// how we work (D173, Nati: two tracks): building a site, a landing page or a bot, and then, in its own
+// voice, video, a memories film and tapes. [קופי: נתי] the track line and the second lede.
 function Process() {
   return (
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
       <header className="sea-head" data-reveal="">
         <Tag className="sea-fade">03 · PROCESS</Tag>
         <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={['איך אנחנו', 'עובדים']} /></h2>
+        <p className="sea-proc__for sea-fade" data-zone="text">( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )</p>
       </header>
-      <ol className="sea-list sea-list--steps">
-        {STEPS.map((s, i) => (
-          <li key={s.id} className="sea-list__item" data-reveal="">
-            <span className="sea-list__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <h3 className="sea-list__title sea-fade" data-zone="text">{s.title}</h3>
-            <p className="sea-list__line sea-fade" data-zone="text">{s.line}</p>
-          </li>
-        ))}
-      </ol>
+      <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
+      <p className="sea-lede sea-proc__also sea-fade" data-reveal="" data-zone="text">
+        <span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>
+        ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל:
+        מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה.
+      </p>
+      <Steps steps={VIDEO_STEPS} label="וידאו, סרט זיכרון וקלטות" />
     </section>
   )
 }
@@ -256,11 +281,17 @@ function Process() {
 export default function SeaHome() {
   useReveals()
 
-  // the bubble types while the visitor types in the contact form
+  // the bubble types while the visitor types in the contact form, and what they write is engraved in it
+  // (D171); after a send the form empties, and so does the bubble
   useEffect(() => {
-    const onInput = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) field.typed() }
+    const val = (id: string) => document.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#contact-${id}`)?.value ?? ''
+    const read = () => field.words({ name: val('name'), email: val('email'), message: val('message') })
+    const onInput = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) { field.typed(); read() } }
+    let later = 0
+    const onSubmit = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) { window.clearTimeout(later); later = window.setTimeout(read, 120) } }
     document.addEventListener('input', onInput)
-    return () => document.removeEventListener('input', onInput)
+    document.addEventListener('submit', onSubmit)
+    return () => { document.removeEventListener('input', onInput); document.removeEventListener('submit', onSubmit); window.clearTimeout(later) }
   }, [])
 
   // a chapter with its own ground (lab gate `ground`): the services under the horizon, the letter on paper

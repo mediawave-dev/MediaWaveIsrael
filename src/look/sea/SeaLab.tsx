@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react'
 import { GATES, labOpen, opt, pick, type Gate } from './lab'
 
-const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד', sun: 'השקיעה בטבעת', rows: 'תמונה בשורת שירות', work: 'שורות עבודה', type: 'טיפוגרפיה', menu: 'התפריט', stack: 'ערימה בפינה', bar: 'הפס עם השעון', bleed: 'סרטון כרקע', hero: 'ההירו', grain: 'נקודות על כל האתר', trail: 'שובל העכבר', finger: 'האצבע בטלפון', media: 'תמונות' }
+const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד', sun: 'השקיעה בטבעת', rows: 'תמונה בשורת שירות', work: 'שורות עבודה', type: 'טיפוגרפיה', menu: 'התפריט', stack: 'ערימה בפינה', bar: 'הפס עם השעון', bleed: 'סרטון כרקע', hero: 'ההירו', grain: 'נקודות על כל האתר', trail: 'שובל העכבר', finger: 'האצבע בטלפון', media: 'תמונות', relief: 'תבליט מתחת לעכבר' }
 const LABELS: Record<string, string> = {
   'head.island': 'אי שנפתח במגע', 'head.away': 'נעלמת, חוזרת למעלה', 'head.sticky': 'צמודה כמו היום',
   'film.touch': 'מתפתח במגע', 'film.scroll': 'מתפתח בגלילה', 'film.time': 'מתפתח לבד', 'film.off': 'בלי',
@@ -20,7 +20,7 @@ const LABELS: Record<string, string> = {
   'bleed.veil': 'רקע שמתפרק לנקודות', 'bleed.slot': 'במסגרת משלו',
   'hero.reel': 'שואוריל שלא חוזר על עצמו', 'hero.sea': 'השקיעה כרקע', 'hero.disc': 'השקיעה בטבעת',
   'grain.off': 'בלי, קרקע נקייה', 'grain.on': 'כן',
-  'trail.squares': 'ריבועים קטנים', 'trail.line': 'קו דק', 'trail.ripple': 'אדווה בשדה', 'finger.line': 'קו של אור', 'finger.drop': 'טיפת מים', 'finger.none': 'בלי',
+  'trail.squares': 'ריבועים קטנים', 'trail.line': 'קו דק', 'trail.ripple': 'אדווה בשדה', 'relief.on': 'כן', 'relief.off': 'בלי', 'finger.squares': 'ריבועים דקים', 'finger.line': 'קו של אור', 'finger.drop': 'טיפת מים', 'finger.none': 'בלי',
   'media.colour': 'בצבע', 'media.develop': 'מנקודות לצבע',
 }
 
