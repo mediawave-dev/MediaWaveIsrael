@@ -1,3 +1,17 @@
+# HANDOFF: calmer (21.10.2026, D166) - live
+
+## Completed (main = efb3c5e, rollback tag prod-before-d166 = 376e466)
+- Phones: the finger draws the hairline (SeaTrail, lab gate `finger`, default `line`); the water drop and ripples only with `finger=drop`.
+- Calmer: sea-of-dots amplitude about a third lower; the film material band narrower (style 1 in `veilLayer`); services backdrop 0.32; render lines 0.62; tracking 0.45.
+- Projects (work strip): `SeaImage look="print"` = a cyanotype that develops from the bottom (shader `imgLayer`, `isPrint`, side + 4 in `IMK.w`).
+- Checks: overlap 0; all-pages 390/1440 clean; WebGL in three engines; live verified.
+
+## Next steps
+1. Nati's verdict on his phone.
+2. Performance round (card task_c78309fc).
+
+---
+
 # HANDOFF: every chapter its own effect (21.10.2026 morning, D165) - live
 
 ## Completed (main = 376e466, rollback tag prod-before-d165 = 58c0168)
