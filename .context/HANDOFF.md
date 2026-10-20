@@ -1,3 +1,9 @@
+# HANDOFF: D167 live (21.10.2026): main = 0a459d4, rollback tag prod-before-d167 = efb3c5e
+
+- The legal links on one line ([ a · b · c ]), the V drawn dot by dot (way-icons pix V13/V11: header mark, menu, ticks), the finger streak (SeaTrail smoothPath + glow sprite). Verified live.
+
+---
+
 # HANDOFF: calmer (21.10.2026, D166) - live
 
 ## Completed (main = efb3c5e, rollback tag prod-before-d166 = 376e466)
