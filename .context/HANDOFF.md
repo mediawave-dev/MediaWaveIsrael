@@ -1,6 +1,6 @@
-# HANDOFF: calm text, the peek, quiet tiles, the contact line (20.10.2026, D174-D177)
+# HANDOFF: calm text, the peek, quiet tiles, the contact line (20.10.2026, D174-D177) - live
 
-## Completed (branch redesign/elegant-20261019, on top of D168-D173 which is live as 5a6c19d)
+## Completed (live: main = e34beec, rollback tag prod-before-d174 = 5a6c19d; verified on the live site at 390)
 - D174: the shader's text mask has a wide calm margin (`calm` in main): the sea of dots fades out under
   every text block, the ripple and the dots' relief stay off the words, the pictures' relief and swell
   scale with `soft` (`flq`), chapter effects drop to 5% under text, the trail to 30%.
@@ -14,8 +14,7 @@
   back from cache ok; GPU shots G:/tmp/d168/cp2 (peek, calm), ch390 (whole home at 390), svc (tiles).
 
 ## Next steps
-1. Nati's approval to release (rollback tag would be prod-before-d174 = 5a6c19d).
-2. Nati's verdict; the effects skill if he is happy; the shader performance round (card task_0d4cbc6d).
+1. Nati's verdict; the effects skill if he is happy; the shader performance round (card task_0d4cbc6d).
 
 ---
 
