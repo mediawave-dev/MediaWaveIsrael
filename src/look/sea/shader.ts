@@ -635,7 +635,8 @@ vec3 veilLayer(sampler2D tx, vec4 R, vec4 K, float A, vec4 V, float style, vec2 
   if (style > 2.5) {
     float lv = edgeLv(fp.y, 0.24, 0.24, n) * edgeLv(1.0 - fp.y, 0.24, 0.24, n2);
     float a = sq7(rk, L * 1.25 * lv);
-    return mix(outc, mix(outc, SQ, 0.32 * mix(0.25, 1.0, soft)), a * K.x);
+    // the services' backdrop, quieter (D176)
+    return mix(outc, mix(outc, SQ, 0.18 * mix(0.15, 1.0, soft)), a * K.x);
   }
   float w = V.y + abs(uScrollV) * 0.05;
   float lvB = edgeLv(fp.y, V.x, w, n);
@@ -774,8 +775,9 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
   if (hit < 0.0) return outc;
   vec2 f = (px - R.xy) / R.zw;
   vec2 off = (px - 0.5 * uRes) * uRel.z * fl.x / R.zw;
-  float isPrint = step(3.5, K.w);
-  vec2 g = clamp((f - 0.5) / (O.w * (1.0 + 0.05 * isPrint * (1.0 - K.y))) + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
+  float isPrint = step(3.5, K.w) * (1.0 - step(7.5, K.w));
+  float isQuiet = step(7.5, K.w);
+  vec2 g = clamp((f - 0.5) / (O.w * (1.0 + 0.05 * max(isPrint, isQuiet) * (1.0 - K.y))) + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
   vec3 col = texture2D(uAtlas, U4.xy + g * U4.zw).rgb;
   // the relief (D170): the picture's own light as its height, four taps around (inside its cell)
   if (fl.x > 0.003) {
@@ -788,6 +790,13 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
       dot(texture2D(uAtlas, U4.xy + clamp(g - vec2(0.0, dg.y), 0.002, 0.998) * U4.zw).rgb, LUM), s));
   }
   float L = dot(col, LUM);
+  // a service's tile (D176, Nati: "too many effects here... it should be more elegant"): no squares and no
+  // broken edge. At rest the picture itself, dim and nearly grey; when its service is on the stage its
+  // colour comes up in one soft fade, and it settles out of a slight zoom
+  if (isQuiet > 0.5) {
+    vec3 rest = mix(vec3(L), col, 0.22) * 0.46;
+    return mix(outc, mix(rest, col, smoothstep(0.0, 1.0, K.y)), K.x);
+  }
   // a project (D166): not the squares but a print. At rest a cyanotype in the logo's blues; when it is
   // on, its colour floods up from the bottom like developer in a tray, along a soft moving front with a
   // faint bright meniscus, and the print settles out of a slight zoom
@@ -835,7 +844,7 @@ vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
     float d = dir > 0.0 ? p.x - head : head + L - p.x;
     float line = step(0.62, hr) * step(0.0, d) * (1.0 - smoothstep(0.0, L, d));
     float thin = step(mod(floor(p.y / sq), 4.0), 1.5);
-    outc = mix(outc, CREAM, sq16(rk, line * min(1.0, v * 3.0)) * thin * 0.62 * b0 * mix(0.2, 1.0, soft));
+    outc = mix(outc, CREAM, sq16(rk, line * min(1.0, v * 3.0)) * thin * 0.62 * b0 * mix(0.05, 1.0, soft));
   }
   // process (talk, design, build, launch): an editor's playhead. A dotted line at the inline end with the
   // timeline's ticks moving with the page and a longer mark at each step; the playhead holds the middle
@@ -854,7 +863,7 @@ vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
     a = max(a, step(abs(p.y - mid), sq * 1.5) * step(abs(p.x - x0), sq * 1.5));
     outc = mix(outc, CREAM, a * b1);
     float cut = exp(-uCh[1].w * 5.0);
-    if (cut > 0.01) outc = mix(outc, CREAM, sq7(rk, cut * (1.0 - smoothstep(0.0, 3.0 * sq, abs(p.y - mid)))) * 0.75 * b1 * mix(0.25, 1.0, soft));
+    if (cut > 0.01) outc = mix(outc, CREAM, sq7(rk, cut * (1.0 - smoothstep(0.0, 3.0 * sq, abs(p.y - mid)))) * 0.75 * b1 * mix(0.05, 1.0, soft));
   }
   // questions: a tape being tracked. Two thin bands drift down the screen, their rows of squares slipping
   // sideways in the deck's red and teal, stronger while the page moves; almost nothing at rest
@@ -872,7 +881,7 @@ vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
       float slip = (hash(vec2(row, floor(t * 16.0))) - 0.5) * 48.0 * px1 * tb;
       float lv = tb * amt * (0.35 + 0.65 * hash(vec2(floor((p.x + slip) / (6.0 * sq)), row)));
       vec3 tint = mod(row, 2.0) < 1.0 ? vec3(0.93, 0.58, 0.52) : vec3(0.52, 0.8, 0.84);
-      outc = mix(outc, mix(CREAM, tint, 0.5), sq7(rankAt(p + vec2(slip, 0.0)), lv) * 0.45 * mix(0.25, 1.0, soft));
+      outc = mix(outc, mix(CREAM, tint, 0.5), sq7(rankAt(p + vec2(slip, 0.0)), lv) * 0.45 * mix(0.05, 1.0, soft));
     }
   }
   return outc;
@@ -939,15 +948,20 @@ void main() {
     dg = max(dg, cov);
   }
   // the words (D139): a safety net under every text block. It dims only what moves (a shape near the
-  // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line
+  // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line.
+  // calm (D174, Nati: "parts are dazzling... look how Lama Lama keep text easy to read"): the ground's
+  // dots, the ripple and the relief keep away from the words, fading out over a wide soft margin, so a
+  // line always sits on a quiet ground and the life is around it
   float mask = 1.0;
   float soft = 1.0;
+  float calm = 1.0;
   for (int i = 0; i < 16; i++) {
     if (float(i) >= uNTxt) break;
     vec4 tr = uTxt[i];
     vec2 dq = abs(c - tr.xy) - tr.zw;
     float dist = length(max(dq, 0.0)) + min(max(dq.x, dq.y), 0.0);
     mask = min(mask, smoothstep(-uPad * 0.3, uPad, dist));
+    calm = min(calm, smoothstep(-uPad * 0.5, uPad * 4.5, dist));
     // per pixel: over a picture a cell-sized step would show
     vec2 dp = abs(px - tr.xy) - tr.zw;
     soft = min(soft, smoothstep(-uPad, uPad * 7.0, length(max(dp, 0.0)) + min(max(dp.x, dp.y), 0.0)));
@@ -960,15 +974,15 @@ void main() {
   float fill = smoothstep(0.1, 0.2, f.x) * (1.0 - smoothstep(0.84, 0.9, f.x));
   f.x *= mix(1.0, 0.68 + 0.32 * light, fill);
   // the music: the shapes and the grain breathe with its level, and each bell sends a ring out
-  float v = max(max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl)), sea * (1.0 + 1.1 * uLvl));
+  float v = max(max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl)), sea * (1.0 + 1.1 * uLvl) * mix(0.1, 0.85, calm));
   float nd = length(c - uNote.xy);
   v += uGrain * uNote.z * 0.36 * exp(-pow((nd - uNote.w) / (uCell * 4.0), 2.0)) * exp(-nd / (2.4 * uR)) * give;
   // the finger or the pointer ripples the dots like water
   float pd = length(c - uPtr);
-  v += uPtrE * max(uRipAll, dg) * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0)) * mix(0.3, 1.0, mask);
+  v += uPtrE * max(uRipAll, dg) * 0.55 * exp(-pd / (0.55 * uR)) * (0.5 + 0.5 * sin(pd * 0.075 - t * 7.0)) * calm;
   v += uRew * step(0.93, slipH) * 0.35;
   // the relief raises the dots too (D170): under the path each one swells into a bead
-  v = clamp(v + step(0.02, v) * fl.x * (0.3 + 0.45 * v), 0.0, 1.0);
+  v = clamp(v + step(0.02, v) * fl.x * calm * (0.3 + 0.45 * v), 0.0, 1.0);
   float r = pow(v, 0.62) * uCell * 0.5;
   float a = 1.0 - smoothstep(r - 0.8, r + 0.6, length(px - c));
   a *= step(0.02, v);
@@ -991,11 +1005,11 @@ void main() {
   }
   vec3 col = mix(mix(CREAM, BLUE, clamp(f.y, 0.0, 1.0)), mix(INK, INKBLUE, clamp(f.y, 0.0, 1.0)), onPaper);
   // ... and becomes a small bead, lit on the side that faces the light and shaded on the other
-  if (fl.x > 0.003) {
+  if (fl.x * calm > 0.003) {
     vec2 nd = (px - c) / max(r, 0.5);
     vec3 bn = normalize(vec3(nd * 0.9, sqrt(max(0.0, 1.0 - dot(nd, nd))) + 0.1));
     float bl = dot(bn, RL) - RL.z;
-    col = col * (1.0 + 0.9 * min(bl, 0.0) * fl.x) + max(bl, 0.0) * 0.5 * fl.x;
+    col = col * (1.0 + 0.9 * min(bl, 0.0) * fl.x * calm) + max(bl, 0.0) * 0.5 * fl.x * calm;
   }
   vec3 outc = mix(ground, col, a * (0.35 + 0.65 * v) * mix(1.0, 0.8, onPaper));
   // the letter's bubble (D165, D171): a sign of fine dots, always on the same grid, 2.25 CSS px apart (Nati:
@@ -1056,15 +1070,17 @@ void main() {
     near = max(near, sl.w * (1.0 - smoothstep(1.25, 1.9, length(px - sl.xy) / max(sl.z, 1.0))));
   }
   float softV = min(soft, 1.0 - 0.72 * near);
-  if (uReelK.x > 0.001) outc = reelLayer(px, t, soft, fl, outc);
-  outc = imgLayer(px, t, fl, outc);
-  if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
-  if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, fl, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
+  // the relief and its swell stay off the words (D174)
+  vec4 flq = vec4(fl.xyz * mix(0.1, 1.0, soft), fl.w);
+  if (uReelK.x > 0.001) outc = reelLayer(px, t, soft, flq, outc);
+  outc = imgLayer(px, t, flq, outc);
+  if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
+  if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
   outc = chapterFx(p0, t, soft, outc);
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
   // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid. Under the words
   // it thins out, so it never sits on what is being read (D168)
-  if (uTrail > 0.5 && trail > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), trail * 1.2 * mix(0.5, 1.0, soft)));
+  if (uTrail > 0.5 && trail > 0.02) outc = mix(outc, CREAM, sq7(rankAt(p0), trail * 1.2 * mix(0.3, 1.0, soft)));
   // the finger's drop (D163, D164): lit on the side that faces the light, shaded on the other, a
   // hairline of light where it meets the glass; as the finger moves, thin ripples spread from its path
   // and fade, like a fingertip drawn across water (no squares on a phone: they were too heavy)

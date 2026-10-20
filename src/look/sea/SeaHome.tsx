@@ -23,6 +23,7 @@ import SeaServices from './SeaServices'
 import SeaRewind from './SeaRewind'
 import SeaFilm from './SeaFilm'
 import SeaWork from './SeaWork'
+import SeaPeek from './SeaPeek'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
@@ -332,6 +333,7 @@ export default function SeaHome() {
         <span className="sea-spot sea-spot--contact" data-spot="bubble" aria-hidden="true" />
         <Contact chapter="contact" art={false} kicker={<Tag>05 · CONTACT</Tag>} />
       </div>
+      <SeaPeek />
       <SeaRewind />
     </div>
   )

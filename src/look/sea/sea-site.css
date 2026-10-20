@@ -694,3 +694,19 @@ html.sea-held .sdv.is-colour:not(.is-ready) .sdv__img { animation: none; }
 html.sea-held .simg:not(.is-live) .simg__img { animation: sdv-late 0.3s linear 6s both; }
 html.sea-gl .simg.is-live { background: none; }
 html.sea-gl .simg.is-live .simg__img { visibility: hidden; }
+
+/* ── the letter's peek (D175, SeaPeek.tsx): below 1100px the bubble sits above the form, so while a field
+   of the form has focus a copy of the sign rides at the top of the visible screen; the header steps
+   aside and the field keeps clear of it ── */
+.sea-peek {
+  position: fixed; top: 0; inset-inline: 0; z-index: 46; display: flex; justify-content: center; padding: 10px 16px 22px;
+  pointer-events: none; background: linear-gradient(#0f1011 0 calc(100% - 16px), rgba(15, 16, 17, 0));
+  opacity: 0; visibility: hidden; translate: 0 -20px;
+  transition: opacity 0.3s var(--sea-ease), translate 0.45s var(--sea-ease), visibility 0s linear 0.45s;
+}
+html.sea-peeking .sea-peek { opacity: 1; visibility: visible; translate: 0 0; transition: opacity 0.3s var(--sea-ease), translate 0.45s var(--sea-ease), visibility 0s; }
+.sea-peek__sign { display: block; }
+html.sea-peeking .mw-head { transform: translateY(-120%); }
+html.sea-peeking #contact :is(input, textarea) { scroll-margin-top: calc(var(--peek-h, 220px) + 16px); }
+html.disable-animations .sea-peek { transition: none; }
+@media (min-width: 1100px) { .sea-peek { display: none; } }

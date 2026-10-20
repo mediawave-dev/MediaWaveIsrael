@@ -132,7 +132,7 @@ export default function SeaServices() {
                   <span className="sea-svc__n" aria-hidden="true">{pad(i + 1)}</span>
                   <span className="sea-svc__title" data-zone="text">{s.title}</span>
                   <span className="sea-svc__line" data-zone="text">{s.line}</span>
-                  {rows === 'tile' && SERVICE_MEDIA[s.id] && <SeaImage src={tileOf(CLIPS[SERVICE_MEDIA[s.id][1] ?? SERVICE_MEDIA[s.id][0]])} w={384} h={240} when="row" className="sea-svc__pic" />}
+                  {rows === 'tile' && SERVICE_MEDIA[s.id] && <SeaImage src={tileOf(CLIPS[SERVICE_MEDIA[s.id][1] ?? SERVICE_MEDIA[s.id][0]])} w={384} h={240} when="row" look="quiet" className="sea-svc__pic" />}
                   {i === TAPE_AT && (
                     <span className="sea-deck" aria-hidden="true">
                       <span ref={deck} className="sea-deck__count">0000</span>

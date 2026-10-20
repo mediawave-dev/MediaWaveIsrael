@@ -14,7 +14,7 @@ interface Props {
   h: number
   when: 'row' | 'hover'
   /** print (D166): a cyanotype that develops like a photo in a tray, instead of the squares */
-  look?: 'print'
+  look?: 'print' | 'quiet'
   className?: string
 }
 

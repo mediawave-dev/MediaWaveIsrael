@@ -1388,7 +1388,7 @@ function drawImgs() {
     if (!im) continue
     IMR.set(im.r, j * 4)
     IMU.set([(j % 4) * 0.25, Math.floor(j / 4) * 0.5, 0.25, 0.5], j * 4)
-    IMK.set([im.w, im.c, im.kind, (im.id % 4) + (im.el.dataset.look === 'print' ? 4 : 0)], j * 4)
+    IMK.set([im.w, im.c, im.kind, (im.id % 4) + (im.el.dataset.look === 'print' ? 4 : im.el.dataset.look === 'quiet' ? 8 : 0)], j * 4)
     IMO.set([im.ox, im.oy, im.par, 1.12], j * 4)
   }
   gl.uniform4fv(U.uImgR, IMR)

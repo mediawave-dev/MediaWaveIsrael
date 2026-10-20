@@ -1,3 +1,23 @@
+# HANDOFF: calm text, the peek, quiet tiles (20.10.2026, D174-D176) - built and checked, not yet live
+
+## Completed (branch redesign/elegant-20261019, on top of D168-D173 which is live as 5a6c19d)
+- D174: the shader's text mask has a wide calm margin (`calm` in main): the sea of dots fades out under
+  every text block, the ripple and the dots' relief stay off the words, the pictures' relief and swell
+  scale with `soft` (`flq`), chapter effects drop to 5% under text, the trail to 30%.
+- D175: SeaPeek.tsx (phones and tablets): while a field of the form has focus, a 2D-canvas copy of the
+  sign rides at the top of the visual viewport; the header steps aside (html.sea-peeking); the field keeps
+  clear (scroll-margin-top). Pitfall met: the html class must not equal the component's class.
+- D176: SeaImage look="quiet" for the services rows (K.w + 8 in the shader): the picture dim and grey at
+  rest, colour in one fade when on; the services backdrop at 0.18.
+- Checks: overlap 0 (320-1440); all-pages 390 and 1440 clean; WebGL in three engines (~5.5 s each);
+  back from cache ok; GPU shots G:/tmp/d168/cp2 (peek, calm), ch390 (whole home at 390), svc (tiles).
+
+## Next steps
+1. Nati's approval to release (rollback tag would be prod-before-d174 = 5a6c19d).
+2. Nati's verdict; the effects skill if he is happy; the shader performance round (card task_0d4cbc6d).
+
+---
+
 # HANDOFF: trail, relief, the letter, the work, more video, two tracks (20.10.2026, D168-D173) - live
 
 ## Goal
