@@ -710,3 +710,5 @@ html.sea-peeking .mw-head { transform: translateY(-120%); }
 html.sea-peeking #contact :is(input, textarea) { scroll-margin-top: calc(var(--peek-h, 220px) + 16px); }
 html.disable-animations .sea-peek { transition: none; }
 @media (min-width: 1100px) { .sea-peek { display: none; } }
+/* the contact's second line speaks of the bubble: only while the field draws it (D177) */
+html:not(.sea-gl) .ct__lead-dots { display: none; }
