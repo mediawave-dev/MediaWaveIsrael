@@ -557,7 +557,7 @@ vec3 veilLayer(sampler2D tx, vec4 R, vec4 K, float A, vec4 V, float style, vec2 
   if (style > 2.5) {
     float lv = edgeLv(fp.y, 0.24, 0.24, n) * edgeLv(1.0 - fp.y, 0.24, 0.24, n2);
     float a = sq7(rk, L * 1.25 * lv);
-    return mix(outc, mix(outc, SQ, 0.42 * mix(0.25, 1.0, soft)), a * K.x);
+    return mix(outc, mix(outc, SQ, 0.32 * mix(0.25, 1.0, soft)), a * K.x);
   }
   float w = V.y + abs(uScrollV) * 0.05;
   float lvB = edgeLv(fp.y, V.x, w, n);
@@ -568,8 +568,8 @@ vec3 veilLayer(sampler2D tx, vec4 R, vec4 K, float A, vec4 V, float style, vec2 
   vec3 res = outc;
   if (a > 0.5) res = col * mix(0.32, 1.0, soft) * mix(0.55, 1.0, min(lvB, lvT));
   else if (style > 0.5 && style < 1.5) {
-    float lm = L * 1.35 * edgeLv(fp.y, V.x - w * 0.5, w * 1.6, n) * edgeLv(fp.y, 0.14, 0.14, n2) * lvT * dv;
-    if (sq7(rk, lm) > 0.5) res = SQ * mix(0.3, 1.0, soft);
+    float lm = L * 0.95 * edgeLv(fp.y, V.x - w * 0.4, w * 1.1, n) * edgeLv(fp.y, 0.14, 0.14, n2) * lvT * dv;
+    if (sq7(rk, lm) > 0.5) res = SQ * 0.75 * mix(0.3, 1.0, soft);
   }
   return mix(outc, res, K.x);
 }
@@ -679,7 +679,8 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
     if (f.x < 0.0 || f.x > 1.0 || f.y < 0.0 || f.y > 1.0) continue;
     vec4 O = uImgO[i];
     vec2 off = fl.xy / R.zw;
-    vec2 g = clamp((f - 0.5) / O.w + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
+    float isPrint = step(3.5, K.w);
+    vec2 g = clamp((f - 0.5) / (O.w * (1.0 + 0.05 * isPrint * (1.0 - K.y))) + 0.5 + vec2(0.0, O.z) - off, 0.002, 0.998);
     vec3 col = texture2D(uAtlas, uImgU[i].xy + g * uImgU[i].zw).rgb;
     if (fl.z > 0.02) {
       col.r = texture2D(uAtlas, uImgU[i].xy + clamp(g - off * 0.35, 0.002, 0.998) * uImgU[i].zw).r;
@@ -687,15 +688,27 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
       col += min(0.06, fl.z * 0.05);
     }
     float L = dot(col, LUM);
+    // a project (D166): not the squares but a print. At rest a cyanotype in the logo's blues; when it is
+    // on, its colour floods up from the bottom like developer in a tray, along a soft moving front with a
+    // faint bright meniscus, and the print settles out of a slight zoom
+    if (isPrint > 0.5) {
+      vec3 cyan = mix(vec3(0.06, 0.15, 0.27), vec3(0.86, 0.88, 0.86), smoothstep(0.04, 0.92, L));
+      float wave = 0.03 * sin(f.x * 9.0 + t * 1.2) + 0.015 * sin(f.x * 21.0 - t * 1.9);
+      float lvl = K.y * 1.25 - 0.12 + wave;
+      vec3 res = mix(cyan, col, smoothstep(f.y - 0.07, f.y + 0.03, lvl));
+      res += vec3(0.07) * (1.0 - smoothstep(0.0, 0.025, abs(lvl - f.y))) * step(0.01, K.y) * step(K.y, 0.99);
+      return mix(outc, res, K.x);
+    }
     float rk = rankAt(px);
     float n = cellN(px, t);
     float reach = K.y;
     if (K.z > 0.5 && K.z < 1.5) reach = clamp(K.y * 1.8 - length((f - O.xy) * vec2(R.z / R.w, 1.0)) * 0.8, 0.0, 1.0);
     if (K.z > 1.5) reach = clamp(K.y * 1.5 - (1.0 - f.y) * 0.5, 0.0, 1.0);
     vec3 res = sq16(rk, lamaP(reach, n)) > 0.5 ? col : (sq7(rk, L * 1.3) > 0.5 ? SQ : TILE);
-    float y = K.w < 0.5 ? f.y : (K.w < 1.5 ? 1.0 - f.y : (K.w < 2.5 ? f.x : 1.0 - f.x));
+    float sd = mod(K.w, 4.0);
+    float y = sd < 0.5 ? f.y : (sd < 1.5 ? 1.0 - f.y : (sd < 2.5 ? f.x : 1.0 - f.x));
     float lv = edgeLv(y, 0.2, 0.2, n);
-    float keep = K.w < 1.5 ? sq16(rk, lv) : sq16(15.0 - rk, lv);
+    float keep = sd < 1.5 ? sq16(rk, lv) : sq16(15.0 - rk, lv);
     res = keep > 0.5 ? res * mix(0.55, 1.0, lv) : outc;
     return mix(outc, res, K.x);
   }
@@ -724,7 +737,7 @@ vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
     float d = dir > 0.0 ? p.x - head : head + L - p.x;
     float line = step(0.62, hr) * step(0.0, d) * (1.0 - smoothstep(0.0, L, d));
     float thin = step(mod(floor(p.y / sq), 4.0), 1.5);
-    outc = mix(outc, CREAM, sq16(rk, line * min(1.0, v * 3.0)) * thin * 0.8 * b0 * mix(0.2, 1.0, soft));
+    outc = mix(outc, CREAM, sq16(rk, line * min(1.0, v * 3.0)) * thin * 0.62 * b0 * mix(0.2, 1.0, soft));
   }
   // process (talk, design, build, launch): an editor's playhead. A dotted line at the inline end with the
   // timeline's ticks moving with the page and a longer mark at each step; the playhead holds the middle
@@ -761,7 +774,7 @@ vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
       float slip = (hash(vec2(row, floor(t * 16.0))) - 0.5) * 48.0 * px1 * tb;
       float lv = tb * amt * (0.35 + 0.65 * hash(vec2(floor((p.x + slip) / (6.0 * sq)), row)));
       vec3 tint = mod(row, 2.0) < 1.0 ? vec3(0.93, 0.58, 0.52) : vec3(0.52, 0.8, 0.84);
-      outc = mix(outc, mix(CREAM, tint, 0.5), sq7(rankAt(p + vec2(slip, 0.0)), lv) * 0.6 * mix(0.25, 1.0, soft));
+      outc = mix(outc, mix(CREAM, tint, 0.5), sq7(rankAt(p + vec2(slip, 0.0)), lv) * 0.45 * mix(0.25, 1.0, soft));
     }
   }
   return outc;
@@ -823,7 +836,7 @@ void main() {
     float swell = sin(c.x * 0.011 + t * 0.5) * 0.5 + sin(c.x * 0.027 - t * 0.8) * 0.3;
     float cov = clamp(inside / uGE + swell * 0.18 - 0.06, 0.0, 1.0) * ch.z;
     float yy = c.y - ch.x * 0.4;
-    float w = 0.075 + 0.05 * sin(c.x * 0.021 + t * 0.4) * sin(yy * 0.017 - t * 0.3) + 0.02 * sin(c.x * 0.006 - yy * 0.009 + t * 0.2);
+    float w = 0.052 + 0.036 * sin(c.x * 0.021 + t * 0.4) * sin(yy * 0.017 - t * 0.3) + 0.012 * sin(c.x * 0.006 - yy * 0.009 + t * 0.2);
     sea = max(sea, w * cov);
     dg = max(dg, cov);
   }

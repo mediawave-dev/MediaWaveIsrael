@@ -18,11 +18,14 @@ interface Dust { x: number; y: number; vx: number; vy: number; age: number; life
 
 export default function SeaTrail() {
   const cv = useRef<HTMLCanvasElement>(null)
-  const on = opt('trail') === 'line'
+  // a mouse draws it with the lab's trail=line; a finger by default (D166, finger=line): the same on the
+  // server and the client, the effect decides which pointer this screen has
+  const on = opt('trail') === 'line' || opt('finger') === 'line'
 
   useEffect(() => {
     const el = cv.current
-    if (!on || !el || tier() !== 'full' || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    if (!on || !el || tier() !== 'full' || (fine ? opt('trail') !== 'line' : opt('finger') !== 'line')) return
     const ctx = el.getContext('2d')
     if (!ctx) return
     const html = document.documentElement.classList
@@ -56,7 +59,7 @@ export default function SeaTrail() {
       pts = pts.filter((p) => now - p.t < LIFE)
       // a speck of dust every so often along the path
       travel += step
-      if (travel > 22 && !stopped) {
+      if (fine && travel > 22 && !stopped) {
         travel = 0
         const a = Math.random() * Math.PI * 2
         dust.push({ x: hx, y: hy, vx: Math.cos(a) * 9, vy: Math.sin(a) * 9 + 4, age: 0, life: 0.55 + Math.random() * 0.5, r: 0.6 + Math.random() * 0.8, c: Math.random() < 0.25 ? BLUE : CREAM })
@@ -118,15 +121,37 @@ export default function SeaTrail() {
       if (!raf) raf = requestAnimationFrame(frame)
     }
     const onLeave = () => { ptr.at = 0 }
+    // a finger: each touch starts its own line (never one drawn from where the last touch ended)
+    const onTouch = (e: TouchEvent) => {
+      const t = e.touches[0]
+      if (!t) return
+      if (e.type === 'touchstart') { pts = []; head.x = t.clientX; head.y = t.clientY; ptr.seen = true }
+      ptr.x = t.clientX
+      ptr.y = t.clientY
+      ptr.at = performance.now()
+      if (!raf) raf = requestAnimationFrame(frame)
+    }
+    const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) ptr.at = 0 }
     size()
     window.addEventListener('resize', size)
-    window.addEventListener('pointermove', onMove, { passive: true })
-    document.documentElement.addEventListener('pointerleave', onLeave)
+    if (fine) {
+      window.addEventListener('pointermove', onMove, { passive: true })
+      document.documentElement.addEventListener('pointerleave', onLeave)
+    } else {
+      window.addEventListener('touchstart', onTouch, { passive: true })
+      window.addEventListener('touchmove', onTouch, { passive: true })
+      window.addEventListener('touchend', onTouchEnd, { passive: true })
+      window.addEventListener('touchcancel', onTouchEnd, { passive: true })
+    }
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', size)
       window.removeEventListener('pointermove', onMove)
       document.documentElement.removeEventListener('pointerleave', onLeave)
+      window.removeEventListener('touchstart', onTouch)
+      window.removeEventListener('touchmove', onTouch)
+      window.removeEventListener('touchend', onTouchEnd)
+      window.removeEventListener('touchcancel', onTouchEnd)
     }
   }, [on])
 

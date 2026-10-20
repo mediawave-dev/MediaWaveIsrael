@@ -43,7 +43,7 @@ export default function SeaWork() {
               <span className="sea-work__tags" data-zone="text">{r.tags.map((t) => <span key={t} className="sea-box">{t}</span>)}</span>
               <span className="sea-work__view" aria-hidden="true">( {r.act} + )</span>
               <span className="sea-work__strip" aria-hidden="true">
-                {r.strip.map((s) => <SeaImage key={s.src} src={s.src} w={s.w} h={s.h} when="hover" />)}
+                {r.strip.map((s) => <SeaImage key={s.src} src={s.src} w={s.w} h={s.h} when="hover" look="print" />)}
               </span>
             </a>
           </li>

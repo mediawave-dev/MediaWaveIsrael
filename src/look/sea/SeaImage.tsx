@@ -13,12 +13,14 @@ interface Props {
   w: number
   h: number
   when: 'row' | 'hover'
+  /** print (D166): a cyanotype that develops like a photo in a tray, instead of the squares */
+  look?: 'print'
   className?: string
 }
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
 
-export default function SeaImage({ src, w, h, when, className = '' }: Props) {
+export default function SeaImage({ src, w, h, when, look, className = '' }: Props) {
   const box = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export default function SeaImage({ src, w, h, when, className = '' }: Props) {
   }, [src, when])
 
   return (
-    <span ref={box} className={`simg ${className}`.trim()} aria-hidden="true" data-on="0">
+    <span ref={box} className={`simg ${className}`.trim()} aria-hidden="true" data-on="0" data-look={look}>
       <img className="simg__img" src={src} width={w} height={h} alt="" loading="lazy" decoding="async" />
     </span>
   )

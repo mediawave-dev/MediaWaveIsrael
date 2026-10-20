@@ -32,6 +32,9 @@ const GRAIN = () => rootHas('sea-grain-on')
 const RIPPLE = () => rootHas('sea-trail-ripple')
 /** the trail of small squares (D162, Lama's own): fine pointers only; a finger gets ripples (D164) */
 const SQUARES = () => rootHas('sea-trail-squares') && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+/** the water drop under the finger (D163-D164): the lab's finger=drop only since D166 (it pulled the eye
+    off the content); the default finger is SeaTrail's hairline */
+const DROP = () => rootHas('sea-finger-drop')
 
 export function tier(): Tier {
   if (typeof window === 'undefined') return 'still'
@@ -649,12 +652,12 @@ const onTouch = (e: TouchEvent) => {
   const t = e.touches[0]
   if (!t) return
   press.tx = t.clientX; press.ty = t.clientY
-  if (mode === 'full') ripPush(t.clientX, t.clientY, 0.75)
+  if (mode === 'full' && DROP()) ripPush(t.clientX, t.clientY, 0.75)
   onPtr(t.clientX, t.clientY)
 }
 const onTouchStart = (e: TouchEvent) => {
   const t = e.touches[0]
-  if (!t || mode !== 'full') return
+  if (!t || mode !== 'full' || !DROP()) return
   press.tx = t.clientX; press.ty = t.clientY
   if (press.e < 0.02) { press.x = t.clientX; press.y = t.clientY }
   press.on = 1
@@ -1287,7 +1290,7 @@ function drawImgs() {
     if (!im) continue
     IMR.set(im.r, j * 4)
     IMU.set([(j % 4) * 0.25, Math.floor(j / 4) * 0.5, 0.25, 0.5], j * 4)
-    IMK.set([im.w, im.c, im.kind, im.id % 4], j * 4)
+    IMK.set([im.w, im.c, im.kind, (im.id % 4) + (im.el.dataset.look === 'print' ? 4 : 0)], j * 4)
     IMO.set([im.ox, im.oy, im.par, 1.12], j * 4)
   }
   gl.uniform4fv(U.uImgR, IMR)
