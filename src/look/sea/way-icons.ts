@@ -12,6 +12,17 @@ const box = (x: number, y: number, cx: number, cy: number, hx: number, hy: numbe
 const ring = (x: number, y: number, cx: number, cy: number, r: number, w: number) => Math.abs(Math.hypot(x - cx, y - cy) - r) <= w
 const disc = (x: number, y: number, cx: number, cy: number, r: number) => Math.hypot(x - cx, y - cy) <= r
 
+/** a mark drawn dot by dot (rows top down, "#" a dot), for shapes a formula cannot place exactly */
+export function pix(rows: string[], r: number): Dot[] {
+  const out: Dot[] = []
+  rows.forEach((row, j) => { for (let i = 0; i < row.length; i++) if (row[i] === '#') out.push([i + 0.5, j + 0.5, r, 0]) })
+  return out
+}
+/** the V (D167, Nati: "more symmetric... at its bottom it is not aligned"): two arms at 45 degrees, two
+    dots thick, meeting in one dot; 13 and 11 dots wide */
+export const V13 = ['.............', '.............', '.............', '##.........##', '.##.......##.', '..##.....##..', '...##...##...', '....##.##....', '.....###.....', '......#......', '.............', '.............', '.............']
+export const V11 = ['...........', '...........', '...........', '##.......##', '.##.....##.', '..##...##..', '...##.##...', '....###....', '.....#.....', '...........', '...........']
+
 /** x, y in -1..1, y up; returns [value 0..1, blue 0|1] */
 const SHAPES: Record<string, Fn> = {
   // the Horizon disc with its sea
@@ -73,14 +84,6 @@ const SHAPES: Record<string, Fn> = {
     if (disc(x, y, -0.25, 0.42, 0.16)) return [0.95, 0]
     return [y < -0.05 + 0.15 * Math.sin(x * 3) ? 0.85 : 0.45, 1]
   },
-  // why us: a mark of something done right
-  why: (x, y) => {
-    const d1 = Math.abs((y + 0.15) + (x + 0.35)) / Math.SQRT2
-    const d2 = Math.abs((y + 0.55) - (x + 0.15) * 1.25) / 1.6
-    const on1 = d1 < 0.17 && x > -0.75 && x < -0.12
-    const on2 = d2 < 0.17 && x > -0.2 && x < 0.85
-    return on1 || on2 ? [0.95, 0] : [0, 0]
-  },
   // the process: three steps
   process: (x, y) => {
     if (box(x, y, -0.6, -0.55, 0.22, 0.3)) return [0.6, 0]
@@ -113,7 +116,7 @@ function sample(fn: Fn): Dot[] {
 
 const cache = new Map<string, Dot[]>()
 export function icon(name: string): Dot[] {
-  if (!cache.has(name)) cache.set(name, sample(SHAPES[name] ?? SHAPES.horizon))
+  if (!cache.has(name)) cache.set(name, name === 'why' ? pix(V13, 0.484) : sample(SHAPES[name] ?? SHAPES.horizon))
   return cache.get(name)!
 }
 export const GRID = G

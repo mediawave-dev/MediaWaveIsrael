@@ -1,5 +1,5 @@
-// sea · the hairline trail (D159), now the lab's `trail=line`; the default is Lama's trail of small squares,
-// drawn by the field's shader (D162). Nati: "a more beautiful, more elegant trail". A
+// sea · the finger's streak of light (D166, D167: smooth, the default on phones) and the mouse's hairline
+// (D159, the lab's `trail=line`; a mouse's default is Lama's squares in the shader, D162). The mouse's: a
 // hairline ribbon that follows the pointer and tapers into nothing a few tenths of a second behind it,
 // a soft point of light at its head, and now and then a speck of dust shed from the path that drifts
 // and fades (most cream, a few in the logo's light blue). The pointer is followed with a little ease,
@@ -10,11 +10,31 @@ import { tier } from './field'
 import { opt } from './lab'
 
 const LIFE = 420
+/** a finger's streak lives a little longer (D167) */
+const LIFE_T = 560
 const CREAM = '237, 231, 218'
 const BLUE = '121, 160, 197'
 
 interface P { x: number; y: number; t: number }
 interface Dust { x: number; y: number; vx: number; vy: number; age: number; life: number; r: number; c: string }
+
+/** the path as a smooth curve (Catmull-Rom through the points), one sample every step px */
+function smoothPath(p: P[], step: number): { x: number; y: number }[] {
+  const out: { x: number; y: number }[] = []
+  for (let i = 0; i < p.length - 1; i++) {
+    const a = p[Math.max(0, i - 1)], b = p[i], c = p[i + 1], d = p[Math.min(p.length - 1, i + 2)]
+    const n = Math.max(1, Math.ceil(Math.hypot(c.x - b.x, c.y - b.y) / step))
+    for (let k = 0; k < n; k++) {
+      const t = k / n, t2 = t * t, t3 = t2 * t
+      out.push({
+        x: 0.5 * (2 * b.x + (c.x - a.x) * t + (2 * a.x - 5 * b.x + 4 * c.x - d.x) * t2 + (3 * b.x - a.x - 3 * c.x + d.x) * t3),
+        y: 0.5 * (2 * b.y + (c.y - a.y) * t + (2 * a.y - 5 * b.y + 4 * c.y - d.y) * t2 + (3 * b.y - a.y - 3 * c.y + d.y) * t3),
+      })
+    }
+  }
+  if (p.length) out.push({ x: p[p.length - 1].x, y: p[p.length - 1].y })
+  return out
+}
 
 export default function SeaTrail() {
   const cv = useRef<HTMLCanvasElement>(null)
@@ -28,6 +48,18 @@ export default function SeaTrail() {
     if (!on || !el || tier() !== 'full' || (fine ? opt('trail') !== 'line' : opt('finger') !== 'line')) return
     const ctx = el.getContext('2d')
     if (!ctx) return
+    // a soft dot of light, stamped along the finger's curve (D167: the drawn line showed its joints)
+    const sprite = document.createElement('canvas')
+    sprite.width = sprite.height = 64
+    const sg = sprite.getContext('2d')
+    if (sg) {
+      const gr = sg.createRadialGradient(32, 32, 0, 32, 32, 32)
+      gr.addColorStop(0, `rgba(${CREAM}, 1)`)
+      gr.addColorStop(0.35, `rgba(${CREAM}, 0.42)`)
+      gr.addColorStop(1, `rgba(${CREAM}, 0)`)
+      sg.fillStyle = gr
+      sg.fillRect(0, 0, 64, 64)
+    }
     const html = document.documentElement.classList
     const ptr = { x: 0, y: 0, at: 0, seen: false }
     const head = { x: 0, y: 0 }
@@ -49,14 +81,14 @@ export default function SeaTrail() {
       last = now
       const stopped = html.contains('disable-animations')
       // the head follows the pointer with a little ease
-      const k = 1 - Math.pow(1 - 0.38, dt * 60)
+      const k = 1 - Math.pow(1 - (fine ? 0.38 : 0.26), dt * 60)
       const hx = head.x + (ptr.x - head.x) * k
       const hy = head.y + (ptr.y - head.y) * k
       const step = Math.hypot(hx - head.x, hy - head.y)
       head.x = hx
       head.y = hy
       if (step > 0.4) pts.push({ x: hx, y: hy, t: now })
-      pts = pts.filter((p) => now - p.t < LIFE)
+      pts = pts.filter((p) => now - p.t < (fine ? LIFE : LIFE_T))
       // a speck of dust every so often along the path
       travel += step
       if (fine && travel > 22 && !stopped) {
@@ -72,10 +104,42 @@ export default function SeaTrail() {
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       ctx.clearRect(0, 0, el.width, el.height)
-      // the ribbon: thin and faint at the tail, a hairline brighter toward the head
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
       const n = pts.length
+      // a finger (D167): a smooth streak of light. A soft glow stamped along the curve, wider and brighter
+      // toward the finger, a fine bright line inside it drawn as one stroke, and a soft light at its head
+      if (!fine) {
+        const s = smoothPath(pts, 2.5)
+        const m = s.length
+        for (let i = 0; i < m; i++) {
+          const a = m > 1 ? i / (m - 1) : 1
+          const r = 2.5 + 11 * Math.pow(a, 1.3)
+          ctx.globalAlpha = 0.07 * Math.pow(a, 1.6) * glow
+          ctx.drawImage(sprite, s[i].x - r, s[i].y - r, 2 * r, 2 * r)
+        }
+        ctx.globalAlpha = 1
+        if (m > 1) {
+          const g = ctx.createLinearGradient(s[0].x, s[0].y, s[m - 1].x, s[m - 1].y)
+          g.addColorStop(0, `rgba(${CREAM}, 0)`)
+          g.addColorStop(1, `rgba(${CREAM}, ${0.5 * glow})`)
+          ctx.strokeStyle = g
+          ctx.lineWidth = 1.1
+          ctx.beginPath()
+          ctx.moveTo(s[0].x, s[0].y)
+          for (let i = 1; i < m; i++) ctx.lineTo(s[i].x, s[i].y)
+          ctx.stroke()
+        }
+        if (glow > 0.01) {
+          ctx.globalAlpha = 0.5 * glow
+          ctx.drawImage(sprite, head.x - 14, head.y - 14, 28, 28)
+          ctx.globalAlpha = 1
+        }
+        if (pts.length || glow > 0.01) raf = requestAnimationFrame(frame)
+        else last = 0
+        return
+      }
+      // a mouse (the lab's trail=line): the hairline ribbon, thin and faint at the tail, brighter toward the head
       for (let i = 1; i < n; i++) {
         const a = i / (n - 1)
         const p0 = pts[i - 1]

@@ -6,7 +6,7 @@
 // (sea-site.css): the dots are revealed from the centre outward when their block arrives, and the glyph
 // pops a little on hover. Decorative: aria-hidden, the text beside it says it.
 import { useEffect, useRef } from 'react'
-import { icon, GRID, DOT_COLOURS } from './way-icons'
+import { icon, pix, V11, GRID, DOT_COLOURS } from './way-icons'
 import { WA_DOTS } from './wa-dots-data'
 
 // one observer for every glyph: a glyph arrives (its dots grow from the centre out) when it comes into
@@ -34,7 +34,6 @@ const rbox = (x: number, y: number, hx: number, hy: number, r: number) => {
 }
 
 const SHAPES: Record<string, Sdf> = {
-  check: (x, y) => seg(x, y, -0.72, 0.02, -0.22, -0.5) < 0.17 || seg(x, y, -0.22, -0.5, 0.74, 0.56) < 0.17,
   plus: (x, y) => (Math.abs(x) < 0.15 && Math.abs(y) < 0.82) || (Math.abs(y) < 0.15 && Math.abs(x) < 0.82),
   phone: (x, y) => (Math.abs(rbox(x, y, 0.5, 0.9, 0.16)) < 0.12) || Math.hypot(x, y + 0.62) < 0.11,
   mail: (x, y) => Math.abs(rbox(x, y, 0.88, 0.62, 0.08)) < 0.11 || ((seg(x, y, -0.8, 0.54, 0, -0.08) < 0.11 || seg(x, y, 0.8, 0.54, 0, -0.08) < 0.11) && y > -0.6),
@@ -86,6 +85,8 @@ function glyph(name: string, n: number) {
     // the chapters' objects come from the header's icons (way-icons.ts)
     const own = Boolean(SHAPES[name] || VALUES[name])
     if (name === 'wa') cache.set(key, { n: 15, dots: WA_DOTS.map(([x, y, r]) => [x, y, r, 0] as Dot) })
+    // the tick is the V, dot by dot (D167)
+    else if (name === 'check') cache.set(key, { n: 11, dots: pix(V11, 0.46) })
     else cache.set(key, { n: own ? n : GRID, dots: own ? sample(name, n) : icon(name) })
   }
   return cache.get(key)!
