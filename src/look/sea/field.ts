@@ -286,7 +286,7 @@ function setup(): boolean {
   gl.enableVertexAttribArray(loc)
   gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
   U = Object.fromEntries(['uRes', 'uCell', 'uTime', 'uPtr', 'uPtrE', 'uS', 'uG', 'uAmb', 'uC', 'uR', 'uLid', 'uScr', 'uLead', 'uReel', 'uType', 'uTypeT', 'uRew', 'uTxt', 'uNTxt', 'uPad', 'uLvl', 'uNote',
-    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uRip', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
+    'uFilm0', 'uFilm1', 'uFilmR', 'uFilmK', 'uFilmP', 'uFilmA', 'uFilmS', 'uFilmV', 'uReel0', 'uReel1', 'uReelR', 'uReelK', 'uReelS', 'uReelV', 'uReelX', 'uGrain', 'uFlowP', 'uFlowE', 'uFlowR', 'uGrainPx', 'uTrail', 'uPress', 'uRip', 'uCh', 'uChK', 'uRipAll', 'uScrollV', 'uAtlas', 'uImgR', 'uImgU', 'uImgK', 'uImgO', 'uGnd', 'uGE', 'uTurn', 'uTurnC']
     .map((n) => [n, gl!.getUniformLocation(prog!, n)]))
   // each film's texture: one frame at a time from its video (or its poster), clamped, no mipmaps
   for (let u = 0; u < MAX_FILMS; u++) {
@@ -413,6 +413,7 @@ function readSpots() {
 /** The film's slot and the chapters with their own ground, in device px (y up). */
 function readLab() {
   readReel()
+  readChapters()
   readImgs()
   for (const film of films) {
     const r = film.el.getBoundingClientRect()
@@ -465,7 +466,11 @@ function draw() {
   gl.uniform1f(U.uCell, cell)
   gl.uniform1f(U.uTime, time)
   gl.uniform2f(U.uPtr, ptr.x * DPR, (H - ptr.y) * DPR)
-  gl.uniform1f(U.uPtrE, mode === 'full' && !T3 && RIPPLE() && !document.documentElement.classList.contains('disable-animations') ? ptr.e : 0)
+  gl.uniform1f(U.uPtrE, mode === 'full' && !T3 && !document.documentElement.classList.contains('disable-animations') ? ptr.e : 0)
+  gl.uniform1f(U.uRipAll, RIPPLE() ? 1 : 0)
+  CH[7] = (performance.now() - cutAt) / 1000
+  gl.uniform4fv(U.uCh, CH)
+  gl.uniform4fv(U.uChK, CHK)
   for (let i = 0; i < N_SCENES; i++) S[i * 4 + 3] = w[i]
   gl.uniform4fv(U.uS, S)
   gl.uniform4f(U.uG, live.gear[0], live.gear[1], live.gear[2], live.gear[3])
@@ -560,7 +565,7 @@ function frame(now: number) {
   press.y = lerp(press.y, press.ty, kf)
   press.e += (press.on - press.e) * (1 - Math.pow(1 - (press.on ? 0.16 : 0.07), dt * 60))
   if (!press.on && press.e < 0.004) press.e = 0
-  if (press.e > 0 || ripBusy) moving = true
+  if (press.e > 0 || ripBusy || performance.now() - cutAt < 1200) moving = true
   // the music moves the dots only in full motion (calm: the music plays, the field keeps still)
   const heard = mode === 'full' && !stopped ? Math.min(1, sound.level() * 4) : 0
   lvl = lerp(lvl, heard, 1 - Math.pow(1 - 0.2, dt * 60))
@@ -606,6 +611,40 @@ const onPtr = (x: number, y: number) => {
 }
 const onPointer = (e: PointerEvent) => { if (e.pointerType !== 'touch') onPtr(e.clientX, e.clientY) }
 let ripBusy = false
+// ── the chapters with their own effect (D165): why, process, questions, letter ──
+const CH = new Float32Array(16)
+const CHK = new Float32Array([-1e6, -1e6, -1e6, -1e6])
+const chPrev: number[] = []
+let cutAt = -1e9
+function readChapters() {
+  const els = [document.getElementById('why-us'), document.getElementById('process'), document.querySelector<HTMLElement>('.sea-faq'), document.querySelector<HTMLElement>('.sea-contact')]
+  els.forEach((el, i) => {
+    CH.fill(0, i * 4, i * 4 + 4)
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const vis = Math.max(0, Math.min(r.bottom, H) - Math.max(r.top, 0))
+    const wgt = r.height > 4 ? smooth(0, 0.12, vis / Math.min(r.height, H)) : 0
+    CH.set([(H - r.top) * DPR, (H - r.bottom) * DPR, wgt, 0], i * 4)
+  })
+  // the process's steps and the playhead (the middle of the screen) crossing one: a cut
+  const steps = document.querySelectorAll<HTMLElement>('#process .sea-list__item')
+  for (let k = 0; k < 4; k++) {
+    const st = steps[k]
+    if (!st) { CHK[k] = -1e6; continue }
+    const top = st.getBoundingClientRect().top
+    CHK[k] = (H - top) * DPR
+    const prev = chPrev[k]
+    if (prev !== undefined && (prev - H / 2) * (top - H / 2) < 0 && mode === 'full') cutAt = performance.now()
+    chPrev[k] = top
+  }
+  // the letter's bubble gathers as its spot rises from the bottom of the screen to just above the middle
+  const spot = document.querySelector<HTMLElement>('.sea-spot--contact')
+  if (spot) {
+    const r = spot.getBoundingClientRect()
+    const cy = r.top + r.height / 2
+    CH[15] = mode === 'full' ? smooth(0, 1, (H - cy) / (H * 0.58)) : 1
+  }
+}
 const onTouch = (e: TouchEvent) => {
   const t = e.touches[0]
   if (!t) return

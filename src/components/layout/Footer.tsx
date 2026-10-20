@@ -7,7 +7,6 @@ import AnimatedLogo from '../ui/AnimatedLogo'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { LOOK } from '../../look/look'
 import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
-import DotGlyph from '../../look/sea/DotGlyph'
 
 const currentYear = new Date().getFullYear()
 
@@ -62,10 +61,10 @@ export default function Footer() {
   if (LOOK === 'shot') {
     const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => handleLinkClick(e, href)
     const contact = [
-      { k: 'TEL', g: 'phone', t: SITE_CONTACT.phone, href: `tel:${SITE_CONTACT.phone}`, ltr: true, ev: 'tel_click' as const, ext: false },
-      { k: 'WHATSAPP', g: 'wa', t: 'וואטסאפ', href: WHATSAPP_URLS.footer, ltr: false, ev: 'whatsapp_click' as const, ext: true },
-      { k: 'MAIL', g: 'mail', t: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}`, ltr: true, ev: 'mailto_click' as const, ext: false },
-      { k: 'INSTAGRAM', g: 'insta', t: 'אינסטגרם', href: SITE_CONTACT.instagramUrl, ltr: false, ev: 'instagram_click' as const, ext: true },
+      { k: 'TEL', t: SITE_CONTACT.phone, href: `tel:${SITE_CONTACT.phone}`, ltr: true, ev: 'tel_click' as const, ext: false },
+      { k: 'WHATSAPP', t: 'וואטסאפ', href: WHATSAPP_URLS.footer, ltr: false, ev: 'whatsapp_click' as const, ext: true },
+      { k: 'MAIL', t: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}`, ltr: true, ev: 'mailto_click' as const, ext: false },
+      { k: 'INSTAGRAM', t: 'אינסטגרם', href: SITE_CONTACT.instagramUrl, ltr: false, ev: 'instagram_click' as const, ext: true },
     ]
     return (
       <footer className="mw-foot sea-foot" data-theme="dark" data-intent="end">
@@ -95,8 +94,8 @@ export default function Footer() {
                 {contact.map((c) => (
                   <li key={c.k}>
                     <a className="sea-foot__row" href={c.href} {...(c.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})} onClick={() => track(c.ev, { placement: 'footer' })}>
-                      {/* the contact's own drawing in dots (Nati: "it was beautiful"), then its key */}
-                      <span className="sea-foot__k" aria-hidden="true"><span className="sea-foot__ico"><DotGlyph name={c.g} /></span>{c.k}</span>
+                      {/* keys only: the drawings live in the letter above (Nati, 21.10) */}
+                      <span className="sea-foot__k" aria-hidden="true">{c.k}</span>
                       <span className="sea-foot__t" dir={c.ltr ? 'ltr' : undefined}>{c.t}</span>
                       <span className="sea-foot__plus" aria-hidden="true">{c.ext ? '( ↗ )' : '( + )'}</span>
                     </a>

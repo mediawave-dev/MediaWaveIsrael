@@ -256,8 +256,8 @@ html[data-look="shot"] .sea-foot { font-family: var(--text); }
 .sea-foot__cols { display: grid; gap: 40px; }
 .sea-foot__col { display: grid; gap: 14px; align-content: start; min-width: 0; }
 html[data-look="shot"] .sea-foot__col h2 { margin: 0; color: #a39d90; }
-.sea-foot__col h2.sea-tag--he::before { content: "[ "; }
-.sea-foot__col h2.sea-tag--he::after { content: " ]"; }
+.sea-foot__col h2.sea-tag--he::before { content: "[ "; content: "[ " / ""; }
+.sea-foot__col h2.sea-tag--he::after { content: " ]"; content: " ]" / ""; }
 .sea-foot__rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
 .sea-foot__rows li { border-top: 1px solid var(--sea-rule); }
 html[data-look="shot"] .sea-foot a.sea-foot__row {
@@ -301,8 +301,8 @@ html[data-look="shot"] .sea-foot__base a {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; border-radius: 2px;
   font: 700 13px/1.3 var(--text); color: #a39d90; text-decoration: none;
 }
-.sea-foot__base a::before { content: "[ "; font-family: var(--sea-mono); font-weight: 600; }
-.sea-foot__base a::after { content: " ]"; font-family: var(--sea-mono); font-weight: 600; }
+.sea-foot__base a::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); font-weight: 600; }
+.sea-foot__base a::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); font-weight: 600; }
 @media (hover: hover) and (pointer: fine) { html[data-look="shot"] .sea-foot__base a:hover { color: #ede7da; background: rgba(237, 231, 218, 0.05); } }
 html[data-look="shot"] .sea-foot__base p { margin: 0; font: 600 12px/44px var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; }
 /* phones: the key and the sign on a small line, the value below it across the row (an email never breaks) */
@@ -348,32 +348,57 @@ html[data-look="shot"] #contact :is(input, textarea) { background: #17191b; }
 .sea-faq .faq__more { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 32px 0 0; justify-content: flex-start; text-align: start; }
 .sea-faq .faq__more p { margin: 0; color: #a39d90; }
 
-.sea-contact .ct__in { display: grid; gap: 48px; }
+/* ── the letter (D165): on the dark ground, in the page's own language. The ways to reach us are big rows
+   on hairlines, each with its drawing in dots and ( + ) (( ↗ ) when it opens elsewhere); the time in
+   brackets; the form's fields framed in dots like the keys, their labels in brackets, the frame lighting
+   up while you write; the bubble above gathers out of its own dots as the chapter arrives (shader) ── */
+.sea-contact .ct__in { display: grid; gap: 56px; }
 .sea-contact .ct__side { display: grid; justify-items: start; gap: 0; }
 .sea-contact .ct__side > .sea-tag { margin-block-end: 18px; }
-.sea-contact .ct__lead { margin: 0 0 28px; max-width: 36ch; color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-align: start; text-shadow: var(--sea-halo); }
+.sea-contact .ct__lead { margin: 0 0 32px; max-width: 36ch; color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-align: start; text-shadow: var(--sea-halo); }
 .sea-contact :is(.ct__face, .ct__pal) { display: none; }
 .sea-contact .ct__card { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; width: 100%; }
 .sea-contact .ct__ways { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); display: block; }
 .sea-contact .ct__ways li { border-top: 1px solid var(--sea-rule); margin: 0; }
-.sea-contact .ct__ways a {
-  display: flex; flex-direction: row; align-items: center; gap: 14px; min-height: 60px; padding: 10px 0;
-  color: #ede7da; text-decoration: none; justify-content: flex-start; text-align: start; background: none;
+html[data-look="shot"] .sea-contact .ct__ways a {
+  display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 72px; padding: 12px 6px;
+  border-radius: 2px; color: #ede7da; text-decoration: none; text-align: start; background: none; transition: background-color 0.3s var(--sea-ease, ease);
 }
-.sea-contact .ct__ways a b { font: 700 1.0625rem/1.4 var(--text); }
-.sea-contact .ct__ways .ct__ico { display: inline-grid; place-items: center; width: 22px; height: 22px; color: #79a0c5; background: none; }
-.sea-contact .ct__ways .ct__ico svg { width: 22px; height: 22px; }
-@media (hover: hover) and (pointer: fine) { .sea-contact .ct__ways a:hover { color: #79a0c5; } }
-.sea-contact .ct__ways a:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
-.sea-contact .ct__time { margin: 14px 0 0; color: #a39d90; text-align: start; }
-.sea-contact .ct__form { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; display: grid; gap: 18px; }
-.sea-contact .ct__field label { display: block; margin: 0 0 8px; font: 700 0.9375rem/1.3 var(--text); color: #ede7da; text-align: start; }
-.sea-contact .ct__field :is(input, textarea) {
-  width: 100%; box-sizing: border-box; padding: 14px; border: 1.5px solid rgba(237, 231, 218, 0.52); border-radius: 4px;
-  background: #17191b; color: #ede7da; font: 400 1rem/1.5 var(--text);
+.sea-contact .ct__ways a::after { content: "( + )"; content: "( + )" / ""; font: 600 12px/1 var(--sea-mono); color: #a39d90; direction: ltr; white-space: nowrap; transition: color 0.3s ease; }
+.sea-contact .ct__ways a[target="_blank"]::after { content: "( ↗ )"; content: "( ↗ )" / ""; }
+html[data-look="shot"] .sea-contact .ct__ways a b {
+  min-width: 0; font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(22px, 6.2vw, 36px);
+  line-height: 1.1; color: #ede7da; text-shadow: var(--sea-halo); text-align: start;
 }
-.sea-contact .ct__field :is(input, textarea):focus-visible { outline: 3px solid #79a0c5; outline-offset: 1px; border-color: #ede7da; }
-.sea-contact .ct__field textarea { min-height: 140px; resize: vertical; }
+html[data-look="shot"] .sea-contact .ct__ways a b[dir="ltr"] { font-size: clamp(18px, 5.4vw, 34px); white-space: nowrap; text-align: end; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+.sea-contact .ct__ways .ct__ico { display: inline-grid; place-items: center; width: 30px; height: 30px; color: #ede7da; background: none; }
+html[data-look="shot"] .sea-contact .ct__ico :is(.dot-glyph, .wa-dots, svg) { width: 30px; height: 30px; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .sea-contact .ct__ways a:hover { background: rgba(237, 231, 218, 0.05); color: #ede7da; }
+  .sea-contact .ct__ways a:hover::after { color: #79a0c5; }
+}
+.sea-contact .ct__ways a:focus-visible { outline: 3px solid #ede7da; outline-offset: -3px; }
+.sea-contact .ct__time { margin: 16px 0 0; font: 700 13px/1.4 var(--text); color: #a39d90; text-align: start; }
+.sea-contact .ct__time::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
+.sea-contact .ct__time::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
+.sea-contact .ct__form { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; display: grid; gap: 26px; }
+.sea-contact .ct__field label { display: block; margin: 0 0 10px; font: 700 13px/1.3 var(--text); color: #a39d90; text-align: start; }
+.sea-contact .ct__field label::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
+.sea-contact .ct__field label::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
+html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea) {
+  --fd: rgba(237, 231, 218, 0.7);
+  width: 100%; box-sizing: border-box; padding: 16px; border: 0; border-radius: 0; color: #ede7da; font: 700 1.125rem/1.5 var(--text);
+  background:
+    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-x,
+    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 100% / 6px 6px repeat-x,
+    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-y,
+    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 100% 0 / 6px 6px repeat-y,
+    rgba(15, 16, 17, 0.6);
+}
+html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus { --fd: #ede7da; }
+html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus-visible { outline: 2px solid #79a0c5; outline-offset: 4px; }
+html[data-look="shot"] .sea-contact #contact .ct__field[data-invalid] :is(input, textarea) { --fd: #e0533f; }
+.sea-contact .ct__field textarea { min-height: 150px; resize: vertical; }
 .sea-contact :is(.ct__err, .ct__status, .ct__failure) { color: #ede7da; }
 
 /* ── the inner pages on the field (D131, D133). shot-pages.css is a lazy chunk that lands after this
