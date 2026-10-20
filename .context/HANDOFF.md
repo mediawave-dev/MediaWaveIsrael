@@ -1,4 +1,4 @@
-# HANDOFF: trail, relief, the letter, the work, more video, two tracks (20.10.2026, D168-D173)
+# HANDOFF: trail, relief, the letter, the work, more video, two tracks (20.10.2026, D168-D173) - live
 
 ## Goal
 Nati's round of requests (one session, many messages): a thinner trail (and one under the finger); the AI
@@ -7,7 +7,7 @@ the 3D feel under the pointer far more pronounced, after immersive-g.com; what t
 the bubble, written by its own dots; more video with nothing repeating; "how we work" in two tracks; then
 production.
 
-## Completed (branch redesign/elegant-20261019; release and tag: see the commit list below)
+## Completed (live: main = 5a6c19d, rollback tag prod-before-d168 = 0a459d4)
 - D168 trail: a thin ribbon along the path's segments (field.ts flowUpload oldest first, stroke breaks as
   energy + 2; shader flowAt `trail`), ~58 px with a mouse, ~37 px with a finger (TRAIL_W); finger default
   `finger=squares`. AI spark: DotGlyph arrives at once inside fixed chrome; parts.tsx sweeps what is on screen
@@ -28,7 +28,10 @@ production.
   production's; wake() waits for the linked program (no "no valid shader program" warnings).
 - Checks on the final build: overlap 0 (320-1440); all-pages 12 routes at 390 and 1440 clean (axe 0,
   overflow 0, small 0, targets 0, errors 0); WebGL in Chromium, Firefox and WebKit; back from cache ok;
-  GPU shots: G:/tmp/d168/ (ab3 relief A/B, w4 the letter, proc2 process, r6 the finger).
+  GPU shots: G:/tmp/d168/ (ab3 relief A/B, w4 the letter, proc2 process, r6 the finger); live shots
+  G:/tmp/d168/live/ (new reel takes load, the work row, both tracks, the letter, the dock spark).
+- Lighthouse mobile (local, median of 3): 49 (LCP 4.10 s, TBT 1.59 s, CLS 0.001); was 57 at D165. The
+  bigger shader: see Known issues.
 
 ## Known issues
 - First-visit WebGL start on this laptop (Intel Iris Xe, D3D11, no shader cache): the program takes
