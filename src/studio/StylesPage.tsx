@@ -8,7 +8,7 @@ import SEO from '../components/SEO'
 import Logo from '../components/ui/Logo'
 import { useMotionEngine } from '../motion/ScrollEngineProvider'
 import { byId, CHAPTERS, type StyleDef, type StyleModule, type StyleProps } from './registry'
-import { useTier } from './motion'
+import { useTier, finePointer } from './motion'
 import Picker, { type PickAt } from './Picker'
 import './studio.css'
 
@@ -50,6 +50,7 @@ export default function StylesPage() {
   const [Page, setPage] = useState<ComponentType<StyleProps> | null>(null)
   const [busy, setBusy] = useState(false)
   const [widgets, setWidgets] = useState(false)
+  const [hint, setHint] = useState(false)
   const tier = useTier()
   const engine = useMotionEngine()
   const lock = useRef(false)
@@ -59,7 +60,14 @@ export default function StylesPage() {
     let live = true
     def.load().then(async (m) => { await prepare(m); if (live) setPage(() => m.default) })
     const id = window.setTimeout(() => setWidgets(true), 1800)
-    return () => { live = false; clearTimeout(id) }
+    // the hint, once: a moment after the page shows, gone at the first scroll, tap or after 6 s
+    const show = window.setTimeout(() => setHint(true), 2600)
+    const hide = window.setTimeout(() => setHint(false), 8600)
+    const off = () => { clearTimeout(show); setHint(false) }
+    const offScroll = () => { if (window.scrollY > 300) off() }
+    window.addEventListener('pointerdown', off, { once: true })
+    window.addEventListener('scroll', offScroll, { passive: true })
+    return () => { live = false; clearTimeout(id); clearTimeout(show); clearTimeout(hide); window.removeEventListener('pointerdown', off); window.removeEventListener('scroll', offScroll) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -134,6 +142,7 @@ export default function StylesPage() {
         </nav>
       </footer>
 
+      {hint && <p className="st-hint" lang="en" dir="ltr" aria-hidden="true">{finePointer() ? 'Click' : 'Tap'} a style, the page transforms</p>}
       <Picker current={def} onPick={choose} busy={busy} />
 
       {widgets && (

@@ -1,6 +1,8 @@
 // The style picker: four chips in the thumb's reach, in the site's own language (bracketed mono labels,
 // a hairline capsule). Each chip is a disc split by a wave, in the style's ground and ink.
 import { STYLES, type StyleDef } from './registry'
+import { waForStyle } from './lead'
+import { track } from '../utils/analytics'
 
 export interface PickAt { x: number; y: number }
 
@@ -17,10 +19,15 @@ function Disc({ ground, ink }: { ground: string; ink: string }) {
 export default function Picker({ current, onPick, busy }: { current: StyleDef; onPick: (s: StyleDef, at: PickAt) => void; busy: boolean }) {
   return (
     <nav className="st-pick" aria-label="בחירת סגנון" data-busy={busy || undefined}>
-      <p className="st-pick__credit" dir="ltr">
-        <span className="st-pick__k" lang="en" dir="ltr">( Inspired by )</span>{' '}
-        <a href={current.creditUrl} target="_blank" rel="noopener noreferrer" dir="ltr">{current.credit} ↗</a>
-      </p>
+      <div className="st-pick__top">
+        {/* the configurator's action: the style on screen goes straight to WhatsApp [קופי: נתי] */}
+        <a className="st-pick__want" href={waForStyle(current)} target="_blank" rel="noopener noreferrer"
+          onClick={() => track('cta_click', { location: `styles_want_${current.id}` })}>אני רוצה כזה <span aria-hidden="true">←</span></a>
+        <p className="st-pick__credit" dir="ltr">
+          <span className="st-pick__k" lang="en">( Inspired by )</span>{' '}
+          <a href={current.creditUrl} target="_blank" rel="noopener noreferrer" aria-label={`בהשראת ${current.credit}`}>{current.credit} ↗</a>
+        </p>
+      </div>
       <ul className="st-pick__row">
         {STYLES.map((s, i) => (
           <li key={s.id}>

@@ -39,7 +39,24 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
   box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
   view-transition-name: st-pick;
 }
-.st-pick__credit { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 6px; font: 600 11px/1 var(--st-mono); color: #a39d90; white-space: nowrap; }
+.st-pick__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 6px; padding-inline: 4px; }
+.st-pick__credit { display: flex; align-items: center; gap: 6px; margin: 0; min-width: 0; overflow: hidden; font: 600 12px/1 var(--st-mono); color: #a39d90; white-space: nowrap; }
+.st-pick__want {
+  flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: 999px; background: #f6e016; color: #0f1011;
+  font: 700 13px/1 var(--st-text); text-decoration: none; transition: background 0.3s ease;
+}
+.st-pick__want:hover, .st-pick__want:focus-visible { background: #ede7da; }
+.st-pick__want span { display: inline-block; transition: transform 0.4s cubic-bezier(.16, 1, .3, 1); }
+.st-pick__want:hover span { transform: translateX(-3px); }
+/* the first hint: what the picker does, once per visit, gone at the first touch */
+.st-hint {
+  position: fixed; z-index: 61; inset-inline: 0; margin: 0 auto; width: max-content; max-width: calc(100% - 32px); bottom: calc(126px + env(safe-area-inset-bottom));
+  padding: 8px 14px; border-radius: 999px; background: rgba(15, 16, 17, 0.92); color: #ede7da; font: 600 12px/1.3 var(--st-mono); letter-spacing: 0.02em;
+  pointer-events: none; animation: st-hint-in 0.6s cubic-bezier(.16, 1, .3, 1) both;
+}
+.st-hint::after { content: ""; position: absolute; left: 50%; bottom: -5px; width: 10px; height: 10px; margin-left: -5px; background: inherit; transform: rotate(45deg); border-radius: 2px; }
+@keyframes st-hint-in { from { opacity: 0; transform: translateY(8px); } }
+.st:has(.mw-consent-banner) .st-hint { bottom: calc(212px + env(safe-area-inset-bottom)); }
 .st-pick__credit a { display: inline-flex; align-items: center; min-height: 24px; padding: 0 4px; color: #ede7da; text-decoration: none; border-radius: 6px; transition: background 0.25s ease; }
 .st-pick__credit a:hover, .st-pick__credit a:focus-visible { background: rgba(237, 231, 218, 0.12); }
 .st-pick__row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 0; padding: 0; list-style: none; }
@@ -58,6 +75,7 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
 .st-chip[aria-pressed="true"] .st-chip__n { color: #4f4b43; }
 .st-pick[data-busy] .st-chip { cursor: progress; }
 @media (max-width: 360px) { .st-chip__n { display: none; } .st-chip { font-size: 14px; gap: 5px; } }
+@media (max-width: 520px) { .st-pick__k { display: none; } }
 
 /* ---------- the live switch (View Transitions): each style enters in its own way ---------- */
 @property --st-r { syntax: "<length>"; inherits: false; initial-value: 0px; }

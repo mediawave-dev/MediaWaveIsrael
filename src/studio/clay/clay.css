@@ -1,6 +1,6 @@
 /* "חימר" after Léo Parpeix: a cream clay room, then paper #F7F7F7 with deep green ink (#022016, #083D2A),
    one yellow (#F6E016) for the pill and the buttons, a peach (#EED6C8). Avantt (variable, 622, caps,
-   line-height .9) becomes Noto Sans Hebrew (variable, the sea look's own face) at 700 and 75% width; text in MW Text. */
+   line-height .9) becomes Karantina 700 (a condensed Hebrew display face, OFL; D183); text in MW Text. */
 html[data-style="clay"] {
   --st-ground: #f7f7f7;
   --st-ink: #022016;
@@ -11,7 +11,7 @@ html[data-style="clay"] {
   --cl-paper: #f7f7f7;
   --cl-peach: #eed6c8;
   --cl-ease: cubic-bezier(.4, 0, 0, 1);
-  --cl-display: "MW Noto", "MW Noto Fallback", sans-serif;
+  --cl-display: "Karantina", "MW Noto", sans-serif;
   --cl-text: "MW Text", "IBM Plex Sans Hebrew", system-ui, sans-serif;
   background: #f7f7f7;
 }
@@ -55,7 +55,7 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 
 /* ---- the intro paper: the big condensed headline and the reel on it ---- */
 .cl-intro { padding-top: clamp(80px, 16vh, 180px); padding-bottom: clamp(70px, 12vh, 140px); }
-.cl-h1 { position: relative; margin: 0; font: 700 clamp(52px, 11.25vw, 214px)/0.9 var(--cl-display); font-stretch: 75%; letter-spacing: 0; color: var(--cl-ink); }
+.cl-h1 { position: relative; margin: 0; font: 700 clamp(68px, 14.6vw, 280px)/0.86 var(--cl-display); letter-spacing: 0; color: var(--cl-ink); }
 .cl-ln { display: block; overflow: hidden; padding-bottom: 0.04em; }
 .cl-ln > span { display: block; }
 .cl-ln[data-flip] > span { animation: cl-flip 0.55s var(--cl-ease) both; }
@@ -86,9 +86,9 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 .cl-rise.is-in:not(.cl-ln):not(.cl-h2) { transform: none; transition: opacity 0.8s ease, transform 1s var(--cl-ease); }
 
 /* ---- the work on devices in front of giant letters ---- */
-.cl-h2 { margin: 0; padding: clamp(70px, 12vh, 140px) 0 clamp(30px, 5vh, 60px); overflow: hidden; font: 700 clamp(46px, 8.2vw, 150px)/0.9 var(--cl-display); font-stretch: 75%; }
+.cl-h2 { margin: 0; padding: clamp(70px, 12vh, 140px) 0 clamp(30px, 5vh, 60px); overflow: hidden; font: 700 clamp(60px, 10.6vw, 196px)/0.88 var(--cl-display); }
 .cl-h2 > span { display: block; }
-.cl-h3 { margin: 4px 0 0; font: 700 clamp(30px, 3.4vw, 54px)/0.95 var(--cl-display); font-stretch: 75%; }
+.cl-h3 { margin: 4px 0 0; font: 700 clamp(40px, 4.4vw, 70px)/0.92 var(--cl-display); }
 .cl-k { margin: 0; font: 600 13px/1 var(--cl-text); opacity: 0.8; }
 .cl-p { margin: 10px 0 0; font: 400 17px/1.55 var(--cl-text); color: #2a3f36; max-width: 46ch; }
 .cl-cards { list-style: none; margin: 0; padding: 0 0 40px; display: grid; gap: clamp(36px, 6vw, 80px) clamp(20px, 3vw, 44px); }
@@ -99,7 +99,7 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 .cl-card[data-g="yellow"] { --g: #f3e57a; --lt: rgba(8, 61, 42, 0.12); }
 .cl-card[data-g="stone"] { --g: #e3ded4; --lt: rgba(8, 61, 42, 0.12); }
 .cl-card__letter, .cl-feature__letter {
-  position: absolute; inset-inline-end: -0.06em; bottom: -0.2em; font: 700 clamp(260px, 72vw, 620px)/0.8 var(--cl-display); font-stretch: 75%; color: var(--lt); pointer-events: none;
+  position: absolute; inset-inline-end: -0.06em; bottom: -0.2em; font: 700 clamp(260px, 72vw, 620px)/0.8 var(--cl-display); color: var(--lt); pointer-events: none;
   transition: transform 1.2s var(--cl-ease);
 }
 .cl-card a:hover .cl-card__letter { transform: translateY(-4%); }
@@ -116,7 +116,7 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 .cl-card a:hover .cl-dev, .cl-card a:focus-visible .cl-dev { transform: translate(-50%, -52%); }
 .cl-card__row { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; align-items: baseline; }
 .cl-card__n { grid-row: span 2; font: 600 12px/1 var(--cl-text); opacity: 0.7; }
-.cl-card__t { font: 700 clamp(28px, 2.6vw, 40px)/1 var(--cl-display); font-stretch: 75%; }
+.cl-card__t { font: 700 clamp(36px, 3.4vw, 52px)/0.95 var(--cl-display); }
 .cl-card__l { font: 400 16px/1.45 var(--cl-text); color: #2a3f36; }
 
 .cl-work { padding-top: clamp(40px, 8vh, 80px); padding-bottom: clamp(50px, 9vh, 100px); }
@@ -127,13 +127,13 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 
 .cl-steps { list-style: none; margin: 0; padding: 0 0 30px; border-top: 1px solid rgba(2, 32, 22, 0.18); }
 .cl-step { display: grid; grid-template-columns: auto 1fr; gap: 4px 18px; padding: 22px 0; border-bottom: 1px solid rgba(2, 32, 22, 0.18); }
-.cl-step__n { grid-row: span 2; font: 700 clamp(44px, 5vw, 84px)/0.85 var(--cl-display); font-stretch: 75%; color: var(--cl-green); }
-.cl-step__t { margin: 0; font: 700 clamp(26px, 2.6vw, 42px)/1 var(--cl-display); font-stretch: 75%; }
+.cl-step__n { grid-row: span 2; font: 700 clamp(58px, 6.5vw, 110px)/0.82 var(--cl-display); color: var(--cl-green); }
+.cl-step__t { margin: 0; font: 700 clamp(34px, 3.4vw, 54px)/0.95 var(--cl-display); }
 .cl-step .cl-p { margin: 4px 0 0; }
 
 .cl-qs { padding-bottom: 30px; border-top: 1px solid rgba(2, 32, 22, 0.18); }
 .cl-q { border-bottom: 1px solid rgba(2, 32, 22, 0.18); }
-.cl-q summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 14px 6px; cursor: pointer; list-style: none; font: 700 clamp(22px, 2.2vw, 34px)/1.05 var(--cl-display); font-stretch: 80%; border-radius: 10px; transition: background 0.35s ease; }
+.cl-q summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 14px 6px; cursor: pointer; list-style: none; font: 700 clamp(28px, 2.8vw, 44px)/1 var(--cl-display); border-radius: 10px; transition: background 0.35s ease; }
 .cl-q summary::-webkit-details-marker { display: none; }
 .cl-q summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--cl-yellow); font: 600 20px/1 var(--cl-text); transition: transform 0.5s var(--cl-ease); }
 .cl-q[open] summary::after { transform: rotate(45deg); }

@@ -10,10 +10,11 @@ import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import Pill from './Pill'
 import type { Tape } from './tape'
-import '../../look/shot/shot-fonts.css'
+import '@fontsource/karantina/hebrew-700.css'
+import '@fontsource/karantina/latin-700.css'
 import './clay.css'
 
-export const prepare = () => Promise.all([document.fonts.load('700 80px "MW Noto"', 'אבג'), document.fonts.load('600 16px "MW Text"', 'אבג')])
+export const prepare = () => Promise.all([document.fonts.load('700 80px Karantina', 'אבג'), document.fonts.load('600 16px "MW Text"', 'אבג')])
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 /** the headline's second line flips through the crafts when the reel is fed [קופי: נתי] */

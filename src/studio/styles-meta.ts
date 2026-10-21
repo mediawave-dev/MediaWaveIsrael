@@ -1,0 +1,25 @@
+// The four styles as plain data (names, credits, colours), with no code attached: the home page's style
+// studio chapter imports this list without pulling any style's chunk. [קופי: נתי] the names and the lines.
+export type StyleId = 'flight' | 'buzz' | 'blueprint' | 'clay'
+
+export interface StyleMeta {
+  id: StyleId
+  /** the style's Hebrew name in the picker */
+  name: string
+  /** one line on what it feels like */
+  feel: string
+  /** the award winner it follows (the credit line) */
+  credit: string
+  creditUrl: string
+  /** the picker chip: the style's ground and ink, split like the Horizon disc */
+  swatch: [string, string]
+  /** the browser's theme colour while the style is on */
+  theme: string
+}
+
+export const STYLE_META: StyleMeta[] = [
+  { id: 'flight', name: 'מעוף', feel: 'סיפור שנפתח בגלילה', credit: 'The Power of Storytelling', creditUrl: 'https://storytelling.noomoagency.com/', swatch: ['#dcd3f7', '#3a3270'], theme: '#e5def9' },
+  { id: 'buzz', name: 'זמזום', feel: 'קליל, שיקי ומלא חיים', credit: 'Buzz', creditUrl: 'https://buzz.xyz/', swatch: ['#d7d72e', '#231e1e'], theme: '#d7d72e' },
+  { id: 'blueprint', name: 'שרטוט', feel: 'מדויק כמו תוכנית עבודה', credit: 'Heron AI', creditUrl: 'https://heronaiapp.com/', swatch: ['#f5f5ee', '#fa3600'], theme: '#f5f5ee' },
+  { id: 'clay', name: 'חימר', feel: 'חדר רך באור של בוקר', credit: 'Léo Parpeix', creditUrl: 'https://www.leoparpeix.com/', swatch: ['#efe4d4', '#083d2a'], theme: '#efe4d4' },
+]

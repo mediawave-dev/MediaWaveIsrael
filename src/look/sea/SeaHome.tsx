@@ -23,6 +23,7 @@ import SeaServices from './SeaServices'
 import SeaRewind from './SeaRewind'
 import SeaFilm from './SeaFilm'
 import SeaWork from './SeaWork'
+import SeaStyles from './SeaStyles'
 import SeaPeek from './SeaPeek'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
@@ -326,6 +327,7 @@ export default function SeaHome() {
       <SeaServices />
       {opt('work') === 'rows' && <SeaWork />}
       <Process />
+      <SeaStyles />
       <div className="sea-ch sea-faq">
         <Faq chapter="faq" kicker={<Tag>04 · FAQ</Tag>} />
       </div>
