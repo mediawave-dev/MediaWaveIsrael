@@ -158,3 +158,6 @@ html[data-style="buzz"] .st { background: transparent; }
   .bz-card__l { align-self: start; }
   .bz-steps { grid-template-columns: 1fr; }
 }
+/* the escort (D191): fixed to the screen, under the words, over the sheet */
+.bz-swarm--escort { position: fixed; inset: 0; z-index: 1; opacity: calc(min(1, var(--bz-hero, 0) * 2)); transition: opacity 0.4s ease; }
+.bz-swarm--escort .bz-bee { width: 22px; height: 17px; margin: -8px 0 0 -11px; }

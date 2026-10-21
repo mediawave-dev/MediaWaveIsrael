@@ -6,7 +6,7 @@
 import {
   ACESFilmicToneMapping, BoxGeometry, Color, CylinderGeometry, DirectionalLight, ExtrudeGeometry, Group, HemisphereLight,
   Mesh, MeshStandardMaterial, PCFShadowMap, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Shape, Path,
-  SphereGeometry, SRGBColorSpace, TorusGeometry, Vector2, WebGLRenderer, CircleGeometry, MathUtils,
+  SphereGeometry, SRGBColorSpace, TorusGeometry, Vector2, WebGLRenderer, CircleGeometry,
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { damp, loop, type Tier } from '../motion'
@@ -163,6 +163,19 @@ function props(): Group {
 
 export interface Room { stop: () => void; setPlaying: (on: boolean) => void }
 
+/** The journey through the room (D191), one pose per chapter: camera xyz and where it looks. Hero: the
+    cassette on its plinth; services: across to the bubble on the tall plinth, the windows behind; work: up
+    through the middle window to the sky; process: low over the floor and the sun's arches; questions: the
+    cassette from the side; the letter: its face, close. Phones stand further back (the room is narrow). */
+const POSES: [number, number, number, number, number, number][] = [
+  [0.3, 2.25, 10.2, 0.55, 1.75, -0.6],
+  [-1.2, 2.6, 5.6, -3.4, 1.9, -2.6],
+  [0.2, 2.2, 4.2, 0.0, 3.4, -4.6],
+  [-0.4, 0.9, 6.0, -1.6, 0.25, 0.2],
+  [4.4, 2.3, 4.6, 0.7, 1.8, -0.4],
+  [0.8, 1.95, 3.5, 0.7, 1.86, -0.4],
+]
+
 export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Tier): Room {
   const mobile = window.matchMedia('(max-width: 760px)').matches
   const renderer = new WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' })
@@ -235,18 +248,49 @@ export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Ti
 
   let playing = false
   let slide = tier === 'full' ? 5 : 0
+  // where the reader is: the chapters of the page this room lives under
+  const root = hero.closest('.cl') ?? hero
+  let marks: { top: number; h: number }[] = []
+  const measure = () => {
+    const y = window.scrollY
+    marks = [...root.querySelectorAll<HTMLElement>('[data-ch]')].map((el) => { const r = el.getBoundingClientRect(); return { top: r.top + y, h: Math.max(1, r.height) } })
+  }
+  const progress = () => {
+    const mid = window.scrollY + window.innerHeight * 0.5
+    for (let j = marks.length - 1; j >= 0; j--) if (mid >= marks[j].top) return Math.min(marks.length - 1, j + Math.min(1, (mid - marks[j].top) / marks[j].h))
+    return 0
+  }
+  measure()
+  const mro = new ResizeObserver(measure)
+  mro.observe(root)
+  let pos = progress()
+  // only drawn while some of it can be seen: the hero, or one of the arched windows in the paper
+  let seen = true
+  const shown = new Set<Element>()
+  const vio = new IntersectionObserver((es) => { es.forEach((x) => { if (x.isIntersecting) shown.add(x.target); else shown.delete(x.target) }); seen = shown.size > 0 })
+  root.querySelectorAll('.cl-room, .cl-window').forEach((el) => vio.observe(el))
   let blinkAt = 3
   let blink = 0
   const portrait = () => camera.aspect < 0.85
   const frame = (dt: number, t: number) => {
     slide = damp(slide, 0, 0.03, dt)
-    const r = hero.getBoundingClientRect()
-    const k = MathUtils.clamp(-r.top / Math.max(1, r.height), 0, 1)
     look.x = damp(look.x, tier === 'full' ? ptr.x : 0, 0.13, dt)
     look.y = damp(look.y, tier === 'full' ? ptr.y : 0, 0.13, dt)
-    const z = (portrait() ? 15.5 : 10.2) - 4 * k
-    camera.position.set(0.3 + slide + look.x * 0.13, (portrait() ? 2.6 : 2.25) - 2.4 * k * 0.6 - look.y * 0.04, z)
-    camera.lookAt(0.55 + slide * 0.35, (portrait() ? 2.1 : 1.75) - 0.9 * k, -0.6)
+    // the journey: chapter index + the fraction read through it, eased between poses, damped
+    pos = damp(pos, progress(), tier === 'full' ? 0.04 : 0.001, dt)
+    const i = Math.min(POSES.length - 2, Math.floor(pos))
+    const f = pos - i
+    const e = f * f * (3 - 2 * f)
+    const A = POSES[i]
+    const B = POSES[i + 1]
+    const v = A.map((a, j) => a + (B[j] - a) * e)
+    const back = portrait() ? 1.45 : 1
+    const tx = v[3] + slide * 0.35
+    const ty = v[4]
+    const tz = v[5]
+    camera.position.set(tx + (v[0] - v[3]) * back + slide + look.x * 0.13, ty + (v[1] - v[4]) * back - look.y * 0.04, tz + (v[2] - v[5]) * back)
+    camera.lookAt(tx, ty, tz)
+    if (!seen && t > 0.5) { skyMat.uniforms.uTime.value = t; return }
 
     // the face: the eyes follow the pointer, a blink every few seconds, a soft breath
     face.pupilL.position.x = face.pupilR.position.x = look.x * 0.07
@@ -266,7 +310,7 @@ export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Ti
   else stopLoop = loop(frame)
   canvas.dataset.ready = '1'
   return {
-    stop: () => { stopLoop(); ro.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose() },
+    stop: () => { stopLoop(); ro.disconnect(); mro.disconnect(); vio.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose() },
     setPlaying: (on) => { playing = on },
   }
 }

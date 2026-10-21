@@ -25,17 +25,29 @@ const LINES = [`${C.hero.line1} ${C.hero.line2}`, C.hero.sub, C.hero.sub2, 'מד
 
 type Stage = 'mark' | 'word' | 'reveal' | 'done'
 
-function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: StyleProps['tier'], delay: number, run: boolean) {
+/** the scroll's wind: how fast the page moves (px/s, smoothed), so the escort streams against it */
+let wind = 0
+let windY = 0
+let windT = 0
+function trackWind() {
+  const now = performance.now()
+  const y = window.scrollY
+  if (windT) wind = wind * 0.8 + (-(y - windY) / Math.max(0.008, (now - windT) / 1000)) * 0.2
+  windY = y
+  windT = now
+}
+
+function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: StyleProps['tier'], delay: number, run: boolean, windy = false) {
   useEffect(() => {
     const host = ref.current
     if (!host || PRERENDER || !run) return
     const n = window.innerWidth < 640 ? Math.round(count / 2) : count
     if (tier === 'still') return placeStill(host, n)
-    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay })
+    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
     const io = new IntersectionObserver(([e]) => sw.pause(!e.isIntersecting), { rootMargin: '120px' })
     io.observe(host)
     return () => { io.disconnect(); sw.stop() }
-  }, [ref, count, tier, delay, run])
+  }, [ref, count, tier, delay, run, windy])
 }
 
 function Typer({ tier }: { tier: StyleProps['tier'] }) {
@@ -73,6 +85,7 @@ export default function Buzz({ tier, def }: StyleProps) {
   const front = useRef<HTMLDivElement>(null)
   const formSw = useRef<HTMLDivElement>(null)
   const endSw = useRef<HTMLDivElement>(null)
+  const escort = useRef<HTMLDivElement>(null)
   const quick = OPENED
   const [stage, setStage] = useState<Stage>(PRERENDER || tier === 'still' ? 'done' : quick ? 'word' : 'mark')
 
@@ -103,6 +116,13 @@ export default function Buzz({ tier, def }: StyleProps) {
   useSwarm(front, 50, tier, 120, bees)
   useSwarm(formSw, 14, tier, 0, bees)
   useSwarm(endSw, 52, tier, 0, bees)
+  // the escort (D191): a few bubbles travel down the page with the visitor and stream against the scroll
+  useSwarm(escort, 16, tier, 600, bees, true)
+  useEffect(() => {
+    const on = () => trackWind()
+    window.addEventListener('scroll', on, { passive: true })
+    return () => window.removeEventListener('scroll', on)
+  }, [])
 
   // the fuzz: fully soft while the word arrives, then 60% (their 16/24 to 9.6/14.4, scaled to our size)
   useEffect(() => {
@@ -221,6 +241,7 @@ export default function Buzz({ tier, def }: StyleProps) {
         </filter>
       </svg>
       <span className="bz-cursor" ref={dot} aria-hidden="true" />
+      <div className="bz-swarm bz-swarm--escort" ref={escort} aria-hidden="true" />
 
       <section className="bz-hero" data-ch="hero" aria-labelledby="bz-h1">
         <div className="bz-swarm bz-swarm--back" ref={back} aria-hidden="true" />

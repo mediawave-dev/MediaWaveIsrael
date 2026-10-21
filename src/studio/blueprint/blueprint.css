@@ -213,3 +213,17 @@ html[data-style="blueprint"] .st-foot { border-top: 1px solid var(--bp-line); ma
   .bp-step h3 { font-size: 20px; }
   .bp-step p { font-size: 15px; }
 }
+
+/* ---- the route (D191): the journey down the sheet ---- */
+.bp-route { position: absolute; top: 0; left: 0; z-index: 3; width: 160px; overflow: visible; pointer-events: none; direction: ltr; }
+.bp-route__ghost { fill: none; stroke: var(--bp-line); stroke-width: 1; stroke-dasharray: 3 5; }
+.bp-route__line { fill: none; stroke: var(--bp-red); stroke-width: 1.6; }
+.bp-route__stop rect { fill: var(--bp-paper); stroke: var(--bp-red); stroke-width: 1.2; }
+.bp-route__stop text { font: 500 12px var(--bp-mono); fill: var(--bp-ink); letter-spacing: 0.04em; }
+.bp-route__here { position: absolute; top: 0; left: 0; z-index: 4; pointer-events: none; will-change: transform; }
+.bp-route__here b { position: absolute; left: -5.5px; top: -5.5px; width: 11px; height: 11px; background: var(--bp-red); box-shadow: 0 0 0 4px rgba(250, 54, 0, 0.16); }
+.bp-route__here span { position: absolute; left: 12px; top: -7px; padding: 2px 5px; background: var(--bp-ink); color: #fff; font: 500 12px/1.2 var(--bp-mono); white-space: nowrap; }
+@media (max-width: 899px) {
+  .bp-route__stop text { display: none; }
+  .bp-route__here span { display: none; }
+}

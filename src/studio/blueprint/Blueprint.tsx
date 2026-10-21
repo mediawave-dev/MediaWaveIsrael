@@ -16,6 +16,7 @@ import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import Drawing from './Drawing'
 import Plan, { Steps } from './Plan'
+import Route from './Route'
 import './blueprint.css'
 
 export const prepare = () => Promise.all([document.fonts.load('700 40px "IBM Plex Sans Hebrew"', 'אבג'), document.fonts.load('500 12px "Geist Mono"', 'AB')])
@@ -148,6 +149,7 @@ export default function Blueprint({ tier, def }: StyleProps) {
   return (
     <div className="bp" ref={ref} data-loading={loading || undefined}>
       <i className="bp-frame" aria-hidden="true" />
+      <Route tier={tier} />
       <span className="bp-cursor" ref={cur} aria-hidden="true" />
 
       <section className="bp-hero" data-ch="hero" aria-labelledby="bp-h1">

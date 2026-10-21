@@ -4,7 +4,7 @@
 // keep apart, flee a mouse, are pulled softly home (homes spread on the plastic-number sequence) and
 // fly in from outside the box over 1.05 s.
 
-export interface SwarmOptions { count: number; pointer: boolean; delay?: number }
+export interface SwarmOptions { count: number; pointer: boolean; delay?: number; /** px/s added to every bee's vertical speed (the scroll's wind) */ wind?: () => number }
 export interface Swarm { stop: () => void; pause: (on: boolean) => void }
 
 interface Bee { el: HTMLElement; s: number; x: number; y: number; vx: number; vy: number; h: number; hx: number; hy: number; sx: number; sy: number; flip: number; rot: number }
@@ -107,6 +107,7 @@ export function createSwarm(host: HTMLElement, opt: SwarmOptions): Swarm {
         const d = Math.hypot(dx, dy)
         if (d > 0.01 && d < 380) { const f = (1600 * (1 - d / 380)) / d * 60; b.vx += (dx / d) * f * dt; b.vy += (dy / d) * f * dt }
       }
+      if (opt.wind) b.vy += opt.wind() * (0.6 + 0.8 * s) * dt * 3
       const out = b.x < 0 || b.x > W || b.y < 0 || b.y > H ? 1 : 0
       b.vx += (b.hx - b.x) * (0.18 + 0.9 * out) * dt
       b.vy += (b.hy - b.y) * (0.18 + 0.9 * out) * dt

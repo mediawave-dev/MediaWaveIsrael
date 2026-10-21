@@ -143,10 +143,11 @@ export default function Clay({ tier, def }: StyleProps) {
   return (
     <div className="cl" ref={root} data-live={live || undefined}>
       {fine && tier !== 'still' && <Pill text={pill} line={!asked && !pill ? askLine : undefined} />}
+      {/* the room stays behind the whole page (D191): the paper covers it, arched windows look back in */}
+      <div className="cl-world" aria-hidden="true"><canvas className="cl-canvas" ref={canvas} /></div>
 
       <section className="cl-hero" data-ch="hero" ref={hero} aria-labelledby="cl-h1">
         <div className="cl-room">
-          <canvas className="cl-canvas" ref={canvas} aria-hidden="true" />
           <div className="cl-room__fg">
             <p className="cl-room__line">{C.hero.sub}<br />{C.hero.sub2}</p>
             <p className="cl-room__scroll" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
@@ -171,6 +172,7 @@ export default function Clay({ tier, def }: StyleProps) {
         </div>
       </section>
 
+      <div className="cl-window" aria-hidden="true"><svg viewBox="0 0 100 140"><path d="M2 138V50a48 48 0 0 1 96 0v88" /><path d="M50 4v134M2 78h96" /></svg></div>
       <section className="cl-paper cl-svc" data-ch="services" aria-labelledby="cl-svc-t">
         <h2 id="cl-svc-t" className="cl-h2" data-cl><span>{C.services.title}</span></h2>
         <ul className="cl-cards">
@@ -206,6 +208,7 @@ export default function Clay({ tier, def }: StyleProps) {
         </div>
       </section>
 
+      <div className="cl-window" aria-hidden="true"><svg viewBox="0 0 100 140"><path d="M2 138V50a48 48 0 0 1 96 0v88" /><path d="M50 4v134M2 78h96" /></svg></div>
       <section className="cl-paper cl-proc" data-ch="process" aria-labelledby="cl-proc-t">
         <h2 id="cl-proc-t" className="cl-h2" data-cl><span>{C.process.title}</span></h2>
         <ol className="cl-steps">
@@ -231,6 +234,7 @@ export default function Clay({ tier, def }: StyleProps) {
         </div>
       </section>
 
+      <div className="cl-window" aria-hidden="true"><svg viewBox="0 0 100 140"><path d="M2 138V50a48 48 0 0 1 96 0v88" /><path d="M50 4v134M2 78h96" /></svg></div>
       <section className="cl-paper cl-contact" data-ch="contact" aria-labelledby="cl-contact-t">
         <h2 id="cl-contact-t" className="cl-h2" data-cl><span>{C.contact.title}</span></h2>
         <p className="cl-p">{C.contact.lead}</p>
