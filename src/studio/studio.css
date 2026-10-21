@@ -95,3 +95,6 @@ html[data-vt="clay"]::view-transition-new(root) { animation: st-rise 1.1s cubic-
 html[data-vt="clay"]::view-transition-old(root) { animation: st-under 1.1s cubic-bezier(.4, 0, 0, 1) both; }
 @keyframes st-rise { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes st-under { to { transform: translateY(-14%) scale(0.97); filter: brightness(0.82); } }
+
+/* the cookie banner sits at the foot of the screen until answered: the picker waits above it */
+.st:has(.mw-consent-banner) .st-pick { bottom: calc(96px + env(safe-area-inset-bottom)); }
