@@ -1,6 +1,6 @@
-# HANDOFF: readability, בוקר, sideways services (21.10.2026, D194-D197) - LIVE: main = 4fa6e8b (+ D197 pending)
+# HANDOFF: readability, בוקר, sideways services (21.10.2026, D194-D197) - LIVE: main = D197 (see git log)
 
-Rollback tags: prod-before-d194 (c1159c5), prod-before-d192 (9fded74), prod-before-d178 (e34beec).
+Rollback tags: prod-before-d197 (4fa6e8b), prod-before-d194 (c1159c5), prod-before-d192 (9fded74), prod-before-d178 (e34beec).
 Verified live on mediawave.co.il: sideways rows in Buzz, Blueprint and Clay; no inspiration captions; the
 clay world is called "בוקר"; films in G:/tmp/studio/live-sw-*.mp4.
 
@@ -36,8 +36,7 @@ remove the inspiration captions; remove the cassette's smile; services that trav
   card for that moment (no frames are drawn). Test: G:/tmp/studio/guide-sw.mjs, home: home-guide.mjs.
 
 ## Next steps
-1. Release D197 (tag prod-before-d197 = origin/main, branch, main) once qa-all.sh is clean; verify live.
-2. Nati's verdict on the sideways rows, the readability, the name "בוקר".
+1. Nati's verdict on the sideways rows, the readability, the name "בוקר".
 
 ## Important files
 - src/studio/sideways.ts: the sideways hook every world uses.
