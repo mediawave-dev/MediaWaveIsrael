@@ -1,4 +1,28 @@
-# HANDOFF: smooth scrolling, the way home, Blueprint notes, music (21.10.2026, D199) - releasing
+# HANDOFF: glass buttons, even dot rings, the music invitation in the site's material, legibility (21.10.2026, D200) - releasing
+
+Rollback tags: prod-before-d200 (= origin/main before this release), prod-before-d199, prod-before-d198.
+
+## Completed
+- src/look/parts/DotRing.tsx (+ dot-ring.css): equal dots along each button's own capsule (SVG path, pathLength =
+  an even dot count), redrawn on resize; walks on hover, swells and runs on press; a 7 ms haptic on Android;
+  the sheen follows the mouse (--gx). Used by KeyButton, the header card, the dock's two buttons, the steps.
+- sea-site.css: smoked glass for every ringed button (blur, saturate, brightness 0.74 backdrop, tint 0.66,
+  top sheen, rim hairline, shadow, a glint every 7.5 s, a sinking press with a spring release).
+- SoundInvite.tsx (+ .snd in portal.css): glass + dot ring + halftone-dot equaliser + "[ Tap for sound ]" that
+  decodes out of dots; shows only at a reading pause, never over words (bottom, under the header, or not at
+  all), leaves when the reader scrolls on, 40 s apart, 3 a visit; the guide skips a visit while it shows.
+- Legibility (scripts/qa/audit-read.mjs now takes PRE / SCOPE / ONCE / NOSND): the map's words have their own
+  colours (the global h2 #2a2a2a made "לאיזה עולם עוברים?" dark on the home); Flight mists behind the services
+  heading and "Watch"; the hero lead #c4bdaf; the skip link ink on cream; the studio bar fits in every world.
+- Regression found and fixed: a position rule had pulled the header card out of its corner.
+
+## Known issues
+- Audit leftovers that are transitions, not states: Blueprint "[04]" half off the row's edge, a line at the very
+  bottom edge crossing Blueprint's frame, Flight's night heading while it fades in.
+
+---
+
+# HANDOFF: smooth scrolling, the way home, Blueprint notes, music (21.10.2026, D199) - LIVE (1330b6b)
 
 Rollback tags: prod-before-d199 (= origin/main before this release), prod-before-d198, prod-before-d194.
 

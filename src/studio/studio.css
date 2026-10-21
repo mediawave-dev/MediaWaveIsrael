@@ -30,7 +30,13 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
 .st-bar__worlds:hover, .st-bar__worlds:focus-visible { background: color-mix(in srgb, var(--st-ink) 12%, transparent); }
 /* the way back home (D199), quieter than the worlds */
 .st-bar__back { margin-inline-start: 0; text-decoration: none; }
-@media (max-width: 480px) { .st-bar__worlds { padding: 0 8px; } }
+/* (D200) a phone's bar holds the sound, Home, Worlds and the logo in any world (Blueprint's is narrower, inside
+   its frame): tighter keys, and the logo gives way a little rather than covering "( Worlds )" */
+@media (max-width: 480px) {
+  .st-bar__worlds { padding: 0 7px; margin-inline-start: 0; letter-spacing: 0.03em; flex: none; }
+  .st-bar__home { flex: 0 1 auto; min-width: 0; }
+  .st-bar__home .mw-logo { width: min(116px, 100%); height: auto; }
+}
 
 .st-main { display: block; }
 /* headings take their world's ink, never the site's global heading colour (D194: "איך אנחנו" was #2a2a2a on the night) */

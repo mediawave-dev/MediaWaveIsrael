@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { track } from '../../utils/analytics'
 import WaDots from '../sea/WaDots'
+import DotRing from '../parts/DotRing'
 // shot-dock.css is imported by ShotHome (the shot entry), not here: Layout imports this file in
 // every look, and a CSS import would put the dock's rules into the k, m and km bundles too.
 
@@ -103,6 +104,7 @@ export default function ShotDock({ chatOpen, onSlot, onShownChange }: ShotDockPr
       >
         <WaDots className="shot-dock__wa-icon" />
         <span>וואטסאפ</span>
+        <DotRing />
       </a>
       <span className="shot-dock__chat" ref={onSlot} />
     </div>

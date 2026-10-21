@@ -190,7 +190,8 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       const s = state.current
       const now = performance.now()
       if (s.phase !== 'away' || s.shown >= plan.max || now - s.last < plan.cool || open) return
-      const p = rowHolds() ? null : pickPerch()
+      // (D200) never at the same time as the music's invitation
+      const p = rowHolds() || document.querySelector('.snd[data-on]') ? null : pickPerch()
       if (!p) return
       s.shown += 1
       s.last = now

@@ -14,6 +14,7 @@ import { posterFor } from '../eye-line'
 import type { ShowItem } from '../../data'
 import { vt } from '../vt'
 import DotGlyph from '../../sea/DotGlyph'
+import DotRing from '../../parts/DotRing'
 import './shot-pages.css'
 
 export { vt }
@@ -134,7 +135,7 @@ export function Steps({ title, kicker, steps, time, id = 'how' }: { title: strin
         <ol>
           {steps.map((s, i) => (
             <li key={s.title} className="sp-step">
-              <span className="sp-step__node" aria-hidden="true">{i + 1}</span>
+              <span className="sp-step__node" aria-hidden="true">{i + 1}<DotRing gap={5.2} inset={1.4} /></span>
               <h3 className="sp-h3" data-zone="text">{s.title}</h3>
               <p data-zone="text">{s.line}</p>
             </li>

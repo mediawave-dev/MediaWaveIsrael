@@ -171,3 +171,10 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-proc .fl-h2::before, .fl-faq .fl-h2::before { background: radial-gradient(closest-side, rgba(4, 7, 26, 0.92), rgba(4, 7, 26, 0.78) 55%, rgba(4, 7, 26, 0)); }
 .fl-contact > .fl-giant::before { background: radial-gradient(closest-side, rgba(30, 6, 2, 0.85), rgba(30, 6, 2, 0.6) 55%, rgba(30, 6, 2, 0)); }
 .fl-form .st-form__style { color: #ffe7d3; }
+
+/* (D200 audit) the services' heading and the work's link cross the wing too: the same mist of the sky */
+.fl-svc > .fl-kicker, .fl-go { position: relative; isolation: isolate; }
+.fl-svc > .fl-kicker::before, .fl-go::before {
+  content: ""; position: absolute; z-index: -1; inset: -40% -18%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(229, 222, 249, 0.92), rgba(229, 222, 249, 0.75) 55%, rgba(229, 222, 249, 0));
+}

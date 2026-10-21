@@ -1,4 +1,6 @@
 // node audit-read.mjs <url> <WxH> <out.json> [stepFraction=0.7]
+// env: PRE = a script to run in the page before measuring (e.g. open a dialog), SCOPE = only the text inside
+// this selector, ONCE = measure the first screen only
 // Legibility audit on the real rendered page (WebGL included): at every stop, photograph the page with all
 // text made transparent, then measure each visible line of text against the pixels actually behind it.
 // A line fails when its 15th-percentile contrast is under 4.5 (3 for large text). Lines still fading in or
@@ -20,17 +22,18 @@ await p.evaluateOnNewDocument(() => { try { localStorage.setItem('mw_cookie_cons
 await p.goto(url, { waitUntil: 'networkidle2', timeout: 90000 })
 await sleep(5000)
 // the guide and the trail are not content
-await p.addStyleTag({ content: '.gd, .gd-trail { display: none !important; }' })
-const total = await p.evaluate(() => document.documentElement.scrollHeight)
+await p.addStyleTag({ content: '.gd, .gd-trail' + (process.env.NOSND ? ', .snd' : '') + ' { display: none !important; }' })
+if (process.env.PRE) { await p.evaluate(process.env.PRE); await sleep(2500) }
+const total = process.env.ONCE ? 1 : await p.evaluate(() => document.documentElement.scrollHeight)
 const found = []
 for (let y = 0; y < total; y += Math.round(H * STEP)) {
   await p.evaluate((yy) => window.scrollTo(0, yy), y)
   await sleep(1500)
-  const items = await p.evaluate(() => {
+  const items = await p.evaluate((scope) => {
     const out = []
     const opacityOf = (el) => { let o = 1; for (let e = el; e && e.nodeType === 1; e = e.parentElement) o *= Number(getComputedStyle(e).opacity); return o }
-    for (const el of document.querySelectorAll('body *')) {
-      if (el.closest('svg, .gd, .gd-trail, [aria-hidden="true"]')) continue
+    for (const el of document.querySelectorAll(`${scope} *`)) {
+      if (el.closest('svg, .gd, .gd-trail, [aria-hidden="true"], .sr-only')) continue
       // a closed <details> keeps its answer laid out but never paints it
       const dt = el.closest('details')
       if (dt && !dt.open && !el.closest('summary')) continue
@@ -49,7 +52,7 @@ for (let y = 0; y < total; y += Math.round(H * STEP)) {
       out.push({ text: el.textContent.trim().replace(/\s+/g, ' ').slice(0, 48), color, size, bold, op: opacityOf(el), rects: rects.slice(0, 4).map((r) => [r.left, r.top, r.width, r.height]), cls: (el.className?.toString?.() || el.tagName).slice(0, 40) })
     }
     return out
-  })
+  }, process.env.SCOPE || 'body')
   const hide = await p.addStyleTag({ content: '* { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } ::placeholder { color: transparent !important; }' })
   await sleep(120)
   const shot = await p.screenshot({ encoding: 'base64' })

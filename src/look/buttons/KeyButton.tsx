@@ -11,6 +11,7 @@ import { useEffect, useRef, type ReactNode, type RefObject } from 'react'
 import { StateButton, type BtnState, type LookButtonProps, type Pointer } from './StateButton'
 import './key-button.css'
 import WaDots from '../sea/WaDots'
+import DotRing from '../parts/DotRing'
 
 export type KeyTone = 'ink' | 'paper'
 
@@ -151,6 +152,7 @@ export function KeyButton({ tone, next, className = '', ...props }: KeyButtonPro
             <span className="key__render" aria-hidden="true">
               <KeyPrint label={label} tc={renderTc} dest={dest} />
             </span>
+            <DotRing inset={2.2} />
           </span>
         </>
       )}
