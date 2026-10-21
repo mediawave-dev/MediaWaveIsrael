@@ -5,15 +5,28 @@
 // 30 s, five times a visit at most, and once more at the letter). Tapped, it opens the map of worlds.
 // Keyboard and screen readers use the bar's "Worlds" button instead (the guide is aria-hidden).
 import { useEffect, useRef, useState } from 'react'
-import type { StyleDef } from './registry'
-import { CHAPTERS } from './registry'
+import './portal.css'
 import type { Tier } from './motion'
 
 type Phase = 'away' | 'in' | 'hover' | 'out'
 
-const COOL = 30000
-const MAX = 5
-const STAY = 7000
+export interface GuidePlan {
+  /** what marks a chapter on this page (the studio: [data-ch]; the main site: [data-chapter]) */
+  chapters: string
+  /** never closer than this (ms), never more than this many times a visit */
+  cool: number
+  max: number
+  /** how long it rests before it flies off (ms) */
+  stay: number
+  /** when it first comes (ms after it is mounted) */
+  first: number
+  /** the line it says (English: a label, D-English micro-labels) */
+  say: string
+  /** the chapter that always calls it once more */
+  last?: string
+}
+
+export const STUDIO_PLAN: GuidePlan = { chapters: '[data-ch]', cool: 30000, max: 5, stay: 7000, first: 4200, say: 'Visit another world', last: 'contact' }
 
 /** where it rests: by the thumb if that spot is free, else the next free one; never on a button, a link,
     a field or a line of text (it looks at what lies under each candidate before it lands) */
@@ -46,11 +59,11 @@ const bez = (a: number, b: number, c: number, d: number, t: number) => {
   return u * u * u * a + 3 * u * u * t * b + 3 * u * t * t * c + t * t * t * d
 }
 
-export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier: Tier; open: boolean; onOpen: (at: { x: number; y: number }) => void }) {
+export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }: { color: string; tier: Tier; open: boolean; onOpen: (at: { x: number; y: number }) => void; plan?: GuidePlan }) {
   const el = useRef<HTMLButtonElement>(null)
   const sparks = useRef<SVGSVGElement>(null)
   const [phase, setPhase] = useState<Phase>('away')
-  const state = useRef({ phase: 'away' as Phase, shown: 0, last: -COOL, t0: 0, from: { x: 0, y: 0 }, to: { x: 0, y: 0 }, c1: { x: 0, y: 0 }, c2: { x: 0, y: 0 }, x: -100, y: -100 })
+  const state = useRef({ phase: 'away' as Phase, shown: 0, last: -plan.cool, t0: 0, from: { x: 0, y: 0 }, to: { x: 0, y: 0 }, c1: { x: 0, y: 0 }, c2: { x: 0, y: 0 }, x: -100, y: -100 })
 
   const go = (p: Phase) => { state.current.phase = p; setPhase(p) }
 
@@ -80,7 +93,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
         const p = perch()
         x = p.x + Math.sin(k * 1.3) * 9 + Math.sin(k * 3.1) * 3
         y = p.y + Math.sin(k * 2.1) * 7
-        if (now - s.t0 > STAY && !open) flyOff(now)
+        if (now - s.t0 > plan.stay && !open) flyOff(now)
       }
       const dx = x - s.x
       s.x = x
@@ -125,7 +138,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
     const call = () => {
       const s = state.current
       const now = performance.now()
-      if (s.phase !== 'away' || s.shown >= MAX || now - s.last < COOL || open) return
+      if (s.phase !== 'away' || s.shown >= plan.max || now - s.last < plan.cool || open) return
       s.shown += 1
       s.last = now
       const w = window.innerWidth
@@ -141,32 +154,31 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
       s.t0 = now
       go('in')
     }
-    const first = window.setTimeout(call, 4200)
+    const first = window.setTimeout(call, plan.first)
     let seen = 'hero'
     let settle = 0
     const onScroll = () => {
       window.clearTimeout(settle)
       settle = window.setTimeout(() => {
         const line = window.innerHeight * 0.5
-        const here = CHAPTERS.find((id) => {
-          const r = document.querySelector(`[data-ch="${id}"]`)?.getBoundingClientRect()
-          return r && r.top <= line && r.bottom > line
-        })
+        const el = [...document.querySelectorAll<HTMLElement>(plan.chapters)].find((c) => { const r = c.getBoundingClientRect(); return r.top <= line && r.bottom > line })
+        const here = el?.dataset.ch ?? el?.dataset.chapter ?? el?.id ?? ''
         if (here && here !== seen) {
           seen = here
-          if (here === 'contact') state.current.last = -COOL
+          if (plan.last && here === plan.last) state.current.last = -plan.cool
           call()
         }
       }, 650)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => { clearTimeout(first); clearTimeout(settle); window.removeEventListener('scroll', onScroll) }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tier, open])
 
   if (tier === 'still') return null
   return (
     <>
-      <svg className="gd-trail" ref={sparks} aria-hidden="true" style={{ ['--gd' as string]: def.ink }}>
+      <svg className="gd-trail" ref={sparks} aria-hidden="true" style={{ ['--gd' as string]: color }}>
         {Array.from({ length: 25 }, (_, i) => <line key={i} opacity="0" strokeLinecap="round" />)}
       </svg>
       <button
@@ -177,7 +189,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
         data-side={typeof window !== 'undefined' && spot.x && spot.x < window.innerWidth / 2 ? 'r' : 'l'}
         aria-hidden="true"
         tabIndex={-1}
-        style={{ ['--gd' as string]: def.ink }}
+        style={{ ['--gd' as string]: color }}
         onClick={() => { const s = state.current; onOpen({ x: s.x, y: s.y }); go('away') }}
       >
         <svg className="gd__body" viewBox="-32 -32 64 64" aria-hidden="true">
@@ -192,7 +204,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
           </g>
           <circle className="gd__rim" r="15" />
         </svg>
-        <span className="gd__say" lang="en" dir="ltr">Visit another world</span>
+        <span className="gd__say" lang="en" dir="ltr">{plan.say}</span>
       </button>
     </>
   )

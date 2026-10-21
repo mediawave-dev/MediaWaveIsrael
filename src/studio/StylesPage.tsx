@@ -85,6 +85,18 @@ export default function StylesPage() {
     return () => { delete html.dataset.style }
   }, [def])
 
+  // arriving from the main site through the wave (D192): the world is ready, its name shows, the wave opens
+  useEffect(() => {
+    if (!Page || !window.__studioArrival) return
+    delete window.__studioArrival
+    const wave = getCurtain()
+    if (!wave) return
+    setTitle({ def, out: false })
+    const id = window.setTimeout(() => { setTitle({ def, out: true }); void wave.reveal(tier === 'calm' ? 560 : 980).then(() => setTitle(null)) }, 650)
+    return () => clearTimeout(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Page])
+
   const land = (ch: string) => {
     const el = document.querySelector<HTMLElement>(`[data-ch="${ch}"]`)
     if (ch === 'hero' || !el) { engine?.lenis ? engine.lenis.scrollTo(0, { immediate: true, force: true }) : window.scrollTo(0, 0); return }
@@ -179,7 +191,7 @@ export default function StylesPage() {
           <span className="st-title__by" lang="en" dir="ltr">Inspired by {title.def.credit}</span>
         </div>
       )}
-      <Guide def={def} tier={tier} open={map || busy} onOpen={() => setMap(true)} />
+      <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} />
       {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} />}
 
       {widgets && (

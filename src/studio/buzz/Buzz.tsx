@@ -132,8 +132,8 @@ export default function Buzz({ tier, def }: StyleProps) {
     const disp = el?.querySelector('.bz-disp')
     if (!el || !word || !blur || !disp) return
     const fs = parseFloat(getComputedStyle(word).fontSize) || 120
-    const to = stage === 'mark' || stage === 'word' ? 1 : 0.6
-    const from = Number(el.dataset.fz ?? (stage === 'done' ? 0.6 : 1))
+    const to = stage === 'mark' || stage === 'word' ? 1 : 0.32
+    const from = Number(el.dataset.fz ?? (stage === 'done' ? 0.32 : 1))
     const set = (k: number) => {
       blur.setAttribute('stdDeviation', (fs * 0.075 * k).toFixed(2))
       disp.setAttribute('scale', (fs * 0.115 * k).toFixed(2))

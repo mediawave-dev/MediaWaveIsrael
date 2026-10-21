@@ -173,9 +173,9 @@ html[data-style="blueprint"] .st-foot { border-top: 1px solid var(--bp-line); ma
 .bp-contact { text-align: start; }
 .bp-contact .bp-body { margin-top: 12px; }
 .bp-form { margin-top: 30px; max-width: 640px; display: grid; gap: 0; border-top: 1px solid var(--bp-line); border-inline-start: 1px solid var(--bp-line); }
-.bp-form .st-form__style { margin: 0; padding: 10px 12px; font: 500 12px/1.4 var(--bp-mono); color: var(--bp-soft); border-inline-end: 1px solid var(--bp-line); border-bottom: 1px solid var(--bp-line); }
+.bp-form .st-form__style { margin: 0; padding: 10px 12px; font: 500 14px/1.4 var(--bp-font); color: var(--bp-soft); border-inline-end: 1px solid var(--bp-line); border-bottom: 1px solid var(--bp-line); }
 .bp-form .st-form__row { display: grid; gap: 4px; padding: 10px 12px; border-inline-end: 1px solid var(--bp-line); border-bottom: 1px solid var(--bp-line); }
-.bp-form label { font: 500 12px/1.2 var(--bp-mono); color: var(--bp-soft); }
+.bp-form label { font: 600 13px/1.2 var(--bp-font); color: var(--bp-soft); }
 .bp-form input, .bp-form textarea { width: 100%; min-height: 44px; padding: 6px 0; border: 0; background: transparent; color: var(--bp-ink); font: 400 17px/1.4 var(--bp-font); resize: vertical; }
 .bp-form input:focus, .bp-form textarea:focus { outline: none; }
 .bp-form .st-form__row:focus-within { background: rgba(255, 255, 255, 0.6); box-shadow: inset 2px 0 0 var(--bp-red); }

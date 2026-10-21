@@ -124,7 +124,7 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-panel { max-width: 620px; margin: 28px auto 0; padding: 22px clamp(16px, 3vw, 30px) 18px; border-radius: 28px; background: rgba(40, 8, 2, 0.62); border: 1px solid rgba(255, 230, 205, 0.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .fl-panel .fl-word__line { margin-top: 0; }
 .fl-form { max-width: 560px; margin: 22px auto 0; text-align: start; }
-.fl-form .st-form__style { margin: 0 0 14px; text-align: center; font: 600 12px/1.5 ui-monospace, Consolas, monospace; color: #ffd9b8; }
+.fl-form .st-form__style { margin: 0 0 14px; text-align: center; font: 500 14px/1.5 var(--fl-sans); color: #ffd9b8; }
 .fl-form .st-form__row { display: grid; gap: 6px; margin-bottom: 14px; }
 .fl-form label { font: 500 14px/1.2 var(--fl-sans); color: #ffe3cc; }
 .fl-form input, .fl-form textarea {
@@ -154,3 +154,7 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 @media (max-width: 899px) {
   .fl-step, .fl-step[data-side="a"] { margin-inline: auto; text-align: center; align-items: center; }
 }
+
+/* legible over the wings: a soft halo of the sky behind every day word (D193) */
+.fl-hero .fl-h1, .fl-hero__foot, .fl-svc > .fl-kicker, .fl-word, .fl-work__in { filter: drop-shadow(0 0 16px rgba(229, 222, 249, 0.85)) drop-shadow(0 0 3px rgba(229, 222, 249, 0.9)); }
+.fl-hint { text-shadow: 0 0 10px rgba(229, 222, 249, 0.95); }

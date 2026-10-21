@@ -2,11 +2,13 @@
 // (filmed from each world), the one you are in marked, and the way to say "this one" on WhatsApp. A real
 // dialog: focus moves in, Escape and the close button leave, focus returns to what opened it.
 import { useEffect, useRef } from 'react'
+import './portal.css'
 import { STYLES, type StyleDef } from './registry'
 import { waForStyle } from './lead'
 import { track } from '../utils/analytics'
 
-export default function WorldMap({ current, onClose, onPick }: { current: StyleDef; onClose: () => void; onPick: (s: StyleDef, at: { x: number; y: number }) => void }) {
+/** `current`: the world you are in (the studio); none on the main site, where the map is the invitation. */
+export default function WorldMap({ current, onClose, onPick }: { current: StyleDef | null; onClose: () => void; onPick: (s: StyleDef, at: { x: number; y: number }) => void }) {
   const box = useRef<HTMLDivElement>(null)
   const close = useRef<HTMLButtonElement>(null)
   useEffect(() => {
@@ -34,11 +36,13 @@ export default function WorldMap({ current, onClose, onPick }: { current: StyleD
           <p className="wm__k" lang="en" dir="ltr">( Choose a world )</p>
           {/* [קופי: נתי] */}
           <h2 id="wm-t" className="wm__t">לאיזה עולם עוברים?</h2>
+          {/* [קופי: נתי] on the main site the map explains itself in one line */}
+          {!current && <p className="wm__sub">אותו אתר בארבעה סגנונות. בוחרים עולם, והאתר משתנה מול העיניים.</p>}
           <button type="button" className="wm__x" ref={close} onClick={onClose} aria-label="סגירה">×</button>
         </header>
         <ul className="wm__grid">
           {STYLES.map((s, i) => {
-            const here = s.id === current.id
+            const here = s.id === current?.id
             return (
               <li key={s.id} style={{ ['--i' as string]: i }}>
                 <button
@@ -67,11 +71,13 @@ export default function WorldMap({ current, onClose, onPick }: { current: StyleD
             )
           })}
         </ul>
-        <a className="wm__want" href={waForStyle(current)} target="_blank" rel="noopener noreferrer"
-          onClick={() => track('cta_click', { location: `styles_want_${current.id}` })}>
-          {/* [קופי: נתי] */}
-          אני רוצה את העולם הזה <span aria-hidden="true">←</span>
-        </a>
+        {current && (
+          <a className="wm__want" href={waForStyle(current)} target="_blank" rel="noopener noreferrer"
+            onClick={() => track('cta_click', { location: `styles_want_${current.id}` })}>
+            {/* [קופי: נתי] */}
+            אני רוצה את העולם הזה <span aria-hidden="true">←</span>
+          </a>
+        )}
       </div>
     </div>
   )

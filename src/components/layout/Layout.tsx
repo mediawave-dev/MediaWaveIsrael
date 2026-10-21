@@ -25,6 +25,9 @@ const ChatWidget = lazy(() => import('../ui/ChatWidget'))
 const CookieConsent = lazy(() => import('../ui/CookieConsent'))
 const PreviewBanner = lazy(() => import('../ui/PreviewBanner'))
 
+// the invitation to the style studio's worlds (D192): its own chunk, loaded only after the opening and idle
+const SiteGuide = lazy(() => import('../../studio/SiteGuide'))
+
 const TRAIL_T3 = typeof window !== 'undefined' && /[?&]trail=t3(&|$)/.test(window.location.search)
 
 interface LayoutProps {
@@ -63,6 +66,23 @@ export default function Layout({ children }: LayoutProps) {
   // Shot: the dock holds the chat trigger (ChatWidget portals into its slot) and tells it when
   // the dock shows, so Lottie 7 plays once per appearance (SPEC 1.12)
   const shot = LOOK === 'shot'
+
+  // the little world comes to the home page once the opening has played, the page has loaded and is idle
+  const [guide, setGuide] = useState(false)
+  useEffect(() => {
+    if (!shot || !isHome || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    let id = 0
+    const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback
+    const idle = (cb: () => void) => (ric ? ric(cb, { timeout: 4000 }) : window.setTimeout(cb, 1200))
+    const check = () => {
+      if (document.documentElement.classList.contains('sea-opening')) { id = window.setTimeout(check, 500); return }
+      idle(() => setGuide(true))
+    }
+    const start = () => { id = window.setTimeout(check, 1500) }
+    if (document.readyState === 'complete') start()
+    else window.addEventListener('load', start, { once: true })
+    return () => { clearTimeout(id); window.removeEventListener('load', start) }
+  }, [shot, isHome])
   const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null)
   const [dockShown, setDockShown] = useState(false)
 
@@ -148,6 +168,7 @@ export default function Layout({ children }: LayoutProps) {
         {shot && <SeaStack />}
         {shot && <SeaTrail />}
         {shot && <SeaLab />}
+        {guide && isHome && <Suspense fallback={null}><SiteGuide /></Suspense>}
 
         {/* Widgets — mounted after idle (see widgetsReady above).
             ONE BOUNDARY EACH, deliberately. These are three separate lazy()

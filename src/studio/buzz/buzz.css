@@ -121,7 +121,7 @@ html[data-style="buzz"] .st { background: transparent; }
 .bz-formbox { position: relative; width: min(100%, 420px); padding-bottom: 20vh; }
 .bz-swarm--form { top: auto; height: 22vh; inset-inline: -30vw; }
 .bz-form { position: relative; z-index: 2; margin-top: 26px; display: grid; gap: 10px; }
-.bz-form .st-form__style { margin: 0 0 4px; font: 400 12px/1.5 var(--bz-mono); letter-spacing: 0.06em; color: rgba(35, 30, 30, 0.75); }
+.bz-form .st-form__style { margin: 0 0 4px; font: 400 14px/1.5 var(--bz-font); color: rgba(35, 30, 30, 0.82); }
 .bz-form .st-form__row { display: grid; gap: 4px; }
 .bz-form label { font: 500 13px/1 var(--bz-font); color: rgba(35, 30, 30, 0.8); }
 .bz-form input, .bz-form textarea {

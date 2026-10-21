@@ -1,7 +1,7 @@
 // The lead form every style shares (each styles it its own way): name, phone, a few words, and the style
 // the visitor chose, which opens the WhatsApp message. No endpoint yet: the site's honest fallback.
 import { useId, useState, type FormEvent } from 'react'
-import { sendLead, styleLine } from './lead'
+import { sendLead } from './lead'
 import type { StyleDef } from './registry'
 
 export default function LeadForm({ def, className = '', send = 'שליחה בוואטסאפ' }: { def: StyleDef; className?: string; send?: string }) {
@@ -17,7 +17,7 @@ export default function LeadForm({ def, className = '', send = 'שליחה בו�
   }
   return (
     <form className={`st-form ${className}`.trim()} onSubmit={submit} noValidate>
-      <p className="st-form__style">( {styleLine(def)} )</p>
+      <p className="st-form__style">אהבתי את הסגנון: {def.name} · בהשראת <bdi dir="ltr">{def.credit}</bdi></p>
       <div className="st-form__row">
         <label htmlFor={`${id}-n`}>שם</label>
         <input id={`${id}-n`} name="name" autoComplete="name" value={f.name} onChange={set('name')} />
