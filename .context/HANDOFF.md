@@ -1,3 +1,52 @@
+# HANDOFF: readability, בוקר, sideways services (21.10.2026, D194-D197) - LIVE: main = 4fa6e8b (+ D197 pending)
+
+Rollback tags: prod-before-d194 (c1159c5), prod-before-d192 (9fded74), prod-before-d178 (e34beec).
+Verified live on mediawave.co.il: sideways rows in Buzz, Blueprint and Clay; no inspiration captions; the
+clay world is called "בוקר"; films in G:/tmp/studio/live-sw-*.mp4.
+
+## Goal
+Nati (21.10): "איך אנחנו" was hard to read; deeper readability checks in every world; a new name for חימר;
+remove the inspiration captions; remove the cassette's smile; services that travel sideways on scroll.
+
+## Completed
+- D194: `.st :is(h1..h4) { color: inherit }` (the site's global h2 colour made Flight's night headings dark);
+  "חימר" -> "בוקר" (registry, styles-meta, lead line, map, title); credits removed from the foot, the map,
+  the home cards and the travel title (they show the world's feel instead); the cassette's smile and blush
+  meshes are gone (preview re-recorded); Clay's camera holds each pose through the first 30% of its chapter.
+- D195: src/studio/sideways.ts (`useSideways`): a sticky stage, vertical scroll moves the track (RTL: to the
+  right); Buzz = cards on an arc that play the middle video, Blueprint = a scan with an X readout, a playhead
+  and a ruler, Clay = devices turning in depth with the big letter sliding. Flight keeps its tall words.
+  Keyboard focus scrolls to the card; under the still tier the rows simply wrap.
+- D196: scripts/qa/audit-read.mjs (text made transparent, contrast measured on the real pixels, WebGL
+  included). Fixes: Flight mists behind word blocks + one glass card per step + the foot above the canvas;
+  Blueprint red #C42A00 and lede grey #6B6B66. 0 firm fails in all four worlds at 390 and 1440.
+- D197: the guide treats every span with text of its own as busy (not decorative wrappers like the sea's
+  hero spot), skips a visit when no spot is free, and never visits a pinned sideways row (it flies off when
+  one takes the screen). It sat on Blueprint's "[ SCAN · 06 ]" label in the live film.
+
+## Key decisions
+- Flight has no sideways row: its tall words are the world's signature (as in the source).
+- The audit ignores closed <details> and aria-hidden text; lines still fading (opacity < .95) are reported
+  apart as "moving".
+
+## Known issues
+- Lighthouse /styles on this machine is noisy (runs 89, 80, 41; median 80). Home median 71.
+- Live chunk hashes differ from the local build (Cloudflare builds its own); check content, not hashes.
+- On a cold GPU cache Clay's room shader blocks the main thread for seconds; the guide can stay frozen on a
+  card for that moment (no frames are drawn). Test: G:/tmp/studio/guide-sw.mjs, home: home-guide.mjs.
+
+## Next steps
+1. Release D197 (tag prod-before-d197 = origin/main, branch, main) once qa-all.sh is clean; verify live.
+2. Nati's verdict on the sideways rows, the readability, the name "בוקר".
+
+## Important files
+- src/studio/sideways.ts: the sideways hook every world uses.
+- src/studio/Guide.tsx: the guide's flight, perch (busyBoxes) and plans.
+- scripts/qa/audit-read.mjs: the legibility audit (`node scripts/qa/audit-read.mjs <url> 390x844 out.json`).
+- G:/tmp/studio/qa-all.sh: build + every QA gate.
+
+---
+
 # HANDOFF: the home page invites into the worlds + legibility (21.10.2026, D192-D193) - LIVE: main = c1159c5
 
 Rollback tags: prod-before-d192 (9fded74), prod-before-d191fix (d2c57c7), prod-before-d178 (e34beec). Verified live: home guide -> map -> wave -> world.

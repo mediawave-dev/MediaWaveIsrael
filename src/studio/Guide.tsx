@@ -31,8 +31,18 @@ export const STUDIO_PLAN: GuidePlan = { chapters: '[data-ch]', cool: 30000, max:
 /** where it rests: by the thumb if that spot is free, else the next free one; never on a button, a link,
     a field or a line of text (it looks at what lies under each candidate before it lands) */
 let spot = { x: 0, y: 0 }
-const BUSY = 'a, button, input, textarea, summary, label, h1, h2, h3, p, li, video, img, .st-sound'
-function pickPerch(): { x: number; y: number } {
+const BUSY = 'a, button, input, textarea, summary, label, h1, h2, h3, p, li, video, img, span, .st-sound'
+/** a span is busy only when it holds text of its own (a label, a number), not when it wraps a decoration */
+const ownText = (el: HTMLElement) => el.tagName !== 'SPAN' || [...el.childNodes].some((n) => n.nodeType === 3 && !!n.textContent?.trim())
+/** the boxes that must stay clear: not the guide's own parts, the map or the travel title, and not a wrapper
+    the size of the screen (a label is small) */
+function busyBoxes(w: number, h: number): DOMRect[] {
+  return [...document.querySelectorAll<HTMLElement>(BUSY)]
+    .filter((el) => ownText(el) && !el.closest('.gd, .gd-trail, .wm, .st-title'))
+    .map((el) => el.getBoundingClientRect())
+    .filter((r) => r.width > 0 && r.bottom > 0 && r.top < h && r.right > 0 && r.left < w && r.width * r.height < w * h * 0.4)
+}
+function pickPerch(): { x: number; y: number } | null {
   const w = window.innerWidth
   const h = window.innerHeight
   const m = w < 760
@@ -41,29 +51,33 @@ function pickPerch(): { x: number; y: number } {
     : [[w - 150, h - 190], [150, h - 190], [w - 110, h * 0.5], [110, h * 0.5]]
   // what must stay clear: every button, link, field and line of text on screen, measured as boxes (a hit test
   // would miss text that ignores the pointer)
-  const boxes = [...document.querySelectorAll<HTMLElement>(BUSY)].map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.bottom > 0 && r.top < h && r.right > 0 && r.left < w)
+  const boxes = busyBoxes(w, h)
   // the disc (60 px) and its label (about 180 px toward the middle of the screen)
   const free = ([x, y]: number[]) => {
     const left = x < w / 2
     const box = { l: Math.min(x - 34, left ? x : x - 190), r: Math.max(x + 34, left ? x + 190 : x), t: y - 34, b: y + 34 }
     return boxes.every((r) => r.right < box.l || r.left > box.r || r.bottom < box.t || r.top > box.b)
   }
-  const hit = c.find(free) ?? c[0]
+  // nowhere clear: it skips this visit and tries again at the next chapter
+  const hit = c.find(free)
+  if (!hit) return null
   spot = { x: hit[0], y: hit[1] }
   return spot
 }
+/** a sideways row holds the screen: its cards keep moving under any spot, so the guide stays away */
+function rowHolds(): boolean {
+  const mid = window.innerHeight / 2
+  return [...document.querySelectorAll<HTMLElement>('.is-sideways')].some((el) => { const r = el.getBoundingClientRect(); return r.top < mid && r.bottom > mid })
+}
 /** is the resting spot still clear (content moves: a sideways row, a scrolled page)? */
 function stillFree(): boolean {
+  if (rowHolds()) return false
   const w = window.innerWidth
   const h = window.innerHeight
   const { x, y } = spot
   const left = x < w / 2
   const box = { l: Math.min(x - 34, left ? x : x - 190), r: Math.max(x + 34, left ? x + 190 : x), t: y - 34, b: y + 34 }
-  return [...document.querySelectorAll<HTMLElement>(BUSY)].every((el) => {
-    if (el.closest('.gd, .wm')) return true
-    const r = el.getBoundingClientRect()
-    return r.width === 0 || r.bottom < 0 || r.top > h || r.right < box.l || r.left > box.r || r.bottom < box.t || r.top > box.b
-  })
+  return busyBoxes(w, h).every((r) => r.right < box.l || r.left > box.r || r.bottom < box.t || r.top > box.b)
 }
 const perch = () => spot
 
@@ -153,11 +167,12 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       const s = state.current
       const now = performance.now()
       if (s.phase !== 'away' || s.shown >= plan.max || now - s.last < plan.cool || open) return
+      const p = rowHolds() ? null : pickPerch()
+      if (!p) return
       s.shown += 1
       s.last = now
       const w = window.innerWidth
       const h = window.innerHeight
-      const p = pickPerch()
       const left = Math.random() < 0.5
       s.from = { x: left ? -60 : w + 60, y: h * (0.25 + Math.random() * 0.25) }
       s.to = p
