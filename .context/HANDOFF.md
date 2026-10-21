@@ -1,3 +1,35 @@
+# HANDOFF: the style studio to production (21.10.2026, D185-D191) - branch feature/style-studio
+
+## Goal
+Nati: "let's see it in production"; then: an unforgettable switch between styles, no floating picker (a
+character that drops by and offers another world), music for every world, scrolling that feels like a
+journey. He picked: "work autonomously, you choose the styles and the names".
+
+## Completed
+- D185 home invitation: SeaStyles.tsx ("STYLE STUDIO" chapter after process: four live portrait previews
+  from public/media/styles/*.mp4, recorded by G:/tmp/studio/rec.mjs); styles-meta.ts is the light list.
+- D186 names kept (מעוף, זמזום, שרטוט, חימר); Clay's display face = Karantina 700.
+- D188 the wave (src/studio/curtain.ts): a shader flood in the new world's colours with a squares spray,
+  the name written in, a second wave that breaks open; other worlds preload at idle.
+- D189 no floating picker: Guide.tsx (a little world with a ring and a comet trail, comes by after chapters,
+  30 s cool-down, 5 a visit) opens WorldMap.tsx (dialog, four previews, "I want this world"); the bar has
+  "( Worlds · 04 )"; the credit is in the foot.
+- D190 music (src/studio/music/: voices, tracks, engine; sound.ts the shared switch; SoundButton.tsx in the
+  bar, docks while playing); previews rendered offline by G:/tmp/studio/render-music.mjs.
+- D191 journeys: blueprint/Route.tsx; Buzz escort swarm with scroll wind; Clay fixed room + arched windows
+  and a camera path by chapter (renders only while seen).
+- /styles CLS: the prerender keeps StylesPage and Flight CSS blocking and preloads Bellefair.
+
+## Known issues
+- Music is synthesized; Nati has 20 s previews (G:/tmp/studio/music-*.mp3) and may want changes.
+- Vite dev can serve a stale module after big refactors: restart the dev server (seen once).
+
+## Next steps
+1. Release (tag, branch, main) after QA and Lighthouse; verify live.
+2. Nati's verdict on the wave, the little world, the music, the journeys.
+
+---
+
 # HANDOFF: the style studio (21.10.2026, D178-D184) - branch feature/style-studio, NOT live
 
 ## Goal
