@@ -11,6 +11,8 @@ import { byId, CHAPTERS, STYLES, type StyleDef, type StyleModule, type StyleProp
 import { useTier, tierNow } from './motion'
 import Guide from './Guide'
 import WorldMap from './WorldMap'
+import SoundButton from './SoundButton'
+import { setWorld } from './sound'
 
 type PickAt = { x: number; y: number }
 import { getCurtain } from './curtain'
@@ -79,6 +81,7 @@ export default function StylesPage() {
     const html = document.documentElement
     html.dataset.style = def.id
     setTheme(def.theme)
+    setWorld(def.id)
     return () => { delete html.dataset.style }
   }, [def])
 
@@ -145,6 +148,7 @@ export default function StylesPage() {
         <button type="button" className="st-bar__worlds" lang="en" dir="ltr" onClick={() => setMap(true)} aria-haspopup="dialog" aria-label="מפת העולמות: בחירת סגנון">
           ( Worlds · 04 )
         </button>
+        <SoundButton />
       </header>
 
       <main id="main-content" className="st-main">

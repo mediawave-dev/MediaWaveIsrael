@@ -9,7 +9,7 @@ import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import Pill from './Pill'
-import type { Tape } from './tape'
+import { isSoundOn, onSoundChange, setSoundOn } from '../sound'
 import '@fontsource/karantina/hebrew-700.css'
 import '@fontsource/karantina/latin-700.css'
 import './clay.css'
@@ -20,28 +20,6 @@ const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __P
 /** the headline's second line flips through the crafts when the reel is fed [קופי: נתי] */
 const FLIP = ['אתרים', 'דפי נחיתה', 'וידאו', 'קלטות']
 const GROUNDS = ['peach', 'green', 'yellow', 'stone']
-
-/** The sound button: four bars, dots when off, a wave when on (their equaliser). */
-function Eq({ on, onToggle, level }: { on: boolean; onToggle: () => void; level: () => number }) {
-  const bars = useRef<HTMLSpanElement[]>([])
-  useEffect(() => {
-    let raf = 0
-    let amt = 0
-    const tick = (t: number) => {
-      amt += ((on ? 1 : 0) - amt) * 0.08
-      const lv = on ? 0.4 + level() * 0.9 : 0
-      bars.current.forEach((b, i) => { if (b) b.style.transform = `scaleY(${(((Math.sin(t * 0.005 + i) + 1) / 2) * amt * (0.6 + lv) + 0.1).toFixed(3)})` })
-      raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [on, level])
-  return (
-    <button type="button" className="cl-eq" aria-pressed={on} aria-label={on ? 'השתקת הצליל' : 'הפעלת הצליל'} onClick={onToggle}>
-      {[0, 1, 2, 3].map((i) => <span key={i} ref={(el) => { if (el) bars.current[i] = el }} />)}
-    </button>
-  )
-}
 
 /** The little reel that wanders along the headline; feed it (click) and the words change for a moment. */
 function Reel({ onFeed }: { onFeed: () => void }) {
@@ -74,9 +52,7 @@ export default function Clay({ tier, def }: StyleProps) {
   const hero = useRef<HTMLElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const room = useRef<{ setPlaying: (on: boolean) => void } | null>(null)
-  const tape = useRef<Tape | null>(null)
-  const [sound, setSound] = useState(false)
-  const [asked, setAsked] = useState(false)
+  const [asked, setAsked] = useState(isSoundOn())
   const [pill, setPill] = useState<string | null>(null)
   const [flip, setFlip] = useState<number | null>(null)
   const [live, setLive] = useState(false)
@@ -93,26 +69,23 @@ export default function Clay({ tier, def }: StyleProps) {
     return () => { alive = false; stop() }
   }, [tier])
 
-  const toggle = async (on: boolean) => {
-    setAsked(true)
-    if (!tape.current) { const { createTape } = await import('./tape'); tape.current = createTape() }
-    tape.current.setOn(on)
-    room.current?.setPlaying(on)
-    setSound(on)
-  }
+  const toggle = (on: boolean) => { setAsked(true); void setSoundOn(on) }
+  // the reels turn while the music plays (the shell's switch or the pill)
+  useEffect(() => onSoundChange((on) => { room.current?.setPlaying(on); if (on) setAsked(true) }), [])
+  useEffect(() => { if (live) room.current?.setPlaying(isSoundOn()) }, [live])
+
   // the first click anywhere plays the tape (their first click enables the sound), never by itself
   useEffect(() => {
     if (asked || PRERENDER) return
     const first = (e: MouseEvent) => {
       if ((e.target as Element)?.closest?.('a, button, input, textarea, summary, .wm, .gd, label')) return
-      void toggle(true)
+      toggle(true)
     }
     document.documentElement.classList.add('cl-asking')
     window.addEventListener('click', first)
     return () => { window.removeEventListener('click', first); document.documentElement.classList.remove('cl-asking') }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asked])
-  useEffect(() => () => tape.current?.dispose(), [])
 
   // the pill speaks over whatever answers to it (data-pill)
   useEffect(() => {
@@ -170,7 +143,6 @@ export default function Clay({ tier, def }: StyleProps) {
   return (
     <div className="cl" ref={root} data-live={live || undefined}>
       {fine && tier !== 'still' && <Pill text={pill} line={!asked && !pill ? askLine : undefined} />}
-      <Eq on={sound} onToggle={() => void toggle(!sound)} level={() => tape.current?.level() ?? 0} />
 
       <section className="cl-hero" data-ch="hero" ref={hero} aria-labelledby="cl-h1">
         <div className="cl-room">
@@ -179,7 +151,7 @@ export default function Clay({ tier, def }: StyleProps) {
             <p className="cl-room__line">{C.hero.sub}<br />{C.hero.sub2}</p>
             <p className="cl-room__scroll" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
             {!fine && !asked && (
-              <button type="button" className="cl-tap" lang="en" dir="ltr" aria-label="הפעלת הצליל של הקלטת" onClick={() => void toggle(true)}>{askLine[0]}<i />{askLine[1]}</button>
+              <button type="button" className="cl-tap" lang="en" dir="ltr" aria-label="הפעלת הצליל של הקלטת" onClick={() => toggle(true)}>{askLine[0]}<i />{askLine[1]}</button>
             )}
           </div>
         </div>
