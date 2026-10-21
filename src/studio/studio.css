@@ -178,3 +178,4 @@ html.wm-open { overflow: hidden; }
 }
 .st-sound[aria-pressed="true"] .st-sound__k { display: none; }
 @keyframes st-dock { from { opacity: 0; transform: translateY(-8px) scale(0.9); } }
+@media (max-width: 480px) { .st-bar__n, .st-sound__k { display: none; } .st-bar { gap: 4px; } .st-bar__home .mw-logo { height: 16px; } }

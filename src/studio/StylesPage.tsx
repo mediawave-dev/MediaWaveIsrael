@@ -146,7 +146,7 @@ export default function StylesPage() {
         <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
         {/* the always-there way to the worlds (keyboard, screen readers, anyone who missed the guide) */}
         <button type="button" className="st-bar__worlds" lang="en" dir="ltr" onClick={() => setMap(true)} aria-haspopup="dialog" aria-label="מפת העולמות: בחירת סגנון">
-          ( Worlds · 04 )
+          ( Worlds<span className="st-bar__n"> · 04</span> )
         </button>
         <SoundButton />
       </header>
