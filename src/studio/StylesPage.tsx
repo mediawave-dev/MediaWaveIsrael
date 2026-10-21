@@ -8,8 +8,11 @@ import SEO from '../components/SEO'
 import Logo from '../components/ui/Logo'
 import { useMotionEngine } from '../motion/ScrollEngineProvider'
 import { byId, CHAPTERS, STYLES, type StyleDef, type StyleModule, type StyleProps } from './registry'
-import { useTier, finePointer, tierNow } from './motion'
-import Picker, { type PickAt } from './Picker'
+import { useTier, tierNow } from './motion'
+import Guide from './Guide'
+import WorldMap from './WorldMap'
+
+type PickAt = { x: number; y: number }
 import { getCurtain } from './curtain'
 import './studio.css'
 
@@ -51,7 +54,7 @@ export default function StylesPage() {
   const [Page, setPage] = useState<ComponentType<StyleProps> | null>(null)
   const [busy, setBusy] = useState(false)
   const [widgets, setWidgets] = useState(false)
-  const [hint, setHint] = useState(false)
+  const [map, setMap] = useState(false)
   const [title, setTitle] = useState<{ def: StyleDef; out: boolean } | null>(null)
   const tier = useTier()
   const engine = useMotionEngine()
@@ -69,15 +72,7 @@ export default function StylesPage() {
       window.setTimeout(() => STYLES.forEach((s) => { if (s.id !== def.id) void s.load().then(prepare).catch(() => {}) }), 2500)
     })
     const id = window.setTimeout(() => setWidgets(true), 1800)
-    // the hint, once: a moment after the page shows, gone at the first scroll, tap or after 6 s
-    const show = window.setTimeout(() => setHint(true), 2600)
-    const hide = window.setTimeout(() => setHint(false), 8600)
-    const off = () => { clearTimeout(show); setHint(false) }
-    const offScroll = () => { if (window.scrollY > 300) off() }
-    window.addEventListener('pointerdown', off, { once: true })
-    window.addEventListener('scroll', offScroll, { passive: true })
-    return () => { live = false; clearTimeout(id); clearTimeout(show); clearTimeout(hide); window.removeEventListener('pointerdown', off); window.removeEventListener('scroll', offScroll) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => { live = false; clearTimeout(id) }
   }, [])
 
   useEffect(() => {
@@ -106,7 +101,6 @@ export default function StylesPage() {
     if (lock.current || next.id === def.id) return
     lock.current = true
     setBusy(true)
-    setHint(false)
     const ch = chapterNow()
     const loading = next.load().then(async (m) => { await prepare(m); return m })
     const wave = tier === 'still' ? null : getCurtain()
@@ -147,8 +141,10 @@ export default function StylesPage() {
       <a className="st-skip" href="#main-content">דלג לתוכן הראשי</a>
       <header className="st-bar">
         <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
-        {/* [קופי: נתי] the page's name */}
-        <p className="st-bar__name" lang="en" dir="ltr">( Style Studio )</p>
+        {/* the always-there way to the worlds (keyboard, screen readers, anyone who missed the guide) */}
+        <button type="button" className="st-bar__worlds" lang="en" dir="ltr" onClick={() => setMap(true)} aria-haspopup="dialog" aria-label="מפת העולמות: בחירת סגנון">
+          ( Worlds · 04 )
+        </button>
       </header>
 
       <main id="main-content" className="st-main">
@@ -166,6 +162,9 @@ export default function StylesPage() {
           <a href="/accessibility/">הצהרת נגישות</a>
           <a href="/" lang="en" dir="ltr">( Back to the site + )</a>
         </nav>
+        <p className="st-foot__credit" lang="en" dir="ltr">
+          <span>{def.name}</span> · Inspired by <a href={def.creditUrl} target="_blank" rel="noopener noreferrer">{def.credit} ↗</a>
+        </p>
       </footer>
 
       {title && (
@@ -176,8 +175,8 @@ export default function StylesPage() {
           <span className="st-title__by" lang="en" dir="ltr">Inspired by {title.def.credit}</span>
         </div>
       )}
-      {hint && <p className="st-hint" lang="en" dir="ltr" aria-hidden="true">{finePointer() ? 'Click' : 'Tap'} a style, the page transforms</p>}
-      <Picker current={def} onPick={choose} busy={busy} />
+      <Guide def={def} tier={tier} open={map || busy} onOpen={() => setMap(true)} />
+      {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} />}
 
       {widgets && (
         <aside aria-label="כלים">

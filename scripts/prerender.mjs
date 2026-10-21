@@ -8,7 +8,7 @@
  *
  * Result: Google sees real content instead of an empty <div id="root"></div>.
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { createServer } from 'http'
@@ -105,6 +105,14 @@ function startServer() {
   })
 }
 
+/** The style studio's first face: Flight's display serif (Bellefair, Hebrew), preloaded like the look's. */
+function studioFontPreload() {
+  try {
+    const f = readdirSync(resolve(DIST, 'assets')).find((n) => /^bellefair-hebrew-400-normal-.*\.woff2$/.test(n))
+    return f ? `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin>` : ''
+  } catch { return '' }
+}
+
 async function prerender() {
   console.log('Starting prerender...')
 
@@ -198,13 +206,15 @@ async function prerender() {
     // (later routes are served the already-rewritten home page, so drop earlier rewrites first)
     html = html.replace(/<noscript><link rel="stylesheet" href="\/assets\/[^"]+\.css"><\/noscript>/g, '')
     html = html.replace(/<link rel="stylesheet" crossorigin="" href="(\/assets\/(?!index-)[^"]+\.css)"(?: media="[^"]*")?(?: onload="[^"]*")?>/g,
-      (_, href) => route !== '/' && /\/assets\/(shot-pages|ShotLegal)-/.test(href)
+      // the style studio paints its shell and its opening style (Flight) in the first frame: without them
+      // the page shows unstyled and then jumps (Lighthouse CLS 0.32 on /styles before this)
+      (_, href) => (route !== '/' && /\/assets\/(shot-pages|ShotLegal)-/.test(href)) || (route === '/styles' && /\/assets\/(StylesPage|Flight)-/.test(href))
         ? `<link rel="stylesheet" crossorigin="" href="${href}">`
         : `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
 
     // Preload the look's display face (the H1), early in <head>
     const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'
-    html = html.replace('<title>', `${fontPreloadLinks(look)}<title>`)
+    html = html.replace('<title>', `${fontPreloadLinks(look)}${route === '/styles' ? studioFontPreload() : ''}<title>`)
 
     // Stamp the route on <main>: the app reuses this markup as the first render's fallback only
     // on the route it was painted for ("*" = the 404 page, served for any unknown path)

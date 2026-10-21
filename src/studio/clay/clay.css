@@ -15,7 +15,6 @@ html[data-style="clay"] {
   --cl-text: "MW Text", "IBM Plex Sans Hebrew", system-ui, sans-serif;
   background: #f7f7f7;
 }
-html[data-style="clay"] .st-bar__name { display: none; }
 html.cl-asking, html.cl-asking body { cursor: pointer; }
 
 .cl { position: relative; color: var(--cl-ink); font-family: var(--cl-text); overflow-x: clip; }

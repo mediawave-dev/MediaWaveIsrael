@@ -104,7 +104,7 @@ export default function Clay({ tier, def }: StyleProps) {
   useEffect(() => {
     if (asked || PRERENDER) return
     const first = (e: MouseEvent) => {
-      if ((e.target as Element)?.closest?.('a, button, input, textarea, summary, .st-pick, label')) return
+      if ((e.target as Element)?.closest?.('a, button, input, textarea, summary, .wm, .gd, label')) return
       void toggle(true)
     }
     document.documentElement.classList.add('cl-asking')

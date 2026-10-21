@@ -1,0 +1,78 @@
+// The map of worlds (D189): what the guide and the bar's "Worlds" button open. Four living previews
+// (filmed from each world), the one you are in marked, and the way to say "this one" on WhatsApp. A real
+// dialog: focus moves in, Escape and the close button leave, focus returns to what opened it.
+import { useEffect, useRef } from 'react'
+import { STYLES, type StyleDef } from './registry'
+import { waForStyle } from './lead'
+import { track } from '../utils/analytics'
+
+export default function WorldMap({ current, onClose, onPick }: { current: StyleDef; onClose: () => void; onPick: (s: StyleDef, at: { x: number; y: number }) => void }) {
+  const box = useRef<HTMLDivElement>(null)
+  const close = useRef<HTMLButtonElement>(null)
+  useEffect(() => {
+    const back = document.activeElement as HTMLElement | null
+    close.current?.focus({ preventScroll: true })
+    const key = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { e.preventDefault(); onClose(); return }
+      if (e.key !== 'Tab' || !box.current) return
+      const f = [...box.current.querySelectorAll<HTMLElement>('button, a[href]')]
+      if (!f.length) return
+      const first = f[0]
+      const last = f[f.length - 1]
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+    }
+    document.addEventListener('keydown', key)
+    document.documentElement.classList.add('wm-open')
+    return () => { document.removeEventListener('keydown', key); document.documentElement.classList.remove('wm-open'); back?.focus?.({ preventScroll: true }) }
+  }, [onClose])
+
+  return (
+    <div className="wm" ref={box} role="dialog" aria-modal="true" aria-labelledby="wm-t" onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="wm__panel">
+        <header className="wm__head">
+          <p className="wm__k" lang="en" dir="ltr">( Choose a world )</p>
+          {/* [קופי: נתי] */}
+          <h2 id="wm-t" className="wm__t">לאיזה עולם עוברים?</h2>
+          <button type="button" className="wm__x" ref={close} onClick={onClose} aria-label="סגירה">×</button>
+        </header>
+        <ul className="wm__grid">
+          {STYLES.map((s, i) => {
+            const here = s.id === current.id
+            return (
+              <li key={s.id} style={{ ['--i' as string]: i }}>
+                <button
+                  type="button"
+                  className="wm__world"
+                  aria-current={here || undefined}
+                  aria-label={`${s.name}: ${s.feel}, בהשראת ${s.credit}${here ? ' (העולם הנוכחי)' : ''}`}
+                  onClick={(e) => {
+                    const r = e.currentTarget.getBoundingClientRect()
+                    if (here) { onClose(); return }
+                    onPick(s, { x: r.left + r.width / 2, y: r.top + r.height / 2 })
+                  }}
+                >
+                  <span className="wm__pic" aria-hidden="true">
+                    <img src={`/media/styles/${s.id}.webp`} width={360} height={640} alt="" />
+                    <video src={`/media/styles/${s.id}.mp4`} muted loop playsInline autoPlay preload="auto" onPlaying={(e) => { e.currentTarget.dataset.on = '1' }} />
+                  </span>
+                  <span className="wm__meta" aria-hidden="true">
+                    <span className="wm__n">0{i + 1}</span>
+                    <span className="wm__name">{s.name}</span>
+                    {here && <span className="wm__here" lang="en" dir="ltr">You are here</span>}
+                    <span className="wm__by" lang="en" dir="ltr">Inspired by {s.credit}</span>
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+        <a className="wm__want" href={waForStyle(current)} target="_blank" rel="noopener noreferrer"
+          onClick={() => track('cta_click', { location: `styles_want_${current.id}` })}>
+          {/* [קופי: נתי] */}
+          אני רוצה את העולם הזה <span aria-hidden="true">←</span>
+        </a>
+      </div>
+    </div>
+  )
+}

@@ -18,7 +18,6 @@ html[data-style="blueprint"] {
   --bp-pad: clamp(8px, 0.8rem, 13px);
   background: #f5f5ee;
 }
-html[data-style="blueprint"] .st-bar__name { display: none; }
 html[data-style="blueprint"] .st-bar { padding-top: calc(var(--bp-pad) + 4px); padding-inline: calc(var(--bp-pad) + 14px); }
 html[data-style="blueprint"] .st-foot { border-top: 1px solid var(--bp-line); margin-inline: var(--bp-pad); }
 
