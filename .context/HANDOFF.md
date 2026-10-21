@@ -1,6 +1,7 @@
-# HANDOFF: performance round (21.10.2026, D198) - committed eb730d4 on feature/style-studio, NOT live
+# HANDOFF: performance round (21.10.2026, D198) - LIVE: main = a011768
 
-Live is still b166d2f (D194-D197). Release needs Nati's go (tag prod-before-d198 = origin/main, branch, main).
+Rollback tag: prod-before-d198 (b166d2f). Live Lighthouse mobile (median of 3): home 87, Flight 94, Buzz 96,
+Blueprint 96, Clay 95 (were 47, 42, 41, 87, 53). Live functional check (G:/tmp/perf/func.mjs) clean.
 
 ## Goal
 Nati: "תעשה עכשיו בדיקות performance ותתקן".
