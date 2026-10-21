@@ -49,7 +49,7 @@ export default function SeaStyles() {
         {STYLE_META.map((s, i) => (
           <li key={s.id} className="sea-styles__item" data-reveal="" style={{ ['--i' as string]: i }}>
             <a className="sea-style" href={`/styles/?s=${s.id}`} onClick={() => track('cta_click', { placement: `home_styles_${s.id}` })}
-              aria-label={`הסגנון ${s.name}: ${s.feel}, בהשראת ${s.credit}`}>
+              aria-label={`הסגנון ${s.name}: ${s.feel}`}>
               <span className="sea-style__pic" aria-hidden="true">
                 <img src={`/media/styles/${s.id}.webp`} width={360} height={640} alt="" loading="lazy" decoding="async" />
                 <video muted loop playsInline preload="none" data-src={`/media/styles/${s.id}.mp4`} />
@@ -57,7 +57,7 @@ export default function SeaStyles() {
               <span className="sea-style__meta" aria-hidden="true">
                 <span className="sea-style__n">0{i + 1}</span>
                 <span className="sea-style__name">{s.name}</span>
-                <span className="sea-style__by" lang="en" dir="ltr">Inspired by {s.credit}</span>
+                <span className="sea-style__by">{s.feel}</span>
               </span>
             </a>
           </li>

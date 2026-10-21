@@ -49,7 +49,7 @@ export default function WorldMap({ current, onClose, onPick }: { current: StyleD
                   type="button"
                   className="wm__world"
                   aria-current={here || undefined}
-                  aria-label={`${s.name}: ${s.feel}, בהשראת ${s.credit}${here ? ' (העולם הנוכחי)' : ''}`}
+                  aria-label={`${s.name}: ${s.feel}${here ? ' (העולם הנוכחי)' : ''}`}
                   onClick={(e) => {
                     const r = e.currentTarget.getBoundingClientRect()
                     if (here) { onClose(); return }
@@ -64,7 +64,7 @@ export default function WorldMap({ current, onClose, onPick }: { current: StyleD
                     <span className="wm__n">0{i + 1}</span>
                     <span className="wm__name">{s.name}</span>
                     {here && <span className="wm__here" lang="en" dir="ltr">You are here</span>}
-                    <span className="wm__by" lang="en" dir="ltr">Inspired by {s.credit}</span>
+                    <span className="wm__by">{s.feel}</span>
                   </span>
                 </button>
               </li>

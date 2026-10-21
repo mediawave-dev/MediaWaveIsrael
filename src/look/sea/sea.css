@@ -516,7 +516,7 @@ html.sea-type-lama .sea-proc__also { text-indent: max(6.2em, 150px); }
 .sea-style__meta { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 4px 10px; }
 .sea-style__n { font: 600 12px/1 var(--sea-mono); color: #79a0c5; direction: ltr; }
 .sea-style__name { font: 800 clamp(24px, 2.2vw, 30px)/1.05 var(--display); font-stretch: 80%; text-shadow: var(--sea-halo); }
-.sea-style__by { grid-column: 1 / -1; font: 600 12px/1.3 var(--sea-mono); color: #a39d90; text-align: start; }
+.sea-style__by { grid-column: 1 / -1; font: 400 15px/1.4 var(--text); color: #b8b0a2; text-align: start; }
 @media (hover: hover) and (pointer: fine) {
   .sea-style:hover .sea-style__pic { border-color: rgba(237, 231, 218, 0.55); }
   .sea-style:hover .sea-style__pic video, .sea-style:hover .sea-style__pic img { transform: scale(1.035); }

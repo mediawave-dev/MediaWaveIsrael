@@ -6,7 +6,7 @@
 import {
   ACESFilmicToneMapping, BoxGeometry, Color, CylinderGeometry, DirectionalLight, ExtrudeGeometry, Group, HemisphereLight,
   Mesh, MeshStandardMaterial, PCFShadowMap, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Shape, Path,
-  SphereGeometry, SRGBColorSpace, TorusGeometry, Vector2, WebGLRenderer, CircleGeometry,
+  SphereGeometry, SRGBColorSpace, Vector2, WebGLRenderer, CircleGeometry,
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { damp, loop, type Tier } from '../motion'
@@ -69,7 +69,7 @@ function bars(): Group {
 
 interface Face { left: Group; right: Group; spinL: Group; spinR: Group; pupilL: Mesh; pupilR: Mesh; body: Group }
 
-/** The clay cassette: a soft body, a yellow label, a dark window with two reels for eyes, a small smile. */
+/** The clay cassette: a soft body, a yellow label, a dark window with two reels for eyes (no smile: D194). */
 function cassette(): Face {
   const body = new Group()
   const shell = new Mesh(new RoundedBoxGeometry(2.1, 1.36, 0.46, 6, 0.16), clay('#f3ebdf', 0.88))
@@ -113,15 +113,6 @@ function cassette(): Face {
   }
   const pupilL = pupil(left)
   const pupilR = pupil(right)
-  const smile = new Mesh(new TorusGeometry(0.12, 0.018, 8, 32, Math.PI), clay('#b78f72'))
-  smile.rotation.z = Math.PI
-  smile.position.set(0, -0.5, 0.24)
-  body.add(smile)
-  for (const x of [-0.62, 0.62]) {
-    const blush = new Mesh(new CircleGeometry(0.1, 24), new MeshStandardMaterial({ color: '#f2b7a3', roughness: 1, transparent: true, opacity: 0.55 }))
-    blush.position.set(x, -0.46, 0.235)
-    body.add(blush)
-  }
   for (const [x, y] of [[-0.92, 0.55], [0.92, 0.55], [-0.92, -0.55], [0.92, -0.55]]) {
     const sc = new Mesh(new SphereGeometry(0.035, 12, 8), clay('#d9cdbd'))
     sc.position.set(x, y, 0.23)
@@ -280,7 +271,8 @@ export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Ti
     pos = damp(pos, progress(), tier === 'full' ? 0.04 : 0.001, dt)
     const i = Math.min(POSES.length - 2, Math.floor(pos))
     const f = pos - i
-    const e = f * f * (3 - 2 * f)
+    const g = Math.min(1, Math.max(0, (f - 0.3) / 0.7))
+    const e = g * g * (3 - 2 * g)
     const A = POSES[i]
     const B = POSES[i + 1]
     const v = A.map((a, j) => a + (B[j] - a) * e)

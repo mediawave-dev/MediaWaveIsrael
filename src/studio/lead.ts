@@ -4,7 +4,7 @@ import { getWhatsAppUrl } from '../utils/whatsapp'
 import { track } from '../utils/analytics'
 import type { StyleDef } from './registry'
 
-export const styleLine = (s: StyleDef) => `אהבתי את הסגנון: ${s.name}, בהשראת ${s.credit}.`
+export const styleLine = (s: StyleDef) => `אהבתי את הסגנון "${s.name}".`
 
 export function waForStyle(s: StyleDef, extra = ''): string {
   const body = ['היי, הגעתי מסטודיו הסגנונות.', styleLine(s), extra.trim()].filter(Boolean).join('\n')

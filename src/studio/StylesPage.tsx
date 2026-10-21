@@ -180,9 +180,6 @@ export default function StylesPage() {
           <a href="/accessibility/">הצהרת נגישות</a>
           <a href="/" lang="en" dir="ltr">( Back to the site + )</a>
         </nav>
-        <p className="st-foot__credit" lang="en" dir="ltr">
-          <span>{def.name}</span> · Inspired by <a href={def.creditUrl} target="_blank" rel="noopener noreferrer">{def.credit} ↗</a>
-        </p>
       </footer>
 
       {title && (
@@ -190,7 +187,7 @@ export default function StylesPage() {
           <span className="st-title__name" style={{ font: title.def.face }}>
             {[...title.def.name].map((ch, i) => <span key={i} style={{ ['--k' as string]: i }}>{ch}</span>)}
           </span>
-          <span className="st-title__by" lang="en" dir="ltr">Inspired by {title.def.credit}</span>
+          <span className="st-title__by">{title.def.feel}</span>
         </div>
       )}
       <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} plan={plan.current} />

@@ -17,7 +17,7 @@ export default function LeadForm({ def, className = '', send = 'שליחה בו�
   }
   return (
     <form className={`st-form ${className}`.trim()} onSubmit={submit} noValidate>
-      <p className="st-form__style">אהבתי את הסגנון: {def.name} · בהשראת <bdi dir="ltr">{def.credit}</bdi></p>
+      <p className="st-form__style">אהבתי את הסגנון: {def.name}</p>
       <div className="st-form__row">
         <label htmlFor={`${id}-n`}>שם</label>
         <input id={`${id}-n`} name="name" autoComplete="name" value={f.name} onChange={set('name')} />

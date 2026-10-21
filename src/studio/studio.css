@@ -30,6 +30,8 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
 .st-bar__worlds:hover, .st-bar__worlds:focus-visible { background: color-mix(in srgb, var(--st-ink) 12%, transparent); }
 
 .st-main { display: block; }
+/* headings take their world's ink, never the site's global heading colour (D194: "איך אנחנו" was #2a2a2a on the night) */
+.st :is(h1, h2, h3, h4) { color: inherit; }
 
 .st-foot { padding: 28px clamp(16px, 4vw, 40px) calc(40px + env(safe-area-inset-bottom)); background: var(--st-ground); }
 .st-foot__credit { margin: 10px 0 0; text-align: center; font: 600 12px/1.6 var(--st-mono); color: var(--st-soft); }
