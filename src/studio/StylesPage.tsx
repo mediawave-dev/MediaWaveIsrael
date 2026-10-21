@@ -26,7 +26,7 @@ const PRERENDERED = (() => {
 const fromUrl = () => (typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('s'))
 
 /** Fonts first: a style never shows in a fallback face. Never waits longer than 1.6 s. */
-const prepare = (m: StyleModule) => Promise.race([m.prepare?.() ?? Promise.resolve(), new Promise((r) => setTimeout(r, 1600))])
+const prepare = (m: StyleModule) => Promise.race([(m.prepare?.() ?? Promise.resolve()).catch(() => undefined), new Promise((r) => setTimeout(r, 1600))])
 
 /** The chapter under the reading line, so a switch lands on the same content in the new style. */
 function chapterNow(): string {

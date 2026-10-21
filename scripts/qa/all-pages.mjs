@@ -36,7 +36,7 @@ for (const route of ROUTES) {
   page.on('pageerror', (e) => errors.push(String(e.message).slice(0, 160)))
   await page.goto(base.replace(/\/$/, '') + route + (route.includes('?') ? '&' : '?') + 'lead=off', { waitUntil: 'load', timeout: 90000 })
   await new Promise((r) => setTimeout(r, 2500))
-  const slug = route.replace(/\//g, '_').replace(/^_/, '') || 'home'
+  const slug = route.replace(/[/?=&]/g, '_').replace(/^_/, '') || 'home'
   const total = await page.evaluate(() => document.documentElement.scrollHeight)
   const frames = []
   for (let i = 0, y = 0; i < MAX; i++) {

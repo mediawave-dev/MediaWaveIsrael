@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Style fonts A/B/C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bellefair&family=Frank+Ruhl+Libre:wght@300;400&family=Noto+Serif+Hebrew:wght@300;400&family=Heebo:wght@400;700;800;900&family=Rubik:wght@400;700&family=Assistant:wght@400;800&family=IBM+Plex+Sans+Hebrew:wght@400;600;700&family=Geist+Mono:wght@500&family=Noto+Sans+Hebrew:wdth,wght@62.5..100,100..900&family=Karantina:wght@700&display=swap">
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; background: #e9e7e1; font-family: "IBM Plex Sans Hebrew", sans-serif; }
+  .row { display: flex; gap: 14px; padding: 18px; }
+  .row h2 { writing-mode: vertical-rl; margin: 0; font: 600 13px/1 "Geist Mono", monospace; letter-spacing: .06em; color: #4b4943; }
+  .card { width: 390px; height: 560px; border-radius: 22px; overflow: hidden; position: relative; padding: 70px 22px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 14px 40px -24px rgba(0,0,0,.4); }
+  .tag { position: absolute; top: 16px; inset-inline-start: 18px; font: 600 12px/1.3 "Geist Mono", monospace; letter-spacing: .02em; opacity: .85; }
+  .big { margin: 0; }
+  .p { margin: 0; font-size: 17px; line-height: 1.55; }
+  .flight { background: linear-gradient(180deg, #e3dcf9, #cfc6f2); color: #29345a; }
+  .flight .big { font-size: 74px; line-height: .86; color: #2e2670; }
+  .flight .small { font: 400 28px/1.15 "IBM Plex Sans Hebrew"; }
+  .buzz { background: #d7d72e; color: #231e1e; }
+  .buzz .big { font-size: 80px; line-height: .9; letter-spacing: -.04em; filter: blur(2.2px); }
+  .blue { background: #f5f5ee; color: #282828; }
+  .blue .big { font-size: 34px; line-height: 1.02; letter-spacing: -.02em; }
+  .blue .mono { font: 500 12px/1.4 "Geist Mono", monospace; color: #d42e00; }
+  .clay { background: #f7f7f7; color: #022016; }
+  .clay .big { font-size: 64px; line-height: .9; }
+</style>
+</head>
+<body>
+  <section class="row" id="flight"><h2>FLIGHT · מעוף</h2>
+    <div class="card flight"><span class="tag">A · Bellefair (נבחר)</span><p class="small">העסק שלכם,</p><p class="big" style="font-family:Bellefair">המומחיות שלנו</p><p class="p">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card flight"><span class="tag">B · Frank Ruhl Libre 300</span><p class="small">העסק שלכם,</p><p class="big" style="font-family:'Frank Ruhl Libre';font-weight:300">המומחיות שלנו</p><p class="p">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card flight"><span class="tag">C · Noto Serif Hebrew 300</span><p class="small">העסק שלכם,</p><p class="big" style="font-family:'Noto Serif Hebrew';font-weight:300">המומחיות שלנו</p><p class="p">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+  </section>
+  <section class="row" id="buzz"><h2>BUZZ · זמזום</h2>
+    <div class="card buzz"><span class="tag">A · Heebo 700 (נבחר)</span><p class="big" style="font-family:Heebo;font-weight:700">המומחיות שלנו</p><p class="p" style="font-family:Heebo">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card buzz"><span class="tag">B · Rubik 700</span><p class="big" style="font-family:Rubik;font-weight:700">המומחיות שלנו</p><p class="p" style="font-family:Rubik">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card buzz"><span class="tag">C · Assistant 800</span><p class="big" style="font-family:Assistant;font-weight:800">המומחיות שלנו</p><p class="p" style="font-family:Assistant">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+  </section>
+  <section class="row" id="blueprint"><h2>BLUEPRINT · שרטוט</h2>
+    <div class="card blue"><span class="tag">A · IBM Plex Sans Hebrew 700 (נבחר)</span><p class="mono">[ CHECK 01 · WHATSAPP ]</p><p class="big" style="font-family:'IBM Plex Sans Hebrew';font-weight:700">העסק שלכם, המומחיות שלנו</p><p class="p" style="color:#5d5d59">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card blue"><span class="tag">B · Heebo 800</span><p class="mono">[ CHECK 01 · WHATSAPP ]</p><p class="big" style="font-family:Heebo;font-weight:800">העסק שלכם, המומחיות שלנו</p><p class="p" style="font-family:Heebo;color:#5d5d59">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card blue"><span class="tag">C · Noto Sans Hebrew 700, 87%</span><p class="mono">[ CHECK 01 · WHATSAPP ]</p><p class="big" style="font-family:'Noto Sans Hebrew';font-weight:700;font-stretch:87.5%">העסק שלכם, המומחיות שלנו</p><p class="p" style="font-family:'Noto Sans Hebrew';color:#5d5d59">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+  </section>
+  <section class="row" id="clay"><h2>CLAY · חימר</h2>
+    <div class="card clay"><span class="tag">A · Noto Sans Hebrew 700, 75% (נבחר)</span><p class="big" style="font-family:'Noto Sans Hebrew';font-weight:700;font-stretch:75%">העסק שלכם, המומחיות שלנו</p><p class="p">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card clay"><span class="tag">B · Karantina 700</span><p class="big" style="font-family:Karantina;font-weight:700;font-size:84px">העסק שלכם, המומחיות שלנו</p><p class="p">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+    <div class="card clay"><span class="tag">C · Heebo 900</span><p class="big" style="font-family:Heebo;font-weight:900;letter-spacing:-.02em">העסק שלכם, המומחיות שלנו</p><p class="p" style="font-family:Heebo">אתר נבנה מאפס, בשביל העסק שלכם.</p></div>
+  </section>
+</body>
+</html>

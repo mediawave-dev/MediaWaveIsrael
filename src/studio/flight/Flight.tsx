@@ -108,12 +108,12 @@ export default function Flight({ tier, def }: StyleProps) {
       </section>
 
       <section className="fl-work" data-ch="work" aria-labelledby="fl-work-t">
-        <div className="fl-work__in" data-fl>
-          <p className="fl-kicker" data-ln>{C.work.title}</p>
-          <h2 id="fl-work-t" className="fl-giant fl-giant--m" data-ln>{C.work.name}</h2>
-          <div data-ln><WorkFilm /></div>
-          <p className="fl-word__line" data-ln>{C.work.line}</p>
-          <a className="fl-go" data-ln href={C.work.href}>{C.work.linkLabel}</a>
+        <div className="fl-work__in">
+          <p className="fl-kicker" data-fl>{C.work.title}</p>
+          <h2 id="fl-work-t" className="fl-giant fl-giant--m" data-fl>{C.work.name}</h2>
+          <div data-fl><WorkFilm /></div>
+          <p className="fl-word__line" data-fl>{C.work.line}</p>
+          <a className="fl-go" data-fl href={C.work.href}>{C.work.linkLabel}</a>
         </div>
       </section>
 
@@ -147,12 +147,14 @@ export default function Flight({ tier, def }: StyleProps) {
 
       <section className="fl-contact" data-ch="contact" aria-labelledby="fl-contact-t">
         <h2 id="fl-contact-t" className="fl-giant fl-giant--m" data-fl data-stay><span data-ln>{C.contact.title}</span></h2>
-        <p className="fl-word__line">{C.contact.lead}</p>
-        <LeadForm def={def} className="fl-form" />
-        <p className="fl-contact__alt">
-          <a href={`tel:${C.contact.phone}`} dir="ltr">{C.contact.phone}</a>
-          <a href={`mailto:${C.contact.email}`} dir="ltr">{C.contact.email}</a>
-        </p>
+        <div className="fl-panel">
+          <p className="fl-word__line">{C.contact.lead}</p>
+          <LeadForm def={def} className="fl-form" />
+          <p className="fl-contact__alt">
+            <a href={`tel:${C.contact.phone}`} dir="ltr">{C.contact.phone}</a>
+            <a href={`mailto:${C.contact.email}`} dir="ltr">{C.contact.email}</a>
+          </p>
+        </div>
       </section>
     </div>
   )

@@ -57,7 +57,7 @@ html[data-style="buzz"] .st { background: transparent; }
 .bz-h1 { margin: 0; font-weight: 700; transform: translateX(var(--bz-cx, 0px)); transition: transform 0.8s var(--bz-ease); }
 .bz-h1__lead { display: block; font: 400 clamp(18px, 2vw, 28px)/1.2 var(--bz-font); letter-spacing: -0.02em; margin-bottom: 0.2em; transition: opacity 0.55s var(--bz-ease) 0.12s; }
 .bz-word { display: block; font: 700 clamp(64px, 20vw, 236px)/0.9 var(--bz-font); letter-spacing: -0.04em; filter: url(#bz-fuzz); padding: 0.06em 0.04em 0.1em; transition: opacity 0.7s var(--bz-ease), transform 0.7s var(--bz-ease); }
-.bz-label { margin: 0; font: 400 clamp(9px, 0.8vw, 12px)/1 var(--bz-mono); letter-spacing: 0.14em; transition: opacity 0.55s var(--bz-ease) 0.12s, transform 0.55s var(--bz-ease) 0.12s; }
+.bz-label { margin: 0; font: 400 12px/1 var(--bz-mono); letter-spacing: 0.14em; transition: opacity 0.55s var(--bz-ease) 0.12s, transform 0.55s var(--bz-ease) 0.12s; }
 .bz-tag { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; transition: opacity 0.55s var(--bz-ease) 0.12s, transform 0.55s var(--bz-ease) 0.12s; }
 .bz-tag p { margin: 0; font: 400 clamp(18px, 2.2vw, 30px)/calc(1em + 4px) var(--bz-font); letter-spacing: -0.02em; max-width: 22ch; }
 .bz[data-stage="mark"] .bz-word { opacity: 0; transform: scale(0.94); }
@@ -121,7 +121,7 @@ html[data-style="buzz"] .st { background: transparent; }
 .bz-formbox { position: relative; width: min(100%, 420px); padding-bottom: 20vh; }
 .bz-swarm--form { top: auto; height: 22vh; inset-inline: -30vw; }
 .bz-form { position: relative; z-index: 2; margin-top: 26px; display: grid; gap: 10px; }
-.bz-form .st-form__style { margin: 0 0 4px; font: 400 11px/1.5 var(--bz-mono); letter-spacing: 0.06em; color: rgba(35, 30, 30, 0.75); }
+.bz-form .st-form__style { margin: 0 0 4px; font: 400 12px/1.5 var(--bz-mono); letter-spacing: 0.06em; color: rgba(35, 30, 30, 0.75); }
 .bz-form .st-form__row { display: grid; gap: 4px; }
 .bz-form label { font: 500 13px/1 var(--bz-font); color: rgba(35, 30, 30, 0.8); }
 .bz-form input, .bz-form textarea {

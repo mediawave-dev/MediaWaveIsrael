@@ -222,7 +222,7 @@ export default function Clay({ tier, def }: StyleProps) {
       </section>
 
       <section className="cl-paper cl-work" data-ch="work" aria-labelledby="cl-work-t">
-        <a className="cl-feature" href={C.work.href} data-pill="צפייה">
+        <a className="cl-feature" href={C.work.href} data-pill="צפייה" aria-label={`${C.work.name}: ${C.work.linkLabel}`}>
           <span className="cl-feature__letter" aria-hidden="true">ז</span>
           <span className="cl-dev cl-dev--wide"><video src="/media/svc-memories-2.mp4" poster="/media/svc-memories-2-poster.webp" muted loop playsInline preload="none" aria-hidden="true" /></span>
         </a>
