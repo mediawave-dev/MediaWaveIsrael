@@ -15,12 +15,26 @@ const COOL = 30000
 const MAX = 5
 const STAY = 7000
 
-/** where it rests: by the thumb (bottom, the reading start), clear of the screen's edge */
-function perch(): { x: number; y: number } {
+/** where it rests: by the thumb if that spot is free, else the next free one; never on a button, a link,
+    a field or a line of text (it looks at what lies under each candidate before it lands) */
+let spot = { x: 0, y: 0 }
+const BUSY = 'a, button, input, textarea, summary, label, h1, h2, h3, p, li, video, img, .st-sound'
+function pickPerch(): { x: number; y: number } {
   const w = window.innerWidth
   const h = window.innerHeight
-  return w < 760 ? { x: w - 64, y: h - 170 } : { x: w - 150, y: h - 190 }
+  const m = w < 760
+  const c = m
+    ? [[w - 52, h - 150], [52, h - 150], [w - 52, h * 0.58], [52, h * 0.58], [w - 52, h * 0.3], [52, h * 0.3]]
+    : [[w - 150, h - 190], [150, h - 190], [w - 110, h * 0.5], [110, h * 0.5]]
+  const free = ([x, y]: number[]) => [[0, 0], [-26, 0], [26, 0], [0, -24], [0, 24], [-110, 0]].every(([dx, dy]) => {
+    const el = document.elementFromPoint(Math.max(0, Math.min(w - 1, x + dx)), Math.max(0, Math.min(h - 1, y + dy)))
+    return !el?.closest(BUSY)
+  })
+  const hit = c.find(free) ?? c[0]
+  spot = { x: hit[0], y: hit[1] }
+  return spot
 }
+const perch = () => spot
 
 const bez = (a: number, b: number, c: number, d: number, t: number) => {
   const u = 1 - t
@@ -111,7 +125,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
       s.last = now
       const w = window.innerWidth
       const h = window.innerHeight
-      const p = perch()
+      const p = pickPerch()
       const left = Math.random() < 0.5
       s.from = { x: left ? -60 : w + 60, y: h * (0.25 + Math.random() * 0.25) }
       s.to = p
@@ -155,6 +169,7 @@ export default function Guide({ def, tier, open, onOpen }: { def: StyleDef; tier
         ref={el}
         className="gd"
         data-phase={phase}
+        data-side={typeof window !== 'undefined' && spot.x && spot.x < window.innerWidth / 2 ? 'r' : 'l'}
         aria-hidden="true"
         tabIndex={-1}
         style={{ ['--gd' as string]: def.ink }}

@@ -25,7 +25,7 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
 .st-bar { justify-content: flex-start; }
 .st-bar__worlds {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; margin-inline-start: 6px; border: 0; border-radius: 999px; background: transparent;
-  color: var(--st-ink); font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; cursor: pointer; transition: background 0.3s ease;
+  color: var(--st-ink); font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; white-space: nowrap; cursor: pointer; transition: background 0.3s ease;
 }
 .st-bar__worlds:hover, .st-bar__worlds:focus-visible { background: color-mix(in srgb, var(--st-ink) 12%, transparent); }
 
@@ -116,6 +116,8 @@ html[data-vt="clay"]::view-transition-old(root) { animation: st-under 1.1s cubic
   transition: opacity 0.5s ease 0.2s, transform 0.6s cubic-bezier(.16, 1, .3, 1) 0.2s;
 }
 .gd[data-phase="hover"] .gd__say { opacity: 1; transform: translate(0, -50%); }
+.gd[data-side="r"] .gd__say { right: auto; left: calc(100% + 4px); transform: translate(-8px, -50%); }
+.gd[data-side="r"][data-phase="hover"] .gd__say { transform: translate(0, -50%); }
 .st[data-tier="calm"] .gd__ring, .st[data-tier="calm"] .gd__sea { animation-duration: 14s; }
 
 /* ---------- the map of worlds (D189) ---------- */
@@ -169,7 +171,7 @@ html.wm-open { overflow: hidden; }
 .st-sound:hover, .st-sound:focus-visible { background: color-mix(in srgb, var(--st-ink) 12%, transparent); }
 .st-sound__bars { display: inline-flex; align-items: center; gap: 3px; height: 16px; }
 .st-sound__bars i { width: 3px; height: 16px; border-radius: 2px; background: currentColor; transform: scaleY(0.12); }
-.st-sound__k { font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; }
+.st-sound__k { font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; white-space: nowrap; }
 .st-sound[aria-pressed="true"] {
   position: fixed; z-index: 75; top: max(10px, env(safe-area-inset-top)); left: 10px; padding: 0 12px; background: rgba(15, 16, 17, 0.78); color: #ede7da;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: st-dock 0.5s cubic-bezier(.16, 1, .3, 1) both;
