@@ -1,3 +1,46 @@
+# HANDOFF: the style studio (21.10.2026, D178-D184) - branch feature/style-studio, NOT live
+
+## Goal
+A new page /styles/: the site's content in four styles, each a close re-reading of an award winner Nati
+picked (The Power of Storytelling, Buzz, Heron AI, Léo Parpeix), with a live switch; the chosen style rides
+into the WhatsApp message and the form. The main site stays the sea of dots (only a menu/credits link).
+
+## Completed (branch feature/style-studio from redesign/elegant-20261019 8ccfc59; no push)
+- Harvest: design/styles/{storytelling,buzz,heron,leo}/harvest.rtl.md (DNA, moments, numbers from code);
+  raw material G:/tmp/harvest/ (films, bundles read as text, sheets).
+- Shell: src/studio/ (StylesPage, Picker, registry, content, lead, LeadForm, motion, studio.css); route in
+  App.tsx outside Layout; prerender adds /styles; navigation.ts adds the link.
+- Styles: flight/ (three.js glass bird on the Horizon wave, keyed scroll timeline, sky phases),
+  buzz/ (winged chat-bubble swarm with Buzz's flight model, fuzz headline), blueprint/ (technical drawing
+  with drag-to-reveal checks, ink transition, plan that builds), clay/ (three.js clay room, cassette with
+  reel eyes, Léo's pill, Web Audio tape sound).
+- Small labels in English (Nati, 21.10); memory saved (english-micro-labels).
+- QA on the build: 4 styles at 390/1440 clean (axe 0, overflow 0, small 0, targets 0); 12 site routes clean;
+  overlap 0; WebGL in 3 engines; back from cache ok. Lighthouse not re-measured.
+- Report for Nati: .context/STYLE-STUDIO-MORNING.rtl.md; comparisons G:/tmp/studio/sbs/*.png; films
+  G:/tmp/studio/out/*-390.mp4; font samples design/styles/fonts/*-abc.png.
+
+## Key decisions
+- Opening state = Flight directly (strongest signature; the picker invites switching). Style in the URL (?s=).
+- Night/dawn text in Flight sits on dark glass panels (legible over the blade; AA however the canvas sky is read).
+- Heron red #FA3600 for lines; #D42E00 for text and filled cards (AA).
+- Clay display = Noto Sans Hebrew variable 700 at 75% width (EFT Betaamango is static, no width axis).
+
+## Known issues
+- Flight's opening is cleaner and sparser than Storytelling's feather macro; no music yet.
+- Clay's room is lit live, not baked (toy-like next to Léo's); PCFSoft shadows removed in three r186 (PCF used).
+- Font picks pending (D183); Lighthouse for / and /styles/ not measured.
+
+## Next steps
+1. Nati's picks (style, translation, fonts). 2. Flight round 2 (textured feathers, bloom, music).
+3. Lighthouse; real phone check. 4. Release only on approval (tag, branch, main).
+
+## Important files
+- src/studio/StylesPage.tsx (shell, live switch), src/studio/registry.ts (styles), src/studio/*/ (each style)
+- G:/tmp/studio/{shots,poses,film}.mjs (GPU stills, pinned Flight poses ?fl=p, films with --pick switches), sbs.sh
+
+---
+
 # HANDOFF: calm text, the peek, quiet tiles, the contact line (20.10.2026, D174-D177) - live
 
 ## Completed (live: main = e34beec, rollback tag prod-before-d174 = 5a6c19d; verified on the live site at 390)
