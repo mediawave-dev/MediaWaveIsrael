@@ -27,7 +27,7 @@ function pickPerch(): { x: number; y: number } {
     ? [[w - 52, h - 150], [52, h - 150], [w - 52, h * 0.58], [52, h * 0.58], [w - 52, h * 0.3], [52, h * 0.3]]
     : [[w - 150, h - 190], [150, h - 190], [w - 110, h * 0.5], [110, h * 0.5]]
   // the disc and its label: the label opens toward the middle of the screen, so look there too
-  const free = ([x, y]: number[]) => [[0, 0], [-26, 0], [26, 0], [0, -24], [0, 24], ...[60, 110, 170].map((d) => [x < w / 2 ? d : -d, 0])].every(([dx, dy]) => {
+  const free = ([x, y]: number[]) => [[0, 0], [-26, 0], [26, 0], [0, -30], [0, 30], ...[60, 110, 170].flatMap((d) => [-16, 0, 16].map((dy) => [x < w / 2 ? d : -d, dy]))].every(([dx, dy]) => {
     const el = document.elementFromPoint(Math.max(0, Math.min(w - 1, x + dx)), Math.max(0, Math.min(h - 1, y + dy)))
     return !el?.closest(BUSY)
   })
