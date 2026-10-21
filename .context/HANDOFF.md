@@ -1,4 +1,6 @@
-# HANDOFF: the home page invites into the worlds + legibility (21.10.2026, D192-D193)
+# HANDOFF: the home page invites into the worlds + legibility (21.10.2026, D192-D193) - LIVE: main = c1159c5
+
+Rollback tags: prod-before-d192 (9fded74), prod-before-d191fix (d2c57c7), prod-before-d178 (e34beec). Verified live: home guide -> map -> wave -> world.
 
 ## Completed
 - D192: src/studio/SiteGuide.tsx (lazy, mounted by Layout on the home page after the opening + load + idle):
