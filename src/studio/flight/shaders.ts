@@ -19,8 +19,8 @@ void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
   vec2 p = (gl_FragCoord.xy - uSun * uRes) / uRes.y;
   float r = length(p);
-  vec3 day = mix(vec3(0.80, 0.75, 0.95), vec3(0.89, 0.86, 0.98), uv.y);
-  day = mix(day, vec3(0.80, 0.87, 0.97), smoothstep(0.55, 0.0, uv.y) * 0.55);
+  vec3 day = mix(vec3(0.74, 0.69, 0.94), vec3(0.84, 0.80, 0.97), uv.y);
+  day = mix(day, vec3(0.76, 0.84, 0.97), smoothstep(0.55, 0.0, uv.y) * 0.45);
   day = mix(day, vec3(0.93, 0.80, 0.90), exp(-pow(length((uv - vec2(0.15, 0.2)) * vec2(1.4, 1.0)), 2.0) * 5.0) * 0.45);
   vec3 dusk = mix(vec3(0.97, 0.80, 0.86), vec3(0.85, 0.78, 0.96), uv.y);
   dusk = mix(dusk, vec3(1.0, 0.86, 0.74), smoothstep(0.45, 0.0, uv.y) * 0.5);
@@ -34,7 +34,7 @@ void main() {
   float lit = 1.0 - uMix.z * 0.9;
   vec3 sunCol = mix(vec3(1.0, 0.99, 0.97), vec3(1.0, 0.78, 0.35), uMix.w);
   float disc = smoothstep(0.05, 0.042, r);
-  float glow = exp(-r * 16.0) * 0.55 + exp(-r * 4.2) * 0.13;
+  float glow = exp(-r * 18.0) * 0.5 + exp(-r * 5.0) * 0.08;
   col = mix(col, sunCol, disc * lit);
   col += sunCol * glow * lit;
 
@@ -140,9 +140,9 @@ void main() {
   vec3 base = mix(uRoot, uTip, k);
   // clear glass near the shaft and the root, colour toward the vane's edge and the tip
   float clear = (0.2 + 0.4 * (1.0 - abs(vS))) * (1.0 - vT * 0.6);
-  vec3 col = mix(mix(base, film, 0.34), vec3(0.97, 0.97, 1.0), clear * 0.55);
+  vec3 col = mix(mix(base, film, 0.42), vec3(0.97, 0.97, 1.0), clear * 0.32);
   col += mix(vec3(1.0), film, 0.45) * (fres * 0.5 + edge * 0.32) + vec3(1.0) * rachis * 0.55;
-  float a = 0.13 + 0.36 * fres + 0.24 * edge + 0.36 * rachis + k * 0.06;
+  float a = 0.19 + 0.38 * fres + 0.26 * edge + 0.36 * rachis + k * 0.08;
   a *= 0.8 + 0.2 * barbs;
   a *= smoothstep(1.0, 0.88, vT);
   col += base * uGlow * (0.6 + fres);

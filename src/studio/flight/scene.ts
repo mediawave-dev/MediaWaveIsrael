@@ -210,7 +210,7 @@ export function startFlight(canvas: HTMLCanvasElement, root: HTMLElement, tier: 
     spr.x = damp(spr.x, calm ? 0 : ptr.x, 0.05, dt)
     spr.y = damp(spr.y, calm ? 0 : ptr.y, 0.05, dt)
     tgt.set(k[4], k[5], k[6])
-    off.set(k[1] - k[4], k[2] - k[5], k[3] - k[6]).multiplyScalar(portrait() ? 1.08 + 0.42 * (1 - Math.min(1, p / 0.6)) : 1)
+    off.set(k[1] - k[4], k[2] - k[5], k[3] - k[6]).multiplyScalar(portrait() ? 1.08 + 0.12 * (1 - Math.min(1, p / 0.6)) : 1)
     off.applyAxisAngle(new Vector3(0, 1, 0), -spr.x * 0.1)
     off.y += spr.y * 0.6
     camera.position.copy(tgt).add(off)
