@@ -24,7 +24,6 @@ import SeaRewind from './SeaRewind'
 import SeaFilm from './SeaFilm'
 import SeaWork from './SeaWork'
 import SeaStyles from './SeaStyles'
-import SeaPeek from './SeaPeek'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
@@ -283,17 +282,13 @@ function Process() {
 export default function SeaHome() {
   useReveals()
 
-  // the bubble types while the visitor types in the contact form, and what they write is engraved in it
-  // (D171); after a send the form empties, and so does the bubble
+  // the bubble types while the visitor types in the contact form: its three dots hop, and that is all (D201,
+  // Nati: the words written in the bubble's dots, D171, and their copy over the form on phones, D175, are
+  // gone; the form is a plain form, apart from the bubble)
   useEffect(() => {
-    const val = (id: string) => document.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#contact-${id}`)?.value ?? ''
-    const read = () => field.words({ name: val('name'), email: val('email'), message: val('message') })
-    const onInput = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) { field.typed(); read() } }
-    let later = 0
-    const onSubmit = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) { window.clearTimeout(later); later = window.setTimeout(read, 120) } }
+    const onInput = (e: Event) => { if ((e.target as Element | null)?.closest?.('#contact')) field.typed() }
     document.addEventListener('input', onInput)
-    document.addEventListener('submit', onSubmit)
-    return () => { document.removeEventListener('input', onInput); document.removeEventListener('submit', onSubmit); window.clearTimeout(later) }
+    return () => document.removeEventListener('input', onInput)
   }, [])
 
   // a chapter with its own ground (lab gate `ground`): the services under the horizon, the letter on paper
@@ -335,7 +330,6 @@ export default function SeaHome() {
         <span className="sea-spot sea-spot--contact" data-spot="bubble" aria-hidden="true" />
         <Contact chapter="contact" art={false} kicker={<Tag>05 · CONTACT</Tag>} />
       </div>
-      <SeaPeek />
       <SeaRewind />
     </div>
   )

@@ -1,4 +1,13 @@
-# HANDOFF: glass buttons, even dot rings, the music invitation in the site's material, legibility (21.10.2026, D200) - releasing
+# HANDOFF: the bubble no longer writes the words (21.10.2026, D201)
+
+Nati: the words drawn in the bubble's dots were not as good as he thought. Reverted D171 (field.words from
+SeaHome), D175 (SeaPeek, the phone copy over the form) and D177 (the lead's second line). The bubble keeps its
+three waiting dots, which hop while typing (field.typed). field.ts still has the words path (unused, cheap).
+Rollback: prod-before-d201.
+
+---
+
+# HANDOFF: glass buttons, even dot rings, the music invitation in the site's material, legibility (21.10.2026, D200) - LIVE (9a15c83)
 
 Rollback tags: prod-before-d200 (= origin/main before this release), prod-before-d199, prod-before-d198.
 

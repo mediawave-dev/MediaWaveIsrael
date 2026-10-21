@@ -151,10 +151,9 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
         <div className="ct__side">
           {kicker}
           <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
-          {/* the sea (D177): the second line points at the bubble that writes the words in dots; it shows only
-              while the field draws the bubble (sea-site.css). [קופי: נתי] */}
+          {/* the sea (D201): the bubble no longer writes the words, so its line (D177) is gone; the first line stays */}
           {SHOT
-            ? <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. <span className="ct__lead-dots">המילים שלכם ייכתבו בבועה, נקודה אחרי נקודה.</span></p>
+            ? <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו.</p>
             : <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. המפתח קורא ועונה בעצמו.</p>}
           <Card>
             {art && (
