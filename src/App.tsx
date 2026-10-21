@@ -39,6 +39,8 @@ const ProtoC = import.meta.env.DEV ? lazy(() => import('./proto/ProtoC')) : null
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
 const StudioPage = lazy(() => import('./pages/StudioPage'))
+// The style studio (/styles/): its own shell, outside Layout, so the sea's field never loads there
+const StylesPage = lazy(() => import('./studio/StylesPage'))
 
 // Lead modal appears only after 35s — no reason for it (and lottie-react)
 // to sit in the critical bundle
@@ -146,6 +148,8 @@ function App() {
               <StudioPage />
             </Suspense>
           } />
+
+          <Route path="/styles" element={<Suspense fallback={<PageFallback />}><StylesPage /></Suspense>} />
 
           {Board && (
             <Route path="/board/*" element={<Suspense fallback={<PageFallback />}><Board /></Suspense>} />

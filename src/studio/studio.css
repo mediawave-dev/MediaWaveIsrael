@@ -1,0 +1,97 @@
+/* The style studio's shell: the bar, the picker, the foot and the live switch. Each style sets its own
+   --st-* tokens on html[data-style=…] in its chunk's CSS; these are the defaults. */
+:root {
+  --st-ground: #0f1011;
+  --st-ink: #ede7da;
+  --st-soft: #a39d90;
+  --st-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --st-text: "IBM Plex Sans Hebrew", "Heebo", system-ui, sans-serif;
+}
+html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
+.st { position: relative; min-height: 100vh; background: var(--st-ground); color: var(--st-ink); font-family: var(--st-text); }
+
+.st-skip { position: absolute; inset-inline-start: 12px; top: -60px; z-index: 90; padding: 10px 14px; background: var(--st-ink); color: var(--st-ground); border-radius: 6px; font: 600 15px/1 var(--st-text); }
+.st-skip:focus { top: 12px; }
+
+/* the bar scrolls away with the page (no header that follows, D145) */
+.st-bar {
+  position: absolute; inset: 0 0 auto 0; z-index: 30; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: max(14px, env(safe-area-inset-top)) clamp(16px, 4vw, 40px) 0; pointer-events: none;
+  --logo-a: var(--st-ink); --logo-b: var(--st-ink); --logo-tag: var(--st-ink);
+}
+.st-bar > * { pointer-events: auto; }
+.st-bar__home { display: inline-flex; align-items: center; min-height: 44px; color: var(--st-ink); }
+.st-bar__home .mw-logo { height: 18px; width: auto; }
+.st-bar__name { margin: 0; font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; color: var(--st-ink); opacity: 0.8; }
+
+.st-main { display: block; }
+
+.st-foot { padding: 28px clamp(16px, 4vw, 40px) calc(132px + env(safe-area-inset-bottom)); background: var(--st-ground); }
+.st-foot nav { display: flex; flex-wrap: wrap; gap: 4px 18px; justify-content: center; }
+.st-foot a { display: inline-flex; align-items: center; min-height: 44px; font: 500 13px/1 var(--st-text); color: var(--st-soft); text-decoration: none; transition: color 0.25s ease; }
+.st-foot a:hover, .st-foot a:focus-visible { color: var(--st-ink); }
+
+/* ---------- the picker: one dark capsule in the thumb's reach, on every style ---------- */
+.st-pick {
+  position: fixed; z-index: 60; inset-inline: 0; bottom: calc(10px + env(safe-area-inset-bottom)); margin-inline: auto;
+  width: min(100% - 20px, 520px); padding: 8px 8px 6px; border-radius: 22px;
+  background: rgba(15, 16, 17, 0.9); color: #ede7da; border: 1px solid rgba(237, 231, 218, 0.16);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  view-transition-name: st-pick;
+}
+.st-pick__credit { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 0 0 6px; font: 600 11px/1 var(--st-mono); color: #a39d90; white-space: nowrap; }
+.st-pick__credit a { display: inline-flex; align-items: center; min-height: 24px; padding: 0 4px; color: #ede7da; text-decoration: none; border-radius: 6px; transition: background 0.25s ease; }
+.st-pick__credit a:hover, .st-pick__credit a:focus-visible { background: rgba(237, 231, 218, 0.12); }
+.st-pick__row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 0; padding: 0; list-style: none; }
+.st-chip {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 44px; padding: 0 6px;
+  border: 0; border-radius: 15px; background: transparent; color: #ede7da; font: 600 15px/1 var(--st-text); cursor: pointer;
+  transition: background 0.35s cubic-bezier(.16, 1, .3, 1), color 0.35s cubic-bezier(.16, 1, .3, 1);
+}
+.st-chip:hover { background: rgba(237, 231, 218, 0.1); }
+.st-chip[aria-pressed="true"] { background: #ede7da; color: #0f1011; }
+.st-chip:focus-visible { outline: 2px solid #79a0c5; outline-offset: 2px; }
+.st-chip__disc { width: 22px; height: 22px; flex: none; color: currentColor; transition: transform 0.6s cubic-bezier(.16, 1, .3, 1); }
+.st-chip:hover .st-chip__disc { transform: rotate(-24deg); }
+.st-chip[aria-pressed="true"] .st-chip__disc { transform: rotate(0deg) scale(1.08); }
+.st-chip__n { position: absolute; top: 4px; inset-inline-end: 7px; font: 600 8px/1 var(--st-mono); opacity: 0.5; }
+.st-pick[data-busy] .st-chip { cursor: progress; }
+@media (max-width: 360px) { .st-chip__n { display: none; } .st-chip { font-size: 14px; gap: 5px; } }
+
+/* ---------- the live switch (View Transitions): each style enters in its own way ---------- */
+@property --st-r { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --st-p { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+::view-transition-group(st-pick) { animation: none; }
+::view-transition-old(st-pick), ::view-transition-new(st-pick) { animation: none; }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-image-pair(root) { isolation: auto; }
+
+/* flight: Storytelling's preloader hole, a soft-edged circle opening from the chip (0 to 200vmax, power3.inOut) */
+html[data-vt="flight"]::view-transition-new(root) {
+  -webkit-mask-image: radial-gradient(circle at var(--vt-x, 50%) var(--vt-y, 90%), #000 calc(var(--st-r) - 14vmax), transparent var(--st-r));
+  mask-image: radial-gradient(circle at var(--vt-x, 50%) var(--vt-y, 90%), #000 calc(var(--st-r) - 14vmax), transparent var(--st-r));
+  animation: st-hole 1.5s cubic-bezier(.65, 0, .35, 1) both;
+}
+html[data-vt="flight"]::view-transition-old(root) { animation: st-sink 1.5s cubic-bezier(.65, 0, .35, 1) both; }
+@keyframes st-hole { from { --st-r: 0px; } to { --st-r: 200vmax; } }
+@keyframes st-sink { to { transform: scale(1.06); filter: blur(6px) brightness(1.08); } }
+
+/* buzz: the wordmark's own entrance, out of a blur (blur 16 to 0, [.16,1,.3,1]) */
+html[data-vt="buzz"]::view-transition-new(root) { animation: st-unblur 0.95s cubic-bezier(.16, 1, .3, 1) both; }
+html[data-vt="buzz"]::view-transition-old(root) { animation: st-blurout 0.55s cubic-bezier(.16, 1, .3, 1) both; }
+@keyframes st-unblur { from { opacity: 0; filter: blur(16px); transform: scale(1.04); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes st-blurout { to { opacity: 0; filter: blur(12px); } }
+
+/* blueprint: Heron's sheet, drawn down from the top with a hard edge (0.8 s, power1) */
+html[data-vt="blueprint"]::view-transition-new(root) {
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--st-p), transparent var(--st-p));
+  mask-image: linear-gradient(to bottom, #000 var(--st-p), transparent var(--st-p));
+  animation: st-draw 0.9s cubic-bezier(.45, 0, .55, 1) both;
+}
+@keyframes st-draw { from { --st-p: 0%; } to { --st-p: 100%; } }
+
+/* clay: the paper page rises over the room (Léo's reveal ease, cubic-bezier(.4,0,0,1)) */
+html[data-vt="clay"]::view-transition-new(root) { animation: st-rise 1.1s cubic-bezier(.4, 0, 0, 1) both; }
+html[data-vt="clay"]::view-transition-old(root) { animation: st-under 1.1s cubic-bezier(.4, 0, 0, 1) both; }
+@keyframes st-rise { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes st-under { to { transform: translateY(-14%) scale(0.97); filter: brightness(0.82); } }

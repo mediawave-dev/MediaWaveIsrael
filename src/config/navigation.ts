@@ -18,6 +18,8 @@ export const navigation: NavLink[] = [
   { label: 'איך אנחנו עובדים', href: '#how-we-work-title', showInHeader: true, showInMenu: true },
   { label: 'שאלות נפוצות', href: '#faq', showInHeader: true, showInMenu: true, showInFooter: true },
   { label: 'דברו איתנו', href: '#contact', showInMenu: true, showInFooter: true },
+  // the style studio: the same site in four styles [קופי: נתי]
+  { label: 'סטודיו הסגנונות', href: '/styles/', showInMenu: true, showInFooter: true },
 ]
 
 export const headerLinks = navigation.filter((n) => n.showInHeader)

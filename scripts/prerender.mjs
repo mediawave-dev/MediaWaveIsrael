@@ -29,7 +29,7 @@ function parseDataSlugs(relPath) {
 }
 
 // Static routes
-const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility']
+const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility', '/styles']
 
 // Dynamic routes from data files
 const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
