@@ -9,7 +9,7 @@ import Logo from '../components/ui/Logo'
 import { useMotionEngine } from '../motion/ScrollEngineProvider'
 import { byId, CHAPTERS, STYLES, type StyleDef, type StyleModule, type StyleProps } from './registry'
 import { useTier, tierNow } from './motion'
-import Guide from './Guide'
+import Guide, { STUDIO_PLAN } from './Guide'
 import WorldMap from './WorldMap'
 import SoundButton from './SoundButton'
 import { setWorld } from './sound'
@@ -61,6 +61,8 @@ export default function StylesPage() {
   const tier = useTier()
   const engine = useMotionEngine()
   const lock = useRef(false)
+  // a visitor who just came through the guide on the main site is not offered it again right away
+  const plan = useRef(typeof window !== 'undefined' && window.__studioArrival ? { ...STUDIO_PLAN, first: 30000 } : STUDIO_PLAN)
 
   // the first style: its chunk and fonts, then the page (the prerendered one stands until then)
   useEffect(() => {
@@ -191,7 +193,7 @@ export default function StylesPage() {
           <span className="st-title__by" lang="en" dir="ltr">Inspired by {title.def.credit}</span>
         </div>
       )}
-      <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} />
+      <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} plan={plan.current} />
       {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} />}
 
       {widgets && (
