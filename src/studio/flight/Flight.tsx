@@ -90,7 +90,7 @@ export default function Flight({ tier, def }: StyleProps) {
           <a className="fl-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{C.hero.cta}</a>
         </div>
         {/* [קופי: נתי] */}
-        <p className="fl-hint" aria-hidden="true">גללו, והגל יתעופף</p>
+        <p className="fl-hint" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
       </section>
 
       <section className="fl-svc" data-ch="services" aria-labelledby="fl-svc-t">
@@ -101,7 +101,7 @@ export default function Flight({ tier, def }: StyleProps) {
               <p className="fl-word__n" data-ln aria-hidden="true">0{i + 1}</p>
               <h3 className="fl-giant" data-ln>{s.title}</h3>
               <p className="fl-word__line" data-ln>{s.line}</p>
-              <a className="fl-go" data-ln href={s.href}>לפרטים</a>
+              <a className="fl-go" data-ln href={s.href} lang="en" aria-label={`לפרטים על ${s.title}`}>Details</a>
             </div>
           </article>
         ))}
@@ -109,11 +109,11 @@ export default function Flight({ tier, def }: StyleProps) {
 
       <section className="fl-work" data-ch="work" aria-labelledby="fl-work-t">
         <div className="fl-work__in">
-          <p className="fl-kicker" data-fl>{C.work.title}</p>
+          <p className="fl-kicker" data-fl lang="en" dir="ltr">{C.work.title}</p>
           <h2 id="fl-work-t" className="fl-giant fl-giant--m" data-fl>{C.work.name}</h2>
           <div data-fl><WorkFilm /></div>
           <p className="fl-word__line" data-fl>{C.work.line}</p>
-          <a className="fl-go" data-fl href={C.work.href}>{C.work.linkLabel}</a>
+          <a className="fl-go" data-fl href={C.work.href} lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>
         </div>
       </section>
 

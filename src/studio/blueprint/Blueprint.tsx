@@ -26,7 +26,7 @@ let OPENED = false
 /** [קופי: נתי] the loader's log and the sheet's metadata (facts from data/site.ts only) */
 const LOG = ['LOAD SHEET', 'DRAW GRID', 'PLACE LAPTOP', 'CHECK 390 PX', 'CHECK SPEED', 'LINK WHATSAPP', 'READY']
 const META: [string, string][] = [['STUDIO', 'MEDIAWAVE'], ['CRAFT', 'WEB · VIDEO · TAPES'], ['TEL', C.contact.phone], ['REPLY', '< 24H']]
-const NAV = [['#bp-services', 'שירותים'], ['#bp-work', 'עבודה'], ['#bp-process', 'תהליך'], ['#bp-faq', 'שאלות']]
+const NAV = [['#bp-services', 'SERVICES'], ['#bp-work', 'WORK'], ['#bp-process', 'PROCESS'], ['#bp-faq', 'FAQ']]
 const TICKER = ['FAST ON PHONES', 'LEADS TO WHATSAPP', 'FOUND ON GOOGLE', 'WEBSITES', 'VIDEO', 'TAPES']
 
 function Loader({ onDone }: { onDone: () => void }) {
@@ -152,15 +152,15 @@ export default function Blueprint({ tier, def }: StyleProps) {
 
       <section className="bp-hero" data-ch="hero" aria-labelledby="bp-h1">
         <nav className="bp-nav" aria-label="פרקים">
-          {NAV.map(([href, t]) => <a key={href} href={href}>{t}</a>)}
-          <a href="#bp-contact" className="bp-nav__go">צרו קשר <span aria-hidden="true">←</span></a>
+          {NAV.map(([href, t]) => <a key={href} href={href} lang="en" dir="ltr">{t}</a>)}
+          <a href="#bp-contact" className="bp-nav__go" lang="en" dir="ltr">CONTACT <span aria-hidden="true">→</span></a>
         </nav>
         <div className="bp-sheet">
           <span className="bp-plus bp-plus--a" aria-hidden="true" /><span className="bp-plus bp-plus--b" aria-hidden="true" />
           <span className="bp-plus bp-plus--c" aria-hidden="true" /><span className="bp-plus bp-plus--d" aria-hidden="true" />
           <i className="bp-ruler bp-ruler--top" aria-hidden="true" /><i className="bp-ruler bp-ruler--side" aria-hidden="true" />
           {/* [קופי: נתי] */}
-          <p className="bp-hint">{fine ? 'גררו את העכבר על השרטוט כדי לראות מה אנחנו בודקים' : 'הקישו על ריבוע אדום כדי לראות מה אנחנו בודקים'}</p>
+          <p className="bp-hint" lang="en" dir="ltr">{fine ? 'CLICK AND DRAG ACROSS THE DRAWING TO SEE WHAT WE CHECK' : 'TAP A RED SQUARE TO SEE WHAT WE CHECK'}</p>
           <Drawing fine={fine} />
           {loading && <Loader onDone={() => setLoading(false)} />}
         </div>
@@ -198,7 +198,7 @@ export default function Blueprint({ tier, def }: StyleProps) {
             <p className="bp-k" dir="ltr">[ WORK · REAL ]</p>
             <h2 id="bp-work-t" className="bp-h2 bp-h2--quiet">{C.work.name}</h2>
             <div className="bp-work__pic"><Ink /><span className="bp-work__tag" dir="ltr">SKETCH → FILM</span></div>
-            <p className="bp-body">{C.work.line} <a className="bp-more" href={C.work.href}>{C.work.linkLabel} <span aria-hidden="true">←</span></a></p>
+            <p className="bp-body">{C.work.line} <a className="bp-more" href={C.work.href} lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel} <span aria-hidden="true">←</span></a></p>
           </div>
         </div>
       </section>

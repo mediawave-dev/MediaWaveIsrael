@@ -114,7 +114,7 @@ export default function StylesPage() {
       <header className="st-bar">
         <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
         {/* [קופי: נתי] the page's name */}
-        <p className="st-bar__name">( סטודיו הסגנונות )</p>
+        <p className="st-bar__name" lang="en" dir="ltr">( Style Studio )</p>
       </header>
 
       <main id="main-content" className="st-main">
@@ -130,7 +130,7 @@ export default function StylesPage() {
           <a href="/terms/">תקנון שימוש</a>
           <a href="/privacy/">מדיניות פרטיות</a>
           <a href="/accessibility/">הצהרת נגישות</a>
-          <a href="/">( חזרה לאתר + )</a>
+          <a href="/" lang="en" dir="ltr">( Back to the site + )</a>
         </nav>
       </footer>
 

@@ -268,7 +268,7 @@ export default function Buzz({ tier, def }: StyleProps) {
         <div className="bz-device" data-bz>
           <video src="/media/svc-memories-2.mp4" poster="/media/svc-memories-2-poster.webp" muted loop playsInline autoPlay preload="metadata" aria-hidden="true" />
         </div>
-        <a className="bz-pill bz-pill--line" href={C.work.href} data-bz>{C.work.linkLabel}</a>
+        <a className="bz-pill bz-pill--line" href={C.work.href} data-bz lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>
       </section>
 
       <section className="bz-sec bz-proc" data-ch="process" aria-labelledby="bz-proc-t">

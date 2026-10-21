@@ -17,8 +17,8 @@ function Disc({ ground, ink }: { ground: string; ink: string }) {
 export default function Picker({ current, onPick, busy }: { current: StyleDef; onPick: (s: StyleDef, at: PickAt) => void; busy: boolean }) {
   return (
     <nav className="st-pick" aria-label="בחירת סגנון" data-busy={busy || undefined}>
-      <p className="st-pick__credit">
-        <span className="st-pick__k">( בהשראת )</span>{' '}
+      <p className="st-pick__credit" dir="ltr">
+        <span className="st-pick__k" lang="en" dir="ltr">( Inspired by )</span>{' '}
         <a href={current.creditUrl} target="_blank" rel="noopener noreferrer" dir="ltr">{current.credit} ↗</a>
       </p>
       <ul className="st-pick__row">

@@ -62,7 +62,7 @@ function Reel({ onFeed }: { onFeed: () => void }) {
     return () => cancelAnimationFrame(raf)
   }, [])
   return (
-    <button type="button" className="cl-reel" ref={el} onClick={onFeed} aria-label="החליפו את המילים בכותרת" data-pill="האכילו אותי">
+    <button type="button" className="cl-reel" ref={el} onClick={onFeed} aria-label="החליפו את המילים בכותרת" data-pill="FEED ME">
       <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" /><circle className="h" cx="20" cy="20" r="5" />
         {[0, 1, 2, 3, 4, 5].map((i) => <rect key={i} className="t" x="18.5" y="6" width="3" height="6" rx="1.5" transform={`rotate(${i * 60} 20 20)`} />)}</svg>
     </button>
@@ -162,10 +162,10 @@ export default function Clay({ tier, def }: StyleProps) {
     const id = window.setInterval(() => { i += 1; if (i >= FLIP.length) { clearInterval(id); window.setTimeout(() => setFlip(null), 1100) } else setFlip(i) }, 650)
   }
   const copy = async () => {
-    try { await navigator.clipboard.writeText(C.contact.email); setPill('הועתק') } catch { /* the mailto link still works */ }
+    try { await navigator.clipboard.writeText(C.contact.email); setPill('COPIED') } catch { /* the mailto link still works */ }
   }
 
-  const askLine: [string, string] = fine ? ['לחצו', 'כדי לנגן את הקלטת'] : ['הקישו', 'כדי לנגן את הקלטת']
+  const askLine: [string, string] = fine ? ['CLICK', 'TO PLAY THE TAPE'] : ['TAP', 'TO PLAY THE TAPE']
   return (
     <div className="cl" ref={root} data-live={live || undefined}>
       {fine && tier !== 'still' && <Pill text={pill} line={!asked && !pill ? askLine : undefined} />}
@@ -176,9 +176,9 @@ export default function Clay({ tier, def }: StyleProps) {
           <canvas className="cl-canvas" ref={canvas} aria-hidden="true" />
           <div className="cl-room__fg">
             <p className="cl-room__line">{C.hero.sub}<br />{C.hero.sub2}</p>
-            <p className="cl-room__scroll" aria-hidden="true">( גללו )</p>
+            <p className="cl-room__scroll" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
             {!fine && !asked && (
-              <button type="button" className="cl-tap" onClick={() => void toggle(true)}>{askLine[0]}<i />{askLine[1]}</button>
+              <button type="button" className="cl-tap" lang="en" dir="ltr" aria-label="הפעלת הצליל של הקלטת" onClick={() => void toggle(true)}>{askLine[0]}<i />{askLine[1]}</button>
             )}
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function Clay({ tier, def }: StyleProps) {
             <p className="cl-hello" data-cl>{C.hero.sub} {C.hero.sub2}</p>
             <div className="cl-intro__side" data-cl>
               <p>מדברים ישירות עם המפתח, בלי מתווכים.</p>
-              <a className="cl-btn" href={waForStyle(def)} target="_blank" rel="noopener noreferrer" data-pill="וואטסאפ">{C.hero.cta}</a>
+              <a className="cl-btn" href={waForStyle(def)} target="_blank" rel="noopener noreferrer" data-pill="WHATSAPP">{C.hero.cta}</a>
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function Clay({ tier, def }: StyleProps) {
         <ul className="cl-cards">
           {C.services.items.map((s, i) => (
             <li key={s.id} className="cl-card" data-g={GROUNDS[i % GROUNDS.length]} data-cl>
-              <a href={s.href} data-pill="צפייה">
+              <a href={s.href} data-pill="WATCH">
                 <span className="cl-card__stage">
                   <span className="cl-card__letter" aria-hidden="true">{s.title.charAt(0)}</span>
                   <span className={i % 3 === 1 ? 'cl-dev cl-dev--phone' : 'cl-dev'}>
@@ -222,12 +222,12 @@ export default function Clay({ tier, def }: StyleProps) {
       </section>
 
       <section className="cl-paper cl-work" data-ch="work" aria-labelledby="cl-work-t">
-        <a className="cl-feature" href={C.work.href} data-pill="צפייה" aria-label={`${C.work.name}: ${C.work.linkLabel}`}>
+        <a className="cl-feature" href={C.work.href} data-pill="WATCH" aria-label={`${C.work.name} - צפייה`}>
           <span className="cl-feature__letter" aria-hidden="true">ז</span>
           <span className="cl-dev cl-dev--wide"><video src="/media/svc-memories-2.mp4" poster="/media/svc-memories-2-poster.webp" muted loop playsInline preload="none" aria-hidden="true" /></span>
         </a>
         <div className="cl-work__row" data-cl>
-          <p className="cl-k">{C.work.title}</p>
+          <p className="cl-k" lang="en" dir="ltr">{C.work.title}</p>
           <h2 id="cl-work-t" className="cl-h3">{C.work.name}</h2>
           <p className="cl-p">{C.work.line}</p>
         </div>
@@ -251,7 +251,7 @@ export default function Clay({ tier, def }: StyleProps) {
         <div className="cl-qs">
           {C.faq.items.map((f) => (
             <details key={f.id} className="cl-q">
-              <summary data-pill="פתיחה">{f.q}</summary>
+              <summary data-pill="OPEN">{f.q}</summary>
               <p className="cl-p">{f.a}</p>
             </details>
           ))}
@@ -263,8 +263,8 @@ export default function Clay({ tier, def }: StyleProps) {
         <p className="cl-p">{C.contact.lead}</p>
         <LeadForm def={def} className="cl-form" />
         <div className="cl-alt">
-          <button type="button" className="cl-copy" onClick={() => void copy()} data-pill="העתקה" aria-label={`העתקת הכתובת ${C.contact.email}`}><span dir="ltr">{C.contact.email}</span></button>
-          <a href={`tel:${C.contact.phone}`} dir="ltr" data-pill="חיוג">{C.contact.phone}</a>
+          <button type="button" className="cl-copy" onClick={() => void copy()} data-pill="COPY" aria-label={`העתקת הכתובת ${C.contact.email}`}><span dir="ltr">{C.contact.email}</span></button>
+          <a href={`tel:${C.contact.phone}`} dir="ltr" data-pill="CALL">{C.contact.phone}</a>
         </div>
       </section>
     </div>

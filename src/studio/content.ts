@@ -22,11 +22,12 @@ export const C = {
   },
   /** the one real sample on the site: the memories film for a 60th birthday (sea home, D164) */
   work: {
-    title: 'עבודה אמיתית',
+    /** labels in English (Nati, 21.10: "זה מוסיף מקצועיות ויופי") */
+    title: 'Selected work',
     name: 'סרט זיכרונות ליום הולדת 60',
     line: 'תמונות מהאלבום שחוזרות לזוז.',
     href: '/portfolio/memory-videos/',
-    linkLabel: 'לצפייה',
+    linkLabel: 'Watch',
     clips: ['/media/work-life-1', '/media/work-life-2', '/media/work-life-3', '/media/work-life-4'],
   },
   process: {
