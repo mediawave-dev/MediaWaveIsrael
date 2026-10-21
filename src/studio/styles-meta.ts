@@ -15,11 +15,15 @@ export interface StyleMeta {
   swatch: [string, string]
   /** the browser's theme colour while the style is on */
   theme: string
+  /** the wave between styles: the style's ground, its ink, and the face its name is shown in */
+  ground: string
+  ink: string
+  face: string
 }
 
 export const STYLE_META: StyleMeta[] = [
-  { id: 'flight', name: 'מעוף', feel: 'סיפור שנפתח בגלילה', credit: 'The Power of Storytelling', creditUrl: 'https://storytelling.noomoagency.com/', swatch: ['#dcd3f7', '#3a3270'], theme: '#e5def9' },
-  { id: 'buzz', name: 'זמזום', feel: 'קליל, שיקי ומלא חיים', credit: 'Buzz', creditUrl: 'https://buzz.xyz/', swatch: ['#d7d72e', '#231e1e'], theme: '#d7d72e' },
-  { id: 'blueprint', name: 'שרטוט', feel: 'מדויק כמו תוכנית עבודה', credit: 'Heron AI', creditUrl: 'https://heronaiapp.com/', swatch: ['#f5f5ee', '#fa3600'], theme: '#f5f5ee' },
-  { id: 'clay', name: 'חימר', feel: 'חדר רך באור של בוקר', credit: 'Léo Parpeix', creditUrl: 'https://www.leoparpeix.com/', swatch: ['#efe4d4', '#083d2a'], theme: '#efe4d4' },
+  { id: 'flight', name: 'מעוף', feel: 'סיפור שנפתח בגלילה', credit: 'The Power of Storytelling', creditUrl: 'https://storytelling.noomoagency.com/', swatch: ['#dcd3f7', '#3a3270'], theme: '#e5def9', ground: '#ddd5f8', ink: '#2e2670', face: '400 1em Bellefair, serif' },
+  { id: 'buzz', name: 'זמזום', feel: 'קליל, שיקי ומלא חיים', credit: 'Buzz', creditUrl: 'https://buzz.xyz/', swatch: ['#d7d72e', '#231e1e'], theme: '#d7d72e', ground: '#d7d72e', ink: '#231e1e', face: '700 1em Heebo, sans-serif' },
+  { id: 'blueprint', name: 'שרטוט', feel: 'מדויק כמו תוכנית עבודה', credit: 'Heron AI', creditUrl: 'https://heronaiapp.com/', swatch: ['#f5f5ee', '#fa3600'], theme: '#f5f5ee', ground: '#f5f5ee', ink: '#fa3600', face: '700 1em "IBM Plex Sans Hebrew", sans-serif' },
+  { id: 'clay', name: 'חימר', feel: 'חדר רך באור של בוקר', credit: 'Léo Parpeix', creditUrl: 'https://www.leoparpeix.com/', swatch: ['#efe4d4', '#083d2a'], theme: '#efe4d4', ground: '#efe6d8', ink: '#083d2a', face: '700 1em Karantina, sans-serif' },
 ]

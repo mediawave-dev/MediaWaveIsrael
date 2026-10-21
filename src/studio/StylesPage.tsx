@@ -7,9 +7,10 @@ import { flushSync } from 'react-dom'
 import SEO from '../components/SEO'
 import Logo from '../components/ui/Logo'
 import { useMotionEngine } from '../motion/ScrollEngineProvider'
-import { byId, CHAPTERS, type StyleDef, type StyleModule, type StyleProps } from './registry'
-import { useTier, finePointer } from './motion'
+import { byId, CHAPTERS, STYLES, type StyleDef, type StyleModule, type StyleProps } from './registry'
+import { useTier, finePointer, tierNow } from './motion'
 import Picker, { type PickAt } from './Picker'
+import { getCurtain } from './curtain'
 import './studio.css'
 
 const AccessibilityWidget = lazy(() => import('../components/ui/AccessibilityWidget'))
@@ -51,6 +52,7 @@ export default function StylesPage() {
   const [busy, setBusy] = useState(false)
   const [widgets, setWidgets] = useState(false)
   const [hint, setHint] = useState(false)
+  const [title, setTitle] = useState<{ def: StyleDef; out: boolean } | null>(null)
   const tier = useTier()
   const engine = useMotionEngine()
   const lock = useRef(false)
@@ -59,6 +61,13 @@ export default function StylesPage() {
   useEffect(() => {
     let live = true
     def.load().then(async (m) => { await prepare(m); if (live) setPage(() => m.default) })
+    // build the wave at idle, so the first switch never waits on a compile
+    const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback
+    // and the other styles' chunks and fonts, so the wave never waits on the network either
+    if (tierNow() !== 'still') (idle ?? ((cb: () => void) => window.setTimeout(cb, 1200)))(() => {
+      getCurtain()
+      window.setTimeout(() => STYLES.forEach((s) => { if (s.id !== def.id) void s.load().then(prepare).catch(() => {}) }), 2500)
+    })
     const id = window.setTimeout(() => setWidgets(true), 1800)
     // the hint, once: a moment after the page shows, gone at the first scroll, tap or after 6 s
     const show = window.setTimeout(() => setHint(true), 2600)
@@ -85,28 +94,45 @@ export default function StylesPage() {
     else el.scrollIntoView({ block: 'start' })
   }
 
+  const swapTo = (next: StyleDef, Mod: ComponentType<StyleProps>, ch: string) => {
+    flushSync(() => { setDef(next); setPage(() => Mod) })
+    land(ch)
+    const url = new URL(window.location.href)
+    url.searchParams.set('s', next.id)
+    window.history.replaceState(window.history.state, '', url)
+  }
+
   async function choose(next: StyleDef, at: PickAt) {
     if (lock.current || next.id === def.id) return
     lock.current = true
     setBusy(true)
+    setHint(false)
     const ch = chapterNow()
-    const mod = await next.load()
-    await prepare(mod)
-    const html = document.documentElement
-    html.style.setProperty('--vt-x', `${at.x}px`)
-    html.style.setProperty('--vt-y', `${at.y}px`)
-    html.dataset.vt = next.id
-    const swap = () => {
-      flushSync(() => { setDef(next); setPage(() => mod.default) })
-      land(ch)
-      const url = new URL(window.location.href)
-      url.searchParams.set('s', next.id)
-      window.history.replaceState(window.history.state, '', url)
+    const loading = next.load().then(async (m) => { await prepare(m); return m })
+    const wave = tier === 'still' ? null : getCurtain()
+    if (wave) {
+      // the wave (D188): it floods the screen in the new colours, the page changes under it, the name
+      // shows, and a second wave breaks into squares to open the new style
+      const calm = tier === 'calm'
+      await wave.cover(at, { from: def.ground, to: next.ground, ink: next.ink }, calm ? 520 : 820)
+      const mod = await loading
+      setTitle({ def: next, out: false })
+      swapTo(next, mod.default, ch)
+      await new Promise((r) => setTimeout(r, calm ? 220 : 560))
+      setTitle({ def: next, out: true })
+      await wave.reveal(calm ? 560 : 980)
+      setTitle(null)
+    } else {
+      const mod = await loading
+      const html = document.documentElement
+      html.style.setProperty('--vt-x', `${at.x}px`)
+      html.style.setProperty('--vt-y', `${at.y}px`)
+      html.dataset.vt = next.id
+      const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } }
+      if (tier !== 'still' && doc.startViewTransition) await doc.startViewTransition(() => swapTo(next, mod.default, ch)).finished.catch(() => {})
+      else swapTo(next, mod.default, ch)
+      delete html.dataset.vt
     }
-    const doc = document as Document & { startViewTransition?: (cb: () => void) => { finished: Promise<void> } }
-    if (tier !== 'still' && doc.startViewTransition) await doc.startViewTransition(swap).finished.catch(() => {})
-    else swap()
-    delete html.dataset.vt
     lock.current = false
     setBusy(false)
   }
@@ -142,6 +168,14 @@ export default function StylesPage() {
         </nav>
       </footer>
 
+      {title && (
+        <div className="st-title" data-out={title.out || undefined} style={{ ['--st-t-ink' as string]: title.def.ink }} aria-hidden="true">
+          <span className="st-title__name" style={{ font: title.def.face }}>
+            {[...title.def.name].map((ch, i) => <span key={i} style={{ ['--k' as string]: i }}>{ch}</span>)}
+          </span>
+          <span className="st-title__by" lang="en" dir="ltr">Inspired by {title.def.credit}</span>
+        </div>
+      )}
       {hint && <p className="st-hint" lang="en" dir="ltr" aria-hidden="true">{finePointer() ? 'Click' : 'Tap'} a style, the page transforms</p>}
       <Picker current={def} onPick={choose} busy={busy} />
 
