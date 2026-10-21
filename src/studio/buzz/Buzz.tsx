@@ -13,6 +13,7 @@ import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import { createSwarm, placeStill } from './swarm'
+import { useSideways } from '../sideways'
 import './buzz.css'
 
 export const prepare = () => Promise.all([document.fonts.load('700 80px Heebo', 'אבג'), document.fonts.load('400 20px Heebo', 'אבג')])
@@ -86,6 +87,24 @@ export default function Buzz({ tier, def }: StyleProps) {
   const formSw = useRef<HTMLDivElement>(null)
   const endSw = useRef<HTMLDivElement>(null)
   const escort = useRef<HTMLDivElement>(null)
+  // the services ride across on an arc while the page scrolls (D195): the middle card rises, the others dip
+  // and lean away, and the whole row leans into the scroll's speed
+  const swWrap = useRef<HTMLDivElement>(null)
+  const swTrack = useRef<HTMLUListElement>(null)
+  useSideways(swWrap, swTrack, tier, {
+    ease: 0.12,
+    onFrame: ({ v, d }) => {
+      const cards = swTrack.current?.querySelectorAll<HTMLElement>('.bz-card > a')
+      cards?.forEach((a, i) => {
+        const k = d[i] ?? 0
+        const lean = Math.max(-10, Math.min(10, -k * 14 + v * 0.35))
+        a.style.transform = `translate3d(0, ${(k * k * 140).toFixed(1)}px, 0) rotate(${lean.toFixed(2)}deg) scale(${(1 - Math.min(0.12, Math.abs(k) * 0.12)).toFixed(3)})`
+        // the card in the middle plays its film
+        const vid = a.querySelector('video')
+        if (vid && tier === 'full') { if (Math.abs(k) < 0.22) { if (vid.paused) void vid.play().catch(() => {}) } else if (!vid.paused) vid.pause() }
+      })
+    },
+  })
   const quick = OPENED
   const [stage, setStage] = useState<Stage>(PRERENDER || tier === 'still' ? 'done' : quick ? 'word' : 'mark')
 
@@ -265,11 +284,13 @@ export default function Buzz({ tier, def }: StyleProps) {
       </section>
 
       <section className="bz-sec bz-svc" data-ch="services" aria-labelledby="bz-svc-t">
-        <h2 id="bz-svc-t" className="bz-h2" data-bz>{C.services.title}</h2>
-        <p className="bz-p" data-bz>{C.hero.sub}</p>
-        <ul className="bz-cards">
+        <div className="sw bz-sw" ref={swWrap}>
+        <div className="sw__stage bz-sw__stage">
+        <h2 id="bz-svc-t" className="bz-h2">{C.services.title}</h2>
+        <p className="bz-p">{C.hero.sub}</p>
+        <ul className="bz-cards" ref={swTrack}>
           {C.services.items.map((s, i) => (
-            <li key={s.id} className="bz-card" data-bz style={{ ['--i' as string]: i }}>
+            <li key={s.id} className="bz-card" style={{ ['--i' as string]: i }}>
               <a href={s.href}>
                 <span className="bz-card__pic">
                   <video src={`${CLIPS[s.id]}-m.mp4`} poster={`${CLIPS[s.id]}-poster-m.webp`} muted loop playsInline preload="none" aria-hidden="true"
@@ -281,6 +302,8 @@ export default function Buzz({ tier, def }: StyleProps) {
             </li>
           ))}
         </ul>
+        </div>
+        </div>
       </section>
 
       <section className="bz-sec bz-work" data-ch="work" aria-labelledby="bz-work-t">

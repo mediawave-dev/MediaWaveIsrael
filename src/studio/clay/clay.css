@@ -167,3 +167,12 @@ html.cl-asking, html.cl-asking body { cursor: pointer; }
 .cl-window svg { position: absolute; left: 50%; top: 50%; height: 82%; aspect-ratio: 100 / 140; transform: translate(-50%, -50%); overflow: visible; }
 .cl-window path { fill: none; stroke: var(--cl-paper); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
 .cl-window path:first-child { stroke: #e3dccf; stroke-width: 10; }
+
+/* ---- sideways works (D195): the devices pass in depth, the letters slide behind at their own speed ---- */
+.cl-sw.is-sideways { margin-inline: calc(-1 * clamp(18px, 4vw, 64px)); }
+.cl-sw.is-sideways .cl-sw__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: flex; align-items: center; }
+.cl-sw.is-sideways .cl-cards { display: flex; flex-wrap: nowrap; width: max-content; gap: clamp(18px, 3vw, 40px); padding: 0 max(12vw, 40px); }
+.cl-sw.is-sideways .cl-card { width: min(80vw, 620px); flex: none; margin-top: 0 !important; }
+.cl-sw.is-sideways .cl-card__stage { aspect-ratio: 4 / 4.2; max-height: 64svh; width: 100%; transition: filter 0.4s ease; }
+.cl-sw.is-sideways .cl-card__letter { transition: none; will-change: transform; }
+.cl-sw.is-sideways .cl-dev { transition: none; will-change: transform; }

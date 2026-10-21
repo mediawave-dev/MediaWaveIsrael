@@ -52,6 +52,19 @@ function pickPerch(): { x: number; y: number } {
   spot = { x: hit[0], y: hit[1] }
   return spot
 }
+/** is the resting spot still clear (content moves: a sideways row, a scrolled page)? */
+function stillFree(): boolean {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  const { x, y } = spot
+  const left = x < w / 2
+  const box = { l: Math.min(x - 34, left ? x : x - 190), r: Math.max(x + 34, left ? x + 190 : x), t: y - 34, b: y + 34 }
+  return [...document.querySelectorAll<HTMLElement>(BUSY)].every((el) => {
+    if (el.closest('.gd, .wm')) return true
+    const r = el.getBoundingClientRect()
+    return r.width === 0 || r.bottom < 0 || r.top > h || r.right < box.l || r.left > box.r || r.bottom < box.t || r.top > box.b
+  })
+}
 const perch = () => spot
 
 const bez = (a: number, b: number, c: number, d: number, t: number) => {
@@ -73,6 +86,7 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
     let raf = 0
     let lastSpark = 0
     const trail: [number, number][] = []
+    let lastCheck = 0
     const tick = (now: number) => {
       raf = requestAnimationFrame(tick)
       const s = state.current
@@ -93,7 +107,7 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
         const p = perch()
         x = p.x + Math.sin(k * 1.3) * 9 + Math.sin(k * 3.1) * 3
         y = p.y + Math.sin(k * 2.1) * 7
-        if (now - s.t0 > plan.stay && !open) flyOff(now)
+        if (!open && (now - s.t0 > plan.stay || (now - lastCheck > 500 && ((lastCheck = now), !stillFree())))) flyOff(now)
       }
       const dx = x - s.x
       s.x = x

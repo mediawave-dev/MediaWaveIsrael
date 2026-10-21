@@ -9,6 +9,7 @@ import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import Pill from './Pill'
+import { useSideways } from '../sideways'
 import { isSoundOn, onSoundChange, setSoundOn } from '../sound'
 import '@fontsource/karantina/hebrew-700.css'
 import '@fontsource/karantina/latin-700.css'
@@ -57,6 +58,27 @@ export default function Clay({ tier, def }: StyleProps) {
   const [flip, setFlip] = useState<number | null>(null)
   const [live, setLive] = useState(false)
   const fine = typeof window !== 'undefined' && finePointer()
+
+  // the works pass by in depth (D195): each device turns toward you as it reaches the middle, its giant
+  // letter slides behind it at another speed, and the clip of the one in the middle plays
+  const swWrap = useRef<HTMLDivElement>(null)
+  const swTrack = useRef<HTMLUListElement>(null)
+  useSideways(swWrap, swTrack, tier, {
+    ease: 0.09,
+    onFrame: ({ d }) => {
+      swTrack.current?.querySelectorAll<HTMLElement>('.cl-card').forEach((c, i) => {
+        const k = Math.max(-1.4, Math.min(1.4, d[i] ?? 0))
+        const dev = c.querySelector<HTMLElement>('.cl-dev')
+        const letter = c.querySelector<HTMLElement>('.cl-card__letter')
+        const stage = c.querySelector<HTMLElement>('.cl-card__stage')
+        if (dev) dev.style.transform = `translate(-50%, -50%) perspective(900px) rotateY(${(k * 28).toFixed(2)}deg) scale(${(1 - Math.abs(k) * 0.12).toFixed(3)})`
+        if (letter) letter.style.transform = `translateX(${(k * -38).toFixed(1)}%)`
+        if (stage) stage.style.filter = `saturate(${(1 - Math.min(0.6, Math.abs(k) * 0.7)).toFixed(2)})`
+        const vid = c.querySelector('video')
+        if (vid && tier !== 'still') { if (Math.abs(k) < 0.25) { if (vid.paused) void vid.play().catch(() => {}) } else if (!vid.paused) vid.pause() }
+      })
+    },
+  })
 
   useEffect(() => {
     if (PRERENDER || !canvas.current || !hero.current) return
@@ -175,9 +197,11 @@ export default function Clay({ tier, def }: StyleProps) {
       <div className="cl-window" aria-hidden="true"><svg viewBox="0 0 100 140"><path d="M2 138V50a48 48 0 0 1 96 0v88" /><path d="M50 4v134M2 78h96" /></svg></div>
       <section className="cl-paper cl-svc" data-ch="services" aria-labelledby="cl-svc-t">
         <h2 id="cl-svc-t" className="cl-h2" data-cl><span>{C.services.title}</span></h2>
-        <ul className="cl-cards">
+        <div className="sw cl-sw" ref={swWrap}>
+        <div className="sw__stage cl-sw__stage">
+        <ul className="cl-cards" ref={swTrack}>
           {C.services.items.map((s, i) => (
-            <li key={s.id} className="cl-card" data-g={GROUNDS[i % GROUNDS.length]} data-cl>
+            <li key={s.id} className="cl-card" data-g={GROUNDS[i % GROUNDS.length]}>
               <a href={s.href} data-pill="WATCH">
                 <span className="cl-card__stage">
                   <span className="cl-card__letter" aria-hidden="true">{s.title.charAt(0)}</span>
@@ -194,6 +218,8 @@ export default function Clay({ tier, def }: StyleProps) {
             </li>
           ))}
         </ul>
+        </div>
+        </div>
       </section>
 
       <section className="cl-paper cl-work" data-ch="work" aria-labelledby="cl-work-t">

@@ -161,3 +161,14 @@ html[data-style="buzz"] .st { background: transparent; }
 /* the escort (D191): fixed to the screen, under the words, over the sheet */
 .bz-swarm--escort { position: fixed; inset: 0; z-index: 1; opacity: calc(min(1, var(--bz-hero, 0) * 2)); transition: opacity 0.4s ease; }
 .bz-swarm--escort .bz-bee { width: 22px; height: 17px; margin: -8px 0 0 -11px; }
+
+/* ---- sideways services (D195): the chapter holds, the cards ride across on an arc ---- */
+.bz-sw { width: 100%; }
+.bz-sw.is-sideways { margin-inline: calc(-1 * clamp(18px, 3vw, 40px)); width: auto; align-self: stretch; }
+.bz-sw.is-sideways .bz-sw__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 70px; }
+.bz-sw.is-sideways .bz-cards { display: flex; flex-wrap: nowrap; width: max-content; overflow: visible; gap: 22px; margin: 34px 0 0; padding: 30px max(14vw, 40px) 60px; align-self: flex-start; }
+.bz-sw.is-sideways .bz-card { width: min(74vw, 330px); flex: none; }
+.bz-sw.is-sideways .bz-card a { display: flex; flex-direction: column; gap: 10px; min-height: 0; padding: 18px; will-change: transform; transform-origin: 50% 120%; }
+.bz-sw.is-sideways .bz-card__pic { width: 100%; aspect-ratio: 1; margin: 0 0 6px; }
+.bz-sw.is-sideways .bz-card__t { font-size: 20px; }
+@media (max-width: 760px) { .bz-sw.is-sideways .bz-h2 { font-size: 34px; } .bz-sw.is-sideways .bz-cards { margin-top: 20px; } }

@@ -1,6 +1,6 @@
 /* "שרטוט" after Heron AI: paper #F5F5EE, ink #282828 (72% for body), lines #B3B3AF a pixel thick, one red.
-   Red #FA3600 is theirs and draws lines, markers and the selection; text and filled cards use #D42E00, the
-   same red pulled to AA (4.6:1 on the paper, 5:1 under white). BT Grotesk becomes IBM Plex Sans Hebrew
+   Red #FA3600 is theirs and draws lines, markers and the selection; text and filled cards use #C42A00, the
+   same red pulled to AA on the textured paper (5.2:1, 5.7:1 under white). BT Grotesk becomes IBM Plex Sans Hebrew
    600/700 (an engineered grotesk with Hebrew), Geist Mono stays (their own instrument face, OFL). */
 html[data-style="blueprint"] {
   --st-ground: #f5f5ee;
@@ -12,7 +12,7 @@ html[data-style="blueprint"] {
   --bp-line: #b3b3af;
   --bp-grey: #b4b4b0;
   --bp-red: #fa3600;
-  --bp-red-t: #d42e00;
+  --bp-red-t: #c42a00;
   --bp-font: "IBM Plex Sans Hebrew", "MW Text", system-ui, sans-serif;
   --bp-mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --bp-pad: clamp(8px, 0.8rem, 13px);
@@ -227,3 +227,24 @@ html[data-style="blueprint"] .st-foot { border-top: 1px solid var(--bp-line); ma
   .bp-route__stop text { display: none; }
   .bp-route__here span { display: none; }
 }
+
+/* ---- sideways services (D195): the sheet passes under a red reading head ---- */
+.bp-sw.is-sideways { margin-top: 40px; margin-inline: -14px; }
+.bp-sw.is-sideways .bp-sw__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+.bp-sw__head { display: none; }
+.bp-sw.is-sideways .bp-sw__head { display: flex; justify-content: space-between; align-items: center; padding: 0 14px 12px; }
+.bp-sw__x { font: 500 12px/1 var(--bp-mono); color: #fff; background: var(--bp-red-t); padding: 4px 7px; }
+.bp-sw__head-line { display: none; }
+.bp-sw.is-sideways .bp-sw__head-line { display: block; position: absolute; z-index: 3; left: 50%; top: 18%; bottom: 14%; width: 0; border-left: 1px solid var(--bp-red); pointer-events: none; }
+.bp-sw.is-sideways .bp-sw__head-line::before, .bp-sw.is-sideways .bp-sw__head-line::after { content: ""; position: absolute; left: -6px; width: 11px; height: 1px; background: var(--bp-red); }
+.bp-sw.is-sideways .bp-sw__head-line::before { top: 0; } .bp-sw.is-sideways .bp-sw__head-line::after { bottom: 0; }
+.bp-sw.is-sideways .bp-grid {
+  position: relative; display: flex; flex-wrap: nowrap; width: max-content; margin: 0; padding: 22px max(40vw, 120px) 0; align-self: flex-start;
+  border-top: 1px solid var(--bp-line); border-bottom: 1px solid var(--bp-line); border-inline-start: 0;
+  background: repeating-linear-gradient(90deg, var(--bp-ink) 0 1px, transparent 1px 80px) 0 0 / 100% 9px no-repeat, repeating-linear-gradient(90deg, var(--bp-line) 0 1px, transparent 1px 8px) 0 0 / 100% 6px no-repeat;
+}
+.bp-sw.is-sideways .bp-cell { width: min(78vw, 520px); flex: none; border-inline-start: 1px solid var(--bp-line); border-bottom: 0; transition: background 0.48s cubic-bezier(.625, .05, 0, 1); }
+.bp-sw.is-sideways .bp-cell[data-on] { background: rgba(255, 255, 255, 0.7); }
+.bp-sw.is-sideways .bp-cell[data-on] .bp-cell__k { color: #fff; background: var(--bp-red-t); padding: 3px 5px; justify-self: start; }
+.bp-sw.is-sideways .bp-cell[data-on] .bp-cell__pic video { filter: grayscale(0.2) contrast(1.1); }
+.bp-sw.is-sideways .bp-cell__pic video { transition: filter 0.6s ease; }

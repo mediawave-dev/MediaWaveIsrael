@@ -17,6 +17,7 @@ import { finePointer } from '../motion'
 import Drawing from './Drawing'
 import Plan, { Steps } from './Plan'
 import Route from './Route'
+import { useSideways } from '../sideways'
 import './blueprint.css'
 
 export const prepare = () => Promise.all([document.fonts.load('700 40px "IBM Plex Sans Hebrew"', 'אבג'), document.fonts.load('500 12px "Geist Mono"', 'AB')])
@@ -104,13 +105,32 @@ export default function Blueprint({ tier, def }: StyleProps) {
     return () => { window.removeEventListener('pointermove', move); cancelAnimationFrame(raf) }
   }, [fine, tier])
 
+  // the services pass under a red reading head like a sheet under a scanner (D195): 1:1 with the scroll, the
+  // ruler moves with them, the cell under the head lights up and plays, a mono readout counts the travel
+  const swWrap = useRef<HTMLDivElement>(null)
+  const swTrack = useRef<HTMLUListElement>(null)
+  const readout = useRef<HTMLSpanElement>(null)
+  useSideways(swWrap, swTrack, tier, {
+    ease: 1,
+    onFrame: ({ x, d }) => {
+      if (readout.current) readout.current.textContent = `X:${String(Math.round(x)).padStart(4, '0')}PX`
+      swTrack.current?.querySelectorAll<HTMLElement>('.bp-cell').forEach((c, i) => {
+        const on = Math.abs(d[i] ?? 9) < 0.2
+        c.toggleAttribute('data-on', on)
+        const vid = c.querySelector('video')
+        if (vid && tier === 'full') { if (on) { if (vid.paused) void vid.play().catch(() => {}) } else if (!vid.paused) vid.pause() }
+      })
+    },
+  })
+
   const ref = useScene<HTMLDivElement>((e, root) => {
     if (e.REDUCE || tier === 'still') return
     const g = e.gsap
-    // the intro paragraph inks itself word by word, grey #B4B4B0 to ink (scrub)
+    // the intro paragraph inks itself word by word, grey to ink (scrub); the grey is Heron's idea at a readable
+    // depth (#6b6b66, 4.9:1 on the paper; their #B4B4B0 read at 1.8)
     root.querySelectorAll<HTMLElement>('[data-bp-ink]').forEach((p) => {
       const words = p.querySelectorAll('span')
-      g.fromTo(words, { color: '#b4b4b0' }, { color: '#282828', ease: 'none', stagger: 0.08, scrollTrigger: { trigger: p, start: 'top 82%', end: 'bottom 45%', scrub: true } })
+      g.fromTo(words, { color: '#6b6b66' }, { color: '#282828', ease: 'none', stagger: 0.08, scrollTrigger: { trigger: p, start: 'top 82%', end: 'bottom 45%', scrub: true } })
     })
     // elements arrive: scale and alpha, 1.6 s expo.out (their reveal)
     root.querySelectorAll<HTMLElement>('[data-bp-in]').forEach((el) => {
@@ -139,7 +159,7 @@ export default function Blueprint({ tier, def }: StyleProps) {
       plan.querySelectorAll<SVGGElement>('.bp-mark').forEach((m, i) => {
         const step = plan.querySelector(`.bp-step[data-i="${i}"]`)
         tl.from(m, { scale: 0, transformOrigin: '50% 50%', duration: 0.35, ease: 'back.out(2)' }, '>+0.2')
-        if (step) tl.fromTo(step, { opacity: 0.18 }, { opacity: 1, duration: 0.35 }, '<')
+        if (step) tl.fromTo(step, { opacity: 0.4 }, { opacity: 1, duration: 0.35 }, '<')
       })
     }
   }, [tier])
@@ -178,9 +198,13 @@ export default function Blueprint({ tier, def }: StyleProps) {
         <p className="bp-k" dir="ltr">[ SERVICES · 06 ]</p>
         <h2 id="bp-svc-t" className="bp-h2">{C.services.title}</h2>
         <p className="bp-lede" data-bp-ink>{words(`${C.hero.sub} ${C.hero.sub2}`)}</p>
-        <ul className="bp-grid">
+        <div className="sw bp-sw" ref={swWrap}>
+        <div className="sw__stage bp-sw__stage">
+        <div className="bp-sw__head" aria-hidden="true"><span className="bp-k" dir="ltr">[ SCAN · 06 ]</span><span className="bp-sw__x" ref={readout} dir="ltr">X:0000PX</span></div>
+        <i className="bp-sw__head-line" aria-hidden="true" />
+        <ul className="bp-grid" ref={swTrack}>
           {C.services.items.map((s, i) => (
-            <li key={s.id} className="bp-cell" data-bp-in>
+            <li key={s.id} className="bp-cell">
               <a href={s.href}>
                 <span className="bp-cell__k" dir="ltr">[{String(i + 1).padStart(2, '0')}]</span>
                 <span className="bp-cell__pic"><video src={`${CLIPS[s.id]}-m.mp4`} poster={`${CLIPS[s.id]}-poster-m.webp`} muted loop playsInline preload="none" aria-hidden="true"
@@ -192,6 +216,8 @@ export default function Blueprint({ tier, def }: StyleProps) {
             </li>
           ))}
         </ul>
+        </div>
+        </div>
       </section>
 
       <section className="bp-work" id="bp-work" data-ch="work" aria-labelledby="bp-work-t">
