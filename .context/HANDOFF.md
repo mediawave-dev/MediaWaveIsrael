@@ -1,3 +1,37 @@
+# HANDOFF: smooth scrolling, the way home, Blueprint notes, music (21.10.2026, D199) - releasing
+
+Rollback tags: prod-before-d199 (= origin/main before this release), prod-before-d198, prod-before-d194.
+
+## Goal
+Nati (21.10): scrolling "stuck, not smooth"; no way back to the main site from the worlds; Blueprint's notes cover
+each other; Blueprint's music not beautiful; music not intuitive, should change between worlds like Spotify.
+
+## Completed
+- Scrolling (measured with real touch swipes, G:/tmp/perf/scroll-jank.mjs + stalls.mjs + prof.mjs):
+  - no layout reads inside frames: SeaWay (chapter tops cached, ResizeObserver on body), SeaIsland, wave/clock.ts,
+    sea/sound.ts follow(), studio/sideways.ts (top/vw cached), blueprint/Route.tsx (path sampled once), Buzz, Clay.
+  - Buzz writes its three vars on the elements that use them, only on change; the bee wings beat from the swarm
+    loop (two strokes, staggered), no CSS animations; paused / invisible swarms keep no layers.
+  - sea-site.css: the island's fold rule names the bar's children (":not(.mw-head__logo)" restyled the page).
+  - sea/sound.ts bakes its buffers at idle (timer slices); arm() starts only on a real tap (pointerup/touchend
+    without movement, mouse pointerdown, key) and stays armed until the context runs (phones were left silent).
+  - Live vs build at 2x CPU: Buzz frames >50ms 144 -> 2 (p95 66.9 -> 16.9 ms); home >33ms 117 -> 47.
+- Way home: "( Home )" in the studio bar and "חזרה לאתר הראשי" in the map; goHome() covers with the wave in the
+  sea's colours, navigates without a reload, reveals.
+- Blueprint notes: one open at a time (tap), the drag selection replaces.
+- Music: music/engine.ts crossfade (dim at the wave's start; 3.2 s equal-power fall with a closing filter, 2.8 s
+  rise from a muffled start; per-track reverb send); new Blueprint track (felt piano, voices.piano, 92 BPM, a
+  32-bar song); SoundInvite.tsx (studio worlds except Clay, and the home via SiteGuide): "Tap anywhere for
+  music"; one AudioContext shared both ways (lendContext / adoptContext) so the music carries between the site
+  and the worlds.
+- QA clean (32 pages, overlap 0, GL x3, back). Lighthouse local: home 79, Buzz 94, Blueprint 96.
+
+## Known issues
+- The first tap that wakes audio still costs the AudioContext's creation (~80 ms on this desktop, once).
+- Buzz at 4x CPU (a weak phone) is ~30 fps; 60 at 2x.
+
+---
+
 # HANDOFF: performance round (21.10.2026, D198) - LIVE: main = a011768
 
 Rollback tag: prod-before-d198 (b166d2f). Live Lighthouse mobile (median of 3): home 87, Flight 94, Buzz 96,

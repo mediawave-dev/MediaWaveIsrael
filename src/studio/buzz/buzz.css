@@ -35,10 +35,16 @@ html[data-style="buzz"] .st { background: transparent; }
 .bz-bee svg, .bz-openmark svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .bz-bee .b, .bz-openmark .b { fill: currentColor; stroke: var(--bz-ink); stroke-width: 1.7; stroke-linejoin: round; }
 .bz-bee .d, .bz-openmark .d { fill: var(--bz-ink); }
-.bz-bee .w, .bz-openmark .w { fill: rgba(255, 255, 255, 0.72); stroke: var(--bz-ink); stroke-width: 1.3; transform-box: fill-box; transform-origin: 50% 100%; animation: bz-flap 0.13s ease-in-out var(--bz-d, 0s) infinite alternate; }
+.bz-bee .w, .bz-openmark .w { fill: rgba(255, 255, 255, 0.72); stroke: var(--bz-ink); stroke-width: 1.3; }
+.bz-openmark .w { transform-box: fill-box; transform-origin: 50% 100%; animation: bz-flap 0.13s ease-in-out var(--bz-d, 0s) infinite alternate; }
+/* (D199) a bee's wings are their own layer under its bubble, beaten by the swarm's loop (swarm.ts), two
+   strokes; the origin is the wings' lower edge (13.6 of the 32-unit drawing) */
+.bz-bee__w { position: absolute; inset: 0; transform-origin: 50% 42.5%; }
+.bz-bee > .bz-bee__b { position: relative; }
+/* a swarm off screen, or the escort while it is still invisible over the hero: no layers, no flutter */
+.bz-swarm.is-paused .bz-bee, .bz-swarm--escort.is-quiet .bz-bee { will-change: auto; }
 @keyframes bz-flap { to { transform: scaleY(0.42); } }
-.st[data-tier="calm"] .bz-bee .w { animation-duration: 0.4s; }
-.st[data-tier="still"] .bz-bee .w, .st[data-tier="still"] .bz-openmark .w { animation: none; }
+.st[data-tier="still"] .bz-openmark .w { animation: none; }
 
 /* ---- the opening: the mark, the word in its fuzz, the reveal, then the bees ---- */
 .bz-openmark { position: absolute; z-index: 4; left: 50%; top: 46%; width: 120px; height: 96px; margin: -48px 0 0 -60px; color: var(--bz-b); opacity: 0; transform: scale(0.92); transition: opacity 0.7s var(--bz-ease), transform 0.7s var(--bz-ease); pointer-events: none; }

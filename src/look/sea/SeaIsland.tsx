@@ -29,10 +29,14 @@ export default function SeaIsland() {
     let upFor = 0
     let speakT = 0
     let pending = 0
+    // (D199) the scroll position and the screen's height are read in the scroll event (layout is clean
+    // there): read in the frame, after the scroll scenes wrote their styles, they forced a layout each frame
+    let sy = window.scrollY
+    let vh = window.innerHeight
     const update = () => {
       pending = 0
-      const y = window.scrollY
-      const under = y > window.innerHeight * 0.35
+      const y = sy
+      const under = y > vh * 0.35
       html.toggle('sea-under', under)
       if (head === 'island') {
         if (open && Math.abs(y - openAt.current) > 360) setOpen(false)
@@ -45,13 +49,14 @@ export default function SeaIsland() {
       }
       lastY = y
     }
-    const onScroll = () => { if (!pending) pending = requestAnimationFrame(update) }
+    const onScroll = () => { sy = window.scrollY; vh = window.innerHeight; if (!pending) pending = requestAnimationFrame(update) }
     // a new chapter: the island opens just wide enough to say its line, then folds again
     const onWay = (e: Event) => requestAnimationFrame(() => requestAnimationFrame(() => speak((e as CustomEvent<string>).detail)))
     const speak = (line: string) => {
       if (!html.contains('sea-fold') || !measure.current) return
       measure.current.textContent = line
-      document.documentElement.style.setProperty('--speak-w', `${Math.ceil(measure.current.offsetWidth)}px`)
+      // on the bar that uses it: on the html element it restyled the whole page at every chapter
+      document.querySelector<HTMLElement>('.mw-head__bar')?.style.setProperty('--speak-w', `${Math.ceil(measure.current.offsetWidth)}px`)
       html.add('sea-speak')
       window.clearTimeout(speakT)
       speakT = window.setTimeout(() => html.remove('sea-speak'), SPEAK_MS)

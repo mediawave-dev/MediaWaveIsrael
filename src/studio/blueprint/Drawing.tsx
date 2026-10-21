@@ -127,7 +127,8 @@ export default function Drawing({ fine }: { fine: boolean }) {
     const [xa, xb] = [Math.min(d.x0, d.x1) / p.w * W, Math.max(d.x0, d.x1) / p.w * W]
     const [ya, yb] = [Math.min(d.y0, d.y1) / p.h * H, Math.max(d.y0, d.y1) / p.h * H]
     const hit = CHECKS.filter((c) => c.x >= xa && c.x <= xb && c.y >= ya && c.y <= yb)
-    if (hit.length) setOpen((o) => ({ ...o, ...Object.fromEntries(hit.map((c) => [c.id, true])) }))
+    // the box selects exactly what it holds (D199: notes opened earlier close, so none covers another)
+    if (hit.length) setOpen(Object.fromEntries(hit.map((c) => [c.id, true])))
   }
   const up = () => { drag.current = null; window.setTimeout(() => setSel(null), 600) }
 
@@ -148,7 +149,7 @@ export default function Drawing({ fine }: { fine: boolean }) {
       {s && <div className="bp-sel" style={s} aria-hidden="true" />}
       {CHECKS.map((c) => (
         <div key={c.id} className="bp-check" style={{ left: `${(c.x / W) * 100}%`, top: `${(c.y / H) * 100}%` }} data-open={open[c.id] || undefined} data-dir={c.x > 520 ? 'l' : 'r'}>
-          <button type="button" className="bp-check__dot" aria-expanded={!!open[c.id]} aria-label={c.text} onClick={() => setOpen((o) => ({ ...o, [c.id]: !o[c.id] }))} />
+          <button type="button" className="bp-check__dot" aria-expanded={!!open[c.id]} aria-label={c.text} onClick={() => setOpen((o) => (o[c.id] ? {} : { [c.id]: true }))} />
           <div className="bp-check__card" role="note">
             <span className="bp-check__code" dir="ltr">{c.code}</span>
             <span className="bp-check__t">{c.text}</span>

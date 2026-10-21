@@ -15,9 +15,13 @@ const marks = new Set<SVGSVGElement>()
 const inView = new Set<SVGSVGElement>()
 let io: IntersectionObserver | null = null
 let clock = 0
+// (D199) no pass while the page is being scrolled: it would add 126 dot restyles to every scroll frame
+let scrolledAt = 0
+const onScroll = () => { scrolledAt = performance.now() }
 
 function pass() {
   if (document.hidden) return
+  if (performance.now() - scrolledAt < 600) { window.setTimeout(pass, 700); return }
   const now = [...inView]
   now.forEach((m) => m.classList.add('is-ripple'))
   window.setTimeout(() => now.forEach((m) => m.classList.remove('is-ripple')), PASS)
@@ -31,12 +35,15 @@ function watch(m: SVGSVGElement) {
     else inView.delete(t)
   }))
   io.observe(m)
-  if (!clock) clock = window.setTimeout(function tick() { pass(); clock = window.setTimeout(tick, EVERY) }, FIRST)
+  if (!clock) {
+    window.addEventListener('scroll', onScroll, { passive: true })
+    clock = window.setTimeout(function tick() { pass(); clock = window.setTimeout(tick, EVERY) }, FIRST)
+  }
   return () => {
     marks.delete(m)
     inView.delete(m)
     io?.unobserve(m)
-    if (!marks.size) { window.clearTimeout(clock); clock = 0 }
+    if (!marks.size) { window.clearTimeout(clock); clock = 0; window.removeEventListener('scroll', onScroll) }
   }
 }
 

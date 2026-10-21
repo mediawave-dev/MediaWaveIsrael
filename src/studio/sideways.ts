@@ -28,7 +28,14 @@ export function useSideways(wrap: RefObject<HTMLElement | null>, track: RefObjec
     w.classList.add('is-sideways')
     const cards = [...t.children] as HTMLElement[]
     let dist = 0
+    let top = 0
     let lefts: number[] = []
+    let cur = 0
+    let x = 0
+    let vw = window.innerWidth
+    // (D199) the wrapper's place and the track's width are measured here (on resize and when the page's
+    // height changes), never in the frame: a box read there, after the scroll scenes wrote their styles,
+    // forced a full style and layout on every scroll frame
     const measure = () => {
       t.style.transform = 'none'
       const stage = t.parentElement as HTMLElement
@@ -36,34 +43,37 @@ export function useSideways(wrap: RefObject<HTMLElement | null>, track: RefObjec
       w.style.height = `${dist + window.innerHeight}px`
       const sr = stage.getBoundingClientRect()
       lefts = cards.map((c) => { const r = c.getBoundingClientRect(); return r.left - sr.left + r.width / 2 })
+      top = w.getBoundingClientRect().top + window.scrollY
+      vw = window.innerWidth
+      t.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`
     }
     measure()
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver(() => { measure(); kick() })
     ro.observe(t)
+    ro.observe(document.body)
     window.addEventListener('resize', measure)
 
-    let cur = 0
-    let x = 0
     let raf = 0
     let seen = false
+    // the scroll position is read in the scroll event, where layout is clean
+    let sy = window.scrollY
     const ease = opts.ease ?? 0.16
     const frame = () => {
       raf = 0
-      const r = w.getBoundingClientRect()
-      const p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - window.innerHeight)))
+      const p = Math.max(0, Math.min(1, (sy - top) / Math.max(1, dist)))
       cur += (p - cur) * (tier === 'calm' ? 1 : ease)
       const nx = cur * dist
       const v = nx - x
       x = nx
       t.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`
-      const vw = window.innerWidth
       opts.onFrame?.({ p: cur, v, x, d: lefts.map((l) => (l + x - vw / 2) / vw) })
       if (seen && Math.abs(p - cur) > 0.0005) raf = requestAnimationFrame(frame)
     }
-    const kick = () => { if (!raf) raf = requestAnimationFrame(frame) }
+    function kick() { if (!raf) raf = requestAnimationFrame(frame) }
+    const onScroll = () => { sy = window.scrollY; kick() }
     const io = new IntersectionObserver(([e]) => { seen = e.isIntersecting; if (seen) kick() }, { rootMargin: '20% 0px' })
     io.observe(w)
-    window.addEventListener('scroll', kick, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
     frame()
 
     // a keyboard visitor tabbing through the services lands on each one in the middle of the screen
@@ -77,7 +87,7 @@ export function useSideways(wrap: RefObject<HTMLElement | null>, track: RefObjec
     t.addEventListener('focusin', focus)
     return () => {
       ro.disconnect(); io.disconnect(); cancelAnimationFrame(raf)
-      window.removeEventListener('resize', measure); window.removeEventListener('scroll', kick)
+      window.removeEventListener('resize', measure); window.removeEventListener('scroll', onScroll)
       t.removeEventListener('focusin', focus)
       w.classList.remove('is-sideways'); w.style.height = ''; t.style.transform = ''
     }

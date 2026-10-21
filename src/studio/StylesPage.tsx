@@ -4,6 +4,7 @@
 // The main site stays the sea of dots; nothing of this page loads there.
 import { lazy, Suspense, useEffect, useRef, useState, type ComponentType } from 'react'
 import { flushSync } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 import SEO from '../components/SEO'
 import Logo from '../components/ui/Logo'
 import { useMotionEngine } from '../motion/ScrollEngineProvider'
@@ -12,7 +13,9 @@ import { useTier, tierNow } from './motion'
 import Guide, { STUDIO_PLAN } from './Guide'
 import WorldMap from './WorldMap'
 import SoundButton from './SoundButton'
-import { setWorld } from './sound'
+import { dimWorld, isSoundOn, leaveWorlds, onSoundChange, preloadSound, setSoundOn, setWorld } from './sound'
+import SoundInvite, { type SoundSource } from './SoundInvite'
+import { resumeMusic, yieldMusic } from '../look/sea/sound'
 
 type PickAt = { x: number; y: number }
 import { getCurtain, prepareCurtain } from './curtain'
@@ -28,6 +31,10 @@ const PRERENDERED = (() => {
   const here = window.location.pathname.replace(/\/+$/, '')
   return main?.dataset.route === '/styles' && here === '/styles' ? main.innerHTML : ''
 })()
+
+// the worlds' music for the invitation (D199); [קופי: נתי] the track names
+const STUDIO_SOUND: SoundSource = { isOn: isSoundOn, turnOn: () => setSoundOn(true), subscribe: onSoundChange, prepare: preloadSound }
+const TRACK: Record<string, string> = { flight: 'Cinematic ambient', buzz: 'Sunny lo-fi', blueprint: 'Felt piano · minimal', clay: 'Morning tape' }
 
 const fromUrl = () => (typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('s'))
 
@@ -60,6 +67,7 @@ export default function StylesPage() {
   const [title, setTitle] = useState<{ def: StyleDef; out: boolean } | null>(null)
   const tier = useTier()
   const engine = useMotionEngine()
+  const navigate = useNavigate()
   const lock = useRef(false)
   // a visitor who just came through the guide on the main site is not offered it again right away
   const plan = useRef(typeof window !== 'undefined' && window.__studioArrival ? { ...STUDIO_PLAN, first: 30000 } : STUDIO_PLAN)
@@ -77,6 +85,17 @@ export default function StylesPage() {
     })
     const id = window.setTimeout(() => setWidgets(true), 1800)
     return () => { live = false; clearTimeout(id) }
+  }, [])
+
+  // one music at a time (D199): the site's lo-fi gives way to the worlds' tracks; a visitor who was
+  // listening keeps listening (the world's track rises in its place), and on the way out it goes back
+  useEffect(() => {
+    if (yieldMusic(0.8) && tierNow() !== 'still') setSoundOn(true)
+    return () => {
+      const was = isSoundOn()
+      leaveWorlds()
+      if (was) resumeMusic(1.6)
+    }
   }, [])
 
   useEffect(() => {
@@ -129,6 +148,8 @@ export default function StylesPage() {
       // the wave (D188): it floods the screen in the new colours, the page changes under it, the name
       // shows, and a second wave breaks into squares to open the new style
       const calm = tier === 'calm'
+      // the music dips as the wave rises; the new world's track rises as it opens (setWorld, music/engine)
+      dimWorld(calm ? 520 : 820)
       await wave.cover(at, { from: def.ground, to: next.ground, ink: next.ink }, calm ? 520 : 820)
       const mod = await loading
       setTitle({ def: next, out: false })
@@ -152,6 +173,22 @@ export default function StylesPage() {
     setBusy(false)
   }
 
+  // back to the main site (D199, Nati: there was no way back): the wave in the sea's colours, the world's
+  // music falling away, the site's own coming back (the cleanup above), without a page load
+  async function goHome(e: { preventDefault: () => void }) {
+    e.preventDefault()
+    if (lock.current) return
+    lock.current = true
+    setMap(false)
+    const wave = tier === 'still' ? null : getCurtain()
+    if (wave) {
+      dimWorld(760)
+      await wave.cover({ x: window.innerWidth / 2, y: 40 }, { from: def.ground, to: '#0f1011', ink: '#ede7da' }, tier === 'calm' ? 520 : 760)
+      navigate('/')
+      window.setTimeout(() => { void wave.reveal(tier === 'calm' ? 520 : 900) }, 420)
+    } else navigate('/')
+  }
+
   return (
     <div className="st" data-tier={tier}>
       <SEO
@@ -161,11 +198,13 @@ export default function StylesPage() {
       />
       <a className="st-skip" href="#main-content">דלג לתוכן הראשי</a>
       <header className="st-bar">
-        <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
+        <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית" onClick={goHome}><Logo variant="compact" decorative /></a>
         {/* the always-there way to the worlds (keyboard, screen readers, anyone who missed the guide) */}
         <button type="button" className="st-bar__worlds" lang="en" dir="ltr" onClick={() => setMap(true)} aria-haspopup="dialog" aria-label="מפת העולמות: בחירת סגנון">
           ( Worlds<span className="st-bar__n"> · 04</span> )
         </button>
+        {/* [קופי: נתי] the plain way back, beside the worlds */}
+        <a className="st-bar__worlds st-bar__back" href="/" lang="en" dir="ltr" onClick={goHome} aria-label="חזרה לאתר הראשי">( Home )</a>
         <SoundButton />
       </header>
 
@@ -182,7 +221,7 @@ export default function StylesPage() {
           <a href="/terms/">תקנון שימוש</a>
           <a href="/privacy/">מדיניות פרטיות</a>
           <a href="/accessibility/">הצהרת נגישות</a>
-          <a href="/" lang="en" dir="ltr">( Back to the site + )</a>
+          <a href="/" lang="en" dir="ltr" onClick={goHome}>( Back to the site + )</a>
         </nav>
       </footer>
 
@@ -195,7 +234,8 @@ export default function StylesPage() {
         </div>
       )}
       <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} plan={plan.current} />
-      {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} />}
+      {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} onHome={(e) => void goHome(e)} />}
+      {tier !== 'still' && def.id !== 'clay' && <SoundInvite track={TRACK[def.id] ?? 'Music'} source={STUDIO_SOUND} cue={def.id} />}
 
       {widgets && (
         <aside aria-label="כלים">

@@ -47,26 +47,43 @@ export default function Route({ tier }: { tier: Tier }) {
   // drawing it with the scroll: the tip sits a little below the middle of the screen
   useEffect(() => {
     const path = line.current
-    if (!path || !geo) return
+    const root = svg.current?.parentElement
+    if (!path || !root || !geo) return
     const len = path.getTotalLength()
     path.style.strokeDasharray = `${len}`
+    // (D199) the path is sampled once (every 6 px of its length) and the sheet's top read once, so a
+    // scroll frame only searches an array: it used to read the sheet's box (a forced layout after the
+    // scroll scenes' writes) and ask the path for 19 points, every frame
+    const n = Math.max(2, Math.ceil(len / 6))
+    const L = new Float32Array(n + 1)
+    const X = new Float32Array(n + 1)
+    const Y = new Float32Array(n + 1)
+    for (let i = 0; i <= n; i++) { const l = (len * i) / n; const q = path.getPointAtLength(l); L[i] = l; X[i] = q.x; Y[i] = q.y }
+    const top = root.getBoundingClientRect().top + window.scrollY
+    let sy = window.scrollY
+    let vh = window.innerHeight
+    let lastOff = -1
+    let lastRead = ''
     let raf = 0
     const paint = () => {
       raf = 0
-      const root = svg.current?.parentElement
-      if (!root) return
-      const top = root.getBoundingClientRect().top
-      const target = tier === 'still' ? geo.h : -top + window.innerHeight * 0.62
-      // walk the path for the length whose point is at the target height (the route only ever goes down)
+      const target = tier === 'still' ? geo.h : sy - top + vh * 0.62
+      // the last sample above the target height (the route only ever goes down), then between it and the next
       let lo = 0
-      let hi = len
-      for (let k = 0; k < 18; k++) { const m = (lo + hi) / 2; if (path.getPointAtLength(m).y < target) lo = m; else hi = m }
-      path.style.strokeDashoffset = `${len - lo}`
-      const p = path.getPointAtLength(lo)
-      if (dot.current) dot.current.style.transform = `translate3d(${p.x}px, ${p.y}px, 0)`
-      if (read.current) read.current.textContent = `Y:${Math.round(p.y)}PX`
+      let hi = n
+      while (lo < hi) { const m = (lo + hi + 1) >> 1; if (Y[m] < target) lo = m; else hi = m - 1 }
+      const j = Math.min(n, lo + 1)
+      const f = Y[j] > Y[lo] ? Math.min(1, Math.max(0, (target - Y[lo]) / (Y[j] - Y[lo]))) : 0
+      const at = L[lo] + (L[j] - L[lo]) * f
+      const px = X[lo] + (X[j] - X[lo]) * f
+      const py = Math.min(target, Y[lo] + (Y[j] - Y[lo]) * f)
+      const off = Math.round((len - at) * 2) / 2
+      if (off !== lastOff) { lastOff = off; path.style.strokeDashoffset = `${off}` }
+      if (dot.current) dot.current.style.transform = `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0)`
+      const r = `Y:${Math.round(py)}PX`
+      if (read.current && r !== lastRead) { lastRead = r; read.current.textContent = r }
     }
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(paint) }
+    const onScroll = () => { sy = window.scrollY; vh = window.innerHeight; if (!raf) raf = requestAnimationFrame(paint) }
     paint()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }

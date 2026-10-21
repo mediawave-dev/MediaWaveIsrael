@@ -125,6 +125,42 @@ export function pluck(b: Bus, t: number, n: number, vol = 0.04, cutoff = 1800, w
   osc(b, 'square', hz(n) * 1.003, t, t + 0.6).connect(f)
 }
 
+/** a felt piano (D199, the blueprint world): a soft hammer through felt, two slightly detuned strings, the
+    second partial fading fast, a filter that closes as the note rings down, and a faint thump at the strike */
+export function piano(b: Bus, t: number, n: number, vol = 0.04, wet = 0.42) {
+  const f0 = hz(n)
+  const lp = b.ctx.createBiquadFilter()
+  lp.type = 'lowpass'
+  lp.Q.value = 0.3
+  lp.frequency.setValueAtTime(Math.min(5200, f0 * 7), t)
+  lp.frequency.exponentialRampToValueAtTime(Math.max(420, f0 * 1.8), t + 1.4)
+  const g = b.ctx.createGain()
+  env(g, t, 0.005, vol, 3.2)
+  lp.connect(g)
+  send(b, g, wet)
+  osc(b, 'triangle', f0, t, t + 3.6, -3).connect(lp)
+  osc(b, 'sine', f0, t, t + 3.6, 4).connect(lp)
+  const h2 = osc(b, 'sine', f0 * 2, t, t + 1.2)
+  const hg = b.ctx.createGain()
+  hg.gain.setValueAtTime(0.24, t)
+  hg.gain.exponentialRampToValueAtTime(0.001, t + 0.9)
+  h2.connect(hg).connect(lp)
+  // the felt: a breath of noise at the strike
+  const s = b.ctx.createBufferSource()
+  s.buffer = b.noise
+  const bp = b.ctx.createBiquadFilter()
+  bp.type = 'bandpass'
+  bp.frequency.value = Math.min(2400, f0 * 3)
+  bp.Q.value = 0.9
+  const ng = b.ctx.createGain()
+  ng.gain.setValueAtTime(vol * 0.5, t)
+  ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.05)
+  s.connect(bp).connect(ng).connect(g)
+  s.start(t, Math.random() * 1.5)
+  s.stop(t + 0.08)
+  s.onended = () => { s.disconnect(); ng.disconnect() }
+}
+
 /** a marimba hit: wood, quick and round */
 export function marimba(b: Bus, t: number, n: number, vol = 0.05, wet = 0.3) {
   const g = b.ctx.createGain()

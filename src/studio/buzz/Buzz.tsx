@@ -44,7 +44,7 @@ function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: Sty
     if (!host || PRERENDER || !run) return
     const n = window.innerWidth < 640 ? Math.round(count / 2) : count
     if (tier === 'still') return placeStill(host, n)
-    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
+    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, flap: tier === 'calm' ? 0.4 : 0.13, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
     const io = new IntersectionObserver(([e]) => sw.pause(!e.isIntersecting), { rootMargin: '120px' })
     io.observe(host)
     return () => { io.disconnect(); sw.stop() }
@@ -192,19 +192,34 @@ export default function Buzz({ tier, def }: StyleProps) {
       return a * (1 - b)
     }
     const mix = (k: number) => Y.map((v, i) => Math.round(v + (B[i] - v) * k)).join(',')
+    // (D199) each value is written only on the element that uses it, and only when it changed: on the
+    // world's root, every scroll frame restyled every element of the page (3 s of style in a 6 s scroll)
+    const last = new Map<string, string>()
+    const put = (node: HTMLElement | null, k: string, v: string) => {
+      if (!node || last.get(k) === v) return
+      last.set(k, v)
+      node.style.setProperty(k.split('@')[0], v)
+    }
     let raf = 0
+    // the scroll position is read in the scroll event (layout is clean there), not in the frame
+    let y = window.scrollY
+    let vh = window.innerHeight
     const paint = () => {
       raf = 0
-      const y = window.scrollY
-      const vh = window.innerHeight
-      el.style.setProperty('--bz-top', `rgb(${mix(blueAt(y + vh * 0.12))})`)
-      el.style.setProperty('--bz-bot', `rgb(${mix(blueAt(y + vh * 0.88))})`)
-      const hero = Math.min(1, y / (vh * 0.9))
-      el.style.setProperty('--bz-hero', String(hero))
+      const sheet = el.querySelector<HTMLElement>('.bz-sheet')
+      put(sheet, '--bz-top', `rgb(${mix(blueAt(y + vh * 0.12))})`)
+      put(sheet, '--bz-bot', `rgb(${mix(blueAt(y + vh * 0.88))})`)
+      const hero = Math.min(1, y / (vh * 0.9)).toFixed(3)
+      put(el.querySelector<HTMLElement>('.bz-hero__in'), '--bz-hero@in', hero)
+      const esc = el.querySelector<HTMLElement>('.bz-swarm--escort')
+      put(esc, '--bz-hero@escort', hero)
+      // invisible over the hero (opacity 0 there): its bees keep no layers and do not flutter
+      const quiet = Number(hero) < 0.005
+      if (esc && esc.classList.contains('is-quiet') !== quiet) esc.classList.toggle('is-quiet', quiet)
     }
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(paint) }
+    const onScroll = () => { y = window.scrollY; vh = window.innerHeight; if (!raf) raf = requestAnimationFrame(paint) }
     measure(); paint()
-    const ro = new ResizeObserver(() => { measure(); paint() })
+    const ro = new ResizeObserver(() => { y = window.scrollY; vh = window.innerHeight; measure(); paint() })
     ro.observe(el)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => { ro.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }

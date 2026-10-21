@@ -509,7 +509,9 @@ html.sea-head-island.sea-under .sea-island__pin { display: inline-grid; }
 .sea-island__measure { position: absolute; top: 0; inset-inline-start: -9999px; visibility: hidden; pointer-events: none; white-space: nowrap; }
 /* folded: the mark alone, a small island at the top centre; tabbing in opens it (focus-within) */
 html.sea-fold .mw-head__bar:not(:focus-within) { width: 56px; padding-inline: 13px; gap: 0; }
-html.sea-fold .mw-head__bar:not(:focus-within) > :not(.mw-head__logo) { opacity: 0; pointer-events: none; }
+/* (D199) the bar's own children by name, never "> :not(.mw-head__logo)": a subject that matches anything made
+   every fold and unfold of the island restyle the whole page (3,300 elements) in the middle of a scroll */
+html.sea-fold .mw-head__bar:not(:focus-within) > :is(.mw-head__nav, .mw-head__cta, .mw-head__sound, .mw-head__a11y, .mw-head__burger, .sea-island__open, .sea-island__pin, .sea-island__measure) { opacity: 0; pointer-events: none; }
 html.sea-fold .mw-head__bar:not(:focus-within) .sea-island__open { display: block; opacity: 1; pointer-events: auto; }
 html.sea-swallow .sea-island__open { display: block; opacity: 0; pointer-events: auto; }
 html.sea-fold .mw-head__bar:not(:focus-within) .mw-head__logo { pointer-events: none; }

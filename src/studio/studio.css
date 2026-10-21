@@ -28,6 +28,9 @@ html[data-style] body { background: var(--st-ground); color: var(--st-ink); }
   color: var(--st-ink); font: 600 12px/1 var(--st-mono); letter-spacing: 0.06em; white-space: nowrap; cursor: pointer; transition: background 0.3s ease;
 }
 .st-bar__worlds:hover, .st-bar__worlds:focus-visible { background: color-mix(in srgb, var(--st-ink) 12%, transparent); }
+/* the way back home (D199), quieter than the worlds */
+.st-bar__back { margin-inline-start: 0; text-decoration: none; }
+@media (max-width: 480px) { .st-bar__worlds { padding: 0 8px; } }
 
 .st-main { display: block; }
 /* headings take their world's ink, never the site's global heading colour (D194: "איך אנחנו" was #2a2a2a on the night) */

@@ -105,6 +105,10 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
     const trail: [number, number][] = []
     const lit: boolean[] = []
     let lastCheck = 0
+    // (D199) the spot is checked again only after the page moved (each check measures every label on screen)
+    let moved = false
+    const onMove = () => { moved = true }
+    window.addEventListener('scroll', onMove, { passive: true })
     const tick = (now: number) => {
       const s = state.current
       if (s.phase === 'away' || !el.current) { raf = 0; return }
@@ -125,7 +129,7 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
         const p = perch()
         x = p.x + Math.sin(k * 1.3) * 9 + Math.sin(k * 3.1) * 3
         y = p.y + Math.sin(k * 2.1) * 7
-        if (!open && (now - s.t0 > plan.stay || (now - lastCheck > 500 && ((lastCheck = now), !stillFree())))) flyOff(now)
+        if (!open && (now - s.t0 > plan.stay || (moved && now - lastCheck > 500 && ((lastCheck = now), (moved = false), !stillFree())))) flyOff(now)
       }
       const dx = x - s.x
       s.x = x
@@ -175,7 +179,7 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       for (let i = 0; i < segs.length; i++) { segs[i].setAttribute('opacity', '0'); lit[i] = false }
     }
     raf = requestAnimationFrame(tick)
-    return () => { cancelAnimationFrame(raf); raf = 0; wake.current = () => {} }
+    return () => { cancelAnimationFrame(raf); raf = 0; wake.current = () => {}; window.removeEventListener('scroll', onMove) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tier, open])
 

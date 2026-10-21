@@ -137,18 +137,29 @@ export default function Clay({ tier, def }: StyleProps) {
       else v.pause()
     }), { rootMargin: '80px' })
     el.querySelectorAll('video').forEach((v) => io.observe(v))
+    // (D199) the hero's place is measured on resize, the scroll read in the scroll event, and the value
+    // written on the one layer that uses it (it was the whole hero, every frame, forever)
     let raf = 0
-    const onScroll = () => {
-      if (raf) return
-      raf = requestAnimationFrame(() => {
-        raf = 0
-        const r = h.getBoundingClientRect()
-        const k = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height)))
-        h.style.setProperty('--cl-fg', String(1 - Math.min(1, Math.max(0, (k - 0.08) / 0.17))))
-      })
+    let sy = window.scrollY
+    let hTop = 0
+    let hH = 1
+    let last = ''
+    const fg = () => h.querySelector<HTMLElement>('.cl-room__fg')
+    const measure = () => { const r = h.getBoundingClientRect(); hTop = r.top + window.scrollY; hH = Math.max(1, r.height) }
+    const paint = () => {
+      raf = 0
+      const k = Math.min(1, Math.max(0, (sy - hTop) / hH))
+      const v = (1 - Math.min(1, Math.max(0, (k - 0.08) / 0.17))).toFixed(3)
+      const el = fg()
+      if (el && v !== last) { last = v; el.style.setProperty('--cl-fg', v) }
     }
+    const onScroll = () => { sy = window.scrollY; if (!raf) raf = requestAnimationFrame(paint) }
+    measure()
+    const ro = new ResizeObserver(() => { measure(); paint() })
+    ro.observe(h)
+    ro.observe(document.body)
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }
+    return () => { io.disconnect(); ro.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }
   }, [tier])
 
   const feed = () => {

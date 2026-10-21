@@ -72,48 +72,77 @@ export function level(): number {
   return Math.min(1, Math.sqrt(s / levelBuf.length) * 9)
 }
 
-function noiseBuffer(c: AudioContext, seconds: number, pink: boolean): AudioBuffer {
-  const b = c.createBuffer(2, Math.floor(c.sampleRate * seconds), c.sampleRate)
-  for (let ch = 0; ch < 2; ch++) {
-    const d = b.getChannelData(ch)
-    let b0 = 0, b1 = 0, b2 = 0
-    for (let i = 0; i < d.length; i++) {
-      const w = Math.random() * 2 - 1
-      if (!pink) { d[i] = w; continue }
-      // pinkish noise (Paul Kellet's economy filter): softer than white, like water
-      b0 = 0.99765 * b0 + w * 0.099046
-      b1 = 0.963 * b1 + w * 0.2965164
-      b2 = 0.57 * b2 + w * 1.0526913
-      d[i] = (b0 + b1 + b2 + w * 0.1848) * 0.16
-    }
+// (D199) The noise, the vinyl, the room and the sea are baked at idle before the first tap, one channel per
+// idle slice, into AudioBuffers that need no context: generated inside the first tap they were a 0.6 s
+// stall on a phone (2.3 million samples of Math.random and Math.pow).
+const BAKE_SR = 48000
+interface Recipe { seconds: number; fill: (d: Float32Array, sr: number) => void }
+const white = (d: Float32Array) => { for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1 }
+/** pinkish noise (Paul Kellet's economy filter): softer than white, like water */
+const pink = (d: Float32Array) => {
+  let b0 = 0, b1 = 0, b2 = 0
+  for (let i = 0; i < d.length; i++) {
+    const w = Math.random() * 2 - 1
+    b0 = 0.99765 * b0 + w * 0.099046
+    b1 = 0.963 * b1 + w * 0.2965164
+    b2 = 0.57 * b2 + w * 1.0526913
+    d[i] = (b0 + b1 + b2 + w * 0.1848) * 0.16
   }
-  return b
 }
-
 /** vinyl: sparse clicks and a low hiss, looped */
-function crackleBuffer(c: AudioContext, seconds: number): AudioBuffer {
-  const len = Math.floor(c.sampleRate * seconds)
-  const b = c.createBuffer(2, len, c.sampleRate)
-  for (let ch = 0; ch < 2; ch++) {
-    const d = b.getChannelData(ch)
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.012
-    for (let k = 0; k < seconds * 7; k++) {
-      const at = Math.floor(Math.random() * (len - 40))
-      const amp = 0.25 + Math.random() * 0.5
-      for (let j = 0; j < 30; j++) d[at + j] += (Math.random() * 2 - 1) * amp * Math.exp(-j / 6)
-    }
+const vinylFill = (seconds: number) => (d: Float32Array) => {
+  const len = d.length
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.012
+  for (let k = 0; k < seconds * 7; k++) {
+    const at = Math.floor(Math.random() * (len - 40))
+    const amp = 0.25 + Math.random() * 0.5
+    for (let j = 0; j < 30; j++) d[at + j] += (Math.random() * 2 - 1) * amp * Math.exp(-j / 6)
   }
-  return b
 }
-
-function room(c: AudioContext, seconds = 2.2, decay = 3): AudioBuffer {
-  const len = Math.floor(c.sampleRate * seconds)
-  const b = c.createBuffer(2, len, c.sampleRate)
-  for (let ch = 0; ch < 2; ch++) {
-    const d = b.getChannelData(ch)
-    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay)
+/** a small room: noise that dies away */
+const roomFill = (decay: number) => (d: Float32Array) => { const len = d.length; for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay) }
+const RECIPES: Record<'noise' | 'room' | 'vinyl' | 'sea', Recipe> = {
+  noise: { seconds: 2, fill: white },
+  room: { seconds: 2.2, fill: roomFill(3) },
+  vinyl: { seconds: 5, fill: vinylFill(5) },
+  sea: { seconds: 6, fill: pink },
+}
+type Baked = { buf: AudioBuffer; done: number }
+const baked: Partial<Record<keyof typeof RECIPES, Baked>> = {}
+function slot(key: keyof typeof RECIPES, c: AudioContext | null): Baked {
+  const have = baked[key]
+  if (have) return have
+  const sr = c?.sampleRate ?? BAKE_SR
+  const len = Math.floor(sr * RECIPES[key].seconds)
+  const buf = c ? c.createBuffer(2, len, sr) : new AudioBuffer({ numberOfChannels: 2, length: len, sampleRate: sr })
+  return (baked[key] = { buf, done: 0 })
+}
+/** the buffer, finished now if the idle baking has not finished it yet */
+function bakedBuffer(key: keyof typeof RECIPES, c: AudioContext): AudioBuffer {
+  // a convolver takes only its context's own rate: the room is made again if the guess was wrong
+  if (key === 'room' && baked.room && baked.room.buf.sampleRate !== c.sampleRate) delete baked.room
+  const b = slot(key, c)
+  while (b.done < 2) { RECIPES[key].fill(b.buf.getChannelData(b.done), b.buf.sampleRate); b.done += 1 }
+  return b.buf
+}
+/** bake at idle, one channel per slice (it stops as soon as the music has started) */
+export function prebake() {
+  if (typeof window === 'undefined' || typeof AudioBuffer === 'undefined') return
+  // short slices on a timer (a busy page may never be idle): done within a second, never a long task
+  const later = (f: () => void) => window.setTimeout(f, 60)
+  const keys = Object.keys(RECIPES) as (keyof typeof RECIPES)[]
+  const next = () => {
+    if (ctx) return
+    const key = keys.find((k) => (baked[k]?.done ?? 0) < 2)
+    if (!key) return
+    try {
+      const b = slot(key, null)
+      RECIPES[key].fill(b.buf.getChannelData(b.done), b.buf.sampleRate)
+      b.done += 1
+    } catch { return }
+    later(next)
   }
-  return b
+  later(next)
 }
 
 function lfo(c: AudioContext, hz: number, depth: number, target: AudioParam): GainNode {
@@ -137,7 +166,7 @@ function build(c: AudioContext) {
   analyser.fftSize = 512
   levelBuf = new Uint8Array(analyser.fftSize)
   master.connect(analyser)
-  noise = noiseBuffer(c, 2, false)
+  noise = bakedBuffer('noise', c)
 
   // the tape: everything musical goes through a warm lowpass, with a small room
   warm = c.createBiquadFilter()
@@ -146,7 +175,7 @@ function build(c: AudioContext) {
   warm.Q.value = 0.4
   warm.connect(master)
   const verb = c.createConvolver()
-  verb.buffer = room(c)
+  verb.buffer = bakedBuffer('room', c)
   const wet = c.createGain()
   wet.gain.value = 0.28
   verb.connect(wet).connect(master)
@@ -173,7 +202,7 @@ function build(c: AudioContext) {
 
   // vinyl crackle
   const vinyl = c.createBufferSource()
-  vinyl.buffer = crackleBuffer(c, 5)
+  vinyl.buffer = bakedBuffer('vinyl', c)
   vinyl.loop = true
   const vf = c.createBiquadFilter()
   vf.type = 'highpass'
@@ -185,7 +214,7 @@ function build(c: AudioContext) {
 
   // the sea: faint, under everything
   const src = c.createBufferSource()
-  src.buffer = noiseBuffer(c, 6, true)
+  src.buffer = bakedBuffer('sea', c)
   src.loop = true
   const seaF = c.createBiquadFilter()
   seaF.type = 'lowpass'
@@ -331,23 +360,27 @@ function schedule() {
 }
 
 /** scroll speed raises the sea a little (eased), like the field's ripple */
+// (D199) the scroll position comes from the scroll event: read in the frame it forced a layout every frame
+let nowY = 0
 function follow() {
   raf = 0
   if (!on || !ctx || !seaGain) return
-  const y = window.scrollY
+  const y = nowY
   speed = speed * 0.9 + Math.min(1, Math.abs(y - lastY) / 60) * 0.1
   lastY = y
   seaGain.gain.setTargetAtTime(0.035 + speed * 0.05, ctx.currentTime, 0.3)
   if (speed > 0.002) raf = requestAnimationFrame(follow)
 }
-const wakeFollow = () => { if (on && !raf) raf = requestAnimationFrame(follow) }
+const wakeFollow = () => { nowY = window.scrollY; if (on && !raf) raf = requestAnimationFrame(follow) }
 
 function tint(name: string) {
   if (!ctx || !warm) return
   warm.frequency.setTargetAtTime(TINT[name] ?? TINT.quiet, ctx.currentTime, 1.4)
 }
 const onScene = (e: Event) => { currentScene = (e as CustomEvent<string>).detail; tint(currentScene) }
-const onHidden = () => { if (!ctx) return; if (document.hidden) void ctx.suspend(); else if (on && running) void ctx.resume() }
+// (D199) the context may be lent to the worlds' music: it wakes for either of them
+let lent = false
+const onHidden = () => { if (!ctx) return; if (document.hidden) void ctx.suspend(); else if ((on && running) || lent) void ctx.resume() }
 
 /** a short voice: a sine (or a glide) with an exponential tail */
 function blip(f0: number, f1: number, dur: number, gain: number, type: OscillatorType = 'sine', at = 0) {
@@ -410,8 +443,8 @@ export function rewind(seconds: number) {
 function ensure(): boolean {
   if (ctx) return true
   const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
-  if (!AC) return false
-  ctx = new AC()
+  if (!AC && !adopted) return false
+  ctx = adopted ?? new AC!()
   build(ctx)
   window.addEventListener('sea:scene', onScene)
   window.addEventListener('scroll', wakeFollow, { passive: true })
@@ -428,6 +461,7 @@ function play(fade = 1.4) {
   master.gain.setValueAtTime(master.gain.value, t)
   master.gain.setTargetAtTime(LEVEL, t, fade)
   lastY = window.scrollY
+  nowY = lastY
   tint(currentScene)
   running = true
   nextStep = t + 0.4
@@ -437,14 +471,50 @@ function play(fade = 1.4) {
   emit()
 }
 
-function quiet() {
+function quiet(fade = 0.25) {
   if (!ctx || !master) return
   const t = ctx.currentTime
   master.gain.cancelScheduledValues(t)
-  master.gain.setTargetAtTime(0, t, 0.25)
+  master.gain.setTargetAtTime(0, t, fade)
   window.clearInterval(scheduler)
-  window.setTimeout(() => { if (!on) void ctx?.suspend() }, 1200)
+  window.setTimeout(() => { if (!on && !lent) void ctx?.suspend() }, 1200)
   running = false
+  emit()
+}
+
+/** (D199) One music at a time: the worlds take over. The site's track fades out (the visitor's choice
+    stays); returns whether it was playing, so the world's track can rise in its place. */
+export function yieldMusic(fade = 0.6): boolean {
+  if (!running) return false
+  quiet(fade)
+  return true
+}
+
+/** The invitation's tap (D199): the music on, now (inside the tap). */
+export function startMusic() {
+  if (!on) { on = true; try { sessionStorage.removeItem('mw-sound') } catch { /* private mode */ } }
+  if (!running) play(1.2)
+  else void ctx?.resume()
+  emit()
+}
+
+/** Back from the worlds: the site's track again, if the visitor has it on (its context, or the worlds'
+    one it adopted, is already awake, so this needs no tap of its own). */
+export function resumeMusic(fade = 1.4) {
+  if (on && !running && (ctx || adopted)) play(fade)
+}
+
+/** (D199) the worlds started the music in a context of their own: the site's music will play through it */
+let adopted: AudioContext | null = null
+export function adoptContext(c: AudioContext) {
+  if (!ctx) { adopted = c; lent = true }
+}
+
+/** The worlds' music plays through this context when it exists: it was started by a tap, so it may play
+    on (a phone will not start a new one without a tap of its own). */
+export function lendContext(): AudioContext | null {
+  if (ctx) lent = true
+  return ctx
 }
 
 /** The pill's control: off, or on again (a click is the gesture browsers require). */
@@ -456,17 +526,34 @@ export function toggle() {
   emit()
 }
 
-/** Armed: the first tap, click or key of the visit starts the music, slowly (about four seconds). */
+/** Armed: the first tap, click or key of the visit starts the music, slowly (about four seconds).
+    (D199) Only gestures that let a page start audio count: a mouse press, a key, or a finger lifted (a
+    finger touching down does not, so on phones the old first-pointerdown start left the context asleep
+    and the music silent). It stays armed until the context really runs. */
 export function arm() {
-  const events = ['pointerdown', 'keydown', 'touchend'] as const
-  const first = (e: Event) => {
+  const events = ['pointerdown', 'pointerup', 'keydown', 'touchend'] as const
+  const disarm = () => events.forEach((n) => window.removeEventListener(n, first, true))
+  // a finger that moved was a scroll, not a tap: a scroll never starts the music (nor the stall of
+  // waking the audio at the end of a swipe)
+  let at: { x: number; y: number } | null = null
+  function first(e: Event) {
+    const pt = (e as PointerEvent).pointerType
+    if (e.type === 'pointerdown') { at = { x: (e as PointerEvent).clientX, y: (e as PointerEvent).clientY }; if (pt !== 'mouse') return }
+    if (e.type === 'pointerup' && pt === 'mouse') return
+    if (e.type === 'pointerup' || e.type === 'touchend') {
+      const t = e.type === 'touchend' ? (e as TouchEvent).changedTouches[0] : (e as PointerEvent)
+      if (!at || !t || Math.hypot(t.clientX - at.x, t.clientY - at.y) > 12) return
+    }
     // the pill's own control handles its press itself
     if ((e.target as Element | null)?.closest?.('.mw-head__sound')) return
-    events.forEach((n) => window.removeEventListener(n, first, true))
-    if (on && !running) play(1.5)
+    if (!on) { disarm(); return }
+    if (!running) play(1.5)
+    else void ctx?.resume()
+    if (ctx?.state === 'running') disarm()
+    else void ctx?.resume().then(() => { if (ctx?.state === 'running') disarm() }).catch(() => {})
   }
   events.forEach((n) => window.addEventListener(n, first, { capture: true, passive: true }))
-  return () => events.forEach((n) => window.removeEventListener(n, first, true))
+  return disarm
 }
 
 if (typeof window !== 'undefined') window.addEventListener('sea:scene', (e) => { currentScene = (e as CustomEvent<string>).detail })
@@ -475,6 +562,7 @@ if (typeof window !== 'undefined') window.addEventListener('sea:scene', (e) => {
     faintly. Delegated on the document, so every page's keys and forms are covered. */
 export function hooks() {
   const disarm = arm()
+  const bakeT = window.setTimeout(prebake, 1800)
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
   let timer = 0
   const over = (e: PointerEvent) => {
@@ -487,7 +575,7 @@ export function hooks() {
   const typed = (e: Event) => { if (running && (e.target as Element | null)?.closest?.('#contact, .lm__card')) typeKey() }
   document.addEventListener('pointerover', over)
   document.addEventListener('input', typed)
-  return () => { disarm(); window.clearTimeout(timer); document.removeEventListener('pointerover', over); document.removeEventListener('input', typed) }
+  return () => { disarm(); window.clearTimeout(bakeT); window.clearTimeout(timer); document.removeEventListener('pointerover', over); document.removeEventListener('input', typed) }
 }
 
 // a probe for the cross-browser checks (state only, no control): is the context playing?

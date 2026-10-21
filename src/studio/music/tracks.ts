@@ -2,11 +2,13 @@
 // flight - cinematic ambient (slow pads in D major, glass bells over them, a deep root);
 // buzz - sunny lo-fi (a swung beat at 86 BPM, electric-piano chords on the genre's falling IV-iii-ii-V, a bass,
 //        a marimba line, a little vinyl dust);
-// blueprint - minimal electronica (a sixteenth-note arpeggio through a breathing filter at 108 BPM, a soft
-//        kick, rim ticks like a clock, a sub bass);
+// blueprint - felt piano minimalism, the Kiasmos and Olafur Arnalds kind (D199, Nati: the old arpeggio
+//        "is not beautiful enough"): a rolling left hand in eighths over Am-F-C-G at 92 BPM, a warm sub,
+//        a soft kick and brushes that come and go, and a right-hand melody in the second half; a 32-bar
+//        song (intro, pulse, melody, breakdown, full), so it never sounds like a loop;
 // clay - a warm morning tape (kalimba arpeggios, a low pad, brushes, tape hiss and a slow wobble).
 // Steps are sixteenths; a track gets the step number (from 0, forever) and the time to play it at.
-import { bass, bell, brush, crackle, hat, kalimba, keys, kick, marimba, pad, pluck, rim, snare, type Bus } from './voices'
+import { bass, bell, brush, crackle, hat, kalimba, keys, kick, marimba, pad, piano, snare, type Bus } from './voices'
 
 export interface Track { bpm: number; swing?: number; wow?: number; bed?: { kind: 'hiss' | 'dust'; vol: number }; step: (b: Bus, i: number, t: number, spb: number) => void }
 
@@ -54,21 +56,56 @@ const buzz: Track = {
   },
 }
 
-/** A minor: Am9, Fmaj7, Cmaj7, G6 (two bars each), arpeggiated */
-const BP_CH = [[57, 60, 64, 67, 71], [53, 57, 60, 64, 67], [48, 55, 59, 64, 67], [55, 59, 62, 64, 69]]
+/** C major, felt piano: Am(add9), Fmaj7, C(add9), G, two bars each (the much-loved vi-IV-I-V) */
+const BP_CH = [
+  { root: 45, v: [57, 64, 71, 72] },
+  { root: 41, v: [53, 60, 64, 69] },
+  { root: 48, v: [48, 55, 62, 64] },
+  { root: 43, v: [55, 62, 67, 71] },
+]
+/** the left hand rolls through the voicing in eighths */
+const BP_ROLL = [0, 1, 2, 3, 2, 1, 2, 3]
+/** the right hand: one phrase per chord, [step within its two bars, note] */
+const BP_MEL: [number, number][][] = [
+  [[0, 76], [6, 74], [12, 72], [20, 71], [24, 72]],
+  [[0, 69], [6, 72], [12, 76], [22, 74], [28, 72]],
+  [[0, 67], [8, 76], [14, 74], [20, 72], [26, 74]],
+  [[0, 71], [6, 74], [12, 79], [20, 76], [28, 74]],
+]
 const blueprint: Track = {
-  bpm: 108,
+  bpm: 92,
   step: (b, i, t, spb) => {
     const bar = Math.floor(i / 16)
     const s = i % 16
-    const ch = BP_CH[Math.floor(bar / 2) % 4]
-    const order = [0, 2, 1, 3, 2, 4, 3, 1]
-    const sweep = 900 + 1500 * (0.5 + 0.5 * Math.sin(i / 48))
-    pluck(b, t, ch[order[s % 8]] + (s >= 8 ? 12 : 0), 0.026, sweep)
-    if (s === 0 || s === 8) kick(b, t, 0.2)
-    if (s === 4 || s === 12) rim(b, t, 0.05)
-    if (s % 2 === 1 && rnd(i) > 0.55) rim(b, t, 0.018)
-    if (s === 0 && bar % 2 === 0) { bass(b, t, ch[0] - 12, spb * 30, 0.07); pad(b, t, ch.slice(0, 3), spb * 32, 0.012, 900, 0.5) }
+    const pair = Math.floor(bar / 2) % 4
+    const ch = BP_CH[pair]
+    const at = bar % 32
+    const pulse = (at >= 8 && at < 24) || at >= 28
+    const melody = at >= 16
+    const breakdown = at >= 24 && at < 28
+    // the left hand: eighths, the first of the bar a little stronger, never two the same
+    if (s % 2 === 0) {
+      const human = (rnd(i, 3) - 0.5) * 0.008
+      const vel = (s === 0 ? 0.034 : 0.025) * (0.9 + rnd(i, 4) * 0.2) * (breakdown ? 0.8 : 1)
+      piano(b, t + human, ch.v[BP_ROLL[(s / 2) % 8]], vel, 0.4)
+    }
+    if (s === 0 && bar % 2 === 0) {
+      pad(b, t, ch.v.slice(0, 3).map((n) => n - 12), spb * 32, breakdown ? 0.012 : 0.008, 760, 0.6)
+      if (pulse || breakdown) bass(b, t, ch.root, spb * 30, 0.05)
+    }
+    // the pulse: a soft kick on one and three, brushes on the off-beats, a brushed snare on two and four
+    if (pulse) {
+      if (s === 0 || s === 8) kick(b, t, 0.13)
+      if (at >= 16 && s === 14 && rnd(i, 5) > 0.6) kick(b, t, 0.06)
+      if (s % 4 === 2) brush(b, t, 0.014)
+      if (at >= 16 && (s === 4 || s === 12)) brush(b, t, 0.03)
+      if (at >= 16 && s % 2 === 1 && rnd(i, 6) > 0.7) hat(b, t, 0.006)
+    }
+    // the right hand, from the middle of the song; in the breakdown an octave up and softer
+    if (melody) {
+      const k = (bar % 2) * 16 + s
+      for (const [st, n] of BP_MEL[pair]) if (st === k) piano(b, t, breakdown ? n + 12 : n, breakdown ? 0.03 : 0.042, 0.55)
+    }
   },
 }
 

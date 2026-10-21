@@ -21,6 +21,9 @@ const parts = new Set<Part>()
 let raf = 0
 let sy = -1
 let listening = false
+// (D199) the native scroll position, read in the scroll event where layout is clean: read in the frame,
+// after the other loops had written their styles, it forced a full style and layout every frame
+let nowY = typeof window === 'undefined' ? 0 : window.scrollY
 
 export function isStill(): boolean {
   if (typeof window === 'undefined') return true
@@ -53,7 +56,7 @@ function measure(p: Part) {
 }
 
 function frame() {
-  const y = window.scrollY
+  const y = nowY
   sy = sy < 0 ? y : lerp(sy, y, SCROLL_EASE)
   if (Math.abs(sy - y) < 0.3) sy = y
   let moving = sy !== y
@@ -69,12 +72,14 @@ function frame() {
 }
 
 const wake = () => { if (!raf && parts.size) raf = requestAnimationFrame(frame) }
-const remeasure = () => { parts.forEach(measure); wake() }
+const onScroll = () => { nowY = window.scrollY; wake() }
+const remeasure = () => { nowY = window.scrollY; parts.forEach(measure); wake() }
 
 function listen() {
   if (listening) return
   listening = true
-  window.addEventListener('scroll', wake, { passive: true })
+  nowY = window.scrollY
+  window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('resize', remeasure)
   window.addEventListener('load', remeasure)
   document.fonts?.ready.then(remeasure)

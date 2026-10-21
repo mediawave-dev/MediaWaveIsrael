@@ -58,11 +58,19 @@ function pairs(from: Live[], to: Dot[]): Live[] {
 
 const ease = (t: number) => 1 - Math.pow(1 - t, 3)
 
-function chapterNow(): string {
+// (D199) where each chapter starts, in page px, measured once and again whenever the page's height changes
+// (lazy chapters, fonts, the held stages growing). Reading every chapter's box on each scroll frame, right
+// after the scroll scenes had written their styles, forced a full style and layout every frame (1.3 s of a
+// 6 s phone scroll).
+let tops: { id: string; top: number }[] = []
+function measureChapters() {
+  const y = window.scrollY
+  tops = [...document.querySelectorAll<HTMLElement>('main [data-chapter]')].map((el) => ({ id: el.dataset.chapter ?? '', top: el.getBoundingClientRect().top + y }))
+}
+function chapterAt(y: number, vh: number): string {
+  const mid = y + vh * 0.5
   let cur = 'hero'
-  document.querySelectorAll<HTMLElement>('main [data-chapter]').forEach((el) => {
-    if (el.getBoundingClientRect().top <= window.innerHeight * 0.5) cur = el.dataset.chapter ?? cur
-  })
+  for (const t of tops) if (t.top <= mid) cur = t.id || cur
   return cur
 }
 
@@ -130,11 +138,14 @@ export default function SeaWay() {
       window.dispatchEvent(new CustomEvent('sea:way', { detail: next }))
       void undecode(el).then(() => decode(el, next))
     }
+    // the scroll position is read in the scroll event (layout is clean there), not in the frame after
+    let sy = window.scrollY
+    let vh = window.innerHeight
     const update = () => {
       // the wordmark at the top of every page; the mark in dots once the reader is under way
-      const under = window.scrollY > window.innerHeight * 0.35
-      html.toggle('sea-way-on', under)
-      const ch = svc ? 'page' : chapterNow()
+      const under = sy > vh * 0.35
+      if (html.contains('sea-way-on') !== under) html.toggle('sea-way-on', under)
+      const ch = svc ? 'page' : chapterAt(sy, vh)
       if (ch !== chapter) {
         chapter = ch
         setLine(ch)
@@ -143,7 +154,11 @@ export default function SeaWay() {
       }
     }
     let pending = 0
-    const onScroll = () => { if (!pending) pending = requestAnimationFrame(() => { pending = 0; update() }) }
+    const onScroll = () => { sy = window.scrollY; vh = window.innerHeight; if (!pending) pending = requestAnimationFrame(() => { pending = 0; update() }) }
+    // ResizeObserver callbacks run after layout, so measuring there is free
+    const ro = new ResizeObserver(() => { vh = window.innerHeight; measureChapters(); update() })
+    ro.observe(document.body)
+    measureChapters()
     const onSvc = (e: Event) => {
       const id = (e as CustomEvent<string>).detail
       svcIcon = SCENE[id] ?? 'laptop'
@@ -157,6 +172,7 @@ export default function SeaWay() {
       cancelAnimationFrame(pending)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('sea:svc', onSvc)
+      ro.disconnect()
       html.remove('sea-way-on')
     }
   }, [pathname])

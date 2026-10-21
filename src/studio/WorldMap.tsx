@@ -8,7 +8,7 @@ import { waForStyle } from './lead'
 import { track } from '../utils/analytics'
 
 /** `current`: the world you are in (the studio); none on the main site, where the map is the invitation. */
-export default function WorldMap({ current, onClose, onPick }: { current: StyleDef | null; onClose: () => void; onPick: (s: StyleDef, at: { x: number; y: number }) => void }) {
+export default function WorldMap({ current, onClose, onPick, onHome }: { current: StyleDef | null; onClose: () => void; onPick: (s: StyleDef, at: { x: number; y: number }) => void; onHome?: (e: { preventDefault: () => void }) => void }) {
   const box = useRef<HTMLDivElement>(null)
   const close = useRef<HTMLButtonElement>(null)
   useEffect(() => {
@@ -71,6 +71,13 @@ export default function WorldMap({ current, onClose, onPick }: { current: StyleD
             )
           })}
         </ul>
+        {/* [קופי: נתי] the way back to the sea of dots, in the studio's map (D199) */}
+        {current && onHome && (
+          <a className="wm__home" href="/" onClick={onHome}>
+            <span className="wm__home-k" lang="en" dir="ltr">( Home )</span>
+            <span>חזרה לאתר הראשי</span>
+          </a>
+        )}
         {current && (
           <a className="wm__want" href={waForStyle(current)} target="_blank" rel="noopener noreferrer"
             onClick={() => track('cta_click', { location: `styles_want_${current.id}` })}>
