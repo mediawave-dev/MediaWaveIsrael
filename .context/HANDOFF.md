@@ -1,3 +1,33 @@
+# HANDOFF: performance round (21.10.2026, D198) - committed eb730d4 on feature/style-studio, NOT live
+
+Live is still b166d2f (D194-D197). Release needs Nati's go (tag prod-before-d198 = origin/main, branch, main).
+
+## Goal
+Nati: "תעשה עכשיו בדיקות performance ותתקן".
+
+## Completed (Lighthouse mobile, median of 3; live baseline -> local gzip build)
+home 47 -> 80-84, Flight 42 -> 96, Buzz 41 -> 94, Blueprint 87 -> 96, Clay 53 -> 95. Home CLS 0.036 -> 0.001.
+- scripts/prerender.mjs: the entry loads after load AND first-contentful-paint (was load + 150ms; Lighthouse's first
+  paint was held to 2.3s and LCP chained the JS). Inner pages no longer carry two loaders and double font preloads.
+- src/look/sea/WaDots.tsx + sea-site.css: the WhatsApp ripple is one shared 7s pass on marks in view (378 endless
+  dot animations restyled every frame).
+- src/styles/index.css: `[class~="bg-orange"] *` -> `.bg-orange *` (every class change restyled whole subtrees).
+- Flight/Clay: renderer.compileAsync before the first frame (ready promise, live after it). curtain.ts:
+  prepareCurtain() compiles at idle (StylesPage) or when the home map opens (SiteGuide).
+- Guide.tsx: the loop sleeps while away, its CSS animations stop, the trail writes only coordinates (20 fps hovering),
+  the trail clears on every "away".
+- sea.css: the hero clock keeps its final width while it decodes from dots.
+- QA (qa-all.sh) clean: 32 pages, overlap 0, GL in 3 browsers, back test; functional check G:/tmp/perf/func.mjs.
+
+## Known issues / next
+- Home TBT (300-700ms, noisy) is mostly the React remount (createRoot over the prerendered DOM) and the scroll
+  scenes' setup; hydration is a separate, bigger change.
+- The pre-JS parse/style/layout of the 200KB home HTML (3 passes) remains; content-visibility would break the
+  pinned scenes' measurements.
+- Tools: G:/tmp/perf/load-trace.mjs (+2 with invalidation reasons), prof.mjs (per-function profile), fp.mjs, cls.mjs.
+
+---
+
 # HANDOFF: readability, בוקר, sideways services (21.10.2026, D194-D197) - LIVE: main = D197 (see git log)
 
 Rollback tags: prod-before-d197 (4fa6e8b), prod-before-d194 (c1159c5), prod-before-d192 (9fded74), prod-before-d178 (e34beec).
