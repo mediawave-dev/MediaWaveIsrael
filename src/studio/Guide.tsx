@@ -26,11 +26,15 @@ function pickPerch(): { x: number; y: number } {
   const c = m
     ? [[w - 52, h - 150], [52, h - 150], [w - 52, h * 0.58], [52, h * 0.58], [w - 52, h * 0.3], [52, h * 0.3]]
     : [[w - 150, h - 190], [150, h - 190], [w - 110, h * 0.5], [110, h * 0.5]]
-  // the disc and its label: the label opens toward the middle of the screen, so look there too
-  const free = ([x, y]: number[]) => [[0, 0], [-26, 0], [26, 0], [0, -30], [0, 30], ...[60, 110, 170].flatMap((d) => [-16, 0, 16].map((dy) => [x < w / 2 ? d : -d, dy]))].every(([dx, dy]) => {
-    const el = document.elementFromPoint(Math.max(0, Math.min(w - 1, x + dx)), Math.max(0, Math.min(h - 1, y + dy)))
-    return !el?.closest(BUSY)
-  })
+  // what must stay clear: every button, link, field and line of text on screen, measured as boxes (a hit test
+  // would miss text that ignores the pointer)
+  const boxes = [...document.querySelectorAll<HTMLElement>(BUSY)].map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.bottom > 0 && r.top < h && r.right > 0 && r.left < w)
+  // the disc (60 px) and its label (about 180 px toward the middle of the screen)
+  const free = ([x, y]: number[]) => {
+    const left = x < w / 2
+    const box = { l: Math.min(x - 34, left ? x : x - 190), r: Math.max(x + 34, left ? x + 190 : x), t: y - 34, b: y + 34 }
+    return boxes.every((r) => r.right < box.l || r.left > box.r || r.bottom < box.t || r.top > box.b)
+  }
   const hit = c.find(free) ?? c[0]
   spot = { x: hit[0], y: hit[1] }
   return spot
