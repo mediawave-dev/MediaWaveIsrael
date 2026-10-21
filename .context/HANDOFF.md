@@ -1,3 +1,22 @@
+# HANDOFF: the home page invites into the worlds + legibility (21.10.2026, D192-D193)
+
+## Completed
+- D192: src/studio/SiteGuide.tsx (lazy, mounted by Layout on the home page after the opening + load + idle):
+  the little world in Horizon blue says "Explore 4 other worlds" (3 a visit, 40 s apart, once more at the
+  letter); its map (WorldMap with current=null) opens a world through the wave and an SPA route change;
+  StylesPage reads window.__studioArrival and opens the wave with the world's name. Guide.tsx takes a
+  GuidePlan; the landing spot is chosen by measuring the boxes of buttons and text. portal.css holds the
+  wave, the title, the guide and the map styles for both pages.
+- D193: Flight's day words have a sky halo (drop-shadow on containers); Buzz's headline settles at 0.32 fuzz;
+  no Hebrew in mono faces; the lead line isolates the English credit (bdi), no nested brackets.
+- Earlier today, live: D178-D191 (main 9fded74 before this round; tags prod-before-d178, prod-before-d191fix).
+
+## Next steps
+1. Nati's verdict on the home invitation, the wave, the music, the journeys.
+2. Possible: a "tour" mode that walks the four worlds; per-world music refinements; Flight's feathers (texture, bloom).
+
+---
+
 # HANDOFF: the style studio to production (21.10.2026, D185-D191) - branch feature/style-studio
 
 ## Goal
