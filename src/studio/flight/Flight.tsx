@@ -51,8 +51,10 @@ export default function Flight({ tier, def }: StyleProps) {
     import('./scene').then(({ startFlight }) => {
       if (!alive || !canvas.current) return
       try {
-        stop = startFlight(canvas.current, canvas.current.closest('.fl') as HTMLElement, tier).stop
-        setLive(true)
+        const s = startFlight(canvas.current, canvas.current.closest('.fl') as HTMLElement, tier)
+        stop = s.stop
+        // live once the programs are compiled and the first frame is drawn (the CSS sky until then)
+        void s.ready.then(() => { if (alive) setLive(true) })
       } catch { /* no WebGL: the CSS sky stays */ }
     })
     return () => { alive = false; stop() }

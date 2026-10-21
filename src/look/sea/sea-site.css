@@ -469,11 +469,13 @@ html[data-look="shot"] .key .wa-dots.key__dest { padding: 5px; }
   38% { transform: translate(calc(var(--dx) * 1.1px), calc(var(--dy) * 1.1px)) scale(0.4); }
   100% { transform: none; }
 }
-/* at rest: a slow ripple runs out from the centre every seven seconds, as through the field */
-@keyframes wa-ripple { 0%, 14%, 100% { transform: none; } 7% { transform: scale(1.4); } }
+/* at rest: a slow ripple runs out from the centre every seven seconds, as through the field. One pass per
+   `is-ripple` (D198, WaDots.tsx sets it on the marks in view): between passes nothing animates. :where keeps
+   the specificity, so the hover burst below still wins. */
+@keyframes wa-ripple { 0%, 100% { transform: none; } 50% { transform: scale(1.4); } }
 @media all { /* D160: full motion on every visit (was: prefers-reduced-motion: no-preference) */
-  html:not(.disable-animations):not(.motion-reduced) :is(.sea-card, .shot-dock__wa, .key__cap > .key__label) .wa-dots circle {
-    animation: wa-ripple 7s ease-in-out calc(2.4s + var(--d) * 45ms) infinite;
+  html:not(.disable-animations):not(.motion-reduced) :is(.sea-card, .shot-dock__wa, .key__cap > .key__label) .wa-dots:where(.is-ripple) circle {
+    animation: wa-ripple 0.98s ease-in-out calc(var(--d) * 45ms) both;
   }
 }
 @media (hover: hover) and (pointer: fine) {

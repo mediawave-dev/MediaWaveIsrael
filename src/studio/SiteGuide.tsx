@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Guide, { type GuidePlan } from './Guide'
 import WorldMap from './WorldMap'
-import { getCurtain } from './curtain'
+import { getCurtain, prepareCurtain } from './curtain'
 import { tierNow } from './motion'
 import type { StyleDef } from './registry'
 import { track } from '../utils/analytics'
@@ -35,7 +35,7 @@ export default function SiteGuide() {
   }
   return (
     <>
-      <Guide color="#79a0c5" tier={tier} open={map} onOpen={() => setMap(true)} plan={SITE_PLAN} />
+      <Guide color="#79a0c5" tier={tier} open={map} onOpen={() => { setMap(true); if (tier !== 'still') prepareCurtain() }} plan={SITE_PLAN} />
       {map && <WorldMap current={null} onClose={() => setMap(false)} onPick={(s, at) => void go(s, at)} />}
     </>
   )

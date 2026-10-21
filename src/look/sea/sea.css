@@ -64,6 +64,10 @@ html.sea-reveal [data-reveal]:not(.on) .sea-fade, html.sea-reveal [data-reveal].
 .sea-rec::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #e0533f; margin-inline-end: 8px; vertical-align: middle; }
 .sea-rec::after { content: none; }
 .sea-rec { font-variant-numeric: tabular-nums; }
+/* the clock develops out of dots one letter at a time (decode.ts): its box holds the final "00 : 00 : 00"
+   (12 mono letters with the tag's 0.08em tracking) from the first frame, so the labels beside it never
+   move or wrap while it writes itself (D198: Lighthouse CLS 0.036 on the phone hero) */
+.sea-clock { display: inline-block; width: calc(12ch + 0.96em); white-space: nowrap; }
 @media (max-width: 380px) { .sea-meta__mid { display: none; } }
 @media (max-height: 700px) and (max-width: 767px) {
   .sea-hero .sea-in { gap: 12px; }

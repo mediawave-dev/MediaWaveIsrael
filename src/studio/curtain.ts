@@ -69,20 +69,45 @@ export interface Curtain {
 }
 
 let shared: Curtain | null | undefined
+let started: { cv: HTMLCanvasElement; gl: WebGLRenderingContext; pr: WebGLProgram } | null | undefined
 
-/** One canvas for the page, built on first use (or at idle, so the first switch never waits on a compile). */
-export function getCurtain(): Curtain | null {
-  if (shared !== undefined) return shared
+/** The canvas, the context and the program handed to the driver (nothing waits on the compile here). */
+function start() {
+  if (started !== undefined) return started
   const cv = document.createElement('canvas')
   cv.className = 'st-curtain'
   cv.setAttribute('aria-hidden', 'true')
   const gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false })
-  if (!gl) { shared = null; return null }
+  if (!gl) return (started = null)
   const sh = (type: number, src: string) => { const s = gl.createShader(type)!; gl.shaderSource(s, src); gl.compileShader(s); return s }
   const pr = gl.createProgram()!
   gl.attachShader(pr, sh(gl.VERTEX_SHADER, VERT))
   gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FRAG))
   gl.linkProgram(pr)
+  return (started = { cv, gl, pr })
+}
+
+/** At idle (D198): the compile runs on the driver's threads (KHR_parallel_shader_compile) and the wave is
+    finished once it is done, so building it never blocks the page; asking for the link status right after
+    linking made it one long task. Without the extension it finishes a frame later. */
+export function prepareCurtain(): void {
+  const s = start()
+  if (!s || shared !== undefined) return
+  const ext = s.gl.getExtension('KHR_parallel_shader_compile')
+  const poll = () => {
+    if (shared !== undefined) return
+    if (!ext || s.gl.getProgramParameter(s.pr, ext.COMPLETION_STATUS_KHR)) getCurtain()
+    else requestAnimationFrame(poll)
+  }
+  requestAnimationFrame(poll)
+}
+
+/** One canvas for the page, finished on first use (prepared at idle, so the first switch never waits on a compile). */
+export function getCurtain(): Curtain | null {
+  if (shared !== undefined) return shared
+  const st = start()
+  if (!st) { shared = null; return null }
+  const { cv, gl, pr } = st
   if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { shared = null; return null }
   gl.useProgram(pr)
   const buf = gl.createBuffer()

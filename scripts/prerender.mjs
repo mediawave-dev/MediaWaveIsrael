@@ -174,9 +174,17 @@ async function prerender() {
     // and rebuilds the DOM), so FCP/LCP were chained to the whole JS graph
     // (Lighthouse mobile LCP 4.3-4.8s). Loading the entry only AFTER the first
     // paint makes the static HTML the recorded FCP AND LCP.
+    // D198: "after the first paint" is measured, not assumed. load + 150ms was not enough once the page
+    // grew (the sea, 200KB of HTML): in Lighthouse's run the first frame was not yet on screen at
+    // load + 150ms, the entry (and the sea's WebGL start) held it back to 2.3s, and the simulated LCP
+    // chained the whole JS graph (4.5s). Now the entry waits for load AND the first-contentful-paint entry;
+    // without paint timing it falls back to load alone, and the 3.5s timer still loads it whatever happens.
+    // (later routes are served the already-rewritten home page: its loader is in the snapshot next to
+    // the entry it appended, so drop it first, or every inner page carried two loaders)
+    html = html.replace(/<script>\(function\(\)\{var d=false[\s\S]*?<\/script>/g, '')
     const entryMatch = html.match(/<script type="module" crossorigin(?:="")? src="(\/assets\/index-[^"]+)"><\/script>/)
     if (entryMatch) {
-      const loader = `<script>(function(){var d=false;function m(){if(d)return;d=true;var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${entryMatch[1]}';document.head.appendChild(s)}if(document.readyState==='complete'){setTimeout(m,150)}else{window.addEventListener('load',function(){setTimeout(m,150)})}setTimeout(m,3500)})()</script>`
+      const loader = `<script>(function(){var d=false,L=false,P=false;function m(){if(d)return;d=true;var s=document.createElement('script');s.type='module';s.crossOrigin='';s.src='${entryMatch[1]}';document.head.appendChild(s)}function g(){if(L&&P)setTimeout(m,150)}try{var T=PerformanceObserver.supportedEntryTypes;if(!T||T.indexOf('paint')<0)throw 0;new PerformanceObserver(function(l,o){if(l.getEntriesByName('first-contentful-paint').length){o.disconnect();P=true;g()}}).observe({type:'paint',buffered:true})}catch(e){P=true}if(document.readyState==='complete'){L=true;g()}else{window.addEventListener('load',function(){L=true;g()})}setTimeout(m,3500)})()</script>`
       html = html.replace(entryMatch[0], loader)
     } else {
       console.warn(`    ! entry module script not found on ${route} — paint-first loader NOT applied`)
@@ -214,6 +222,8 @@ async function prerender() {
 
     // Preload the look's display face (the H1), early in <head>
     const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'
+    // the home page's font preloads came along in the served shell: one set per page
+    html = html.replace(/<link rel="preload" href="[^"]+\.woff2" as="font" type="font\/woff2" crossorigin(?:="")?>\s*/g, '')
     html = html.replace('<title>', `${fontPreloadLinks(look)}${route === '/styles' ? studioFontPreload() : ''}<title>`)
 
     // Stamp the route on <main>: the app reuses this markup as the first render's fallback only

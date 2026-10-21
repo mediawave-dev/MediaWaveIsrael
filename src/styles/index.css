@@ -984,10 +984,11 @@ html.high-contrast [role="button"] {
 
 /* Accent-filled CTAs hardcode dark-navy text for the pastel-sky fill;
    over the deep-sky high-contrast fill every one of them must flip to
-   white. [class~="bg-orange"] matches the exact utility (NOT bg-orange/10),
-   and !important beats the inline styles. */
-html.high-contrast [class~="bg-orange"],
-html.high-contrast [class~="bg-orange"] * {
+   white. .bg-orange matches the exact utility (NOT bg-orange/10), and !important beats the inline styles.
+   Never [class~="bg-orange"] here (D198): an attribute selector followed by `*` makes every class change on
+   any element (the html element's sea and Lenis classes included) restyle that element's whole subtree. */
+html.high-contrast .bg-orange,
+html.high-contrast .bg-orange * {
   color: #FFFFFF !important;
 }
 

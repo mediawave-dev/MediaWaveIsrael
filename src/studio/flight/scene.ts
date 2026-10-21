@@ -100,7 +100,7 @@ const C = (hex: string) => new Color(hex)
 const ROOT = [C('#3f52ff'), C('#7d5cff'), C('#2f43ff'), C('#ff5a12')]
 const TIP = [C('#ff8fc4'), C('#ffa060'), C('#9cc0ff'), C('#ffd06a')]
 
-export interface FlightScene { stop: () => void }
+export interface FlightScene { stop: () => void; ready: Promise<void> }
 
 export function startFlight(canvas: HTMLCanvasElement, root: HTMLElement, tier: Tier): FlightScene {
   const mobile = window.matchMedia('(max-width: 760px)').matches
@@ -252,13 +252,22 @@ export function startFlight(canvas: HTMLCanvasElement, root: HTMLElement, tier: 
     renderer.render(scene, camera)
   }
 
+  // D198: every program compiles off the main thread first (KHR_parallel_shader_compile), so the first
+  // frame links nothing; a first render that compiled them was one long task (Lighthouse: 0.6 s)
   let stopLoop = () => {}
-  if (tier === 'still') frame(0, 0)
-  else stopLoop = loop(frame)
-  canvas.dataset.ready = '1'
+  let stopped = false
+  const begin = () => {
+    if (stopped) return
+    if (tier === 'still') frame(0, 0)
+    else stopLoop = loop(frame)
+    canvas.dataset.ready = '1'
+  }
+  const ready = renderer.compileAsync(scene, camera).catch(() => undefined).then(begin)
 
   return {
+    ready,
     stop: () => {
+      stopped = true
       stopLoop()
       ro.disconnect()
       window.removeEventListener('resize', resize)

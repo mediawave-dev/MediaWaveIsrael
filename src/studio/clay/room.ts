@@ -152,7 +152,7 @@ function props(): Group {
   return g
 }
 
-export interface Room { stop: () => void; setPlaying: (on: boolean) => void }
+export interface Room { stop: () => void; setPlaying: (on: boolean) => void; ready: Promise<void> }
 
 /** The journey through the room (D191), one pose per chapter: camera xyz and where it looks. Hero: the
     cassette on its plinth; services: across to the bubble on the tall plinth, the windows behind; work: up
@@ -297,12 +297,20 @@ export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Ti
     skyMat.uniforms.uTime.value = t
     renderer.render(scene, camera)
   }
+  // D198: the programs compile off the main thread first (KHR_parallel_shader_compile); a first render
+  // that compiled them was one long task
   let stopLoop = () => {}
-  if (tier === 'still') frame(0, 0)
-  else stopLoop = loop(frame)
-  canvas.dataset.ready = '1'
+  let stopped = false
+  const begin = () => {
+    if (stopped) return
+    if (tier === 'still') frame(0, 0)
+    else stopLoop = loop(frame)
+    canvas.dataset.ready = '1'
+  }
+  const ready = renderer.compileAsync(scene, camera).catch(() => undefined).then(begin)
   return {
-    stop: () => { stopLoop(); ro.disconnect(); mro.disconnect(); vio.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose() },
+    ready,
+    stop: () => { stopped = true; stopLoop(); ro.disconnect(); mro.disconnect(); vio.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose() },
     setPlaying: (on) => { playing = on },
   }
 }

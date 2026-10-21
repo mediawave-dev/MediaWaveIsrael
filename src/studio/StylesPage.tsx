@@ -15,7 +15,7 @@ import SoundButton from './SoundButton'
 import { setWorld } from './sound'
 
 type PickAt = { x: number; y: number }
-import { getCurtain } from './curtain'
+import { getCurtain, prepareCurtain } from './curtain'
 import './studio.css'
 
 const AccessibilityWidget = lazy(() => import('../components/ui/AccessibilityWidget'))
@@ -72,7 +72,7 @@ export default function StylesPage() {
     const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback
     // and the other styles' chunks and fonts, so the wave never waits on the network either
     if (tierNow() !== 'still') (idle ?? ((cb: () => void) => window.setTimeout(cb, 1200)))(() => {
-      getCurtain()
+      prepareCurtain()
       window.setTimeout(() => STYLES.forEach((s) => { if (s.id !== def.id) void s.load().then(prepare).catch(() => {}) }), 2500)
     })
     const id = window.setTimeout(() => setWidgets(true), 1800)
@@ -101,7 +101,11 @@ export default function StylesPage() {
 
   const land = (ch: string) => {
     const el = document.querySelector<HTMLElement>(`[data-ch="${ch}"]`)
-    if (ch === 'hero' || !el) { engine?.lenis ? engine.lenis.scrollTo(0, { immediate: true, force: true }) : window.scrollTo(0, 0); return }
+    if (ch === 'hero' || !el) {
+      if (engine?.lenis) engine.lenis.scrollTo(0, { immediate: true, force: true })
+      else window.scrollTo(0, 0)
+      return
+    }
     if (engine?.lenis) engine.lenis.scrollTo(el, { immediate: true, force: true })
     else el.scrollIntoView({ block: 'start' })
   }

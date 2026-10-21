@@ -92,7 +92,10 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
   const [phase, setPhase] = useState<Phase>('away')
   const state = useRef({ phase: 'away' as Phase, shown: 0, last: -plan.cool, t0: 0, from: { x: 0, y: 0 }, to: { x: 0, y: 0 }, c1: { x: 0, y: 0 }, c2: { x: 0, y: 0 }, x: -100, y: -100 })
 
-  const go = (p: Phase) => { state.current.phase = p; setPhase(p) }
+  // the frame loop sleeps while the guide is away (D198) and wakes when it sets off
+  const wake = useRef<() => void>(() => {})
+  const clear = useRef<() => void>(() => {})
+  const go = (p: Phase) => { state.current.phase = p; setPhase(p); if (p !== 'away') wake.current(); else clear.current() }
 
   // the flight itself: a bezier in, a hover that bobs on two sines, a bezier out; sparks fall behind it
   useEffect(() => {
@@ -100,11 +103,12 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
     let raf = 0
     let lastSpark = 0
     const trail: [number, number][] = []
+    const lit: boolean[] = []
     let lastCheck = 0
     const tick = (now: number) => {
-      raf = requestAnimationFrame(tick)
       const s = state.current
-      if (s.phase === 'away' || !el.current) return
+      if (s.phase === 'away' || !el.current) { raf = 0; return }
+      raf = requestAnimationFrame(tick)
       const k = (now - s.t0) / 1000
       let x = s.x
       let y = s.y
@@ -130,18 +134,26 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       // the comet trail: the last positions, drawn as one path that thins and fades toward its tail
       trail.unshift([x, y])
       if (trail.length > 26) trail.length = 26
-      if (sparks.current && now - lastSpark > 16) {
+      // (D198) a segment's opacity and width depend only on its place, so they are written when it appears
+      // or goes, not every frame; while the guide only bobs in place the trail redraws at 20 fps
+      if (sparks.current && now - lastSpark > (s.phase === 'hover' ? 50 : 16)) {
         lastSpark = now
         const segs = sparks.current.children
         for (let i = 0; i < segs.length; i++) {
           const a = trail[i]
           const b = trail[i + 1]
           const seg = segs[i] as SVGLineElement
-          if (!a || !b) { seg.setAttribute('opacity', '0'); continue }
+          if (!a || !b) {
+            if (lit[i]) { seg.setAttribute('opacity', '0'); lit[i] = false }
+            continue
+          }
           seg.setAttribute('x1', a[0].toFixed(1)); seg.setAttribute('y1', a[1].toFixed(1))
           seg.setAttribute('x2', b[0].toFixed(1)); seg.setAttribute('y2', b[1].toFixed(1))
-          seg.setAttribute('opacity', (0.7 * (1 - i / segs.length)).toFixed(2))
-          seg.setAttribute('stroke-width', (2.6 * (1 - i / segs.length) + 0.3).toFixed(2))
+          if (!lit[i]) {
+            seg.setAttribute('opacity', (0.7 * (1 - i / segs.length)).toFixed(2))
+            seg.setAttribute('stroke-width', (2.6 * (1 - i / segs.length) + 0.3).toFixed(2))
+            lit[i] = true
+          }
         }
       }
     }
@@ -155,8 +167,15 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       s.t0 = now
       go('out')
     }
+    wake.current = () => { if (!raf) raf = requestAnimationFrame(tick) }
+    // away (flown off, or tapped open): no trail left on the screen
+    clear.current = () => {
+      trail.length = 0
+      const segs = sparks.current?.children ?? []
+      for (let i = 0; i < segs.length; i++) { segs[i].setAttribute('opacity', '0'); lit[i] = false }
+    }
     raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
+    return () => { cancelAnimationFrame(raf); raf = 0; wake.current = () => {} }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tier, open])
 

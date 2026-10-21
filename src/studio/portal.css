@@ -37,6 +37,8 @@
 @keyframes gd-sea { to { transform: translateX(34px); } }
 @keyframes gd-ring { to { transform: rotate(360deg); } }
 @keyframes gd-breathe { 50% { transform: scale(1.18); opacity: 0.22; } }
+/* away (hidden, off screen) nothing of it animates (D198) */
+.gd[data-phase="away"] :is(.gd__glow, .gd__sea, .gd__ring) { animation: none; }
 .gd:hover .gd__glow { opacity: 0.3; }
 .gd__say {
   position: absolute; top: 50%; right: calc(100% + 4px); transform: translate(8px, -50%); opacity: 0; white-space: nowrap; pointer-events: none;

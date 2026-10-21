@@ -86,7 +86,7 @@ export default function Clay({ tier, def }: StyleProps) {
     let stop = () => {}
     import('./room').then(({ startRoom }) => {
       if (!alive || !canvas.current || !hero.current) return
-      try { const r = startRoom(canvas.current, hero.current, tier); room.current = r; stop = r.stop; setLive(true) } catch { /* the CSS room stays */ }
+      try { const r = startRoom(canvas.current, hero.current, tier); room.current = r; stop = r.stop; void r.ready.then(() => { if (alive) setLive(true) }) } catch { /* the CSS room stays */ }
     })
     return () => { alive = false; stop() }
   }, [tier])
