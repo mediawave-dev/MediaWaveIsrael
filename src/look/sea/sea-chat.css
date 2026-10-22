@@ -1,0 +1,95 @@
+/* The chat panel in the sea (D204, SeaChat.tsx). Phones: the whole screen (the visual viewport's height,
+   so the keyboard never covers the input). Wider: a panel beside the AI key, which is at the left of the
+   dock below 1100px and at the start of the content's measure above it. */
+.sc {
+  position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column;
+  height: 100dvh; background: #0f1011; color: #ede7da; font-family: var(--text);
+}
+@media (min-width: 640px) {
+  .sc {
+    inset: auto auto 24px var(--gut, 24px); width: 384px; height: min(620px, calc(100dvh - 48px)); border-radius: 6px; overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.14), 0 40px 80px -28px #000, 0 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+}
+@media (min-width: 1100px) { .sc { left: auto; right: max(var(--gut, 24px), (100% - 1160px) / 2); } }
+/* while it is open, the guide and the music's invitation step away */
+html.chat-open :is(.gd, .gd-trail, .snd) { visibility: hidden !important; }
+
+/* the head: the AI's spark in dots, the name in the display face, the controls in the contact rows' mono */
+.sc__head {
+  display: flex; align-items: center; gap: 12px; flex: none; min-height: 72px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px 8px; border-bottom: 1px solid var(--sea-rule, rgba(237, 231, 218, 0.12));
+}
+.sc__spark { flex: none; width: 30px; height: 30px; color: #9dbcd8; }
+@media all { /* D160: full motion on every visit */
+  html:not(.disable-animations):not(.motion-reduced) .sc__spark { animation: ai-twinkle 4.2s ease-in-out 0.8s infinite; }
+}
+.sc__who { flex: 1; min-width: 0; }
+.sc__name { margin: 0; font: 800 22px/1 var(--display); font-stretch: 80%; color: #ede7da; unicode-bidi: isolate; }
+.sc__role { margin: 5px 0 0; font: 600 13px/1.2 var(--text); color: #a39d90; }
+.sc__ctl {
+  flex: none; display: grid; place-items: center; min-width: 52px; height: 44px; padding: 0 6px; border: 0; border-radius: 999px;
+  background: none; color: #a39d90; font: 600 13px/1 var(--sea-mono); white-space: nowrap; direction: ltr; cursor: pointer;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) { .sc__ctl:hover { color: #ede7da; background: rgba(237, 231, 218, 0.06); } }
+.sc__ctl:active { color: #ede7da; }
+
+/* the conversation: the sea's dots at rest behind it */
+.sc__log {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 16px;
+  padding: 24px 20px;
+  background: radial-gradient(circle, rgba(237, 231, 218, 0.07) 0 1px, transparent 1.5px) 0 0 / 16px 16px local;
+}
+.sc__msg { display: flex; }
+.sc__msg--ai { justify-content: flex-start; }
+.sc__msg--me { justify-content: flex-end; }
+/* every message stands on an island of halftone: the bot's dark, the visitor's cream */
+.sc__bubble {
+  position: relative; isolation: isolate; max-width: 84%; padding: 12px 16px;
+  font: 500 16px/1.6 var(--text); color: #ede7da; white-space: pre-wrap; overflow-wrap: anywhere; text-align: start;
+}
+.sc__msg--me .sc__bubble { --isle-ground: #ede7da; color: #0f1011; font-weight: 600; }
+.sc__bubble a { color: #9dbcd8; text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .sc__bubble a:hover { color: #ede7da; } }
+.sc__msg[data-failed] .sc__bubble::before { content: "[ ! ] "; content: "[ ! ] " / ""; font: 700 14px/1 var(--sea-mono); color: #f0907e; }
+/* the bot is writing: three dots hop, the bubble's own three dots */
+.sc__bubble--typing { padding: 16px 18px; }
+.sc__dots { display: flex; gap: 6px; }
+.sc__dots i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #a39d90; }
+@keyframes sc-hop { 0%, 60%, 100% { transform: none; opacity: 0.55; } 30% { transform: translateY(-5px); opacity: 1; } }
+html:not(.disable-animations):not(.motion-reduced) .sc__dots i { animation: sc-hop 1s ease-in-out infinite; }
+html:not(.disable-animations):not(.motion-reduced) .sc__dots i:nth-child(2) { animation-delay: 0.15s; }
+html:not(.disable-animations):not(.motion-reduced) .sc__dots i:nth-child(3) { animation-delay: 0.3s; }
+
+/* the input: the contact form's dotted frame; the send key: an island that fills with cream when there is
+   something to send */
+.sc__bar {
+  display: flex; align-items: flex-end; gap: 14px; flex: none;
+  padding: 14px 16px max(14px, env(safe-area-inset-bottom)); border-top: 1px solid var(--sea-rule, rgba(237, 231, 218, 0.12));
+}
+.sc__input {
+  --fd: rgba(237, 231, 218, 0.55); --fr: 1.1px;
+  flex: 1; min-width: 0; box-sizing: border-box; min-height: 52px; max-height: 120px; resize: none; margin: 0;
+  padding: 13px 16px; border: 0; border-radius: 0; color: #ede7da; font: 600 16px/1.6 var(--text); direction: rtl;
+  background:
+    radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 0 0 / 6px 6px repeat-x,
+    radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 0 100% / 6px 6px repeat-x,
+    radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 0 0 / 6px 6px repeat-y,
+    radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 100% 0 / 6px 6px repeat-y,
+    rgba(15, 16, 17, 0.6);
+}
+.sc__input::placeholder { color: #a39d90; opacity: 1; }
+/* focus is the frame itself: its dots turn cream and grow (no second frame around it) */
+.sc .sc__input:is(:focus, :focus-visible) { outline: none !important; box-shadow: none; --fd: #ede7da; --fr: 1.45px; }
+.sc__input:disabled { opacity: 0.6; }
+.sc__send {
+  position: relative; isolation: isolate; flex: none; display: grid; place-items: center; width: 52px; height: 52px; margin: 0;
+  padding: 0; border: 0; border-radius: 999px; background: none; color: #6f6a60; cursor: default; transition: color 0.2s linear;
+}
+.sc__arrow { width: 20px; height: 20px; }
+.sc__send[data-ready] { color: #0f1011; cursor: pointer; transition: color 0.15s linear 0.12s; }
+.sc__send[data-ready] .isle__ink path { --grow: 1; transition: --grow 0.42s cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--o) * 45ms); }
+.sc__send[data-ready]:active { transform: scale(0.94); }
+.sc :is(.sc__ctl, .sc__send):focus-visible { outline: 2px solid #ede7da; outline-offset: 2px; }
+html:is(.disable-animations, .motion-reduced) :is(.sc__spark, .sc__dots i) { animation: none !important; }

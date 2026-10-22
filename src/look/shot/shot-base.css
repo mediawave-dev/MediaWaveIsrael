@@ -281,7 +281,7 @@ html[data-look="shot"] .mw-consent__no { background: none; color: var(--ink-2); 
 /* ── the legacy panels on the desk: their Tailwind palette (looks.css .legacy) remapped onto
    table, paper and ink, only inside the two panels (the inner pages keep theirs). ── */
 html[data-look="shot"] #accessibility-panel,
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] {
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) {
   --color-cream: #ede7da;
   --color-cream-dark: #ede7da;
   --color-cream-darker: rgba(26, 25, 23, 0.14);
@@ -319,24 +319,25 @@ html[data-look="shot"] #accessibility-panel .bg-gray-400 { background: var(--pap
 html[data-look="shot"] #accessibility-panel .bg-gray-400 .bg-white { background: var(--ink-2); }
 
 /* chat panel: a sheet of paper (full screen on phones), an ink header, 17px messages, 18px input
-   (no iOS zoom). The panel's inline gradients are overridden here. */
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] {
+   (no iOS zoom). The panel's inline gradients are overridden here.
+   (the sea's own panel, .sc in look/sea/sea-chat.css, is left alone: D204) */
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) {
   background: var(--paper) !important; border: 0 !important; color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow);
 }
-@media (min-width: 640px) { html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] { border-radius: 2px; } }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child { background: var(--ink) !important; }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child .rounded-full:has(> div) { background: var(--paper); }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child p { font: 600 1rem/1.4 var(--ui); }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child p + p { font: 400 0.9rem/1.4 var(--text); }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] > div:first-child button { width: 44px; height: 44px; }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] [role="log"] .text-sm { font-size: 0.95rem; line-height: 1.6; }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] textarea {
+@media (min-width: 640px) { html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) { border-radius: 2px; } }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) > div:first-child { background: var(--ink) !important; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) > div:first-child .rounded-full:has(> div) { background: var(--paper); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) > div:first-child p { font: 600 1rem/1.4 var(--ui); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) > div:first-child p + p { font: 400 0.9rem/1.4 var(--text); }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) > div:first-child button { width: 44px; height: 44px; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) [role="log"] .text-sm { font-size: 0.95rem; line-height: 1.6; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) textarea {
   min-height: 44px; border-radius: 2px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line-ui);
   color: var(--ink); font: 400 1rem/1.5 var(--text);
 }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] textarea::placeholder { color: var(--ink-2); opacity: 1; }
-html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"] button[aria-label="שלח הודעה"] { width: 44px; height: 44px; border-radius: 2px; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) textarea::placeholder { color: var(--ink-2); opacity: 1; }
+html[data-look="shot"] [role="dialog"][aria-label="צ'אט עם MediaWave"]:not(.sc) button[aria-label="שלח הודעה"] { width: 44px; height: 44px; border-radius: 2px; }
 
 /* ── the shared paper between pages (D91): cross-document view transitions. The home page's
    service label and the service page's hero sheet carry one name (vt.ts), so a plain link morphs

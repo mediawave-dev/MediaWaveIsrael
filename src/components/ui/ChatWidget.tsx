@@ -7,10 +7,12 @@ import { EASE_BRAND } from '../../config/motion'
 import { LottieIcon } from './index'
 import { track } from '../../utils/analytics'
 import { CHAT_EVENT, takePendingChat } from './chat-event'
+import { linkifyContent, stripMarkdown } from './chat-text'
 import { LOOK } from '../../look/look'
 import DotGlyph from '../../look/sea/DotGlyph'
 import Brackets from '../../look/parts/Brackets'
 import Isle from '../../look/parts/Isle'
+import SeaChat from '../../look/sea/SeaChat'
 
 // --- Typing Indicator ---
 
@@ -26,46 +28,6 @@ function TypingIndicator() {
         />
       ))}
     </div>
-  )
-}
-
-// --- Bot message text hygiene ---
-// The prompt forbids markdown (see src/config/chatbot-prompt.ts rule 3), but the
-// bubble renders raw text in whitespace-pre-wrap, so a single slip shipped literal
-// '**' to the client. Strip the markers rather than pull in a markdown renderer.
-function stripMarkdown(text: string) {
-  return text
-    .replace(/\*\*(.+?)\*\*/gs, '$1')
-    .replace(/__(.+?)__/gs, '$1')
-    .replace(/^#{1,6}\s+/gm, '')
-    .replace(/^[ \t]*[-*•][ \t]+/gm, '')
-    .replace(/\s*—\s*/g, ', ')
-    .trim()
-}
-
-// --- URL linkification for bot messages ---
-
-const URL_REGEX = /(https?:\/\/[^\s)<>]+)/g
-
-function linkifyContent(text: string) {
-  const parts = text.split(URL_REGEX)
-  if (parts.length === 1) return text
-
-  return parts.map((part, i) =>
-    URL_REGEX.test(part) ? (
-      <a
-        key={i}
-        href={part}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline text-sky-ink hover:text-sky-ink-strong transition-colors"
-        onClick={() => track('chat_handoff', { placement: 'chat_message' })}
-      >
-        {part}
-      </a>
-    ) : (
-      part
-    )
   )
 }
 
@@ -348,7 +310,15 @@ export default function ChatWidget({ onOpenChange, triggerSlot, triggerActive }:
 
       {/* --- Chat Panel --- */}
       <AnimatePresence>
-        {isOpen && (
+        {isOpen && LOOK === 'shot' && (
+          <SeaChat
+            panelRef={panelRef} inputRef={inputRef} endRef={messagesEndRef}
+            messages={messages} isLoading={isLoading} isLimitReached={isLimitReached}
+            input={input} canSend={canSend} height={viewportHeight}
+            onInput={handleInput} onKeyDown={handleKeyDown} onSend={handleSend} onReset={handleReset} onClose={closeChat}
+          />
+        )}
+        {isOpen && LOOK !== 'shot' && (
           /* z-[60]: modal dialogs sit above the cookie banner (z-50), which mounts
              later in Layout and otherwise covered the message input (measured) */
           <m.div

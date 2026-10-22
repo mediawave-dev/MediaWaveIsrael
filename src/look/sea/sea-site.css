@@ -759,7 +759,8 @@ html[data-look="shot"] .shot-dock__chat-btn.is-ai { padding-inline: 24px; color:
   width: calc(100% + 2 * var(--out)); height: calc(100% + 2 * var(--out)); overflow: visible; pointer-events: none;
 }
 .isle path { fill: none; stroke-linecap: round; }
-.isle__ground path { stroke: #1b1d20; stroke-width: calc(var(--r) * 1px); }
+.isle__ground path { stroke: var(--isle-ground, #1b1d20); stroke-width: calc(var(--r) * 1px); }
+.isle__ground rect { fill: var(--isle-ground, #1b1d20); }
 /* the cream dots: at rest size zero; they shrink back rim first */
 .isle__ink path {
   stroke: #ede7da; stroke-width: calc(var(--r) * var(--grow) * 1px);

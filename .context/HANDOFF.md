@@ -1,3 +1,16 @@
+# HANDOFF: the AI chat window in the site's material (22.10.2026, D204)
+
+- src/look/sea/SeaChat.tsx + sea-chat.css: the shot look's chat panel (ChatWidget renders it when LOOK ===
+  'shot'; it keeps state, focus trap, Escape, the visual-viewport height). Messages on Isle islands (bot dark,
+  visitor cream), dotted input (focus = cream bigger dots), send = an island that fills when canSend.
+- src/components/ui/chat-text.tsx: stripMarkdown + linkifyContent (shared by both panels).
+- shot-base.css legacy chat rules now end in :not(.sc). html.chat-open hides .gd/.gd-trail/.snd; SoundInvite
+  treats chat-open as busy and ignores taps while it is open.
+- Isle: radius, ink=false; the ground's core is one rect (bands 0-3 as dots); the ink copy keeps all 5 bands.
+Rollback: prod-before-d204 (when shipped).
+
+---
+
 # HANDOFF: the floating buttons on an island of halftone dots, the email row fits (22.10.2026, D203)
 
 - src/look/parts/Isle.tsx: an SVG under a floating button (absolute, --out px beyond it): a 4px grid of round
