@@ -235,15 +235,6 @@ function Why() {
   )
 }
 
-/** The second track (D173): video, a memories film, tapes. Its steps are the ones the two service pages
-    already promise (data/services.ts), nothing new. [קופי: נתי] */
-const VIDEO_STEPS = [
-  { id: 'send', title: 'שולחים חומר', line: 'צילומים, תמונות מהאלבום או הקלטות עצמן, בקישור או בוואטסאפ.' },
-  { id: 'story', title: 'עריכה, הנפשה או המרה', line: 'חותכים ומוסיפים מוזיקה, מנפישים כל תמונה ומסדרים לפי תקופות, או ממירים את הקלטות לקובץ.' },
-  { id: 'watch', title: 'צפייה ותיקונים', line: 'רואים את הסרטון לפני האירוע, ומבקשים שינויים.' },
-  { id: 'file', title: 'קובץ סופי', line: 'MP4 שנפתח בכל טלפון ומחשב, ומתאים גם להקרנה באולם.' },
-]
-
 function Steps({ steps, label }: { steps: { id: string; title: string; line: string }[]; label: string }) {
   return (
     <ol className="sea-list sea-list--steps" aria-label={label}>
@@ -258,8 +249,9 @@ function Steps({ steps, label }: { steps: { id: string; title: string; line: str
   )
 }
 
-// how we work (D173, Nati: two tracks): building a site, a landing page or a bot, and then, in its own
-// voice, video, a memories film and tapes. [קופי: נתי] the track line and the second lede.
+// how we work (D173): building a site, a landing page or a bot. [קופי: נתי] the track line. The second
+// track (video, a memories film, tapes) left (22.10, "crowded on a phone, and a bit unrelated"): its lede
+// closes the services chapter (SeaServices), its steps live on the two service pages.
 function Process() {
   return (
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
@@ -269,12 +261,6 @@ function Process() {
         <p className="sea-proc__for sea-fade" data-zone="text">( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )</p>
       </header>
       <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
-      <p className="sea-lede sea-proc__also sea-fade" data-reveal="" data-zone="text">
-        <span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>
-        ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל:
-        מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה.
-      </p>
-      <Steps steps={VIDEO_STEPS} label="וידאו, סרט זיכרון וקלטות" />
     </section>
   )
 }

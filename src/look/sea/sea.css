@@ -161,6 +161,19 @@ html.sea-held .sea-lap__stage { position: sticky; top: 0; height: 100svh; min-he
   .sea-svc__row:hover .sea-svc__title { color: #79a0c5; }
   .sea-svc__row:hover .sea-svc__go { transform: translateX(-4px); }
 }
+/* a service's real sample (the memories film, D164's notation): its own link under the row, in the
+   service's words; wide held screens set it in the row's line column (below) */
+.sea-svc__sample {
+  display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-height: 44px; padding: 2px 6px;
+  margin: -12px -6px 14px; margin-inline-start: calc(2.6em + 6px); border-radius: 2px;
+  color: #ede7da; text-decoration: none; font-size: 15px; line-height: 1.4;
+}
+.sea-svc__sample-go { font: 600 12px/1 var(--sea-mono); color: #79a0c5; white-space: nowrap; transition: color 0.3s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .sea-svc__sample:hover { background: rgba(237, 231, 218, 0.06); }
+  .sea-svc__sample:hover .sea-svc__sample-go { color: #ede7da; }
+}
+.sea-svc__sample:focus-visible { outline: 3px solid #ede7da; outline-offset: 2px; }
 .sea-deck { grid-area: deck; display: none; align-items: center; gap: 14px; margin-top: 6px; font: 700 12px/1 var(--sea-mono); direction: ltr; color: #a39d90; justify-content: flex-end; }
 .sea-deck__count { background: #ede7da; color: #0f1011; padding: 6px 9px; border-radius: 3px; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; }
 .sea-deck__state { min-width: 6.5em; }
@@ -188,20 +201,46 @@ html.sea-held .sea-deck { display: flex; }
   html.sea-held .sea-svc__line { font-size: 17px; }
   html.sea-held .sea-svc__go { align-self: start; }
   html.sea-held .sea-deck { justify-content: flex-start; }
+  html.sea-held .sea-svc__sample { margin: 10px -6px 0; }
 }
 @media (min-width: 1100px) {
   .sea-svc__row { grid-template-columns: 3em minmax(0, 5fr) minmax(0, 5fr) 32px; grid-template-areas: "n title line go" ". . deck go"; padding-block: 30px; }
   html.sea-held .sea-svc__run { --seg: 66svh; }
-  html.sea-held .sea-svc__stage { align-content: center; padding-bottom: 0; }
+  html.sea-held .sea-svc__stage { align-content: center; padding-top: clamp(56px, 9.5svh, 96px); padding-bottom: 0; }
   html.sea-held .sea-svc__stage > * { max-width: 52%; }
   html.sea-held .sea-svc .sea-head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; margin-block-end: 28px; }
   html.sea-held .sea-svc .sea-head > .sea-tag:first-child { grid-column: 1 / -1; }
-  html.sea-held .sea-svc__h2 { font-size: min(5vw, 80px); }
-  html.sea-held .sea-svc__row { padding-block: 18px; grid-template-columns: 3em minmax(0, 4fr) minmax(0, 5fr) 32px; grid-template-areas: "n title line go"; }
-  html.sea-held .sea-svc__title { font-size: min(2.5vw, 38px); color: #a39d90; }
+  html.sea-held .sea-svc__h2 { font-size: min(5vw, 80px, 9svh); }
+  /* the whole index fits the held screen at any desktop height (Moria, 22.10: the sixth row fell off
+     the ground): sizes follow the screen's height, and one shared column grid (subgrid) keeps every
+     title on one line with the lines starting together */
+  html.sea-held .sea-svc .sea-head { margin-block-end: clamp(12px, 3svh, 28px); }
+  html.sea-held .sea-svc__list { display: grid; grid-template-columns: 3em max-content minmax(0, 1fr) 32px; column-gap: 12px; }
+  html.sea-held .sea-svc__item { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }
+  html.sea-held .sea-svc__row {
+    grid-row: 1; grid-column: 1 / -1; grid-template-columns: subgrid; grid-template-areas: "n title line go"; column-gap: inherit;
+    padding-block: clamp(6px, 1.4svh, 18px); padding-inline: 14px; isolation: isolate;
+  }
+  html.sea-held .sea-svc__title { font-size: min(2.5vw, 38px, 4.6svh); white-space: nowrap; color: #a39d90; }
+  html.sea-held .sea-svc__line { font-size: clamp(15px, 2.2svh, 17px); line-height: 1.5; transition: color 0.4s ease; }
   html.sea-held .sea-svc__item.is-on .sea-svc__title { color: #ede7da; }
   html.sea-held .sea-svc__item.is-on .sea-svc__n { color: #ede7da; }
   html.sea-held .sea-deck { display: none; }
+  /* the service on the stage is a lit band, and the band fills as the scroll runs through it (--fill,
+     set by SeaServices), so every turn of the wheel visibly moves something */
+  html.sea-held .sea-svc__row::before, html.sea-held .sea-svc__row::after {
+    content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: rgba(237, 231, 218, 0.07);
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  html.sea-held .sea-svc__row::after { transform: scaleX(var(--fill, 0)); transform-origin: 100% 50%; }
+  html.sea-held .sea-svc__item.is-on .sea-svc__row::before, html.sea-held .sea-svc__item.is-on .sea-svc__row::after { opacity: 1; }
+  /* the sample sits in a strip the row keeps free at its foot, across the line and picture columns, so
+     it stays on one line and never meets a line that wraps */
+  html.sea-held .sea-svc__item:has(.sea-svc__sample) .sea-svc__row { padding-block-end: calc(clamp(6px, 1.4svh, 18px) + 34px); }
+  html.sea-held .sea-svc__sample {
+    grid-row: 1; grid-column: 3 / -2; align-self: end; justify-self: start; position: relative; z-index: 1;
+    min-height: 32px; margin: 0 -6px clamp(4px, 0.8svh, 10px); font-size: 14px; white-space: nowrap;
+  }
 }
 
 /* ── 03 process, 04 questions, 05 the letter ── */
@@ -375,9 +414,17 @@ html.sea-gnd-deep:not(.sea-gl) #services { background: #1b3e62; }
 html.sea-gnd-deep #services { --sea-rule: rgba(237, 231, 218, 0.24); }
 html.sea-gnd-deep #services :is(.sea-svc__line, .sea-sub) { color: #d4cdbf; }
 html.sea-gnd-deep #services .sea-tag { color: #d4cdbf; }
-html.sea-gnd-deep #services .sea-svc__n { color: #a9c6e0; }
-@media (hover: hover) and (pointer: fine) { html.sea-gnd-deep #services .sea-svc__row:hover .sea-svc__title { color: #a9c6e0; } }
+html.sea-gnd-deep #services :is(.sea-svc__n, .sea-svc__sample-go) { color: #a9c6e0; }
+@media (hover: hover) and (pointer: fine) {
+  html.sea-gnd-deep #services .sea-svc__row:hover .sea-svc__title { color: #a9c6e0; }
+  html.sea-gnd-deep #services .sea-svc__sample:hover .sea-svc__sample-go { color: #ede7da; }
+}
 html.sea-gnd-deep #services :is(.sea-svc__title, .sea-svc__line, .sea-h2) { text-shadow: none; }
+/* the rows off the stage step back (still AA on the deep ground), the one on it reads in full */
+@media (min-width: 1100px) {
+  html.sea-held.sea-gnd-deep #services .sea-svc__line { color: #b9b2a5; }
+  html.sea-held.sea-gnd-deep #services .sea-svc__item.is-on .sea-svc__line { color: #ede7da; }
+}
 
 html.sea-gnd-paper .sea-contact { padding-block-end: clamp(64px, 12vh, 140px); color: #0f1011; --sea-rule: rgba(15, 16, 17, 0.18); }
 html.sea-gnd-paper:not(.sea-gl) .sea-contact { background: #ede7da; }
@@ -408,8 +455,9 @@ html.sea-held .sea-svc__pic { display: block; }
   html.sea-held .sea-svc__pic { width: 96px; justify-self: end; }
 }
 @media (min-width: 1100px) {
-  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: 3em minmax(0, 4fr) minmax(0, 5fr) 112px 32px; grid-template-areas: "n title line pic go"; }
-
+  html.sea-held .sea-svc__list:has(.sea-svc__pic) { grid-template-columns: 3em max-content minmax(0, 1fr) var(--pic) 32px; --pic: clamp(80px, 13svh, 112px); }
+  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-areas: "n title line pic go"; }
+  html.sea-held .sea-svc__pic { width: var(--pic); }
 
 }
 /* the hero's sunset: its video is only the texture's source (2 px, never a paint candidate) */
@@ -501,8 +549,11 @@ html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on .sea-word {
    the site's ( + ); the second track opens with a lede of its own (its tag in the indent), set well apart
    from the first list, then its four steps in the same rows ── */
 .sea-proc__for { margin: 14px 0 0; flex-basis: 100%; order: 3; max-width: 40ch; font: 400 clamp(17px, 1.5vw, 21px)/1.55 var(--text); color: #a39d90; text-shadow: var(--sea-halo); text-wrap: pretty; }
-.sea-proc__also { margin-block: clamp(64px, 9vw, 128px) 4px; font-size: clamp(21px, 2vw, 30px); }
-html.sea-type-lama .sea-proc__also { text-indent: max(6.2em, 150px); }
+/* the video lede closes the services chapter (moved from "how we work", 22.10), on its deep ground */
+.sea-svc__after { max-width: calc(1360px + 2 * var(--gut, 16px)); margin-inline: auto; padding: clamp(48px, 7vw, 96px) var(--gut, 16px) 0; }
+.sea-svc__also { font-size: clamp(21px, 2vw, 30px); }
+html.sea-type-lama .sea-svc__also { text-indent: max(6.2em, 150px); }
+html.sea-gnd-deep #services .sea-svc__also { color: #ede7da; }
 
 /* the style studio (D185): four portrait previews into /styles/; a row to swipe on phones, four across from 900 */
 .sea-styles__row {

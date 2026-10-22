@@ -38,6 +38,8 @@ export interface ShowItem {
   hrefLabel?: string
   /** a real work sample (the strongest proof on the card): /portfolio/<slug> */
   portfolio?: string
+  /** the service's own fact that names the sample (services.ts tags), its link's words */
+  portfolioLabel?: string
   lottie?: string
   image?: string
   renderer?: 'svg' | 'canvas'
@@ -50,6 +52,7 @@ export const SERVICES: ShowItem[] = servicesData.map((s) => ({
   href: `/services/${s.slug}/`,
   hrefLabel: `לפרטים על ${s.title}`,
   portfolio: s.portfolioLink,
+  portfolioLabel: s.tags?.find((t) => /דוגמה/.test(t)),
   lottie: s.lottieAnimation,
   image: s.imageIcon,
   renderer: s.lottieRenderer,

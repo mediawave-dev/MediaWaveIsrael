@@ -7,6 +7,7 @@ import AnimatedLogo from '../ui/AnimatedLogo'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { LOOK } from '../../look/look'
 import { turnThen, turnFrom } from '../../look/sea/SeaTurn'
+import DotGlyph from '../../look/sea/DotGlyph'
 
 const currentYear = new Date().getFullYear()
 
@@ -61,17 +62,17 @@ export default function Footer() {
   if (LOOK === 'shot') {
     const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => handleLinkClick(e, href)
     const contact = [
-      { k: 'TEL', t: SITE_CONTACT.phone, href: `tel:${SITE_CONTACT.phone}`, ltr: true, ev: 'tel_click' as const, ext: false },
-      { k: 'WHATSAPP', t: 'וואטסאפ', href: WHATSAPP_URLS.footer, ltr: false, ev: 'whatsapp_click' as const, ext: true },
-      { k: 'MAIL', t: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}`, ltr: true, ev: 'mailto_click' as const, ext: false },
-      { k: 'INSTAGRAM', t: 'אינסטגרם', href: SITE_CONTACT.instagramUrl, ltr: false, ev: 'instagram_click' as const, ext: true },
+      { k: 'TEL', ico: 'phone', t: SITE_CONTACT.phone, href: `tel:${SITE_CONTACT.phone}`, ltr: true, ev: 'tel_click' as const, ext: false },
+      { k: 'WHATSAPP', ico: 'wa', t: 'וואטסאפ', href: WHATSAPP_URLS.footer, ltr: false, ev: 'whatsapp_click' as const, ext: true },
+      { k: 'MAIL', ico: 'mail', t: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}`, ltr: true, ev: 'mailto_click' as const, ext: false },
+      { k: 'INSTAGRAM', ico: 'insta', t: 'אינסטגרם', href: SITE_CONTACT.instagramUrl, ltr: false, ev: 'instagram_click' as const, ext: true },
     ]
     return (
       <footer className="mw-foot sea-foot" data-theme="dark" data-intent="end">
         <div className="sea-foot__in">
           <div className="sea-foot__head">
             <span className="sea-tag">END CREDITS</span>
-            <p className="sea-foot__line">אתרים וסרטונים לעסקים,<br />ישר מהמפתח.</p>
+            <p className="sea-foot__line">אתרים וסרטונים לעסקים.</p>
           </div>
           <div className="sea-foot__cols">
             <nav className="sea-foot__col" aria-labelledby="sea-foot-nav">
@@ -94,8 +95,8 @@ export default function Footer() {
                 {contact.map((c) => (
                   <li key={c.k}>
                     <a className="sea-foot__row" href={c.href} {...(c.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})} onClick={() => track(c.ev, { placement: 'footer' })}>
-                      {/* keys only: the drawings live in the letter above (Nati, 21.10) */}
-                      <span className="sea-foot__k" aria-hidden="true">{c.k}</span>
+                      {/* each key with its mark, the same dot glyphs as the letter above (22.10: back by request) */}
+                      <span className="sea-foot__k" aria-hidden="true"><span className="sea-foot__ico"><DotGlyph name={c.ico} /></span>{c.k}</span>
                       <span className="sea-foot__t" dir={c.ltr ? 'ltr' : undefined}>{c.t}</span>
                       <span className="sea-foot__plus" aria-hidden="true">{c.ext ? '( ↗ )' : '( + )'}</span>
                     </a>
@@ -123,7 +124,7 @@ export default function Footer() {
       {signFirst && sign}
       <div className="mw-foot__in">
         <div className="mw-foot__brand">
-          <p className="mw-foot__line">אתרים וסרטונים לעסקים, ישר מהמפתח.</p>
+          <p className="mw-foot__line">אתרים וסרטונים לעסקים.</p>
         </div>
 
         {/* h2: the page h1 comes first, footer headings must not skip levels */}

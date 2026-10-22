@@ -98,6 +98,8 @@ export default function SeaServices() {
       backdrop.current.show(SERVICES[active].id)
       sound.tick()
     }
+    // the lit row's band fills as the scroll runs through its service (sea.css, wide screens)
+    list.current?.style.setProperty('--fill', at(active).toFixed(3))
     // the websites row keeps the laptop where its chapter left it (open, the lead arrived)
     SERVICES.forEach((s, i) => { if (s.id !== 'websites' && s.id !== 'video-editing') serviceAt(s.id, at(i)) })
     const tp = at(TAPE_AT)
@@ -141,10 +143,24 @@ export default function SeaServices() {
                   )}
                   <svg className="sea-svc__go" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
                 </a>
+                {/* the real sample lives in its service's row (Moria, 22.10: it left its own chapter) */}
+                {s.portfolio && s.portfolioLabel && (
+                  <a className="sea-svc__sample" href={s.portfolio} data-cursor="לצפייה" data-zone="text" onClick={() => track('cta_click', { placement: `services_sample_${s.id}` })}>
+                    {s.portfolioLabel}<span className="sea-svc__sample-go" aria-hidden="true">( לצפייה + )</span>
+                  </a>
+                )}
               </li>
             ))}
           </ol>
         </div>
+      </div>
+      {/* video, a memories film and tapes, in their own words (moved here from "how we work", 22.10). [קופי: נתי] */}
+      <div className="sea-svc__after">
+        <p className="sea-lede sea-svc__also sea-fade" data-reveal="" data-zone="text">
+          <span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>
+          ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל:
+          מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה.
+        </p>
       </div>
     </section>
   )
