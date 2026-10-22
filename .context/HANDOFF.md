@@ -1,3 +1,20 @@
+# HANDOFF: smooth scrolling on the site and in the worlds, a bug sweep (22.10.2026, D210)
+
+- Measure: G:/tmp/perf/scroll-jank.mjs <url> <tag> <cpu> (INV=1 for invalidations), where.mjs (long frames by
+  chapter; NOPLAY=1 stubs video play), callers.mjs (who calls a hot function), before.mjs (what dirtied style before
+  a forced recalc), anims.mjs (running CSS animations), net.mjs (failed requests per route), flows.mjs (menu, chat,
+  form, studio, links). A test build: vite build --outDir G:/tmp/postsend/dist-ep, served on localhost:4196.
+- Rules learned: no endless main-thread CSS animation (letter-spacing, color, svg transforms) while scrolling; no
+  layout read inside rAF (utils/scroll-cache.ts); counters via utils/set-text.ts; no mix-blend-mode on full-screen or
+  moving video layers; start videos when the reader rests, not while passing; many moving sprites = one canvas.
+- Files: utils/scroll-cache.ts (+ markScrolling in main.tsx), utils/set-text.ts, look/sea/{sea.css, SeaHome,
+  SeaServices, field.ts, SeaTrail, sea-site.css}, ChatWidget (.mw-ai wrapper), motion/motion-engine.js (Lenis FINE
+  only), studio/buzz/swarm.ts (canvas), studio/clay/room.ts, studio/flight/scene.ts, studio/blueprint/{Blueprint,
+  Route, blueprint.css}, studio/portal.css.
+Rollback: prod-before-d210.
+
+---
+
 # HANDOFF: the little world after a send, "the orbit" (22.10.2026, D209)
 
 - src/studio/SentGuide.tsx + sent-guide.css: lazy, mounted by look/sections/Contact.tsx (SHOT only, once a visit)

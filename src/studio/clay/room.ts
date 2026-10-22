@@ -10,6 +10,7 @@ import {
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { damp, loop, type Tier } from '../motion'
+import { scrollTop, viewHeight } from '../../utils/scroll-cache'
 
 const clay = (hex: string, rough = 0.92) => new MeshStandardMaterial({ color: new Color(hex), roughness: rough, metalness: 0 })
 
@@ -246,8 +247,9 @@ export function startRoom(canvas: HTMLCanvasElement, hero: HTMLElement, tier: Ti
     const y = window.scrollY
     marks = [...root.querySelectorAll<HTMLElement>('[data-ch]')].map((el) => { const r = el.getBoundingClientRect(); return { top: r.top + y, h: Math.max(1, r.height) } })
   }
+  // (D210) called every frame: the scroll as of its event, not a fresh read after this frame's writes
   const progress = () => {
-    const mid = window.scrollY + window.innerHeight * 0.5
+    const mid = scrollTop() + viewHeight() * 0.5
     for (let j = marks.length - 1; j >= 0; j--) if (mid >= marks[j].top) return Math.min(marks.length - 1, j + Math.min(1, (mid - marks[j].top) / marks[j].h))
     return 0
   }

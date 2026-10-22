@@ -250,7 +250,7 @@ export default function ChatWidget({ onOpenChange, triggerSlot, triggerActive }:
       data-cursor={LOOK === 'shot' ? 'שאלו את הבוט, הוא עונה מיד' : undefined}
     >
       {/* the sea (Nati, 20.10): the AI's spark in dots and the two letters everyone reads as AI */}
-      {LOOK === 'shot' ? (<><DotGlyph name="ai" n={11} className="mw-ai" /><span className="mw-ai__t" aria-hidden="true">AI</span><Brackets /><Isle /></>) : <LottieIcon
+      {LOOK === 'shot' ? (<><span className="mw-ai" aria-hidden="true"><DotGlyph name="ai" n={11} /></span><span className="mw-ai__t" aria-hidden="true">AI</span><Brackets /><Isle /></>) : <LottieIcon
         animationPath="/animations/7%20chatbot/chatbot_header.json"
         size={36}
         loop={false}

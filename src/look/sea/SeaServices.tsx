@@ -19,6 +19,7 @@ import { CLIPS, SERVICE_MEDIA, posterOf, tileOf, videoOf } from './media'
 import { GroundSource } from './SeaGround'
 import * as field from './field'
 import { opt } from './lab'
+import { setText } from '../../utils/set-text'
 
 const N = SERVICES.length
 const TAPE_AT = SERVICES.findIndex((s) => s.id === 'video-editing')
@@ -102,8 +103,8 @@ export default function SeaServices() {
     SERVICES.forEach((s, i) => { if (s.id !== 'websites' && s.id !== 'video-editing') serviceAt(s.id, at(i)) })
     const tp = at(TAPE_AT)
     const dv = tape.current(tp)
-    if (deck.current) deck.current.textContent = String(Math.round(tp * 1800)).padStart(4, '0')
-    if (state.current) state.current.textContent = dv > 0.0004 ? '▶ PLAY' : dv < -0.0004 ? '◀◀ REW' : '■ STOP'
+    setText(deck.current, String(Math.round(tp * 1800)).padStart(4, '0'))
+    setText(state.current, dv > 0.0004 ? '▶ PLAY' : dv < -0.0004 ? '◀◀ REW' : '■ STOP')
   })
 
   return (
@@ -122,7 +123,7 @@ export default function SeaServices() {
             {SERVICES.map((s, i) => (
               <li key={s.id} className={`sea-svc__item${i === 0 ? ' is-on' : ''}`}>
                 <a
-                  className="sea-svc__row"
+                  className={`sea-svc__row${rows === 'tile' && SERVICE_MEDIA[s.id] ? ' sea-svc__row--pic' : ''}`}
                   href={s.href}
                   data-cursor="לדף השירות"
                   onClick={() => track('cta_click', { placement: `services_${s.id}` })}

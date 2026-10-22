@@ -8,6 +8,7 @@ import {
 import { SKY_FRAG, SKY_VERT, WING_FRAG, WING_VERT, DUST_FRAG, DUST_VERT } from './shaders'
 import { sample, skyMix } from './keys'
 import { damp, loop, type Tier } from '../motion'
+import { scrollTop, viewHeight } from '../../utils/scroll-cache'
 
 interface FeatherRow { n: number; layer: number; len: (u: number) => number; wid: (u: number) => number }
 
@@ -158,8 +159,9 @@ export function startFlight(canvas: HTMLCanvasElement, root: HTMLElement, tier: 
       return { top: r.top + y, h: Math.max(1, r.height) }
     })
   }
+  // (D210) called every frame: the scroll as of its event, not a fresh read after this frame's writes
   const progress = () => {
-    const mid = window.scrollY + window.innerHeight * 0.5
+    const mid = scrollTop() + viewHeight() * 0.5
     for (let i = marks.length - 1; i >= 0; i--) {
       if (mid >= marks[i].top) return Math.min(marks.length, i + Math.min(1, (mid - marks[i].top) / marks[i].h))
     }
@@ -199,8 +201,8 @@ export function startFlight(canvas: HTMLCanvasElement, root: HTMLElement, tier: 
   const portrait = () => camera.aspect < 0.85
 
   const frame = (dt: number, t: number) => {
-    const y = window.scrollY
-    const v = dt > 0 ? (y - lastY) / dt / window.innerHeight : 0
+    const y = scrollTop()
+    const v = dt > 0 ? (y - lastY) / dt / viewHeight() : 0
     lastY = y
     vel = damp(vel, v, 0.02, dt)
     p = pin ?? damp(p, progress(), 0.03, dt)

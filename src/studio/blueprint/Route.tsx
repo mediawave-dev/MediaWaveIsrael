@@ -4,6 +4,7 @@
 // here. Under the still tier the whole route is drawn.
 import { useEffect, useRef, useState } from 'react'
 import type { Tier } from '../motion'
+import { setText } from '../../utils/set-text'
 
 const LABELS: Record<string, string> = { hero: 'START', services: 'SERVICES', work: 'WORK', process: 'PROCESS', faq: 'FAQ', contact: 'CONTACT' }
 
@@ -81,7 +82,7 @@ export default function Route({ tier }: { tier: Tier }) {
       if (off !== lastOff) { lastOff = off; path.style.strokeDashoffset = `${off}` }
       if (dot.current) dot.current.style.transform = `translate3d(${px.toFixed(1)}px, ${py.toFixed(1)}px, 0)`
       const r = `Y:${Math.round(py)}PX`
-      if (read.current && r !== lastRead) { lastRead = r; read.current.textContent = r }
+      if (r !== lastRead) { lastRead = r; setText(read.current, r) }
     }
     const onScroll = () => { sy = window.scrollY; vh = window.innerHeight; if (!raf) raf = requestAnimationFrame(paint) }
     paint()

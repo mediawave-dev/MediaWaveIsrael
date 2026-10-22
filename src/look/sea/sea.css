@@ -400,11 +400,11 @@ html.sea-gnd-paper .sea-contact .key:focus-visible { outline-color: #0f1011; }
 .sea-svc__pic { grid-area: pic; display: none; width: 100%; align-self: center; }
 html.sea-held .sea-svc__pic { display: block; }
 @media (max-width: 1099px) {
-  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: minmax(0, 1fr) 96px 24px; grid-template-areas: "n n go" "title pic pic" "line line line" "deck deck deck"; }
+  html.sea-held .sea-svc__row--pic { grid-template-columns: minmax(0, 1fr) 96px 24px; grid-template-areas: "n n go" "title pic pic" "line line line" "deck deck deck"; }
   html.sea-held .sea-svc__pic { width: 96px; justify-self: end; }
 }
 @media (min-width: 1100px) {
-  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: 3em minmax(0, 4fr) minmax(0, 5fr) 112px 32px; grid-template-areas: "n title line pic go"; }
+  html.sea-held .sea-svc__row--pic { grid-template-columns: 3em minmax(0, 4fr) minmax(0, 5fr) 112px 32px; grid-template-areas: "n title line pic go"; }
 
 
 }
@@ -478,11 +478,11 @@ html.sea-reveal .sea-meta--end.on::before { transform: none; }
 .sea-lead__pro { display: block; margin-top: 10px; color: #ede7da; font-size: 1.18em; font-weight: 600; line-height: 1.45; letter-spacing: 0.005em; }
 .sea-word { display: inline-block; }
 @keyframes sea-word {
-  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-  11.3% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; }
-  64% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
-  72% { opacity: 0; transform: translateY(-0.28em); filter: blur(6px); letter-spacing: 0.03em; }
-  100% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; }
+  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  11.3% { opacity: 1; transform: none; filter: blur(0); }
+  64% { opacity: 1; transform: none; filter: blur(0); animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  72% { opacity: 0; transform: translateY(-0.28em); filter: blur(6px); }
+  100% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); }
 }
 @keyframes sea-glint { 0%, 10%, 100% { color: #ede7da; text-shadow: var(--sea-halo); } 5% { color: #ffffff; text-shadow: 0 0 18px rgba(255, 255, 255, 0.38), var(--sea-halo); } }
 html.sea-reveal:not(.disable-animations) .sea-lead__pro .sea-word { opacity: 0; }
@@ -491,6 +491,8 @@ html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on .sea-word {
     sea-word 11.5s linear calc(var(--w) * 0.5s) infinite both,
     sea-glint 11.5s ease-in-out calc(3.7s + var(--w) * 0.14s) infinite both;
 }
+/* (D210) off screen the loop holds: an endless text animation kept the page's style dirty while scrolling */
+html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on.is-off .sea-word { animation-play-state: paused; }
 @media (max-width: 767px) { .sea-lead__pro { margin-top: 8px; font-size: 1.12em; } }
 
 /* ── how we work (D173): two tracks. Under the heading, the first track's line, quiet, in parentheses like

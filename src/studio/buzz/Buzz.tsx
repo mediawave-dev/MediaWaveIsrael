@@ -44,7 +44,7 @@ function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: Sty
     if (!host || PRERENDER || !run) return
     const n = window.innerWidth < 640 ? Math.round(count / 2) : count
     if (tier === 'still') return placeStill(host, n)
-    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, flap: tier === 'calm' ? 0.4 : 0.13, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
+    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, size: windy ? [22, 17] : [28, 22], flap: tier === 'calm' ? 0.4 : 0.13, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
     const io = new IntersectionObserver(([e]) => sw.pause(!e.isIntersecting), { rootMargin: '120px' })
     io.observe(host)
     return () => { io.disconnect(); sw.stop() }
