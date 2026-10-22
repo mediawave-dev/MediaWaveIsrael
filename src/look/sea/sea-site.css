@@ -569,7 +569,6 @@ html[data-look="shot"] .shot-dock__chat-btn.is-ai {
   html:not(.disable-animations):not(.motion-reduced) .mw-ai { animation: ai-twinkle 4.2s ease-in-out 1.2s infinite; }
 }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] .shot-dock__chat-btn.is-ai:hover { background: #ede7da; color: #0f1011; box-shadow: none; }
   html[data-look="shot"] .shot-dock__chat-btn.is-ai:hover .mw-ai { color: #225079; }
   html:not(.disable-animations):not(.motion-reduced) .shot-dock__chat-btn.is-ai:hover .mw-ai { animation: dg-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 }
@@ -690,13 +689,9 @@ html.disable-animations .sea-peek { transition: none; }
 /* the contact's second line speaks of the bubble: only while the field draws it (D177) */
 html:not(.sea-gl) .ct__lead-dots { display: none; }
 
-/* (D200) the rings of dots are DotRing (look/parts): equal dots along each button's own outline, in
-   the colours the old grid rings had; other looks keep their own keys without it */
-html[data-look="shot"] .key { --ring-dot: var(--k-dots); }
-html:not([data-look="shot"]) .key .dot-ring { display: none; }
+/* (D200) the steps' rings of dots are DotRing (look/parts): equal dots along their own outline */
 /* (the header card is already absolute: it keeps its corner) */
 html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn, .sp-step__node) { position: relative; }
-html[data-look="shot"] .sea-card .dot-ring { z-index: 1; }
 html[data-look="shot"] .sp-step__node .dot-ring { --ring-size: 2.2px; }
 /* the press, everywhere: the button sinks a little and springs back */
 html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn) { transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s linear; }
@@ -705,60 +700,71 @@ html[data-look="shot"] .key__cap { transition: transform 0.42s cubic-bezier(0.34
 html[data-look="shot"] .key[data-pressed] .key__cap { transform: scale(0.965); transition: transform 0.09s ease; }
 html:is(.disable-animations, .motion-reduced) :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn, .key__cap) { transition: none !important; }
 
-/* ── (D200, Nati: "glossy, beautiful glass that makes you want to press it") every button is a pane of
-   polished smoked glass: the page behind it blurred, deepened and dimmed (so its words stay AA over any
-   ground, even the paper chapters), a sheen that falls from the top edge, a bright hairline along the
-   rim, a soft shadow under it, and the even ring of dots on top. A glint crosses it now and then; on a
-   computer the sheen follows the pointer; pressed, the glass sinks in and springs back. The ink (the
-   cream that spreads on hover) still fills it from where the pointer came in. ── */
-html[data-look="shot"] { --glass-base: rgba(19, 21, 25, 0.66); }
-html[data-look="shot"] .key { --k-face: var(--glass-base); }
-html[data-look="shot"] :is(.key__cap, .sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.07) 44%, rgba(255, 255, 255, 0) 56%, rgba(255, 255, 255, 0.06) 100%),
-    var(--glass-base);
-  -webkit-backdrop-filter: blur(12px) saturate(1.7) brightness(0.74);
-  backdrop-filter: blur(12px) saturate(1.7) brightness(0.74);
-  box-shadow:
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.36),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.1),
-    0 16px 32px -16px rgba(0, 0, 0, 0.8),
-    0 3px 10px -4px rgba(0, 0, 0, 0.55);
+/* ── (D202, Nati picked "Bracket" and asked for the dotted WhatsApp mark) every button speaks the site's own
+   mono tags: [ the dotted mark + the words ]. In the page there is no capsule at all; hovered, focused or
+   pressed, the brackets spring apart and a cream plate fills the space between them in square steps, from
+   where the pointer (or finger) came in; the words turn ink and the mark's dots burst and settle. The
+   floating ones (the header card, the dock) keep a dark plate under them so they read over any content. ── */
+html[data-look="shot"] .key { --k-face: transparent; --k-ink: #ede7da; --k-ink-on: #0f1011; }
+html[data-look="shot"] .key :is(.key__cap, .key__ink, .key__render) { border-radius: 0; }
+html[data-look="shot"] .key .key__cap { background: none; box-shadow: none; overflow: visible; padding: 0 34px; }
+html[data-look="shot"] .key[data-size="sm"] .key__cap { padding: 0 28px; }
+html[data-look="shot"] .key__cap > .key__label { text-shadow: var(--sea-halo); }
+/* the brackets */
+html[data-look="shot"] .btn-br {
+  position: absolute; top: 50%; z-index: 2; font: 500 22px/1 var(--sea-mono); color: #a39d90; pointer-events: none;
+  translate: 0 -54%; transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
 }
-/* the sheen: a light that falls from above, centred where the pointer is (--gx) */
-html[data-look="shot"] :is(.key__cap, .shot-dock__wa, .shot-dock__chat-btn.is-ai)::before,
-html[data-look="shot"] .sea-card::after {
-  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit;
-  background: radial-gradient(120% 130% at var(--gx, 30%) -34%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.09) 40%, rgba(255, 255, 255, 0) 62%);
-  transition: opacity 0.3s ease;
+html[data-look="shot"] .btn-br--o { inset-inline-start: 6px; }
+html[data-look="shot"] .btn-br--c { inset-inline-end: 6px; }
+html[data-look="shot"] .key[data-size="sm"] .btn-br { font-size: 18px; }
+/* the plate: cream, between the brackets, in square steps from where the pointer came in */
+html[data-look="shot"] .key .key__ink {
+  inset: 5px 24px; background: #ede7da; padding: 0 10px;
+  clip-path: inset(0 calc(100% - var(--kx, 50%)) 0 var(--kx, 50%));
+  transition: clip-path 0.42s steps(9, jump-none);
 }
-/* the glint: a band of light across the glass, now and then */
-html[data-look="shot"] :is(.key__cap, .shot-dock__wa)::after {
-  content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; z-index: 2; width: 34%; pointer-events: none;
-  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 42%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.16) 58%, rgba(255, 255, 255, 0) 100%);
-  transform: translateX(-140%) skewX(-18deg); opacity: 0;
+html[data-look="shot"] .key[data-size="sm"] .key__ink { inset: 4px 20px; padding: 0 8px; }
+html[data-look="shot"] :is(.key:focus-visible, .key[data-force="hover"], .key[data-pressed]) .key__ink { clip-path: inset(0); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .key:hover .key__ink { clip-path: inset(0); transition: clip-path 0.42s steps(9, jump-none); }
 }
-@keyframes glass-glint {
-  0% { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
-  2% { opacity: 1; }
-  15% { transform: translateX(400%) skewX(-18deg); opacity: 1; }
-  16%, 100% { transform: translateX(400%) skewX(-18deg); opacity: 0; }
+html[data-look="shot"] :is(.key:focus-visible, .key[data-force="hover"], .key[data-pressed]) .btn-br--o { transform: translateX(6px); color: #ede7da; }
+html[data-look="shot"] :is(.key:focus-visible, .key[data-force="hover"], .key[data-pressed]) .btn-br--c { transform: translateX(-6px); color: #ede7da; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .key:hover .btn-br--o { transform: translateX(6px); color: #ede7da; }
+  html[data-look="shot"] .key:hover .btn-br--c { transform: translateX(-6px); color: #ede7da; }
 }
-html[data-look="shot"]:not(.disable-animations):not(.motion-reduced) :is(.key__cap, .shot-dock__wa)::after { animation: glass-glint 7.5s cubic-bezier(0.45, 0, 0.2, 1) 2.8s infinite; }
-html[data-look="shot"]:not(.disable-animations):not(.motion-reduced) .shot-dock__wa::after { animation-delay: 5.2s; }
-/* pressed: the glass sinks in, the sheen dims, the shadow tucks under */
-html[data-look="shot"] :is(.key[data-pressed] .key__cap, .sea-card:active, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) {
-  box-shadow:
-    inset 0 2px 8px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.12),
-    0 6px 14px -10px rgba(0, 0, 0, 0.8);
+html[data-look="shot"] .key:focus-visible { outline: 2px solid #ede7da; outline-offset: 2px; border-radius: 0; }
+/* the press: the plate is there at once, the key sinks a little and springs back (D200's spring) */
+html[data-look="shot"] .key[data-pressed] .key__ink { transition-duration: 0.12s; }
+/* the floating ones: a dark plate under the brackets, the same cream fill on hover and press */
+html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) {
+  border-radius: 2px; background: rgba(15, 16, 17, 0.88); box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.14), 0 10px 24px -14px #000;
+  padding-inline: 30px; isolation: isolate; overflow: hidden;
 }
-html[data-look="shot"] :is(.key[data-pressed] .key__cap, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active)::before,
-html[data-look="shot"] .sea-card:active::after { opacity: 0.55; }
-/* the ink keeps its own dots over the glass (its base is the glass's tint) */
-html[data-look="shot"] .shot-dock__chat-btn.is-ai { color: #ede7da; }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { background: rgba(15, 16, 17, 0.88); box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.14), 0 10px 24px -14px #000; }
+}
+html[data-look="shot"] .shot-dock__chat-btn.is-ai { padding-inline: 24px; color: #ede7da; }
+html[data-look="shot"] .sea-card::before, html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai)::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: #ede7da; --kdot: 0px;
+  clip-path: inset(0 0 0 100%); transition: clip-path 0.42s steps(9, jump-none);
+}
+html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) .btn-br { font-size: 18px; color: #a39d90; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) { color: #0f1011; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active)::before { clip-path: inset(0); transition-duration: 0.2s; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br { color: #0f1011; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br--o { transform: translateX(4px); }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br--c { transform: translateX(-4px); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { color: #0f1011; transition: color 0.2s linear 0.15s, transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover::before { clip-path: inset(0); }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br { color: #0f1011; }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br--o { transform: translateX(4px); }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br--c { transform: translateX(-4px); }
+}
+html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br, .sea-card::before) { transition: none !important; }
 
 /* (D200 audit) the skip link, when a keyboard focuses it: ink on cream (it was white on light sky) */
 html[data-look="shot"] a[href="#main-content"]:focus { background: #ede7da !important; color: #0f1011 !important; outline: 2px solid #ede7da; outline-offset: 3px; }

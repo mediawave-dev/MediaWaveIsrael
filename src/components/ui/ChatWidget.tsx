@@ -9,7 +9,7 @@ import { track } from '../../utils/analytics'
 import { CHAT_EVENT, takePendingChat } from './chat-event'
 import { LOOK } from '../../look/look'
 import DotGlyph from '../../look/sea/DotGlyph'
-import DotRing from '../../look/parts/DotRing'
+import Brackets from '../../look/parts/Brackets'
 
 // --- Typing Indicator ---
 
@@ -287,7 +287,7 @@ export default function ChatWidget({ onOpenChange, triggerSlot, triggerActive }:
       data-cursor={LOOK === 'shot' ? 'שאלו את הבוט, הוא עונה מיד' : undefined}
     >
       {/* the sea (Nati, 20.10): the AI's spark in dots and the two letters everyone reads as AI */}
-      {LOOK === 'shot' ? (<><DotGlyph name="ai" n={11} className="mw-ai" /><span className="mw-ai__t" aria-hidden="true">AI</span><DotRing /></>) : <LottieIcon
+      {LOOK === 'shot' ? (<><DotGlyph name="ai" n={11} className="mw-ai" /><span className="mw-ai__t" aria-hidden="true">AI</span><Brackets /></>) : <LottieIcon
         animationPath="/animations/7%20chatbot/chatbot_header.json"
         size={36}
         loop={false}

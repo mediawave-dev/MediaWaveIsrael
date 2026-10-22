@@ -1,3 +1,17 @@
+# HANDOFF: the buttons in brackets, "Bracket" (22.10.2026, D202)
+
+Nati picked option 2 of six (mockup G:/tmp/perf/btns, shots G:/tmp/perf/br) with the dotted WhatsApp mark.
+- src/look/parts/Brackets.tsx: two mono spans (.btn-br--o "[", .btn-br--c "]") at the button's inline edges; RTL
+  mirrors the glyphs. Used by KeyButton (inside .key__cap), the header .sea-card, the dock's WhatsApp and AI.
+- src/look/parts/haptics.ts: the 7 ms Android tap for any button carrying .btn-br or .dot-ring (was in DotRing).
+- sea-site.css (the D202 block, replaces D200's glass): keys have no capsule; hover / focus / press springs the
+  brackets out 6px and fills a cream plate between them in steps(9) from --kx. Floating buttons: a dark square
+  plate (0.88) with a cream hairline; the cream ::before fills in steps on hover / press.
+- DotRing stays only for the steps' circles (kit.tsx). The music invite (.snd) uses the dark square plate.
+Rollback: prod-before-d202.
+
+---
+
 # HANDOFF: the bubble no longer writes the words (21.10.2026, D201)
 
 Nati: the words drawn in the bubble's dots were not as good as he thought. Reverted D171 (field.words from
