@@ -50,8 +50,9 @@ export default function SeaSteps({ data, errors, setErrors, change, needEmail, s
     const bad = ORDER.findIndex((k) => errors[k])
     if (bad >= 0 && bad !== step) { setStep(bad); setMoved(true) }
   }, [errors]) // eslint-disable-line react-hooks/exhaustive-deps
-  // after a send the data is empty again: back to the first question
-  useEffect(() => { if (state === 'sent') setStep(0) }, [state])
+  // after a send the data is empty again: back to the first question, without taking the focus (on a phone
+  // that would open the keyboard just as the little world arrives, D209)
+  useEffect(() => { if (state === 'sent') { setMoved(false); setStep(0) } }, [state])
   // the field of a question the visitor moved to takes the focus (never on arrival: no keyboard uninvited)
   useEffect(() => {
     if (!moved) return

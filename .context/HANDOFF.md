@@ -1,3 +1,19 @@
+# HANDOFF: the little world after a send, "the orbit" (22.10.2026, D209)
+
+- src/studio/SentGuide.tsx + sent-guide.css: lazy, mounted by look/sections/Contact.tsx (SHOT only, once a visit)
+  after a successful send ('now') or after the WhatsApp hand-off ('late': waits for the tab to come back).
+  Portaled to body (a transformed ancestor broke position:fixed inside the section). Phases wait -> set -> in -> out
+  ('set' paints at rest so the CSS entrances run). Frame loop writes transforms only; geometry measured once
+  (and on resize) from the bubble's layout box. html.sg-on hides .gd/.gd-trail/.snd; html.sg-open locks scroll;
+  html.sg-seen ends the main-site guide's visits (GuidePlan.until).
+- src/studio/travel.ts: the wave + route change, shared by SiteGuide's map and SentGuide.
+- SeaSteps: after 'sent' it resets without taking the focus.
+- Tests: G:/tmp/postsend/run*.mjs (send the form and film), axe.mjs (axe inside the open scene: 0).
+  Note: something old listens on 127.0.0.1:4196; serve.mjs on 4196 answers at localhost.
+Rollback: prod-before-d209.
+
+---
+
 # HANDOFF: the contact form as an RPG window, Flight's clipped headings (22.10.2026, D205-D206)
 
 - D206: src/look/sea/RpgWindow.tsx (useRpgWindow on the form + RpgChrome: frame, tab, cursor, block caret,
