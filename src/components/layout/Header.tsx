@@ -25,6 +25,7 @@ import AnimatedLogo from '../ui/AnimatedLogo'
 import SoundToggle from '../../look/sea/SoundToggle'
 import WaDots from '../../look/sea/WaDots'
 import Brackets from '../../look/parts/Brackets'
+import Isle from '../../look/parts/Isle'
 import SeaWay from '../../look/sea/SeaWay'
 import SeaIsland from '../../look/sea/SeaIsland'
 import DotGlyph from '../../look/sea/DotGlyph'
@@ -234,6 +235,7 @@ export default function Header() {
             <span className="sea-card__dot" aria-hidden="true"><WaDots /></span>
             כתבו לנו בוואטסאפ
             <Brackets />
+            <Isle />
           </a>
         )}
       </header>

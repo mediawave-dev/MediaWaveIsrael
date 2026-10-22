@@ -358,6 +358,9 @@ html[data-look="shot"] .sea-contact .ct__ways a b {
   line-height: 1.1; color: #ede7da; text-shadow: var(--sea-halo); text-align: start;
 }
 html[data-look="shot"] .sea-contact .ct__ways a b[dir="ltr"] { font-size: clamp(18px, 5.4vw, 34px); white-space: nowrap; text-align: end; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+/* (D203) the address is the longest value (13.2em): on phones it sizes itself to the row, never under the icon */
+html[data-look="shot"] .sea-contact .ct__ways a[href^="mailto:"] { container-type: inline-size; }
+html[data-look="shot"] .sea-contact .ct__ways a[href^="mailto:"] b { font-size: clamp(13px, calc((100cqi - 108px) / 13.6), 34px); }
 .sea-contact .ct__ways .ct__ico { display: inline-grid; place-items: center; width: 30px; height: 30px; color: #ede7da; background: none; }
 html[data-look="shot"] .sea-contact .ct__ico :is(.dot-glyph, .wa-dots, svg) { width: 30px; height: 30px; }
 @media (hover: hover) and (pointer: fine) {
@@ -738,33 +741,49 @@ html[data-look="shot"] :is(.key:focus-visible, .key[data-force="hover"], .key[da
 html[data-look="shot"] .key:focus-visible { outline: 2px solid #ede7da; outline-offset: 2px; border-radius: 0; }
 /* the press: the plate is there at once, the key sinks a little and springs back (D200's spring) */
 html[data-look="shot"] .key[data-pressed] .key__ink { transition-duration: 0.12s; }
-/* the floating ones: a dark plate under the brackets, the same cream fill on hover and press */
+/* the floating ones (D203, Nati: "less the generic squareness"): no plate. They stand on a small island of the
+   sea's halftone (parts/Isle.tsx): solid ink deep inside, so the words read over anything, its rim breaking
+   into shrinking dots that dissolve into the page. Hovered or pressed, cream dots grow inside it from the
+   core outward until the island is cream, the words and brackets turn ink, the brackets spring apart. */
+@property --grow { syntax: '<number>'; inherits: false; initial-value: 0; }
 html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) {
-  border-radius: 2px; background: rgba(15, 16, 17, 0.88); box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.14), 0 10px 24px -14px #000;
-  padding-inline: 30px; isolation: isolate; overflow: hidden;
+  border-radius: 999px; background: none; box-shadow: none; padding-inline: 30px; isolation: isolate; overflow: visible;
 }
+html[data-look="shot"] .sea-card::before { content: none; }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { background: rgba(15, 16, 17, 0.88); box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.14), 0 10px 24px -14px #000; }
+  html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { background: none; box-shadow: none; }
 }
 html[data-look="shot"] .shot-dock__chat-btn.is-ai { padding-inline: 24px; color: #ede7da; }
-html[data-look="shot"] .sea-card::before, html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai)::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; background: #ede7da; --kdot: 0px;
-  clip-path: inset(0 0 0 100%); transition: clip-path 0.42s steps(9, jump-none);
+.isle {
+  position: absolute; top: calc(-1 * var(--out)); left: calc(-1 * var(--out)); z-index: -1;
+  width: calc(100% + 2 * var(--out)); height: calc(100% + 2 * var(--out)); overflow: visible; pointer-events: none;
+}
+.isle path { fill: none; stroke-linecap: round; }
+.isle__ground path { stroke: #1b1d20; stroke-width: calc(var(--r) * 1px); }
+/* the cream dots: at rest size zero; they shrink back rim first */
+.isle__ink path {
+  stroke: #ede7da; stroke-width: calc(var(--r) * var(--grow) * 1px);
+  transition: --grow 0.3s cubic-bezier(0.4, 0, 0.2, 1) calc((4 - var(--o)) * 30ms);
 }
 html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) .btn-br { font-size: 18px; color: #a39d90; }
-html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) { color: #0f1011; }
-html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active)::before { clip-path: inset(0); transition-duration: 0.2s; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) { color: #0f1011; transition: color 0.12s linear 0.08s; }
+html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .isle__ink path {
+  --grow: 1; transition: --grow 0.24s cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--o) * 22ms);
+}
 html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br { color: #0f1011; }
 html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br--o { transform: translateX(4px); }
 html[data-look="shot"] :is(.sea-card:focus-visible, .shot-dock__wa:active, .shot-dock__chat-btn.is-ai:active) .btn-br--c { transform: translateX(-4px); }
 @media (hover: hover) and (pointer: fine) {
-  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { color: #0f1011; transition: color 0.2s linear 0.15s, transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover::before { clip-path: inset(0); }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover { color: #0f1011; transition: color 0.2s linear 0.16s, transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .isle__ink path {
+    --grow: 1; transition: --grow 0.42s cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--o) * 45ms);
+  }
   html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br { color: #0f1011; }
   html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br--o { transform: translateX(4px); }
   html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai):hover .btn-br--c { transform: translateX(-4px); }
 }
-html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br, .sea-card::before) { transition: none !important; }
+html:is(.disable-animations, .motion-reduced) .isle__ink path { transition: none !important; }
+html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br) { transition: none !important; }
 
 /* (D200 audit) the skip link, when a keyboard focuses it: ink on cream (it was white on light sky) */
 html[data-look="shot"] a[href="#main-content"]:focus { background: #ede7da !important; color: #0f1011 !important; outline: 2px solid #ede7da; outline-offset: 3px; }

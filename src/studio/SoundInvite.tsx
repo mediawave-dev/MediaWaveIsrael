@@ -1,6 +1,6 @@
 // The invitation to the music (D199, D200). Nati: "something that clearly says: tap the screen for music",
 // then: "the button is generic, it does not belong to the site; I want it to come and go now and then,
-// smartly". So it is made of the site's own material: the buttons' dark plate (D202), an equaliser of
+// smartly". So it is made of the site's own material: the floating buttons' island of halftone dots (D203), an equaliser of
 // halftone dots that light up like the field, and a mono label in brackets that develops out of dots
 // (decode.ts) and goes back into them when it leaves.
 // When it comes: never while the page is being scrolled (it waits for the reader to pause), first a few
@@ -12,6 +12,7 @@
 // [קופי: נתי] the English micro-labels and the track names
 import { useEffect, useRef, useState } from 'react'
 import { decode, undecode } from '../look/sea/decode'
+import Isle from '../look/parts/Isle'
 import './portal.css'
 
 const CONTROL = 'a, button, input, textarea, select, summary, label, [role="button"], .wm, .gd, .snd'
@@ -148,6 +149,7 @@ export default function SoundInvite({ track, source, cue, delay = 3200 }: { trac
         </span>
       </button>
       <button type="button" className="snd__x" tabIndex={show ? 0 : -1} aria-label="בלי מוזיקה" onClick={() => { declined = true; setShow(false) }}>×</button>
+      <Isle out={8} />
     </div>
   )
 }

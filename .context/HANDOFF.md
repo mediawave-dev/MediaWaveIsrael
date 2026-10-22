@@ -1,3 +1,16 @@
+# HANDOFF: the floating buttons on an island of halftone dots, the email row fits (22.10.2026, D203)
+
+- src/look/parts/Isle.tsx: an SVG under a floating button (absolute, --out px beyond it): a 4px grid of round
+  dots (zero-length path segments, round caps), one path per size band (5), solid in the capsule's core and
+  shrinking toward the rim; a cream copy (.isle__ink) whose dots grow with the registered --grow (core first).
+  Used by the header .sea-card, the dock's WhatsApp and AI, and the music invite (.snd). Redraws on resize only.
+- sea-site.css D203 block replaces D202's dark square plate (in-page keys unchanged). The email row:
+  a[href^="mailto:"] is an inline-size container; its b sizes clamp(13px, (100cqi - 108px) / 13.6, 34px).
+- SeaRewind.tsx: the end meta row is a data-dock-hide zone (its INSTAGRAM link was under the dock).
+Rollback: prod-before-d203 (when shipped).
+
+---
+
 # HANDOFF: the buttons in brackets, "Bracket" (22.10.2026, D202)
 
 Nati picked option 2 of six (mockup G:/tmp/perf/btns, shots G:/tmp/perf/br) with the dotted WhatsApp mark.

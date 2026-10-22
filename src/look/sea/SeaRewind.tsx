@@ -47,9 +47,10 @@ export default function SeaRewind() {
         חזרה להתחלה
       </button>
       <div className={`sea-rew__hud${on ? ' is-on' : ''}`} aria-hidden="true">◀◀ REW <span ref={count}>0000</span></div>
-      {/* the meta bar comes back at the end (D155, gate `bar`): the line, the labels, the live clock */}
+      {/* the meta bar comes back at the end (D155, gate `bar`): the line, the labels, the live clock; the dock
+          slides away when it shows, so its INSTAGRAM link is never under WhatsApp (D203) */}
       {opt('bar') === 'ends' && (
-        <div className="sea-meta sea-meta--end" data-reveal="">
+        <div className="sea-meta sea-meta--end" data-reveal="" data-dock-hide="">
           <Clock />
           <Tag he className="sea-meta__mid">סטודיו לאתרים ולווידאו · ישראל</Tag>
           <a className="sea-tag sea-meta__link" href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="MediaWave באינסטגרם">INSTAGRAM +</a>

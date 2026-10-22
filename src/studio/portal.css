@@ -106,14 +106,12 @@ html.wm-open { overflow: hidden; }
 @media (max-height: 700px) and (max-width: 899px) { .wm__pic { aspect-ratio: 9 / 10; } }
 
 /* ---------- the invitation to the music (D199, D200: the site's own material) ---------- */
-/* D202: the buttons' plate (a dark square plate with a cream hairline, like the dock's) and an equaliser of
-   halftone dots; it arrives out of a blur and leaves into one, its label "[ Tap for sound ]" developing out
-   of dots (SoundInvite.tsx) */
+/* D203: the floating buttons' island of halftone dots (parts/Isle.tsx) and an equaliser of halftone dots; it
+   arrives out of a blur and leaves into one, its label "[ Tap for sound ]" developing out of dots (SoundInvite.tsx) */
 .snd {
   position: fixed; z-index: 45; left: 50%; bottom: max(18px, calc(env(safe-area-inset-bottom) + 12px));
-  display: flex; align-items: center; gap: 2px; padding: 5px 5px 5px 8px; border-radius: 2px; color: #ede7da;
-  background: rgba(15, 16, 17, 0.9);
-  box-shadow: inset 0 0 0 1px rgba(237, 231, 218, 0.16), 0 18px 36px -16px rgba(0, 0, 0, 0.8);
+  display: flex; align-items: center; gap: 2px; padding: 5px 12px 5px 14px; border-radius: 999px; color: #ede7da;
+  background: none; isolation: isolate;
   opacity: 0; visibility: hidden; filter: blur(8px); transform: translate(-50%, 14px) scale(0.94);
   transition: opacity 0.6s ease, filter 0.7s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.8s;
 }
@@ -130,7 +128,7 @@ html.wm-open { overflow: hidden; }
 .snd__t::before { content: "[ "; color: #b9b2a4; } .snd__t::after { content: " ]"; color: #b9b2a4; }
 .snd__s { font: 600 10.5px/1 var(--st-mono, ui-monospace, "Cascadia Mono", Consolas, monospace); letter-spacing: 0.12em; text-transform: uppercase; color: #cfc8ba; white-space: nowrap; }
 .snd__x {
-  position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 0;
+  position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%;
   background: transparent; color: #ede7da; font: 400 22px/1 var(--pt-text); cursor: pointer; transition: color 0.25s ease, background 0.25s ease;
 }
 .snd__x:hover, .snd__x:focus-visible { color: #ede7da; background: rgba(237, 231, 218, 0.08); }
