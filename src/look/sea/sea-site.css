@@ -371,25 +371,82 @@ html[data-look="shot"] .sea-contact .ct__ico :is(.dot-glyph, .wa-dots, svg) { wi
 .sea-contact .ct__time { margin: 16px 0 0; font: 700 13px/1.4 var(--text); color: #a39d90; text-align: start; }
 .sea-contact .ct__time::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
 .sea-contact .ct__time::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
-.sea-contact .ct__form { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; display: grid; gap: 26px; }
-.sea-contact .ct__field label { display: block; margin: 0 0 10px; font: 700 13px/1.3 var(--text); color: #a39d90; text-align: start; }
-.sea-contact .ct__field label::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
-.sea-contact .ct__field label::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea) {
-  --fd: rgba(237, 231, 218, 0.7);
-  width: 100%; box-sizing: border-box; padding: 16px; border: 0; border-radius: 0; color: #ede7da; font: 700 1.125rem/1.5 var(--text);
-  background:
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-x,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 100% / 6px 6px repeat-x,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-y,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 100% 0 / 6px 6px repeat-y,
-    rgba(15, 16, 17, 0.6);
+/* ── the contact form as an old role-playing game's window (D206, RpgWindow.tsx): a cream frame with
+   stepped corners and an inner hairline, the tab "PLAYER 1" in a pixel face, the cursor at the start edge
+   that jumps in steps to the row in play, a blinking block caret, a pixel check on every row left
+   complete, and the "more" prompt blinking once everything is ready. Mobile first. ── */
+@font-face { font-family: "Press Start 2P"; src: url("/fonts/PressStart2P-Latin.woff2") format("woff2"); font-display: swap; unicode-range: U+0020-007E; }
+.sea-contact .ct__form {
+  --rpg-step: polygon(0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px));
+  --rpg-px: polygon(2px 0, calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px), 0 2px, 2px 2px);
+  position: relative; isolation: isolate; display: grid; gap: 22px; margin: 14px 0 0; border: 0; box-shadow: none; background: none;
+  padding: 34px 16px 24px; padding-inline-start: 40px;
 }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus { --fd: #ede7da; }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus-visible { outline: 2px solid #79a0c5; outline-offset: 4px; }
-html[data-look="shot"] .sea-contact #contact .ct__field[data-invalid] :is(input, textarea) { --fd: #e0533f; }
-.sea-contact .ct__field textarea { min-height: 150px; resize: vertical; }
+@media (min-width: 560px) { .sea-contact .ct__form { padding: 40px 28px 28px; padding-inline-start: 52px; } }
+/* the frame: cream, its corners stepped; inside it the window's ink and a faint second line */
+.rpg__frame { position: absolute; inset: 0; z-index: -1; background: #ede7da; clip-path: var(--rpg-step); pointer-events: none; }
+.rpg__frame > i {
+  position: absolute; inset: 3px; background: #0f1011; clip-path: var(--rpg-step);
+  box-shadow: inset 0 0 0 4px #0f1011, inset 0 0 0 6px rgba(237, 231, 218, 0.28);
+}
+.rpg__tab {
+  position: absolute; top: 0; inset-inline-start: 22px; translate: 0 -50%; padding: 7px 10px 6px; background: #ede7da; color: #0f1011;
+  font: 10px/1 "Press Start 2P", var(--sea-mono); letter-spacing: 0.04em; direction: ltr; white-space: nowrap;
+}
+/* the cursor: a pixel triangle pointing at the row; dimmed at the first row until the visitor is in */
+.rpg__ptr {
+  position: absolute; top: -8px; inset-inline-start: 14px; width: 0; height: 0; z-index: 2; pointer-events: none;
+  border-block: 8px solid transparent; border-inline-start: 11px solid #ede7da; opacity: 0.4;
+  transition: transform 0.2s steps(4, end), opacity 0.2s linear;
+}
+@media (min-width: 560px) { .rpg__ptr { inset-inline-start: 22px; } }
+.rpg__ptr[data-on] { opacity: 1; }
+@keyframes rpg-bob { 0%, 100% { translate: 0 0; } 50% { translate: -3px 0; } }
+@keyframes rpg-shake { 0%, 100% { translate: 0 0; } 25% { translate: 4px 0; } 50% { translate: -4px 0; } 75% { translate: 3px 0; } }
+html:not(.disable-animations):not(.motion-reduced) .rpg__ptr[data-on] { animation: rpg-bob 0.9s steps(1, end) infinite; }
+html:not(.disable-animations):not(.motion-reduced) .rpg__ptr[data-shake] { animation: rpg-shake 0.32s steps(4, end); }
+/* the block caret */
+.rpg__caret { position: absolute; top: 0; left: 0; z-index: 2; display: none; background: #ede7da; pointer-events: none; }
+.rpg__caret[data-on] { display: block; }
+@keyframes rpg-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+html:not(.disable-animations):not(.motion-reduced) .rpg__caret[data-on]:not([data-typing]) { animation: rpg-blink 1.05s steps(1, end) infinite; }
+/* the "more" prompt: a pixel triangle pointing down at the send key, blinking once the form is ready */
+.rpg__more {
+  position: absolute; bottom: 10px; inset-inline-end: 14px; width: 0; height: 0; pointer-events: none; opacity: 0;
+  border-inline: 6px solid transparent; border-top: 8px solid #ede7da;
+}
+.sea-contact .ct__form[data-ready] .rpg__more { opacity: 1; }
+html:not(.disable-animations):not(.motion-reduced) .sea-contact .ct__form[data-ready] .rpg__more { animation: rpg-blink 0.8s steps(1, end) infinite; }
+/* the rows: the label in the text face (no brackets in the window), the field a pixel box */
+.sea-contact .ct__field label { display: flex; align-items: center; gap: 8px; margin: 0 0 9px; font: 600 15px/1.3 var(--text); color: #a39d90; text-align: start; transition: color 0.15s linear; }
+.sea-contact .ct__field label::before { content: none; }
+.sea-contact .ct__field label::after { content: none; }
+.sea-contact .ct__field:focus-within label { color: #ede7da; }
+/* a row left complete: a pixel check in the AI's blue, popping in two steps */
+.sea-contact .ct__field[data-ok] label::after {
+  content: ""; display: block; width: 14px; height: 14px; background: #9dbcd8;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M0 3h1v1H0zM1 4h1v1H1zM2 5h1v1H2zM3 4h1v1H3zM4 3h1v1H4zM5 2h1v1H5zM6 1h1v1H6z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath d='M0 3h1v1H0zM1 4h1v1H1zM2 5h1v1H2zM3 4h1v1H3zM4 3h1v1H4zM5 2h1v1H5zM6 1h1v1H6z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+@keyframes rpg-pop { 0% { scale: 0; } 50% { scale: 1.4; } 100% { scale: 1; } }
+html:not(.disable-animations):not(.motion-reduced) .sea-contact .ct__field[data-ok] label::after { animation: rpg-pop 0.3s steps(3, end); }
+html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea) {
+  width: 100%; box-sizing: border-box; padding: 12px 14px; border: 0; border-radius: 0; margin: 0;
+  color: #ede7da; font: 600 1.125rem/1.5 var(--text); caret-color: #ede7da; clip-path: var(--rpg-px);
+  background: rgba(237, 231, 218, 0.05); box-shadow: inset 0 0 0 2px #6f6a60;
+  transition: background-color 0.15s steps(2, end), box-shadow 0.15s steps(2, end);
+}
+html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus {
+  outline: none; background: rgba(121, 160, 197, 0.2); box-shadow: inset 0 0 0 2px #ede7da;
+}
+html[data-look="shot"] .sea-contact #contact .ct__field[data-invalid] :is(input, textarea) { box-shadow: inset 0 0 0 2px #e0533f; }
+.sea-contact .ct__field textarea { min-height: 132px; resize: vertical; }
 .sea-contact :is(.ct__err, .ct__status, .ct__failure) { color: #ede7da; }
+.sea-contact .ct__err { margin: 8px 0 0; font: 600 14px/1.4 var(--text); }
+.sea-contact .ct__err::before {
+  content: "! "; content: "! " / ""; display: inline; width: auto; height: auto; margin: 0; border-radius: 0; background: none;
+  font: 10px/1 "Press Start 2P", var(--sea-mono); color: #f0907e;
+}
 
 /* ── the inner pages on the field (D131, D133). shot-pages.css is a lazy chunk that lands after this
    file, hence html[data-look] on every rule. Content stays on cards in the pill's material (they keep

@@ -1,3 +1,15 @@
+# HANDOFF: the contact form as an RPG window, Flight's clipped headings (22.10.2026, D205-D206)
+
+- D206: src/look/sea/RpgWindow.tsx (useRpgWindow on the form + RpgChrome: frame, tab, cursor, block caret,
+  "more" prompt), wired in look/sections/Contact.tsx (SHOT only: data-ok rows, data-ready, email as
+  type=text + inputMode=email); CSS = the D206 block in sea-site.css; sounds select()/ok() in sea/sound.ts;
+  public/fonts/PressStart2P-Latin.woff2. The mirror is position:fixed (an absolute one widened the RTL page).
+- D205: flight.css: .fl-h2 is fit-content; the gradient text sits on the element holding the words.
+  G:/tmp/perf/clip/clip.mjs + layer.mjs audit every background-clip:text element (overflow, layered child).
+Rollback: prod-before-d206.
+
+---
+
 # HANDOFF: the AI chat window in the site's material (22.10.2026, D204)
 
 - src/look/sea/SeaChat.tsx + sea-chat.css: the shot look's chat panel (ChatWidget renders it when LOOK ===

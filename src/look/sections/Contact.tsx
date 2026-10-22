@@ -23,6 +23,8 @@ import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
+import { RpgChrome, useRpgWindow } from '../sea/RpgWindow'
+import { ok as okSound } from '../sea/sound'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -56,6 +58,22 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
   const [keys, setKeys] = useState(0)
   const timer = useRef(0)
   useEffect(() => () => clearTimeout(timer.current), [])
+  // the sea's window (D206): a row the visitor has left complete gets its check and a small arpeggio
+  const form = useRef<HTMLFormElement>(null)
+  useRpgWindow(form, SHOT)
+  const [left, setLeft] = useState<Partial<Record<Field, boolean>>>({})
+  const complete: Record<Field, boolean> = {
+    name: isValidName(data.name),
+    email: data.email.trim() !== '' && isValidEmail(data.email),
+    message: isValidMessage(data.message),
+  }
+  const done = (f: Field) => SHOT && !!left[f] && complete[f]
+  const ready = SHOT && complete.name && complete.message && (complete.email || data.email.trim() === '' && !import.meta.env.VITE_CONTACT_ENDPOINT)
+  const leave = (f: Field) => () => {
+    if (!SHOT) return
+    if (complete[f] && !left[f]) okSound()
+    setLeft((l) => ({ ...l, [f]: complete[f] }))
+  }
 
   // the companion's state: the request lifecycle first, then whether a field has focus
   const pal: CompanionStatus = state === 'loading' || state === 'sent' || state === 'error' ? state : focused ? 'typing' : 'idle'
@@ -133,11 +151,11 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
     const id = `contact-${f}`
     const err = errors[f]
     const shared = {
-      id, name: f, value: data[f], required: f !== 'email' || !!import.meta.env.VITE_CONTACT_ENDPOINT, onChange: change(f),
+      id, name: f, value: data[f], required: f !== 'email' || !!import.meta.env.VITE_CONTACT_ENDPOINT, onChange: change(f), onBlur: leave(f),
       'aria-invalid': err ? true : undefined, 'aria-describedby': err ? `${id}-err` : undefined, ...props,
     }
     return (
-      <div className="ct__field" data-invalid={err ? '' : undefined}>
+      <div className="ct__field" data-invalid={err ? '' : undefined} data-ok={done(f) ? '' : undefined}>
         <label htmlFor={id} data-zone={Z}>{label}</label>
         {area ? <textarea rows={5} {...shared} /> : <input {...shared} />}
         {err && <p id={`${id}-err`} className="ct__err">{err}</p>}
@@ -187,10 +205,15 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
           <p className="ct__time" data-zone={Z}>{SITE_CONTACT.responseTime}</p>
         </div>
 
-        <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
+        <form ref={form} className={`ct__form${SHOT ? ' rpg' : ''}`} data-ready={ready || undefined} onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
+          {SHOT && <RpgChrome />}
           {art && <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />}
           {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
-          {field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
+          {/* the sea's block caret needs the caret's offset, which an email input does not expose: a text input
+              with the email keyboard (the form validates by itself, noValidate) */}
+          {field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', SHOT
+            ? { type: 'text', autoComplete: 'email', dir: 'ltr', inputMode: 'email', autoCapitalize: 'off', autoCorrect: 'off', spellCheck: false }
+            : { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {field('message', 'הודעה', {}, true)}
           {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (

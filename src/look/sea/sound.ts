@@ -415,6 +415,19 @@ export function typeKey() {
 }
 /** the WhatsApp key's mark arrives */
 export const pop = () => blip(520, 900, 0.16, 0.045)
+/** (D206) the contact window's cursor moves to another row: an 8-bit menu blip, two quick squares */
+let lastSelect = 0
+export function select() {
+  const now = performance.now()
+  if (now - lastSelect < 70) return
+  lastSelect = now
+  blip(N(81), N(81), 0.035, 0.018, 'square')
+  blip(N(88), N(88), 0.045, 0.014, 'square', 0.035)
+}
+/** (D206) a row of the contact window is complete: a small rising arpeggio */
+export function ok() {
+  ;[76, 80, 83, 88].forEach((n, i) => blip(N(n), N(n), 0.07, 0.013, 'square', i * 0.055))
+}
 /** the lead rises out of the laptop: two soft notes, a fifth apart */
 export function chime() { blip(N(76), N(76), 0.9, 0.04, 'sine'); blip(N(83), N(83), 1.1, 0.03, 'sine', 0.14) }
 /** the rewind: a tape whirring back, then the deck stopping */

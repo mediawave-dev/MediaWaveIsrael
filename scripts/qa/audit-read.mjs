@@ -53,10 +53,14 @@ for (let y = 0; y < total; y += Math.round(H * STEP)) {
     }
     return out
   }, process.env.SCOPE || 'body')
-  const hide = await p.addStyleTag({ content: '* { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } ::placeholder { color: transparent !important; }' })
+  // a gradient clipped to the letters (background-clip: text) still draws the letters with the text made
+  // transparent: those backgrounds go too, or the words are measured against themselves (D205)
+  await p.evaluate(() => { for (const el of document.querySelectorAll('body *')) { const cs = getComputedStyle(el); if (cs.webkitBackgroundClip === 'text' || cs.backgroundClip === 'text') el.setAttribute('data-audit-clip', '') } })
+  const hide = await p.addStyleTag({ content: '* { color: transparent !important; -webkit-text-fill-color: transparent !important; text-shadow: none !important; caret-color: transparent !important; } ::placeholder { color: transparent !important; } [data-audit-clip] { background: none !important; }' })
   await sleep(120)
   const shot = await p.screenshot({ encoding: 'base64' })
   await hide.evaluate((n) => n.remove())
+  await p.evaluate(() => document.querySelectorAll('[data-audit-clip]').forEach((el) => el.removeAttribute('data-audit-clip')))
   const res = await p.evaluate(async (b64, items, dpr) => {
     const img = new Image()
     img.src = 'data:image/png;base64,' + b64
