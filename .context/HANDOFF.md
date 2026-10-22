@@ -6,7 +6,7 @@
   public/fonts/PressStart2P-Latin.woff2. The mirror is position:fixed (an absolute one widened the RTL page).
 - D205: flight.css: .fl-h2 is fit-content; the gradient text sits on the element holding the words.
   G:/tmp/perf/clip/clip.mjs + layer.mjs audit every background-clip:text element (overflow, layered child).
-Rollback: prod-before-d206. LIVE (bd7a188), verified on mediawave.co.il. Next session: .context/NEXT-SESSION-PROMPT.rtl.md
+Rollback: prod-before-d206. D206 was replaced by D208 (SeaSteps, one question at a time; RpgWindow and the pixel font removed). D207: the rewind ring. Rollback for D207-D208: prod-before-d208.
 
 ---
 

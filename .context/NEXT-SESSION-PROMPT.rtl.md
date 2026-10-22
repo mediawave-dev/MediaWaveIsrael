@@ -5,7 +5,7 @@
 ## איפה עובדים
 - רק ב-worktree: `G:\Web-Dev\MediaWaveIsrael\.claude\worktrees\elegant-20261019`, בענף `feature/style-studio`.
   - בתיקייה הראשית `G:\Web-Dev\MediaWaveIsrael` יש שינויים ישנים לא שמורים, ואסור לגעת בהם.
-- מה שבאוויר: `origin/main` = ‏bd7a188 (D206), בכתובת https://mediawave.co.il (ה-.co.il, לא .com).
+- מה שבאוויר: `origin/main` = D208 (ראה git log), בכתובת https://mediawave.co.il (ה-.co.il, לא .com).
 - Stack: React 18, Vite 6, TypeScript, framer-motion דרך `m` (לא `motion`), WebGL, prerender ב-Puppeteer (12 עמודים).
   - Cloudflare Pages מעלה כל push ל-main.
 - קרא קודם:
@@ -28,10 +28,9 @@
   - הודעות על איים: הבוט כהה מימין, המבקר קרם משמאל.
   - קלט מנוקד, ושליחה שמתמלאת כשיש מה לשלוח.
   - החלון הישן נשאר רק למראות האחרים.
-- **טופס יצירת הקשר (D206)**: חלון של משחק תפקידים רטרו (`src/look/sea/RpgWindow.tsx`, ו-Contact.tsx).
-  - מסגרת פיקסלים ולשונית "PLAYER 1" בפונט Press Start 2P.
-  - סמן ◀ שקופץ בצעדים לשורה הפעילה, עם "בליפ" 8-ביט, וסמן בלוק מהבהב.
-  - וי פיקסלים וארפג'יו על שורה שהושלמה, ו-▼ מהבהב כשהכול מוכן.
+- **טופס יצירת הקשר (D208)**: שאלה אחת בכל מסך, באותיות גדולות (`src/look/sea/SeaSteps.tsx`, ו-Contact.tsx).
+  - "01 / 03", פס נקודות שמתמלא, ו-Enter או "[ הבא ]" כדי להתקדם.
+  - התשובות הקודמות נאספות למטה, והקשה על אחת חוזרת אליה. (חלון ה-RPG של D206 הוחלף.)
 - **צלילים**: `src/look/sea/sound.ts` (מנוע אחד, AudioContext משותף).
   - פועל כברירת מחדל ושקט. מתחיל רק מהקשה אמיתית.
 
@@ -60,6 +59,7 @@
 
 ## בדיקות לפני העלאה
 - `TEMP=G:/tmp/temp` (כונן C כמעט מלא), `PRERENDER_PORT=4191 npm run build`.
+- ה-Chrome של Puppeteer נמחק מהקאש: `export PUPPETEER_EXECUTABLE_PATH="C:/Program Files/Google/Chrome/Application/chrome.exe"` לפני build ובדיקות (או התקנה מחדש לכונן G).
 - `bash G:/tmp/studio/qa-all.sh`: build, ‏32 עמודים (axe, יעדי מגע, גלילה לצדדים, שגיאות), overlap, GL בשלושה דפדפנים, ובדיקת חזרה.
   - צריך שרת על 4192 (וגם 4194 לצילומים): `node C:/Users/User/.claude/skills/pattern-breaker/scripts/serve.mjs dist --port 4194 --spa`.
   - לבדיקת "חזרה" יש לפעמים כישלון אקראי בטלפון: תריץ שוב לבד.
@@ -90,6 +90,6 @@
 
 ## חוטים פתוחים (רעיונות, לא משימות)
 - טופס ה-LeadModal (`.lm__card`) עדיין לא בשפת חלון ה-RPG.
-- "PLAYER 1" מחכה לאישור קופי.
+- השאלות של הטופס מחכות לאישור קופי.
 - Lighthouse לא נמדד מחדש מאז D198 (אז: בית 87, מעוף 94, באזז 96, שרטוט 96, בוקר 95). D202-D206 הוסיפו SVG, פונט קטן וחלון צ'אט עצל, אז כדאי למדוד.
 - הכפתורים הרחבים (שליחה בטופס, וואטסאפ בדפי השירות): הסוגריים בקצוות. אם ארצה, אפשר שיצמדו למילים.
