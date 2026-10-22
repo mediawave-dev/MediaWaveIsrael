@@ -19,6 +19,7 @@ import Plan, { Steps } from './Plan'
 import Route from './Route'
 import { useSideways } from '../sideways'
 import './blueprint.css'
+import { setText } from '../../utils/set-text'
 
 export const prepare = () => Promise.all([document.fonts.load('700 40px "IBM Plex Sans Hebrew"', 'אבג'), document.fonts.load('500 12px "Geist Mono"', 'AB')])
 
@@ -110,16 +111,26 @@ export default function Blueprint({ tier, def }: StyleProps) {
   const swWrap = useRef<HTMLDivElement>(null)
   const swTrack = useRef<HTMLUListElement>(null)
   const readout = useRef<HTMLSpanElement>(null)
+  // (D210) the cell under the head plays once the head rests on it: starting a decoder for every cell that
+  // passed under it during a scan held the chapter at 30 frames a second on a phone
+  const rest = useRef(0)
+  useEffect(() => () => window.clearTimeout(rest.current), [])
   useSideways(swWrap, swTrack, tier, {
     ease: 1,
     onFrame: ({ x, d }) => {
-      if (readout.current) readout.current.textContent = `X:${String(Math.round(x)).padStart(4, '0')}PX`
+      setText(readout.current, `X:${String(Math.round(x)).padStart(4, '0')}PX`)
+      let here: HTMLVideoElement | null = null
       swTrack.current?.querySelectorAll<HTMLElement>('.bp-cell').forEach((c, i) => {
         const on = Math.abs(d[i] ?? 9) < 0.2
         c.toggleAttribute('data-on', on)
         const vid = c.querySelector('video')
-        if (vid && tier === 'full') { if (on) { if (vid.paused) void vid.play().catch(() => {}) } else if (!vid.paused) vid.pause() }
+        if (!vid || tier !== 'full') return
+        if (on) here = vid
+        else if (!vid.paused) vid.pause()
       })
+      window.clearTimeout(rest.current)
+      const v = here as HTMLVideoElement | null
+      if (v && v.paused) rest.current = window.setTimeout(() => { if (v.isConnected) void v.play().catch(() => {}) }, 220)
     },
   })
 

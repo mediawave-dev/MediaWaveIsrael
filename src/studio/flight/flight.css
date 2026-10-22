@@ -34,7 +34,8 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-giant { margin: 0; font-size: clamp(54px, 15vw, 210px); line-height: 0.92; padding-bottom: 0.06em; }
 .fl-giant--m { font-size: clamp(46px, 11vw, 150px); }
 .fl-kicker { margin: 0 0 18px; font: 400 clamp(22px, 2.4vw, 34px)/1.2 var(--fl-sans); color: var(--fl-ink); }
-.fl-h2 { margin: 0 auto 48px; text-align: center; font-weight: 400; max-width: 16ch; }
+/* the heading hugs its words (D205): a 16ch box cut the last letters of the gradient-filled line on desktop */
+.fl-h2 { margin: 0 auto 48px; text-align: center; font-weight: 400; width: fit-content; max-width: 100%; }
 .fl-h2__sans { display: block; font: 400 clamp(24px, 3vw, 40px)/1.2 var(--fl-sans); }
 .fl-h2__serif { display: block; font: 400 clamp(56px, 12vw, 170px)/0.95 var(--fl-serif); }
 [data-ln] { display: block; transform-origin: 50% 60%; will-change: transform, opacity; }
@@ -85,8 +86,12 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 
 /* ---- process and questions: the night, the folded blade glows in the middle ---- */
 .fl-proc, .fl-faq { color: #eef0ff; --fl-ink: #eef0ff; }
-.fl-proc .fl-h2__serif, .fl-faq .fl-h2__serif, .fl-contact .fl-giant {
+/* the gradient sits on the element that holds the words, and its box covers every letter (D205): text that
+   leaves the box has no gradient under it and shows nothing, and text in a child with its own layer (the
+   lines' entrance, will-change: transform) is not clipped by the parent's background at all */
+.fl-proc .fl-h2__serif, .fl-faq .fl-h2__serif, .fl-contact .fl-giant > [data-ln] {
   color: #fdebfd; background: var(--fl-pale); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  width: fit-content; max-width: 100%; margin-inline: auto; padding: 0 0.06em 0.08em;
 }
 .fl-proc { padding: 22vh clamp(18px, 4vw, 56px) 10vh; }
 .fl-steps { list-style: none; margin: 0 auto; padding: 0; max-width: 1180px; }
@@ -159,6 +164,8 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-hint { text-shadow: 0 0 10px rgba(229, 222, 249, 0.95); }
 /* the night's big words: a dark halo of the night behind them, so the bright blade never shows through */
 .fl-proc .fl-h2, .fl-faq .fl-h2 { filter: drop-shadow(0 0 22px rgba(3, 6, 24, 0.95)) drop-shadow(0 0 6px rgba(3, 6, 24, 0.95)); }
+/* (D205) the contact's line, visible again, gets the same halo in the sunset's ink: it stands over the bright wings */
+.fl-contact > .fl-giant > [data-ln] { filter: drop-shadow(0 0 20px rgba(30, 6, 2, 0.95)) drop-shadow(0 0 5px rgba(30, 6, 2, 0.95)) drop-shadow(0 0 2px rgba(30, 6, 2, 0.9)); }
 .fl-word { filter: drop-shadow(0 0 22px rgba(229, 222, 249, 0.95)) drop-shadow(0 0 5px rgba(229, 222, 249, 0.95)); }
 /* a real mist of the sky behind each block of words (D194 audit: halos are not a background): lilac by day,
    night-blue at night, a warm dark at dawn; soft-edged, so it reads as part of the sky, not as a box */
@@ -169,7 +176,7 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 }
 .fl-proc .fl-h2, .fl-faq .fl-h2, .fl-contact > .fl-giant { position: relative; isolation: isolate; }
 .fl-proc .fl-h2::before, .fl-faq .fl-h2::before { background: radial-gradient(closest-side, rgba(4, 7, 26, 0.92), rgba(4, 7, 26, 0.78) 55%, rgba(4, 7, 26, 0)); }
-.fl-contact > .fl-giant::before { background: radial-gradient(closest-side, rgba(30, 6, 2, 0.85), rgba(30, 6, 2, 0.6) 55%, rgba(30, 6, 2, 0)); }
+.fl-contact > .fl-giant::before { background: radial-gradient(closest-side, rgba(30, 6, 2, 0.94), rgba(30, 6, 2, 0.86) 60%, rgba(30, 6, 2, 0)); }
 .fl-form .st-form__style { color: #ffe7d3; }
 
 /* (D200 audit) the services' heading and the work's link cross the wing too: the same mist of the sky */

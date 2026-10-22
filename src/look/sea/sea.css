@@ -236,7 +236,7 @@ html.sea-held .sea-deck { display: flex; }
   html.sea-held .sea-svc__item.is-on .sea-svc__row::before, html.sea-held .sea-svc__item.is-on .sea-svc__row::after { opacity: 1; }
   /* the sample sits in a strip the row keeps free at its foot, across the line and picture columns, so
      it stays on one line and never meets a line that wraps */
-  html.sea-held .sea-svc__item:has(.sea-svc__sample) .sea-svc__row { padding-block-end: calc(clamp(6px, 1.4svh, 18px) + 34px); }
+  html.sea-held .sea-svc__item--sample .sea-svc__row { padding-block-end: calc(clamp(6px, 1.4svh, 18px) + 34px); }
   html.sea-held .sea-svc__sample {
     grid-row: 1; grid-column: 3 / -2; align-self: end; justify-self: start; position: relative; z-index: 1;
     min-height: 32px; margin: 0 -6px clamp(4px, 0.8svh, 10px); font-size: 14px; white-space: nowrap;
@@ -262,18 +262,14 @@ html.sea-held .sea-deck { display: flex; }
   border: 0; border-radius: 999px; background: rgba(15, 16, 17, 0.74); color: #ede7da;
   font: 700 1rem var(--ui); cursor: pointer; overflow: hidden; isolation: isolate; transition: color 0.2s linear;
 }
-.sea-rew::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: 3px;
-  background: radial-gradient(circle at center, rgba(237, 231, 218, 0.9) 0 1.2px, transparent 1.6px) 0 0 / 6px 6px;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
+/* (D207) the ring is DotRing (parts/DotRing.tsx): equal dots, the capsule's own outline */
+.sea-rew { --ring-dot: rgba(237, 231, 218, 0.9); --ring-size: 2.6px; }
 .sea-rew::before {
   content: ""; position: absolute; inset: 0; z-index: -1; --kdot: 0.6px;
   background: radial-gradient(circle at center, #ede7da 0 var(--kdot), transparent calc(var(--kdot) + 0.7px)) 0 0 / 7px 7px;
   clip-path: circle(0 at 50% 50%); transition: clip-path 0.5s var(--sea-ease), --kdot 0s linear 0.5s;
 }
-.sea-rew svg { width: 18px; height: 11px; fill: currentColor; }
+.sea-rew > svg:not(.dot-ring) { width: 18px; height: 11px; fill: currentColor; }
 @media (hover: hover) and (pointer: fine) {
   .sea-rew:hover { color: #0f1011; transition: color 0.2s linear 0.28s; }
   .sea-rew:hover::before { clip-path: circle(150% at 50% 50%); --kdot: 5.4px; transition: clip-path 0.6s var(--sea-ease), --kdot 0.6s cubic-bezier(0.5, 0, 0.3, 1) 0.06s; }
@@ -451,12 +447,13 @@ html.sea-gnd-paper .sea-contact .key:focus-visible { outline-color: #0f1011; }
 .sea-svc__pic { grid-area: pic; display: none; width: 100%; align-self: center; }
 html.sea-held .sea-svc__pic { display: block; }
 @media (max-width: 1099px) {
-  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-columns: minmax(0, 1fr) 96px 24px; grid-template-areas: "n n go" "title pic pic" "line line line" "deck deck deck"; }
+  html.sea-held .sea-svc__row--pic { grid-template-columns: minmax(0, 1fr) 96px 24px; grid-template-areas: "n n go" "title pic pic" "line line line" "deck deck deck"; }
   html.sea-held .sea-svc__pic { width: 96px; justify-self: end; }
 }
 @media (min-width: 1100px) {
-  html.sea-held .sea-svc__list:has(.sea-svc__pic) { grid-template-columns: 3em max-content minmax(0, 1fr) var(--pic) 32px; --pic: clamp(80px, 13svh, 112px); }
-  html.sea-held .sea-svc__row:has(.sea-svc__pic) { grid-template-areas: "n title line pic go"; }
+  /* explicit classes, no :has() (D210): the shared columns live on the list, each row takes them */
+  html.sea-held .sea-svc__list--pic { grid-template-columns: 3em max-content minmax(0, 1fr) var(--pic) 32px; --pic: clamp(80px, 13svh, 112px); }
+  html.sea-held .sea-svc__row--pic { grid-template-areas: "n title line pic go"; }
   html.sea-held .sea-svc__pic { width: var(--pic); }
 
 }
@@ -530,11 +527,11 @@ html.sea-reveal .sea-meta--end.on::before { transform: none; }
 .sea-lead__pro { display: block; margin-top: 10px; color: #ede7da; font-size: 1.18em; font-weight: 600; line-height: 1.45; letter-spacing: 0.005em; }
 .sea-word { display: inline-block; }
 @keyframes sea-word {
-  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
-  11.3% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; }
-  64% { opacity: 1; transform: none; filter: blur(0); letter-spacing: 0.005em; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
-  72% { opacity: 0; transform: translateY(-0.28em); filter: blur(6px); letter-spacing: 0.03em; }
-  100% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); letter-spacing: 0.06em; }
+  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+  11.3% { opacity: 1; transform: none; filter: blur(0); }
+  64% { opacity: 1; transform: none; filter: blur(0); animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  72% { opacity: 0; transform: translateY(-0.28em); filter: blur(6px); }
+  100% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); }
 }
 @keyframes sea-glint { 0%, 10%, 100% { color: #ede7da; text-shadow: var(--sea-halo); } 5% { color: #ffffff; text-shadow: 0 0 18px rgba(255, 255, 255, 0.38), var(--sea-halo); } }
 html.sea-reveal:not(.disable-animations) .sea-lead__pro .sea-word { opacity: 0; }
@@ -543,6 +540,8 @@ html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on .sea-word {
     sea-word 11.5s linear calc(var(--w) * 0.5s) infinite both,
     sea-glint 11.5s ease-in-out calc(3.7s + var(--w) * 0.14s) infinite both;
 }
+/* (D210) off screen the loop holds: an endless text animation kept the page's style dirty while scrolling */
+html.sea-reveal:not(.disable-animations) .sea-lead__pro.is-on.is-off .sea-word { animation-play-state: paused; }
 @media (max-width: 767px) { .sea-lead__pro { margin-top: 8px; font-size: 1.12em; } }
 
 /* ── how we work (D173): two tracks. Under the heading, the first track's line, quiet, in parentheses like

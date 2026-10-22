@@ -96,7 +96,9 @@ export function createMotionEngine(libs, options = {}) {
   let lenis = null;
   // Skip smooth scrolling on pages with at most one scrubbed set-piece (options.smooth = false):
   // native scroll is enough there, and one less layer means fewer ways to fail.
-  if (!REDUCE && !CALM && Lenis && options.smooth !== false) {
+  // Only with a mouse (D210): on a phone touch scrolls natively anyway (syncTouch: false), and Lenis's
+  // ticker read the scroll position every frame after the frame's writes, a forced layout each time.
+  if (!REDUCE && !CALM && FINE && Lenis && options.smooth !== false) {
     lenis = new Lenis({
       lerp: 0.1, wheelMultiplier: 1,
       syncTouch: false,            // phones keep native momentum scrolling

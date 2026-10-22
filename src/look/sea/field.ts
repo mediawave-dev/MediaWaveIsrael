@@ -618,7 +618,8 @@ function frame(now: number) {
   // full: halve the rate after 2.5s with nothing but the sea moving
   if (moving) idleSince = now
   // the words move with transitions too (reveals, the services stage): read them now and then
-  if (textDirty || (moving && ++textTick % 6 === 0)) { readText(); readSpots(); readLab() }
+  // (D210) not in a frame the scroll has just read: a second read after this frame's writes forced a layout
+  if (textDirty || (moving && ++textTick % 6 === 0 && now - readAt > 40)) { readText(); readSpots(); readLab() }
   const idle = mode === 'full' && now - idleSince > 2500
   skip = idle ? !skip : false
   if (!skip) draw()
@@ -714,8 +715,9 @@ const onScroll = () => {
   if (svAt) svT = Math.max(-1, Math.min(1, ((y - svY) / Math.max(8, now - svAt)) * 1000 / 2600))
   svY = y
   svAt = now
-  readSpots(); readText(); readLab(); wake()
+  readSpots(); readText(); readLab(); readAt = performance.now(); wake()
 }
+let readAt = 0
 const onVisible = () => { if (!document.hidden) { last = 0; wake() } }
 let remeasureT = 0
 const remeasure = () => { window.clearTimeout(remeasureT); remeasureT = window.setTimeout(() => { measure(); wake() }, 60) }
@@ -896,7 +898,7 @@ function uploadFilm(f: Film) {
   gl.bindTexture(gl.TEXTURE_2D, tex)
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
   try {
-    if (fromVideo && v) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, v); f.frameNew = false }
+    if (fromVideo && v) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, v); f.frameNew = false }
     else if (f.poster) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, f.poster)
       f.posterUp = true
@@ -1209,7 +1211,7 @@ function uploadReel() {
     if (!s.ready || !s.fresh || s.v.readyState < 2) return
     gl!.activeTexture(gl!.TEXTURE2 + i)
     gl!.bindTexture(gl!.TEXTURE_2D, reelTex[i])
-    try { gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGB, gl!.RGB, gl!.UNSIGNED_BYTE, s.v); s.fresh = false } catch { /* keep the last frame */ }
+    try { gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, s.v); s.fresh = false } catch { /* keep the last frame */ }
   })
   // before the first take's first frame (and in calm): its poster
   const first = reel.slots[0]

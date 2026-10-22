@@ -1,3 +1,61 @@
+# HANDOFF: smooth scrolling on the site and in the worlds, a bug sweep (22.10.2026, D210)
+
+- Measure: G:/tmp/perf/scroll-jank.mjs <url> <tag> <cpu> (INV=1 for invalidations), where.mjs (long frames by
+  chapter; NOPLAY=1 stubs video play), callers.mjs (who calls a hot function), before.mjs (what dirtied style before
+  a forced recalc), anims.mjs (running CSS animations), net.mjs (failed requests per route), flows.mjs (menu, chat,
+  form, studio, links). A test build: vite build --outDir G:/tmp/postsend/dist-ep, served on localhost:4196.
+- Rules learned: no endless main-thread CSS animation (letter-spacing, color, svg transforms) while scrolling; no
+  layout read inside rAF (utils/scroll-cache.ts); counters via utils/set-text.ts; no mix-blend-mode on full-screen or
+  moving video layers; start videos when the reader rests, not while passing; many moving sprites = one canvas.
+- Files: utils/scroll-cache.ts (+ markScrolling in main.tsx), utils/set-text.ts, look/sea/{sea.css, SeaHome,
+  SeaServices, field.ts, SeaTrail, sea-site.css}, ChatWidget (.mw-ai wrapper), motion/motion-engine.js (Lenis FINE
+  only), studio/buzz/swarm.ts (canvas), studio/clay/room.ts, studio/flight/scene.ts, studio/blueprint/{Blueprint,
+  Route, blueprint.css}, studio/portal.css.
+Rollback: prod-before-d210.
+
+---
+
+# HANDOFF: the little world after a send, "the orbit" (22.10.2026, D209)
+
+- src/studio/SentGuide.tsx + sent-guide.css: lazy, mounted by look/sections/Contact.tsx (SHOT only, once a visit)
+  after a successful send ('now') or after the WhatsApp hand-off ('late': waits for the tab to come back).
+  Portaled to body (a transformed ancestor broke position:fixed inside the section). Phases wait -> set -> in -> out
+  ('set' paints at rest so the CSS entrances run). Frame loop writes transforms only; geometry measured once
+  (and on resize) from the bubble's layout box. html.sg-on hides .gd/.gd-trail/.snd; html.sg-open locks scroll;
+  html.sg-seen ends the main-site guide's visits (GuidePlan.until).
+- src/studio/travel.ts: the wave + route change, shared by SiteGuide's map and SentGuide.
+- SeaSteps: after 'sent' it resets without taking the focus.
+- Tests: G:/tmp/postsend/run*.mjs (send the form and film), axe.mjs (axe inside the open scene: 0).
+  Note: something old listens on 127.0.0.1:4196; serve.mjs on 4196 answers at localhost.
+Rollback: prod-before-d209.
+
+---
+
+# HANDOFF: the contact form as an RPG window, Flight's clipped headings (22.10.2026, D205-D206)
+
+- D206: src/look/sea/RpgWindow.tsx (useRpgWindow on the form + RpgChrome: frame, tab, cursor, block caret,
+  "more" prompt), wired in look/sections/Contact.tsx (SHOT only: data-ok rows, data-ready, email as
+  type=text + inputMode=email); CSS = the D206 block in sea-site.css; sounds select()/ok() in sea/sound.ts;
+  public/fonts/PressStart2P-Latin.woff2. The mirror is position:fixed (an absolute one widened the RTL page).
+- D205: flight.css: .fl-h2 is fit-content; the gradient text sits on the element holding the words.
+  G:/tmp/perf/clip/clip.mjs + layer.mjs audit every background-clip:text element (overflow, layered child).
+Rollback: prod-before-d206. D206 was replaced by D208 (SeaSteps, one question at a time; RpgWindow and the pixel font removed). D207: the rewind ring. Rollback for D207-D208: prod-before-d208.
+
+---
+
+# HANDOFF: the AI chat window in the site's material (22.10.2026, D204)
+
+- src/look/sea/SeaChat.tsx + sea-chat.css: the shot look's chat panel (ChatWidget renders it when LOOK ===
+  'shot'; it keeps state, focus trap, Escape, the visual-viewport height). Messages on Isle islands (bot dark,
+  visitor cream), dotted input (focus = cream bigger dots), send = an island that fills when canSend.
+- src/components/ui/chat-text.tsx: stripMarkdown + linkifyContent (shared by both panels).
+- shot-base.css legacy chat rules now end in :not(.sc). html.chat-open hides .gd/.gd-trail/.snd; SoundInvite
+  treats chat-open as busy and ignores taps while it is open.
+- Isle: radius, ink=false; the ground's core is one rect (bands 0-3 as dots); the ink copy keeps all 5 bands.
+Rollback: prod-before-d204 (when shipped).
+
+---
+
 # HANDOFF: the floating buttons on an island of halftone dots, the email row fits (22.10.2026, D203)
 
 - src/look/parts/Isle.tsx: an SVG under a floating button (absolute, --out px beyond it): a 4px grid of round

@@ -46,8 +46,8 @@ function placeNow(): 'bottom' | 'top' | null {
   return null
 }
 
-/** something else holds the stage: the guide flying or resting, a dialog, a hidden tab */
-const busy = () => document.hidden || document.documentElement.classList.contains('wm-open') || [...document.querySelectorAll<HTMLElement>('.gd')].some((g) => g.dataset.phase && g.dataset.phase !== 'away')
+/** something else holds the stage: the guide flying or resting, a dialog or the chat, a hidden tab */
+const busy = () => document.hidden || document.documentElement.classList.contains('wm-open') || document.documentElement.classList.contains('chat-open') || [...document.querySelectorAll<HTMLElement>('.gd')].some((g) => g.dataset.phase && g.dataset.phase !== 'away')
 
 let declined = false
 let shown = 0
@@ -127,6 +127,7 @@ export default function SoundInvite({ track, source, cue, delay = 3200 }: { trac
       down.current = null
       if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 12 || performance.now() - d.t > 600) return
       if ((e.target as Element | null)?.closest?.(CONTROL)) return
+      if (document.documentElement.classList.contains('chat-open')) return
       source.turnOn()
     }
     window.addEventListener('pointerdown', pd, { passive: true })

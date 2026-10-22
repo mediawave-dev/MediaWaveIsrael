@@ -9,7 +9,7 @@
 // Lottie and the four ways), overlap-audit zones on the ways, the time line and the messages,
 // and its own companion file through `pal`. The props are optional; the looks' DOM is unchanged.
 
-import { Fragment, useEffect, useRef, useState, type FocusEvent, type FormEvent, type ReactNode } from 'react'
+import { Fragment, lazy, Suspense, useEffect, useRef, useState, type FocusEvent, type FormEvent, type ReactNode } from 'react'
 import { LookButton } from '@look/button'
 import type { BtnState } from '../buttons/StateButton'
 import { useMotionEngine } from '../../motion/ScrollEngineProvider'
@@ -23,10 +23,14 @@ import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
+import SeaSteps from '../sea/SeaSteps'
 
 type Field = 'name' | 'email' | 'message'
 
 const SHOT = LOOK === 'shot'
+/** the sea (D209): after a send the guide's little world offers the four worlds; once a visit */
+const SentGuide = lazy(() => import('../../studio/SentGuide'))
+let invited = false
 /** overlap-audit zone for the shot's text (the looks keep their markup as it was) */
 const Z = SHOT ? 'text' : undefined
 /** the shot's business card around the Lottie and the ways; a Fragment in the looks */
@@ -56,6 +60,9 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
   const [keys, setKeys] = useState(0)
   const timer = useRef(0)
   useEffect(() => () => clearTimeout(timer.current), [])
+  // the moment after a send: 'now' after the endpoint, 'late' after the WhatsApp hand-off (the visitor returns first)
+  const [invite, setInvite] = useState<'' | 'now' | 'late'>('')
+  const inviteOnce = (how: 'now' | 'late') => { if (SHOT && !invited) { invited = true; setInvite(how) } }
 
   // the companion's state: the request lifecycle first, then whether a field has focus
   const pal: CompanionStatus = state === 'loading' || state === 'sent' || state === 'error' ? state : focused ? 'typing' : 'idle'
@@ -100,6 +107,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(wa), '_blank', 'noopener')
       setStatus('ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.')
+      inviteOnce('late')
       return
     }
 
@@ -122,6 +130,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       setState('sent')
       setStatus('קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.')
       setData({ name: '', email: '', message: '' })
+      inviteOnce('now')
       timer.current = window.setTimeout(() => setState('idle'), 4200)
     } catch {
       setState('error')
@@ -187,11 +196,16 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
           <p className="ct__time" data-zone={Z}>{SITE_CONTACT.responseTime}</p>
         </div>
 
-        <form className="ct__form" onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
+        <form className={`ct__form${SHOT ? ' qs' : ''}`} onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
+          {/* the sea (D208): one question at a time; the looks keep their three fields */}
+          {SHOT && (
+            <SeaSteps data={data} errors={errors} setErrors={setErrors} change={change} needEmail={!!import.meta.env.VITE_CONTACT_ENDPOINT}
+              state={state} submitLabel={import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'} />
+          )}
           {art && <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />}
-          {field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
-          {field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
-          {field('message', 'הודעה', {}, true)}
+          {!SHOT && field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
+          {!SHOT && field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
+          {!SHOT && field('message', 'הודעה', {}, true)}
           {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (
             <p role="alert" className="ct__failure" data-zone={Z}>
@@ -199,9 +213,10 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
               <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
             </p>
           )}
-          <LookButton type="submit" block state={state} live zone="text">{import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'}</LookButton>
+          {!SHOT && <LookButton type="submit" block state={state} live zone="text">{import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'}</LookButton>}
         </form>
       </div>
+      {invite && <Suspense fallback={null}><SentGuide late={invite === 'late'} onDone={() => setInvite('')} /></Suspense>}
     </section>
   )
 }

@@ -371,25 +371,50 @@ html[data-look="shot"] .sea-contact .ct__ico :is(.dot-glyph, .wa-dots, svg) { wi
 .sea-contact .ct__time { margin: 16px 0 0; font: 700 13px/1.4 var(--text); color: #a39d90; text-align: start; }
 .sea-contact .ct__time::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
 .sea-contact .ct__time::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
-.sea-contact .ct__form { background: none; box-shadow: none; border: 0; padding: 0; margin: 0; display: grid; gap: 26px; }
-.sea-contact .ct__field label { display: block; margin: 0 0 10px; font: 700 13px/1.3 var(--text); color: #a39d90; text-align: start; }
-.sea-contact .ct__field label::before { content: "[ "; content: "[ " / ""; font-family: var(--sea-mono); }
-.sea-contact .ct__field label::after { content: " ]"; content: " ]" / ""; font-family: var(--sea-mono); }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea) {
-  --fd: rgba(237, 231, 218, 0.7);
-  width: 100%; box-sizing: border-box; padding: 16px; border: 0; border-radius: 0; color: #ede7da; font: 700 1.125rem/1.5 var(--text);
-  background:
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-x,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 100% / 6px 6px repeat-x,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 0 0 / 6px 6px repeat-y,
-    radial-gradient(circle, var(--fd) 0 1.1px, transparent 1.5px) 100% 0 / 6px 6px repeat-y,
-    rgba(15, 16, 17, 0.6);
+/* ── the contact form, one question at a time (D208, SeaSteps.tsx): the question in the display face, the
+   answer typed large on a dotted line that turns blue in play, a row of dots that fills as the visitor
+   writes, "01 / 03" in mono, the answers already given as rows below. Mobile first. ── */
+.sea-contact .ct__form { display: block; margin: 0; padding: 0; border: 0; box-shadow: none; background: none; }
+.qs__top { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 0 0 28px; direction: ltr; }
+.qs__n { font: 600 12px/1 var(--sea-mono); letter-spacing: 0.1em; color: #a39d90; }
+.qs__dots { display: flex; gap: 5px; }
+.qs__dots i { width: 6px; height: 6px; border-radius: 50%; background: #2c2e32; transition: background-color 0.2s linear; }
+.qs__dots i.h { background: #9dbcd8; }
+.qs__dots i.f { background: #ede7da; }
+@keyframes qs-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+html:not(.disable-animations):not(.motion-reduced) .qs__q { animation: qs-in 0.45s var(--sea-ease, cubic-bezier(0.16, 1, 0.3, 1)) both; }
+.qs__label { display: block; margin: 0 0 22px; font: 400 clamp(36px, 9.6vw, 56px)/1.05 var(--display); color: #ede7da; text-align: start; text-wrap: balance; }
+.qs__label small { display: block; margin-top: 12px; font: 500 16px/1.5 var(--text); color: #a39d90; }
+html[data-look="shot"] .sea-contact #contact .qs__field {
+  --ul: #6f6a60;
+  display: block; width: 100%; box-sizing: border-box; margin: 0; padding: 4px 0 14px; border: 0; border-radius: 0;
+  color: #ede7da; caret-color: #9dbcd8; font: 600 clamp(26px, 7.4vw, 38px)/1.3 var(--text); text-align: start;
+  background: radial-gradient(circle, var(--ul) 0 1.6px, transparent 2px) 0 100% / 8px 4px repeat-x;
+  transition: --ul 0.2s linear;
 }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus { --fd: #ede7da; }
-html[data-look="shot"] .sea-contact #contact .ct__field :is(input, textarea):focus-visible { outline: 2px solid #79a0c5; outline-offset: 4px; }
-html[data-look="shot"] .sea-contact #contact .ct__field[data-invalid] :is(input, textarea) { --fd: #e0533f; }
-.sea-contact .ct__field textarea { min-height: 150px; resize: vertical; }
-.sea-contact :is(.ct__err, .ct__status, .ct__failure) { color: #ede7da; }
+html[data-look="shot"] .sea-contact #contact textarea.qs__field { font-size: clamp(20px, 5.4vw, 26px); line-height: 1.5; min-height: 4.6em; resize: none; field-sizing: content; max-height: 40vh; }
+html[data-look="shot"] .sea-contact #contact .qs__field[dir="ltr"] { text-align: left; }
+html[data-look="shot"] .sea-contact #contact .qs__field:focus { outline: none; --ul: #9dbcd8; }
+html[data-look="shot"] .sea-contact #contact .qs__q[data-err] .qs__field { --ul: #e0533f; }
+.sea-contact .ct__err { margin: 12px 0 0; font: 600 15px/1.4 var(--text); color: #ede7da; }
+.sea-contact .ct__err::before {
+  content: "[ ! ] "; content: "[ ! ] " / ""; display: inline; width: auto; height: auto; margin: 0; border-radius: 0; background: none;
+  font: 700 13px/1 var(--sea-mono); color: #f0907e;
+}
+@keyframes qs-shake { 0%, 100% { transform: none; } 25% { transform: translateX(6px); } 50% { transform: translateX(-5px); } 75% { transform: translateX(3px); } }
+html:not(.disable-animations):not(.motion-reduced) .qs__q[data-err] .qs__field { animation: qs-shake 0.32s ease; }
+.qs__next { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 26px 0 0; }
+.qs__hint { font: 600 11px/1 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; }
+@media (hover: none), (pointer: coarse) { .qs__hint { visibility: hidden; } }
+.qs__done { list-style: none; margin: 34px 0 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
+.qs__done li { border-top: 1px solid var(--sea-rule); }
+.qs__done button {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px; width: 100%; min-height: 48px; padding: 12px 4px;
+  border: 0; background: none; color: #a39d90; font: 500 15px/1.3 var(--text); text-align: start; cursor: pointer; border-radius: 2px;
+}
+.qs__done b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #ede7da; font-weight: 600; }
+@media (hover: hover) and (pointer: fine) { .qs__done button:hover { background: rgba(237, 231, 218, 0.05); } }
+.qs__done button:focus-visible { outline: 2px solid #ede7da; outline-offset: -2px; }
 
 /* ── the inner pages on the field (D131, D133). shot-pages.css is a lazy chunk that lands after this
    file, hence html[data-look] on every rule. Content stays on cards in the pill's material (they keep
@@ -565,11 +590,14 @@ html[data-look="shot"] .shot-dock__chat-btn.is-ai {
   border-radius: 999px; background: rgba(15, 16, 17, 0.82); color: #ede7da; box-shadow: none; overflow: visible;
 }
 
-.mw-ai { width: 24px; height: 24px; color: #9dbcd8; }
+.mw-ai { display: inline-block; flex: none; width: 24px; height: 24px; color: #9dbcd8; }
+.mw-ai > svg { display: block; width: 100%; height: 100%; }
 .mw-ai__t { font: 700 13px/1 var(--sea-mono); letter-spacing: 0.06em; direction: ltr; }
 @keyframes ai-twinkle { 0%, 80%, 100% { transform: none; } 88% { transform: scale(1.3) rotate(45deg); } }
 @media all { /* D160: full motion on every visit (was: prefers-reduced-motion: no-preference) */
   html:not(.disable-animations):not(.motion-reduced) .mw-ai { animation: ai-twinkle 4.2s ease-in-out 1.2s infinite; }
+  /* (D210) it holds while the page scrolls (an endless restyle kept every scroll read paying for one) */
+  html[data-scrolling]:not(.disable-animations):not(.motion-reduced) .mw-ai { animation-play-state: paused; }
 }
 @media (hover: hover) and (pointer: fine) {
   html[data-look="shot"] .shot-dock__chat-btn.is-ai:hover .mw-ai { color: #225079; }
@@ -660,6 +688,7 @@ html.sea-gl .sea-clips__still { display: none; }
 
 /* ── the pointer's trail (D157, SeaTrail.tsx): its own canvas over everything, never in the way ── */
 .sea-trail { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 70; pointer-events: none; mix-blend-mode: screen; }
+.sea-trail:not([data-live]) { visibility: hidden; }
 /* pictures in colour (D157, gate `media`): no dots; the picture fades in once it has loaded */
 .sdv.is-colour .sdv__dots { display: none; }
 .sdv.is-colour .sdv__img { opacity: 0; transition: opacity 0.75s ease; }
@@ -759,7 +788,8 @@ html[data-look="shot"] .shot-dock__chat-btn.is-ai { padding-inline: 24px; color:
   width: calc(100% + 2 * var(--out)); height: calc(100% + 2 * var(--out)); overflow: visible; pointer-events: none;
 }
 .isle path { fill: none; stroke-linecap: round; }
-.isle__ground path { stroke: #1b1d20; stroke-width: calc(var(--r) * 1px); }
+.isle__ground path { stroke: var(--isle-ground, #1b1d20); stroke-width: calc(var(--r) * 1px); }
+.isle__ground rect { fill: var(--isle-ground, #1b1d20); }
 /* the cream dots: at rest size zero; they shrink back rim first */
 .isle__ink path {
   stroke: #ede7da; stroke-width: calc(var(--r) * var(--grow) * 1px);

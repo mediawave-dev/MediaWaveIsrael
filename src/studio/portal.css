@@ -139,6 +139,8 @@ html.wm-open { overflow: hidden; }
 .snd__col i { display: block; width: 3.4px; height: 3.4px; border-radius: 50%; background: #ede7da; opacity: 0.16; }
 .snd__col i:first-child { opacity: 0.9; }
 .snd[data-on] .snd__col i { animation: snd-lit 1.2s steps(1, end) infinite; animation-delay: calc(var(--c) * -0.23s - var(--r) * 0.07s); }
+/* (D210) the equaliser holds while the page scrolls */
+html[data-scrolling] .snd[data-on] .snd__col i { animation-play-state: paused; }
 .snd[data-on] .snd__col:nth-child(2n) i { animation-duration: 0.9s; }
 .snd[data-on] .snd__col:nth-child(3) i { animation-duration: 1.45s; }
 @keyframes snd-lit {

@@ -97,7 +97,10 @@ function Promise() {
       })
       mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     } else go(700)
-    return () => { mo?.disconnect(); window.clearTimeout(t) }
+    // (D210) the loop holds while the words are off screen
+    const io = new IntersectionObserver(([e]) => el.classList.toggle('is-off', !e.isIntersecting))
+    io.observe(el)
+    return () => { mo?.disconnect(); io.disconnect(); window.clearTimeout(t) }
   }, [])
   const words = HERO.pro.split(' ')
   return (

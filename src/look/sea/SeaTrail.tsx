@@ -70,6 +70,9 @@ export default function SeaTrail() {
     let raf = 0
     let last = 0
     let dpr = 1
+    // (D210) seen only while a streak is drawn: an idle full-screen layer with mix-blend-mode still made the
+    // compositor blend the whole screen over the moving sea every frame
+    const live = (on: boolean) => { if (on) el.dataset.live = ''; else delete el.dataset.live }
     const size = () => {
       dpr = Math.min(2, window.devicePixelRatio || 1)
       el.width = Math.round(window.innerWidth * dpr)
@@ -136,7 +139,7 @@ export default function SeaTrail() {
           ctx.globalAlpha = 1
         }
         if (pts.length || glow > 0.01) raf = requestAnimationFrame(frame)
-        else last = 0
+        else { last = 0; live(false) }
         return
       }
       // a mouse (the lab's trail=line): the hairline ribbon, thin and faint at the tail, brighter toward the head
@@ -174,7 +177,7 @@ export default function SeaTrail() {
         ctx.fill()
       }
       if (pts.length || dust.length || glow > 0.01) raf = requestAnimationFrame(frame)
-      else last = 0
+      else { last = 0; live(false) }
     }
     const onMove = (e: PointerEvent) => {
       if (e.pointerType === 'touch') return
@@ -182,7 +185,7 @@ export default function SeaTrail() {
       ptr.x = e.clientX
       ptr.y = e.clientY
       ptr.at = performance.now()
-      if (!raf) raf = requestAnimationFrame(frame)
+      if (!raf) { live(true); raf = requestAnimationFrame(frame) }
     }
     const onLeave = () => { ptr.at = 0 }
     // a finger: each touch starts its own line (never one drawn from where the last touch ended)
@@ -193,7 +196,7 @@ export default function SeaTrail() {
       ptr.x = t.clientX
       ptr.y = t.clientY
       ptr.at = performance.now()
-      if (!raf) raf = requestAnimationFrame(frame)
+      if (!raf) { live(true); raf = requestAnimationFrame(frame) }
     }
     const onTouchEnd = (e: TouchEvent) => { if (!e.touches.length) ptr.at = 0 }
     size()

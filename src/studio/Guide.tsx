@@ -24,6 +24,8 @@ export interface GuidePlan {
   say: string
   /** the chapter that always calls it once more */
   last?: string
+  /** a class on <html> that ends its visits (the main site: sg-seen, the offer after a send was made, D209) */
+  until?: string
 }
 
 export const STUDIO_PLAN: GuidePlan = { chapters: '[data-ch]', cool: 30000, max: 5, stay: 7000, first: 4200, say: 'Visit another world', last: 'contact' }
@@ -190,6 +192,7 @@ export default function Guide({ color, tier, open, onOpen, plan = STUDIO_PLAN }:
       const s = state.current
       const now = performance.now()
       if (s.phase !== 'away' || s.shown >= plan.max || now - s.last < plan.cool || open) return
+      if (plan.until && document.documentElement.classList.contains(plan.until)) return
       // (D200) never at the same time as the music's invitation
       const p = rowHolds() || document.querySelector('.snd[data-on]') ? null : pickPerch()
       if (!p) return

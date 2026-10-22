@@ -8,9 +8,13 @@ import './look/looks.css'
 import { stampLook } from './look/look'
 import App from './App.tsx'
 import { installStaleChunkReload } from './utils/stale-chunk'
+import { markScrolling } from './utils/scroll-cache'
 
 // a tab from before a deploy reloads once instead of failing on chunks that are gone
 installStaleChunkReload()
+
+// small endless decorations hold still while the page scrolls (D210)
+markScrolling()
 
 // dev ?look= override (production HTML already carries data-look from the build)
 stampLook()
