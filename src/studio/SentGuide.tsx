@@ -7,7 +7,7 @@
 // scene brings it to the top and waits for it, and after the WhatsApp hand-off it waits for the visitor to
 // come back to the tab. Still: no flight, no typing, no orbit, only fades; calm: a slower orbit.
 // Sounds go through the site's engine, which is silent unless the visitor's sound is on.
-// [קופי: נתי] the bubble's two lines
+// The bubble's lines: approved by Nati (22.10, "מאושר")
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
