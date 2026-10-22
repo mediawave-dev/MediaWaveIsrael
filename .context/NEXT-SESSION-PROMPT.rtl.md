@@ -9,7 +9,7 @@
 ## איפה עובדים
 - רק ב-worktree: `G:\Web-Dev\MediaWaveIsrael\.claude\worktrees\elegant-20261019`, בענף `feature/style-studio`.
   - בתיקייה הראשית `G:\Web-Dev\MediaWaveIsrael` יש שינויים ישנים לא שמורים, ואסור לגעת בהם.
-- מה שבאוויר: `origin/main` = D209 (ראה git log), בכתובת https://mediawave.co.il (ה-.co.il, לא .com).
+- מה שבאוויר: `origin/main` = D209 (עם אישורי הקופי של D208-D209) (ראה git log), בכתובת https://mediawave.co.il (ה-.co.il, לא .com).
 - Stack: React 18, Vite 6, TypeScript, framer-motion דרך `m` (לא `motion`), WebGL, prerender ב-Puppeteer (12 עמודים).
   - Cloudflare Pages מעלה כל push ל-main.
 - קרא קודם:
@@ -94,6 +94,5 @@
 
 ## חוטים פתוחים (רעיונות, לא משימות)
 - טופס ה-LeadModal (`.lm__card`) עדיין לא בשפה של הטופס החדש (D208).
-- השאלות של הטופס מחכות לאישור קופי (השורות של הבועה אחרי השליחה, D209, אושרו).
 - Lighthouse לא נמדד מחדש מאז D198 (אז: בית 87, מעוף 94, באזז 96, שרטוט 96, בוקר 95). D202-D208 הוסיפו SVG וחלון צ'אט עצל, אז כדאי למדוד.
 - הכפתורים הרחבים (שליחה בטופס, וואטסאפ בדפי השירות): הסוגריים בקצוות. אם ארצה, אפשר שיצמדו למילים.

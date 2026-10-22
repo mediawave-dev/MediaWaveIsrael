@@ -3,7 +3,7 @@
 // that fills as the visitor writes, "01 / 03" in mono. Enter (or [ הבא ]) checks the answer and moves on;
 // the answers already given gather below as rows, and a tap on one goes back to it. The message takes
 // Enter as a new line and Ctrl/Cmd+Enter to send. Contact.tsx keeps the data, the validation and the send.
-// [קופי: נתי] the questions and their small lines
+// The questions and their small lines: approved by Nati (22.10, "הכל מאושר")
 import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react'
 import { LookButton } from '@look/button'
 import type { BtnState } from '../buttons/StateButton'
