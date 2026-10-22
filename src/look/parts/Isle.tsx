@@ -83,8 +83,10 @@ export default function Isle({ out = 7, radius = Infinity, ink = true }: { out?:
         c.setAttribute('rx', core.r.toFixed(1))
       }
     }
-    const r = s.getBoundingClientRect()
-    draw(r.width, r.height)
+    // the layout size (the host plus the fringe on both sides), not the painted one, which an entrance's scale
+    // would shrink (D207)
+    const host = s.parentElement
+    draw((host?.clientWidth ?? 0) + 2 * out, (host?.clientHeight ?? 0) + 2 * out)
     const ro = new ResizeObserver(([e]) => draw(e.contentRect.width, e.contentRect.height))
     ro.observe(s)
     return () => ro.disconnect()

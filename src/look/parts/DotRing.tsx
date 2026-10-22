@@ -52,8 +52,10 @@ export default function DotRing({ className = '', inset = 1.6, gap = GAP }: { cl
       p.setAttribute('d', d)
       p.setAttribute('pathLength', String(n))
     }
-    const r = s.getBoundingClientRect()
-    draw(r.width, r.height)
+    // the layout size, not the painted one: a button still scaled by its entrance would get a ring of 8 dots
+    // that no resize ever corrects (D207)
+    const host = s.parentElement
+    draw(host?.clientWidth ?? 0, host?.clientHeight ?? 0)
     const ro = new ResizeObserver(([e]) => draw(e.contentRect.width, e.contentRect.height))
     ro.observe(s)
     return () => ro.disconnect()

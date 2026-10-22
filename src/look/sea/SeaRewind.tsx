@@ -11,6 +11,7 @@ import { Clock, Tag } from './parts'
 import { opt } from './lab'
 import { SITE_CONTACT } from '../../data/site'
 import * as sound from './sound'
+import DotRing from '../parts/DotRing'
 
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
@@ -45,6 +46,8 @@ export default function SeaRewind() {
       <button type="button" className="sea-rew" onClick={go} data-cursor="◀◀ REW">
         <svg viewBox="0 0 20 12" aria-hidden="true" focusable="false"><path d="M10 1 1 6l9 5zM19 1l-9 5 9 5z" /></svg>
         חזרה להתחלה
+        {/* (D207) equal dots along the capsule, not a masked grid that halves the dots on its curve */}
+        <DotRing inset={2} />
       </button>
       <div className={`sea-rew__hud${on ? ' is-on' : ''}`} aria-hidden="true">◀◀ REW <span ref={count}>0000</span></div>
       {/* the meta bar comes back at the end (D155, gate `bar`): the line, the labels, the live clock; the dock
