@@ -20,6 +20,7 @@ import { resumeMusic, yieldMusic } from '../look/sea/sound'
 type PickAt = { x: number; y: number }
 import { getCurtain, prepareCurtain } from './curtain'
 import { fitNames, listenParent, PREVIEW, tellParent, useHero } from './preview'
+import { liftTurnCover } from '../look/sea/SeaTurn'
 import './studio.css'
 
 const AccessibilityWidget = lazy(() => import('../components/ui/AccessibilityWidget'))
@@ -94,6 +95,8 @@ export default function StylesPage() {
   // listening keeps listening (the world's track rises in its place), and on the way out it goes back
   useEffect(() => {
     if (PREVIEW) return
+    // reached from the home's style cards through the page turn: open at once (D217)
+    liftTurnCover()
     if (yieldMusic(0.8) && tierNow() !== 'still') setSoundOn(true)
     return () => {
       const was = isSoundOn()
@@ -161,7 +164,7 @@ export default function StylesPage() {
     }
     requestAnimationFrame(wait)
     return () => { live = false }
-  }, [Page, def, engine])
+  }, [Page, def, engine, words])
   useLayoutEffect(() => { if (PREVIEW && Page) fitNames() }, [words, Page])
 
   const land = (ch: string) => {

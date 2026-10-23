@@ -66,6 +66,16 @@ export function turnThen(x: number, y: number, go: () => void, kind: 'spa' | 'pa
   })
 }
 
+/** A page with its own shell (/styles/, /your-site/) has no SeaTurn and no field to open it: it lifts the
+    arrival cover itself once it has painted, instead of waiting for index.html's 2.5 s safety net. */
+export function liftTurnCover() {
+  const html = document.documentElement
+  if (!html.classList.contains('sea-turn-in')) return
+  try { sessionStorage.removeItem(KEY) } catch { /* private mode */ }
+  html.classList.add('sea-turn-fade')
+  window.setTimeout(() => html.classList.remove('sea-turn-in', 'sea-turn-fade'), 320)
+}
+
 /** From a click (or a key, which has no pointer): the turn starts where the visitor acted. */
 export function turnFrom(e: { clientX?: number; clientY?: number; currentTarget?: EventTarget | null }) {
   const el = e.currentTarget as HTMLElement | null

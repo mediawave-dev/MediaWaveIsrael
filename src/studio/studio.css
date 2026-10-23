@@ -126,4 +126,4 @@ html.st-preview .st { min-height: 100svh; }
 .st-pv__menu i:last-child { width: 62%; }
 /* the visitor's name inside a world's big line: it shrinks to fit (preview.ts fitNames), and a mixed
    Hebrew and English name keeps its own order */
-.s60-name { display: inline-block; max-width: 100%; unicode-bidi: isolate; overflow-wrap: normal; }
+.s60-name { display: inline-block; max-width: min(100%, calc(100vw - 32px)); unicode-bidi: isolate; overflow-wrap: normal; white-space: normal; }

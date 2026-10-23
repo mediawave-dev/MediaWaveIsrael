@@ -39,22 +39,34 @@ export default function Air({ style, words, slot, show, onReady }: {
   const [live, setLive] = useState<StyleId | null>(null)
   const ready = useRef(onReady)
   ready.current = onReady
+  const post = (msg: object) => frame.current?.contentWindow?.postMessage(msg, window.location.origin)
+  // what the frame should show now, for its hello and for checking its ready
+  const want = useRef({ words, style })
+  want.current = { words, style }
 
   useEffect(() => {
     const on = (e: MessageEvent) => {
       if (e.origin !== window.location.origin || e.source !== frame.current?.contentWindow) return
-      const m = e.data as { type?: string; style?: StyleId; h1?: Ready['h1'] }
+      const m = e.data as { type?: string; style?: StyleId; name?: string; h1?: Ready['h1'] }
+      const now = want.current
+      // listening now: words sent before it was (while it loaded) were lost, so they go again
+      if (m?.type === 's60:hello') {
+        post({ type: 's60:hero', ...now.words })
+        post({ type: 's60:show', style: now.style })
+        return
+      }
       if (m?.type !== 's60:ready' || !m.style) return
+      // painted with an older name: send the words again and wait for the next ready
+      if (m.name !== now.words.name) { post({ type: 's60:hero', ...now.words }); return }
       setLive(m.style)
       ready.current({ style: m.style, h1: m.h1 })
     }
     window.addEventListener('message', on)
     return () => window.removeEventListener('message', on)
-  }, [])
-
-  const post = (msg: object) => frame.current?.contentWindow?.postMessage(msg, window.location.origin)
+  }, [])  
   useEffect(() => { post({ type: 's60:hero', ...words }) }, [words.name, words.field, words.line]) // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { post({ type: 's60:show', style }) }, [style])
+  useEffect(() => { post({ type: 's60:show', style }) }, [style])  
+
 
   const k = slot ? slot.w / AIR_W : 1
   const on = show && !!slot && live === style

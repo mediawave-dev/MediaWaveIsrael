@@ -13,7 +13,7 @@
 html.s60-on, html.s60-on body { background: #0f1011; }
 .s60 :is(h1, h2, h3) { color: inherit; }
 .s60-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.s60-skip { position: absolute; inset-inline-start: 12px; top: -60px; z-index: 90; padding: 10px 14px; background: var(--ink); color: var(--g0); font: 700 15px/1 var(--text); }
+.s60-skip { position: absolute; inset-inline-start: 12px; top: -60px; z-index: 90; display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; background: var(--ink); color: var(--g0); font: 700 15px/1 var(--text); }
 .s60-skip:focus { top: 12px; }
 .s60 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .s60 [tabindex="-1"]:focus { outline: none; }
@@ -24,8 +24,10 @@ html.s60-on, html.s60-on body { background: #0f1011; }
   height: 60px; padding: max(8px, env(safe-area-inset-top)) 12px 0 16px;
   --logo-a: var(--ink); --logo-b: var(--blue); --logo-tag: var(--ink);
 }
-.s60-bar__home { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); }
-.s60-bar__home .mw-logo { height: 18px; width: auto; }
+.s60-bar__home { display: inline-flex; align-items: center; flex: none; min-height: 44px; color: var(--ink); }
+/* a set width: the mark keeps its proportions and never spills past its box (in RTL it spilled left, over Back) */
+.s60-bar__home .mw-logo { display: block; width: 124px; height: auto; }
+@media (max-width: 380px) { .s60-bar__home .mw-logo { width: 98px; } }
 .s60-bar__end { display: flex; align-items: center; gap: 2px; }
 .s60-bar__btn, .s60-bar__wa {
   display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; padding: 0 8px; border: 0; background: none;
@@ -34,8 +36,16 @@ html.s60-on, html.s60-on body { background: #0f1011; }
 .s60-bar__wa-g { width: 22px; height: 22px; }
 .s60-bar__n { font: 600 12px/1 var(--mono); letter-spacing: 0.06em; color: var(--soft); padding-inline-start: 8px; white-space: nowrap; }
 @media (hover: hover) and (pointer: fine) { .s60-bar__btn:hover, .s60-bar__wa:hover { color: var(--blue); } }
+/* the timecode: the visitor's own time since the first tap; the tape's red dot while it runs */
+.s60-bar__tc { display: inline-flex; align-items: center; gap: 6px; padding-inline-start: 8px; font: 600 12px/1 var(--mono); letter-spacing: 0.06em; color: var(--soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.s60-bar__tc::before { content: ""; width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor; }
+.s60-bar__tc[data-on] { color: var(--ink); }
+.s60-bar__tc[data-on]::before { background: #e5484d; border-color: #e5484d; }
+.s60-took { margin: 6px 0 4px; font: 600 12px/1 var(--mono); letter-spacing: 0.1em; color: var(--blue); }
 /* a phone's bar: the hairlines under it already count the questions */
-@media (max-width: 420px) { .s60-bar__n { display: none; } }
+@media (max-width: 639px) { .s60-bar__n { display: none; } }
+@media (max-width: 420px) { .s60-bar__bw { display: none; } }
+@media (max-width: 359px) { .s60-bar__tc { display: none; } }
 /* the four questions as four hairlines, the passed ones cream */
 .s60-bar__line { position: absolute; inset: auto 16px -2px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .s60-bar__line i { height: 1px; background: var(--hair); position: relative; overflow: hidden; }

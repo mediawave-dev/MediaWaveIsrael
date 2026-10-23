@@ -20,7 +20,7 @@ const [base, out, size, stepArg, maxArg] = pos
 const [W, H] = size.split('x').map(Number)
 const STEP = Number(stepArg) || 0.9
 const MAX = Number(maxArg) || 8
-const ALL = ['/', '/services/building-websites', '/services/landing-pages', '/services/seo-promotion', '/services/chatbots', '/services/video-editing', '/services/memory-videos', '/portfolio/memory-videos', '/terms', '/privacy', '/accessibility', '/no-such-page']
+const ALL = ['/', '/services/building-websites', '/services/landing-pages', '/services/seo-promotion', '/services/chatbots', '/services/video-editing', '/services/memory-videos', '/portfolio/memory-videos', '/terms', '/privacy', '/accessibility', '/your-site', '/no-such-page']
 const ROUTES = flag('--routes') ? flag('--routes').split(',') : ALL
 process.env.TEMP ||= 'G:/tmp/temp'
 mkdirSync(out, { recursive: true })

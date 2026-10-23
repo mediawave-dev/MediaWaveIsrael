@@ -42,7 +42,8 @@ export default function Wall({ index, onIndex, onChoose, onTurning, onSlot, name
   const stage = useRef<HTMLDivElement>(null)
   const slot = useRef<HTMLDivElement>(null)
   const screens = useRef<(HTMLDivElement | null)[]>([])
-  const pos = useRef(index)
+  // it arrives a little turned and settles on the first world: the wall shows it can be turned
+  const pos = useRef(tier === 'still' ? index : index - 0.42)
   const target = useRef(index)
   const drag = useRef<{ x: number; y: number; p: number; t: number; v: number; on: boolean } | null>(null)
   const moving = useRef(false)
@@ -76,6 +77,11 @@ export default function Wall({ index, onIndex, onChoose, onTurning, onSlot, name
     onSlot({ x: r.left, y: r.top, w: r.width, r: parseFloat(getComputedStyle(s).borderTopLeftRadius) || 0 })
   }, [onSlot])
   useLayoutEffect(() => { place(); report() }, [place, report])
+  useEffect(() => {
+    if (pos.current === target.current) return
+    const id = window.setTimeout(() => { moving.current = true; turning.current(true); run() }, 260)
+    return () => clearTimeout(id)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const on = () => { place(); report() }
     window.addEventListener('resize', on)

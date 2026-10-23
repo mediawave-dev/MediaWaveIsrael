@@ -4,7 +4,8 @@
 // chapters below the opening). The parent page talks to it with postMessage, same origin only:
 //   parent -> frame  { type: 's60:hero', name, field, line }   the words (any time)
 //   parent -> frame  { type: 's60:show', style }               put a world on air
-//   frame -> parent  { type: 's60:ready', style, h1 }          that world is painted and alive; where its heading is
+//   frame -> parent  { type: 's60:hello' }                     listening (the parent sends the words and world again)
+//   frame -> parent  { type: 's60:ready', style, name, h1 }    that world is painted with these words; where its heading is
 // The first words and world also come in the URL (?s=&name=&field=&line=), so the frame paints right
 // even before the first message.
 import { useSyncExternalStore } from 'react'
@@ -27,6 +28,8 @@ export interface Hero {
 
 const OURS: Hero = { ...C.hero }
 let hero: Hero = OURS
+/** the name as the parent sent it, echoed back in 'ready' so the parent knows the frame shows it */
+let sentName = ''
 const subs = new Set<() => void>()
 
 function heroFor(name: string, fieldId: string, line: string): Hero {
@@ -37,6 +40,7 @@ function heroFor(name: string, fieldId: string, line: string): Hero {
 }
 
 export function setHero(name: string, field: string, line: string) {
+  sentName = name
   hero = heroFor(name, field, line)
   subs.forEach((f) => f())
 }
@@ -45,7 +49,8 @@ if (PREVIEW) {
   // before the first paint: the chapters below the opening never show (studio.css, D217)
   document.documentElement.classList.add('st-preview')
   const q = new URLSearchParams(window.location.search)
-  hero = heroFor(q.get('name') ?? '', q.get('field') ?? '', q.get('line') ?? '')
+  sentName = q.get('name') ?? ''
+  hero = heroFor(sentName, q.get('field') ?? '', q.get('line') ?? '')
 }
 
 const subscribe = (f: () => void) => { subs.add(f); return () => { subs.delete(f) } }
@@ -57,9 +62,9 @@ export function useHero(): Hero {
 }
 
 /** Tell the page around the frame (same origin only). */
-export function tellParent(msg: { type: 's60:ready'; style: string; h1?: { top: number; bottom: number } }) {
+export function tellParent(msg: { type: 's60:hello' } | { type: 's60:ready'; style: string; h1?: { top: number; bottom: number } }) {
   if (!PREVIEW || window.parent === window) return
-  window.parent.postMessage(msg, window.location.origin)
+  window.parent.postMessage(msg.type === 's60:ready' ? { ...msg, name: sentName } : msg, window.location.origin)
 }
 
 type Incoming = { type: 's60:hero'; name: string; field: string; line: string } | { type: 's60:show'; style: string }
@@ -75,6 +80,7 @@ export function listenParent(onShow: (style: string) => void): () => void {
     else if (m.type === 's60:show' && typeof m.style === 'string') onShow(m.style)
   }
   window.addEventListener('message', on)
+  tellParent({ type: 's60:hello' })
   return () => window.removeEventListener('message', on)
 }
 
@@ -90,7 +96,8 @@ export function fitNames(root: ParentNode = document) {
     const cs = getComputedStyle(el)
     const max = parseFloat(cs.fontSize)
     const lh0 = parseFloat(cs.lineHeight) || max * 1.05
-    const width = box.clientWidth
+    // the heading's box, and never wider than the screen (a world may let its heading run past it)
+    const width = Math.min(box.clientWidth, document.documentElement.clientWidth - 32)
     let size = max
     for (let i = 0; i < 24; i++) {
       const lines = el.getBoundingClientRect().height / (lh0 * (size / max))

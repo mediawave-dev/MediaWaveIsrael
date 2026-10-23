@@ -1,3 +1,57 @@
+# HANDOFF: "האתר שלכם ב-60 שניות" (/your-site/, D217, 23.10.2026)
+
+## Goal
+Nati (23.10, autonomous, away until 24.10 evening): build the brief in `.context/SITE-IN-60-PROMPT.rtl.md` at SOTD level with
+site-director, take inspiration from an SOTD site, and "after verifying everything is perfect, push to production". His chat
+message overrides the brief's "preview only"; the brief's price rule still holds (no unapproved number goes public).
+
+## Where
+Worktree `G:\Web-Dev\MediaWaveIsrael\.claude\worktrees\keys-form-20261021`, branch `feature/site-in-60-20261024`, cut from
+origin/main 8210797. `feature/journey-20261023` (D216, e7250b6) is untouched and not merged.
+
+## Completed
+- /your-site/: trade (8 cards, dot glyphs) -> name (+ optional line) -> the wall of five live worlds -> the chosen world
+  fills the screen, "what to build" sheet -> one WhatsApp message. Step kept in history (phone back = one question back),
+  Back in the bar, WhatsApp and accessibility in the bar on every step, a tape timecode of the visitor's own time.
+- The studio's preview mode (/styles/?preview=1, src/studio/preview.ts): the opening only, the visitor's name as the
+  wordmark and the big line, a line per trade, no music/guide/invitations; postMessage with a hello handshake and a name
+  echo (the frame goes on air only with the right name painted).
+- Entry points: the home's style studio chapter (line + key), the world map, the menu and the footer. Not in the home's
+  opening (one action there; for Nati to approve).
+- Fixed on the way: the page turn's cream cover stayed 2.5 s on pages with their own shell (/styles/, /your-site/);
+  menu hrefs on inner pages ("//styles/"); the cookie note no longer covers the flow (it shows after the send).
+
+## Measured (final build)
+- all-pages: 13 routes clean at 390 and 1440 (axe 0, overflow 0, text <12px 0, targets <44 0, errors 0), with /your-site/.
+- axe on every step of the flow (not only the first screen): 0; the whole flow works by keyboard alone.
+- overlap audit 0 at 320/390/768/1024/1440 on / and /your-site/.
+- Lighthouse mobile /your-site/ (median of 3): perf 99, a11y 100, bp 100, seo 100; LCP 1.66 s, TBT 28 ms, CLS 0.
+- One world cold on a 4x-slow phone: 0.9-1.5 MB, live in 4.5-4.8 s (why the frame starts loading at the name question).
+  The wall usually opens on a live world (~0.9 s after typing in the runs).
+- Chunk: YourSitePage 22 KB JS + 16 KB CSS; nothing new on the home page except a line and a key.
+
+## Waiting for Nati
+1. Prices: `src/data/pricing.ts` has placeholders [מחיר: נתי] (landing 2,500-4,500, site 6,000-12,000) and
+   `approved: false`. Public visitors see no number, only the Terms' honest lines. See them with `?draft=1`. To go live:
+   set the numbers, `approved: true`, build, push.
+2. Copy [קופי: נתי]: the eight trades' lines (src/data/site-in-60.ts), the steps (src/site60/Steps.tsx), the message
+   (src/site60/message.ts), the home's invitation (SeaStyles).
+3. A secondary link in the home's opening: left out on purpose (D217); say if you want it.
+
+## Next steps
+- Nati's verdict on his phone. Rollback: `prod-before-d217` (tag = origin/main before this release), or the CF dashboard.
+- Possible next: real per-trade sample images inside the worlds; a "send me the link" share of the visitor's preview.
+
+## Important files
+- src/site60/YourSitePage.tsx (the flow, history, take-over slot, timecode), Wall.tsx (the arc, finger, slot), Air.tsx
+  (the one frame, handshake), Steps.tsx (questions, Key), glyphs.ts, message.ts, s60.css.
+- src/studio/preview.ts + StylesPage.tsx (preview shell) + the five worlds (useHero) + studio.css (preview block).
+- src/data/site-in-60.ts (trades, copy, cleanText), src/data/pricing.ts (placeholders, approved flag).
+- Tools in G:/tmp/s60/tools (flow.mjs: drives the flow with a GPU and a finger; axe-flow.mjs;
+  rec60.mjs: the film; measure-worlds.mjs). Shots and film: G:/tmp/s60/ (final-390, film-390.mp4).
+
+---
+
 # HANDOFF: the quality round, what SOTD sites do and ours lacked (23.10.2026, D211-D213)
 
 ## Where

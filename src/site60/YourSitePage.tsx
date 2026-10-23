@@ -12,6 +12,8 @@ import DotGlyph from '../look/sea/DotGlyph'
 import { track } from '../utils/analytics'
 import { WHATSAPP_URLS } from '../utils/whatsapp'
 import { openAccessibility } from '../components/ui/a11y-event'
+import { setText } from '../utils/set-text'
+import { liftTurnCover } from '../look/sea/SeaTurn'
 import { useTier } from '../studio/motion'
 import { STYLE_META } from '../studio/styles-meta'
 import { cleanText, fieldById, LINE_MAX, NAME_MAX, type BuildId, type FieldId } from '../data/site-in-60'
@@ -37,6 +39,31 @@ const CookieConsent = lazy(() => import('../components/ui/CookieConsent'))
 type Step = 'field' | 'name' | 'style' | 'build'
 const ORDER: Step[] = ['field', 'name', 'style', 'build']
 const DESK = 900
+const tc = (ms: number) => { const s = Math.floor(ms / 1000); return `00:${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}` }
+
+/** The tape's timecode (the video world's clock): the visitor's own time, from the first tap to the
+    message. True data; it holds still under the stop switch and ?reduce=1 (WCAG 2.2.2), like the
+    home's clock. */
+function useStopwatch(still: boolean) {
+  const [from, setFrom] = useState<number | null>(null)
+  const [to, setTo] = useState<number | null>(null)
+  const el = useRef<HTMLSpanElement>(null)
+  useEffect(() => {
+    if (from === null) { setText(el.current, tc(0)); return }
+    if (to !== null || still) { setText(el.current, tc((to ?? Date.now()) - from)); return }
+    const tick = () => setText(el.current, tc(Date.now() - from))
+    tick()
+    const id = window.setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [from, to, still])
+  return {
+    el,
+    start: () => setFrom((f) => f ?? Date.now()),
+    stop: () => setTo((t) => t ?? Date.now()),
+    reset: () => { setFrom(null); setTo(null) },
+    took: from !== null && to !== null ? tc(to - from) : null,
+  }
+}
 
 export default function YourSitePage() {
   const tier = useTier()
@@ -52,6 +79,7 @@ export default function YourSitePage() {
   const [sent, setSent] = useState(false)
   const [widgets, setWidgets] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
+  const clock = useStopwatch(tier === 'still')
 
   // the step lives in the history, so the phone's own back goes one question back
   const asked = (location.state as { s60?: Step } | null)?.s60
@@ -86,6 +114,7 @@ export default function YourSitePage() {
   useEffect(() => {
     const html = document.documentElement
     html.classList.add('s60-on')
+    liftTurnCover()
     const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
     const was = meta?.content
     if (meta) meta.content = '#0f1011'
@@ -159,7 +188,7 @@ export default function YourSitePage() {
         <div className="s60-bar__end">
           {index > 0 && (
             <button type="button" className="s60-bar__btn" lang="en" dir="ltr" aria-label="חזרה לשאלה הקודמת"
-              onClick={() => (depth.current > 0 ? navigate(-1) : navigate(`${location.pathname}${location.search}`, { replace: true, state: { s60: ORDER[index - 1] } }))}>( Back )</button>
+              onClick={() => (depth.current > 0 ? navigate(-1) : navigate(`${location.pathname}${location.search}`, { replace: true, state: { s60: ORDER[index - 1] } }))}>( →<span className="s60-bar__bw"> Back</span> )</button>
           )}
           <button type="button" className="s60-bar__wa" aria-label="תפריט נגישות" aria-haspopup="dialog" onClick={(e) => openAccessibility(e.currentTarget)}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -171,6 +200,9 @@ export default function YourSitePage() {
             <DotGlyph name="wa" className="s60-bar__wa-g" />
           </a>
           <span className="s60-bar__n" lang="en" dir="ltr" aria-hidden="true">{String(index + 1).padStart(2, '0')} / 04</span>
+          {tier !== 'still' && (
+            <span className="s60-bar__tc" lang="en" dir="ltr" aria-hidden="true" data-on={clock.took ? undefined : step !== 'field' || undefined}><span ref={clock.el}>00:00:00</span></span>
+          )}
         </div>
         <span className="s60-bar__line" aria-hidden="true">{ORDER.map((s, i) => <i key={s} data-on={i <= index || undefined} />)}</span>
       </header>
@@ -181,6 +213,7 @@ export default function YourSitePage() {
         {step === 'field' && (
           <FieldStep value={field} headingRef={heading} onPick={(f) => {
             setField(f)
+            clock.start()
             track('cta_click', { location: `s60_field_${f}` })
             window.setTimeout(() => goTo('name'), tier === 'still' ? 0 : 260)
           }} />
@@ -230,8 +263,9 @@ export default function YourSitePage() {
               <section className="s60-step s60-done" aria-labelledby="s60-done-t">
                 <h2 id="s60-done-t" className="s60-q" ref={heading} tabIndex={-1}>ההודעה מחכה לכם בוואטסאפ.</h2>
                 <p className="s60-lede">שולחים אותה, ואנחנו חוזרים אליכם עם הצעה כתובה.</p>
+                {clock.took && <p className="s60-took" lang="en" dir="ltr">( YOUR SITE IN {clock.took} )</p>}
                 {choice && <Key href={waFor(choice)} wa className="s60-key--wa">לפתוח שוב את ההודעה</Key>}
-                <button type="button" className="s60-again" lang="en" dir="ltr" onClick={() => { setSent(false); setBuild(null); goTo('field') }}>( Start over )</button>
+                <button type="button" className="s60-again" lang="en" dir="ltr" onClick={() => { setSent(false); setBuild(null); clock.reset(); goTo('field') }}>( Start over )</button>
               </section>
             ) : (
               <BuildStep
@@ -239,7 +273,7 @@ export default function YourSitePage() {
                 headingRef={heading}
                 onPick={(b) => { setBuild(b); track('cta_click', { location: `s60_build_${b}` }) }}
                 waHref={choice ? waFor(choice) : null}
-                onSend={() => { track('whatsapp_click', { location: 's60_send' }); window.setTimeout(() => setSent(true), 400) }}
+                onSend={() => { clock.stop(); track('whatsapp_click', { location: 's60_send' }); window.setTimeout(() => setSent(true), 400) }}
                 summary={{ name: clean, field: fieldLabel, style: style.name }}
               />
             )}
