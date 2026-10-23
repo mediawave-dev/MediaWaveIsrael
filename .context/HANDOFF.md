@@ -1,3 +1,46 @@
+# HANDOFF: released - the quality round (D211-D214), the fifth world "depth" (D215), the partner's home fixes (23.10.2026)
+
+## Live
+- main = 8210797 (fast-forward from 9cf2966). Rollback tag `prod-before-d211` = 9cf2966 (pushed before main).
+  Roll back: `git push origin prod-before-d211:main --force-with-lease` with the mediawave-dev helper, or the
+  Cloudflare Pages dashboard (previous deployment, "Rollback to this deployment").
+- Shipped together: the partner's branch fix/home-feedback-20261023 (66c208f + merge 04b6566; services index in the
+  screen with a filling band, the 60th-birthday sample in the memories row, the video lede at the end of services,
+  footer icons, no "ישר מהמפתח"); D211 finish; D212 "מה כלול, תמיד"; D213 desktop scale; D214 service pages in the
+  home's language; D215 the fifth world "עומק" at /styles/?s=depth.
+
+## D215 in short
+- src/studio/depth/{Depth.tsx, cloud.ts, depth.css}: one point cloud (5,200 phone / 8,400 desktop) re-forms into the
+  object of the block on the middle line; scan plane; true readout; phones: the top 42svh is the scanner window
+  (opaque veil that takes taps, html scroll-padding 50svh), words below; desktop: cloud on the left half.
+- Each start makes its own canvas in .dp-cloud-host and removes it on stop (a tier change re-runs the effect).
+  Settled shapes stop the CPU morph and uploads (the sea keeps rolling). Context loss hides the window and the
+  readout (data-nocloud on .dp and html); webglcontextrestored starts a new cloud.
+- StylesPage: land() prefers [data-land] inside a chapter; chapterNow's reading line respects the root's scroll
+  padding. styles-meta: `guide` colour (depth #79a0c5). SentGuide: data-five, wider orbit, smaller keys.
+- Music: tracks.ts `depth` (deep ambient, sonar ping). Preview: public/media/styles/depth.{mp4,webp} recorded with
+  G:/tmp/wow/rec-world.mjs (screencast ~15 fps re-timed to real speed with setpts).
+
+## Checks before release (build 8/9, local prerendered dist)
+- Overlap 0 at 320/390/768/1024/1440. all-pages 12/12 clean at 390x844, 1440x900, 1440x700 and the five worlds at
+  390 (G:/tmp/wow/qa8, summarised by G:/tmp/wow/gate-sum.cjs; a route is clean only when every metric is 0).
+  Known: /styles/?s=flight reports one 42-43px target at 1440 - the Details pill is 44px in CSS and is measured
+  mid scale animation (transform); not a defect.
+- Tier switch (stop on and off mid-visit), still tier and resize: cloud drawn (G:/tmp/wow/still-shot.mjs, ~17.6% lit).
+  Landing: flight -> depth lands the process heading at 422px of 844 (below the window), depth -> buzz at 232px.
+  Services index fits 1280x600 to 1920x1080 (G:/tmp/wow/svc-fit.mjs). Map: five worlds, Worlds · 05, home row of five.
+- Two independent review workflows (3 lenses + a skeptic per finding): 22 confirmed findings, then 5 regressions of
+  the fixes; all fixed (DECISIONS D215).
+- Correction: the earlier note that D211-D214 had "12 routes clean at 1440" was counted by console errors only; the
+  home had two small items at 1440 (ENTER hint 11px, the sample link 32px). Both are fixed in this release.
+
+## Next
+1. Nati's look on his phone at /styles/?s=depth and the home.
+2. The SOTD proposals A (timeline), C (wall of screens), D (a moment in every world) stay as live proofs on
+   proposals/sotd-20261023 (https://proposals-sotd-20261023.mediawaveisrael.pages.dev/lab/sotd/); not on main.
+3. Performance round still open (the sea shader compile time, Lighthouse mobile).
+
+---
 # HANDOFF: the quality round, what SOTD sites do and ours lacked (23.10.2026, D211-D213)
 
 ## Where
