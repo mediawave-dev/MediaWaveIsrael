@@ -16,12 +16,17 @@
 - D212 SeaHome `Included` under the process steps: six facts from the Terms (2, 3.2, 3.4, 4.2, 7.1, 8.1), [קופי: נתי].
 - D213 the desktop scale (>= 1100px only): ledes 20px, list titles to 42px, why in three columns across the width,
   FAQ questions 24px, included in two columns. The phone is unchanged.
-- Checks so far: tsc clean; a vite build (no prerender) served on 127.0.0.1:4197 and filmed at 1440 and 390
-  (G:/tmp/wow/loc-1440, loc-390, sheets sheet-loc-*.jpg). NOT yet: overlap audit, all-pages, Lighthouse, a full
-  `npm run build` with the prerender, the live release.
+- D214 the service pages in the home's language (sea-craft.css part 6, ShotService.tsx passes mono kickers): no
+  slabs, [ INCLUDED ] [ PRICE ] [ PROCESS ] [ FAQ ], heads at the start, rows on hairlines, the FAQ with ( 01 ).
+- Checks: tsc clean. Full build 1 (D211-D213): overlap 0 at 320/390/768/1024/1440 (G:/tmp/wow/qa/overlap),
+  all-pages 12 routes clean at 390 and 1440 (axe 0, overflow 0, small 0, targets 0, errors 0). Full build 2 (+ the
+  menu roll, the hairline range): overlap 0 (G:/tmp/wow/qa2/overlap). GPU checks: the roll moves (-33px mid
+  transition), the hairline is at 31% when the row is at 85% of the screen. Films: G:/tmp/wow/loc2-1440 (home),
+  svc3-1440 and svc3-390 (the service page after D214), sheets sheet-*.jpg. NOT yet: Lighthouse, the live release.
 
 ## Next steps
-1. Full build: `PRERENDER_PORT=4191 npm run build`; overlap audit 0 at 320-1440; all-pages 390 and 1440; glstart.
+1. The final full build with D214 and its gates (overlap, all-pages 390 + 1440) were queued at the end of the session: see
+   G:/tmp/wow/qa3-*.log. If they did not run, run them before the release.
 2. Nati's verdict on his phone, then release: tag `prod-before-d211` = origin/main at release time, push the
    branch, then HEAD:main with the mediawave-dev helper (origin/fix/home-feedback-20261023 is inside this branch;
    check whether that branch was released first, and merge if main moved).

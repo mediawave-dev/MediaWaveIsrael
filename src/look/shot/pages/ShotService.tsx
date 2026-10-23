@@ -174,13 +174,13 @@ export default function ShotService() {
       {service.portfolioLink && <Sample href={service.portfolioLink} />}
 
       <div className="sp-pair">
-        <Checklist title="מה מקבלים" items={service.features} />
-        {service.price && <Slip title="איך נקבע המחיר" lines={[...service.price, ...PRICE_COMMON]} />}
+        <Checklist title="מה מקבלים" kicker="INCLUDED" items={service.features} />
+        {service.price && <Slip title="איך נקבע המחיר" kicker="PRICE" lines={[...service.price, ...PRICE_COMMON]} />}
       </div>
 
       <div className="sp-flow">
-        {service.steps && <Steps title="איך זה עובד" steps={service.steps} time={service.time} />}
-        <Pad title="שאלות" items={service.faq} />
+        {service.steps && <Steps title="איך זה עובד" kicker="PROCESS" steps={service.steps} time={service.time} />}
+        <Pad title="שאלות" kicker="FAQ" items={service.faq} />
       </div>
 
       <section className="sp-final" aria-labelledby="sp-final-title">

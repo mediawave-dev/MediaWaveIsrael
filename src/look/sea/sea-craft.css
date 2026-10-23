@@ -27,9 +27,11 @@
 }
 
 /* ── 2. the roll ── */
-.sea-roll { position: relative; display: inline-block; overflow: hidden; vertical-align: top; padding: 0.08em 0 0.12em; margin: -0.08em 0 -0.12em; }
-.sea-roll > span { display: block; }
-.sea-roll > span + span { position: absolute; inset-inline-start: 0; top: 100%; width: 100%; padding-top: 0.08em; color: var(--sea-blue); }
+/* the room for ascenders and descenders is on the spans, so one translate of -100% moves a span by exactly the
+   box's height: the label leaves whole and its copy lands where it stood (a padded box left a sliver and an offset) */
+.sea-roll { position: relative; display: inline-block; overflow: hidden; vertical-align: top; margin: -0.08em 0 -0.12em; }
+.sea-roll > span { display: block; padding: 0.08em 0 0.12em; }
+.sea-roll > span + span { position: absolute; inset-inline-start: 0; top: 100%; width: 100%; color: var(--sea-blue); }
 html[data-look="shot"] .mw-head__nav a:hover { text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
   html.sea-reveal .sea-roll > span { transition: transform 0.62s var(--sea-ease); }
@@ -87,4 +89,84 @@ html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0
   html[data-look="shot"] .sea-faq .faq__a-in .prose-hebrew, html[data-look="shot"] .sea-faq .faq__a-in .prose-hebrew * { font-size: 1.125rem; }
   html[data-look="shot"] .sea-incl__t { font-size: min(2vw, 29px); }
   html[data-look="shot"] .sea-proc__for { font-size: 1.0625rem; }
+}
+
+/* ── 6. a service page in the home's language (D214). The inner pages still carried the shot's desk: paper
+   slabs, a perforated slip, a punched notepad, centred heads and small type, the one place that read as a
+   template next to the home (frames 23.10, G:/tmp/wow/svc2-*). Now: no slabs (the calm mask under every
+   text block keeps the dots off the words), mono kickers in brackets, heads at the start, rows on hairlines
+   that draw in, the facts in the display face, the home's measure. shot-pages.css lands later as a lazy
+   chunk: every rule here carries html[data-look] and .sp--service. ── */
+html[data-look="shot"] .sp--service .sp-sheet { background: none; box-shadow: none; border-radius: 0; }
+html[data-look="shot"] .sp--service .sp-kicker {
+  display: inline-block; margin: 0 0 14px; font: 600 12px/1.2 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90;
+  direction: ltr; unicode-bidi: isolate; text-shadow: var(--sea-halo);
+}
+html[data-look="shot"] .sp--service .sp-kicker::before { content: "[ "; }
+html[data-look="shot"] .sp--service .sp-kicker::after { content: " ]"; }
+html[data-look="shot"] .sp--service .sp-head { width: 100%; margin: 0 0 24px; text-align: start; }
+html[data-look="shot"] .sp--service :is(.sp-head, .sp-check, .sp-slip__paper) .sp-h2 {
+  font-size: clamp(32px, 8.4vw, 60px); font-stretch: 80%; line-height: 1; text-align: start; text-shadow: var(--sea-halo);
+}
+/* the prose: each item on its own hairline */
+html[data-look="shot"] .sp--service .sp-prose { gap: 0; }
+html[data-look="shot"] .sp--service .sp-prose__item { padding: 22px 0 26px; border-top: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp--service .sp-prose__item .sp-h2 { font-size: clamp(24px, 6.6vw, 34px); font-stretch: 80%; line-height: 1.1; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-prose__item p { color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-try { box-shadow: none; padding: 18px 0 0; border-top: 1px solid var(--sea-rule); text-align: start; color: #a39d90; }
+/* what you get: the facts in the display face, on hairlines, with the tick in dots */
+html[data-look="shot"] .sp--service .sp-check { padding: 0; text-align: start; }
+html[data-look="shot"] .sp--service .sp-check ul { margin-top: 0; border-bottom: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp--service .sp-check li {
+  gap: 14px; padding: 16px 0; box-shadow: none; border-top: 1px solid var(--sea-rule);
+  font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(19px, 5vw, 26px); line-height: 1.25; text-shadow: var(--sea-halo);
+}
+html[data-look="shot"] .sp--service .sp-check li:last-child { box-shadow: none; }
+html[data-look="shot"] .sp--service .sp-tick { margin-top: 0.2em; }
+/* the price: a plain list, no slip */
+html[data-look="shot"] .sp--service .sp-slip { width: 100%; filter: none; }
+html[data-look="shot"] .sp--service .sp-slip__paper { -webkit-mask: none; mask: none; background: none; padding: 0; text-align: start; }
+html[data-look="shot"] .sp--service .sp-slip ul { border-bottom: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp--service .sp-slip li { padding: 14px 0; border-top: 1px solid var(--sea-rule); color: #a39d90; font-size: 1.0625rem; line-height: 1.65; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-slip li:last-child { color: #ede7da; font-weight: 600; }
+/* the steps: bigger names, the time on a hairline */
+html[data-look="shot"] .sp--service .sp-step .sp-h3 { font-size: clamp(22px, 6vw, 30px); font-stretch: 80%; line-height: 1.1; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-step p { color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-time { background: none; box-shadow: none; border-radius: 0; padding: 16px 0 0; border-top: 1px solid var(--sea-rule); color: #a39d90; }
+html[data-look="shot"] .sp--service .sp-time b { color: #ede7da; }
+/* the questions: the home's rows, a mono count in brackets, the plus in dots */
+html[data-look="shot"] .sp--service .sp-pad { padding: 0; background: none; box-shadow: none; border-radius: 0; border-bottom: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp--service .sp-pad::before { content: none; }
+html[data-look="shot"] .sp--service .sp-pad > li { box-shadow: none; border-top: 1px solid var(--sea-rule); }
+html[data-look="shot"] .sp--service .sp-pad summary { padding-inline: 0 40px; min-height: 64px; font: 700 1.125rem/1.45 var(--text); text-shadow: var(--sea-halo); }
+html[data-look="shot"] .sp--service .sp-pad summary::before {
+  content: "( " counter(q, decimal-leading-zero) " )"; content: "( " counter(q, decimal-leading-zero) " )" / "";
+  min-width: 3.4em; color: #79a0c5; font: 600 12px/1 var(--sea-mono); letter-spacing: 0.06em; direction: ltr;
+}
+html[data-look="shot"] .sp--service .sp-pad__sign { inset-inline-end: 4px; }
+html[data-look="shot"] .sp--service .sp-pad details[open] summary { box-shadow: none; }
+html[data-look="shot"] .sp--service .sp-pad details p { padding: 0 0 20px; padding-inline-start: calc(3.4em + 12px); color: #a39d90; font-size: 1.0625rem; line-height: 1.7; text-shadow: var(--sea-halo); }
+@media (hover: hover) and (pointer: fine) {
+  html[data-look="shot"] .sp--service .sp-pad summary:hover { background: none; color: #79a0c5; }
+  html[data-look="shot"] .sp--service .sp-check li:hover, html[data-look="shot"] .sp--service .sp-slip li:hover { color: inherit; }
+}
+/* the hairlines of these rows draw in like the home's */
+@supports (animation-timeline: view()) {
+  html.sea-reveal[data-look="shot"] .sp--service :is(.sp-check li, .sp-slip li, .sp-pad > li, .sp-prose__item) { border-top-color: transparent; position: relative; }
+  html.sea-reveal[data-look="shot"] .sp--service :is(.sp-check li, .sp-slip li, .sp-pad > li, .sp-prose__item)::before {
+    content: ""; position: absolute; top: -1px; inset-inline: 0; height: 1px; background: var(--sea-rule);
+    transform-origin: 100% 50%; pointer-events: none;
+    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%;
+  }
+}
+/* wide: the home's measure, the heads at the start, two columns for what you get and the price */
+@media (min-width: 1100px) {
+  html[data-look="shot"] .sp--service :is(.sp-prose, .sp-pair, .sp-flow, .sp-more) { width: min(100% - 2 * var(--gut, 16px), 1360px); }
+  html[data-look="shot"] .sp--service .sp-prose { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 56px; }
+  html[data-look="shot"] .sp--service .sp-prose__item .sp-h2 { font-size: min(2.6vw, 36px); }
+  html[data-look="shot"] .sp--service .sp-pair { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 96px; }
+  html[data-look="shot"] .sp--service .sp-check li { font-size: min(2vw, 28px); padding: 18px 0; }
+  html[data-look="shot"] .sp--service .sp-slip { margin-top: 0; }
+  html[data-look="shot"] .sp--service .sp-pad summary { font-size: 1.375rem; min-height: 72px; }
+  html[data-look="shot"] .sp--service .sp-pad details p { font-size: 1.125rem; }
 }
