@@ -1,3 +1,40 @@
+# HANDOFF: the quality round, what SOTD sites do and ours lacked (23.10.2026, D211-D213)
+
+## Where
+- Worktree `G:Web-DevMediaWaveIsrael.claudeworktreeskeys-form-20261021`, branch `quality/wow-20261023`, cut from
+  `origin/fix/home-feedback-20261023` (= origin/main 9cf2966 + the two home-feedback commits of 23.10). The old
+  `sea/keys-form-20261021` branch (D185, never released, superseded by D208) is untouched.
+- Nati's request: "תחקור היטב ותהיה מעשי, איך אתרים כמו שמופיעים ב-SOTD נראים באיכות כל כך גבוהה... תממש שדרוג איכותי".
+  Then: "יש לך חופש פעולה מלא... תזדרז". No research round: the live site was filmed (G:/tmp/wow/live-1440, live-390)
+  and compared with the SOTD anatomy already in design/research/02-awwwards.md.
+
+## Completed
+- D211 `src/look/sea/sea-craft.css` (imported by SeaHome after sea-site.css): hairlines draw in from the start side
+  (scroll-driven `animation-timeline: view()`, compositor only; plain line where unsupported), labels roll on hover
+  (`.sea-roll` in Header nav and the footer's quick links: real text + an aria-hidden copy), thin cream scrollbar,
+  kerning on the display face. Gated by html.sea-reveal.
+- D212 SeaHome `Included` under the process steps: six facts from the Terms (2, 3.2, 3.4, 4.2, 7.1, 8.1), [קופי: נתי].
+- D213 the desktop scale (>= 1100px only): ledes 20px, list titles to 42px, why in three columns across the width,
+  FAQ questions 24px, included in two columns. The phone is unchanged.
+- Checks so far: tsc clean; a vite build (no prerender) served on 127.0.0.1:4197 and filmed at 1440 and 390
+  (G:/tmp/wow/loc-1440, loc-390, sheets sheet-loc-*.jpg). NOT yet: overlap audit, all-pages, Lighthouse, a full
+  `npm run build` with the prerender, the live release.
+
+## Next steps
+1. Full build: `PRERENDER_PORT=4191 npm run build`; overlap audit 0 at 320-1440; all-pages 390 and 1440; glstart.
+2. Nati's verdict on his phone, then release: tag `prod-before-d211` = origin/main at release time, push the
+   branch, then HEAD:main with the mediawave-dev helper (origin/fix/home-feedback-20261023 is inside this branch;
+   check whether that branch was released first, and merge if main moved).
+3. Candidates for the next wave (not built): a price-drivers picker without numbers that prefills WhatsApp with the
+   choice; the service pages at the desktop scale; a face and a name for the developer (needs Nati's photo).
+
+## Tools
+- `G:/tmp/wow/film.mjs <url> <outDir> <WxH>`: viewport frames every 0.85 screen with the GPU on (system Chrome,
+  profile G:/tmp/pw-gl-profile). Run it with cwd = a worktree whose puppeteer resolves (elegant-20261019).
+  This worktree's puppeteer has no Chrome 145 download: `npx puppeteer browsers install chrome` if needed.
+- Parallel Bash calls here share one shell: never rely on `cd`, use absolute paths.
+
+---
 # HANDOFF: smooth scrolling on the site and in the worlds, a bug sweep (22.10.2026, D210)
 
 - Measure: G:/tmp/perf/scroll-jank.mjs <url> <tag> <cpu> (INV=1 for invalidations), where.mjs (long frames by

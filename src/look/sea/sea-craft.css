@@ -54,10 +54,11 @@ html[data-look="shot"] :is(.sea-h1, .sea-h2, .sea-h3, .sea-foot__line, .sp-h1) {
 .sea-incl__more { justify-self: start; }
 html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0.3s + var(--i, 0) * 0.06s); }
 @media (min-width: 1100px) {
-  .sea-incl { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr); column-gap: 64px; align-items: start; }
-  .sea-incl__list { grid-column: 2; grid-row: 1 / span 2; }
+  /* the whole width (the steps above keep 58%): the title at the start, the six facts in two columns */
+  .sea-incl { max-width: none; grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); column-gap: 64px; align-items: start; }
+  .sea-incl__list { grid-column: 2; grid-row: 1 / span 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; border-bottom: 0; }
+  .sea-incl__row { padding-block: 20px; border-bottom: 1px solid var(--sea-rule); margin-bottom: -1px; }
   .sea-incl__more { grid-column: 1; }
-  .sea-incl__row { padding-block: 18px; }
 }
 @supports (animation-timeline: view()) {
   html.sea-reveal .sea-incl__row { border-top-color: transparent; position: relative; }
@@ -66,4 +67,24 @@ html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0
     transform-origin: 100% 50%; pointer-events: none;
     animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% entry 75%;
   }
+}
+
+/* ── 5. the desktop scale (D213): the phone's measure stretched to 1440 read small, with half the screen
+   empty (frames of the live site, 23.10). Award sites scale the type and the grid with the screen; the
+   phone keeps every approved size, so every rule here starts at 1100px. ── */
+@media (min-width: 1100px) {
+  html[data-look="shot"] .sea-sub { font-size: 20px; line-height: 1.6; max-width: 40ch; }
+  html[data-look="shot"] .sea-list__title { font-size: min(2.9vw, 42px); }
+  html[data-look="shot"] .sea-list__line { font-size: 1.125rem; line-height: 1.65; max-width: 44ch; }
+  html[data-look="shot"] .sea-list__n { font-size: 13px; }
+  /* why: the three reasons as three columns across the whole width, a spread; the header keeps the start */
+  html[data-look="shot"] .sea-why > .sea-list { max-width: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 56px; border-bottom: 0; }
+  html[data-look="shot"] .sea-why .sea-list__item { grid-template-columns: minmax(0, 1fr); row-gap: 14px; padding-block: 28px 8px; align-content: start; }
+  html[data-look="shot"] .sea-why .sea-list__n { grid-row: 1; padding-top: 0; }
+  html[data-look="shot"] .sea-why .sea-list__line { max-width: none; }
+  /* the questions, at a reading size for a wide screen */
+  html[data-look="shot"] .sea-faq .faq__q { font-size: 1.5rem; line-height: 1.4; min-height: 76px; padding: 22px 0; }
+  html[data-look="shot"] .sea-faq .faq__a-in .prose-hebrew, html[data-look="shot"] .sea-faq .faq__a-in .prose-hebrew * { font-size: 1.125rem; }
+  html[data-look="shot"] .sea-incl__t { font-size: min(2vw, 29px); }
+  html[data-look="shot"] .sea-proc__for { font-size: 1.0625rem; }
 }
