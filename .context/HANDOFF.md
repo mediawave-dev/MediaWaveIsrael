@@ -30,6 +30,14 @@ origin/main 8210797. `feature/journey-20261023` (D216, e7250b6) is untouched and
   The wall usually opens on a live world (~0.9 s after typing in the runs).
 - Chunk: YourSitePage 22 KB JS + 16 KB CSS; nothing new on the home page except a line and a key.
 
+## The independent review (before release)
+- One code-review agent on the whole change: 1 blocker + 9 findings, all fixed (D217). The blocker: public/_headers had
+  X-Frame-Options: DENY, which also refuses same-origin frames: in production the frame would never load. Local serving
+  ignores _headers, so only a Cloudflare deploy shows it. Now SAMEORIGIN + frame-ancestors 'self'.
+- Then on the Cloudflare preview (real headers): all five worlds on air with the name, 0 errors, a world on air
+  0.7-1.2 s after the wall turns, the race test (flick + immediate choice) agrees, film 30 s.
+- Pre-existing, not from this change: /styles/ at 1440 has one Details link 42 px tall (the same in production today).
+
 ## Waiting for Nati
 1. Prices: `src/data/pricing.ts` has placeholders [מחיר: נתי] (landing 2,500-4,500, site 6,000-12,000) and
    `approved: false`. Public visitors see no number, only the Terms' honest lines. See them with `?draft=1`. To go live:
