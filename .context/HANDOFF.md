@@ -27,10 +27,14 @@
 ## Next steps
 1. Done: the final full build (HEAD 0217224, with D214) passed its gates: overlap 0 at 320/390/768/1024/1440
    (G:/tmp/wow/qa3/overlap), all-pages 12 routes clean at 390 and 1440 (G:/tmp/wow/qa3-pages-*.log). Lighthouse not run.
-2. Nati's verdict on his phone, then release: tag `prod-before-d211` = origin/main at release time, push the
+2. Preview (pushed 23.10, verified: the home has the included block, the service page its four kickers, the CSS the
+   new rules): https://quality-wow-20261023.mediawaveisrael.pages.dev/ . The branch is on origin; main is untouched.
+   The round's lessons went into site-director 1.3.0: references/sotd-finish.md (the gap audit, F1-F6, measured
+   traps) and scripts/scroll-sheet.mjs (GPU film + contact sheet per route). Not committed in ~/.claude.
+3. Nati's verdict on his phone, then release: tag `prod-before-d211` = origin/main at release time, push the
    branch, then HEAD:main with the mediawave-dev helper (origin/fix/home-feedback-20261023 is inside this branch;
    check whether that branch was released first, and merge if main moved).
-3. Candidates for the next wave (not built): a price-drivers picker without numbers that prefills WhatsApp with the
+4. Candidates for the next wave (not built): a price-drivers picker without numbers that prefills WhatsApp with the
    choice; the service pages at the desktop scale; a face and a name for the developer (needs Nati's photo).
 
 ## Tools
