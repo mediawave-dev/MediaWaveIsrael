@@ -1,3 +1,23 @@
+# HANDOFF: four SOTD upgrade proposals as live proofs (23.10.2026), waiting for Nati's pick
+
+- Branch `proposals/sotd-20261023` (from quality/wow-20261023, pushed; preview only, never for main as is):
+  https://proposals-sotd-20261023.mediawaveisrael.pages.dev/lab/sotd/ . Files: public/lab/sotd/ (index + a-timeline,
+  b-points, c-wall, d-worlds, lab.css, img/). Standalone pages on the site's fonts, palette and real media.
+- Nati's request: "עדיין מרגיש לי משהו חסר... קח השראה מאתרים שמה, תעבוד לפי הסקיל site-direction, תשדרג גם את
+  העולמות... ארבע הצעות שדרוג". Ten SOTD winners of 23.9-23.10.2026 were filmed (G:/tmp/wow/sotd/, scroll-sheet).
+- A the timeline (Butter, SOTD 28.9): chapters as clips, scroll = playhead, timecode, scrub, PLAY. Recommended for the home.
+- B point cloud (Lidar Drone Scanning, SOTD 6.10): the objects as 3D point clouds, scroll re-forms, a scan line. Risk: the sea
+  shader is already 8-10 s to compile on Intel; would need merging.
+- C wall of screens (Jesper Landberg, SOTD 29.9): the worlds + the memories film as live phone screens on a concave arc; tap
+  fills the room and opens the world. For the style studio chapter and the worlds map.
+- D a moment in every world: zimzum the swarm writes the word; maof wings by scroll speed; shirtut a plotter draws the phone
+  and measures 390 x 844; boker light by the real Israel hour, the cassette's eyes follow.
+- Moment library: three candidate entries added (butter-timeline, lidar-point-cloud, jesper-curved-wall).
+- site-director 1.3.0 tool fix this round: scroll-sheet.mjs films wheel-driven sites (virtual scroll) by wheel steps.
+- Next: Nati picks; build the pick into the real site on quality/wow-20261023 (or a new branch), with the gates; release
+  only with his approval. quality/wow-20261023 (D211-D214) is still waiting for his release approval.
+
+---
 # HANDOFF: the quality round, what SOTD sites do and ours lacked (23.10.2026, D211-D213)
 
 ## Where
