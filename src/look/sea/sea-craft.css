@@ -15,7 +15,7 @@
   html.sea-reveal :is(.sea-list__item, .sea-foot__rows li, .sea-contact .ct__ways li, .qs__done li, .sp-more li, .sea-faq .faq__row)::before {
     content: ""; position: absolute; top: -1px; inset-inline: 0; height: 1px; background: var(--sea-rule);
     transform-origin: 100% 50%; pointer-events: none;
-    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% entry 75%;
+    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%;
   }
   html.sea-reveal .sea-meta { border-top-color: transparent; }
   html.sea-reveal .sea-meta::before {
@@ -65,7 +65,7 @@ html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0
   html.sea-reveal .sea-incl__row::before {
     content: ""; position: absolute; top: -1px; inset-inline: 0; height: 1px; background: var(--sea-rule);
     transform-origin: 100% 50%; pointer-events: none;
-    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% entry 75%;
+    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%;
   }
 }
 

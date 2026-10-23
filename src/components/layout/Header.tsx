@@ -285,12 +285,13 @@ export default function Header() {
                   }}
                 >
                   {LOOK === 'shot' && MENU_ICON[link.href] && <DotGlyph name={MENU_ICON[link.href]} className="mw-menu__ico" />}
-                  {link.label}
+                  {/* the sea: the label rolls on hover (sea-craft.css); the copy is decorative */}
+                  <span className="sea-roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
                 </a>
               )).flatMap((a, i) => menuLinks[i].href !== '#services' ? [a] : [a, (
                 <ul key="svc" className="mw-menu__svc" aria-label="השירותים">
                   {servicesData.map((s) => (
-                    <li key={s.id}><a href={`/services/${s.slug}/`} onClick={() => setIsMobileMenuOpen(false)}>{LOOK === 'shot' && <DotGlyph name={SCENE[s.id] ?? 'horizon'} className="mw-menu__ico" colour />}{s.title}</a></li>
+                    <li key={s.id}><a href={`/services/${s.slug}/`} onClick={() => setIsMobileMenuOpen(false)}>{LOOK === 'shot' && <DotGlyph name={SCENE[s.id] ?? 'horizon'} className="mw-menu__ico" colour />}<span className="sea-roll"><span>{s.title}</span><span aria-hidden="true">{s.title}</span></span></a></li>
                   ))}
                 </ul>
               )])}
