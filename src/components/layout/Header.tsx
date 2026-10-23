@@ -166,7 +166,8 @@ export default function Header() {
           <nav className="mw-head__nav" aria-label="ניווט ראשי">
             {headerLinks.map((link) => (
               <a key={link.href} href={isHomePage ? link.href : `/${link.href}`} onClick={(e) => handleNavClick(e, link.href)}>
-                {link.label}
+                {/* the sea: the label rolls on hover (sea-craft.css); the copy is decorative */}
+                <span className="sea-roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
               </a>
             ))}
           </nav>

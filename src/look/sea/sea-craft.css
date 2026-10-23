@@ -1,0 +1,43 @@
+/* sea · craft (D211): the finish that award sites share and ours lacked. Loaded after sea-site.css.
+   1. Hairlines draw themselves in from the start side as a row enters the screen (scroll-driven, on the
+      compositor: no main-thread work, D210). Where the browser has no view() timeline the line simply shows.
+   2. Links roll: on hover the label slides up and its copy rises from below (contained in the element,
+      no underline, no drift: DECISIONS 26-46). The copy is aria-hidden; keyboards get the same move on focus.
+   3. Small finish: a thin cream scrollbar, kerning on in the display face.
+   Gated by html.sea-reveal (motion allowed, set before paint): REDUCE and the prerender see the final state. */
+
+/* ── 1. hairlines ── */
+@supports (animation-timeline: view()) {
+  html.sea-reveal :is(.sea-list__item, .sea-foot__rows li, .sea-contact .ct__ways li, .qs__done li, .sp-more li, .sea-faq .faq__row) {
+    border-top-color: transparent;
+    position: relative;
+  }
+  html.sea-reveal :is(.sea-list__item, .sea-foot__rows li, .sea-contact .ct__ways li, .qs__done li, .sp-more li, .sea-faq .faq__row)::before {
+    content: ""; position: absolute; top: -1px; inset-inline: 0; height: 1px; background: var(--sea-rule);
+    transform-origin: 100% 50%; pointer-events: none;
+    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% entry 75%;
+  }
+  html.sea-reveal .sea-meta { border-top-color: transparent; }
+  html.sea-reveal .sea-meta::before {
+    content: ""; position: absolute; top: 0; inset-inline: 0; height: 1px; background: var(--sea-rule);
+    transform-origin: 100% 50%; animation: sea-rule-in 1.4s var(--sea-ease) 0.5s both;
+  }
+  html.sea-reveal .sea-meta { position: relative; }
+  @keyframes sea-rule-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+/* ── 2. the roll ── */
+.sea-roll { position: relative; display: inline-block; overflow: hidden; vertical-align: top; padding: 0.08em 0 0.12em; margin: -0.08em 0 -0.12em; }
+.sea-roll > span { display: block; }
+.sea-roll > span + span { position: absolute; inset-inline-start: 0; top: 100%; width: 100%; padding-top: 0.08em; color: var(--sea-blue); }
+html[data-look="shot"] .mw-head__nav a:hover { text-decoration: none; }
+@media (hover: hover) and (pointer: fine) {
+  html.sea-reveal .sea-roll > span { transition: transform 0.62s var(--sea-ease); }
+  html.sea-reveal :is(a, button):is(:hover, :focus-visible) .sea-roll > span { transform: translateY(-100%); }
+}
+/* the footer's value keeps its grid cell */
+.sea-foot__t.sea-roll { display: block; }
+
+/* ── 3. finish ── */
+html[data-look="shot"] { scrollbar-width: thin; scrollbar-color: rgba(237, 231, 218, 0.28) transparent; }
+html[data-look="shot"] :is(.sea-h1, .sea-h2, .sea-h3, .sea-foot__line, .sp-h1) { text-rendering: optimizeLegibility; font-kerning: normal; }

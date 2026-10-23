@@ -82,7 +82,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <a className="sea-foot__row" href={link.href.startsWith('#') && window.location.pathname !== '/' ? `/${link.href}` : link.href} onClick={(e) => go(e, link.href)}>
                       <span className="sea-foot__k" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                      <span className="sea-foot__t">{link.label}</span>
+                      <span className="sea-foot__t sea-roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
                       <span className="sea-foot__plus" aria-hidden="true">( + )</span>
                     </a>
                   </li>
