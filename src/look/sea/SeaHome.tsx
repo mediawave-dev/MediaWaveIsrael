@@ -256,6 +256,38 @@ function Steps({ steps, label }: { steps: { id: string; title: string; line: str
 // how we work (D173): building a site, a landing page or a bot. [קופי: נתי] the track line. The second
 // track (video, a memories film, tapes) left (22.10, "crowded on a phone, and a bit unrelated"): its lede
 // closes the services chapter (SeaServices), its steps live on the two service pages.
+// what is always in the offer (D212): the honest proof the research found buried in the Terms and the FAQ
+// (Terms 2, 3.2, 3.4, 4.2, 7.1, 8.1): a written quote, VAT in, a 50% deposit, two rounds, year one of hosting,
+// 30 days of fixes. Nobody in the Israeli sample shows these together. [קופי: נתי] every line.
+const INCLUDED = [
+  'הצעת מחיר בכתב: מה נבנה, עד מתי, וכמה.',
+  'המחיר כולל מע"מ. בלי הפתעות בסוף.',
+  'מתחילים במקדמה של 50%.',
+  'עד שני סבבי תיקונים, בלי תוספת.',
+  'שנה ראשונה של אחסון, דומיין וגיבויים.',
+  '30 יום אחרי ההשקה: תיקונים עלינו.',
+]
+
+function Included() {
+  return (
+    <aside className="sea-incl" aria-labelledby="incl-title" data-reveal="">
+      <div className="sea-incl__head">
+        <Tag className="sea-fade">INCLUDED</Tag>
+        <h3 id="incl-title" className="sea-incl__h sea-fade" data-zone="text">מה כלול, תמיד</h3>
+      </div>
+      <ul className="sea-incl__list">
+        {INCLUDED.map((t, i) => (
+          <li key={i} className="sea-incl__row sea-fade" data-zone="text" style={{ ['--i' as string]: i }}>
+            <span className="sea-incl__n" aria-hidden="true">( {String(i + 1).padStart(2, '0')} )</span>
+            <span className="sea-incl__t">{t}</span>
+          </li>
+        ))}
+      </ul>
+      <a className="sea-go sea-incl__more sea-fade" href="/terms/">הכל כתוב בתנאי השירות</a>
+    </aside>
+  )
+}
+
 function Process() {
   return (
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
@@ -265,6 +297,7 @@ function Process() {
         <p className="sea-proc__for sea-fade" data-zone="text">( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )</p>
       </header>
       <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
+      <Included />
     </section>
   )
 }
