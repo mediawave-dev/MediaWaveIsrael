@@ -41,6 +41,8 @@ const ProtoC = import.meta.env.DEV ? lazy(() => import('./proto/ProtoC')) : null
 const StudioPage = lazy(() => import('./pages/StudioPage'))
 // The style studio (/styles/): its own shell, outside Layout, so the sea's field never loads there
 const StylesPage = lazy(() => import('./studio/StylesPage'))
+// "האתר שלכם ב-60 שניות" (/your-site/, D217): its own shell too; the studio runs inside it as a frame
+const YourSitePage = lazy(() => import('./site60/YourSitePage'))
 
 // Lead modal appears only after 35s — no reason for it (and lottie-react)
 // to sit in the critical bundle
@@ -150,6 +152,7 @@ function App() {
           } />
 
           <Route path="/styles" element={<Suspense fallback={<PageFallback />}><StylesPage /></Suspense>} />
+          <Route path="/your-site" element={<Suspense fallback={<PageFallback />}><YourSitePage /></Suspense>} />
 
           {Board && (
             <Route path="/board/*" element={<Suspense fallback={<PageFallback />}><Board /></Suspense>} />

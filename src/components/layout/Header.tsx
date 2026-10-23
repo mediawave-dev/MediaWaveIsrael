@@ -277,7 +277,7 @@ export default function Header() {
               {menuLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={isHomePage ? link.href : `/${link.href}`}
+                  href={isHomePage || !link.href.startsWith('#') ? link.href : `/${link.href}`}
                   aria-current={here === link.href ? 'location' : undefined}
                   onClick={(e) => {
                     handleNavClick(e, link.href)

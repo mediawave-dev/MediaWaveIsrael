@@ -20,6 +20,8 @@ export const navigation: NavLink[] = [
   { label: 'דברו איתנו', href: '#contact', showInMenu: true, showInFooter: true },
   // the style studio: the same site in four styles [קופי: נתי]
   { label: 'סטודיו הסגנונות', href: '/styles/', showInMenu: true, showInFooter: true },
+  // (D217) the visitor's own site in the five styles [קופי: נתי]
+  { label: 'האתר שלכם ב-60 שניות', href: '/your-site/', showInMenu: true, showInFooter: true },
 ]
 
 export const headerLinks = navigation.filter((n) => n.showInHeader)

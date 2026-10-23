@@ -588,5 +588,9 @@ html.sea-gnd-deep #services .sea-svc__also { color: #ede7da; }
   .sea-styles__row { grid-auto-flow: row; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; margin-inline: 0; padding: 0; gap: 18px; }
 }
 
+/* (D217) the invitation to the visitor's own site, under the five previews */
+.sea-styles__own { display: grid; justify-items: start; gap: 14px; margin: 6px 0 18px; }
+.sea-styles__own-l { margin: 0; max-width: 34ch; font: 400 clamp(17px, 1.5vw, 20px)/1.6 var(--text); color: #c4bdaf; text-shadow: var(--sea-halo); }
+
 /* (D200 audit) the hero's lead lines sit on the reel: a lighter grey keeps them AA over its brighter frames */
 .sea-hero .sea-sub { color: #c4bdaf; }

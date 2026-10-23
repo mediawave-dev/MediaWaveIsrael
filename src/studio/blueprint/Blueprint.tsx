@@ -11,6 +11,7 @@ import '@fontsource/geist-mono/latin-500.css'
 import { useScene } from '../../motion/ScrollEngineProvider'
 import { C, CLIPS } from '../content'
 import { waForStyle } from '../lead'
+import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
@@ -89,6 +90,7 @@ function Ink() {
 
 export default function Blueprint({ tier, def }: StyleProps) {
   const [loading, setLoading] = useState(() => !PRERENDER && tier !== 'still' && !OPENED)
+  const hero = useHero()
   const fine = typeof window !== 'undefined' && finePointer()
   useEffect(() => { OPENED = true }, [])
 
@@ -198,9 +200,9 @@ export default function Blueprint({ tier, def }: StyleProps) {
           {loading && <Loader onDone={() => setLoading(false)} />}
         </div>
         <div className="bp-hero__foot">
-          <h1 id="bp-h1" className="bp-h1">{C.hero.line1} {C.hero.line2}</h1>
-          <p className="bp-body">{C.hero.sub} {C.hero.sub2}</p>
-          <a className="bp-more" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{C.hero.cta} <span aria-hidden="true">←</span></a>
+          <h1 id="bp-h1" className="bp-h1">{hero.line1}{hero.brand ? <br /> : ' '}{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</h1>
+          <p className="bp-body">{hero.sub} {hero.sub2}</p>
+          <a className="bp-more" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta} <span aria-hidden="true">←</span></a>
         </div>
         <div className="bp-ticker" aria-hidden="true"><div>{[0, 1].map((k) => <span key={k}>{TICKER.map((t) => <b key={t}>{t} <i>⬡</i> </b>)}</span>)}</div></div>
       </section>

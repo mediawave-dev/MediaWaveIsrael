@@ -105,3 +105,25 @@ html[data-vt="clay"]::view-transition-old(root) { animation: st-under 1.1s cubic
 .st-sound[aria-pressed="true"] .st-sound__k { display: none; }
 @keyframes st-dock { from { opacity: 0; transform: translateY(-8px) scale(0.9); } }
 @media (max-width: 480px) { .st-bar__n, .st-sound__k { display: none; } .st-bar { gap: 4px; } .st-bar__home .mw-logo { height: 16px; } }
+
+
+/* ---------- (D217) the visitor's own site, inside the frame of /your-site/ (?preview=1) ----------
+   Only the opening: the chapters below it, our invitations and our hints are gone, the page holds still
+   (the wall around the frame is the motion), and the bar carries the visitor's name in the world's face. */
+html.st-preview, html.st-preview body { overflow: hidden !important; overscroll-behavior: none; }
+/* the chapters keep their place (a world's timeline reads them: flight's sky is its lilac day only at the
+   start of the chapters), they are only never drawn */
+html.st-preview .st-main [data-ch]:not([data-ch="hero"]) { visibility: hidden !important; }
+html.st-preview :is(.bp-hint, .cl-tap, .cl-reel, .cl-pill, .bz-down, .dp-hint, .cl-intro__side > p) { display: none !important; }
+html.st-preview .st { min-height: 100svh; }
+.st-pv { justify-content: space-between; gap: 16px; pointer-events: none; }
+.st-pv__brand {
+  font: var(--pv-face, 700 1em var(--st-text)); font-size: 21px; line-height: 44px; color: var(--st-ink);
+  max-width: 72%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; unicode-bidi: isolate;
+}
+.st-pv__menu { display: inline-grid; gap: 5px; width: 24px; padding: 14px 0; }
+.st-pv__menu i { display: block; height: 2px; border-radius: 2px; background: var(--st-ink); }
+.st-pv__menu i:last-child { width: 62%; }
+/* the visitor's name inside a world's big line: it shrinks to fit (preview.ts fitNames), and a mixed
+   Hebrew and English name keeps its own order */
+.s60-name { display: inline-block; max-width: 100%; unicode-bidi: isolate; overflow-wrap: normal; }

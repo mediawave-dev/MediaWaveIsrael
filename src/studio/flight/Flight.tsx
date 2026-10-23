@@ -8,6 +8,7 @@ import '@fontsource/bellefair/latin-400.css'
 import { useScene } from '../../motion/ScrollEngineProvider'
 import { C } from '../content'
 import { waForStyle } from '../lead'
+import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
@@ -43,6 +44,7 @@ function WorkFilm() {
 export default function Flight({ tier, def }: StyleProps) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const [live, setLive] = useState(false)
+  const hero = useHero()
 
   useEffect(() => {
     if (PRERENDER || !canvas.current) return
@@ -84,12 +86,12 @@ export default function Flight({ tier, def }: StyleProps) {
 
       <section className="fl-hero" data-ch="hero" aria-labelledby="fl-h1">
         <h1 id="fl-h1" className="fl-h1">
-          <span className="fl-h1__small">{C.hero.line1}</span>
-          <span className="fl-h1__big">{C.hero.line2}</span>
+          <span className="fl-h1__small">{hero.line1}</span>
+          <span className="fl-h1__big">{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</span>
         </h1>
         <div className="fl-hero__foot">
-          <p className="fl-hero__sub">{C.hero.sub}<br />{C.hero.sub2}</p>
-          <a className="fl-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{C.hero.cta}</a>
+          <p className="fl-hero__sub">{hero.sub}{hero.sub2 && <><br />{hero.sub2}</>}</p>
+          <a className="fl-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
         </div>
         {/* [קופי: נתי] */}
         <p className="fl-hint" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>

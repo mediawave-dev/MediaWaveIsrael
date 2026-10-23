@@ -31,6 +31,8 @@ function generateSitemap() {
     { loc: '/terms', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
     { loc: '/privacy', lastmod: '2026-01-01', changefreq: 'yearly', priority: '0.3' },
     { loc: '/accessibility', lastmod: '2026-07-02', changefreq: 'yearly', priority: '0.3' },
+    // (D217) the visitor's own site in 60 seconds: a page ads can link to
+    { loc: '/your-site/', lastmod: today, changefreq: 'monthly', priority: '0.7' },
   ]
 
   const servicePages = parseSlugs('src/data/services.ts').map((slug) => ({

@@ -15,6 +15,7 @@ import '@fontsource/assistant/latin-800.css'
 import '@fontsource/geist-mono/latin-500.css'
 import { C } from '../content'
 import { waForStyle } from '../lead'
+import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
@@ -32,6 +33,7 @@ const NAME: Record<ShapeId, string> = { horizon: 'HORIZON', laptop: 'LAPTOP', ph
 export default function Depth({ tier, def }: StyleProps) {
   /** a restored WebGL context starts the cloud again (a new canvas) */
   const [gen, setGen] = useState(0)
+  const hero = useHero()
   const root = useRef<HTMLDivElement>(null)
   const host = useRef<HTMLDivElement>(null)
   const pts = useRef<HTMLSpanElement>(null)
@@ -93,9 +95,9 @@ export default function Depth({ tier, def }: StyleProps) {
       <section className="dp-sec dp-hero" data-ch="hero" data-shape="horizon" aria-labelledby="dp-h1">
         <div className="dp-sheet">
           <p className="dp-k" dir="ltr" lang="en" aria-hidden="true">[ DEPTH · LIDAR ]</p>
-          <h1 id="dp-h1" className="dp-h1">{C.hero.line1}<br />{C.hero.line2}</h1>
-          <p className="dp-body">{C.hero.sub} {C.hero.sub2}</p>
-          <a className="dp-key" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{C.hero.cta}</a>
+          <h1 id="dp-h1" className="dp-h1">{hero.line1}<br />{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</h1>
+          <p className="dp-body">{hero.sub} {hero.sub2}</p>
+          <a className="dp-key" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
           {/* [קופי: נתי] */}
           <p className="dp-hint" lang="en" dir="ltr" aria-hidden="true">SCROLL TO SCAN ↓</p>
         </div>

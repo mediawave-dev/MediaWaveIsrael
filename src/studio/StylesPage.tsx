@@ -2,7 +2,7 @@
 // signal, translated into our world. The visitor picks a style and the page turns into it live
 // (View Transitions, each style its own entrance); the pick rides into the WhatsApp message and the form.
 // The main site stays the sea of dots; nothing of this page loads there.
-import { lazy, Suspense, useEffect, useRef, useState, type ComponentType } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, type ComponentType } from 'react'
 import { flushSync } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import SEO from '../components/SEO'
@@ -19,6 +19,7 @@ import { resumeMusic, yieldMusic } from '../look/sea/sound'
 
 type PickAt = { x: number; y: number }
 import { getCurtain, prepareCurtain } from './curtain'
+import { fitNames, listenParent, PREVIEW, tellParent, useHero } from './preview'
 import './studio.css'
 
 const AccessibilityWidget = lazy(() => import('../components/ui/AccessibilityWidget'))
@@ -26,7 +27,7 @@ const CookieConsent = lazy(() => import('../components/ui/CookieConsent'))
 
 /** The prerendered page (no JS yet, or the first chunk in flight): shown as it was painted. */
 const PRERENDERED = (() => {
-  if (typeof document === 'undefined') return ''
+  if (typeof document === 'undefined' || PREVIEW) return ''
   const main = document.getElementById('main-content')
   const here = window.location.pathname.replace(/\/+$/, '')
   return main?.dataset.route === '/styles' && here === '/styles' ? main.innerHTML : ''
@@ -82,7 +83,7 @@ export default function StylesPage() {
     const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback
     // and the other styles' chunks and fonts, so the wave never waits on the network either
     if (tierNow() !== 'still') (idle ?? ((cb: () => void) => window.setTimeout(cb, 1200)))(() => {
-      prepareCurtain()
+      if (!PREVIEW) prepareCurtain()
       window.setTimeout(() => STYLES.forEach((s) => { if (s.id !== def.id) void s.load().then(prepare).catch(() => {}) }), 2500)
     })
     const id = window.setTimeout(() => setWidgets(true), 1800)
@@ -92,6 +93,7 @@ export default function StylesPage() {
   // one music at a time (D199): the site's lo-fi gives way to the worlds' tracks; a visitor who was
   // listening keeps listening (the world's track rises in its place), and on the way out it goes back
   useEffect(() => {
+    if (PREVIEW) return
     if (yieldMusic(0.8) && tierNow() !== 'still') setSoundOn(true)
     return () => {
       const was = isSoundOn()
@@ -104,7 +106,7 @@ export default function StylesPage() {
     const html = document.documentElement
     html.dataset.style = def.id
     setTheme(def.theme)
-    setWorld(def.id)
+    if (!PREVIEW) setWorld(def.id)
     return () => { delete html.dataset.style }
   }, [def])
 
@@ -119,6 +121,48 @@ export default function StylesPage() {
     return () => clearTimeout(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Page])
+
+  // (D217) inside the frame of /your-site/: a world goes on air on the parent's word, at once (the wall
+  // around the frame is the transition); the last word wins when the visitor swipes fast
+  const want = useRef(def.id)
+  const words = useHero()
+  useEffect(() => listenParent((id) => {
+    const next = byId(id)
+    want.current = next.id
+    void next.load().then(async (m) => {
+      await prepare(m)
+      if (want.current !== next.id) return
+      flushSync(() => { setDef(next); setPage(() => m.default) })
+      window.scrollTo(0, 0)
+    })
+  }), [])
+  // on air: once the world is painted (a WebGL world once its first frame is drawn, 1.8 s at most), the
+  // name fits its line and the parent is told
+  useEffect(() => {
+    if (!PREVIEW || !Page) return
+    let live = true
+    const id = def.id
+    const t0 = performance.now()
+    const wait = () => {
+      if (!live) return
+      const root = document.querySelector('.st-main > *')
+      if (root?.matches('.fl, .cl') && !root.hasAttribute('data-live') && performance.now() - t0 < 1800) { requestAnimationFrame(wait); return }
+      fitNames()
+      // a world whose name sits below its first screen (clay's paper under the room) names the frame to show
+      const at = document.querySelector<HTMLElement>('[data-pv-at]')
+      const y = at ? Math.max(0, at.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.4) : 0
+      if (engine?.lenis) engine.lenis.scrollTo(y, { immediate: true, force: true })
+      else window.scrollTo(0, y)
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!live) return
+        const h = document.querySelector('.st-main h1')?.getBoundingClientRect()
+        tellParent({ type: 's60:ready', style: id, h1: h ? { top: Math.round(h.top), bottom: Math.round(h.bottom) } : undefined })
+      }))
+    }
+    requestAnimationFrame(wait)
+    return () => { live = false }
+  }, [Page, def, engine])
+  useLayoutEffect(() => { if (PREVIEW && Page) fitNames() }, [words, Page])
 
   const land = (ch: string) => {
     const el = document.querySelector<HTMLElement>(`[data-ch="${ch}"]`)
@@ -191,6 +235,21 @@ export default function StylesPage() {
       navigate('/')
       window.setTimeout(() => { void wave.reveal(tier === 'calm' ? 520 : 900) }, 420)
     } else navigate('/')
+  }
+
+  if (PREVIEW) {
+    return (
+      <div className="st st--preview" data-tier={tier}>
+        {/* the visitor's site: their name as the wordmark, a menu that is only drawn */}
+        <header className="st-bar st-pv" aria-hidden="true">
+          <bdi className="st-pv__brand" style={{ ['--pv-face' as string]: def.face }}>{words.brand}</bdi>
+          <span className="st-pv__menu"><i /><i /><i /></span>
+        </header>
+        <main id="main-content" className="st-main">
+          {Page && <Page key={def.id} tier={tier} def={def} />}
+        </main>
+      </div>
+    )
   }
 
   return (

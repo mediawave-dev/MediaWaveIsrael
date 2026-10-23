@@ -9,6 +9,7 @@ import '@fontsource/heebo/latin-400.css'
 import '@fontsource/heebo/latin-700.css'
 import { C, CLIPS } from '../content'
 import { waForStyle } from '../lead'
+import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
@@ -82,6 +83,7 @@ function Typer({ tier }: { tier: StyleProps['tier'] }) {
 
 export default function Buzz({ tier, def }: StyleProps) {
   const root = useRef<HTMLDivElement>(null)
+  const hero = useHero()
   const back = useRef<HTMLDivElement>(null)
   const front = useRef<HTMLDivElement>(null)
   const formSw = useRef<HTMLDivElement>(null)
@@ -284,14 +286,14 @@ export default function Buzz({ tier, def }: StyleProps) {
         </div>
         <div className="bz-hero__in">
           <h1 id="bz-h1" className="bz-h1">
-            <span className="bz-h1__lead">{C.hero.line1}</span>
-            <span className="bz-word">{C.hero.line2}</span>
+            <span className="bz-h1__lead">{hero.line1}</span>
+            <span className="bz-word">{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</span>
           </h1>
           {/* [קופי: נתי] the label: the studio's three crafts */}
-          <p className="bz-label" dir="ltr">WEBSITES · VIDEO · TAPES</p>
+          <p className="bz-label" dir="ltr">{hero.tags ?? 'WEBSITES · VIDEO · TAPES'}</p>
           <div className="bz-tag">
-            <p>{C.hero.sub} {C.hero.sub2}</p>
-            <a className="bz-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{C.hero.cta}</a>
+            <p>{hero.sub} {hero.sub2}</p>
+            <a className="bz-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
           </div>
         </div>
         <div className="bz-swarm bz-swarm--front" ref={front} aria-hidden="true" />

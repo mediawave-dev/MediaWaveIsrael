@@ -5,6 +5,7 @@
 // ?reduce=1 the posters only). Placed after "how we work", before the questions. [קופי: נתי] the heading,
 // the lede and the link.
 import { useEffect, useRef } from 'react'
+import { LookButton } from '@look/button'
 import { Lines, Tag } from './parts'
 import { tier } from './field'
 import { track } from '../../utils/analytics'
@@ -63,6 +64,13 @@ export default function SeaStyles() {
           </li>
         ))}
       </ul>
+      {/* (D217) the visitor's own name in the five styles: the chapter's real invitation [קופי: נתי] */}
+      <div className="sea-styles__own" data-reveal="">
+        <p className="sea-styles__own-l sea-fade" data-zone="text">ומה עם האתר שלכם? כותבים את שם העסק, ורואים אותו בכל אחד מהסגנונות.</p>
+        <LookButton href="/your-site/" zone="text" onClick={() => track('cta_click', { placement: 'home_styles_yoursite' })}>
+          האתר שלכם ב-60 שניות
+        </LookButton>
+      </div>
       <a className="sea-go sea-styles__all" href="/styles/" lang="en" dir="ltr" onClick={() => track('cta_click', { placement: 'home_styles_all' })}>
         Enter the Style Studio
       </a>

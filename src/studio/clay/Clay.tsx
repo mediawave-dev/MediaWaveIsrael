@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { C, CLIPS } from '../content'
 import { waForStyle } from '../lead'
+import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
@@ -51,6 +52,7 @@ function Reel({ onFeed }: { onFeed: () => void }) {
 
 export default function Clay({ tier, def }: StyleProps) {
   const hero = useRef<HTMLElement>(null)
+  const words = useHero()
   const canvas = useRef<HTMLCanvasElement>(null)
   const room = useRef<{ setPlaying: (on: boolean) => void } | null>(null)
   const [asked, setAsked] = useState(isSoundOn())
@@ -182,24 +184,24 @@ export default function Clay({ tier, def }: StyleProps) {
       <section className="cl-hero" data-ch="hero" ref={hero} aria-labelledby="cl-h1">
         <div className="cl-room">
           <div className="cl-room__fg">
-            <p className="cl-room__line">{C.hero.sub}<br />{C.hero.sub2}</p>
+            <p className="cl-room__line">{words.sub}{words.sub2 && <><br />{words.sub2}</>}</p>
             <p className="cl-room__scroll" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
             {!fine && !asked && (
               <button type="button" className="cl-tap" lang="en" dir="ltr" aria-label="הפעלת הצליל של הקלטת" onClick={() => toggle(true)}>{askLine[0]}<i />{askLine[1]}</button>
             )}
           </div>
         </div>
-        <div className="cl-paper cl-intro">
+        <div className="cl-paper cl-intro" data-pv-at>
           <h1 id="cl-h1" className="cl-h1">
-            <span className="cl-ln" data-cl><span>{C.hero.line1}</span></span>
-            <span className="cl-ln" data-cl data-flip={flip !== null || undefined}><span key={flip ?? 'base'}>{flip === null ? C.hero.line2 : FLIP[flip]}</span></span>
+            <span className="cl-ln" data-cl><span>{words.line1}</span></span>
+            <span className="cl-ln" data-cl data-flip={flip !== null || undefined}><span key={flip ?? 'base'}>{flip === null ? words.brand ? <bdi className="s60-name">{words.line2}</bdi> : words.line2 : FLIP[flip]}</span></span>
             <Reel onFeed={feed} />
           </h1>
           <div className="cl-intro__row">
-            <p className="cl-hello" data-cl>{C.hero.sub} {C.hero.sub2}</p>
+            <p className="cl-hello" data-cl>{words.sub} {words.sub2}</p>
             <div className="cl-intro__side" data-cl>
               <p>מדברים ישירות עם המפתח, בלי מתווכים.</p>
-              <a className="cl-btn" href={waForStyle(def)} target="_blank" rel="noopener noreferrer" data-pill="WHATSAPP">{C.hero.cta}</a>
+              <a className="cl-btn" href={waForStyle(def)} target="_blank" rel="noopener noreferrer" data-pill="WHATSAPP">{words.cta}</a>
             </div>
           </div>
         </div>

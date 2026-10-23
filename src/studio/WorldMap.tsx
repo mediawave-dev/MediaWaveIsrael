@@ -71,6 +71,11 @@ export default function WorldMap({ current, onClose, onPick, onHome }: { current
             )
           })}
         </ul>
+        {/* [קופי: נתי] (D217) the same worlds with the visitor's own name in them */}
+        <a className="wm__home wm__own" href="/your-site/" onClick={() => track('cta_click', { location: `worldmap_yoursite${current ? `_${current.id}` : ''}` })}>
+          <span className="wm__home-k" lang="en" dir="ltr">( Your site )</span>
+          <span>האתר שלכם ב-60 שניות</span>
+        </a>
         {/* [קופי: נתי] the way back to the sea of dots, in the studio's map (D199) */}
         {current && onHome && (
           <a className="wm__home" href="/" onClick={onHome}>

@@ -34,7 +34,7 @@ function arrive(el: Element) {
   io.observe(el)
 }
 
-type Sdf = (x: number, y: number) => boolean
+export type Sdf = (x: number, y: number) => boolean
 const seg = (px: number, py: number, ax: number, ay: number, bx: number, by: number) => {
   const vx = bx - ax, vy = by - ay
   const t = Math.max(0, Math.min(1, ((px - ax) * vx + (py - ay) * vy) / (vx * vx + vy * vy)))
@@ -63,9 +63,9 @@ const VALUES: Record<string, (x: number, y: number) => number> = {
 type Dot = [number, number, number, number]
 const cache = new Map<string, { n: number; dots: Dot[] }>()
 
-function sample(name: string, n: number): Dot[] {
+function sample(name: string, n: number, own?: Sdf): Dot[] {
   const out: Dot[] = []
-  const val = VALUES[name]
+  const val = own ? undefined : VALUES[name]
   if (val) {
     for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
       const v = val(((i + 0.5) / n) * 2 - 1, 1 - ((j + 0.5) / n) * 2)
@@ -73,7 +73,7 @@ function sample(name: string, n: number): Dot[] {
     }
     return out
   }
-  const f = SHAPES[name]
+  const f = own ?? SHAPES[name]
   const S = 4
   for (let j = 0; j < n; j++) {
     for (let i = 0; i < n; i++) {
@@ -91,21 +91,22 @@ function sample(name: string, n: number): Dot[] {
   return out
 }
 
-function glyph(name: string, n: number) {
+function glyph(name: string, n: number, sdf?: Sdf) {
   const key = `${name}:${n}`
   if (!cache.has(key)) {
     // the chapters' objects come from the header's icons (way-icons.ts)
-    const own = Boolean(SHAPES[name] || VALUES[name])
+    const own = Boolean(sdf || SHAPES[name] || VALUES[name])
     if (name === 'wa') cache.set(key, { n: 15, dots: WA_DOTS.map(([x, y, r]) => [x, y, r, 0] as Dot) })
     // the tick is the V, dot by dot (D167)
     else if (name === 'check') cache.set(key, { n: 11, dots: pix(V11, 0.46) })
-    else cache.set(key, { n: own ? n : GRID, dots: own ? sample(name, n) : icon(name) })
+    else cache.set(key, { n: own ? n : GRID, dots: own ? sample(name, n, sdf) : icon(name) })
   }
   return cache.get(key)!
 }
 
-export default function DotGlyph({ name, n = 11, className = '', colour = false }: { name: string; n?: number; className?: string; colour?: boolean }) {
-  const g = glyph(name, n)
+/** `sdf`: a page's own shape (inside/outside on -1..1, y up), sampled like the built-in ones; `name` is its cache key. */
+export default function DotGlyph({ name, n = 11, className = '', colour = false, sdf }: { name: string; n?: number; className?: string; colour?: boolean; sdf?: Sdf }) {
+  const g = glyph(name, n, sdf)
   const ref = useRef<SVGSVGElement>(null)
   useEffect(() => { if (ref.current) arrive(ref.current) }, [])
   // one path per colour: every dot is two arcs
