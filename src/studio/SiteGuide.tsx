@@ -1,5 +1,5 @@
 // The invitation on the main site (D192): after the opening has played and the page is idle, the little
-// world comes by and offers the other worlds ("Explore 4 other worlds"); at most three times a visit, never
+// world comes by and offers the other worlds ("Explore 5 other worlds", D215); at most three times a visit, never
 // closer than 40 s, once more at the letter. Its map opens a world through the wave, without a page load:
 // the wave covers the sea in the chosen world's colours, the studio and that world load under it, the route
 // changes, and the studio opens the wave with the world's name (StylesPage reads window.__studioArrival).
@@ -15,7 +15,7 @@ import { tierNow } from './motion'
 import type { StyleDef } from './registry'
 import { travel } from './travel'
 
-const SITE_PLAN: GuidePlan = { chapters: '[data-chapter]', cool: 40000, max: 3, stay: 8000, first: 2600, say: 'Explore 4 other worlds', last: 'contact', until: 'sg-seen' }
+const SITE_PLAN: GuidePlan = { chapters: '[data-chapter]', cool: 40000, max: 3, stay: 8000, first: 2600, say: 'Explore 5 other worlds', last: 'contact', until: 'sg-seen' }
 
 // the site's own music for the invitation (D199): offered only while it is armed and not yet playing
 const SEA_SOUND: SoundSource = { isOn: () => sea.isRunning() || !sea.isOn(), turnOn: sea.startMusic, subscribe: sea.onChange }

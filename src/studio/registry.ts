@@ -1,4 +1,4 @@
-// The four styles with their loaders. Each is a lazy chunk with its own CSS, fonts and scene; nothing here
+// The five styles with their loaders. Each is a lazy chunk with its own CSS, fonts and scene; nothing here
 // loads on the main site's pages (the home page reads only styles-meta.ts).
 import type { ComponentType } from 'react'
 import type { Tier } from './motion'
@@ -29,6 +29,7 @@ const LOADERS: Record<StyleId, () => Promise<StyleModule>> = {
   buzz: () => import('./buzz/Buzz'),
   blueprint: () => import('./blueprint/Blueprint'),
   clay: () => import('./clay/Clay'),
+  depth: () => import('./depth/Depth'),
 }
 
 export const STYLES: StyleDef[] = STYLE_META.map((m) => ({ ...m, load: LOADERS[m.id] }))

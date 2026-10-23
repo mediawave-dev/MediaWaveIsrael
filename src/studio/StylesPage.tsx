@@ -1,4 +1,4 @@
-// /styles/: the site's content in four styles, each a careful re-reading of an award-winning site's
+// /styles/: the site's content in five styles, each a careful re-reading of an award-winning site's
 // signal, translated into our world. The visitor picks a style and the page turns into it live
 // (View Transitions, each style its own entrance); the pick rides into the WhatsApp message and the form.
 // The main site stays the sea of dots; nothing of this page loads there.
@@ -34,7 +34,7 @@ const PRERENDERED = (() => {
 
 // the worlds' music for the invitation (D199); [קופי: נתי] the track names
 const STUDIO_SOUND: SoundSource = { isOn: isSoundOn, turnOn: () => setSoundOn(true), subscribe: onSoundChange, prepare: preloadSound }
-const TRACK: Record<string, string> = { flight: 'Cinematic ambient', buzz: 'Sunny lo-fi', blueprint: 'Felt piano · minimal', clay: 'Morning tape' }
+const TRACK: Record<string, string> = { flight: 'Cinematic ambient', buzz: 'Sunny lo-fi', blueprint: 'Felt piano · minimal', clay: 'Morning tape', depth: 'Deep ambient · sonar' }
 
 const fromUrl = () => (typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('s'))
 
@@ -193,7 +193,7 @@ export default function StylesPage() {
     <div className="st" data-tier={tier}>
       <SEO
         title="סטודיו הסגנונות"
-        description="אותו אתר בארבעה סגנונות. בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם."
+        description="אותו אתר בחמישה סגנונות. בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם."
         canonical="/styles/"
       />
       <a className="st-skip" href="#main-content">דלג לתוכן הראשי</a>
@@ -201,7 +201,7 @@ export default function StylesPage() {
         <a className="st-bar__home" href="/" aria-label="MediaWave, לדף הבית" onClick={goHome}><Logo variant="compact" decorative /></a>
         {/* the always-there way to the worlds (keyboard, screen readers, anyone who missed the guide) */}
         <button type="button" className="st-bar__worlds" lang="en" dir="ltr" onClick={() => setMap(true)} aria-haspopup="dialog" aria-label="מפת העולמות: בחירת סגנון">
-          ( Worlds<span className="st-bar__n"> · 04</span> )
+          ( Worlds<span className="st-bar__n"> · {String(STYLES.length).padStart(2, '0')}</span> )
         </button>
         {/* [קופי: נתי] the plain way back, beside the worlds */}
         <a className="st-bar__worlds st-bar__back" href="/" lang="en" dir="ltr" onClick={goHome} aria-label="חזרה לאתר הראשי">( Home )</a>

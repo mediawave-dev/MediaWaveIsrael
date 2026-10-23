@@ -1,4 +1,4 @@
-// The map of worlds (D189): what the guide and the bar's "Worlds" button open. Four living previews
+// The map of worlds (D189): what the guide and the bar's "Worlds" button open. Five living previews (D215)
 // (filmed from each world), the one you are in marked, and the way to say "this one" on WhatsApp. A real
 // dialog: focus moves in, Escape and the close button leave, focus returns to what opened it.
 import { useEffect, useRef } from 'react'
@@ -37,7 +37,7 @@ export default function WorldMap({ current, onClose, onPick, onHome }: { current
           {/* [קופי: נתי] */}
           <h2 id="wm-t" className="wm__t">לאיזה עולם עוברים?</h2>
           {/* [קופי: נתי] on the main site the map explains itself in one line */}
-          {!current && <p className="wm__sub">אותו אתר בארבעה סגנונות. בוחרים עולם, והאתר משתנה מול העיניים.</p>}
+          {!current && <p className="wm__sub">אותו אתר בחמישה סגנונות. בוחרים עולם, והאתר משתנה מול העיניים.</p>}
           <button type="button" className="wm__x" ref={close} onClick={onClose} aria-label="סגירה">×</button>
         </header>
         <ul className="wm__grid">

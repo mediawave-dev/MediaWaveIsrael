@@ -1,0 +1,99 @@
+/* "עומק" (D215): a deep night ground, a cloud of cool white points with the sea in the logo's blue, Assistant
+   at its two ends (800 for the words that matter, 400 for reading), Geist Mono for the readout and the labels.
+   Contrast on #06080E: ink #DCE8FF 16.4:1, soft #93A1BC 7.4:1, blue #79A0C5 7.0:1. */
+html[data-style="depth"] {
+  --st-ground: #06080e;
+  --st-ink: #dce8ff;
+  --st-soft: #93a1bc;
+  --dp-blue: #79a0c5;
+  --dp-line: rgba(220, 232, 255, 0.14);
+  --dp-font: Assistant, "MW Text", system-ui, sans-serif;
+  --dp-mono: "Geist Mono", ui-monospace, Consolas, monospace;
+  --dp-gut: clamp(16px, 4vw, 40px);
+  color-scheme: dark;
+}
+html[data-style="depth"] ::selection { background: var(--dp-blue); color: #06080e; }
+
+.dp { position: relative; font-family: var(--dp-font); color: var(--st-ink); }
+/* the cloud holds the top of a phone's screen, the left half of a wide one; it never takes a tap */
+.dp-cloud { position: fixed; z-index: 3; top: 0; left: 0; width: 100%; height: 46svh; display: block; pointer-events: none; }
+.dp-veil { position: fixed; z-index: 2; top: 0; left: 0; right: 0; height: 52svh; pointer-events: none;
+  background: linear-gradient(to bottom, var(--st-ground) 0, var(--st-ground) 42svh, rgba(6, 8, 14, 0) 52svh); }
+@media (min-width: 1100px) { .dp-cloud { z-index: 0; width: 54%; height: 100svh; } .dp-veil { display: none; } }
+
+/* the true readout */
+.dp-read { position: fixed; z-index: 4; left: var(--dp-gut); bottom: max(14px, env(safe-area-inset-bottom)); margin: 0; pointer-events: none;
+  font: 500 12px/1.4 var(--dp-mono); letter-spacing: 0.06em; color: var(--st-soft); font-variant-numeric: tabular-nums; }
+.dp-read b { font-weight: 500; color: var(--st-ink); }
+.dp-read i { font-style: normal; color: var(--dp-blue); }
+@media (max-width: 1099px) { .dp-read { top: calc(42svh - 6px); bottom: auto; } }
+
+/* a chapter: on a phone its words ride up over the cloud on their own ground (a sheet that fades in at its top
+   edge); from 1100px the words keep to the right, the start side, and the cloud stays clear */
+.dp-sec { position: relative; z-index: 1; min-height: 100svh; display: grid; align-content: end; padding: 0 var(--dp-gut); }
+.dp-sheet { display: grid; gap: 16px; justify-items: start; padding: 56px 0 64px; }
+.dp-hero { padding-top: 50svh; }
+@media (min-width: 1100px) {
+  .dp-sec { align-content: center; padding-inline-end: calc(54% + 24px); }
+  .dp-sheet { background: none; padding: 96px 0; }
+  .dp-hero { padding-top: 0; }
+}
+
+.dp-k { margin: 0; font: 500 12px/1.2 var(--dp-mono); letter-spacing: 0.08em; color: var(--st-soft); }
+.dp-h1, .dp-h2 { margin: 0; font-family: var(--dp-font); font-weight: 800; line-height: 0.95; letter-spacing: 0; color: var(--st-ink); text-wrap: balance; }
+.dp-h1 { font-size: clamp(44px, 12.4vw, 116px); }
+.dp-h2 { font-size: clamp(38px, 10.4vw, 92px); }
+.dp-body { margin: 0; max-width: 38ch; font: 400 18px/1.65 var(--dp-font); color: var(--st-soft); text-wrap: pretty; }
+@media (min-width: 1100px) { .dp-body { font-size: 20px; } }
+.dp-hint { margin: 8px 0 0; font: 500 12px/1 var(--dp-mono); letter-spacing: 0.08em; color: var(--st-soft); }
+
+/* the key: the ink's ground, the night's text; its second state is the blue */
+.dp-key { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; margin-top: 6px; border-radius: 999px; background: var(--st-ink); color: #06080e;
+  font: 800 17px/1 var(--dp-font); text-decoration: none; transition: background 0.35s ease, transform 0.35s cubic-bezier(.16, 1, .3, 1); }
+@media (hover: hover) and (pointer: fine) { .dp-key:hover { background: var(--dp-blue); } }
+.dp-key:active { transform: scale(0.97); }
+.dp-more { display: inline-flex; align-items: center; min-height: 44px; font: 500 13px/1 var(--dp-mono); letter-spacing: 0.06em; color: var(--st-ink); text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .dp-more:hover { color: var(--dp-blue); } }
+:is(.dp-key, .dp-more, .dp-row, .dp-q summary, .dp-alt a):focus-visible { outline: 3px solid var(--st-ink); outline-offset: 3px; }
+
+/* the services: rows on hairlines; the row on the middle line is the cloud's object */
+.dp-rows, .dp-steps { list-style: none; margin: 8px 0 0; padding: 0; width: 100%; border-bottom: 1px solid var(--dp-line); }
+.dp-rows li, .dp-steps li { border-top: 1px solid var(--dp-line); }
+.dp-row { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 22px 0; color: inherit; text-decoration: none; }
+.dp-row__n { grid-row: span 3; padding-top: 0.55em; font: 500 12px/1 var(--dp-mono); color: var(--dp-blue); }
+.dp-row__t { font: 800 clamp(26px, 7.4vw, 40px)/1.05 var(--dp-font); transition: color 0.35s ease; }
+.dp-row__l { color: var(--st-soft); font-size: 17px; line-height: 1.6; }
+.dp-row__go { font: 500 12px/1 var(--dp-mono); letter-spacing: 0.06em; color: var(--st-soft); }
+@media (hover: hover) and (pointer: fine) { .dp-row:hover .dp-row__t { color: var(--dp-blue); } }
+
+.dp-steps li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 20px 0; }
+.dp-steps b { font: 800 clamp(22px, 6vw, 32px)/1.1 var(--dp-font); }
+.dp-steps li > span:last-child { grid-column: 2; color: var(--st-soft); font-size: 17px; line-height: 1.6; }
+
+.dp-qs { width: 100%; border-bottom: 1px solid var(--dp-line); }
+.dp-q { border-top: 1px solid var(--dp-line); }
+.dp-q summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 14px 0; cursor: pointer; list-style: none; font: 800 19px/1.35 var(--dp-font); }
+.dp-q summary::-webkit-details-marker { display: none; }
+.dp-q summary::after { content: "+"; flex: none; font: 500 18px/1 var(--dp-mono); color: var(--dp-blue); transition: transform 0.35s ease; }
+.dp-q[open] summary::after { transform: rotate(45deg); }
+.dp-q p { margin: 0; padding: 0 0 20px; color: var(--st-soft); font-size: 17px; line-height: 1.7; }
+@media (min-width: 1100px) { .dp-q summary { font-size: 22px; } }
+
+/* the letter: the shared form, in this world's lines */
+.dp-form { width: 100%; max-width: 560px; display: grid; gap: 0; margin-top: 8px; border-top: 1px solid var(--dp-line); }
+.dp-form .st-form__style { margin: 0; padding: 12px 0; font: 500 12px/1.4 var(--dp-mono); letter-spacing: 0.04em; color: var(--st-soft); border-bottom: 1px solid var(--dp-line); }
+.dp-form .st-form__row { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--dp-line); }
+.dp-form label { font: 500 12px/1.2 var(--dp-mono); letter-spacing: 0.04em; color: var(--st-soft); }
+.dp-form input, .dp-form textarea { width: 100%; min-height: 44px; padding: 6px 0; border: 0; background: transparent; color: var(--st-ink); font: 400 18px/1.4 var(--dp-font); resize: vertical; caret-color: var(--dp-blue); }
+.dp-form input:focus, .dp-form textarea:focus { outline: none; }
+.dp-form .st-form__row:focus-within { box-shadow: inset 0 -2px 0 var(--dp-blue); }
+.dp-form .st-form__err { margin: 0; padding: 10px 0; font: 500 14px/1.3 var(--dp-font); color: #ff9a8a; }
+.dp-form .st-form__send { justify-self: start; min-height: 48px; margin-top: 18px; padding: 0 24px; border: 0; border-radius: 999px; background: var(--st-ink); color: #06080e; font: 800 17px/1 var(--dp-font); cursor: pointer; transition: background 0.35s ease; }
+@media (hover: hover) and (pointer: fine) { .dp-form .st-form__send:hover { background: var(--dp-blue); } }
+.dp-form .st-form__send:focus-visible { outline: 3px solid var(--st-ink); outline-offset: 3px; }
+.dp-alt { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 6px 0 0; }
+.dp-alt a { display: inline-flex; align-items: center; min-height: 44px; font: 500 13px/1 var(--dp-mono); color: var(--st-ink); text-decoration: none; }
+@media (hover: hover) and (pointer: fine) { .dp-alt a:hover { color: var(--dp-blue); } }
+
+/* the shell on this ground */
+html[data-style="depth"] .st-foot { position: relative; z-index: 1; background: var(--st-ground); }

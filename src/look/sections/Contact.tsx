@@ -28,7 +28,7 @@ import SeaSteps from '../sea/SeaSteps'
 type Field = 'name' | 'email' | 'message'
 
 const SHOT = LOOK === 'shot'
-/** the sea (D209): after a send the guide's little world offers the four worlds; once a visit */
+/** the sea (D209): after a send the guide's little world offers the worlds (five since D215); once a visit */
 const SentGuide = lazy(() => import('../../studio/SentGuide'))
 let invited = false
 /** overlap-audit zone for the shot's text (the looks keep their markup as it was) */

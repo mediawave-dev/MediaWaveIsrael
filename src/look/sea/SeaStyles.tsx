@@ -1,4 +1,4 @@
-// sea · the style studio (D185): the invitation from the home page. Four portrait previews, each a few
+// sea · the style studio (D185): the invitation from the home page. Five portrait previews (D215), each a few
 // seconds filmed from the style itself (public/media/styles/*, recorded from /styles/), each opening that
 // style; the visitor sees that one site can wear very different clothes, picks one, and the pick rides into
 // WhatsApp. Previews play only while seen (at rest under ?calm=1 they play too; under the stop switch and
@@ -40,7 +40,7 @@ export default function SeaStyles() {
     <section id="styles" className="sea-ch sea-styles" aria-labelledby="styles-title">
       <header className="sea-head" data-reveal="">
         <Tag className="sea-fade">STYLE STUDIO</Tag>
-        <h2 id="styles-title" className="sea-h2" data-zone="text"><Lines lines={['אותו אתר,', 'ארבעה סגנונות.']} /></h2>
+        <h2 id="styles-title" className="sea-h2" data-zone="text"><Lines lines={['אותו אתר,', 'חמישה סגנונות.']} /></h2>
       </header>
       <p className="sea-lede sea-fade" data-reveal="" data-zone="text">
         בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם.

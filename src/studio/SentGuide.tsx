@@ -21,7 +21,7 @@ import { travel } from './travel'
 import './portal.css'
 import './sent-guide.css'
 
-const SAY = ['ההודעה שלכם אצלנו.', 'עד שנחזור אליכם, רוצים להציץ בארבעה אתרים לדוגמה?']
+const SAY = ['ההודעה שלכם אצלנו.', 'עד שנחזור אליכם, רוצים להציץ בחמישה אתרים לדוגמה?']
 /** after the WhatsApp hand-off the message waits in WhatsApp; "it is with us" would not be true */
 const SAY_LATE = ['תודה שכתבתם לנו.', SAY[1]]
 const CPS = 26
@@ -321,7 +321,7 @@ function drawTrail(a: FrameArgs, hist: [number, number][], t: number, out: numbe
   }
 }
 
-/** the four worlds: they burst out of the disc onto the orbit, turn slowly (held while one is pointed at),
+/** the worlds (five since D215): they burst out of the disc onto the orbit, evenly spaced, turn slowly (held while one is pointed at),
     the far ones smaller and behind the disc; on the way out they fall back into it */
 function placeWorlds(a: FrameArgs, g: Geo, t: number, out: number) {
   const still = a.tier === 'still'
@@ -330,7 +330,7 @@ function placeWorlds(a: FrameArgs, g: Geo, t: number, out: number) {
     const burst = still ? 1 : easeBack((t - 1.85 - i * 0.07) / 0.7)
     const fall = out < 0 ? 0 : still ? 0 : easeOut(out / 0.4)
     const r = burst * (1 - fall)
-    const ang = -Math.PI / 2 + (i * Math.PI) / 2 + a.S.current.angle
+    const ang = -Math.PI / 2 + (i * 2 * Math.PI) / a.worlds.current.length + a.S.current.angle
     const depth = (Math.sin(ang) + 1) / 2
     const x = g.cx + Math.cos(ang) * g.rx * r
     const y = g.cy + Math.sin(ang) * g.ry * r

@@ -100,10 +100,20 @@ html.wm-open { overflow: hidden; }
 .wm__home:hover, .wm__home:focus-visible { background: rgba(237, 231, 218, 0.1); border-color: #ede7da; }
 .wm__home-k { font: 600 12px/1 var(--pt-mono); letter-spacing: 0.06em; opacity: 0.85; }
 @media (min-width: 900px) {
-  .wm__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .wm__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
   .wm__pic { aspect-ratio: 9 / 14; }
 }
 @media (max-height: 700px) and (max-width: 899px) { .wm__pic { aspect-ratio: 9 / 10; } }
+/* phones (D215, five worlds): three across and two centred under them, so the map stays two rows */
+@media (max-width: 899px) {
+  .wm__grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+  .wm__grid li { grid-column: span 2; }
+  .wm__grid li:nth-child(4) { grid-column: 2 / span 2; }
+  .wm__grid li:nth-child(5) { grid-column: 4 / span 2; }
+  .wm__meta { padding: 34px 8px 8px; gap: 2px 6px; }
+  .wm__name { font-size: 18px; }
+  .wm__by { font-size: 12px; }
+}
 
 /* ---------- the invitation to the music (D199, D200: the site's own material) ---------- */
 /* D203: the floating buttons' island of halftone dots (parts/Isle.tsx) and an equaliser of halftone dots; it

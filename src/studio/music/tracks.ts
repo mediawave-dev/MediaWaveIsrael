@@ -6,7 +6,8 @@
 //        "is not beautiful enough"): a rolling left hand in eighths over Am-F-C-G at 92 BPM, a warm sub,
 //        a soft kick and brushes that come and go, and a right-hand melody in the second half; a 32-bar
 //        song (intro, pulse, melody, breakdown, full), so it never sounds like a loop;
-// clay - a warm morning tape (kalimba arpeggios, a low pad, brushes, tape hiss and a slow wobble).
+// clay - a warm morning tape (kalimba arpeggios, a low pad, brushes, tape hiss and a slow wobble);
+// depth - deep ambient with a sonar ping (D215).
 // Steps are sixteenths; a track gets the step number (from 0, forever) and the time to play it at.
 import { bass, bell, brush, crackle, hat, kalimba, keys, kick, marimba, pad, piano, snare, type Bus } from './voices'
 
@@ -128,4 +129,21 @@ const clay: Track = {
   },
 }
 
-export const TRACKS: Record<string, Track> = { flight, buzz, blueprint, clay }
+/** depth (D215) - deep ambient with a sonar: E minor (Em9, Cmaj9, Am9, Bsus), two bars each at 60 BPM, a long pad,
+ *  a sub that breathes, a high ping every second bar that answers itself an octave down (the scan), and a few
+ *  low bells between, like points lighting up. */
+const DP_CH = [[40, 47, 50, 54, 55], [36, 43, 47, 50, 55], [45, 52, 55, 59, 60], [47, 52, 54, 57, 59]]
+const DP_DOTS = [64, 66, 67, 71, 74, 76]
+const depth: Track = {
+  bpm: 60,
+  step: (b, i, t, spb) => {
+    const bar = Math.floor(i / 16)
+    const s = i % 16
+    const ch = DP_CH[Math.floor(bar / 2) % 4]
+    if (s === 0 && bar % 2 === 0) { pad(b, t, ch.map((n) => n + 12), spb * 32, 0.02, 900, 0.9); bass(b, t, ch[0] - 12, spb * 30, 0.055) }
+    if (s === 0 && bar % 2 === 1) { bell(b, t, 88, 0.014, 0.95, 2.01); bell(b, t + spb * 3, 76, 0.009, 0.9, 2.01) }
+    if (s % 4 === 2 && rnd(i) > 0.78) bell(b, t, DP_DOTS[Math.floor(rnd(i, 3) * DP_DOTS.length)], 0.016, 0.7)
+  },
+}
+
+export const TRACKS: Record<string, Track> = { flight, buzz, blueprint, clay, depth }
