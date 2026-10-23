@@ -70,9 +70,11 @@ function measure(bubble: HTMLElement): Geo {
   const top = bubble.offsetTop + bubble.offsetHeight + 24
   const bottom = h - 76
   const m = w < 760
-  const rx = Math.min(w * (m ? 0.33 : 0.2), 210)
+  // (D215) five worlds share the orbit: a little wider, the discs a little smaller, so no name is covered
+  const five = STYLES.length > 4
+  const rx = Math.min(w * (m ? (five ? 0.37 : 0.33) : (five ? 0.23 : 0.2)), five ? 240 : 210)
   const ry = clamp(Math.min(rx * 0.74, (bottom - top) / 2 - 48), 52, 180)
-  return { w, h, cx: w / 2, cy: Math.max(top + ry + 30, (top + bottom) / 2 - 12), rx, ry, disc: m ? 92 : 112 }
+  return { w, h, cx: w / 2, cy: Math.max(top + ry + 30, (top + bottom) / 2 - 12), rx, ry, disc: (m ? 92 : 112) * (five ? 0.84 : 1) }
 }
 
 export default function SentGuide({ late, onDone }: { late: boolean; onDone: () => void }) {
@@ -179,7 +181,7 @@ export default function SentGuide({ late, onDone }: { late: boolean; onDone: () 
   if (phase === 'wait') return null
   // on body: a transformed ancestor would make the scene's fixed position relative to the section
   return createPortal(
-    <div className="sg" ref={root} data-phase={phase} data-tier={tier} role="dialog" aria-modal="true" aria-labelledby="sg-say" style={{ ['--clear' as string]: `${clear}px` }}>
+    <div className="sg" ref={root} data-phase={phase} data-tier={tier} data-five={STYLES.length > 4 || undefined} role="dialog" aria-modal="true" aria-labelledby="sg-say" style={{ ['--clear' as string]: `${clear}px` }}>
       <div className="sg__veil" onClick={leave} />
       <svg className="sg__orbit" aria-hidden="true" focusable="false"><ellipse ref={orbit} /></svg>
       <div className="sg__trail" ref={trail} aria-hidden="true">{Array.from({ length: TRAIL }, (_, i) => <i key={i} />)}</div>

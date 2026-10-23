@@ -17,9 +17,22 @@ html[data-style="depth"] ::selection { background: var(--dp-blue); color: #06080
 .dp { position: relative; font-family: var(--dp-font); color: var(--st-ink); }
 /* the cloud holds the top of a phone's screen, the left half of a wide one; it never takes a tap */
 .dp-cloud { position: fixed; z-index: 3; top: 0; left: 0; width: 100%; height: 46svh; display: block; pointer-events: none; }
-.dp-veil { position: fixed; z-index: 2; top: 0; left: 0; right: 0; height: 52svh; pointer-events: none;
-  background: linear-gradient(to bottom, var(--st-ground) 0, var(--st-ground) 42svh, rgba(6, 8, 14, 0) 52svh); }
+.dp-cloud-host { display: contents; }
+/* (review) the veil takes the taps on the scanner window, so a link hidden under it can never be hit; scrolling
+   still passes through it. Focus and in-page jumps land below it (scroll-padding, scroll-margin). */
+/* (recheck) only the opaque band takes taps; the fade below it lets taps through to what shows there, and no
+   touch-action is set, so pinch-zoom works everywhere */
+.dp-veil { position: fixed; z-index: 2; top: 0; left: 0; right: 0; height: 42svh; pointer-events: auto; background: var(--st-ground); }
+.dp-veil::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 10svh; pointer-events: none;
+  background: linear-gradient(to bottom, var(--st-ground), rgba(6, 8, 14, 0)); }
 @media (min-width: 1100px) { .dp-cloud { z-index: 0; width: 54%; height: 100svh; } .dp-veil { display: none; } }
+@media (max-width: 1099px) {
+  html[data-style="depth"] { scroll-padding-top: 50svh; }
+}
+/* no cloud (no WebGL, or the context was lost): no scanner window, no readout, the words use the whole screen */
+.dp[data-nocloud] :is(.dp-veil, .dp-read) { display: none; }
+/* an attribute on html, not :has(): a :has() on the root re-checks the page on every change (D210) */
+html[data-style="depth"][data-nocloud] { scroll-padding-top: 80px; }
 
 /* the true readout */
 .dp-read { position: fixed; z-index: 4; left: var(--dp-gut); bottom: max(14px, env(safe-area-inset-bottom)); margin: 0; pointer-events: none;
@@ -67,15 +80,15 @@ html[data-style="depth"] ::selection { background: var(--dp-blue); color: #06080
 @media (hover: hover) and (pointer: fine) { .dp-row:hover .dp-row__t { color: var(--dp-blue); } }
 
 .dp-steps li { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); column-gap: 10px; row-gap: 6px; padding: 20px 0; }
-.dp-steps b { font: 800 clamp(22px, 6vw, 32px)/1.1 var(--dp-font); }
+.dp-step__t { margin: 0; font: 800 clamp(22px, 6vw, 32px)/1.1 var(--dp-font); color: var(--st-ink); }
 .dp-steps li > span:last-child { grid-column: 2; color: var(--st-soft); font-size: 17px; line-height: 1.6; }
 
 .dp-qs { width: 100%; border-bottom: 1px solid var(--dp-line); }
 .dp-q { border-top: 1px solid var(--dp-line); }
 .dp-q summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 14px 0; cursor: pointer; list-style: none; font: 800 19px/1.35 var(--dp-font); }
 .dp-q summary::-webkit-details-marker { display: none; }
-.dp-q summary::after { content: "+"; flex: none; font: 500 18px/1 var(--dp-mono); color: var(--dp-blue); transition: transform 0.35s ease; }
-.dp-q[open] summary::after { transform: rotate(45deg); }
+.dp-q__sign { flex: none; font: 500 18px/1 var(--dp-mono); color: var(--dp-blue); transition: transform 0.35s ease; }
+.dp-q[open] .dp-q__sign { transform: rotate(45deg); }
 .dp-q p { margin: 0; padding: 0 0 20px; color: var(--st-soft); font-size: 17px; line-height: 1.7; }
 @media (min-width: 1100px) { .dp-q summary { font-size: 22px; } }
 

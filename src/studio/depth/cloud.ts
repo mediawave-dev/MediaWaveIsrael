@@ -125,9 +125,15 @@ export interface Cloud {
   stop: () => void
 }
 
-export async function startCloud(canvas: HTMLCanvasElement, opts: { still: boolean; calm: boolean; photoSrc: string }): Promise<Cloud | null> {
+export async function startCloud(host: HTMLElement, opts: { still: boolean; calm: boolean; photoSrc: string; onLost?: () => void; onRestored?: () => void }): Promise<Cloud | null> {
+  // (review, D215) every start gets its own canvas, removed on stop: a context that was released can never be
+  // handed back to the next start (a tier change re-runs the world's effect on the same element)
+  const canvas = document.createElement('canvas')
+  canvas.className = 'dp-cloud'
+  canvas.setAttribute('aria-hidden', 'true')
+  host.append(canvas)
   const ctx = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: true, alpha: true })
-  if (!ctx) return null
+  if (!ctx || ctx.isContextLost()) { canvas.remove(); return null }
   const gl: WebGLRenderingContext = ctx
   const phone = window.matchMedia('(max-width: 1099px)').matches
   const N = phone ? 5200 : 8400
@@ -136,10 +142,12 @@ export async function startCloud(canvas: HTMLCanvasElement, opts: { still: boole
   shapes.sea = seaBase(N)
   void photo(N, opts.photoSrc).then((p) => { shapes.photo = p }).catch(() => { shapes.photo = shapes.horizon })
 
-  const sh = (t: number, src: string) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s }
-  const pr = gl.createProgram()!
-  gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr)
-  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return null
+  const sh = (t: number, src: string) => { const x = gl.createShader(t); if (!x) return null; gl.shaderSource(x, src); gl.compileShader(x); return x }
+  const pr = gl.createProgram()
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS)
+  if (!pr || !vs || !fs) { canvas.remove(); return null }
+  gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr)
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { canvas.remove(); return null }
   gl.useProgram(pr)
 
   // the live arrays: where each point is now, where it goes, and when it may start
@@ -150,10 +158,13 @@ export async function startCloud(canvas: HTMLCanvasElement, opts: { still: boole
   // the first frame: the points lie flat as a sea and rise into the world (unless still)
   const flat = shapes.sea!
   for (let i = 0; i < N; i++) for (let k = 0; k < 7; k++) { from[i * 7 + k] = (opts.still ? start : flat)[i][k]; goal[i * 7 + k] = start[i][k] }
+  const dur = opts.calm ? 2.2 : 1.5
   let current: ShapeId = 'horizon', mt = opts.still ? 99 : 0, scanAt = 0, last = performance.now(), t = 0
+  /** once a shape has landed its points stop moving (the sea excepted): one last upload, then none */
+  let landed = false
 
   const buf = (name: string, data: Float32Array, n: number) => {
-    const b = gl.createBuffer()!; gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW)
+    const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW)
     const l = gl.getAttribLocation(pr, name); gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l, n, gl.FLOAT, false, 0, 0); return b
   }
   const bPos = buf('aPos', pos, 3), bCol = buf('aCol', colr, 3), bSize = buf('aSize', size, 1)
@@ -161,20 +172,28 @@ export async function startCloud(canvas: HTMLCanvasElement, opts: { still: boole
   const uP = U('uP'), uV = U('uV'), uScan = U('uScan'), uSize = U('uSize')
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 
-  const persp = (fov: number, asp: number, n: number, f: number) => { const k = 1 / Math.tan(fov / 2); return [k / asp, 0, 0, 0, 0, k, 0, 0, 0, 0, (f + n) / (n - f), -1, 0, 0, (2 * f * n) / (n - f), 0] }
-  const view = (ry: number, rx: number, d: number) => { const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx); return [cy, sx * sy, -cx * sy, 0, 0, cx, sx, 0, sy, -sx * cy, cx * cy, 0, 0, 0, -d, 1] }
+  // the projection changes only with the canvas' size; the view matrix is one array, refilled each frame
+  const proj = new Float32Array(16), viewM = new Float32Array(16)
+  const persp = (fov: number, asp: number, n: number, f: number) => { const k = 1 / Math.tan(fov / 2); proj.set([k / asp, 0, 0, 0, 0, k, 0, 0, 0, 0, (f + n) / (n - f), -1, 0, 0, (2 * f * n) / (n - f), 0]) }
+  const view = (ry: number, rx: number, d: number) => { const cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx); viewM.set([cy, sx * sy, -cx * sy, 0, 0, cx, sx, 0, sy, -sx * cy, cx * cy, 0, 0, 0, -d, 1]) }
 
-  let W = 0, H = 0
+  let W = 0, H = 0, lost = false
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const fit = () => { W = canvas.clientWidth; H = canvas.clientHeight; canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); gl.viewport(0, 0, canvas.width, canvas.height) }
-  const ro = new ResizeObserver(fit); ro.observe(canvas); fit()
+  const fit = () => {
+    W = canvas.clientWidth; H = canvas.clientHeight
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr)
+    gl.viewport(0, 0, canvas.width, canvas.height)
+    persp(0.72, W / Math.max(1, H), 0.1, 20); gl.uniformMatrix4fv(uP, false, proj)
+    // a resize clears the drawing buffer: the still tier draws its one frame again
+    if (opts.still && !lost) requestAnimationFrame(frame)
+  }
+  const ro = new ResizeObserver(fit)
 
-  let px = 0, py = 0, tx = 0, ty = 0, screens = 0, scan = 1.2, raf = 0, visible = true
+  let px = 0, py = 0, tx = 0, ty = 0, screens = 0, scan = opts.still ? 2 : 1.2, raf = 0, visible = true, rxNow = 0.28
   const ease = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x))
 
   function step() {
     const target = shapes[current] ?? shapes.horizon!
-    const dur = opts.calm ? 2.2 : 1.5
     const k = mt / dur
     const live = current === 'sea'
     for (let i = 0; i < N; i++) {
@@ -192,42 +211,66 @@ export async function startCloud(canvas: HTMLCanvasElement, opts: { still: boole
   }
 
   function frame(now: number) {
+    if (lost) return
     const dt = Math.min(0.05, (now - last) / 1000); last = now
     if (!opts.still) { t += dt; mt += dt }
     px += (tx - px) * 0.05; py += (ty - py) * 0.05
-    step()
-    gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.bufferSubData(gl.ARRAY_BUFFER, 0, pos)
-    gl.bindBuffer(gl.ARRAY_BUFFER, bCol); gl.bufferSubData(gl.ARRAY_BUFFER, 0, colr)
-    gl.bindBuffer(gl.ARRAY_BUFFER, bSize); gl.bufferSubData(gl.ARRAY_BUFFER, 0, size)
+    const settled = mt >= dur
+    // the points move while a shape lands, and the sea always rolls; after that only the camera and the scan move
+    if (!settled || !landed || current === 'sea') {
+      step()
+      gl.bindBuffer(gl.ARRAY_BUFFER, bPos); gl.bufferSubData(gl.ARRAY_BUFFER, 0, pos)
+      if (!settled || !landed) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, bCol); gl.bufferSubData(gl.ARRAY_BUFFER, 0, colr)
+        gl.bindBuffer(gl.ARRAY_BUFFER, bSize); gl.bufferSubData(gl.ARRAY_BUFFER, 0, size)
+      }
+      if (settled) landed = true
+    }
+    // the scan sweeps down as a shape lands, then idles up and down from where it ended (no jump)
     const since = t - scanAt
-    scan = opts.still ? 2 : since < 1.6 ? 1.3 - (since / 1.6) * 2.8 : Math.sin((since - 1.6) * 0.5) * 1.2
+    scan = opts.still ? 2 : since < 1.6 ? 1.3 - (since / 1.6) * 2.8 : -1.5 + (1 - Math.cos((since - 1.6) * 0.5)) * 1.35
     const ry = -0.32 + (opts.still ? 0 : 0.34 * Math.sin(t * (opts.calm ? 0.15 : 0.3))) + px * 0.8 + screens * 0.04
-    const rx = (current === 'sea' ? 0.55 : 0.28) + py * 0.4
-    gl.uniformMatrix4fv(uP, false, persp(0.72, W / Math.max(1, H), 0.1, 20))
-    gl.uniformMatrix4fv(uV, false, view(ry, rx, phone ? 3.9 : 4.0))
+    // the camera tilts toward the sea and back over a second, never in one frame
+    const rxGoal = current === 'sea' ? 0.55 : 0.28
+    rxNow = opts.still ? rxGoal : rxNow + (rxGoal - rxNow) * Math.min(1, dt * 3)
+    view(ry, rxNow + py * 0.4, phone ? 3.9 : 4.0)
+    gl.uniformMatrix4fv(uV, false, viewM)
     gl.uniform1f(uScan, scan); gl.uniform1f(uSize, (phone ? 11 : 13) * dpr)
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
     gl.drawArrays(gl.POINTS, 0, N)
     if (!opts.still && visible) raf = requestAnimationFrame(frame)
   }
-  const vis = () => { visible = document.visibilityState === 'visible'; if (visible && !opts.still) { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame) } }
+  const vis = () => { visible = document.visibilityState === 'visible'; if (visible && !opts.still && !lost) { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame) } }
+  // a lost context (a GPU reset, too many contexts): the loop stops and the canvas steps aside; the words stay
+  // (recheck) the page is told, so it hides the scanner window and the readout; a restored context starts a new cloud
+  const onLost = (e: Event) => { e.preventDefault(); lost = true; cancelAnimationFrame(raf); canvas.style.visibility = 'hidden'; opts.onLost?.() }
+  const onRestored = () => { opts.onRestored?.() }
+  canvas.addEventListener('webglcontextlost', onLost)
+  canvas.addEventListener('webglcontextrestored', onRestored)
   document.addEventListener('visibilitychange', vis)
+  ro.observe(canvas)
+  fit()
   raf = requestAnimationFrame(frame)
   canvas.dataset.ready = ''
 
   return {
     to(id) {
-      if (id === current) return
+      if (id === current || lost) return
       // the morph starts from wherever the points are now
       for (let i = 0; i < N; i++) { for (let c = 0; c < 3; c++) { from[i * 7 + c] = pos[i * 3 + c]; from[i * 7 + 3 + c] = colr[i * 3 + c] } from[i * 7 + 6] = size[i] }
       const target = shapes[id] ?? shapes.horizon!
       for (let i = 0; i < N; i++) for (let k = 0; k < 7; k++) goal[i * 7 + k] = target[i][k]
-      current = id; mt = opts.still ? 99 : 0; scanAt = t
+      current = id; mt = opts.still ? 99 : 0; scanAt = t; landed = false
       if (opts.still) requestAnimationFrame(frame)
     },
     steer(x, y) { tx = x; ty = y },
     scroll(s) { screens = s },
     readout: () => ({ points: N, scan, shape: current }),
-    stop() { cancelAnimationFrame(raf); ro.disconnect(); document.removeEventListener('visibilitychange', vis); gl.getExtension('WEBGL_lose_context')?.loseContext() },
+    stop() {
+      cancelAnimationFrame(raf); ro.disconnect(); lost = true
+      document.removeEventListener('visibilitychange', vis); canvas.removeEventListener('webglcontextlost', onLost); canvas.removeEventListener('webglcontextrestored', onRestored)
+      gl.getExtension('WEBGL_lose_context')?.loseContext()
+      canvas.remove()
+    },
   }
 }

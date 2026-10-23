@@ -404,7 +404,7 @@ html[data-look="shot"] .sea-contact #contact .qs__q[data-err] .qs__field { --ul:
 @keyframes qs-shake { 0%, 100% { transform: none; } 25% { transform: translateX(6px); } 50% { transform: translateX(-5px); } 75% { transform: translateX(3px); } }
 html:not(.disable-animations):not(.motion-reduced) .qs__q[data-err] .qs__field { animation: qs-shake 0.32s ease; }
 .qs__next { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 26px 0 0; }
-.qs__hint { font: 600 11px/1 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; }
+.qs__hint { font: 600 12px/1 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; }
 @media (hover: none), (pointer: coarse) { .qs__hint { visibility: hidden; } }
 .qs__done { list-style: none; margin: 34px 0 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
 .qs__done li { border-top: 1px solid var(--sea-rule); }

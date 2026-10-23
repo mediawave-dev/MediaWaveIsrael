@@ -19,6 +19,8 @@ export interface StyleMeta {
   ground: string
   ink: string
   face: string
+  /** the guide's colour when the ink would vanish in its little white world (a light ink on a dark ground) */
+  guide?: string
 }
 
 export const STYLE_META: StyleMeta[] = [
@@ -27,5 +29,5 @@ export const STYLE_META: StyleMeta[] = [
   { id: 'blueprint', name: 'שרטוט', feel: 'מדויק כמו תוכנית עבודה', credit: 'Heron AI', creditUrl: 'https://heronaiapp.com/', swatch: ['#f5f5ee', '#fa3600'], theme: '#f5f5ee', ground: '#f5f5ee', ink: '#fa3600', face: '700 1em "IBM Plex Sans Hebrew", sans-serif' },
   { id: 'clay', name: 'בוקר', feel: 'חדר רך, אור ראשון וקלטת ישנה', credit: 'Léo Parpeix', creditUrl: 'https://www.leoparpeix.com/', swatch: ['#efe4d4', '#083d2a'], theme: '#efe4d4', ground: '#efe6d8', ink: '#083d2a', face: '700 1em Karantina, sans-serif' },
   // D215: the fifth world, a cloud of points that is scanned as you read (Nati picked it from the SOTD proposals)
-  { id: 'depth', name: 'עומק', feel: 'ענן נקודות שנסרק מול העיניים', credit: 'Lidar Drone Scanning', creditUrl: 'https://drone.riotters.com/', swatch: ['#06080e', '#79a0c5'], theme: '#06080e', ground: '#06080e', ink: '#dce8ff', face: '800 1em Assistant, sans-serif' },
+  { id: 'depth', name: 'עומק', feel: 'ענן נקודות שנסרק מול העיניים', credit: 'Lidar Drone Scanning', creditUrl: 'https://drone.riotters.com/', swatch: ['#2a3550', '#79a0c5'], theme: '#06080e', ground: '#06080e', ink: '#dce8ff', face: '800 1em Assistant, sans-serif', guide: '#79a0c5' },
 ]

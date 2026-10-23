@@ -56,6 +56,9 @@ html.sg-on :is(.gd, .gd-trail, .snd) { visibility: hidden; }
   opacity: 0; pointer-events: none; cursor: pointer; touch-action: manipulation; will-change: transform; --p: 48px;
 }
 @media (min-width: 760px) { .sg__w { --p: 58px; } }
+/* (D215) five worlds share the orbit: smaller keys, so neighbours never cover a name */
+.sg[data-five] .sg__w { --p: 42px; }
+@media (min-width: 760px) { .sg[data-five] .sg__w { --p: 50px; } }
 .sg__sw {
   position: relative; width: var(--p); height: var(--p); overflow: hidden; border-radius: 50%; background: var(--g);
   box-shadow: 0 0 0 2px #0f1011, 0 0 26px color-mix(in srgb, var(--g) 40%, transparent);

@@ -241,6 +241,15 @@ html.sea-held .sea-deck { display: flex; }
     grid-row: 1; grid-column: 3 / -2; align-self: end; justify-self: start; position: relative; z-index: 1;
     min-height: 32px; margin: 0 -6px clamp(4px, 0.8svh, 10px); font-size: 14px; white-space: nowrap;
   }
+  /* (D215) a 44px target where the screen has the room; below 700px of height the index keeps its fit (22.10) */
+  @media (min-height: 700px) {
+    html.sea-held .sea-svc__item--sample .sea-svc__row { padding-block-end: calc(clamp(6px, 1.4svh, 18px) + 46px); }
+    html.sea-held .sea-svc__sample { min-height: 44px; }
+  }
+  /* (D215) the shortest screens (600px of height): a strip 4px narrower keeps the sixth row on the stage */
+  @media (max-height: 620px) {
+    html.sea-held .sea-svc__item--sample .sea-svc__row { padding-block-end: calc(clamp(6px, 1.4svh, 18px) + 26px); }
+  }
 }
 
 /* ── 03 process, 04 questions, 05 the letter ── */
@@ -576,7 +585,7 @@ html.sea-gnd-deep #services .sea-svc__also { color: #ede7da; }
   .sea-style:hover .sea-style__pic video, .sea-style:hover .sea-style__pic img { transform: scale(1.035); }
 }
 @media (min-width: 900px) {
-  .sea-styles__row { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; margin-inline: 0; padding: 0; gap: 18px; }
+  .sea-styles__row { grid-auto-flow: row; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-columns: auto; overflow: visible; margin-inline: 0; padding: 0; gap: 18px; }
 }
 
 /* (D200 audit) the hero's lead lines sit on the reel: a lighter grey keeps them AA over its brighter frames */

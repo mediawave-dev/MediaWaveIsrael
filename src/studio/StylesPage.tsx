@@ -43,7 +43,9 @@ const prepare = (m: StyleModule) => Promise.race([(m.prepare?.() ?? Promise.reso
 
 /** The chapter under the reading line, so a switch lands on the same content in the new style. */
 function chapterNow(): string {
-  const line = window.innerHeight * 0.42
+  // (D215) below a world's scroll padding (depth's scanner window on phones) the reading line moves down with it
+  const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+  const line = Math.max(window.innerHeight * 0.42, pad + (window.innerHeight - pad) * 0.25)
   for (const id of CHAPTERS) {
     const el = document.querySelector<HTMLElement>(`[data-ch="${id}"]`)
     const r = el?.getBoundingClientRect()
@@ -125,8 +127,10 @@ export default function StylesPage() {
       else window.scrollTo(0, 0)
       return
     }
-    if (engine?.lenis) engine.lenis.scrollTo(el, { immediate: true, force: true })
-    else el.scrollIntoView({ block: 'start' })
+    // a world may name the element to land on inside a chapter (depth: its heading, so the words show below the veil)
+    const at = el.querySelector<HTMLElement>('[data-land]') ?? el
+    if (engine?.lenis) engine.lenis.scrollTo(at, { immediate: true, force: true })
+    else at.scrollIntoView({ block: 'start' })
   }
 
   const swapTo = (next: StyleDef, Mod: ComponentType<StyleProps>, ch: string) => {
@@ -233,7 +237,7 @@ export default function StylesPage() {
           <span className="st-title__by">{title.def.feel}</span>
         </div>
       )}
-      <Guide color={def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} plan={plan.current} />
+      <Guide color={def.guide ?? def.ink} tier={tier} open={map || busy} onOpen={() => setMap(true)} plan={plan.current} />
       {map && <WorldMap current={def} onClose={() => setMap(false)} onPick={(s, at) => { setMap(false); void choose(s, at) }} onHome={(e) => void goHome(e)} />}
       {tier !== 'still' && def.id !== 'clay' && <SoundInvite track={TRACK[def.id] ?? 'Music'} source={STUDIO_SOUND} cue={def.id} />}
 
