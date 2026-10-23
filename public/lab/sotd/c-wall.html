@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>C · The wall of screens</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+  /* C · the wall of screens (after Jesper Landberg, SOTD 29.9.2026, Developer 8.17: the work as a curved
+     wall of live screens in a dark room, and the screen you choose becomes the page). Ours is the editing
+     suite's wall of monitors, phone-shaped because every world is built for the phone first: the four
+     worlds and the memories film play live, the scroll or a drag turns the wall, the screen in front is on
+     air, and a tap on it fills the room and opens that world. The floor is the sea of dots. */
+  .intro { padding: 112px var(--gut) 24px; display: grid; gap: 14px; justify-items: start; }
+  @media (min-width: 1100px) { .intro { padding-top: 140px; } .intro > * { max-width: 58%; } }
+  .run { position: relative; height: 420svh; }
+  .stage { position: sticky; top: 0; height: 100svh; overflow: hidden; perspective: 1400px; perspective-origin: 50% 42%; touch-action: pan-y; cursor: grab; }
+  .stage:active { cursor: grabbing; }
+  .floor { position: absolute; left: -50%; right: -50%; bottom: -12%; height: 70%; transform: rotateX(78deg); transform-origin: 50% 100%;
+           background-image: radial-gradient(circle, rgba(237,231,218,0.22) 1.1px, transparent 1.6px); background-size: 22px 22px;
+           -webkit-mask-image: linear-gradient(transparent, #000 60%); mask-image: linear-gradient(transparent, #000 60%); pointer-events: none; }
+  .ring { position: absolute; left: 50%; top: 46%; transform-style: preserve-3d; }
+  .scr { position: absolute; width: var(--sw); aspect-ratio: 9 / 16; margin: calc(var(--sw) * -0.889) 0 0 calc(var(--sw) * -0.5);
+         border-radius: 14px; overflow: hidden; background: #000; transform-style: preserve-3d; backface-visibility: hidden;
+         box-shadow: 0 0 0 1px rgba(237,231,218,0.16), 0 30px 60px rgba(0,0,0,0.6); transition: filter 0.5s ease, box-shadow 0.5s ease; filter: brightness(0.42) saturate(0.6); }
+  .scr video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .scr.on { filter: none; box-shadow: 0 0 0 1px var(--cream), 0 30px 80px rgba(0,0,0,0.7); }
+  .scr .lbl { position: absolute; inset-inline: 10px; bottom: 10px; display: flex; justify-content: space-between; align-items: end; gap: 8px; }
+  .scr .nm { font: 800 22px/1 var(--face); font-stretch: 75%; color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,0.7); }
+  .scr .ft { font: 600 10px/1.2 var(--mono); letter-spacing: 0.06em; color: rgba(255,255,255,0.8); direction: ltr; text-shadow: 0 0 8px #000; }
+  .scr .rec { position: absolute; top: 10px; inset-inline-end: 10px; font: 600 10px/1 var(--mono); color: #fff; letter-spacing: 0.08em; opacity: 0; direction: ltr; }
+  .scr .rec::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); margin-inline-end: 6px; vertical-align: 1px; }
+  .scr.on .rec { opacity: 1; }
+  :root { --sw: min(46vw, 230px); }
+  @media (min-width: 1100px) { :root { --sw: min(20vw, 310px); } }
+  .hud { position: absolute; inset-inline: var(--gut); bottom: 18px; display: flex; justify-content: space-between; align-items: end; gap: 16px; }
+  .hud .now { display: grid; gap: 6px; }
+  .hud .now b { font: 800 clamp(30px, 8vw, 64px)/0.95 var(--face); font-stretch: 75%; }
+  .hud .now span { color: var(--mute); }
+  .hud .go { min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; font: 700 15px/1 var(--face); color: var(--cream); white-space: nowrap; }
+  .hud .go::after { content: "( + )"; margin-inline-start: 10px; font: 600 12px var(--mono); color: var(--mute); direction: ltr; }
+  /* the take-over: the screen in front fills the room */
+  .take { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; pointer-events: none; }
+  .take video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .take b { position: relative; font: 800 clamp(56px, 16vw, 200px)/0.9 var(--face); font-stretch: 75%; color: #fff; text-shadow: 0 2px 40px rgba(0,0,0,0.5); opacity: 0; transform: translateY(30px); transition: opacity 0.6s var(--ease) 0.35s, transform 0.9s var(--ease) 0.35s; }
+  .take.in b { opacity: 1; transform: none; }
+  .after { padding: 64px var(--gut) 96px; color: var(--mute); }
+</style>
+</head>
+<body>
+<div class="lab-bar"><a href="./">ALL 4</a><span class="lab-note">C · WALL OF SCREENS</span></div>
+<header class="intro">
+  <span class="tag">STYLE STUDIO</span>
+  <h1 class="h h2">אותו אתר,<br>ארבעה סגנונות.</h1>
+  <p class="sub">בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם.</p>
+</header>
+<section class="run" aria-label="Worlds">
+  <div class="stage" id="stage">
+    <div class="floor" aria-hidden="true"></div>
+    <div class="ring" id="ring"></div>
+    <div class="hud"><div class="now"><b id="nowName">מעוף</b><span id="nowFeel">סיפור שנפתח בגלילה</span></div><a class="go" id="go" href="/styles/?s=flight">כניסה לעולם</a></div>
+  </div>
+</section>
+<p class="after">( ממשיכים לשאר הדף )</p>
+
+<script>
+(() => {
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches && !/motion=full/.test(location.search)
+  const W = [
+    { id: 'flight', name: 'מעוף', feel: 'סיפור שנפתח בגלילה', src: '/media/styles/flight.mp4', href: '/styles/?s=flight' },
+    { id: 'buzz', name: 'זמזום', feel: 'קליל, שיקי ומלא חיים', src: '/media/styles/buzz.mp4', href: '/styles/?s=buzz' },
+    { id: 'blueprint', name: 'שרטוט', feel: 'מדויק כמו תוכנית עבודה', src: '/media/styles/blueprint.mp4', href: '/styles/?s=blueprint' },
+    { id: 'clay', name: 'בוקר', feel: 'חדר רך, אור ראשון וקלטת ישנה', src: '/media/styles/clay.mp4', href: '/styles/?s=clay' },
+    { id: 'memory', name: 'זיכרונות', feel: 'סרט ליום הולדת 60, מהאלבום', src: '/media/work-life-1-m.mp4', href: '/portfolio/memory-videos/' },
+  ]
+  const ring = document.getElementById('ring'), stage = document.getElementById('stage')
+  const COUNT = 10, STEP = 360 / COUNT
+  const sw = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sw')) || ring.firstChild?.offsetWidth || 220
+  const screens = Array.from({ length: COUNT }, (_, i) => {
+    const w = W[i % W.length]
+    const el = document.createElement('a'); el.className = 'scr'; el.href = w.href; el.setAttribute('aria-label', w.name)
+    el.innerHTML = `<video muted loop playsinline preload="metadata" src="${w.src}"></video><span class="rec">ON AIR</span><span class="lbl"><span class="nm">${w.name}</span><span class="ft">${String((i % W.length) + 1).padStart(2, '0')} / ${String(W.length).padStart(2, '0')}</span></span>`
+    ring.append(el)
+    return { el, w, v: el.querySelector('video') }
+  })
+  let R = 0
+  // a concave arc, like a curved wall of monitors: the screen in front sits at depth 0, the ones beside it
+  // swing toward the viewer and turn their faces to the middle of the room
+  function place() { const s = screens[0].el.offsetWidth; R = (s * 1.12) / (2 * Math.sin(Math.PI / COUNT)) }
+  addEventListener('resize', place); place()
+
+  // the angle: the page's scroll through the run, plus what the hand adds; eased, with inertia
+  const run = stage.parentElement
+  let drag = 0, vel = 0, angle = 0, down = null, on = -1
+  stage.addEventListener('pointerdown', (e) => { down = { x: e.clientX, d: drag, t: performance.now(), moved: false } })
+  addEventListener('pointermove', (e) => { if (!down) return; const dx = e.clientX - down.x; if (Math.abs(dx) > 6) down.moved = true; drag = down.d + dx * 0.25 })
+  addEventListener('pointerup', (e) => { if (!down) return; const dt = Math.max(16, performance.now() - down.t); vel = ((e.clientX - down.x) * 0.25) / dt * 16; const wasDrag = down.moved; down = null; if (wasDrag) e.preventDefault() })
+  stage.addEventListener('click', (e) => { const a = e.target.closest('.scr'); if (!a) return; e.preventDefault()
+    if (a !== screens[on]?.el) { const i = screens.findIndex((c) => c.el === a); drag += ((on - i) * STEP); return }
+    takeOver(screens[on]) })
+  function target() { const r = run.getBoundingClientRect(); const p = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight))); return -p * 360 * 0.9 + drag }
+  function frame() {
+    if (!down && !calm) { drag += vel; vel *= 0.94 }
+    const t = target()
+    angle += (t - angle) * (calm ? 1 : 0.09)
+    // only the arc in front is drawn: a screen past 80 degrees would sit between us and the wall
+    screens.forEach((c, i) => {
+      const a = ((((i * STEP + angle) % 360) + 540) % 360) - 180, rad = a * Math.PI / 180, vis = Math.abs(a) < 80
+      c.el.style.visibility = vis ? 'visible' : 'hidden'
+      if (!vis) return
+      c.el.style.opacity = String(Math.max(0, 1 - Math.max(0, Math.abs(a) - 50) / 30))
+      c.el.style.transform = `translate3d(${R * Math.sin(rad)}px, 0, ${R * (1 - Math.cos(rad))}px) rotateY(${-a}deg)`
+    })
+    const idx = ((Math.round(-angle / STEP) % COUNT) + COUNT) % COUNT
+    if (idx !== on) {
+      if (screens[on]) { screens[on].el.classList.remove('on'); screens[on].v.pause() }
+      on = idx; const c = screens[on]
+      c.el.classList.add('on'); if (!calm) c.v.play().catch(() => {})
+      document.getElementById('nowName').textContent = c.w.name
+      document.getElementById('nowFeel').textContent = c.w.feel
+      document.getElementById('go').href = c.w.href
+    }
+    requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
+  // the neighbours show their first frame; only the screen on air plays
+  screens.forEach((c) => c.v.addEventListener('loadeddata', () => { c.v.currentTime = 0.4 }, { once: true }))
+
+  // the take-over: the screen grows from where it stands to the whole room, the world's name rises, then the world opens
+  function takeOver(c) {
+    const r = c.el.getBoundingClientRect()
+    const t = document.createElement('div'); t.className = 'take'
+    t.innerHTML = `<video muted loop playsinline autoplay src="${c.w.src}"></video><b>${c.w.name}</b>`
+    const v = t.querySelector('video')
+    v.style.clipPath = `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px round 14px)`
+    document.body.append(t)
+    v.currentTime = c.v.currentTime
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      v.style.transition = calm ? 'none' : 'clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1)'
+      v.style.clipPath = 'inset(0px 0px 0px 0px round 0px)'
+      t.classList.add('in')
+    }))
+    setTimeout(() => { location.href = c.w.href }, calm ? 200 : 1700)
+  }
+})()
+</script>
+</body>
+</html>

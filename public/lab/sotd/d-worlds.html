@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>D · A moment in every world</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+  /* D · every world gets its own signature moment, the one thing a visitor tells a friend about (the SOTD
+     rule: one moment done fully beats many effects). Each card is the moment, live, in its world's colours. */
+  .intro { padding: 112px var(--gut) 32px; display: grid; gap: 14px; justify-items: start; }
+  @media (min-width: 1100px) { .intro > * { max-width: 58%; } }
+  .w { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; overflow: hidden; }
+  /* the moment owns the top of the screen on a phone and the left half on a wide one; the words keep their own place */
+  .w canvas, .w svg.art, .w .room { position: absolute; top: 0; left: 0; width: 100%; height: 60%; display: block; }
+  @media (min-width: 1100px) { .w canvas, .w svg.art, .w .room { width: 54%; height: 100%; } .w .cap { max-width: 44%; } }
+  .w .cap { grid-row: 2; position: relative; z-index: 1; display: grid; gap: 10px; justify-items: start; padding: 0 var(--gut) 40px; }
+  .w .cap .tag { color: currentColor; opacity: 0.7; }
+  .w .cap h2 { margin: 0; font: 800 clamp(44px, 12vw, 120px)/0.92 var(--face); font-stretch: 75%; }
+  .w .cap p { margin: 0; max-width: 38ch; font-size: 17px; line-height: 1.6; }
+  .w .cap small { font: 600 11px/1.4 var(--mono); letter-spacing: 0.06em; direction: ltr; opacity: 0.75; }
+  @media (min-width: 1100px) { .w .cap { padding-bottom: 64px; } .w .cap p { font-size: 19px; } }
+  .buzz { background: #d7d72e; color: #231e1e; }
+  .flight { background: linear-gradient(#e7e0fb, #d4cbf6); color: #2e2670; }
+  .blue { background: #f5f5ee; color: #1f1f1f; }
+  .blue .cap h2 { color: #fa3600; }
+  .clay { color: #083d2a; background: #efe6d8; transition: background 1.2s ease; }
+  .clay .sun { position: absolute; inset: 0; mix-blend-mode: soft-light; pointer-events: none; transition: background 1.2s ease; }
+  .clay .now { font: 600 12px/1 var(--mono); letter-spacing: 0.08em; direction: ltr; }
+</style>
+</head>
+<body>
+<div class="lab-bar"><a href="./">ALL 4</a><span class="lab-note">D · A MOMENT IN EVERY WORLD</span></div>
+<header class="intro">
+  <span class="tag">THE WORLDS</span>
+  <h1 class="h h2">ארבעה עולמות,<br>ארבעה רגעים.</h1>
+  <p class="sub">בכל עולם רגע אחד שעושים עד הסוף, והוא מהעולם של אותו סגנון. גוללים כדי לראות כל אחד חי.</p>
+</header>
+
+<section class="w buzz" id="buzz">
+  <canvas id="swarm" aria-hidden="true"></canvas>
+  <div class="cap"><span class="tag">ZIMZUM · SWARM</span><h2>הנחיל כותב</h2>
+    <p>הבועות עם הכנפיים, הפניות שאתר מביא, מתאספות לאותיות של הכותרת, נפרדות מהעכבר או מהאצבע, וחוזרות להתיישב.</p>
+    <small>after Buzz · particles that become the headline</small></div>
+</section>
+
+<section class="w flight" id="flight">
+  <canvas id="wing" aria-hidden="true"></canvas>
+  <div class="cap"><span class="tag">MAOF · WINGS</span><h2>הגלילה היא הרוח</h2>
+    <p>הכנפיים פורשות ונוצצות לפי מהירות הגלילה: גלילה איטית היא דאייה, גלילה מהירה היא משק כנפיים, ועצירה מקפלת אותן.</p>
+    <small>after Mr. Pandas (SOTD 11.3.2026) · scroll as the throttle</small></div>
+</section>
+
+<section class="w blue" id="blue">
+  <svg class="art" id="plot" viewBox="0 0 400 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+  <div class="cap"><span class="tag">SHIRTUT · PLOTTER</span><h2>העט משרטט</h2>
+    <p>עט אחד משרטט את הטלפון קו אחרי קו לפי הגלילה, ואז קווי המידה מודדים אותו: 390 על 844, הגודל שבו בודקים כל דף.</p>
+    <small>after Heron AI (SOTD 12.10.2026) · the drawing is scrubbed, 1:1</small></div>
+</section>
+
+<section class="w clay" id="clay">
+  <div class="room" id="room" aria-hidden="true"></div>
+  <div class="sun" id="sun" aria-hidden="true"></div>
+  <div class="cap"><span class="now" id="now">-- : -- IL</span><h2>האור של עכשיו</h2>
+    <p>החדר מואר לפי השעה האמיתית בישראל: בוקר נמוך ומזרחי, צהריים לבנים, שקיעה כתומה ולילה עם מנורה. עיני הקלטת עוקבות אחרי העכבר.</p>
+    <small>after Léo Parpeix · a true live detail, never an invented one</small></div>
+</section>
+
+<script>
+(() => {
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches && !/motion=full/.test(location.search)
+  const phone = innerWidth < 768
+  const dpr = Math.min(devicePixelRatio || 1, 2)
+  const inView = new Set()
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting ? inView.add(e.target.id) : inView.delete(e.target.id)), { threshold: 0.15 })
+  document.querySelectorAll('.w').forEach((w) => io.observe(w))
+  let ptr = { x: -999, y: -999 }
+  addEventListener('pointermove', (e) => { ptr = { x: e.clientX, y: e.clientY } }, { passive: true })
+  addEventListener('pointerdown', (e) => { ptr = { x: e.clientX, y: e.clientY } }, { passive: true })
+  let lastY = scrollY, vel = 0
+  addEventListener('scroll', () => { vel = vel * 0.6 + Math.abs(scrollY - lastY) * 0.4; lastY = scrollY }, { passive: true })
+  const fit = (cv) => { const r = cv.getBoundingClientRect(); cv.width = r.width * dpr; cv.height = r.height * dpr; return r }
+
+  // ── זמזום: the swarm writes the word ──
+  const sw = document.getElementById('swarm'), sctx = sw.getContext('2d')
+  let bees = [], swR
+  function words() {
+    swR = fit(sw)
+    const W = sw.width, H = sw.height, off = document.createElement('canvas'); off.width = W; off.height = H
+    const o = off.getContext('2d'), fs = Math.min(W * 0.3, H * 0.42)
+    o.fillStyle = '#000'; o.textAlign = 'center'; o.direction = 'rtl'
+    o.font = `800 ${fs}px "MW Noto", Arial`
+    o.fillText('זמזום', W / 2, H * 0.62)
+    const step = Math.round((phone ? 5 : 6.5) * dpr), data = o.getImageData(0, 0, W, H).data, pts = []
+    for (let y = 0; y < H; y += step) for (let x = 0; x < W; x += step) if (data[(y * W + x) * 4 + 3] > 128) pts.push([x, y])
+    bees = pts.map(([x, y], i) => ({ tx: x, ty: y, x: Math.random() * W, y: H + Math.random() * H * 0.5, vx: 0, vy: 0, ph: i * 1.7 }))
+  }
+  function bee(x, y, s, flap) {
+    sctx.fillStyle = 'rgba(255,255,255,0.6)'
+    sctx.beginPath(); sctx.ellipse(x - s * 0.6, y - s * 0.9, s * 0.7, s * 0.35 * (0.4 + flap), -0.5, 0, 6.28); sctx.ellipse(x + s * 0.6, y - s * 0.9, s * 0.7, s * 0.35 * (0.4 + flap), 0.5, 0, 6.28); sctx.fill()
+    sctx.fillStyle = '#231e1e'
+    sctx.beginPath(); sctx.roundRect(x - s, y - s * 0.7, s * 2, s * 1.4, s * 0.6); sctx.moveTo(x + s * 0.3, y + s * 0.6); sctx.lineTo(x + s * 0.8, y + s * 1.2); sctx.lineTo(x - s * 0.1, y + s * 0.6); sctx.fill()
+  }
+  function swarm(t) {
+    const W = sw.width, H = sw.height, px = (ptr.x - swR.left) * dpr, py = (ptr.y - sw.getBoundingClientRect().top) * dpr
+    sctx.clearRect(0, 0, W, H)
+    const s = (phone ? 1.6 : 2.1) * dpr
+    for (const b of bees) {
+      let ax = (b.tx - b.x) * 0.012, ay = (b.ty - b.y) * 0.012
+      const dx = b.x - px, dy = b.y - py, d2 = dx * dx + dy * dy, R = 90 * dpr
+      if (d2 < R * R) { const f = (1 - Math.sqrt(d2) / R) * 3.2; ax += dx / Math.sqrt(d2 + 1) * f; ay += dy / Math.sqrt(d2 + 1) * f }
+      ax += Math.sin(t * 0.004 + b.ph) * 0.04; ay += Math.cos(t * 0.005 + b.ph) * 0.04
+      b.vx = (b.vx + ax) * 0.86; b.vy = (b.vy + ay) * 0.86; b.x += b.vx; b.y += b.vy
+      bee(b.x, b.y, s, Math.abs(Math.sin(t * 0.05 + b.ph)))
+    }
+  }
+
+  // ── מעוף: the wings open with the scroll speed ──
+  const wg = document.getElementById('wing'), wctx = wg.getContext('2d')
+  let spread = 0.2, flapPh = 0
+  function wing(t) {
+    fit(wg)
+    const W = wg.width, H = wg.height, cx = W / 2, cy = H * 0.5, L = Math.min(W * 0.48, H * 0.62)
+    spread += ((0.15 + Math.min(1, vel / 40) * 0.85) - spread) * 0.06
+    flapPh += 0.02 + Math.min(1, vel / 40) * 0.2
+    const flap = Math.sin(flapPh) * 0.25 * spread
+    wctx.clearRect(0, 0, W, H)
+    const cols = ['#ff7ad9', '#c58bff', '#8aa8ff', '#66e0ff', '#ffd27a']
+    for (const side of [-1, 1]) for (let k = 0; k < 26; k++) {
+      const f = k / 25, a = -0.15 - f * (0.35 + spread * 1.1) + flap
+      const len = L * (0.55 + 0.45 * Math.sin(f * 3.1)) * (0.7 + spread * 0.3)
+      const ex = cx + side * Math.cos(a) * len, ey = cy + Math.sin(a) * len * 0.75
+      const g = wctx.createLinearGradient(cx, cy, ex, ey); g.addColorStop(0, 'rgba(255,255,255,0.0)'); g.addColorStop(1, cols[k % cols.length])
+      wctx.strokeStyle = g; wctx.lineWidth = (3 + f * 5) * dpr; wctx.lineCap = 'round'
+      wctx.beginPath(); wctx.moveTo(cx, cy); wctx.quadraticCurveTo(cx + side * len * 0.45, cy - len * 0.25 * (1 - f), ex, ey); wctx.stroke()
+    }
+    wctx.fillStyle = '#ffffff'; wctx.beginPath(); wctx.ellipse(cx, cy + 6 * dpr, 7 * dpr, 16 * dpr, 0, 0, 6.28); wctx.fill()
+    vel *= 0.94
+  }
+
+  // ── שרטוט: the plotter draws the phone with the scroll, then measures it ──
+  const plot = document.getElementById('plot'), NS = 'http://www.w3.org/2000/svg'
+  const P = [
+    'M120 120 h160 a24 24 0 0 1 24 24 v412 a24 24 0 0 1 -24 24 h-160 a24 24 0 0 1 -24 -24 v-412 a24 24 0 0 1 24 -24 z',
+    'M108 156 h184 v388 h-184 z', 'M176 136 h48', 'M130 196 h140', 'M130 214 h100', 'M130 244 h140 v120 h-140 z', 'M130 384 h140', 'M130 400 h120',
+    'M150 470 h100 a18 18 0 0 1 0 36 h-100 a18 18 0 0 1 0 -36 z',
+    'M96 610 v20 M304 610 v20 M96 620 h208', 'M330 120 h20 M330 580 h20 M340 120 v460',
+  ]
+  const paths = P.map((d, i) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('fill', 'none')
+    p.setAttribute('stroke', i >= 9 ? '#fa3600' : '#222'); p.setAttribute('stroke-width', i >= 9 ? '1.2' : '1.4'); p.setAttribute('stroke-linecap', 'round'); plot.append(p); const L = p.getTotalLength(); p.style.strokeDasharray = `${L}`; p.style.strokeDashoffset = `${L}`; return { p, L } })
+  const lab = (x, y, t, rot) => { const e = document.createElementNS(NS, 'text'); e.setAttribute('x', x); e.setAttribute('y', y); e.setAttribute('fill', '#fa3600'); e.setAttribute('font-size', '13'); e.setAttribute('font-family', 'ui-monospace, Consolas, monospace'); e.setAttribute('text-anchor', 'middle'); if (rot) e.setAttribute('transform', `rotate(-90 ${x} ${y})`); e.textContent = t; e.style.opacity = 0; plot.append(e); return e }
+  const l1 = lab(200, 650, '390', false), l2 = lab(368, 355, '844', true)
+  const tip = document.createElementNS(NS, 'circle'); tip.setAttribute('r', '4'); tip.setAttribute('fill', '#fa3600'); plot.append(tip)
+  function plotter() {
+    const r = document.getElementById('blue').getBoundingClientRect()
+    const p = calm ? 1 : Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height * 0.4)))
+    const total = paths.length, at = p * total
+    paths.forEach((o, i) => { const f = Math.min(1, Math.max(0, at - i)); o.p.style.strokeDashoffset = `${o.L * (1 - f)}`
+      if (f > 0 && f < 1) { const q = o.p.getPointAtLength(o.L * f); tip.setAttribute('cx', q.x); tip.setAttribute('cy', q.y) } })
+    l1.style.opacity = at > 10 ? 1 : 0; l2.style.opacity = at > 10.9 ? 1 : 0
+    tip.style.opacity = at >= total ? 0 : 1
+  }
+
+  // ── בוקר: the room lit by the real hour in Israel, the cassette's eyes on the pointer ──
+  const room = document.getElementById('room'), sun = document.getElementById('sun'), nowEl = document.getElementById('now')
+  room.innerHTML = `<svg viewBox="0 0 400 700" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%">
+    <rect x="230" y="70" width="120" height="190" rx="60" fill="#fff6e6" opacity="0.7"/>
+    <g transform="translate(200 360)"><rect x="-120" y="-70" width="240" height="140" rx="22" fill="#e3c98f"/><rect x="-96" y="-48" width="192" height="64" rx="12" fill="#f4ead8"/>
+    <circle cx="-48" cy="-16" r="26" fill="#fff"/><circle cx="48" cy="-16" r="26" fill="#fff"/><circle id="e1" cx="-48" cy="-16" r="10" fill="#083d2a"/><circle id="e2" cx="48" cy="-16" r="10" fill="#083d2a"/>
+    <rect x="-60" y="34" width="120" height="22" rx="8" fill="#cdb27a"/></g></svg>`
+  const e1 = room.querySelector('#e1'), e2 = room.querySelector('#e2')
+  const FMT = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jerusalem' })
+  function light() {
+    const [hh, mm] = FMT.format(new Date()).split(':').map(Number), h = hh + mm / 60
+    const phase = h < 5 || h >= 19.5 ? 'NIGHT' : h < 10.5 ? 'MORNING' : h < 16 ? 'NOON' : 'SUNSET'
+    nowEl.textContent = `${String(hh).padStart(2, '0')} : ${String(mm).padStart(2, '0')} IL · ${phase}`
+    const ang = Math.round(((h - 6) / 13) * 160 + 10)
+    sun.style.background = phase === 'NIGHT' ? 'radial-gradient(circle at 30% 30%, rgba(255,200,120,0.55), rgba(10,20,60,0.75) 60%)'
+      : phase === 'SUNSET' ? `linear-gradient(${ang}deg, rgba(255,140,60,0.75), rgba(120,40,80,0.35))`
+      : phase === 'NOON' ? 'linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,250,235,0.2))'
+      : `linear-gradient(${ang}deg, rgba(255,214,150,0.8), rgba(255,240,220,0.1))`
+  }
+  function eyes() {
+    const r = room.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * 0.49
+    const a = Math.atan2(ptr.y - cy, ptr.x - cx), d = ptr.x < -900 ? 0 : 9
+    for (const e of [e1, e2]) { e.setAttribute('transform', `translate(${Math.cos(a) * d} ${Math.sin(a) * d})`) }
+  }
+
+  addEventListener('resize', () => { words() })
+  document.fonts.ready.then(() => { words(); light(); setInterval(light, 30000)
+    let t0 = performance.now()
+    const loop = (now) => { const t = calm ? 0 : now - t0
+      if (inView.has('buzz')) swarm(t)
+      if (inView.has('flight')) wing(t)
+      if (inView.has('blue')) plotter()
+      if (inView.has('clay')) eyes()
+      requestAnimationFrame(loop) }
+    requestAnimationFrame(loop) })
+})()
+</script>
+</body>
+</html>

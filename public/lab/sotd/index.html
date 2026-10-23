@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Four upgrades</title>
+<link rel="stylesheet" href="lab.css">
+<style>
+  .top { padding: 96px var(--gut) 24px; display: grid; gap: 14px; justify-items: start; max-width: 1360px; margin-inline: auto; }
+  .top .sub { max-width: 52ch; }
+  .list { list-style: none; margin: 0 auto; padding: 0 var(--gut) 80px; max-width: 1360px; }
+  .card { display: grid; gap: 18px; padding: 28px 0 36px; border-top: 1px solid var(--rule); }
+  .card:last-child { border-bottom: 1px solid var(--rule); }
+  .card img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 1px rgba(237,231,218,0.12); background: #000; }
+  .card .k { display: flex; align-items: baseline; gap: 14px; }
+  .card .k b { font: 600 13px/1 var(--mono); color: var(--blue); direction: ltr; }
+  .card h2 { margin: 0; font: 800 clamp(34px, 9vw, 72px)/0.95 var(--face); font-stretch: 75%; }
+  .card .pitch { margin: 0; font: 800 clamp(20px, 5.4vw, 28px)/1.25 var(--face); font-stretch: 85%; color: var(--cream); }
+  .card dl { margin: 0; display: grid; gap: 0; }
+  .card dl > div { display: grid; grid-template-columns: 5.6em minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--rule); }
+  .card dt { font: 600 11px/1.6 var(--mono); letter-spacing: 0.08em; color: var(--mute); direction: ltr; text-align: end; }
+  .card dd { margin: 0; color: #cfc8b9; font-size: 16px; line-height: 1.65; }
+  .card dd a { color: var(--cream); }
+  .card dd bdi { display: inline-block; font: 600 12px/1.6 var(--mono); letter-spacing: 0.04em; color: var(--cream); text-align: left; }
+  .card .open { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 2px; text-decoration: none; font: 700 17px/1 var(--face); color: var(--cream); }
+  .card .open::after { content: "( + )"; font: 600 12px var(--mono); color: var(--mute); direction: ltr; }
+  @media (hover: hover) { .card .open:hover { color: var(--blue); } }
+  .pick { margin: 0 auto 72px; max-width: 1360px; padding: 0 var(--gut); }
+  .pick p { margin: 0; padding: 20px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 17px; color: var(--cream); max-width: 70ch; }
+  @media (min-width: 1100px) {
+    .card { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: 64px; align-items: start; }
+    .card img { grid-row: 1 / span 4; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="tag">23.10.2026 · FOUR UPGRADES</span>
+  <h1 class="h h2">ארבע הצעות,<br>כל אחת חיה.</h1>
+  <p class="sub">כל הצעה לקוחה מרגע שזכה ב-Site of the Day בחודש האחרון, ומתורגמת לעולם של MediaWave: עריכה, קלטות, אתרים ונקודות. פתחו כל אחת בטלפון, גללו, גררו ונגעו. בוחרים אחת או יותר, ורק אז בונים באתר.</p>
+</header>
+
+<ol class="list">
+  <li class="card">
+    <img src="img/a.jpg" alt="" width="520" height="1126" loading="lazy">
+    <div class="k"><b>A</b><h2>הטיימליין</h2></div>
+    <p class="pitch">כל האתר הוא עריכה: הגלילה היא ראש ההקרנה.</p>
+    <dl>
+      <div><dt>REFERENCE</dt><dd><bdi dir="ltr"><a href="https://www.awwwards.com/sites/butter" rel="noopener" target="_blank">Butter</a> · SOTD 28.9.2026 · 7.50</bdi><br>ציר הזמן של עורך הווידאו הוא הממשק.</dd></div>
+      <div><dt>ON THE SITE</dt><dd>כל פרק הוא קליפ על ציר זמן בתחתית המסך, עם פריימים מהסרטון שלו. יש טיים-קוד אמיתי, גוררים כדי לקפוץ, ו-PLAY מריץ את האתר לבד כמו סרט. בטלפון ראש ההקרנה נשאר באמצע והציר רץ מתחתיו, כמו בעורך.</dd></div>
+      <div><dt>IN THE WORLDS</dt><dd>לכל עולם הציר בצבעים שלו, והמעבר בין עולמות הוא קאט על הציר.</dd></div>
+      <div><dt>COST</dt><dd>שכבה קטנה בלי WebGL נוסף. סיכון נמוך לביצועים, ומחליפה את התווית שמופיעה היום בראש המסך.</dd></div>
+    </dl>
+    <a class="open" href="a-timeline.html">פתחו את A</a>
+  </li>
+  <li class="card">
+    <img src="img/b.jpg" alt="" width="560" height="350" loading="lazy">
+    <div class="k"><b>B</b><h2>ענן נקודות</h2></div>
+    <p class="pitch">לים הנקודות יש עומק.</p>
+    <dl>
+      <div><dt>REFERENCE</dt><dd><bdi dir="ltr"><a href="https://www.awwwards.com/sites/lidar-drone-scanning" rel="noopener" target="_blank">Lidar Drone Scanning</a> (Riotters) · SOTD 6.10.2026 · 7.68</bdi><br>ענן נקודות חי, וסריקה שעוברת עליו.</dd></div>
+      <div><dt>ON THE SITE</dt><dd>האופק, המחשב, הקלטת והבועה הם ענני נקודות בחלל. הגלילה מפרקת אחד ומרכיבה את הבא, קו סריקה עובר על כל אובייקט כשהוא מגיע, והעכבר מסובב אותו.</dd></div>
+      <div><dt>IN THE WORLDS</dt><dd>המעבר לעולם: האובייקט מתפרק לנקודות ומתגבש לסמל של העולם הבא.</dd></div>
+      <div><dt>COST</dt><dd>תוכנית WebGL קלה של נקודות בלבד, אבל היא מצטרפת ל-shader של הים, שכבר כבד (8 עד 10 שניות הידור במחשב חלש). סיכון בינוני: צריך לאחד או להחליף פרקים.</dd></div>
+    </dl>
+    <a class="open" href="b-points.html">פתחו את B</a>
+  </li>
+  <li class="card">
+    <img src="img/c.jpg" alt="" width="560" height="350" loading="lazy">
+    <div class="k"><b>C</b><h2>קיר המסכים</h2></div>
+    <p class="pitch">העולמות על קיר מוניטורים בחדר עריכה.</p>
+    <dl>
+      <div><dt>REFERENCE</dt><dd><bdi dir="ltr"><a href="https://www.awwwards.com/sites/jesper-landberg-4" rel="noopener" target="_blank">Jesper Landberg</a> · SOTD 29.9.2026 · 7.73 · DEV 8.17</bdi><br>העבודות על קיר מעוקל, והמסך שבוחרים הופך לדף.</dd></div>
+      <div><dt>ON THE SITE</dt><dd>הפרק "אותו אתר, ארבעה סגנונות" הופך לקיר מעוקל של מסכי טלפון חיים: ארבעת העולמות וסרט הזיכרונות. גלילה או גרירה מסובבות, המסך שבחזית ON AIR, ונגיעה בו ממלאת את החדר ופותחת את העולם.</dd></div>
+      <div><dt>IN THE WORLDS</dt><dd>אותו קיר הוא מפת העולמות במקום החלון של היום, וגם הדרך חזרה לאתר.</dd></div>
+      <div><dt>COST</dt><dd>CSS תלת-ממדי, וסרטון אחד מתנגן בכל רגע. סיכון נמוך.</dd></div>
+    </dl>
+    <a class="open" href="c-wall.html">פתחו את C</a>
+  </li>
+  <li class="card">
+    <img src="img/d.jpg" alt="" width="560" height="230" loading="lazy">
+    <div class="k"><b>D</b><h2>רגע בכל עולם</h2></div>
+    <p class="pitch">ארבעה עולמות, ארבעה רגעים שמספרים עליהם.</p>
+    <dl>
+      <div><dt>REFERENCE</dt><dd><bdi dir="ltr">Buzz · <a href="https://www.awwwards.com/sites/heron-ai" rel="noopener" target="_blank">Heron AI</a> (SOTD 12.10.2026) · Mr. Pandas (SOTD 11.3.2026) · Léo Parpeix</bdi><br>המקורות של העולמות עצמם.</dd></div>
+      <div><dt>THE MOMENTS</dt><dd>זמזום: הנחיל כותב את הכותרת בדבורים. מעוף: הגלילה היא הרוח, והכנפיים לפי המהירות. שרטוט: עט משרטט את הטלפון לפי הגלילה ומודד 390 על 844. בוקר: החדר מואר לפי השעה האמיתית בישראל, ועיני הקלטת עוקבות.</dd></div>
+      <div><dt>COST</dt><dd>קנבס קטן לכל עולם, פועל רק כשהוא על המסך. סיכון נמוך.</dd></div>
+    </dl>
+    <a class="open" href="d-worlds.html">פתחו את D</a>
+  </li>
+</ol>
+
+<section class="pick">
+  <p>ההמלצה שלי: A לדף הבית, כי רק אתר של מי שעורך וידאו יכול להפוך את הגלילה לעריכה, והוא גם ניווט אמיתי בטלפון. ואם רוצים גם את העולמות, C ו-D יחד.</p>
+</section>
+</body>
+</html>
