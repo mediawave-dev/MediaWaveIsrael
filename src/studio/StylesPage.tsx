@@ -76,10 +76,13 @@ export default function StylesPage() {
   // a visitor who just came through the guide on the main site is not offered it again right away
   const plan = useRef(typeof window !== 'undefined' && window.__studioArrival ? { ...STUDIO_PLAN, first: 30000 } : STUDIO_PLAN)
 
+  // (D217) inside the frame: the world last asked for by the parent; the last word wins
+  const want = useRef(def.id)
+
   // the first style: its chunk and fonts, then the page (the prerendered one stands until then)
   useEffect(() => {
     let live = true
-    def.load().then(async (m) => { await prepare(m); if (live) setPage(() => m.default) })
+    def.load().then(async (m) => { await prepare(m); if (live && want.current === def.id) setPage(() => m.default) })
     // build the wave at idle, so the first switch never waits on a compile
     const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback
     // and the other styles' chunks and fonts, so the wave never waits on the network either
@@ -95,8 +98,6 @@ export default function StylesPage() {
   // listening keeps listening (the world's track rises in its place), and on the way out it goes back
   useEffect(() => {
     if (PREVIEW) return
-    // reached from the home's style cards through the page turn: open at once (D217)
-    liftTurnCover()
     if (yieldMusic(0.8) && tierNow() !== 'still') setSoundOn(true)
     return () => {
       const was = isSoundOn()
@@ -127,7 +128,6 @@ export default function StylesPage() {
 
   // (D217) inside the frame of /your-site/: a world goes on air on the parent's word, at once (the wall
   // around the frame is the transition); the last word wins when the visitor swipes fast
-  const want = useRef(def.id)
   const words = useHero()
   useEffect(() => listenParent((id) => {
     const next = byId(id)
@@ -166,6 +166,9 @@ export default function StylesPage() {
     return () => { live = false }
   }, [Page, def, engine, words])
   useLayoutEffect(() => { if (PREVIEW && Page) fitNames() }, [words, Page])
+  // reached from the home's style cards through the page turn: the cover lifts once the world is there,
+  // instead of index.html's 2.5 s safety net (D217)
+  useEffect(() => { if (!PREVIEW && Page) liftTurnCover() }, [Page])
 
   const land = (ch: string) => {
     const el = document.querySelector<HTMLElement>(`[data-ch="${ch}"]`)

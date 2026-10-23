@@ -80,6 +80,8 @@ export default function YourSitePage() {
   const [widgets, setWidgets] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
   const clock = useStopwatch(tier === 'still')
+  /** a trade was just tapped: a second tap during the card's fill is not a second step */
+  const leaving = useRef(false)
 
   // the step lives in the history, so the phone's own back goes one question back
   const asked = (location.state as { s60?: Step } | null)?.s60
@@ -159,14 +161,20 @@ export default function YourSitePage() {
     if (vp.w >= DESK) {
       const h = Math.min(vp.h - 112, 760)
       const w = (h * AIR_W) / AIR_H
-      return { x: Math.round(vp.w * 0.3 - w / 2), y: Math.round((vp.h - h) / 2 + 24), w, r: 22, animate: true }
+      return { x: Math.round(vp.w * 0.3 - w / 2), y: Math.round((vp.h - h) / 2 + 24), w, r: 22, animate: true, fixed: true }
     }
     const k = vp.w / AIR_W
     const open = Math.max(160, vp.h - sheetH)
     const mid = live?.style === style.id && live.h1 ? ((live.h1.top + live.h1.bottom) / 2) * k : open / 2
     const y = Math.min(0, Math.max(open - AIR_H * k, open / 2 - mid))
-    return { x: 0, y: Math.round(y), w: vp.w, r: 0, animate: true }
+    return { x: 0, y: Math.round(y), w: vp.w, r: 0, animate: true, fixed: true }
   }, [vp, sheetH, live, style.id])
+
+  // nothing a step holds outlives it: the wall's turn, the sent note (Back from it asks the question again)
+  useEffect(() => {
+    if (step !== 'style') setTurning(false)
+    if (step !== 'build') setSent(false)
+  }, [step])
 
   const slot = step === 'style' ? wallSlot : step === 'build' ? takeSlot : null
   const onAir = live?.style === style.id && !turning
@@ -212,6 +220,9 @@ export default function YourSitePage() {
         <p className="s60-sr" aria-live="polite">{`שאלה ${index + 1} מתוך 4`}</p>
         {step === 'field' && (
           <FieldStep value={field} headingRef={heading} onPick={(f) => {
+            if (leaving.current) return
+            leaving.current = true
+            window.setTimeout(() => { leaving.current = false }, 600)
             setField(f)
             clock.start()
             track('cta_click', { location: `s60_field_${f}` })

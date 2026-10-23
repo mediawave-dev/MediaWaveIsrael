@@ -6,13 +6,13 @@
 //   parent -> frame  { type: 's60:show', style }               put a world on air
 //   frame -> parent  { type: 's60:hello' }                     listening (the parent sends the words and world again)
 //   frame -> parent  { type: 's60:ready', style, name, h1 }    that world is painted with these words; where its heading is
-// The first words and world also come in the URL (?s=&name=&field=&line=), so the frame paints right
-// even before the first message.
+// The address carries only the world and the trade (?s=&field=); the visitor's words come by message.
 import { useSyncExternalStore } from 'react'
 import { C } from './content'
 import { cleanText, fieldById, LINE_MAX, NAME_MAX } from '../data/site-in-60'
 
-export const PREVIEW = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('preview') === '1'
+// only inside the frame: opened on its own, /styles/?preview=1 is the plain studio
+export const PREVIEW = typeof window !== 'undefined' && window.parent !== window && new URLSearchParams(window.location.search).get('preview') === '1'
 
 export interface Hero {
   line1: string
@@ -49,8 +49,7 @@ if (PREVIEW) {
   // before the first paint: the chapters below the opening never show (studio.css, D217)
   document.documentElement.classList.add('st-preview')
   const q = new URLSearchParams(window.location.search)
-  sentName = q.get('name') ?? ''
-  hero = heroFor(sentName, q.get('field') ?? '', q.get('line') ?? '')
+  hero = heroFor('', q.get('field') ?? '', '')
 }
 
 const subscribe = (f: () => void) => { subs.add(f); return () => { subs.delete(f) } }

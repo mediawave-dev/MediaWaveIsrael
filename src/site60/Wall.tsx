@@ -69,12 +69,21 @@ export default function Wall({ index, onIndex, onChoose, onTurning, onSlot, name
     })
   }, [])
 
-  // the front screen's box: the slot sits where the front screen rests, untransformed
+  // the front screen's box: the slot sits where the front screen rests, untransformed. In the page's own
+  // coordinates (inside main, where the frame is placed absolute), so the page scrolls frame and wall
+  // together on the compositor; told again only when it really moved (the step's entrance, a resize)
+  const last = useRef('')
   const report = useCallback(() => {
     const s = slot.current
-    if (!s) return
+    const main = s?.closest('main')
+    if (!s || !main) return
     const r = s.getBoundingClientRect()
-    onSlot({ x: r.left, y: r.top, w: r.width, r: parseFloat(getComputedStyle(s).borderTopLeftRadius) || 0 })
+    const m = main.getBoundingClientRect()
+    const next = { x: Math.round((r.left - m.left) * 2) / 2, y: Math.round((r.top - m.top) * 2) / 2, w: Math.round(r.width * 2) / 2, r: parseFloat(getComputedStyle(s).borderTopLeftRadius) || 0 }
+    const key = `${next.x},${next.y},${next.w}`
+    if (key === last.current) return
+    last.current = key
+    onSlot(next)
   }, [onSlot])
   useLayoutEffect(() => { place(); report() }, [place, report])
   useEffect(() => {
@@ -85,8 +94,12 @@ export default function Wall({ index, onIndex, onChoose, onTurning, onSlot, name
   useEffect(() => {
     const on = () => { place(); report() }
     window.addEventListener('resize', on)
-    window.addEventListener('scroll', report, { passive: true })
-    return () => { window.removeEventListener('resize', on); window.removeEventListener('scroll', report) }
+    // the question's entrance moves the wall 14 px; fonts and the bar can move it too
+    const step = stage.current?.closest('.s60-step')
+    step?.addEventListener('animationend', report)
+    const ro = new ResizeObserver(on)
+    if (stage.current) ro.observe(stage.current)
+    return () => { window.removeEventListener('resize', on); step?.removeEventListener('animationend', report); ro.disconnect() }
   }, [place, report])
 
   // the one clock: ease toward the target, report the rest
@@ -112,10 +125,14 @@ export default function Wall({ index, onIndex, onChoose, onTurning, onSlot, name
     }
     raf.current = requestAnimationFrame(tick)
   }, [place, tier])
-  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+  // leaving mid-turn (the key pressed while the wall still moves): the frame must not stay stepped aside
+  useEffect(() => () => { cancelAnimationFrame(raf.current); if (moving.current) turning.current(false) }, [])
 
+  // the world is chosen the moment the wall is sent toward it, not when it comes to rest: the key under
+  // the wall, the label and the frame always name the world the visitor sees arriving
   const go = useCallback((to: number) => {
     target.current = to
+    pick.current(((to % N) + N) % N)
     if (!moving.current) { moving.current = true; turning.current(true) }
     run()
   }, [run])

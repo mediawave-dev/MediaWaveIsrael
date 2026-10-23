@@ -44,9 +44,10 @@ export const BUILDS: { id: BuildId; name: string; line: string }[] = [
     message, not escaping. */
 export function cleanText(raw: string, max: number): string {
   return raw
-    // control characters and the bidi overrides / isolates that could flip the page's text around them
+    // control characters, the bidi overrides / isolates that could flip the page's text around them, and
+    // the invisible ones (zero-width spaces and joiners, the word joiner, the BOM): a name is what shows
     // eslint-disable-next-line no-control-regex
-    .replace(/[\u0000-\u001f\u007f-\u009f‎‏‪-‮⁦-⁩]/g, '')
+    .replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2060-\u2069\ufeff]/g, '')
     .replace(/[<>]/g, '')
     .replace(/\s+/g, ' ')
     .trimStart()
@@ -55,3 +56,6 @@ export function cleanText(raw: string, max: number): string {
 
 export const NAME_MAX = 40
 export const LINE_MAX = 90
+
+/** A name to build on: something visible is left once it is cleaned (the key and the page agree). */
+export const isName = (raw: string) => cleanText(raw, NAME_MAX).trim().length > 0

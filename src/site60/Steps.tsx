@@ -2,7 +2,7 @@
 // screen, one tap each (the name is the one line typed); the wall of styles is Wall.tsx. [קופי: נתי]
 import { useEffect, useRef, type FormEvent, type PointerEvent as RPointerEvent, type ReactNode } from 'react'
 import DotGlyph from '../look/sea/DotGlyph'
-import { BUILDS, FIELDS, LINE_MAX, NAME_MAX, type BuildId, type FieldId } from '../data/site-in-60'
+import { BUILDS, FIELDS, isName, LINE_MAX, NAME_MAX, type BuildId, type FieldId } from '../data/site-in-60'
 import { formatRange, PRICE_HONEST, PRICING } from '../data/pricing'
 import { FIELD_GLYPHS } from './glyphs'
 import { showPrices } from './message'
@@ -80,7 +80,7 @@ export function NameStep({ name, line, onName, onLine, onNext, headingRef }: {
     const id = window.setTimeout(() => input.current?.focus({ preventScroll: true }), 380)
     return () => clearTimeout(id)
   }, [])
-  const ok = name.trim().length > 0
+  const ok = isName(name)
   const submit = (e: FormEvent) => { e.preventDefault(); if (ok) onNext() }
   return (
     <section className="s60-step s60-name" aria-labelledby="s60-q2">

@@ -189,10 +189,12 @@ html.s60-on, html.s60-on body { background: #0f1011; }
 .s60-style .s60-actions { margin-top: 12px; }
 
 /* ---------- the visitor's site on air (Air.tsx) ---------- */
+.s60-main { position: relative; }
 .s60-air {
-  position: fixed; left: 0; top: 0; z-index: 20; width: 390px; height: 844px; transform-origin: 0 0; pointer-events: none;
+  position: absolute; left: 0; top: 0; z-index: 20; width: 390px; height: 844px; transform-origin: 0 0; pointer-events: none;
   border-radius: var(--air-r, 0px); overflow: hidden; opacity: 0; transition: opacity 0.3s ease; contain: strict;
 }
+.s60-air[data-fixed] { position: fixed; }
 .s60-air[data-on] { opacity: 1; transition: opacity 0.5s ease 0.05s; }
 .s60-air[data-animate] { transition: opacity 0.5s ease, transform 0.95s cubic-bezier(0.76, 0, 0.24, 1), border-radius 0.95s cubic-bezier(0.76, 0, 0.24, 1); }
 .s60-air__frame { display: block; width: 390px; height: 844px; border: 0; background: transparent; }
