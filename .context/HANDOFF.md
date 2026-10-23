@@ -25,8 +25,8 @@
   svc3-1440 and svc3-390 (the service page after D214), sheets sheet-*.jpg. NOT yet: Lighthouse, the live release.
 
 ## Next steps
-1. The final full build with D214 and its gates (overlap, all-pages 390 + 1440) were queued at the end of the session: see
-   G:/tmp/wow/qa3-*.log. If they did not run, run them before the release.
+1. Done: the final full build (HEAD 0217224, with D214) passed its gates: overlap 0 at 320/390/768/1024/1440
+   (G:/tmp/wow/qa3/overlap), all-pages 12 routes clean at 390 and 1440 (G:/tmp/wow/qa3-pages-*.log). Lighthouse not run.
 2. Nati's verdict on his phone, then release: tag `prod-before-d211` = origin/main at release time, push the
    branch, then HEAD:main with the mediawave-dev helper (origin/fix/home-feedback-20261023 is inside this branch;
    check whether that branch was released first, and merge if main moved).
