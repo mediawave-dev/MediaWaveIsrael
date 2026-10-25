@@ -1,3 +1,67 @@
+# HANDOFF: blog for search, stored measurement, a form that emails (D218, 25.10.2026)
+
+## Goal
+Nati (25.10, autonomous): "continue what the prompt for the next session says" (`.context/BLOG-SEO-PROMPT.rtl.md`), with
+one change of his own: the blog lives in the menu only, not visible on the home page, because it is there for search.
+No production approval was given: everything is on branch `feature/blog-seo-20261025` and its Cloudflare preview.
+
+## Where
+Worktree `G:\Web-Dev\MediaWaveIsrael\.claude\worktrees\keys-form-20261021`, branch `feature/blog-seo-20261025`,
+cut from origin/main 3b50c0b (D217, live). Preview: https://feature-blog-seo-20261025.mediawaveisrael.pages.dev
+(previews send x-robots-tag: noindex, so Lighthouse SEO reads 66 there; locally 100).
+
+## Completed (D218 in DECISIONS.rtl.md has the full record)
+- Part A of the prompt: Analytics Engine storage in /api/event (binding EVENTS), page_view per route, a `src` tag from a
+  post into /your-site/, the s60 name step, /api/stats private dashboard (Basic auth, STATS_KEY). /api/lead: Cloudflare
+  Email Sending REST to a verified destination (free on any plan with Email Routing only); the form asks GET /api/lead on
+  first focus and stays on WhatsApp until LEAD_TOKEN exists; on failure the WhatsApp link carries the visitor's words.
+  Privacy line under the form. /styles in the sitemap. The studio's Details link 48px.
+- Part B: the blog engine (src/blog, Markdown in src/content/blog, no HTML path, safe hrefs, `:::price` block shown only
+  when pricing.ts is approved), /blog and /blog/:slug prerendered, sitemap, real /feed.xml, JSON-LD, an OG card per post
+  (`node scripts/generate-og-image.mjs --blog`), old-slug 301s in public/_redirects. Menu-only entry ("בלוג", last).
+- Keywords from Google Hebrew autocomplete (design/seo/keywords.rtl.md, raw G:/tmp/blog/kw/suggest.json): 13 posts
+  planned, 3 written as the representative set for approval (price, restaurant, tapes).
+- docs/SETUP-MEASUREMENT-AND-FORM.rtl.md: Nati's exact Cloudflare steps (Email Routing + verified address, two tokens,
+  variables, the EVENTS binding, redeploy, checks).
+- Independent review: no blocker; 5 should-fix + 4 minor, all fixed except the two that need Nati (below).
+
+## Measured (build 3, local 4192, and the CF preview)
+- all-pages 8/8 clean at 390 and 1440; axe 0 with every FAQ open; small text 0; overflow 0.
+- Lighthouse mobile median of 3 on /blog/, the price post, the restaurant post: perf 99, a11y 100, seo 100, LCP 1.81 s,
+  CLS 0. BP 96 locally only because serve-br has no /api/event (404 in the console); BP 100 on the preview.
+- Overlap: 0 on the blog content and on / (320-1440). Remaining 4-8 at the END of every inner page (also /privacy and
+  service pages in production today): the cookie banner covers the footer's legal links until a choice. Pre-existing.
+- Preview: lead ready:false, POST 503 not_configured, event 204 / foreign origin 403, old slugs 301 to the right page,
+  feed application/xml, unknown post 404, home has 0 links to /blog. Function unit run: G:/tmp/blog/fn/test.mjs.
+
+## Waiting for Nati (do not act unasked)
+1. Copy approval of the 3 posts and the index lines (all new text is [קופי: נתי]); then the next posts in the plan.
+2. Production: tag prod-before-d218 on origin/main, then push HEAD to main, verify by content.
+3. Cloudflare settings per docs/SETUP-MEASUREMENT-AND-FORM.rtl.md (only he can sign in).
+4. Search Console: verify the property and submit https://mediawave.co.il/sitemap.xml (his Google sign-in).
+5. Should service pages link to their posts? (helps search; not done because he said "menu only").
+6. Privacy policy text still describes Google Analytics cookies; it should mention first-party counting and mail via
+   Cloudflare. Legal text, his call.
+7. Facts for the next posts (keywords file, last section): tape turnaround, how tapes reach us, formats beyond VHS/MiniDV.
+8. Author: "MediaWave" until he picks a person and a photo. Moria asked to remove the blog on 6.10: decide together.
+9. Older open items: prices (pricing.ts approved:false), the secondary link in the home opening (D217), the cookie
+   banner over the footer on inner pages.
+
+## Next steps
+- On approval: write posts 4-13 (design/seo/keywords.rtl.md), each with its OG card; when an old slug returns as a post,
+  delete its two lines in public/_redirects. Rebuild, gates (all-pages, overlap with --path, axe-blog), push the branch.
+- Part C of the prompt not started: WebKit pass of /your-site/ (Playwright webkit-2203, not port 4190), the s60 WhatsApp
+  message carrying a link to what the visitor saw.
+
+## Important files
+- src/blog/{markdown.ts, posts.ts, text.ts, Prose.tsx, BlogIndex.tsx, BlogPost.tsx, blog.css}; src/content/blog/*.md
+- functions/api/{event.ts, lead.ts, stats.ts}; src/utils/{analytics.ts, lead.ts}; src/look/sections/Contact.tsx
+- scripts/{blog-posts.mjs (frontmatter + validation), generate-seo.mjs, prerender.mjs, generate-og-image.mjs, overlap-audit.mjs}
+- design/seo/keywords.rtl.md, docs/SETUP-MEASUREMENT-AND-FORM.rtl.md, DECISIONS.rtl.md (D218)
+- Tools: G:/tmp/blog/tools/{shoot.mjs, axe-blog.mjs, contact.mjs}, G:/tmp/blog/gates2/run.sh, deliverables in G:/tmp/blog/deliver
+
+---
+
 # HANDOFF: "האתר שלכם ב-60 שניות" (/your-site/, D217, 23.10.2026)
 
 ## Goal
