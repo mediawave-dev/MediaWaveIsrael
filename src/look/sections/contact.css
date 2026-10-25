@@ -47,3 +47,10 @@ html[data-look="m"] .ct__field input, html[data-look="m"] .ct__field textarea { 
 /* the label line is a glyph (Nati, 18.10.2026): the same height as the old label, in the label's colour */
 .ct__ways a .ct__ico { display: inline-flex; align-items: center; justify-content: center; height: 1.5em; }
 .ct__ways a .ct__ico svg { display: block; width: 22px; height: 22px; }
+
+/* (D218) the hidden field bots fill: no box, no paint, no pointer; people and screen readers never meet it */
+.ct__trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
+.ct__trap input { width: 1px; height: 1px; margin: 0; padding: 0; border: 0; opacity: 0; }
+/* (D218) the privacy line under the form; the link sits in the sentence, so it keeps its underline (#30) */
+.ct__privacy { margin: 18px 0 0; font-size: 13px; line-height: 1.5; }
+.ct__privacy a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }

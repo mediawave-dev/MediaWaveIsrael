@@ -1,0 +1,143 @@
+/* the blog (D218): a place to read, in the home's language. No slabs and no cards: the calm mask under
+   every text block keeps the dots off the words (D174), so the column reads on the quiet ground and the
+   sea stays alive in the margins. A 64ch measure, 1.8 leading, no italics, heads at the start in the
+   display face, mono kickers in brackets, hairlines between the parts. Links in the running text keep
+   their underline (DECISIONS #30, the one exception); every other link is underline-free. */
+
+.bp { --bp-ink: #ede7da; --bp-body: #d9d3c6; --bp-mute: #a39d90; --bp-blue: #79a0c5; --bp-rule: var(--sea-rule, rgba(237, 231, 218, 0.14)); color: var(--bp-ink); }
+.bp :focus-visible { outline: 2px solid var(--bp-ink); outline-offset: 2px; border-radius: 2px; }
+.bp .sp-top { background: none; }
+.bp .sp-top--hang { padding-bottom: 0; }
+
+/* the head: kicker, title, the meta line */
+.bp-head { box-sizing: border-box; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 28px auto 0; text-align: start; }
+.bp-kicker {
+  display: inline-block; margin: 0 0 16px; font: 600 12px/1.2 var(--sea-mono, monospace); letter-spacing: 0.08em; color: var(--bp-mute);
+  direction: ltr; unicode-bidi: isolate; text-shadow: var(--sea-halo, none);
+}
+.bp-kicker::before { content: "[ "; }
+.bp-kicker::after { content: " ]"; }
+.bp-h1 {
+  margin: 0; max-width: 18ch; color: var(--bp-ink); font: 800 clamp(36px, 9.6vw, 88px)/1.02 var(--display); font-stretch: 80%;
+  text-wrap: balance; overflow-wrap: anywhere; text-shadow: var(--sea-halo, none); font-kerning: normal;
+}
+.bp-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--bp-rule); color: var(--bp-mute); font: 400 14px/1.5 var(--text); text-shadow: var(--sea-halo, none); }
+.bp-meta > span + span::before { content: "·"; content: "·" / ""; margin-inline-end: 12px; color: var(--bp-blue); }
+
+/* the column */
+.bp-art { padding-bottom: 8px; }
+.bp-body { box-sizing: border-box; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 36px auto 0; }
+.bp-body > * { max-width: 64ch; }
+.bp-body p, .bp-body li { color: var(--bp-body); font: 400 1.0625rem/1.8 var(--text); text-shadow: var(--sea-halo, none); text-wrap: pretty; }
+.bp-body p { margin: 0 0 18px; }
+.bp-body strong { color: var(--bp-ink); font-weight: 700; }
+/* the short answer: the first paragraph, bigger, so it is the one a reader (and a quote) takes away */
+.bp-lede, .bp-body .bp-lede { color: var(--bp-ink); font: 500 clamp(1.25rem, 5.2vw, 1.6rem)/1.6 var(--text); margin: 0 0 28px; max-width: 40ch; text-shadow: var(--sea-halo, none); }
+.bp-head--index .bp-lede { margin-top: 22px; }
+.bp-h2 {
+  margin: 44px 0 16px; padding-top: 26px; border-top: 1px solid var(--bp-rule); color: var(--bp-ink);
+  font: 800 clamp(26px, 6.8vw, 40px)/1.12 var(--display); font-stretch: 80%; text-wrap: balance; text-shadow: var(--sea-halo, none);
+  scroll-margin-top: calc(var(--head, 64px) + 20px);
+}
+.bp-h3 { margin: 28px 0 10px; color: var(--bp-ink); font: 700 1.2rem/1.45 var(--text); text-shadow: var(--sea-halo, none); }
+/* in-text links: the exception to the no-underline rule */
+/* 9px above and below: an inline box's padding moves no line, so the text stays put while the tap area
+   reaches 44px (line height 1.8 alone gives about 26) */
+.bp-a { padding-block: 9px; color: var(--bp-ink); text-decoration: underline; text-decoration-color: var(--bp-blue); text-underline-offset: 4px; text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+@media (hover: hover) and (pointer: fine) { .bp-a:hover { text-decoration-thickness: 2px; } }
+
+/* lists: a dot of the sea for each item, or a mono count */
+.bp-list { list-style: none; margin: 0 0 22px; padding: 0; }
+.bp-list li { position: relative; margin: 0 0 10px; padding-inline-start: 26px; }
+.bp-list--ul li::before { content: ""; position: absolute; inset-inline-start: 4px; top: 0.78em; width: 6px; height: 6px; border-radius: 50%; background: var(--bp-blue); }
+.bp-list--ol { counter-reset: bp; }
+.bp-list--ol li { counter-increment: bp; padding-inline-start: 42px; }
+.bp-list--ol li::before { content: counter(bp, decimal-leading-zero); position: absolute; inset-inline-start: 0; top: 0.45em; font: 600 12px/1 var(--sea-mono, monospace); color: var(--bp-blue); direction: ltr; }
+
+/* a tip: a mono label and the line, between two hairlines */
+.bp-tip { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); column-gap: 12px; align-items: baseline; margin: 8px 0 26px; padding: 16px 0; border-block: 1px solid var(--bp-rule); }
+.bp-tip__k { font: 600 12px/1 var(--sea-mono, monospace); letter-spacing: 0.08em; color: var(--bp-blue); }
+.bp-tip p, .bp-body .bp-tip p { margin: 0; color: var(--bp-ink); }
+
+/* the questions: the home's rows, a mono count, the plus in dots */
+.bp-faq { list-style: none; counter-reset: q; margin: 0 0 26px; padding: 0; border-bottom: 1px solid var(--bp-rule); }
+.bp-faq > li { counter-increment: q; border-top: 1px solid var(--bp-rule); }
+.bp-faq summary {
+  position: relative; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 40px 12px 0; padding-inline: 0 40px;
+  color: var(--bp-ink); font: 700 1.0625rem/1.45 var(--text); cursor: pointer; list-style: none; text-shadow: var(--sea-halo, none);
+}
+.bp-faq summary::-webkit-details-marker { display: none; }
+.bp-faq summary::before { content: "( " counter(q, decimal-leading-zero) " )"; content: "( " counter(q, decimal-leading-zero) " )" / ""; flex: none; min-width: 3.4em; color: var(--bp-blue); font: 600 12px/1 var(--sea-mono, monospace); letter-spacing: 0.06em; direction: ltr; }
+.bp-faq__sign { position: absolute; inset-inline-end: 4px; top: 50%; translate: 0 -50%; color: var(--bp-blue); }
+.bp-faq__sign .dot-glyph { width: 16px; height: 16px; transition: transform 0.4s var(--sea-ease, ease); }
+.bp-faq details[open] .bp-faq__sign .dot-glyph { transform: rotate(45deg); }
+.bp-faq details p, .bp-body .bp-faq details p { margin: 0; padding: 0 0 20px; padding-inline-start: calc(3.4em + 12px); }
+@media (hover: hover) and (pointer: fine) { .bp-faq summary:hover { color: var(--bp-blue); } }
+
+/* the index of the post's questions */
+.bp-toc { margin: 0 0 30px; }
+/* .bp-body p would take its font: the label sits inside the column, so it names the column too */
+.bp-body .bp-toc__t, .bp-toc__t { display: inline-block; margin: 0 0 12px; font: 600 12px/1.2 var(--sea-mono, monospace); letter-spacing: 0.08em; color: var(--bp-mute); unicode-bidi: isolate; }
+.bp-toc__t::before { content: "[ "; }
+.bp-toc__t::after { content: " ]"; }
+.bp-toc ol { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--bp-rule); }
+.bp-toc li { border-top: 1px solid var(--bp-rule); }
+.bp-toc a { display: flex; align-items: baseline; gap: 12px; min-height: 48px; box-sizing: border-box; padding: 12px 4px; color: var(--bp-ink); font: 600 1rem/1.4 var(--text); text-decoration: none; border-radius: 2px; text-shadow: var(--sea-halo, none); }
+.bp-toc__n { flex: none; min-width: 3.4em; color: var(--bp-blue); font: 600 12px/1 var(--sea-mono, monospace); direction: ltr; }
+@media (hover: hover) and (pointer: fine) { .bp-toc a:hover { background: rgba(237, 231, 218, 0.05); } }
+
+/* the end: one line in the display face and the next step */
+.bp-end { box-sizing: border-box; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 72px auto 0; padding-top: 32px; border-top: 1px solid var(--bp-rule); }
+.bp-big { margin: 0; max-width: 20ch; color: var(--bp-ink); font: 800 clamp(30px, 8.4vw, 64px)/1.04 var(--display); font-stretch: 80%; text-wrap: balance; text-shadow: var(--sea-halo, none); }
+.bp-end__line { margin: 16px 0 0; max-width: 40ch; color: var(--bp-mute); font: 400 1.0625rem/1.65 var(--text); text-shadow: var(--sea-halo, none); }
+.bp-end__keys { display: grid; justify-items: start; gap: 6px; max-width: 366px; margin: 26px 0 0; }
+.bp-end__keys > :first-child { justify-self: stretch; }
+.bp-end__keys .shot-link { display: inline-flex; align-items: center; min-height: 48px; padding-inline: 4px; color: var(--bp-ink); text-decoration: none; font: 600 1rem/1.3 var(--text); border-radius: 2px; }
+@media (hover: hover) and (pointer: fine) { .bp-end__keys .shot-link:hover { color: var(--bp-blue); } }
+
+/* more posts, and the index's rows: titles on hairlines */
+.bp-more { box-sizing: border-box; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 72px auto 0; }
+.bp-more ul, .bp-index { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--bp-rule); }
+.bp-more li, .bp-index > li { border-top: 1px solid var(--bp-rule); }
+.bp-more a { display: grid; gap: 4px; min-height: 56px; box-sizing: border-box; padding: 14px 4px; color: var(--bp-ink); text-decoration: none; border-radius: 2px; }
+.bp-more__t { font: 800 clamp(20px, 5.4vw, 28px)/1.2 var(--display); font-stretch: 80%; text-shadow: var(--sea-halo, none); }
+.bp-more__m { color: var(--bp-mute); font: 400 14px/1.4 var(--text); }
+@media (hover: hover) and (pointer: fine) { .bp-more a:hover .bp-more__t, .bp-row:hover .bp-row__t { color: var(--bp-blue); } }
+
+.bp-index { box-sizing: border-box; width: min(100% - 2 * var(--gut, 16px), 1360px); margin: 48px auto 0; }
+.bp-row { display: grid; gap: 8px; box-sizing: border-box; padding: 22px 4px 24px; color: var(--bp-ink); text-decoration: none; border-radius: 2px; }
+.bp-row__n { font: 600 12px/1.2 var(--sea-mono, monospace); letter-spacing: 0.06em; color: var(--bp-blue); text-shadow: var(--sea-halo, none); justify-self: start; }
+.bp-row__t { font: 800 clamp(26px, 7.2vw, 48px)/1.08 var(--display); font-stretch: 80%; text-wrap: balance; text-shadow: var(--sea-halo, none); transition: color 0.3s ease; }
+.bp-row__d { max-width: 52ch; color: var(--bp-body); font: 400 1.0625rem/1.65 var(--text); text-shadow: var(--sea-halo, none); }
+.bp-row__m { color: var(--bp-mute); font: 400 14px/1.4 var(--text); }
+
+/* the hairlines draw in from the start side as a row arrives (the home's move, on the compositor) */
+@supports (animation-timeline: view()) {
+  html.sea-reveal :is(.bp-index > li, .bp-more li, .bp-toc li, .bp-faq > li) { border-top-color: transparent; position: relative; }
+  html.sea-reveal :is(.bp-index > li, .bp-more li, .bp-toc li, .bp-faq > li)::before {
+    content: ""; position: absolute; top: -1px; inset-inline: 0; height: 1px; background: var(--bp-rule);
+    transform-origin: 100% 50%; pointer-events: none;
+    animation: sea-rule-in linear both; animation-timeline: view(); animation-range: entry 0% cover 30%;
+  }
+}
+html:is(.disable-animations, .motion-reduced) .bp * { transition: none !important; }
+
+/* wide: the column at the start, the index of questions beside it, sticky, the home's measure */
+@media (min-width: 1100px) {
+  .bp-head { margin-top: 44px; }
+  .bp-h1 { font-size: min(6.4vw, 96px); }
+  .bp-body { display: grid; grid-template-columns: minmax(0, 68ch) minmax(240px, 1fr); column-gap: 96px; align-items: start; margin-top: 52px; }
+  .bp-body > * { grid-column: 1; }
+  .bp-body > .bp-toc { grid-column: 2; grid-row: 1 / span 400; position: sticky; top: calc(var(--head, 64px) + 28px); max-width: 360px; justify-self: end; width: 100%; }
+  .bp-body p, .bp-body li { font-size: 1.1875rem; }
+  .bp-lede, .bp-body .bp-lede { font-size: 1.75rem; }
+  .bp-h2 { font-size: min(3vw, 44px); }
+  .bp-end { margin-top: 112px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 96px; align-items: end; }
+  .bp-end__keys { grid-column: 2; grid-row: 1 / span 2; align-self: end; margin: 0; }
+  .bp-big { font-size: min(4.6vw, 72px); }
+  .bp-index > li .bp-row { grid-template-columns: 14em minmax(0, 1fr) 10em; column-gap: 48px; align-items: baseline; padding-block: 30px 32px; }
+  .bp-row__n { grid-row: 1 / span 2; }
+  .bp-row__t { grid-column: 2; }
+  .bp-row__d { grid-column: 2; }
+  .bp-row__m { grid-column: 3; grid-row: 1; justify-self: end; }
+}

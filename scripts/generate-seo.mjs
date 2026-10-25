@@ -1,17 +1,17 @@
 /**
- * Generate sitemap.xml from the route data files.
+ * Generate sitemap.xml from the route data files, and the blog's RSS feed (D218).
  *
  * Run: node scripts/generate-seo.mjs
  * Automatically runs before build via: npm run build
  *
- * The RSS feed lived here too until the blog was removed; with no feed there is
- * nothing to syndicate, so public/feed.xml and its <link rel="alternate"> are
- * gone as well.
+ * The blog came back for search (D218, Nati 25.10): its index and every published
+ * post go into the sitemap, and public/feed.xml lists the posts.
  */
 
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { blogPosts } from './blog-posts.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
@@ -33,6 +33,8 @@ function generateSitemap() {
     { loc: '/accessibility', lastmod: '2026-07-02', changefreq: 'yearly', priority: '0.3' },
     // (D217) the visitor's own site in 60 seconds: a page ads can link to
     { loc: '/your-site', lastmod: today, changefreq: 'monthly', priority: '0.7' },
+    // (D218) the style studio: the same site in five styles (no trailing slash: added below)
+    { loc: '/styles', lastmod: today, changefreq: 'monthly', priority: '0.6' },
   ]
 
   const servicePages = parseSlugs('src/data/services.ts').map((slug) => ({
@@ -49,7 +51,15 @@ function generateSitemap() {
     priority: '0.6',
   }))
 
-  const allPages = [...staticPages, ...servicePages, ...portfolioPages]
+  const posts = blogPosts(ROOT)
+  const blogPages = posts.length
+    ? [
+        { loc: '/blog', lastmod: posts[0].updated, changefreq: 'weekly', priority: '0.6' },
+        ...posts.map((p) => ({ loc: `/blog/${p.slug}`, lastmod: p.updated, changefreq: 'monthly', priority: '0.7' })),
+      ]
+    : []
+
+  const allPages = [...staticPages, ...servicePages, ...portfolioPages, ...blogPages]
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -63,6 +73,35 @@ ${allPages.map((page) => `  <url>
 `
 }
 
+const xml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/** RSS 2.0: the published posts, newest first (dates at noon Israel time, so the day never shifts) */
+function generateFeed() {
+  const posts = blogPosts(ROOT)
+  const day = (iso) => new Date(`${iso}T12:00:00+03:00`).toUTCString()
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>הבלוג של MediaWave</title>
+    <link>${SITE_URL}/blog/</link>
+    <description>תשובות ישרות לשאלות של בעלי עסקים על אתרים, דפי נחיתה ווידאו.</description>
+    <language>he-IL</language>
+    <atom:link href="${SITE_URL}/feed.xml" rel="self" type="application/rss+xml" />
+${posts.map((p) => `    <item>
+      <title>${xml(p.title)}</title>
+      <link>${SITE_URL}/blog/${p.slug}/</link>
+      <guid isPermaLink="true">${SITE_URL}/blog/${p.slug}/</guid>
+      <description>${xml(p.description)}</description>
+      <pubDate>${day(p.published)}</pubDate>
+    </item>`).join('\n')}
+  </channel>
+</rss>
+`
+}
+
 const sitemap = generateSitemap()
 writeFileSync(resolve(ROOT, 'public/sitemap.xml'), sitemap)
 console.log(`Generated public/sitemap.xml (${sitemap.match(/<url>/g).length} URLs)`)
+const feed = generateFeed()
+writeFileSync(resolve(ROOT, 'public/feed.xml'), feed)
+console.log(`Generated public/feed.xml (${(feed.match(/<item>/g) || []).length} posts)`)

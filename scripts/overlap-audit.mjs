@@ -84,6 +84,9 @@ function collect() {
     for (let a = el; a && a !== document.documentElement; a = a.parentElement) {
       const cs = getComputedStyle(a)
       if (cs.display === 'none' || cs.visibility === 'hidden' || cs.contentVisibility === 'hidden') { hidden = true; break }
+      // (D218) a closed <details> renders only its summary: Chrome hides the rest in ::details-content,
+      // which getComputedStyle on the elements never shows, and their stale boxes read as overlaps
+      if (a.tagName === 'DETAILS' && !a.open && el.closest('summary')?.parentElement !== a) { hidden = true; break }
       op *= Number(cs.opacity)
       if (a !== el && (cs.overflowX !== 'visible' || cs.overflowY !== 'visible')) {
         const ar = a.getBoundingClientRect()

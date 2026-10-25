@@ -5,9 +5,24 @@
 # to 404.html (real HTTP 404 instead of the old /* soft-404).
 /studio/* /studio/ 200
 
-# Blog removed (Oct 2026). The 9 posts and the index were indexed by Google, so
-# their URLs are redirected to the home page rather than left to 404 — that
-# preserves any link equity and keeps visitors from a dead end.
-/blog / 301
-/blog/* / 301
-/feed.xml / 301
+# The blog is back (D218, 25.10.2026) for search. The 9 posts of the old blog (removed 6.10, indexed by
+# Google) point to the closest live page; when a post on the same subject is written under its old
+# address, its two lines here are deleted (keep both forms: with and without the slash).
+/blog/why-your-business-needs-a-website-2026 /blog/ 301
+/blog/why-your-business-needs-a-website-2026/ /blog/ 301
+/blog/what-is-pagespeed-and-why-it-matters /blog/ 301
+/blog/what-is-pagespeed-and-why-it-matters/ /blog/ 301
+/blog/how-to-choose-web-developer-israel /blog/ 301
+/blog/how-to-choose-web-developer-israel/ /blog/ 301
+/blog/landing-page-guide-for-small-business /services/landing-pages/ 301
+/blog/landing-page-guide-for-small-business/ /services/landing-pages/ 301
+/blog/seo-basics-for-small-business-2026 /services/seo-promotion/ 301
+/blog/seo-basics-for-small-business-2026/ /services/seo-promotion/ 301
+/blog/chatbot-for-business-whatsapp-website /services/chatbots/ 301
+/blog/chatbot-for-business-whatsapp-website/ /services/chatbots/ 301
+/blog/common-website-mistakes-small-business /blog/ 301
+/blog/common-website-mistakes-small-business/ /blog/ 301
+/blog/what-is-responsive-website-2026 /services/building-websites/ 301
+/blog/what-is-responsive-website-2026/ /services/building-websites/ 301
+/blog/increase-website-leads-tips /blog/ 301
+/blog/increase-website-leads-tips/ /blog/ 301

@@ -19,6 +19,7 @@ import { isValidEmail, isValidName, isValidMessage, validationErrors } from '../
 import { WHATSAPP_URLS, getWhatsAppUrl } from '../../utils/whatsapp'
 import { SITE_CONTACT } from '../../data/site'
 import { track } from '../../utils/analytics'
+import { leadReady, sendLead } from '../../utils/lead'
 import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
@@ -60,7 +61,17 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
   const [keys, setKeys] = useState(0)
   const timer = useRef(0)
   useEffect(() => () => clearTimeout(timer.current), [])
-  // the moment after a send: 'now' after the endpoint, 'late' after the WhatsApp hand-off (the visitor returns first)
+  // (D218) the form sends mail itself once /api/lead says it can; until then the message goes to WhatsApp.
+  // Asked on the first focus in the form, not on every visit to the home page.
+  const [mail, setMail] = useState(false)
+  const asked = useRef(false)
+  const ask = () => { if (!asked.current) { asked.current = true; void leadReady().then(setMail) } }
+  /** a send that failed keeps the visitor's words: the WhatsApp link in the error carries them */
+  const [waBack, setWaBack] = useState('')
+  /** when the visitor first typed (a send faster than a person can type is a bot's) */
+  const started = useRef(0)
+  const trap = useRef<HTMLInputElement>(null)
+  // the moment after a send: 'now' after the mail went, 'late' after the WhatsApp hand-off (the visitor returns first)
   const [invite, setInvite] = useState<'' | 'now' | 'late'>('')
   const inviteOnce = (how: 'now' | 'late') => { if (SHOT && !invited) { invited = true; setInvite(how) } }
 
@@ -69,13 +80,14 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
   // 180 characters fill the laptop's page
   const progress = Math.min(100, ((data.name.length + data.email.length + data.message.length) * 100) / 180)
   const isField = (el: EventTarget | null) => el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement
-  const focusIn = (e: FocusEvent) => { if (isField(e.target)) setFocused(true) }
+  const focusIn = (e: FocusEvent) => { ask(); if (isField(e.target)) setFocused(true) }
   const focusOut = (e: FocusEvent) => { if (!isField(e.relatedTarget)) setFocused(false) }
 
   const change = (f: Field) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFailure('')
     setErrors({})
     if (state === 'error') setState('idle')
+    started.current ||= Date.now()
     setData((d) => ({ ...d, [f]: e.target.value }))
     setKeys((k) => k + 1)
   }
@@ -86,8 +98,8 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
     setStatus('')
     setFailure('')
     // every error at once, focus on the first (one at a time took three submits to find three)
-    // no form endpoint: the message goes to WhatsApp, so the email is optional (an address only helps)
-    const needEmail = !!import.meta.env.VITE_CONTACT_ENDPOINT
+    // no mail on the server: the message goes to WhatsApp, so the email is optional (an address only helps)
+    const needEmail = mail
     const errs: Partial<Record<Field, string>> = {}
     if (!isValidName(data.name)) errs.name = validationErrors.name
     if ((needEmail || data.email.trim()) && !isValidEmail(data.email)) errs.email = validationErrors.email
@@ -100,9 +112,8 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
     }
     setErrors({})
 
-    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
-    // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
-    if (!endpoint) {
+    // No mail on the server: hand the message to WhatsApp, prefilled. Never pretend it was sent.
+    if (!mail) {
       const wa = `היי, אני ${data.name.trim()}.\n${data.message.trim()}` + (data.email.trim() ? `\n(אימייל לחזרה: ${data.email.trim()})` : '')
       track('form_submit', { placement: 'contact_form', mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(wa), '_blank', 'noopener')
@@ -114,27 +125,29 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
     // a second send within 4.2 s must not be reset to idle by the first send's timer mid-request
     clearTimeout(timer.current)
     setState('loading')
-    try {
-      await fetch(endpoint, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: new URLSearchParams({
-          fullName: data.name.trim(),
-          email: data.email.trim(),
-          message: data.message.trim(),
-          page: window.location.href,
-          userAgent: navigator.userAgent,
-        }),
-      })
+    const res = await sendLead({
+      kind: 'contact', name: data.name.trim(), email: data.email.trim(), message: data.message.trim(),
+      mw_hp7: trap.current?.value ?? '', t: started.current ? Date.now() - started.current : 0,
+    })
+    if (res.error === 'email') {
+      // the server's address check is stricter than the browser's: say so on the field itself
+      setState('idle')
+      setErrors({ email: validationErrors.email })
+      requestAnimationFrame(() => document.getElementById('contact-email')?.focus())
+      return
+    }
+    if (res.ok) {
       track('form_submit', { placement: 'contact_form', mode: 'endpoint' })
       setState('sent')
       setStatus('קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.')
       setData({ name: '', email: '', message: '' })
+      started.current = 0
       inviteOnce('now')
       timer.current = window.setTimeout(() => setState('idle'), 4200)
-    } catch {
+    } else {
       setState('error')
-      setFailure('ההודעה לא נשלחה. נסו שוב, או כתבו לנו ישר בוואטסאפ.')
+      setWaBack([`היי, אני ${data.name.trim()}.`, data.message.trim(), data.email.trim() && `(אימייל לחזרה: ${data.email.trim()})`].filter(Boolean).join('\n'))
+      setFailure('ההודעה לא נשלחה. נסו שוב, או שלחו אותה בוואטסאפ: היא כבר כתובה שם.')
     }
   }
 
@@ -142,7 +155,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
     const id = `contact-${f}`
     const err = errors[f]
     const shared = {
-      id, name: f, value: data[f], required: f !== 'email' || !!import.meta.env.VITE_CONTACT_ENDPOINT, onChange: change(f),
+      id, name: f, value: data[f], required: f !== 'email' || mail, onChange: change(f),
       'aria-invalid': err ? true : undefined, 'aria-describedby': err ? `${id}-err` : undefined, ...props,
     }
     return (
@@ -199,21 +212,25 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
         <form className={`ct__form${SHOT ? ' qs' : ''}`} onSubmit={submit} onFocus={focusIn} onBlur={focusOut} noValidate>
           {/* the sea (D208): one question at a time; the looks keep their three fields */}
           {SHOT && (
-            <SeaSteps data={data} errors={errors} setErrors={setErrors} change={change} needEmail={!!import.meta.env.VITE_CONTACT_ENDPOINT}
-              state={state} submitLabel={import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'} />
+            <SeaSteps data={data} errors={errors} setErrors={setErrors} change={change} needEmail={mail}
+              state={state} submitLabel={mail ? 'שליחת הודעה' : 'שליחה בוואטסאפ'} />
           )}
           {art && <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />}
           {!SHOT && field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
-          {!SHOT && field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
+          {!SHOT && field('email', mail ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {!SHOT && field('message', 'הודעה', {}, true)}
           {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (
             <p role="alert" className="ct__failure" data-zone={Z}>
               {failure}{' '}
-              <a href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
+              <a href={waBack ? getWhatsAppUrl(waBack) : WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_error_alert' })}>לוואטסאפ</a>
             </p>
           )}
-          {!SHOT && <LookButton type="submit" block state={state} live zone="text">{import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'}</LookButton>}
+          {!SHOT && <LookButton type="submit" block state={state} live zone="text">{mail ? 'שליחת הודעה' : 'שליחה בוואטסאפ'}</LookButton>}
+          {/* (D218) the hidden field: off screen, out of the tab order and of the accessibility tree; people never fill it */}
+          <div className="ct__trap" aria-hidden="true"><label>השאירו ריק<input ref={trap} type="text" name="mw_hp7" tabIndex={-1} autoComplete="off" defaultValue="" /></label></div>
+          {/* [קופי: נתי] the privacy line next to the form (Amendment 13, design/research/03) */}
+          <p className="ct__privacy" data-zone={Z}>הפרטים משמשים רק כדי לחזור אליכם. <a href="/privacy/">מדיניות הפרטיות</a></p>
         </form>
       </div>
       {invite && <Suspense fallback={null}><SentGuide late={invite === 'late'} onDone={() => setInvite('')} /></Suspense>}

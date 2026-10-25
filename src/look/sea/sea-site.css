@@ -817,3 +817,8 @@ html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br) { transiti
 
 /* (D200 audit) the skip link, when a keyboard focuses it: ink on cream (it was white on light sky) */
 html[data-look="shot"] a[href="#main-content"]:focus { background: #ede7da !important; color: #0f1011 !important; outline: 2px solid #ede7da; outline-offset: 3px; }
+
+/* (D218) the privacy line under the form, on the sea */
+.sea-contact .ct__privacy { color: #a39d90; text-shadow: var(--sea-halo); }
+.sea-contact .ct__privacy a { color: #ede7da; }
+.sea-contact .ct__privacy a:focus-visible { outline: 2px solid #ede7da; outline-offset: 2px; border-radius: 2px; }

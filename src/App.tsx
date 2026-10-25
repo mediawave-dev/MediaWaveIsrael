@@ -1,11 +1,12 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { Layout } from './components/layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { MotionProvider } from './components/MotionProvider'
 import { ScrollEngineProvider } from './motion/ScrollEngineProvider'
 import SEO from './components/SEO'
 import { testimonials } from './data/testimonials'
+import { trackView } from './utils/analytics'
 
 // The look (DECISIONS #50): vite.config aliases @look/registry to this build's look, so the
 // page ships one look's hero and held scenes (dev: all three, ?look= picks one at boot).
@@ -27,6 +28,9 @@ const Accessibility = P.Accessibility ?? lazy(() => import('./components/pages/A
 const ServicePage = P.Service ?? lazy(() => import('./components/pages/ServicePage'))
 const PortfolioExample = P.Portfolio ?? lazy(() => import('./components/pages/PortfolioExample'))
 const NotFound = P.NotFound ?? lazy(() => import('./components/pages/NotFound'))
+// (D218) the blog, for search: its own lazy chunk, reached from the menu only
+const BlogIndex = lazy(() => import('./blog/BlogIndex'))
+const BlogPost = lazy(() => import('./blog/BlogPost'))
 
 // Style board (dev only): the redesign directions for Gate 1. Never built:
 // import.meta.env.DEV is a literal false in production, so Rollup drops the import.
@@ -138,11 +142,19 @@ function HomePage() {
   )
 }
 
+/** (D218) one page_view per route (the steps of /your-site/ live in history state, not in the path) */
+function PageViews() {
+  const { pathname } = useLocation()
+  useEffect(() => { trackView() }, [pathname])
+  return null
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <MotionProvider>
         <ScrollEngineProvider>
+        <PageViews />
         <Routes>
           {/* Sanity Studio — full viewport, NO Layout wrapper */}
           <Route path="/studio/*" element={
@@ -180,6 +192,8 @@ function App() {
                 <Route path="/terms" element={<Suspense fallback={<PageFallback />}><Terms /></Suspense>} />
                 <Route path="/privacy" element={<Suspense fallback={<PageFallback />}><Privacy /></Suspense>} />
                 <Route path="/accessibility" element={<Suspense fallback={<PageFallback />}><Accessibility /></Suspense>} />
+                <Route path="/blog" element={<Suspense fallback={<PageFallback />}><BlogIndex /></Suspense>} />
+                <Route path="/blog/:slug" element={<Suspense fallback={<PageFallback />}><BlogPost /></Suspense>} />
                 <Route path="*" element={<Suspense fallback={<PageFallback />}><NotFound /></Suspense>} />
               </Routes>
             </Layout>

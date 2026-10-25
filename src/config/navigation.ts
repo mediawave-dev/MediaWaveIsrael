@@ -22,6 +22,8 @@ export const navigation: NavLink[] = [
   { label: 'סטודיו הסגנונות', href: '/styles/', showInMenu: true, showInFooter: true },
   // (D217) the visitor's own site in the five styles [קופי: נתי]
   { label: 'האתר שלכם ב-60 שניות', href: '/your-site/', showInMenu: true, showInFooter: true },
+  // (D218) the blog is there for search: in the menu only, never on the home page or in the footer (Nati, 25.10) [קופי: נתי]
+  { label: 'בלוג', href: '/blog/', showInMenu: true },
 ]
 
 export const headerLinks = navigation.filter((n) => n.showInHeader)

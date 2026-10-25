@@ -230,7 +230,7 @@ export default function YourSitePage() {
           }} />
         )}
         {step === 'name' && (
-          <NameStep name={name} line={line} onName={setName} onLine={setLine} headingRef={heading} onNext={() => goTo('style')} />
+          <NameStep name={name} line={line} onName={setName} onLine={setLine} headingRef={heading} onNext={() => { track('cta_click', { location: 's60_name' }); goTo('style') }} />
         )}
         {step === 'style' && (
           <section className="s60-step s60-style" aria-labelledby="s60-q3">

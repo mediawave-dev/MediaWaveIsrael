@@ -8,9 +8,7 @@ import { isValidName, isValidPhone, validationErrors } from '../utils/validation
 import { getWhatsAppUrl, WHATSAPP_URLS } from '../utils/whatsapp'
 import { track } from '../utils/analytics'
 import { createLeadIntent, type LeadIntent } from '../utils/lead-intent.js'
-
-// Same endpoint as Contact form
-const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
+import { leadReady, sendLead } from '../utils/lead'
 
 export default function LeadModal() {
     const [isVisible, setIsVisible] = useState(false)
@@ -22,6 +20,17 @@ export default function LeadModal() {
     // via Input); the form-level alert is only for send failures
     const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string; privacy?: string }>({})
     const [privacyChecked, setPrivacyChecked] = useState(false)
+    // (D218) the site's own mail (/api/lead), asked only once the modal opens; until it answers yes,
+    // the details go to WhatsApp. `opened` dates the send for the server's bot check.
+    const [mail, setMail] = useState(false)
+    const opened = useRef(0)
+    useEffect(() => {
+        if (!isVisible) return
+        opened.current ||= Date.now()
+        let on = true
+        void leadReady().then((ok) => { if (on) setMail(ok) })
+        return () => { on = false }
+    }, [isVisible])
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -136,9 +145,9 @@ export default function LeadModal() {
 
         setFieldErrors({})
 
-        // No endpoint configured — hand the lead off to WhatsApp with the details
+        // No mail on the server: hand the lead off to WhatsApp with the details
         // prefilled. Never show a fake "received" state for data that went nowhere.
-        if (!endpoint) {
+        if (!mail) {
             const waMessage = `היי, אני ${formData.name.trim()}. אשמח שתחזרו אליי לשיחה.\nטלפון: ${formData.phone.trim()}`
             track('lead_submit', { placement: 'lead_modal', mode: 'whatsapp_fallback' })
             window.open(getWhatsAppUrl(waMessage), '_blank', 'noopener')
@@ -153,19 +162,11 @@ export default function LeadModal() {
         setIsSubmitting(true)
 
         try {
-            const message = `New Lead from Popup. Phone: ${formData.phone.trim()}`
-
-            await fetch(endpoint, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: new URLSearchParams({
-                    fullName: formData.name.trim(),
-                    phone: formData.phone.trim(),
-                    message: message,
-                    page: window.location.href,
-                    userAgent: navigator.userAgent,
-                }),
+            const res = await sendLead({
+                kind: 'callback', name: formData.name.trim(), phone: formData.phone.trim(),
+                t: opened.current ? Date.now() - opened.current : 0,
             })
+            if (!res.ok) throw new Error(`lead not sent: ${res.error ?? 'network'}`)
 
             // Mark as submitted permanently
             localStorage.setItem('leadModalSubmitted', 'true')
@@ -293,7 +294,7 @@ export default function LeadModal() {
                                         </p>
                                     )}
                                     <LookButton type="submit" block live state={isSubmitting ? 'loading' : errorMsg ? 'error' : 'idle'}>
-                                        {endpoint ? 'תחזרו אליי' : 'שליחה בוואטסאפ'}
+                                        {mail ? 'תחזרו אליי' : 'שליחה בוואטסאפ'}
                                     </LookButton>
                                 </form>
                             </>

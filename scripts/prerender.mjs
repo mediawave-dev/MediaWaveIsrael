@@ -13,6 +13,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { createServer } from 'http'
 import puppeteer from 'puppeteer'
+import { blogPosts } from './blog-posts.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
@@ -35,7 +36,11 @@ const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility', '/styles', '
 const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
 const portfolioRoutes = parseDataSlugs('src/data/portfolio-examples.ts').map(s => `/portfolio/${s}`)
 
-const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes]
+// (D218) the blog: its index and every published post
+const posts = blogPosts(ROOT)
+const blogRoutes = posts.length ? ['/blog', ...posts.map((p) => `/blog/${p.slug}`)] : []
+
+const ROUTES = [...STATIC_ROUTES, ...serviceRoutes, ...portfolioRoutes, ...blogRoutes]
 
 // Any path that matches no route renders the NotFound page. Prerendering it to
 // 404.html lets Cloudflare Pages serve a real HTTP 404 for unknown URLs instead
@@ -216,7 +221,7 @@ async function prerender() {
     html = html.replace(/<link rel="stylesheet" crossorigin="" href="(\/assets\/(?!index-)[^"]+\.css)"(?: media="[^"]*")?(?: onload="[^"]*")?>/g,
       // the style studio paints its shell and its opening style (Flight) in the first frame: without them
       // the page shows unstyled and then jumps (Lighthouse CLS 0.32 on /styles before this)
-      (_, href) => (route !== '/' && /\/assets\/(shot-pages|ShotLegal)-/.test(href)) || (route === '/styles' && /\/assets\/(StylesPage|Flight)-/.test(href)) || (route === '/your-site' && /\/assets\/YourSitePage-/.test(href))
+      (_, href) => (route !== '/' && /\/assets\/(shot-pages|ShotLegal)-/.test(href)) || (route.startsWith('/blog') && /\/assets\/(Blog\w*|blog)-/.test(href)) || (route === '/styles' && /\/assets\/(StylesPage|Flight)-/.test(href)) || (route === '/your-site' && /\/assets\/YourSitePage-/.test(href))
         ? `<link rel="stylesheet" crossorigin="" href="${href}">`
         : `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
 
