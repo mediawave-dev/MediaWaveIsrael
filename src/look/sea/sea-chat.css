@@ -25,11 +25,11 @@ html.chat-open :is(.gd, .gd-trail, .snd) { visibility: hidden !important; }
   html:not(.disable-animations):not(.motion-reduced) .sc__spark { animation: ai-twinkle 4.2s ease-in-out 0.8s infinite; }
 }
 .sc__who { flex: 1; min-width: 0; }
-.sc__name { margin: 0; font: 800 22px/1 var(--display); font-stretch: 80%; color: #ede7da; unicode-bidi: isolate; }
-.sc__role { margin: 5px 0 0; font: 600 13px/1.2 var(--text); color: #a39d90; }
+.sc__name { margin: 0; font: 800 calc(22px * var(--ts))/1 var(--display); font-stretch: 80%; color: #ede7da; unicode-bidi: isolate; }
+.sc__role { margin: 5px 0 0; font: 600 calc(13px * var(--ts))/1.2 var(--text); color: #a39d90; }
 .sc__ctl {
   flex: none; display: grid; place-items: center; min-width: 52px; height: 44px; padding: 0 6px; border: 0; border-radius: 999px;
-  background: none; color: #a39d90; font: 600 13px/1 var(--sea-mono); white-space: nowrap; direction: ltr; cursor: pointer;
+  background: none; color: #a39d90; font: 600 calc(13px * var(--ts))/1 var(--sea-mono); white-space: nowrap; direction: ltr; cursor: pointer;
   transition: color 0.25s ease, background-color 0.25s ease;
 }
 @media (hover: hover) and (pointer: fine) { .sc__ctl:hover { color: #ede7da; background: rgba(237, 231, 218, 0.06); } }
@@ -47,12 +47,12 @@ html.chat-open :is(.gd, .gd-trail, .snd) { visibility: hidden !important; }
 /* every message stands on an island of halftone: the bot's dark, the visitor's cream */
 .sc__bubble {
   position: relative; isolation: isolate; max-width: 84%; padding: 12px 16px;
-  font: 500 16px/1.6 var(--text); color: #ede7da; white-space: pre-wrap; overflow-wrap: anywhere; text-align: start;
+  font: 500 calc(16px * var(--ts))/1.6 var(--text); color: #ede7da; white-space: pre-wrap; overflow-wrap: anywhere; text-align: start;
 }
 .sc__msg--me .sc__bubble { --isle-ground: #ede7da; color: #0f1011; font-weight: 600; }
 .sc__bubble a { color: #9dbcd8; text-decoration: underline; text-underline-offset: 3px; }
 @media (hover: hover) and (pointer: fine) { .sc__bubble a:hover { color: #ede7da; } }
-.sc__msg[data-failed] .sc__bubble::before { content: "[ ! ] "; content: "[ ! ] " / ""; font: 700 14px/1 var(--sea-mono); color: #f0907e; }
+.sc__msg[data-failed] .sc__bubble::before { content: "[ ! ] "; content: "[ ! ] " / ""; font: 700 calc(14px * var(--ts))/1 var(--sea-mono); color: #f0907e; }
 /* the bot is writing: three dots hop, the bubble's own three dots */
 .sc__bubble--typing { padding: 16px 18px; }
 .sc__dots { display: flex; gap: 6px; }
@@ -64,6 +64,12 @@ html:not(.disable-animations):not(.motion-reduced) .sc__dots i:nth-child(3) { an
 
 /* the input: the contact form's dotted frame; the send key: an island that fills with cream when there is
    something to send */
+.sc__note {
+  flex: none; margin: 0; padding: 10px 16px; border-bottom: 1px solid var(--sea-rule, rgba(237, 231, 218, 0.12));
+  font: 500 calc(13px * var(--ts))/1.5 var(--text); color: #c9c3b6;
+}
+.sc__note a { color: #ede7da; text-decoration: underline; text-underline-offset: 3px; }
+.sc__note a:focus-visible { outline: 2px solid #ede7da; outline-offset: 2px; border-radius: 2px; }
 .sc__bar {
   display: flex; align-items: flex-end; gap: 14px; flex: none;
   padding: 14px 16px max(14px, env(safe-area-inset-bottom)); border-top: 1px solid var(--sea-rule, rgba(237, 231, 218, 0.12));
@@ -71,7 +77,7 @@ html:not(.disable-animations):not(.motion-reduced) .sc__dots i:nth-child(3) { an
 .sc__input {
   --fd: rgba(237, 231, 218, 0.55); --fr: 1.1px;
   flex: 1; min-width: 0; box-sizing: border-box; min-height: 52px; max-height: 120px; resize: none; margin: 0;
-  padding: 13px 16px; border: 0; border-radius: 0; color: #ede7da; font: 600 16px/1.6 var(--text); direction: rtl;
+  padding: 13px 16px; border: 0; border-radius: 0; color: #ede7da; font: 600 calc(16px * var(--ts))/1.6 var(--text); direction: rtl;
   background:
     radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 0 0 / 6px 6px repeat-x,
     radial-gradient(circle, var(--fd) 0 var(--fr), transparent calc(var(--fr) + 0.4px)) 0 100% / 6px 6px repeat-x,

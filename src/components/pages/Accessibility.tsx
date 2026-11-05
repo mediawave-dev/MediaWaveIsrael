@@ -62,7 +62,7 @@ export default function Accessibility() {
             הצהרת נגישות | MediaWave Israel
           </h1>
           <p className="text-brown-light">
-            <strong>עודכן לאחרונה:</strong> יולי 2026
+            <strong>עודכן לאחרונה:</strong> נובמבר 2026
           </p>
         </m.header>
 
@@ -106,7 +106,7 @@ export function AccessibilityBody() {
               באתר מוטמע רכיב נגישות ייעודי (נפתח בלחיצה על כפתור הנגישות), המאפשר:
             </p>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4 mb-6">
-              <li><strong>הגדלת גודל הטקסט</strong> במספר רמות</li>
+              <li><strong>הגדלת הטקסט</strong> בשתי רמות (גדול וגדול מאוד)</li>
               <li><strong>מצב ניגודיות גבוהה</strong> לשיפור קריאות</li>
               <li><strong>עצירת אנימציות</strong> ותנועה באתר</li>
             </ul>
@@ -132,12 +132,29 @@ export function AccessibilityBody() {
               אנו פועלים באופן שוטף לשיפור נגישות האתר. ייתכן שיתגלו רכיבים או עמודים שטרם הונגשו
               במלואם. אם נתקלתם בקושי או בבעיה, נשמח שתפנו אלינו ונטפל בכך בהקדם האפשרי.
             </p>
+            <p className="text-brown leading-relaxed mb-3">
+              מגבלות ידועות:
+            </p>
+            <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
+              <li>הגדלת הטקסט בווידג'ט מגדילה את טקסט הגוף, התוויות והטפסים. הכותרות הגדולות ותוויות הכפתורים נשארות בגודלן. אפשר להגדיל את כל העמוד בהגדלה של הדפדפן (Ctrl ו-+).</li>
+              <li>בסטודיו הסגנונות (/styles) יש סצנות תלת-ממד ואנימציות שמדגימות סגנונות עיצוב. הן לא נושאות מידע שאין בטקסט שלצידן, והכפתור "ללא אנימציות" עוצר אותן.</li>
+            </ul>
+          </section>
+
+          {/* Section 3b - בדיקה */}
+          <section className="mb-10">
+            <h2 className="text-[24px] font-headline font-bold text-brown-dark mb-4 pb-2 border-b border-cream-darker">
+              4. בדיקת הנגישות
+            </h2>
+            <p className="text-brown leading-relaxed">
+              הבדיקה האחרונה של האתר נעשתה בנובמבר 2026, בדפדפן Chrome במחשב ובתצוגת טלפון. נבדקו רכיב הנגישות, טפסי יצירת הקשר והמעבר ביניהם במקלדת.
+            </p>
           </section>
 
           {/* Section 4 - יצירת קשר */}
           <section className="mb-10">
             <h2 className="text-[24px] font-headline font-bold text-brown-dark mb-4 pb-2 border-b border-cream-darker">
-              4. פנייה בנושאי נגישות
+              5. פנייה בנושאי נגישות
             </h2>
             <p className="text-brown leading-relaxed mb-3">
               נתקלתם בבעיית נגישות באתר? יש לכם הצעה לשיפור? נשמח לשמוע:

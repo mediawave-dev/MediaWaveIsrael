@@ -51,8 +51,8 @@ html[data-look="shot"] :is(.sea-h1, .sea-h2, .sea-h3, .sea-foot__line, .sp-h1) {
 .sea-incl__h { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(26px, 7vw, 44px); line-height: 1.05; color: #ede7da; text-shadow: var(--sea-halo); }
 .sea-incl__list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--sea-rule); }
 .sea-incl__row { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); column-gap: 12px; align-items: baseline; padding-block: 16px; border-top: 1px solid var(--sea-rule); }
-.sea-incl__n { font: 600 12px/1 var(--sea-mono); letter-spacing: 0.06em; color: #79a0c5; direction: ltr; text-shadow: var(--sea-halo); }
-.sea-incl__t { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(19px, 5vw, 26px); line-height: 1.25; color: #ede7da; text-shadow: var(--sea-halo); text-wrap: pretty; }
+.sea-incl__n { font: 600 calc(12px * var(--ts))/1 var(--sea-mono); letter-spacing: 0.06em; color: #79a0c5; direction: ltr; text-shadow: var(--sea-halo); }
+.sea-incl__t { font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: calc(clamp(19px, 5vw, 26px) * var(--ts)); line-height: 1.25; color: #ede7da; text-shadow: var(--sea-halo); text-wrap: pretty; }
 .sea-incl__more { justify-self: start; }
 html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0.3s + var(--i, 0) * 0.06s); }
 @media (min-width: 1100px) {
@@ -75,10 +75,10 @@ html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0
    empty (frames of the live site, 23.10). Award sites scale the type and the grid with the screen; the
    phone keeps every approved size, so every rule here starts at 1100px. ── */
 @media (min-width: 1100px) {
-  html[data-look="shot"] .sea-sub { font-size: 20px; line-height: 1.6; max-width: 40ch; }
+  html[data-look="shot"] .sea-sub { font-size: calc(20px * var(--ts)); line-height: 1.6; max-width: 40ch; }
   html[data-look="shot"] .sea-list__title { font-size: min(2.9vw, 42px); }
   html[data-look="shot"] .sea-list__line { font-size: 1.125rem; line-height: 1.65; max-width: 44ch; }
-  html[data-look="shot"] .sea-list__n { font-size: 13px; }
+  html[data-look="shot"] .sea-list__n { font-size: calc(13px * var(--ts)); }
   /* why: the three reasons as three columns across the whole width, a spread; the header keeps the start */
   html[data-look="shot"] .sea-why > .sea-list { max-width: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 56px; border-bottom: 0; }
   html[data-look="shot"] .sea-why .sea-list__item { grid-template-columns: minmax(0, 1fr); row-gap: 14px; padding-block: 28px 8px; align-content: start; }
@@ -99,7 +99,7 @@ html.sea-reveal [data-reveal] .sea-incl__row.sea-fade { transition-delay: calc(0
    chunk: every rule here carries html[data-look] and .sp--service. ── */
 html[data-look="shot"] .sp--service .sp-sheet { background: none; box-shadow: none; border-radius: 0; }
 html[data-look="shot"] .sp--service .sp-kicker {
-  display: inline-block; margin: 0 0 14px; font: 600 12px/1.2 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90;
+  display: inline-block; margin: 0 0 14px; font: 600 calc(12px * var(--ts))/1.2 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90;
   direction: ltr; unicode-bidi: isolate; text-shadow: var(--sea-halo);
 }
 html[data-look="shot"] .sp--service .sp-kicker::before { content: "[ "; }
@@ -119,7 +119,7 @@ html[data-look="shot"] .sp--service .sp-check { padding: 0; text-align: start; }
 html[data-look="shot"] .sp--service .sp-check ul { margin-top: 0; border-bottom: 1px solid var(--sea-rule); }
 html[data-look="shot"] .sp--service .sp-check li {
   gap: 14px; padding: 16px 0; box-shadow: none; border-top: 1px solid var(--sea-rule);
-  font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(19px, 5vw, 26px); line-height: 1.25; text-shadow: var(--sea-halo);
+  font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: calc(clamp(19px, 5vw, 26px) * var(--ts)); line-height: 1.25; text-shadow: var(--sea-halo);
 }
 html[data-look="shot"] .sp--service .sp-check li:last-child { box-shadow: none; }
 html[data-look="shot"] .sp--service .sp-tick { margin-top: 0.2em; }
@@ -141,7 +141,7 @@ html[data-look="shot"] .sp--service .sp-pad > li { box-shadow: none; border-top:
 html[data-look="shot"] .sp--service .sp-pad summary { padding-inline: 0 40px; min-height: 64px; font: 700 1.125rem/1.45 var(--text); text-shadow: var(--sea-halo); }
 html[data-look="shot"] .sp--service .sp-pad summary::before {
   content: "( " counter(q, decimal-leading-zero) " )"; content: "( " counter(q, decimal-leading-zero) " )" / "";
-  min-width: 3.4em; color: #79a0c5; font: 600 12px/1 var(--sea-mono); letter-spacing: 0.06em; direction: ltr;
+  min-width: 3.4em; color: #79a0c5; font: 600 calc(12px * var(--ts))/1 var(--sea-mono); letter-spacing: 0.06em; direction: ltr;
 }
 html[data-look="shot"] .sp--service .sp-pad__sign { inset-inline-end: 4px; }
 html[data-look="shot"] .sp--service .sp-pad details[open] summary { box-shadow: none; }

@@ -3,16 +3,20 @@
 import { useId, useState, type FormEvent } from 'react'
 import { sendLead } from './lead'
 import type { StyleDef } from './registry'
+import Agree from '../components/ui/Agree'
 
 export default function LeadForm({ def, className = '', send = 'שליחה בוואטסאפ' }: { def: StyleDef; className?: string; send?: string }) {
   const id = useId().replace(/:/g, '')
   const [f, setF] = useState({ name: '', phone: '', message: '' })
   const [err, setErr] = useState('')
+  const [agreed, setAgreed] = useState(false)
+  const [agreeErr, setAgreeErr] = useState(false)
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF((o) => ({ ...o, [k]: e.target.value }))
   const submit = (e: FormEvent) => {
     e.preventDefault()
     if (!f.name.trim() && !f.message.trim()) { setErr('כתבו שם או כמה מילים, ונמשיך משם.'); return }
     setErr('')
+    if (!agreed) { setAgreeErr(true); document.getElementById(`${id}-a`)?.focus(); return }
     sendLead(def, f)
   }
   return (
@@ -30,6 +34,8 @@ export default function LeadForm({ def, className = '', send = 'שליחה בו�
         <label htmlFor={`${id}-m`}>כמה מילים על העסק</label>
         <textarea id={`${id}-m`} name="message" rows={3} value={f.message} onChange={set('message')} />
       </div>
+      <Agree id={`${id}-a`} checked={agreed} error={agreeErr} className="st-form__agree"
+        onChange={(v) => { setAgreed(v); if (v) setAgreeErr(false) }} />
       {err && <p className="st-form__err" role="alert">{err}</p>}
       <button type="submit" className="st-form__send">{send}</button>
     </form>

@@ -94,6 +94,12 @@ export default function SeaChat(p: SeaChatProps) {
         </button>
       </div>
 
+      {/* the notice at collection (privacy law, amendment 13): who answers and where the words go */}
+      <p className="sc__note">
+        התשובות נכתבות בבינה מלאכותית של Anthropic, וההודעות עוברות אליה. לא לכתוב כאן פרטים רגישים.{' '}
+        <a href="/privacy" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</a>
+      </p>
+
       {/* role=log + a polite live region: screen readers hear the bot's replies and its errors */}
       <div className="sc__log" dir="rtl" role="log" aria-live="polite">
         {p.messages.map((msg) => <Message key={msg.id} message={msg} />)}

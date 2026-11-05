@@ -4,7 +4,7 @@ import { AccessibilityBody } from '../../../components/pages/Accessibility'
 
 export default function ShotAccessibility() {
   return (
-    <ShotLegal name="הצהרת נגישות" path="/accessibility" updated="יולי 2026"
+    <ShotLegal name="הצהרת נגישות" path="/accessibility" updated="נובמבר 2026"
       description="הצהרת הנגישות של MediaWave Israel: התאמות הנגישות באתר, רמת התאימות ודרכי פנייה בנושאי נגישות.">
       <AccessibilityBody />
     </ShotLegal>

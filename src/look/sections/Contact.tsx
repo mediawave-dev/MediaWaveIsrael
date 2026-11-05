@@ -24,6 +24,7 @@ import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
 import SeaSteps from '../sea/SeaSteps'
+import Agree from '../../components/ui/Agree'
 
 type Field = 'name' | 'email' | 'message'
 
@@ -53,6 +54,9 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
   const engine = useMotionEngine()
   const [data, setData] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
+  // the privacy consent: required before any send (the fields' errors come first)
+  const [agreed, setAgreed] = useState(false)
+  const [agreeErr, setAgreeErr] = useState(false)
   const [state, setState] = useState<BtnState>('idle')
   const [status, setStatus] = useState('')
   const [failure, setFailure] = useState('')
@@ -99,6 +103,11 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       return
     }
     setErrors({})
+    if (!agreed) {
+      setAgreeErr(true)
+      requestAnimationFrame(() => document.getElementById('contact-agree')?.focus())
+      return
+    }
 
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
     // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
@@ -130,6 +139,7 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       setState('sent')
       setStatus('קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.')
       setData({ name: '', email: '', message: '' })
+      setAgreed(false)
       inviteOnce('now')
       timer.current = window.setTimeout(() => setState('idle'), 4200)
     } catch {
@@ -153,6 +163,11 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       </div>
     )
   }
+
+  const agree = (
+    <Agree id="contact-agree" checked={agreed} error={agreeErr} className="ct__agree"
+      onChange={(v) => { setAgreed(v); if (v) setAgreeErr(false) }} />
+  )
 
   return (
     <section id="contact" className="ct" aria-labelledby="contact-title" data-theme="dark" data-intent="contact" data-chapter={chapter} data-dossier={dossier}>
@@ -200,12 +215,13 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
           {/* the sea (D208): one question at a time; the looks keep their three fields */}
           {SHOT && (
             <SeaSteps data={data} errors={errors} setErrors={setErrors} change={change} needEmail={!!import.meta.env.VITE_CONTACT_ENDPOINT}
-              state={state} submitLabel={import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'} />
+              state={state} submitLabel={import.meta.env.VITE_CONTACT_ENDPOINT ? 'שליחת הודעה' : 'שליחה בוואטסאפ'} agree={agree} />
           )}
           {art && <Companion engine={engine} status={pal} progress={progress} keys={keys} src={palSrc} />}
           {!SHOT && field('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
           {!SHOT && field('email', import.meta.env.VITE_CONTACT_ENDPOINT ? 'אימייל' : 'אימייל (לא חובה)', { type: 'email', autoComplete: 'email', dir: 'ltr', inputMode: 'email' })}
           {!SHOT && field('message', 'הודעה', {}, true)}
+          {!SHOT && agree}
           {status && <p role="status" className="ct__status" data-zone={Z}>{status}</p>}
           {failure && (
             <p role="alert" className="ct__failure" data-zone={Z}>

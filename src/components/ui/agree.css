@@ -1,0 +1,13 @@
+/* The consent checkbox (Agree.tsx). Neutral: the box and the words take the form's own colour and face,
+   the hit area is the whole row (44px at least). Looks and worlds tune it in their own sheets. */
+.agree { margin: 14px 0; }
+.agree__row { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; }
+/* the forms style their inputs as fields (width, padding, a ground): the box starts from the browser's own */
+.agree input.agree__box {
+  all: revert; flex: none; width: 22px; height: 22px; margin: 1px 0 0; cursor: pointer;
+  accent-color: currentColor; color-scheme: light;
+}
+.agree .agree__label { all: revert; flex: 1; min-width: 0; font: inherit; font-size: 0.92em; line-height: 1.5; color: inherit; text-align: start; cursor: pointer; }
+.agree__label a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.agree input.agree__box:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.agree__err { margin: 6px 0 0; font-size: 0.92em; font-weight: 600; line-height: 1.4; }

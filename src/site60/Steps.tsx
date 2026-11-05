@@ -170,7 +170,7 @@ export function BuildStep({ value, onPick, waHref, onSend, headingRef, summary }
         {waHref
           ? <Key href={waHref} onClick={onSend} wa className="s60-key--wa">שלחו לנו בוואטסאפ</Key>
           : <Key disabled wa className="s60-key--wa">שלחו לנו בוואטסאפ</Key>}
-        <p className="s60-fine">ההודעה נפתחת אצלכם כתובה, ונשלחת רק כשתלחצו.</p>
+        <p className="s60-fine">ההודעה נפתחת אצלכם כתובה, ונשלחת רק כשתלחצו. <a href="/privacy" target="_blank" rel="noopener noreferrer">מדיניות הפרטיות</a></p>
       </div>
     </section>
   )

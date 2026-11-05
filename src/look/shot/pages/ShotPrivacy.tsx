@@ -4,7 +4,7 @@ import { PrivacyBody } from '../../../components/pages/Privacy'
 
 export default function ShotPrivacy() {
   return (
-    <ShotLegal name="מדיניות פרטיות" path="/privacy" updated="ינואר 2026"
+    <ShotLegal name="מדיניות פרטיות" path="/privacy" updated="נובמבר 2026"
       description="מדיניות הפרטיות של MediaWave Israel: כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם.">
       <PrivacyBody />
     </ShotLegal>

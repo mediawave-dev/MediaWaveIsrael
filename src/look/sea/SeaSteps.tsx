@@ -4,7 +4,7 @@
 // the answers already given gather below as rows, and a tap on one goes back to it. The message takes
 // Enter as a new line and Ctrl/Cmd+Enter to send. Contact.tsx keeps the data, the validation and the send.
 // The questions and their small lines: approved by Nati (22.10, "הכל מאושר")
-import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent, type ReactNode } from 'react'
 import { LookButton } from '@look/button'
 import type { BtnState } from '../buttons/StateButton'
 import { isValidEmail, isValidMessage, isValidName, validationErrors } from '../../utils/validation'
@@ -24,9 +24,11 @@ interface Props {
   needEmail: boolean
   state: BtnState
   submitLabel: string
+  /** the privacy consent (Contact owns it), shown on the last question above the send */
+  agree: ReactNode
 }
 
-export default function SeaSteps({ data, errors, setErrors, change, needEmail, state, submitLabel }: Props) {
+export default function SeaSteps({ data, errors, setErrors, change, needEmail, state, submitLabel, agree }: Props) {
   const [step, setStep] = useState(0)
   const [moved, setMoved] = useState(false)
   const field = useRef<HTMLInputElement & HTMLTextAreaElement>(null)
@@ -107,6 +109,7 @@ export default function SeaSteps({ data, errors, setErrors, change, needEmail, s
             : <input type="text" autoComplete="name" enterKeyHint="next" {...shared} />}
         {err && <p id={`${id}-err`} className="ct__err">{err}</p>}
       </div>
+      {last && agree}
       <div className="qs__next">
         <span className="qs__hint" lang="en" dir="ltr" aria-hidden="true">{f === 'message' ? 'CTRL + ENTER ↵' : 'ENTER ↵'}</span>
         {last

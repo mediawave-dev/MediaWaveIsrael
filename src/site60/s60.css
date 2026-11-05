@@ -67,6 +67,7 @@ html.s60-on, html.s60-on body { background: #0f1011; }
 .s60-lede { margin: 0 0 22px; font-size: 18px; line-height: 1.6; color: var(--soft); }
 .s60-fine { margin: 14px 0 0; font-size: 14px; line-height: 1.6; color: var(--soft); }
 .s60-fine--c { text-align: center; }
+.s60-fine a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .s60-actions { display: flex; justify-content: center; margin-top: 18px; }
 
 /* ---------- the key: [ words ] ---------- */

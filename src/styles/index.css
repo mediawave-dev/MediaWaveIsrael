@@ -946,6 +946,9 @@ textarea {
 :root {
   --accessibility-text-scale: 1;
 }
+/* --ts: the same scale for sizes written in px (the sea and the shot's pages): calc(15px * var(--ts)).
+   Declared on html beside the inline scale, so it follows every change of the widget. */
+html { --ts: var(--accessibility-text-scale, 1); }
 
 /* Text scaling is applied at the ROOT (see @layer base html rule):
    scaling the root font-size scales every rem-based size on the site —
