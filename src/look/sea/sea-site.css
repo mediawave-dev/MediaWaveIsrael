@@ -233,7 +233,7 @@ html[data-look="shot"] .sea-foot { font-family: var(--text); }
 .sea-foot__in { max-width: calc(1360px + 2 * var(--gut, 16px)); margin-inline: auto; padding: 72px var(--gut, 16px) 0; display: grid; gap: 44px; }
 .sea-foot__head { display: grid; gap: 16px; justify-items: start; }
 .sea-foot__line {
-  margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%; font-size: clamp(34px, 9vw, 88px);
+  margin: 0; font-family: var(--display); font-weight: var(--display-w); font-size: clamp(34px, 9vw, 88px);
   line-height: 0.98; color: #ede7da; text-shadow: var(--sea-halo); text-wrap: balance;
 }
 .sea-foot__cols { display: grid; gap: 40px; }
@@ -262,7 +262,7 @@ html[data-look="shot"] .sea-foot__rows--contact a.sea-foot__row { grid-template-
   html:not(.disable-animations):not(.motion-reduced) .sea-foot a.sea-foot__row:hover .sea-foot__ico > .dot-glyph { animation: dg-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 }
 .sea-foot__t {
-  min-width: 0; overflow-wrap: anywhere; font-family: var(--display); font-weight: 800; font-stretch: 80%;
+  min-width: 0; overflow-wrap: anywhere; font-family: var(--display); font-weight: var(--display-w);
   font-size: clamp(22px, 5.6vw, 32px); line-height: 1.12; color: #ede7da; text-shadow: var(--sea-halo);
 }
 .sea-foot__t[dir="ltr"] { text-align: end; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
@@ -314,7 +314,7 @@ html[data-look="shot"] #contact :is(input, textarea) { background: #17191b; }
 .sea-faq .faq__head, .sea-contact .ct__side > h2 { margin: 0 0 36px; text-align: start; }
 .sea-faq .faq__head { display: grid; gap: 18px; justify-items: start; }
 .sea-faq .faq__head h2, .sea-contact .ct h2 {
-  margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%;
+  margin: 0; font-family: var(--display); font-weight: var(--display-w);
   font-size: clamp(40px, 10.6vw, 120px); line-height: 0.94; color: #ede7da; text-align: start; text-shadow: var(--sea-halo);
   padding-bottom: 0.08em; margin-bottom: 0.22em;
 }
@@ -354,7 +354,7 @@ html[data-look="shot"] .sea-contact .ct__ways a {
 .sea-contact .ct__ways a::after { content: "( + )"; content: "( + )" / ""; font: 600 12px/1 var(--sea-mono); color: #a39d90; direction: ltr; white-space: nowrap; transition: color 0.3s ease; }
 .sea-contact .ct__ways a[target="_blank"]::after { content: "( ↗ )"; content: "( ↗ )" / ""; }
 html[data-look="shot"] .sea-contact .ct__ways a b {
-  min-width: 0; font-family: var(--display); font-weight: 800; font-stretch: 80%; font-size: clamp(22px, 6.2vw, 36px);
+  min-width: 0; font-family: var(--display); font-weight: var(--display-w); font-size: clamp(22px, 6.2vw, 36px);
   line-height: 1.1; color: #ede7da; text-shadow: var(--sea-halo); text-align: start;
 }
 html[data-look="shot"] .sea-contact .ct__ways a b[dir="ltr"] { font-size: clamp(18px, 5.4vw, 34px); white-space: nowrap; text-align: end; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
@@ -464,7 +464,7 @@ html[data-look="shot"] .sp-more .sp-obj { display: none; }
 html[data-look="shot"] .sp-more ul { grid-template-columns: 1fr; gap: 0; width: min(100% - 2 * var(--gut, 16px), 720px); margin-inline: auto; border-bottom: 1px solid var(--sea-rule); }
 html[data-look="shot"] .sp-more li { border-top: 1px solid var(--sea-rule); }
 html[data-look="shot"] .sp-more__link { display: flex; justify-content: flex-start; align-items: center; min-height: 56px; padding: 12px 0; background: none; box-shadow: none; border-radius: 0; color: #ede7da; text-decoration: none; }
-html[data-look="shot"] .sp-more__name { font: 800 1.35rem/1.2 var(--display); font-stretch: 80%; }
+html[data-look="shot"] .sp-more__name { font: var(--display-w) 1.35rem/1.2 var(--display); }
 @media (hover: hover) and (pointer: fine) { html[data-look="shot"] .sp-more__link:hover { color: #79a0c5; } }
 /* the 404: the desk's gap and loupe give way to the field */
 html[data-look="shot"] .sp-lost__top .sp-lost__gap { border-color: rgba(237, 231, 218, 0.4); }
@@ -817,3 +817,5 @@ html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br) { transiti
 
 /* (D200 audit) the skip link, when a keyboard focuses it: ink on cream (it was white on light sky) */
 html[data-look="shot"] a[href="#main-content"]:focus { background: #ede7da !important; color: #0f1011 !important; outline: 2px solid #ede7da; outline-offset: 3px; }
+/* the closing line, on the page's quiet ground: the Thin cut, where it is large enough to hold (D218) */
+@media (min-width: 768px) { html[data-look="shot"] .sea-foot__line { font-weight: 100; } }

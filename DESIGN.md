@@ -15,9 +15,8 @@ colors:
   face: "#FFFFFF"
 typography:
   display:
-    fontFamily: "MW Noto = Noto Sans Hebrew variable (Hebrew + Latin), MW Noto Fallback (Arial, metric-matched)"
-    fontWeight: 800
-    fontStretch: "75%"
+    fontFamily: "mediawave-font1 (the studio's own wide face, Hebrew + Latin), Arial metric-matched fallback, then MW Noto"
+    fontWeight: 400
     lineHeight: 1.02-1.2
   body:
     fontFamily: "MW Noto"
@@ -55,7 +54,7 @@ A gallery on cream. One thin Prussian line, the wave of the Horizon logo, runs f
 | rule | ink at 16% | hairlines between rows |
 | credits | ink ground, cream type | the footer only |
 
-Type: Noto Sans Hebrew. Display 800 at 75% width (H1 12.4vw on phones, 60-96px from 1100px; H2 10.5vw to 96px); text 400, 17px, 1.7; chapter numbers in a mono face, Latin digits.
+Type: headings in mediawave-font1 Regular (D218; H1 12.4vw on phones, 60-96px from 1100px; H2 10.5vw to 96px); text in Noto Sans Hebrew 400, 17px, 1.7; chapter numbers in a mono face, Latin digits.
 
 ## Motion (D125)
 One clock (`clock.ts`): native scroll, eased once for the page, each part eased again toward its own target, fixed ratios. One requestAnimationFrame loop, only while something moves. Still mode (OS reduced motion, the widget's stop switch, `?reduce=1`, the prerender, no JS): every part at its last frame. The pre-paint class `html.shot-dive` (index.html) shows the shut laptop until the first geared frame.
@@ -101,7 +100,7 @@ Shadows are ink at an alpha (`--paper-shadow`). No gradients, glow or glass. Err
 
 ## 3. Typography (D81)
 
-One family, Noto Sans Hebrew (variable, self-hosted in `public/fonts/noto/`), with a metric-matched Arial fallback (`src/look/shot/shot-fonts.css`). Headings 800 at 75% width; text 400; UI 700. Hebrew rules: no letter-spacing, no italics, no en or em dash or maqaf in copy, no hyphen where words can carry the meaning ("2 עד 3 שבועות", "בחיפושי AI").
+Two families (`src/look/shot/shot-fonts.css`), each with a metric-matched Arial fallback. Headings: mediawave-font1 Regular, the studio's own face (D218, source in `fonts/mediawave-font1`); Thin only on large lines over a quiet ground, never over video. Text 400 and UI 700: Noto Sans Hebrew (variable, self-hosted in `public/fonts/noto/`). Hebrew rules: no letter-spacing, no italics, no en or em dash or maqaf in copy, no hyphen where words can carry the meaning ("2 עד 3 שבועות", "בחיפושי AI").
 
 ## 4. Motion (D83, SPEC 1.4-1.7)
 

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>mediawave-font1 proof</title>
+<!-- Every letter large in each weight, a system Hebrew row to check direction against, and real words. -->
+<style>
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Thin.woff2') format('woff2'); font-weight: 100; }
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Regular.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Bold.woff2') format('woff2'); font-weight: 700; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #FAFAF7; color: #00113D; font-family: 'mediawave-font1'; width: 1800px; padding: 16px; }
+  section { display: grid; grid-template-columns: repeat(9, 1fr); margin-bottom: 18px; }
+  section div { font-size: 170px; line-height: 250px; height: 250px; text-align: center; border: 1px solid #00113D14; }
+  .ref div { font-family: Arial, sans-serif; font-size: 90px; line-height: 130px; height: 130px; }
+  p { font-size: 100px; line-height: 1.4; white-space: nowrap; }
+</style>
+</head>
+<body>
+<script>
+  const abc = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת'.split('');
+  const cells = list => list.map(c => `<div>${c}</div>`).join('');
+  const words = ['העסק שלכם', 'אתר מהיר שלא נתקע', 'דג סקרן שט בים מאוכזב ולפתע מצא חברה'];
+  document.body.innerHTML = [400, 100, 700].map(w => `<section style="font-weight:${w}">${cells(abc)}</section>`).join('')
+    + `<section class="ref">${cells(abc)}</section>`
+    + [400, 100, 700].flatMap(w => words.map(t => `<p style="font-weight:${w}">${t}</p>`)).join('');
+</script>
+</body>
+</html>

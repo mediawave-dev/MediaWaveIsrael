@@ -25,7 +25,7 @@ html.chat-open :is(.gd, .gd-trail, .snd) { visibility: hidden !important; }
   html:not(.disable-animations):not(.motion-reduced) .sc__spark { animation: ai-twinkle 4.2s ease-in-out 0.8s infinite; }
 }
 .sc__who { flex: 1; min-width: 0; }
-.sc__name { margin: 0; font: 800 22px/1 var(--display); font-stretch: 80%; color: #ede7da; unicode-bidi: isolate; }
+.sc__name { margin: 0; font: var(--display-w) 22px/1 var(--display); color: #ede7da; unicode-bidi: isolate; }
 .sc__role { margin: 5px 0 0; font: 600 13px/1.2 var(--text); color: #a39d90; }
 .sc__ctl {
   flex: none; display: grid; place-items: center; min-width: 52px; height: 44px; padding: 0 6px; border: 0; border-radius: 999px;

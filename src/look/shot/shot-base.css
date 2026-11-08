@@ -55,7 +55,7 @@ html[data-look="shot"] {
 }
 
 /* Headings: 800 at 75% width, never italic. The H1 is never balanced, split or faded (it is the LCP). */
-.shot-h1, .shot-h2, .shot-big, .shot-h3 { margin: 0; color: var(--ink); font-family: var(--display); font-weight: 800; font-stretch: 75%; font-style: normal; }
+.shot-h1, .shot-h2, .shot-big, .shot-h3 { margin: 0; color: var(--ink); font-family: var(--display); font-weight: var(--display-w); font-style: normal; }
 .shot-h1 { font-size: var(--shot-h1); line-height: 1.02; }
 .shot-h2 { font-size: var(--shot-h2); line-height: 1.05; text-wrap: balance; }
 .shot-big { font-size: var(--shot-big); line-height: 1.1; }
@@ -68,7 +68,7 @@ html[data-look="shot"] {
 
 /* chapter headings printed on the table: centred (#61), never transformed */
 .shot-table-head { display: block; text-align: center; padding-inline: var(--gut); margin-block: 0 24px; }
-:where(.shot-table-head) > h2 { margin: 0; color: var(--ink); font: 800 var(--shot-h2)/1.05 var(--display); font-stretch: 75%; text-wrap: balance; }
+:where(.shot-table-head) > h2 { margin: 0; color: var(--ink); font: var(--display-w) var(--shot-h2)/1.05 var(--display); text-wrap: balance; }
 :where(.shot-table-head) > p { margin: 12px auto 0; max-width: 34ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
 @media (min-width: 1100px) { .shot-table-head { margin-block: 0 40px; } }
 
@@ -168,7 +168,7 @@ html[data-look="shot"] .mw-menu { background: var(--paper); color: var(--ink); o
 html[data-look="shot"] .mw-menu nav { gap: 0; }
 html[data-look="shot"] .mw-menu nav a {
   display: flex; align-items: center; gap: 12px; min-height: 60px;
-  color: var(--ink); font: 800 clamp(1.9rem, 8vw, 2.6rem)/1.2 var(--display); font-stretch: 75%; text-decoration: none;
+  color: var(--ink); font: var(--display-w) clamp(1.9rem, 8vw, 2.6rem)/1.2 var(--display); text-decoration: none;
   box-shadow: inset 0 -1px 0 var(--line);
 }
 html[data-look="shot"] .mw-menu nav a[aria-current]::after {
@@ -216,7 +216,7 @@ html[data-look="shot"] .mw-foot__col, html[data-look="shot"] .mw-foot__col--wide
 @media (max-width: 860px) {
   html[data-look="shot"] .mw-foot__col, html[data-look="shot"] .mw-foot__col--wide { grid-column: 1 / -1; }
 }
-html[data-look="shot"] .mw-foot__line { font-weight: 800; font-stretch: 75%; font-size: clamp(1.35rem, 6vw, 2rem); line-height: 1.3; text-wrap: balance; }
+html[data-look="shot"] .mw-foot__line { font-weight: var(--display-w); font-size: clamp(1.35rem, 6vw, 2rem); line-height: 1.3; text-wrap: balance; }
 html[data-look="shot"] .mw-foot__col h2 { font: 700 1rem/1.4 var(--ui); }
 html[data-look="shot"] .mw-foot__col ul { gap: 0; }
 html[data-look="shot"] .mw-foot a { padding-inline: 10px; border-radius: 2px; font-size: 1rem; line-height: 1.6; }
@@ -309,7 +309,7 @@ html[data-look="shot"] #accessibility-panel {
   border: 0; border-radius: 2px; background: var(--paper); color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--line), var(--paper-shadow);
 }
-html[data-look="shot"] #accessibility-panel h2 { color: var(--ink); font: 800 1.35rem/1.15 var(--display); font-stretch: 75%; }
+html[data-look="shot"] #accessibility-panel h2 { color: var(--ink); font: var(--display-w) 1.35rem/1.15 var(--display); }
 html[data-look="shot"] #accessibility-panel :is(.text-sm, label) { font-size: 1rem; line-height: 1.6; }
 html[data-look="shot"] #accessibility-panel button { min-height: 44px; border-radius: 2px; }
 html[data-look="shot"] #accessibility-panel button[aria-label="סגור"] { width: 44px; height: 44px; }

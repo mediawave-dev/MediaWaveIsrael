@@ -8,10 +8,10 @@
 .sp { padding: 4px 0 72px; color: var(--ink); }
 
 /* ── type ── */
-.sp-h1 { margin: 0; color: var(--ink); font: 800 clamp(2.4rem, 12.4vw, 3.6rem)/1.02 var(--display); font-stretch: 75%; overflow-wrap: anywhere; }
-.sp-h2 { margin: 0; color: var(--ink); font: 800 clamp(1.7rem, 7.6vw, 2.3rem)/1.08 var(--display); font-stretch: 75%; text-wrap: balance; }
-.sp-h3 { margin: 0; color: var(--ink); font: 800 1.35rem/1.15 var(--display); font-stretch: 75%; }
-.sp-big { margin: 0; color: var(--ink); font: 800 var(--shot-big)/1.08 var(--display); font-stretch: 75%; text-wrap: balance; }
+.sp-h1 { margin: 0; color: var(--ink); font: var(--display-w) clamp(2.4rem, 12.4vw, 3.6rem)/1.02 var(--display); overflow-wrap: anywhere; }
+.sp-h2 { margin: 0; color: var(--ink); font: var(--display-w) clamp(1.7rem, 7.6vw, 2.3rem)/1.08 var(--display); text-wrap: balance; }
+.sp-h3 { margin: 0; color: var(--ink); font: var(--display-w) 1.35rem/1.15 var(--display); }
+.sp-big { margin: 0; color: var(--ink); font: var(--display-w) var(--shot-big)/1.08 var(--display); text-wrap: balance; }
 .sp-kicker { margin: 0 0 8px; color: var(--ink-2); font: 700 0.95rem/1.4 var(--ui); }
 .sp-head { width: min(100% - 2 * var(--gut), 720px); margin: 0 auto 20px; text-align: center; }
 
@@ -220,7 +220,7 @@ html.motion-reduced .sp-pad__sign::before, html.motion-reduced .sp-pad__sign::af
   box-sizing: border-box; display: grid; place-items: center; width: 62%; aspect-ratio: 3 / 4;
   border: 2px dashed rgba(26, 25, 23, 0.38); border-radius: 2px;
 }
-.sp-lost__code { color: var(--ink-2); font: 800 clamp(2.6rem, 14vw, 4rem)/1 var(--display); font-stretch: 75%; font-variant-numeric: tabular-nums; }
+.sp-lost__code { color: var(--ink-2); font: var(--display-w) clamp(2.6rem, 14vw, 4rem)/1 var(--display); font-variant-numeric: tabular-nums; }
 .sp-lost__loupe { position: absolute; inset-inline-start: 4%; bottom: -6%; --fs: 2.6px; }
 @media all { /* D160: full motion on every visit (was: prefers-reduced-motion: no-preference) */
   html:not(.disable-animations):not(.motion-reduced) .sp-lost__loupe > .thing { animation: sp-search 5.6s var(--ease-out) infinite alternate; }

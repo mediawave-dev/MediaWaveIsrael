@@ -17,7 +17,7 @@
 
 .sl-body { max-width: 68ch; color: var(--ink); font: 400 1.05rem/1.75 var(--text); }
 .sl-body section { margin: 0; padding: 26px 0 0; }
-.sl-body h2 { margin: 0 0 12px; padding: 0; border: 0; color: var(--ink); font: 800 1.5rem/1.2 var(--display); font-stretch: 75%; }
+.sl-body h2 { margin: 0 0 12px; padding: 0; border: 0; color: var(--ink); font: var(--display-w) 1.5rem/1.2 var(--display); }
 .sl-body h3 { margin: 18px 0 8px; color: var(--ink); font: 700 1.1rem/1.4 var(--ui); }
 .sl-body p, .sl-body li { color: var(--ink); font: 400 1.05rem/1.75 var(--text); }
 .sl-body p { margin: 0 0 10px; }

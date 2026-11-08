@@ -92,7 +92,7 @@ html:is(.shot-dive, .shot-dive-calm) .shot-hero__laptop .lap__lid { transform: r
 .shot-hero__copy { padding: var(--g-lens) 12px 16px; }
 .shot-hero__title {
   margin: 0; color: var(--ink);
-  font-family: var(--display); font-weight: 800; font-stretch: 75%; font-style: normal;
+  font-family: var(--display); font-weight: var(--display-w); font-style: normal;
   font-size: var(--h1-fs); line-height: 1.02;
 }
 .shot-hero__sub {

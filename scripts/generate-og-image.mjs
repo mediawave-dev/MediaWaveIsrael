@@ -1,7 +1,7 @@
 /**
  * The social share image (public/og-image.png, 1200x630), in the shot look's bands (D110): the
  * Horizon logo, stacked version, on the black band in its dark tones (cream #F4EFE4 and light
- * Prussian blue #79A0C5, as in the site's header), and a cream band under it with the H1 in Noto Sans Hebrew 800
+ * Prussian blue #79A0C5, as in the site's header), and a cream band under it with the H1 in mediawave-font1
  * at 75% width, ink on cream. A hard cut between the bands, no gradient, no shadow, nothing behind
  * the logo (brand rules); clear space well beyond half the disc. Run: node scripts/generate-og-image.mjs
  */
@@ -24,12 +24,13 @@ const HTML = `<!DOCTYPE html>
   @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-hebrew-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; unicode-range: U+0590-05FF, U+20AA, U+FB1D-FB4F; }
   @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-latin-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  @font-face { font-family: 'mediawave-font1'; src: url('data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts/mediawave-font1-Regular.woff2')).toString('base64')}') format('woff2'); font-weight: 400; }
   body { width: 1200px; height: 630px; overflow: hidden; font-family: 'MW Noto', sans-serif; direction: rtl; }
   .top { height: 400px; background: #1A1917; display: grid; place-items: center; }
   .logo { width: 360px; }
   .logo svg { display: block; width: 100%; height: auto; overflow: visible; }
   .ask { position: relative; height: 230px; background: #EDE7DA; display: grid; place-items: center; }
-  .line { font-size: 76px; font-weight: 800; font-stretch: 75%; color: #1A1917; line-height: 1; }
+  .line { font-family: 'mediawave-font1', 'MW Noto', sans-serif; font-size: 66px; font-weight: 400; color: #1A1917; line-height: 1.08; }
   .url { position: absolute; bottom: 22px; left: 40px; font-size: 22px; font-weight: 500; color: #4D4942; direction: ltr; }
 </style>
 </head>

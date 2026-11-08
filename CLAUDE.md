@@ -16,6 +16,7 @@ Design inspiration: https://microsoft.ai/about/
   (`build:k`, `build:m`). Design system: `DESIGN.md`. Decisions: `DECISIONS.rtl.md` #47-#59.
 - Palette "Klein" (#58): stage `#00113D`, paper `#FAFAF7`, International Klein Blue `#002FA7`.
   Fonts (#59): EFT Betaamango headings, IBM Plex Sans Hebrew text, all in `public/fonts`.
+  Production headings (D218): `mediawave-font1`, the studio's own face (`fonts/mediawave-font1`, skill `hebrew-font-studio`).
 - Logo: Horizon (`logos/horizon`, rules in its README; colours via `scripts/brand-palette.mjs`).
 - Rive contact companion: `design/rive/companion/` (CONTRACT.md), `npm run rive:companion`.
 - Sacred: hero video + all 13 Lotties. Locked: contained hovers, no static underlines or lines under

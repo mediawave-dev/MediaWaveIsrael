@@ -65,7 +65,7 @@ html.disable-animations .shot-meet__item h3 { transition: none; }
 .shot-meet__text { margin-top: 16px; }
 .shot-meet__item h3 {
   margin: 0; color: var(--ink);
-  font: 800 var(--shot-h3, 1.35rem)/1.15 var(--display); font-stretch: 75%;
+  font: var(--display-w) var(--shot-h3, 1.35rem)/1.15 var(--display);
 }
 .shot-meet__item p { margin: 8px 0 0; color: var(--ink-2); font: 400 var(--shot-body, 1rem)/1.7 var(--text); }
 .shot-meet__item .shot-receipt { margin-top: 12px; font-size: var(--shot-small, 0.9rem); line-height: 1.6; }

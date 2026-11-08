@@ -16,7 +16,7 @@ html[data-look="shot"] .faq__in {
 
 /* the heading printed on the table (.shot-table-head metrics), never transformed */
 html[data-look="shot"] .faq__head { grid-row: 1; grid-column: 1; margin: 0 0 24px; text-align: center; }
-html[data-look="shot"] .faq__head h2 { margin: 0; color: var(--ink); font: 800 var(--shot-h2)/1.05 var(--display); font-stretch: 75%; text-wrap: balance; }
+html[data-look="shot"] .faq__head h2 { margin: 0; color: var(--ink); font: var(--display-w) var(--shot-h2)/1.05 var(--display); text-wrap: balance; }
 html[data-look="shot"] .faq__head p { margin: 12px auto 0; max-width: 34ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
 
 /* the pad: one sheet, a binding band at its top (the art band it lands on), ruled rows and a
@@ -94,7 +94,7 @@ html[data-look="shot"] .faq__more p { margin: 0; color: var(--ink); font: 400 1r
 html[data-look="shot"] .shot-bw { position: relative; box-sizing: border-box; width: fit-content; max-width: calc(100% - 2 * var(--gut)); margin: 40px auto 0; padding-top: 56px; }
 html[data-look="shot"] .shot-bw .bw { padding: 0; overflow: clip; overflow-clip-margin: 4px; }
 html[data-look="shot"] .shot-bw .bw__line {
-  font: 800 clamp(3.6rem, 22vw, 8rem)/1.05 var(--display); font-stretch: 75%;
+  font: var(--display-w) clamp(3.6rem, 22vw, 8rem)/1.05 var(--display);
   color: transparent; -webkit-text-stroke: 1.5px var(--ink-2);
 }
 html[data-look="shot"] .shot-bw .bw__fill { color: var(--ink); -webkit-text-stroke: 0; }
@@ -115,7 +115,7 @@ html[data-look="shot"] .shot-line--to-word { top: 0; bottom: auto; height: calc(
 html[data-look="shot"] .ct { padding: 48px 0 0; color: var(--ink); }
 html[data-look="shot"] .ct__in { max-width: none; gap: 0; padding-inline: var(--gut); align-items: center; }
 html[data-look="shot"] .ct__side { width: 100%; }
-html[data-look="shot"] .ct h2 { margin: 0; color: var(--ink); font: 800 var(--shot-h2)/1.05 var(--display); font-stretch: 75%; text-wrap: balance; }
+html[data-look="shot"] .ct h2 { margin: 0; color: var(--ink); font: var(--display-w) var(--shot-h2)/1.05 var(--display); text-wrap: balance; }
 html[data-look="shot"] .ct__lead { margin: 12px auto 24px; max-width: 34ch; color: var(--ink-2); font: 400 var(--shot-body)/1.7 var(--text); }
 
 /* the business card: paper, the Lottie printed at its top as the logo (the art band), four rows */

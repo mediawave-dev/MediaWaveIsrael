@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mediawave-font1</title>
+<style>
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Thin.woff2') format('woff2'); font-weight: 100; }
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Regular.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'mediawave-font1'; src: url('dist/mediawave-font1-Bold.woff2') format('woff2'); font-weight: 700; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #FAFAF7; color: #00113D; font-family: 'mediawave-font1'; padding: 40px 16px; width: 1600px; }
+  section { padding-block: 22px; border-bottom: 1px solid #00113D22; }
+  p { font-size: 74px; line-height: 1.5; word-spacing: .1em; }
+</style>
+</head>
+<body>
+  <script>
+    const rows = ['אבגדהוזחטיכךלמםנןסעפףצץקרשת'.split('').join(' '), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').join(' '), 'abcdefghijklmnopqrstuvwxyz'.split('').join(' '), 'MediaWave  Hamburgefonstiv  AVATAR  Typography', '0 1 2 3 4 5 6 7 8 9', '. , : ; ? ! - ־ – — … ( ) / % + ₪ ׳ ״ \' " ‘ ’ “ ”'];
+    document.body.innerHTML = [100, 400, 700].map(w => `<section style="font-weight:${w}">${rows.map(r => `<p>${r}</p>`).join('')}</section>`).join('');
+  </script>
+</body>
+</html>

@@ -47,8 +47,8 @@ const NOT_FOUND_ROUTE = '/__not-found__'
 // loaded") and re-emits a later LCP entry. The metric-matched fallback (looks.css) keeps the
 // swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
 // The display face lives at a stable public URL: EFT Betaamango for k, m and km (DECISIONS #59),
-// Noto Sans Hebrew's Hebrew subset for shot (#81, the H1 is Hebrew, so only that subset is needed).
-const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2' }
+// mediawave-font1 for shot (D218, the H1's own face; Noto still sets the text).
+const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/mediawave-font1-Regular.woff2' }
 function fontPreloadLinks(look) {
   const DISPLAY_FONT = DISPLAY_FONTS[look] || DISPLAY_FONTS.shot
   if (!existsSync(resolve(DIST, DISPLAY_FONT.slice(1)))) {
@@ -59,6 +59,7 @@ function fontPreloadLinks(look) {
   // largest text at first paint can be that line: preload the Latin subset too, so it never waits
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
+    <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>` : ''
   return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>${extra}`
 }

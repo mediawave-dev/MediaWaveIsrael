@@ -17,7 +17,7 @@
 .shot-process__head > h2 { position: relative; }
 .shot-process .shot-process__big {
   margin: 14px auto 0; max-width: none;
-  color: var(--ink); font: 800 var(--shot-big)/1.1 var(--display); font-stretch: 75%;
+  color: var(--ink); font: var(--display-w) var(--shot-big)/1.1 var(--display);
 }
 .shot-process__big > span { display: block; text-wrap: balance; }
 /* the heading's segment of the line: from the section's top (where the stub ends) to the track */
@@ -64,7 +64,7 @@
 .shot-step__kicker { margin: 16px 0 0; color: var(--ink-2); font: 600 var(--shot-small)/1.6 var(--text); }
 .shot-step__paper > h3 {
   margin: 4px 0 0; color: var(--ink-2);
-  font: 800 var(--shot-h3-step)/1.15 var(--display); font-stretch: 75%;
+  font: var(--display-w) var(--shot-h3-step)/1.15 var(--display);
   transition: color 160ms linear 200ms;
 }
 .shot-step[data-on] .shot-step__paper > h3 { color: var(--ink); }
