@@ -46,7 +46,7 @@ cd mediawave-fonts
 ```
 
 ```bash
-git sparse-checkout set --no-cone /fonts/
+git sparse-checkout set fonts
 ```
 
 כדי לקבל עדכונים בהמשך, מריצים בתוך התיקייה:
