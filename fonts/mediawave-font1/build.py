@@ -2,7 +2,7 @@
 
     python fonts/mediawave-font1/build.py
 
-Writes installable OTF and web WOFF2 to dist/ and copies the WOFF2 to public/fonts/.
+Writes installable fonts to otf/ and web fonts to woff2/, and copies the WOFF2 to public/fonts/.
 """
 import math
 import os
@@ -22,7 +22,7 @@ from source.latin import LATIN  # noqa: E402
 from source.letters import GLYPHS  # noqa: E402
 from source.marks import MARKS  # noqa: E402
 
-DIST = os.path.join(HERE, "dist")
+OTF, WOFF2 = os.path.join(HERE, "otf"), os.path.join(HERE, "woff2")
 PUBLIC = os.path.join(HERE, "..", "..", "public", "fonts")
 FAMILY = "mediawave-font1"
 VERSION = "1.000"
@@ -129,12 +129,13 @@ def build(st):
     latin_table = kern.pairs(glyphs, latin, st.H, st.floor_latin, rtl=False)
     addOpenTypeFeaturesFromString(fb.font, kern.feature(table, latin_table))
 
-    os.makedirs(DIST, exist_ok=True)
-    otf = os.path.join(DIST, f"{ps}.otf")
+    os.makedirs(OTF, exist_ok=True)
+    os.makedirs(WOFF2, exist_ok=True)
+    otf = os.path.join(OTF, f"{ps}.otf")
     fb.save(otf)
     web = TTFont(otf)
     web.flavor = "woff2"
-    woff2 = otf.replace(".otf", ".woff2")
+    woff2 = os.path.join(WOFF2, f"{ps}.woff2")
     web.save(woff2)
     if os.path.isdir(PUBLIC):
         shutil.copy(woff2, PUBLIC)

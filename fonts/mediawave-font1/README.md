@@ -6,8 +6,8 @@ MediaWave's own wide display face: Hebrew, Latin, digits and punctuation, in Thi
 
 | Path | What it is |
 |---|---|
-| `dist/*.otf` | Installable fonts for Windows, Mac, Figma |
-| `dist/*.woff2` | Web fonts; `build.py` also copies them to `public/fonts/` |
+| `otf/` | Installable fonts for Windows, Mac, Figma |
+| `woff2/` | Web fonts; `build.py` also copies them to `public/fonts/` |
 | `source/letters.py` | Hebrew, digits, basic punctuation |
 | `source/latin.py` | A-Z and a-z |
 | `source/marks.py` | Other punctuation, the sheqel sign |
