@@ -23,6 +23,7 @@ import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
+import GlassKey from '../sea/GlassKey'
 import SeaSteps from '../sea/SeaSteps'
 
 type Field = 'name' | 'email' | 'message'
@@ -170,12 +171,15 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
                 <LottieIcon animationPath="/animations/12 Talk with us/Topictalk_icon.json" size={180} playOnHover={false} loop />
               </div>
             )}
+            {SHOT && <GlassKey href={WHATSAPP_URLS.contact} label="כתבו לנו בוואטסאפ" after="פותחים וואטסאפ" placement="contact_glass" />}
             <ul className="ct__ways">
-              <li className="ct__way--wa">
-                <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
-                  <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="wa" /> : <WaIcon />}</span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
-                </a>
-              </li>
+              {!SHOT && (
+                <li className="ct__way--wa">
+                  <a data-zone={Z} href={WHATSAPP_URLS.contact} target="_blank" rel="noopener noreferrer" onClick={() => track('whatsapp_click', { placement: 'contact_section' })}>
+                    <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="wa" /> : <WaIcon />}</span><span className="sr-only">וואטסאפ</span><b>כתבו לנו בוואטסאפ</b>
+                  </a>
+                </li>
+              )}
               <li>
                 <a data-zone={Z} href={`tel:${SITE_CONTACT.phone.replace(/-/g, '')}`} onClick={() => track('tel_click', { placement: 'contact_section' })}>
                   <span className="ct__ico">{LOOK === 'shot' ? <DotGlyph name="phone" /> : <PhoneIcon />}</span><span className="sr-only">טלפון</span><b dir="ltr">{SITE_CONTACT.phone}</b>

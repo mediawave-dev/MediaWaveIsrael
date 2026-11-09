@@ -1,3 +1,57 @@
+# HANDOFF: optical objects, the cinema lab, Shira's teardown (8-9.11.2026, D219-D220, overnight)
+
+## Goal
+Nati brought Zsolt Kacso's edge-lit glass switch and asked how to reach that level on our site, minimal and clean. Then, in order: add it to site-director as a selectable tier, mainly for mobile; "זה יפה תממש את זה באתר שלנו"; more cinematic effects; break down shira-bengaiev.co.il; organise everything so that he only decides.
+
+## Where
+Worktree `.claude/worktrees/stunning-visual-effects-964ff5`, branch `claude/stunning-visual-effects-964ff5`, fast-forwarded to origin/main 8155d52. **Nothing committed, nothing pushed, nothing live.** The site changes are uncommitted in this worktree.
+
+## Waiting for Nati
+The decision board: https://claude.ai/artifact/WxFfZ4HuC6JzAbZo35b4XA (private). Picks are saved to its database:
+`ArtifactData` action `list`, collection `picks`, that url. Documents `G1 G2 C1-C6 S1-S7 P1 _note`, field `value`.
+The proof alone: https://claude.ai/artifact/AVecKTCTETSFzKeULm3mxg
+
+## Completed
+- Research: `design/harvest/optical-objects-research.rtl.md` (the code read, the numbers, restraint, status of the tech).
+- Shira: `design/harvest/shira-bengaiev.rtl.md` (what changes for us, the proposed handover storyboard, the type scale).
+- site-director 1.4.0: `references/optical-objects.md`, `references/story-staging.md`, `references/harvest/{whitespace-experiments,shira-bengaiev}.md`, `scripts/optical-{check,build}.mjs`, `assets/proof/optical-proof.html`, `assets/proof/cinema/` (six effects, the dive, harness, brief); SKILL.md router, D2 at stage 0, stages 2 and 5, GUIDE, qa.md, an eval.
+- On the site (D219, D220, lab gates `glass` and `tape`): the glass key in the contact chapter, the tape head under the video and tapes line. Files below.
+- The lab: C1 focus pull, C2 anamorphic, C3 projector, C4 film burn, C5 iris, C6 grade, S3 dive into a dot (with S4, the emptied stage).
+
+## Key decisions and why
+- Objects replace moments, never add. Budget: 3 on the home at most, 2 are taken. Why: research on restraint, Nati's fear of annoying effects.
+- Every optical length scales with the object (`half / 99`). Without it the key washed out on phones.
+- The key is a real link and the picture a real picture at all times; WebGL is on top, and on context loss the plain element returns.
+- The tape damage is simulated, and the page says so: no invented proof. A real before and after is decision G2.
+- HTML-in-Canvas and WebGPU rejected as a base (Chrome-only, experimental).
+
+## Measured on the final local build
+- Touch: a vertical swipe starting on the key scrolled and sent nothing; a drag and Enter open WhatsApp; a right-click sends nothing; 0 draws at rest on both objects; a lost context brings the plain key back.
+- Overlap 0 at 320, 390, 768, 1024, 1440. all-pages: 13 routes clean at 390 and 1440 (axe 0, overflow 0, small 0, targets 0, errors 0).
+- Independent code review: 2 blockers and 8 should-fix, all fixed before the final run.
+- Chunks, lazy: glass-key 13 KB, tape-head 7 KB, engine 1.8 KB.
+
+## Known issues, not verified
+- **No real phone.** All frame times are this PC's GPU; a 4x CPU slowdown does not model a phone GPU.
+- The board was never opened on claude.ai (the built-in browser has no sign-in; not attempted). Its save path was tested by a probe write and delete. Each effect also has a full-screen page (`fx/`) in case a frame cannot run there.
+- Lighthouse mobile home: 64 this build, 63 with the objects off, 63 live (TBT about 2 s). Not caused by this work, but below the 91 recorded on 19.10. Decision P1. Local preview has no compression; compare like with like.
+- iOS Safari: whether `window.open` about 400 ms after pointerup counts as a gesture is unconfirmed; the fallback navigates the tab.
+- DECISIONS.rtl.md has 24 older banned dashes (not from this round).
+
+## Next steps
+1. Read the picks. For each yes: G1/G2 ship, C items are built per their place, S items in the order in `shira-bengaiev.rtl.md`.
+2. Before any push: tag a rollback point, build, re-run overlap and all-pages, open on a real iPhone and Android. Deploy only on Nati's word (CF Pages deploys on push to main, mediawave-dev only).
+3. Remember to add `glass` and `tape` removal once picked (lab.ts says the picked option becomes the only one).
+
+## Important files
+- src/look/sea/optical/{engine.ts, glass-key.ts, tape-head.ts}: the optics and physics.
+- src/look/sea/{GlassKey.tsx, TapeHead.tsx, sea-optical.css}: lazy mount, fallback, styles.
+- src/look/sections/Contact.tsx, src/look/sea/SeaServices.tsx, lab.ts, SeaLab.tsx: wiring and gates.
+- public/media/tape-head.webp: one frame of the memory film.
+- Scratch, outside the repo: the session scratchpad holds the lab sources (`cine/`), test tools (`tools/`), frames (`frames/`, `gap/`, `shira/`); G:/tmp/optical has the audit output.
+
+---
+
 # HANDOFF: "האתר שלכם ב-60 שניות" (/your-site/, D217, 23.10.2026)
 
 ## Goal
