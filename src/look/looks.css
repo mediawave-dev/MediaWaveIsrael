@@ -198,7 +198,7 @@ html[data-look="shot"] {
   /* layout: the table's side margin, the dock and the cookie strip at the near edge. --safe-b is
      the only source of the bottom band's height (storyboard rule 7); it never changes when the
      dock hides, so nothing moves. The shot --safe-b rules sit after the generic ones below. */
-  --gut: 12px;
+  --gut: 16px;
   --dock-h: 64px;
   --strip-h: 104px;                     /* cookie strip below 640px; 88px from 640px */
   --eye-top: 0.36;                      /* the Lottie eye band, read by eye-line.ts */

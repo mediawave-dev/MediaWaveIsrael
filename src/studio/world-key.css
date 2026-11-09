@@ -1,0 +1,16 @@
+/* studio · a world's main key: its plain button first, the glass over it once it loads (WorldKey.tsx). The stage
+   holds the object's height from the start, so nothing moves when the glass arrives. 900 px is the same test as
+   glass-key.ts. */
+.st-key { position: relative; display: flex; align-items: center; width: 100%; max-width: 340px; height: 76px; }
+@media (min-width: 900px) { .st-key { height: 84px; } }
+.st-key canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; pointer-events: none; opacity: 0; transition: opacity 0.3s ease; }
+.st-key.is-live canvas { opacity: 1; }
+.st-key__hit {
+  display: inline-flex; color: inherit; text-decoration: none; cursor: pointer; touch-action: pan-y pinch-zoom; -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none; user-select: none; -webkit-user-select: none;
+}
+.st-key__face { transition: opacity 0.3s ease; }
+.st-key.is-live .st-key__hit { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+/* the words stay in the page for a screen reader; the canvas shows them */
+.st-key.is-live .st-key__face { opacity: 0; pointer-events: none; }
+.st-key__hit:focus-visible { outline: 3px solid var(--st-ink); outline-offset: 2px; border-radius: 14px; }

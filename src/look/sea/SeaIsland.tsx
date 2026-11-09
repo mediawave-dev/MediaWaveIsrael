@@ -7,12 +7,25 @@
 // Keyboard: tabbing into the header opens it (focus-within), so every control stays reachable.
 // Gate `head` (lab.ts): island, away (the pill scrolls away and comes back when you scroll up),
 // sticky (the pill follows, as before). [קופי: נתי] the labels.
+// Phones: while reading, the island is off the screen too: it leaves on the way down and comes back on the
+// way up, unless it is open or pinned. The controls it holds (the menu, the sound, accessibility) are a tap away.
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { opt } from './lab'
 
 const PIN = 'mw-sea-pin'
 const SPEAK_MS = 2600
+const PHONE = '(max-width: 767px)'
+/** px of travel before the island leaves on the way down, and before it comes back on the way up */
+const LEAVE_AFTER = 8
+const BACK_AFTER = 24
+
+/** a finger left focus on one of the pill's controls: let go of it, or :focus-within would hold the island on screen.
+    A keyboard's focus stays, so tabbing into the header still brings it back. */
+function dropTouchFocus() {
+  const a = document.activeElement as HTMLElement | null
+  if (a?.closest('.mw-head') && !a.matches(':focus-visible')) a.blur()
+}
 
 export default function SeaIsland() {
   const head = opt('head')
@@ -25,8 +38,10 @@ export default function SeaIsland() {
   useEffect(() => {
     const html = document.documentElement.classList
     html.add(`sea-head-${head}`)
+    const phone = window.matchMedia(PHONE)
     let lastY = window.scrollY
     let upFor = 0
+    let downFor = 0
     let speakT = 0
     let pending = 0
     // (D199) the scroll position and the screen's height are read in the scroll event (layout is clean
@@ -41,6 +56,12 @@ export default function SeaIsland() {
       if (head === 'island') {
         if (open && Math.abs(y - openAt.current) > 360) setOpen(false)
         html.toggle('sea-fold', under && !pinned && !open)
+        const d = y - lastY
+        if (d > 0) { downFor += d; upFor = 0 } else if (d < 0) { upFor -= d; downFor = 0 }
+        const gone = html.contains('sea-gone')
+        const next = phone.matches && under && !open && !pinned && (gone ? upFor < BACK_AFTER : downFor > LEAVE_AFTER)
+        if (next && !gone) dropTouchFocus()
+        html.toggle('sea-gone', next)
       }
       if (head === 'away') {
         // it comes back after a deliberate scroll up, and goes on the way down

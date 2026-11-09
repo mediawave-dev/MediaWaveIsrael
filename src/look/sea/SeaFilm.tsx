@@ -13,6 +13,7 @@ import { opt } from './lab'
 import { Lines, Tag } from './parts'
 import { CLIPS, avifOf, posterOf, posterSet, videoOf } from './media'
 import { GroundSource, useGround } from './SeaGround'
+import SeaInk from './SeaInk'
 
 const FILM = CLIPS['film-tapes']
 
@@ -97,8 +98,9 @@ export default function SeaFilm() {
       </span>}
       <div className="sea-in" data-reveal="">
         <Tag className="sea-fade">VIDEO · TAPES</Tag>
-        <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={['סרטון לעסק,', 'וקלטות לזיכרון.']} /></h2>
-        <p className="sea-sub sea-fade" data-zone="text">עורכים את הסרטונים של העסק, ומעבירים קלטות ישנות לקובץ שאפשר לשמור ולשתף.</p>
+        {/* [קופי: נתי] S5, ?copy=new only until approved */}
+        <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={['סרטון לעסק,', opt('copy') === 'new' ? 'והקלטות שלכם.' : 'וקלטות לזיכרון.']} /></h2>
+        <SeaInk className="sea-sub" text="עורכים את הסרטונים של העסק, ומעבירים קלטות ישנות לקובץ שאפשר לשמור ולשתף." />
         {hint && <Tag className="sea-fade sea-film__hint" he>{hint}</Tag>}
       </div>
     </section>

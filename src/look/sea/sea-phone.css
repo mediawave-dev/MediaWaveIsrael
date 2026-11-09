@@ -1,0 +1,126 @@
+/* sea · the phone's measure. One type scale and one gutter, read from tokens, and two small round controls in the
+   bottom corners instead of four kinds of floating layer. Every rule sits inside a phone media query, so a wide
+   screen never reads this file. #root is what makes it win over every class rule, whatever order the lazy chunks
+   (shot-pages.css, shot-legal.css) land in. Sizes go through the accessibility panel's text scale. The five style
+   worlds under /styles/ have their own systems and use none of these classes. */
+
+/* ── the type scale (phones) ── */
+@media (max-width: 599px) {
+  html[data-look="shot"] {
+    --t-scale: var(--accessibility-text-scale, 1);
+    --t-label: calc(12px * var(--t-scale));
+    --t-help: calc(16px * var(--t-scale));
+    --t-body: calc(17px * var(--t-scale));
+    --t-lead: calc(19px * var(--t-scale));
+    --t-h3: calc(26px * var(--t-scale));
+    /* the wide heading face (D218): 36 and 47 from 390 up, and below that the size follows the column, so the
+       longest set lines ("אתר שנבנה בשבילכם,") keep to one line at 320 too */
+    --t-h2: calc(min(36px, (100vw - 32px) * 0.1006) * var(--t-scale));
+    --t-h1: calc(min(47px, (100vw - 32px) * 0.1313) * var(--t-scale));
+  }
+
+  /* H1: one spec on every page */
+  #root :is(.sea-h1, .sp-h1) { font-size: var(--t-h1); line-height: 0.94; text-wrap: balance; }
+
+  /* H2: one spec, and the closing line and the form's question are set in it too */
+  #root :is(.sea-h2, .sea-h3, .sp-h2, .sp-big, .sea-foot__line, .sea-empty__say, .qs__label, .sea-faq .faq__head h2, .sea-contact .ct h2, .sl-body h2, .sp-lost__more h2) { font-size: var(--t-h2); line-height: 0.98; }
+  #root .sp--service :is(.sp-head, .sp-check, .sp-slip__paper, .sp-prose__item) .sp-h2 { font-size: var(--t-h2); line-height: 0.98; }
+  #root .sp-more .sp-h2 { font-size: var(--t-h2); }
+
+  /* H3 */
+  #root :is(.sea-list__title, .sea-incl__h, .sea-svc__title, .sea-style__name, .sea-work__title, .sp-h3, .sp-more__name) { font-size: var(--t-h3); line-height: 1.12; }
+  #root .sp--service .sp-step .sp-h3 { font-size: var(--t-h3); line-height: 1.12; }
+  #root .sp-lost__more h2.sp-h3 { font-size: var(--t-h2); line-height: 0.98; }
+  #root .sl-body h3 { font-family: var(--display); font-weight: var(--display-w); font-size: var(--t-h3); line-height: 1.12; text-wrap: balance; }
+  #root .sl-body h2 { text-wrap: balance; }
+
+  /* a chapter's opening line, and the rows that read as one: the questions, the facts, the footer's rows */
+  #root :is(.sea-lede, .sea-svc__also, .sea-lead__pro, .sp-sub, .sea-incl__t, .sp-check li, .sea-foot__t, .sea-faq .faq__q, .sp-pad summary) { font-size: var(--t-lead); }
+  #root .sp--service :is(.sp-check li, .sp-pad summary) { font-size: var(--t-lead); }
+  #root .sea-contact .ct__ways a b { font-size: var(--t-lead); }
+  /* the address is the longest value (13.2em): it stays on one line beside the icon down to 320 */
+  #root .sea-contact .ct__ways a[href^="mailto:"] b { font-size: clamp(13px, calc((100cqi - 96px) / 13.6), var(--t-body)); }
+
+  /* body */
+  #root :is(.sea-sub, .sea-list__line, .sea-svc__line, .sea-proc__for, .sea-styles__own-l, .ct__lead, .faq__more p, .sp-prose__item p, .sp-slip li, .sp-step p, .sp-pad details p, .sp-final__line, .sp-note p, .sp-try, .sl-body, .sl-body p, .sl-body li) { font-size: var(--t-body); line-height: 1.65; }
+  #root .sp--service :is(.sp-prose__item p, .sp-slip li, .sp-step p, .sp-pad details p) { font-size: var(--t-body); line-height: 1.65; }
+  #root .sea-faq .faq__a-in { line-height: 1.65; }
+  #root .sea-faq .faq__a-in .prose-hebrew, #root .sea-faq .faq__a-in .prose-hebrew * { font-size: var(--t-body); }
+  #root .key { --k-fs: var(--t-body); }
+  #root .key .btn-br { font-size: var(--t-lead); }
+
+  /* helper: a small link, a caption, a key that is not the main one */
+  #root :is(.sea-go, .sea-svc__sample, .sea-style__by, .qs__done button, .ct__err, .sea-rew, .shot-link, .sp-facts li, .sp-time, .sp-trail li, .sl-toc a, .sl-updated, .sp-sample figcaption, .sp-note__tags li, .mw-consent__text, .mw-consent__ok, .mw-consent__no, .sea-way__line) { font-size: var(--t-help); }
+  #root .sl-body > div:last-child.mt-12 p { font-size: var(--t-help); }
+  #root .sp--service .sp-time { font-size: var(--t-help); }
+  #root .key[data-size="sm"] { --k-fs: var(--t-help); }
+
+  /* labels */
+  #root :is(.sea-tag, .sea-tag--he, .ct__time, .sea-rew__hud, .sp-kicker) { font-size: var(--t-label); }
+
+  /* the contact form's answers, large as you type them (16 and up, so iOS never zooms the page) */
+  #root .sea-contact #contact .qs__field { font-size: var(--t-h3); }
+  #root .sea-contact #contact textarea.qs__field { font-size: var(--t-lead); }
+
+  /* the menu sheet and the chat panel keep to the same steps */
+  #root .mw-menu nav a { font-size: var(--t-h3); }
+  #root .mw-menu .mw-menu__svc a { font-size: var(--t-body); }
+  #root .mw-menu__foot { font-size: var(--t-help); }
+  #root .sc__name { font-size: var(--t-lead); }
+  #root :is(.sc__role, .sc__ctl) { font-size: var(--t-label); }
+}
+
+/* short phones: the opening keeps its fit on the first screen (568 to 700 px tall) */
+@media (max-width: 599px) and (max-height: 700px) {
+  #root .sea-h1 { font-size: min(var(--t-h1), calc(10.8vw * var(--t-scale))); }
+  #root .sea-hero .sea-sub { font-size: var(--t-help); line-height: 1.55; }
+}
+/* the shortest (568 to 640 px tall): the hero and the services' held stage give up room, so no line reaches the band */
+@media (max-width: 599px) and (max-height: 640px) {
+  #root .sea-hero { grid-template-rows: minmax(64px, 1fr) auto; }
+  html.sea-held #root .sea-svc__stage { grid-template-rows: minmax(96px, 1fr) auto auto; padding-top: 88px; }
+  html.sea-held #root .sea-deck { display: none; }
+}
+
+/* the narrowest phones: the services' count moves up beside the tag, so the chapter's title keeps one line */
+@media (max-width: 379px) {
+  html.sea-held #root .sea-svc .sea-head > .sea-tag:first-child { grid-column: 1; grid-row: 1; }
+  html.sea-held #root .sea-svc__count { grid-column: 2; grid-row: 1; }
+  html.sea-held #root .sea-svc__h2 { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ── the one gutter (--gut is 16 below 768, looks.css): nothing adds its own on top of it ── */
+@media (max-width: 767px) {
+  #root .sp { --sp-gut: var(--gut); }
+  #root .sp-prose { width: min(100% - 2 * var(--gut), 720px); }
+  #root .sp-prose.sp-sheet { padding-inline: 0; }
+  #root .sp-trail li:first-child :is(a, span) { padding-inline-start: 0; }
+  #root .sea-foot a.sea-foot__row, #root .sea-contact .ct__ways a { padding-inline: 0; }
+  #root .sl-toc a { padding-inline: 0; }
+  /* the legal sheet runs edge to edge, so its words keep the same 16 as every other page */
+  #root .sl-sheet { width: 100%; padding-inline: var(--gut); border-radius: 0; }
+  #root .mw-consent-banner { left: var(--gut); right: var(--gut); }
+  /* the 404's tag was glued to the screen's left edge: it stands over its centred words */
+  #root .sp-lost__tag { text-align: center; }
+  /* a page's end while the cookie strip is up or still to come: the documents' row stands clear of it */
+  html:is(.consent-pending, .consent-later) #root .sea-foot__base, body.mw-consent-open #root .sea-foot__base {
+    padding-bottom: calc(var(--strip-h) + 20px + env(safe-area-inset-bottom, 0px) + var(--browser-chrome-bottom, 0px));
+  }
+}
+
+/* ── the floating layers on a phone: two round controls in the corners, in the band --safe-b already reserves ──
+   WhatsApp keeps the thumb's corner, the AI the other; each is its glyph alone on its island of halftone, and its
+   name is its aria-label. The words beside them stay on tablets and wide screens. */
+@media (max-width: 767px) {
+  #root .shot-dock { padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+  #root .shot-dock__chat { width: 48px; height: 48px; }
+  #root .shot-dock__wa, #root .shot-dock__chat-btn.is-ai {
+    box-sizing: border-box; width: 48px; min-width: 48px; height: 48px; padding: 0; gap: 0; justify-content: center; border-radius: 50%;
+  }
+  #root :is(.shot-dock__wa, .shot-dock__chat-btn) > span:not(.mw-ai) { display: none; }
+  #root .shot-dock__chat-btn .mw-ai { width: 30px; height: 30px; }
+
+  /* the island leaves on the way down and comes back on the way up (SeaIsland.tsx sets sea-gone) */
+  html.sea-head-island .mw-head { transition: transform 0.42s var(--sea-ease); }
+  html:is(.disable-animations, .motion-reduced).sea-head-island .mw-head { transition: none; }
+}

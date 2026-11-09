@@ -4,11 +4,12 @@
 // Ours: the creature in the room is a clay cassette whose reels are its eyes; the click plays the tape.
 import { useEffect, useRef, useState } from 'react'
 import { C, CLIPS } from '../content'
-import { waForStyle } from '../lead'
+import type { GlassLook } from '../../look/sea/optical/glass-key'
 import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import WorldKey, { hex } from '../WorldKey'
 import Pill from './Pill'
 import { useSideways } from '../sideways'
 import { isSoundOn, onSoundChange, setSoundOn } from '../sound'
@@ -22,6 +23,11 @@ const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __P
 /** the headline's second line flips through the crafts when the reel is fed [קופי: נתי] */
 const FLIP = ['אתרים', 'דפי נחיתה', 'וידאו', 'קלטות']
 const GROUNDS = ['peach', 'green', 'yellow', 'stone']
+/** the key: a matte slab of the deep green, the world's one yellow for its light and its words */
+const KEY: GlassLook = {
+  light: hex('#f6e016'), floor: hex('#083d2a'), ink: hex('#f6e016'), read: hex('#f6e016'), rim: hex('#083d2a'), shade: hex('#022016'), shadow: 0.22,
+  brightFloor: false, brightPage: true, matte: 0.7, square: false, trackR: 0.5, keyR: 0.98, height: [76, 84], text: 16,
+}
 
 /** The little reel that wanders along the headline; feed it (click) and the words change for a moment. */
 function Reel({ onFeed }: { onFeed: () => void }) {
@@ -201,7 +207,7 @@ export default function Clay({ tier, def }: StyleProps) {
             <p className="cl-hello" data-cl>{words.sub} {words.sub2}</p>
             <div className="cl-intro__side" data-cl>
               <p>מדברים ישירות עם המפתח, בלי מתווכים.</p>
-              <a className="cl-btn" href={waForStyle(def)} target="_blank" rel="noopener noreferrer" data-pill="WHATSAPP">{words.cta}</a>
+              <WorldKey def={def} tier={tier} label={words.cta} plain="cl-btn" look={KEY} pill="WHATSAPP" />
             </div>
           </div>
         </div>

@@ -8,16 +8,23 @@ import '@fontsource/heebo/hebrew-700.css'
 import '@fontsource/heebo/latin-400.css'
 import '@fontsource/heebo/latin-700.css'
 import { C, CLIPS } from '../content'
-import { waForStyle } from '../lead'
+import type { GlassLook } from '../../look/sea/optical/glass-key'
 import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import WorldKey, { hex } from '../WorldKey'
 import { createSwarm, placeStill } from './swarm'
 import { useSideways } from '../sideways'
 import './buzz.css'
 
 export const prepare = () => Promise.all([document.fonts.load('700 80px Heebo', 'אבג'), document.fonts.load('400 20px Heebo', 'אבג')])
+
+/** the key: the sheet's own ink poured as glass, the sheet's yellow for its words, the bees' lime for its light */
+const KEY: GlassLook = {
+  light: hex('#c4e23c'), floor: hex('#231e1e'), ink: hex('#d7d72e'), read: hex('#dbfa52'), rim: hex('#231e1e'), shade: hex('#231e1e'), shadow: 0.3,
+  brightFloor: false, brightPage: true, matte: 0, square: false, trackR: 0.28, keyR: 0.46, height: [76, 84], text: 16,
+}
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 let OPENED = false
@@ -293,7 +300,7 @@ export default function Buzz({ tier, def }: StyleProps) {
           <p className="bz-label" dir="ltr">{hero.tags ?? 'WEBSITES · VIDEO · TAPES'}</p>
           <div className="bz-tag">
             <p>{hero.sub} {hero.sub2}</p>
-            <a className="bz-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
+            <WorldKey def={def} tier={tier} label={hero.cta} plain="bz-pill" look={KEY} />
           </div>
         </div>
         <div className="bz-swarm bz-swarm--front" ref={front} aria-hidden="true" />

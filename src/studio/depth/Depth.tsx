@@ -14,14 +14,21 @@ import '@fontsource/assistant/latin-400.css'
 import '@fontsource/assistant/latin-800.css'
 import '@fontsource/geist-mono/latin-500.css'
 import { C } from '../content'
-import { waForStyle } from '../lead'
-import { useHero } from '../preview'
+import type { GlassLook } from '../../look/sea/optical/glass-key'
+import { PREVIEW, useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import WorldKey, { hex } from '../WorldKey'
 import { setText } from '../../utils/set-text'
 import { startCloud, type Cloud, type ShapeId } from './cloud'
 import './depth.css'
+
+/** the key: the night's own glass, the cloud's blue for its light, the mark made of points */
+const KEY: GlassLook = {
+  light: hex('#6c9bd0'), floor: hex('#0a0e17'), ink: hex('#dce8ff'), read: hex('#a9caff'), rim: hex('#dce8ff'), shade: hex('#000000'), shadow: 0,
+  brightFloor: false, brightPage: false, matte: 0, square: false, trackR: 0.34, keyR: 0.62, height: [76, 84], text: 16,
+}
 
 export const prepare = () => Promise.all([document.fonts.load('800 60px Assistant', 'אבג'), document.fonts.load('400 18px Assistant', 'אבג'), document.fonts.load('500 12px "Geist Mono"', 'AB')])
 
@@ -39,11 +46,47 @@ export default function Depth({ tier, def }: StyleProps) {
   const pts = useRef<HTMLSpanElement>(null)
   const scan = useRef<HTMLSpanElement>(null)
   const obj = useRef<HTMLSpanElement>(null)
+  const sheet = useRef<HTMLDivElement>(null)
+  const h1 = useRef<HTMLHeadingElement>(null)
+  /** the cloud, for the focus pull; the pull's last position, for a cloud that starts after it; with no cloud there is nothing to pull to */
+  const lens = useRef<{ cloud: Cloud | null; p: number; none: boolean; end: (() => void) | null }>({ cloud: null, p: 1, none: false, end: null })
+
+  // the lens: the focus moves from the headline to the cloud as the reading starts (design/sample-sites-effects.rtl.md).
+  // A lazy chunk after the page and an idle moment; never in the frame of /your-site/, and only in the full tier
+  useEffect(() => {
+    if (PREVIEW || tier !== 'full' || !sheet.current || !h1.current) return
+    let alive = true
+    let idle = 0
+    let dispose: (() => void) | null = null
+    const set = (p: number) => { lens.current.p = p; lens.current.cloud?.focus(p) }
+    const end = () => { dispose?.(); dispose = null; set(1) }
+    lens.current.end = end
+    const go = () => {
+      void Promise.all([import('./focus'), document.fonts.ready]).then(([m]) => {
+        if (!alive || !sheet.current || !h1.current || lens.current.none) return
+        dispose = m.mountFocus(sheet.current, h1.current, { onFocus: set, onEnd: end })
+      }).catch(end)
+    }
+    const later = () => {
+      if (typeof window.requestIdleCallback === 'function') idle = window.requestIdleCallback(go, { timeout: 2200 })
+      else idle = window.setTimeout(go, 900)
+    }
+    if (document.readyState === 'complete') later()
+    else window.addEventListener('load', later, { once: true })
+    return () => {
+      alive = false
+      window.removeEventListener('load', later)
+      window.cancelIdleCallback?.(idle)
+      window.clearTimeout(idle)
+      end()
+    }
+  }, [tier, gen])
 
   useEffect(() => {
     const hv = host.current
     const el = root.current
     if (!hv || !el) return
+    const shared = lens.current
     let cloud: Cloud | null = null
     let alive = true
     let read = 0
@@ -51,7 +94,10 @@ export default function Depth({ tier, def }: StyleProps) {
     // the readout says what the cloud shows: in the still tier there is no interval, so it is written on every change
     const paint = (c: Cloud) => { const r = c.readout(); setText(scan.current, r.scan.toFixed(2)); setText(obj.current, NAME[r.shape]) }
     const html = document.documentElement
-    const none = (on: boolean) => { if (on) { el.dataset.nocloud = ''; html.dataset.nocloud = '' } else { delete el.dataset.nocloud; delete html.dataset.nocloud } }
+    const none = (on: boolean) => {
+      shared.none = on
+      if (on) { el.dataset.nocloud = ''; html.dataset.nocloud = ''; shared.end?.() } else { delete el.dataset.nocloud; delete html.dataset.nocloud }
+    }
     startCloud(hv, {
       still: tier === 'still', calm: tier === 'calm', photoSrc: '/media/work-life-1.webp',
       onLost: () => { if (alive) { none(true); window.clearInterval(read) } },
@@ -60,6 +106,8 @@ export default function Depth({ tier, def }: StyleProps) {
       if (!alive || !c) { c?.stop(); if (alive) none(true); return }
       none(false)
       cloud = c
+      shared.cloud = c
+      c.focus(shared.p)
       setText(pts.current, c.readout().points.toLocaleString('en-US'))
       // the object follows the block on the middle line of the screen
       const io = new IntersectionObserver((es) => es.forEach((e) => {
@@ -81,7 +129,7 @@ export default function Depth({ tier, def }: StyleProps) {
       if (tier !== 'still') read = window.setInterval(() => paint(c), 140)
       else paint(c)
     }).catch(() => { if (alive) none(true) })
-    return () => { alive = false; window.clearInterval(read); offs.forEach((f) => f()); cloud?.stop(); delete html.dataset.nocloud }
+    return () => { alive = false; window.clearInterval(read); offs.forEach((f) => f()); cloud?.stop(); shared.cloud = null; delete html.dataset.nocloud }
   }, [tier, gen])
 
   return (
@@ -93,11 +141,11 @@ export default function Depth({ tier, def }: StyleProps) {
       <p className="dp-read" aria-hidden="true" dir="ltr"><b ref={pts}>0</b> PTS · SCAN <i ref={scan}>0.00</i> · <span ref={obj}>HORIZON</span></p>
 
       <section className="dp-sec dp-hero" data-ch="hero" data-shape="horizon" aria-labelledby="dp-h1">
-        <div className="dp-sheet">
+        <div className="dp-sheet" ref={sheet}>
           <p className="dp-k" dir="ltr" lang="en" aria-hidden="true">[ DEPTH · LIDAR ]</p>
-          <h1 id="dp-h1" className="dp-h1">{hero.line1}<br />{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</h1>
+          <h1 id="dp-h1" className="dp-h1" ref={h1}>{hero.line1}<br />{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</h1>
           <p className="dp-body">{hero.sub} {hero.sub2}</p>
-          <a className="dp-key" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
+          <WorldKey def={def} tier={tier} label={hero.cta} plain="dp-key" look={KEY} />
           {/* [קופי: נתי] */}
           <p className="dp-hint" lang="en" dir="ltr" aria-hidden="true">SCROLL TO SCAN ↓</p>
         </div>

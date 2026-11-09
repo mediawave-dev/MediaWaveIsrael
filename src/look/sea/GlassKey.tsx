@@ -30,6 +30,8 @@ export default function GlassKey({ href, label, after, placement }: Props) {
       io.disconnect()
       // the compile waits for an idle moment, so it never lands in the middle of a scroll
       const start = () => {
+        // no GPU (field.ts said so): the plain key stays
+        if (document.documentElement.classList.contains('sea-nogl')) return
         void Promise.all([import('./optical/glass-key'), document.fonts.ready]).then(([m]) => {
           if (!alive || !stage.current || !canvas.current || !link.current) return
           dispose = m.mountGlassKey(stage.current, canvas.current, link.current, {

@@ -1,0 +1,26 @@
+/* sea · the focus pull (C1): the hero holds on a sticky pin while a real lens racks from the words to the night city
+   behind them. The pin is laid out before first paint (html.sea-held, html.sea-reveal: index.html), so nothing below
+   the hero moves when the effect arrives; without motion or WebGL the page collapses to the plain hero (.is-plain).
+   The canvas is a child of the pinned hero, so the copy of the headline and the real one can never drift apart. */
+.sea-focus { position: relative; }
+html.sea-held.sea-reveal .sea-focus:not(.is-plain):not(.is-calm)::after { content: ""; display: block; height: 110svh; }
+html.sea-held.sea-reveal .sea-focus:not(.is-plain):not(.is-calm) > .sea-hero { position: sticky; top: var(--head); }
+
+/* the whole screen, measured against the tallest viewport: the address bar's coming and going never resizes it */
+.sea-focus__lens { position: absolute; top: calc(-1 * var(--head)); inset-inline: 0; height: 100vh; height: 100lvh; z-index: 0; pointer-events: none; }
+.sea-focus__lens canvas { display: block; width: 100%; height: 100%; visibility: hidden; }
+.sea-focus .sea-in { position: relative; z-index: 1; }
+.sea-focus.is-plain .sea-focus__lens { display: none; }
+
+/* the takeover: the first frame of the copy and this rule land in the same paint. The real H1 keeps its place, its
+   text and its role; only its pixels step aside, and only after scrolling has begun */
+.sea-focus.is-lit .sea-focus__lens canvas { visibility: visible; }
+.sea-focus.is-lit .sea-h1 { opacity: 0; }
+.sea-focus.is-lit .sea-in { will-change: opacity; }
+.sea-focus.is-out .sea-in { pointer-events: none; }
+.sea-focus.is-lit .sea-in:focus-within { opacity: 1 !important; }
+
+/* calm: the end of the shot, standing still under the hero */
+.sea-focus.is-calm { padding-bottom: 60svh; }
+.sea-focus.is-calm .sea-focus__lens { top: 100%; height: 60svh; }
+.sea-focus.is-calm .sea-focus__lens canvas { visibility: visible; }

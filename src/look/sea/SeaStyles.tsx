@@ -7,6 +7,7 @@
 import { useEffect, useRef } from 'react'
 import { LookButton } from '@look/button'
 import { Lines, Tag } from './parts'
+import SeaInk from './SeaInk'
 import { tier } from './field'
 import { track } from '../../utils/analytics'
 import { STYLE_META } from '../../studio/styles-meta'
@@ -43,9 +44,7 @@ export default function SeaStyles() {
         <Tag className="sea-fade">STYLE STUDIO</Tag>
         <h2 id="styles-title" className="sea-h2" data-zone="text"><Lines lines={['אותו אתר,', 'חמישה סגנונות.']} /></h2>
       </header>
-      <p className="sea-lede sea-fade" data-reveal="" data-zone="text">
-        בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם.
-      </p>
+      <SeaInk className="sea-lede" text="בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם." />
       <ul ref={row} className="sea-styles__row">
         {STYLE_META.map((s, i) => (
           <li key={s.id} className="sea-styles__item" data-reveal="" style={{ ['--i' as string]: i }}>

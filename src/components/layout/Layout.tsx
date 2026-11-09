@@ -18,6 +18,7 @@ import SeaLab from '../../look/sea/SeaLab'
 import SeaStack from '../../look/sea/SeaStack'
 import SeaTrail from '../../look/sea/SeaTrail'
 import { CHAT_EVENT, hasPendingChat } from '../ui/chat-event'
+import '../../studio/portal-keyframes.css' // in the entry sheet: a late @keyframes restyles the whole page
 
 // Lazy load widgets for code splitting
 const AccessibilityWidget = lazy(() => import('../ui/AccessibilityWidget'))

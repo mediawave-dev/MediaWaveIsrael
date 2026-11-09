@@ -200,7 +200,7 @@ html[data-style="blueprint"] .st-foot { border-top: 1px solid var(--bp-line); ma
   .bp-nav a:hover, .bp-nav a:focus-visible { background: rgba(255, 255, 255, 0.65); }
   .bp-nav__go { color: var(--bp-red-t) !important; justify-content: space-between; }
   .bp-sheet { margin-top: 58px; padding: 40px 30px 30px; }
-  .bp-hero__foot { grid-template-columns: 7fr 3fr 2fr; gap: 0; padding: 0; border-bottom: 1px solid var(--bp-line); }
+  .bp-hero__foot { grid-template-columns: 6fr 3fr 3fr; gap: 0; padding: 0; border-bottom: 1px solid var(--bp-line); }
   .bp-hero__foot > * { padding: 22px 22px 26px; }
   .bp-hero__foot > * + * { border-inline-start: 1px solid var(--bp-line); }
   .bp-hero__foot .bp-body { font-size: 15px; }

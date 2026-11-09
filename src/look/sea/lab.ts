@@ -46,6 +46,8 @@ export const GATES = {
   media: ['colour', 'develop'],
   /** the relief under the pointer and the finger (D170, after immersive-g.com), or the plain wake */
   relief: ['on', 'off'],
+  /** [קופי: נתי] the words waiting for his approval (S4, S5): the approved copy, or the proposal */
+  copy: ['now', 'new'],
 } as const
 
 export type Gate = keyof typeof GATES
@@ -69,7 +71,7 @@ const chosen = read()
 
 /** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn.
     The colour round's gates start on the recommendations. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'tile', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on' }
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'tile', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on', copy: 'now' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>

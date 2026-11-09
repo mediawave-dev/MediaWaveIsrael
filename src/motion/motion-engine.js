@@ -22,7 +22,9 @@
 // - Everything created through the engine can be reverted (SPA route changes, React unmounts).
 
 export function createMotionEngine(libs, options = {}) {
-  const { gsap, ScrollTrigger, SplitText, Lenis } = libs;
+  const { gsap, ScrollTrigger, Lenis, loadSplitText } = libs;
+  // SplitText, or loadSplitText for a page that may never split text (it is fetched at the first splitLines)
+  let { SplitText } = libs;
   if (!gsap || !ScrollTrigger) throw new Error('createMotionEngine needs { gsap, ScrollTrigger } (SplitText and Lenis optional)');
   gsap.registerPlugin(ScrollTrigger, ...(SplitText ? [SplitText] : []));
 
@@ -192,6 +194,7 @@ export function createMotionEngine(libs, options = {}) {
     // trigger behind (measured: 2 leaked triggers per restart before this).
     const ctx = gsap.context();
     await fontsReady;
+    if (!SplitText && loadSplitText) { SplitText = await loadSplitText(); gsap.registerPlugin(SplitText); }
     if (!SplitText) throw new Error('splitLines needs SplitText (gsap/SplitText)');
     if (ctx && ctx.isReverted) return null; // the scene was torn down while fonts were loading
     el.style.fontKerning = 'none'; // kerning shifts glyphs between split and unsplit states
@@ -342,7 +345,8 @@ export function createMotionEngine(libs, options = {}) {
   }
 
   const engine = {
-    gsap, ScrollTrigger, SplitText,
+    gsap, ScrollTrigger,
+    get SplitText() { return SplitText; },
     get lenis() { return lenis; },
     REDUCE, CALM, FINE, RTL, DIR, PRERENDER,
     fontsReady, scene, splitLines, holdTimeline, reveal, playInView,

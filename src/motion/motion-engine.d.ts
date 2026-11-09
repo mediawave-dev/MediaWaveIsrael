@@ -12,6 +12,8 @@ export interface MotionLibs {
   gsap: typeof GsapLib;
   ScrollTrigger: typeof ScrollTrigger;
   SplitText?: typeof SplitText | null;
+  /** Instead of SplitText: fetched at the first splitLines, so a page that never splits text never pays for it. */
+  loadSplitText?: () => Promise<typeof SplitText>;
   Lenis?: typeof Lenis | null;
 }
 

@@ -10,11 +10,12 @@ import '@fontsource/ibm-plex-sans-hebrew/latin-700.css'
 import '@fontsource/geist-mono/latin-500.css'
 import { useScene } from '../../motion/ScrollEngineProvider'
 import { C, CLIPS } from '../content'
-import { waForStyle } from '../lead'
+import type { GlassLook } from '../../look/sea/optical/glass-key'
 import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import WorldKey, { hex } from '../WorldKey'
 import Drawing from './Drawing'
 import Plan, { Steps } from './Plan'
 import Route from './Route'
@@ -32,6 +33,12 @@ const LOG = ['LOAD SHEET', 'DRAW GRID', 'PLACE LAPTOP', 'CHECK 390 PX', 'CHECK S
 const META: [string, string][] = [['STUDIO', 'MEDIAWAVE'], ['CRAFT', 'WEB · VIDEO · TAPES'], ['TEL', C.contact.phone], ['REPLY', '< 24H']]
 const NAV = [['#bp-services', 'SERVICES'], ['#bp-work', 'WORK'], ['#bp-process', 'PROCESS'], ['#bp-faq', 'FAQ']]
 const TICKER = ['FAST ON PHONES', 'LEADS TO WHATSAPP', 'FOUND ON GOOGLE', 'WEBSITES', 'VIDEO', 'TAPES']
+
+/** the key: a sheet of the paper under a square loupe, the one red for its light, the mark plotted in the check points' squares */
+const KEY: GlassLook = {
+  light: hex('#fa3600'), floor: hex('#fbfbf6'), ink: hex('#282828'), read: hex('#c42a00'), rim: hex('#b3b3af'), shade: hex('#282828'), shadow: 0.12,
+  brightFloor: true, brightPage: true, matte: 0, square: true, trackR: 0.05, keyR: 0.1, height: [76, 84], text: 15,
+}
 
 function Loader({ onDone }: { onDone: () => void }) {
   const [pc, setPc] = useState(0)
@@ -202,7 +209,7 @@ export default function Blueprint({ tier, def }: StyleProps) {
         <div className="bp-hero__foot">
           <h1 id="bp-h1" className="bp-h1">{hero.line1}{hero.brand ? <br /> : ' '}{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</h1>
           <p className="bp-body">{hero.sub} {hero.sub2}</p>
-          <a className="bp-more" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta} <span aria-hidden="true">←</span></a>
+          <div className="bp-hero__go"><WorldKey def={def} tier={tier} label={hero.cta} plain="bp-more" look={KEY}> <span aria-hidden="true">←</span></WorldKey></div>
         </div>
         <div className="bp-ticker" aria-hidden="true"><div>{[0, 1].map((k) => <span key={k}>{TICKER.map((t) => <b key={t}>{t} <i>⬡</i> </b>)}</span>)}</div></div>
       </section>

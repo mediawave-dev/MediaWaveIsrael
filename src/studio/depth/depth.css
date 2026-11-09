@@ -14,7 +14,10 @@ html[data-style="depth"] {
 }
 html[data-style="depth"] ::selection { background: var(--dp-blue); color: #06080e; }
 
-.dp { position: relative; font-family: var(--dp-font); color: var(--st-ink); }
+.dp { position: relative; font-family: var(--dp-font); color: var(--st-ink); overflow-x: clip; }
+/* the lens's copy of the headline, once the scroll has started (focus.ts); the real words stay in the page under it */
+.dp-focus { position: absolute; top: 0; left: 0; display: block; pointer-events: none; visibility: hidden; }
+.dp-h1.is-lens { color: transparent; }
 /* the cloud holds the top of a phone's screen, the left half of a wide one; it never takes a tap */
 .dp-cloud { position: fixed; z-index: 3; top: 0; left: 0; width: 100%; height: 46svh; display: block; pointer-events: none; }
 .dp-cloud-host { display: contents; }
@@ -44,7 +47,8 @@ html[data-style="depth"][data-nocloud] { scroll-padding-top: 80px; }
 /* a chapter: on a phone its words ride up over the cloud on their own ground (a sheet that fades in at its top
    edge); from 1100px the words keep to the right, the start side, and the cloud stays clear */
 .dp-sec { position: relative; z-index: 1; min-height: 100svh; display: grid; align-content: end; padding: 0 var(--dp-gut); }
-.dp-sheet { display: grid; gap: 16px; justify-items: start; padding: 56px 0 64px; }
+.dp-sheet { position: relative; display: grid; gap: 16px; justify-items: start; padding: 56px 0 64px; }
+.st-key .dp-key { margin-top: 0; }
 .dp-hero { padding-top: 50svh; }
 @media (min-width: 1100px) {
   .dp-sec { align-content: center; padding-inline-end: calc(54% + 24px); }

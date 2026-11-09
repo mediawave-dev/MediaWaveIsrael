@@ -255,6 +255,19 @@ function playOrWait(v: HTMLVideoElement, refused?: () => void) {
     evs.forEach((e) => window.addEventListener(e, go, { passive: true }))
   })
 }
+/** the shader's compile is asked about at this pace (ms), slower where it is known to take seconds (ANGLE on
+    Direct3D: 8-10 s on Intel), and no longer than COMPILE_MAX_MS before it is taken as done */
+const POLL_MIN_MS = 50
+const POLL_MAX_MS = 400
+const POLL_MAX_D3D_MS = 1000
+const COMPILE_MAX_MS = 45000
+/** a rasteriser in software instead of a GPU (the name in the driver string; SwiftShader passes the context attribute) */
+const SOFTWARE_GL = /swiftshader|llvmpipe|softpipe|basic render|software/i
+function rendererName(): string {
+  if (!gl) return ''
+  const info = gl.getExtension('WEBGL_debug_renderer_info')
+  return info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL) ?? '') : ''
+}
 let resolveReady: (ok: boolean) => void = () => {}
 /** Resolves after the first frame (true) or when WebGL is not available (false). */
 export const ready: Promise<boolean> = new Promise((r) => { resolveReady = r })
@@ -732,23 +745,37 @@ export function start(canvas: HTMLCanvasElement): boolean {
   if (mode === 'still') { html.remove('sea-held'); resolveReady(false); return false }
   cv = canvas
   try {
-    gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: false })
+    // no context on a software rasteriser (a VM, a blocked GPU, a headless browser): the full-screen shader takes
+    // many seconds to compile there and then runs at a frame or two a second; those visitors get the stills
+    gl = canvas.getContext('webgl', { antialias: false, alpha: false, depth: false, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: false, failIfMajorPerformanceCaveat: true })
   } catch { gl = null }
   const fail = () => {
+    // a browser has only so many contexts: one that will never draw is given back
+    try { gl?.getExtension('WEBGL_lose_context')?.loseContext() } catch { /* already gone */ }
     gl = null
     html.add('sea-nogl')
     html.remove('sea-held')
     resolveReady(false)
   }
-  if (!gl || !queue()) { fail(); return false }
+  const renderer = rendererName()
+  if (!gl || SOFTWARE_GL.test(renderer) || !queue()) { fail(); return false }
   const t0 = performance.now()
+  // on a timer that backs off, not every frame: each status query waits for the GPU's queue (50-260 ms a query
+  // on Direct3D, the page's longest tasks) and a frame loop keeps the whole page rendering meanwhile. Nor is the
+  // poll given up for a blocking wait: LINK_STATUS after a timeout froze the page for the rest of the compile (4.2 s)
+  const maxWait = /direct3d/i.test(renderer) ? POLL_MAX_D3D_MS : POLL_MAX_MS
+  let wait = POLL_MIN_MS
   const poll = () => {
     if (!gl) return
-    if (!compiled() && performance.now() - t0 < 8000) { requestAnimationFrame(poll); return }
+    if (!compiled() && performance.now() - t0 < COMPILE_MAX_MS) {
+      wait = Math.min(maxWait, wait * 1.5)
+      window.setTimeout(poll, wait)
+      return
+    }
     if (!setup()) { fail(); return }
     run(canvas)
   }
-  requestAnimationFrame(poll)
+  window.setTimeout(poll, wait)
   return true
 }
 

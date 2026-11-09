@@ -1,0 +1,30 @@
+/* sea · the words (S6, SeaInk.tsx): the shades a word passes through on its way to the paragraph's own colour.
+   Colour only: no layer, no stacking context, nothing moves. A word with no class is fully lit, which is every
+   word in the prerender, without script and in the still and calm tiers. */
+.sea-ink__k0 { color: color-mix(in srgb, currentColor 22%, transparent); }
+.sea-ink__k1 { color: color-mix(in srgb, currentColor 32%, transparent); }
+.sea-ink__k2 { color: color-mix(in srgb, currentColor 42%, transparent); }
+.sea-ink__k3 { color: color-mix(in srgb, currentColor 51%, transparent); }
+.sea-ink__k4 { color: color-mix(in srgb, currentColor 61%, transparent); }
+.sea-ink__k5 { color: color-mix(in srgb, currentColor 71%, transparent); }
+.sea-ink__k6 { color: color-mix(in srgb, currentColor 81%, transparent); }
+.sea-ink__k7 { color: color-mix(in srgb, currentColor 90%, transparent); }
+
+/* the widget can stop the motion or raise the contrast at any time: every word is lit at once */
+html:is(.disable-animations, .motion-reduced, .high-contrast) [class*='sea-ink__k'] { color: inherit; }
+@media (prefers-contrast: more), (forced-colors: active), print {
+  [class*='sea-ink__k'] { color: inherit; }
+}
+
+/* the page's last line (S5), between END OF TAPE and the way back to the start */
+.sea-end__last { margin: 0; }
+@media (min-width: 1100px) {
+  .sea .sea-end:has(> .sea-end__last) { grid-template-rows: 1fr auto 1fr; }
+  .sea .sea-end > .sea-end__last { grid-row: 2; }
+  .sea .sea-end:has(> .sea-end__last) > .sea-rew { grid-row: 3; }
+  .sea .sea-end:has(> .sea-end__last) > .sea-spot--end { grid-row: 1 / span 3; }
+  .sea .sea-end:has(> .sea-end__last) > .sea-meta--end { grid-row: 4; }
+}
+
+/* the reader stopped (SeaInk.tsx): whatever was still dim comes up to full ink, softly */
+.sea-ink--rest span { transition: color 0.45s linear; }

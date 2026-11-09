@@ -11,13 +11,16 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode,
 import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { SplitText } from 'gsap/SplitText'
 import Lenis from 'lenis'
 import { useGSAP } from '@gsap/react'
 import { createMotionEngine, type MotionEngine } from './motion-engine.js'
 import { useAmbientMotion } from '../hooks/useReducedMotion'
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText)
+gsap.registerPlugin(useGSAP, ScrollTrigger)
+
+// SplitText arrives when a scene first asks for a split: importing it builds an Intl.Segmenter at module load,
+// 20 ms on a fast machine, and the production pages never split text
+const loadSplitText = () => import('gsap/SplitText').then((m) => m.SplitText)
 
 const EngineContext = createContext<MotionEngine | null>(null)
 
@@ -89,7 +92,7 @@ export function ScrollEngineProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const e = createMotionEngine({ gsap, ScrollTrigger, SplitText, Lenis }, { reduce: !ambient })
+    const e = createMotionEngine({ gsap, ScrollTrigger, Lenis, loadSplitText }, { reduce: !ambient })
     // CSS-only ambient loops (floating objects) stop under the OS flag; ?motion=full lifts it
     const calm = e.CALM && !e.PRERENDER
     document.documentElement.classList.toggle('motion-calm', calm)

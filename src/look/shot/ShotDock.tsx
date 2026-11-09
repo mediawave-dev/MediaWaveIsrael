@@ -38,18 +38,25 @@ export default function ShotDock({ chatOpen, onSlot, onShownChange }: ShotDockPr
   useEffect(() => {
     const watched = new Set<Element>()
     const inView = new Set<Element>()
+    let reported = false
+    // the hero's focus pull (sea/optical/focus.ts) takes its keys off the screen while the hero itself stays pinned:
+    // from there on the hero no longer covers anything the dock could hide
+    const decide = () => {
+      const pulled = document.documentElement.classList.contains('sea-focus-out')
+      setCovered([...inView].some((el) => !(pulled && el.closest('.sea-focus'))))
+    }
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (e.isIntersecting) inView.add(e.target)
         else inView.delete(e.target)
       }
-      setCovered(inView.size > 0)
+      reported = true
+      decide()
     }, { threshold: 0 })
 
     // Chapters mount lazily (#contact lives in a lazy chunk), so the zones are re-scanned on DOM
     // changes, at most once per frame
     const scan = () => {
-      let changed = false
       document.querySelectorAll(ZONES).forEach((el) => {
         if (watched.has(el)) return
         watched.add(el)
@@ -60,10 +67,10 @@ export default function ShotDock({ chatOpen, onSlot, onShownChange }: ShotDockPr
         watched.delete(el)
         inView.delete(el)
         io.unobserve(el)
-        changed = true
       })
-      // The observer reports every new target once; with none (or after a removal) decide here
-      if (watched.size === 0 || changed) setCovered(inView.size > 0)
+      // Before the observer's first report nothing is known yet (the dock must not flash over the hero's keys),
+      // unless there is nothing to observe; after it, a removal or a change of the pull's class is decided here
+      if (reported || watched.size === 0) decide()
       setBusy(isBusy())
     }
 

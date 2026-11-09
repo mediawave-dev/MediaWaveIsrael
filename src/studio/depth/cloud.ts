@@ -100,18 +100,24 @@ async function photo(n: number, src: string): Promise<P[]> {
 
 const VS = `
 attribute vec3 aPos; attribute vec3 aCol; attribute float aSize;
-uniform mat4 uP, uV; uniform float uScan, uSize, uT;
-varying vec3 vC; varying float vA;
+uniform mat4 uP, uV; uniform float uScan, uSize, uT, uCoc;
+varying vec3 vC; varying float vA; varying float vE; varying float vK;
 void main() {
   vec4 mv = uV * vec4(aPos, 1.0);
   gl_Position = uP * mv;
   float scan = exp(-pow((aPos.y - uScan) * 13.0, 2.0));
   vC = mix(aCol, vec3(1.0), scan * 0.8);
   vA = (0.62 + 0.38 * scan) * clamp(1.0 - (-mv.z - 3.4) * 0.45, 0.32, 1.0);
-  gl_PointSize = uSize * aSize * (1.0 + scan * 1.3) / -mv.z;
+  // out of focus a point spreads into a disc and keeps its light: the same energy over a larger area
+  float s = uSize * aSize * (1.0 + scan * 1.3) / -mv.z;
+  gl_PointSize = s + uCoc * 2.0;
+  vE = pow(s / gl_PointSize, 1.45);
+  vK = clamp(uCoc * 0.25, 0.0, 1.0);
 }`
-const FS = `precision mediump float; varying vec3 vC; varying float vA;
-void main() { vec2 q = gl_PointCoord - 0.5; if (dot(q, q) > 0.25) discard; gl_FragColor = vec4(vC * vA, vA); }`
+const FS = `precision mediump float; varying vec3 vC; varying float vA; varying float vE; varying float vK;
+void main() { vec2 q = gl_PointCoord - 0.5; float d = dot(q, q); if (d > 0.25) discard;
+  float rim = 1.0 + vK * 0.34 * smoothstep(0.13, 0.245, d) - vK * 0.12;
+  gl_FragColor = vec4(vC * vA, vA) * vE * rim; }`
 
 export interface Cloud {
   /** re-form into a shape (the scan sweeps it when it lands) */
@@ -120,6 +126,8 @@ export interface Cloud {
   steer: (x: number, y: number) => void
   /** the page's scroll, in screens (turns the camera a little) */
   scroll: (screens: number) => void
+  /** the lens: 0 the focus is on the headline and the points are discs, 1 the points are sharp */
+  focus: (p: number) => void
   /** the live readout: points, the scan's height, the object's name */
   readout: () => { points: number; scan: number; shape: ShapeId }
   stop: () => void
@@ -169,7 +177,10 @@ export async function startCloud(host: HTMLElement, opts: { still: boolean; calm
   }
   const bPos = buf('aPos', pos, 3), bCol = buf('aCol', colr, 3), bSize = buf('aSize', size, 1)
   const U = (n: string) => gl.getUniformLocation(pr, n)
-  const uP = U('uP'), uV = U('uV'), uScan = U('uScan'), uSize = U('uSize')
+  const uP = U('uP'), uV = U('uV'), uScan = U('uScan'), uSize = U('uSize'), uCoc = U('uCoc')
+  /** the disc's radius when the focus is off the cloud, device px; a share of it per frame, so the first focus eases in */
+  const COC = (phone ? 3.4 : 5) * Math.min(window.devicePixelRatio || 1, 2)
+  let coc = 0, cocGoal = 0
   gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 
   // the projection changes only with the canvas' size; the view matrix is one array, refilled each frame
@@ -235,6 +246,8 @@ export async function startCloud(host: HTMLElement, opts: { still: boolean; calm
     rxNow = opts.still ? rxGoal : rxNow + (rxGoal - rxNow) * Math.min(1, dt * 3)
     view(ry, rxNow + py * 0.4, phone ? 3.9 : 4.0)
     gl.uniformMatrix4fv(uV, false, viewM)
+    coc += (cocGoal - coc) * Math.min(1, dt * 7)
+    gl.uniform1f(uCoc, coc < 0.02 ? 0 : coc)
     gl.uniform1f(uScan, scan); gl.uniform1f(uSize, (phone ? 11 : 13) * dpr)
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
     gl.drawArrays(gl.POINTS, 0, N)
@@ -265,6 +278,7 @@ export async function startCloud(host: HTMLElement, opts: { still: boolean; calm
     },
     steer(x, y) { tx = x; ty = y },
     scroll(s) { screens = s },
+    focus(p) { cocGoal = COC * (1 - p) },
     readout: () => ({ points: N, scan, shape: current }),
     stop() {
       cancelAnimationFrame(raf); ro.disconnect(); lost = true

@@ -1,9 +1,6 @@
 /* The portal between worlds (D188-D189): the wave, the title card, the little world and the map. Shared by
-   the style studio and the main site's invitation, so it carries its own faces. */
-:root {
-  --pt-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
-  --pt-text: "MW Text", "IBM Plex Sans Hebrew", "Heebo", system-ui, sans-serif;
-}
+   the style studio and the main site's invitation; its faces (the --pt-* tokens) and its keyframes live in
+   portal-keyframes.css, in the entry sheet. */
 /* ---------- the wave between styles (D188) ---------- */
 .st-curtain { position: fixed; inset: 0; z-index: 85; width: 100%; height: 100%; pointer-events: none; display: none; }
 .st-curtain[data-on] { display: block; }
@@ -14,10 +11,7 @@
 .st-title[data-out] { animation: st-title-out 0.5s cubic-bezier(.7, 0, .84, 0) both; }
 .st-title__name { display: flex; font-size: clamp(84px, 24vw, 300px) !important; line-height: 0.9 !important; letter-spacing: -0.01em; }
 .st-title__name > span { display: inline-block; animation: st-letter 0.7s cubic-bezier(.16, 1, .3, 1) calc(var(--k) * 0.055s) both; }
-@keyframes st-letter { from { opacity: 0; transform: translateY(0.35em) rotate(-6deg); filter: blur(10px); } }
 .st-title__by { font: 500 16px/1.3 var(--pt-text); opacity: 0.85; }
-@keyframes st-title-in { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: none; } }
-@keyframes st-title-out { to { opacity: 0; transform: translateY(-6vh) scale(0.96); filter: blur(8px); } }
 
 /* ---------- the guide: a little world that comes by now and then (D189) ---------- */
 .gd-trail { position: fixed; inset: 0; z-index: 69; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
@@ -34,9 +28,6 @@
 .gd__rim { fill: none; stroke: var(--gd); stroke-width: 1.4; }
 .gd__ring ellipse { fill: none; stroke: var(--gd); stroke-width: 1; opacity: 0.55; stroke-dasharray: 3 3; }
 .gd__ring { animation: gd-ring 7s linear infinite; }
-@keyframes gd-sea { to { transform: translateX(34px); } }
-@keyframes gd-ring { to { transform: rotate(360deg); } }
-@keyframes gd-breathe { 50% { transform: scale(1.18); opacity: 0.22; } }
 /* away (hidden, off screen) nothing of it animates (D198) */
 .gd[data-phase="away"] :is(.gd__glow, .gd__sea, .gd__ring) { animation: none; }
 .gd:hover .gd__glow { opacity: 0.3; }
@@ -56,7 +47,6 @@ html.wm-open { overflow: hidden; }
   position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: max(14px, env(safe-area-inset-top)) 12px max(14px, env(safe-area-inset-bottom));
   background: rgba(10, 11, 12, 0.72); backdrop-filter: blur(16px) saturate(1.1); -webkit-backdrop-filter: blur(16px) saturate(1.1); animation: wm-in 0.45s ease both;
 }
-@keyframes wm-in { from { opacity: 0; } }
 .wm__panel { width: min(100%, 1180px); max-height: 100%; overflow: auto; color: #ede7da; display: grid; gap: 16px; padding: 4px; }
 .wm__head { position: relative; display: grid; gap: 6px; padding-inline-end: 54px; }
 .wm__k { margin: 0; font: 600 12px/1 var(--pt-mono); color: #a39d90; letter-spacing: 0.06em; }
@@ -73,7 +63,6 @@ html.wm-open { overflow: hidden; }
 .wm__x:hover, .wm__x:focus-visible { background: rgba(237, 231, 218, 0.14); }
 .wm__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .wm__grid li { animation: wm-card 0.7s cubic-bezier(.16, 1, .3, 1) calc(0.08s * var(--i) + 0.1s) both; }
-@keyframes wm-card { from { opacity: 0; transform: translateY(30px) scale(0.96); } }
 .wm__world { position: relative; display: block; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: start; cursor: pointer; border-radius: 16px; }
 .wm__world:focus-visible { outline: 3px solid #ede7da; outline-offset: 3px; }
 .wm__pic { position: relative; display: block; aspect-ratio: 9 / 13; overflow: hidden; border-radius: 14px; background: #1a1b1d; border: 1px solid rgba(237, 231, 218, 0.16); transition: border-color 0.4s ease, transform 0.6s cubic-bezier(.16, 1, .3, 1); }
@@ -153,12 +142,6 @@ html.wm-open { overflow: hidden; }
 html[data-scrolling] .snd[data-on] .snd__col i { animation-play-state: paused; }
 .snd[data-on] .snd__col:nth-child(2n) i { animation-duration: 0.9s; }
 .snd[data-on] .snd__col:nth-child(3) i { animation-duration: 1.45s; }
-@keyframes snd-lit {
-  0% { opacity: calc(0.92 - var(--r) * 0.24); }
-  25% { opacity: calc(0.95 - var(--r) * 0.1); }
-  50% { opacity: calc(0.9 - var(--r) * 0.3); }
-  75% { opacity: calc(0.85 - var(--r) * 0.18); }
-}
 html:is(.disable-animations, .motion-reduced) .snd { transition: opacity 0.2s ease, visibility 0s; filter: none; }
 html:is(.disable-animations, .motion-reduced) .snd__col i { animation: none !important; }
 @media (max-width: 360px) { .snd__go { gap: 10px; padding-inline: 8px 10px; } }

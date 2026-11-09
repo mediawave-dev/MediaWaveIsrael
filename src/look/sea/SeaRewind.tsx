@@ -43,6 +43,8 @@ export default function SeaRewind() {
     <div className="sea-end">
       <span className="sea-spot sea-spot--end" data-spot="horizon" aria-hidden="true" />
       <Tag>END OF TAPE</Tag>
+      {/* the page's last line (S5): the websites chapter's "ונשאר שלכם", once more. [קופי: נתי] ?copy=new only until approved */}
+      {opt('copy') === 'new' && <p className="sea-h3 sea-end__last" data-zone="text">האתר נשאר שלכם.</p>}
       <button type="button" className="sea-rew" onClick={go} data-cursor="◀◀ REW">
         <svg viewBox="0 0 20 12" aria-hidden="true" focusable="false"><path d="M10 1 1 6l9 5zM19 1l-9 5 9 5z" /></svg>
         חזרה להתחלה

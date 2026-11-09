@@ -3,7 +3,7 @@
 // closer than 40 s, once more at the letter. Its map opens a world through the wave, without a page load:
 // the wave covers the sea in the chosen world's colours, the studio and that world load under it, the route
 // changes, and the studio opens the wave with the world's name (StylesPage reads window.__studioArrival).
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useSyncExternalStore } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Guide, { type GuidePlan } from './Guide'
 import WorldMap from './WorldMap'
@@ -20,7 +20,16 @@ const SITE_PLAN: GuidePlan = { chapters: '[data-chapter]', cool: 40000, max: 3, 
 // the site's own music for the invitation (D199): offered only while it is armed and not yet playing
 const SEA_SOUND: SoundSource = { isOn: () => sea.isRunning() || !sea.isOn(), turnOn: sea.startMusic, subscribe: sea.onChange }
 
+// phones (S2): nothing comes by while someone reads. The worlds and the sound are in the header's menu.
+const PHONE = '(max-width: 767px)'
+const onPhoneChange = (cb: () => void) => {
+  const m = window.matchMedia(PHONE)
+  m.addEventListener('change', cb)
+  return () => m.removeEventListener('change', cb)
+}
+
 export default function SiteGuide() {
+  const phone = useSyncExternalStore(onPhoneChange, () => window.matchMedia(PHONE).matches, () => false)
   const [map, setMap] = useState(false)
   const navigate = useNavigate()
   const tier = tierNow()
@@ -30,6 +39,7 @@ export default function SiteGuide() {
     setMap(false)
     void travel(s, at, navigate, tier, 'site_guide')
   }
+  if (phone) return null
   return (
     <>
       <Guide color="#79a0c5" tier={tier} open={map} onOpen={() => { setMap(true); if (tier !== 'still') { prepareCurtain(); preloadSound() } }} plan={plan} />

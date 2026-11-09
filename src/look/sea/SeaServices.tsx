@@ -17,6 +17,7 @@ import * as sound from './sound'
 import SeaImage from './SeaImage'
 import { CLIPS, SERVICE_MEDIA, posterOf, tileOf, videoOf } from './media'
 import { GroundSource } from './SeaGround'
+import SeaInk from './SeaInk'
 import * as field from './field'
 import { opt } from './lab'
 import { setText } from '../../utils/set-text'
@@ -157,11 +158,12 @@ export default function SeaServices() {
       </div>
       {/* video, a memories film and tapes, in their own words (moved here from "how we work", 22.10). [קופי: נתי] */}
       <div className="sea-svc__after">
-        <p className="sea-lede sea-svc__also sea-fade" data-reveal="" data-zone="text">
-          <span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>
-          ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל:
-          מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה.
-        </p>
+        <SeaInk
+          reveal
+          className="sea-lede sea-svc__also"
+          before={<span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>}
+          text="ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל: מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה."
+        />
       </div>
     </section>
   )

@@ -35,6 +35,7 @@
 | pexels-34268861 | W01 | וידאו | https://www.pexels.com/video/colorful-code-on-dark-background-34268861/ | Jakub Zerdzicki | Pexels License | לא נדרש | 2026-10-20 | public/media/reel/code* | טייק בשואוריל מ-0:02 |
 | pexels-34459460 | W01 | וידאו | https://www.pexels.com/video/colorful-html-code-on-computer-monitor-34459460/ | Jakub Zerdzicki | Pexels License | לא נדרש | 2026-10-20 | public/media/svc-websites-2* | מקור אנכי: חיתוך 1080×608, 0:00-0:07 לופ, 1280 ו-640, H.264 + VP9, פוסטר, אריח |
 | pexels-36462419 | W30 | וידאו | https://www.pexels.com/video/city-night-lights-with-bokeh-effect-36462419/ | Israyosoy S. | Pexels License | לא נדרש | 2026-10-20 | public/media/reel/lights* | טייק בשואוריל מ-0:04, חיתוך 72% סביב האורות שבתחתית |
+| pexels-36462419 | W30 | תמונה | https://www.pexels.com/video/city-night-lights-with-bokeh-effect-36462419/ | Israyosoy S. | Pexels License | לא נדרש | 2026-10-20 | public/media/focus-lights.webp | פריים מ-`public/media/reel/lights.mp4` בשנייה 1.2, רוחב 960, WebP 6KB; הזוהר של משיכת הפוקוס ביציאה מההירו (C1) |
 | pexels-40057146 | W28 | וידאו | https://www.pexels.com/video/abstract-glowing-neon-fiber-optic-light-burst-40057146/ | Nicola Narracci | Pexels License | לא נדרש | 2026-10-20 | public/media/svc-chat-2* | 0:01-0:08 לופ, כנ"ל |
 
 ## השואוריל של ההירו (D157, D172)

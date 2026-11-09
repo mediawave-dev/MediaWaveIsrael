@@ -1,0 +1,22 @@
+/* The portal's tokens and motion (portal.css), in the entry stylesheet (Layout imports it). A stylesheet that
+   arrives after first paint with a :root rule or an @keyframes rule makes the browser restyle the whole document:
+   the little world's and the sound invitation's sheet cost 70-87 ms on a fast machine, about 350 ms on a phone,
+   right after the load. */
+:root {
+  --pt-mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --pt-text: "MW Text", "IBM Plex Sans Hebrew", "Heebo", system-ui, sans-serif;
+}
+@keyframes st-letter { from { opacity: 0; transform: translateY(0.35em) rotate(-6deg); filter: blur(10px); } }
+@keyframes st-title-in { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: none; } }
+@keyframes st-title-out { to { opacity: 0; transform: translateY(-6vh) scale(0.96); filter: blur(8px); } }
+@keyframes gd-sea { to { transform: translateX(34px); } }
+@keyframes gd-ring { to { transform: rotate(360deg); } }
+@keyframes gd-breathe { 50% { transform: scale(1.18); opacity: 0.22; } }
+@keyframes wm-in { from { opacity: 0; } }
+@keyframes wm-card { from { opacity: 0; transform: translateY(30px) scale(0.96); } }
+@keyframes snd-lit {
+  0% { opacity: calc(0.92 - var(--r) * 0.24); }
+  25% { opacity: calc(0.95 - var(--r) * 0.1); }
+  50% { opacity: calc(0.9 - var(--r) * 0.3); }
+  75% { opacity: calc(0.85 - var(--r) * 0.18); }
+}

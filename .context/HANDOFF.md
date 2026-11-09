@@ -1,3 +1,30 @@
+# HANDOFF: implementing Nati's picks (9.11.2026, D219-D229)
+
+## Where
+Worktree `.claude/worktrees/stunning-visual-effects-964ff5`, branch `claude/stunning-visual-effects-964ff5`.
+**Live:** the glass key only (main d6a7e32, rollback tag `prod-before-d219`).
+**Uncommitted in this worktree, not live:** everything below. `.claude/launch.json` is temporary: never commit it.
+
+## Picks (9.11)
+G1 live. G2, C3, C4, C5, C6 no (tape head code removed). C1 home. C2 service pages. S1-S6 yes. S7 not now. P1 fix.
+
+## Done in the worktree
+P1 performance (D221), S1 type (D222), S2 two corners (D223), S6 ink (D224), S3 dive and S4 emptied stage (D226), C1 focus (D227), C2 anamorphic on 5 of 6 service pages (D228), the sample sites: a key per world, focus in Depth (D229, plan in design/sample-sites-effects.rtl.md).
+site-director is at 1.6.0, installed: level per site, Shira recipes R0-R8, story kit, gates.
+
+## Waiting for Nati
+1. Release: Cloudflare preview branch first, or straight to main.
+2. S5 copy, behind `?copy=new` until approved (the menu labels in src/config/navigation.ts change with it): "והקלטות שלכם.", "איך זה נהיה שלכם", "השאלות שלכם", "האתר נשאר שלכם."
+3. The AI launcher lost its letters on phones and the tap-for-sound invitation is off on phones (D223): tell Nati.
+
+## Known issues
+No real phone or VoiceOver test. Home has 4-5 WebGL contexts, no headroom on Android's 8. The reel keeps decoding behind the focus canvas. Depth world shows a honeycomb at DPR 3 when out of focus. Perf 79, below 80.
+
+## Next steps
+On approval: commit by explicit paths, `git fetch`, tag `prod-before-d221`, push with the helper in memory mediawave-github-deploy, verify by content on a real browser, remove `.claude/launch.json`.
+
+---
+
 # HANDOFF: optical objects, the cinema lab, Shira's teardown (8-9.11.2026, D219-D220, overnight)
 
 ## Goal

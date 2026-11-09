@@ -472,6 +472,7 @@ html[data-look="shot"] .sp-lost__top .sp-lost__code { color: #a39d90; }
 
 /* ── the WhatsApp mark in dots (D138) ── */
 .wa-dots { display: block; overflow: visible; }
+.wa-dots path { fill: currentColor; }
 .wa-dots circle { fill: currentColor; transform-box: fill-box; transform-origin: center; }
 html[data-look="shot"] .key .wa-dots.key__dest { padding: 5px; }
 /* hover: the dots burst a little apart and snap back into the mark */

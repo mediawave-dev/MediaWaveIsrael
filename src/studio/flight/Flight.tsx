@@ -7,14 +7,21 @@ import '@fontsource/bellefair/hebrew-400.css'
 import '@fontsource/bellefair/latin-400.css'
 import { useScene } from '../../motion/ScrollEngineProvider'
 import { C } from '../content'
-import { waForStyle } from '../lead'
+import type { GlassLook } from '../../look/sea/optical/glass-key'
 import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import WorldKey, { hex } from '../WorldKey'
 import './flight.css'
 
 export const prepare = () => document.fonts.load('400 64px Bellefair', 'אבג')
+
+/** the key: one more piece of the wings' glass, milky on the sky, lit by the dusk's violet */
+const KEY: GlassLook = {
+  light: hex('#6a3ff0'), floor: hex('#f4effd'), ink: hex('#29345a'), read: hex('#3d3196'), rim: hex('#ffffff'), shade: hex('#3a2e8c'), shadow: 0.36,
+  brightFloor: true, brightPage: true, matte: 0, square: false, trackR: 0.5, keyR: 0.98, height: [76, 84], text: 16,
+}
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
@@ -91,7 +98,7 @@ export default function Flight({ tier, def }: StyleProps) {
         </h1>
         <div className="fl-hero__foot">
           <p className="fl-hero__sub">{hero.sub}{hero.sub2 && <><br />{hero.sub2}</>}</p>
-          <a className="fl-pill" href={waForStyle(def)} target="_blank" rel="noopener noreferrer">{hero.cta}</a>
+          <WorldKey def={def} tier={tier} label={hero.cta} plain="fl-pill" look={KEY} />
         </div>
         {/* [קופי: נתי] */}
         <p className="fl-hint" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>

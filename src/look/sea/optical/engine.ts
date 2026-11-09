@@ -74,6 +74,12 @@ export function watch(el: Element, loop: Loop, onFirst?: () => void) {
   return () => io.disconnect()
 }
 
+/** a rasteriser in software (a VM, a blocked GPU, a headless browser): these objects are for a GPU, the plain element stays */
+export function softwareGL(gl: WebGL2RenderingContext) {
+  const info = gl.getExtension('WEBGL_debug_renderer_info')
+  return /swiftshader|llvmpipe|softpipe|basic render|software/i.test(info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL) ?? '') : '')
+}
+
 export function loseContext(gl: WebGL2RenderingContext) {
   try { gl.getExtension('WEBGL_lose_context')?.loseContext() } catch { /* already gone */ }
 }

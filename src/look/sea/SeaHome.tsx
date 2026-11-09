@@ -18,12 +18,15 @@ import Contact from '../sections/Contact'
 import { track } from '../../utils/analytics'
 import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import SeaIntro from './SeaIntro'
+import SeaFocus from './SeaFocus'
 import SeaLaptop from './SeaLaptop'
 import SeaServices from './SeaServices'
 import SeaRewind from './SeaRewind'
 import SeaFilm from './SeaFilm'
+import SeaDive, { SeaEmpty } from './SeaDive'
 import SeaWork from './SeaWork'
 import SeaStyles from './SeaStyles'
+import SeaInk from './SeaInk'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
@@ -35,6 +38,7 @@ import './sea.css'
 import './sea-site.css'
 import './sea-optical.css' // the glass key (D219)
 import './sea-craft.css' // the finish (D211): hairlines that draw in, rolling labels
+import './sea-phone.css' // the phone's type scale, gutter and two corner controls
 
 /** The sunset on the horizon (D154, Pexels 11335978): the disc's own sea becomes a real one. The field
     draws it inside the disc in dots and develops it into colour a moment after the opening hands over
@@ -170,6 +174,7 @@ function Hero() {
   useReel(section, video, take, hero === 'reel')
   useGround(section, video, 'hero-veil', { on: veil, after: true, text: () => section.current?.querySelector<HTMLElement>('.sea-in') ?? null, focus: [0.6, 0.5] })
   return (
+    <div className="sea-focus">
     <section ref={section} id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
       {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them.
           With the ground the field draws no disc here; the opening still gathers its dots into it */}
@@ -178,6 +183,7 @@ function Hero() {
         <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
         {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
       </span>
+      <SeaFocus />
       <div className="sea-in">
         {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
         <h1 id="hero-title" className="sea-h1" data-zone="text" tabIndex={-1}>
@@ -203,6 +209,7 @@ function Hero() {
         </div>
       </div>
     </section>
+    </div>
   )
 }
 
@@ -213,7 +220,7 @@ function Websites() {
         <div className="sea-in" data-reveal="">
           <Tag className="sea-fade">01 · WEBSITES</Tag>
           <h2 id="web-title" className="sea-h2" data-zone="text"><Lines lines={['אתר שנבנה בשבילכם,', 'ונשאר שלכם.']} /></h2>
-          <p className="sea-sub sea-fade" data-zone="text">מאפס ובלי תבנית. אחרי התשלום העיצוב, הקוד והתכנים עוברים אליכם.</p>
+          <SeaInk hold className="sea-sub" text="מאפס ובלי תבנית. אחרי התשלום העיצוב, הקוד והתכנים עוברים אליכם." />
         </div>
       </SeaLaptop>
     </section>
@@ -294,8 +301,9 @@ function Process() {
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
       <header className="sea-head" data-reveal="">
         <Tag className="sea-fade">03 · PROCESS</Tag>
-        <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={['איך אנחנו', 'עובדים']} /></h2>
-        <p className="sea-proc__for sea-fade" data-zone="text">( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )</p>
+        {/* [קופי: נתי] S5, ?copy=new only until approved; the menu's label in navigation.ts changes with it */}
+        <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={opt('copy') === 'new' ? ['איך זה', 'נהיה שלכם'] : ['איך אנחנו', 'עובדים']} /></h2>
+        <SeaInk className="sea-proc__for" text="( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )" />
       </header>
       <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
       <Included />
@@ -341,7 +349,11 @@ export default function SeaHome() {
       <SeaIntro />
       <Hero />
       <Websites />
+      <SeaDive />
       <SeaFilm />
+      {/* the emptied stage (S4): Nati approved it with this sentence on the decision board, 9.11 */}
+      <SeaEmpty />
+
       <Why />
       <SeaServices />
       {opt('work') === 'rows' && <SeaWork />}

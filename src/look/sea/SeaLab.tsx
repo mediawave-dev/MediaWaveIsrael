@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react'
 import { GATES, labOpen, opt, pick, type Gate } from './lab'
 
-const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד', sun: 'השקיעה בטבעת', rows: 'תמונה בשורת שירות', work: 'שורות עבודה', type: 'טיפוגרפיה', menu: 'התפריט', stack: 'ערימה בפינה', bar: 'הפס עם השעון', bleed: 'סרטון כרקע', hero: 'ההירו', grain: 'נקודות על כל האתר', trail: 'שובל העכבר', finger: 'האצבע בטלפון', media: 'תמונות', relief: 'תבליט מתחת לעכבר' }
+const NAMES: Record<Gate, string> = { head: 'הכותרת', film: 'הסרט', ground: 'צבע לפרק', turn: 'מעבר עמוד', sun: 'השקיעה בטבעת', rows: 'תמונה בשורת שירות', work: 'שורות עבודה', type: 'טיפוגרפיה', menu: 'התפריט', stack: 'ערימה בפינה', bar: 'הפס עם השעון', bleed: 'סרטון כרקע', hero: 'ההירו', grain: 'נקודות על כל האתר', trail: 'שובל העכבר', finger: 'האצבע בטלפון', media: 'תמונות', relief: 'תבליט מתחת לעכבר', copy: 'קופי לאישור' }
 const LABELS: Record<string, string> = {
   'head.island': 'אי שנפתח במגע', 'head.away': 'נעלמת, חוזרת למעלה', 'head.sticky': 'צמודה כמו היום',
   'film.touch': 'מתפתח במגע', 'film.scroll': 'מתפתח בגלילה', 'film.time': 'מתפתח לבד', 'film.off': 'בלי',

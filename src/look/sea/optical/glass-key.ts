@@ -2,15 +2,16 @@
 // the WhatsApp mark in dots rests under the glass; dragged or tapped, the dots swirl into two read receipts,
 // which turn blue when the key arrives. Every optical length is authored for a 198 px glass and scaled by uU.
 // Technique from reading Zsolt Kacso's switch; the code, the mark, the words and the moment are ours.
-import { LIGHT, OPTICS, VS, clamp, easeIO, loopOf, loseContext, program, rnd, watch } from './engine'
+// The studio's worlds wear it in their own colour and material (GlassLook); with no look it is the site's dark key.
+import { LIGHT, OPTICS, VS, clamp, easeIO, loopOf, loseContext, program, rnd, softwareGL, watch } from './engine'
 import { WA_DOTS } from '../wa-dots-data'
 
 const FS = `#version 300 es
 precision highp float;
 out vec4 frag;
 uniform vec2 uRes, uTrackH, uK, uKH, uEdge;
-uniform float uDpr, uTrackR, uKR, uTheta, uArc, uLed, uLift, uRead, uDotsHalf, uU;
-uniform vec3 uLight;
+uniform float uDpr, uTrackR, uKR, uTheta, uArc, uLed, uLift, uRead, uDotsHalf, uU, uBF, uBP, uMatte, uShadow;
+uniform vec3 uLight, uFloor, uInk, uReadC, uRim, uShade;
 uniform vec4 uLabelBox;
 uniform sampler2D uLabel, uDots;
 ${OPTICS}
@@ -25,17 +26,17 @@ float field(vec2 p){ vec2 d = abs(mod(p, 5.) - 2.5) - .8; return 1. - smoothstep
 vec3 under(vec2 p, float frost, vec2 ca){
   float L = max(strip(p - uK), 0.);
   float wash = (exp(-L / (14. * uU)) * .85 + exp(-L / (55. * uU)) * .32) * uLed;
-  vec3 c = vec3(.024, .026, .031);
-  c *= 1. - smoothstep(-13., 3., box(p - vec2(0., 6.), uTrackH, uTrackR).x) * .6;
-  c += uLight * wash * .42;
-  c += field(p) * wash * .1 * (1. - frost);
+  vec3 c = uFloor;
+  c *= 1. - smoothstep(-13., 3., box(p - vec2(0., 6.), uTrackH, uTrackR).x) * mix(.6, .07, uBF);
+  // adding light to paper does nothing: on a bright floor the same falloff emits a saturated tint
+  c = mix(c + uLight * wash * .42, mix(c, uLight, clamp(wash * .34, 0., .9)), uBF);
+  c += field(p) * wash * mix(.1, -.16, uBF) * (1. - frost);
   float lod = frost * 4.4, s = smoothstep(-5., 5., p.x - uK.x);
   vec2 a = label(p - ca, lod), b = label(p, lod), e = label(p + ca, lod);
   vec3 t = mix(vec3(a.r, b.r, e.r), vec3(a.g, b.g, e.g), s);
-  vec3 ink = vec3(.93, .905, .855);
-  c = mix(c, ink * .92, clamp(t, 0., 1.));
+  c = mix(c, uInk * .92, clamp(t, 0., 1.));
   vec3 d = vec3(dots(p - ca, lod), dots(p, lod), dots(p + ca, lod));
-  vec3 mark = mix(ink, mix(uLight, vec3(1.), .3) * 1.12, uRead) + uLight * wash * .2;
+  vec3 mark = mix(uInk, uReadC, uRead) + uLight * wash * .2 * (1. - uBF);
   return mix(c, mark, clamp(d, 0., 1.));
 }
 void main(){
@@ -45,14 +46,18 @@ void main(){
   float sh2 = 1. - smoothstep(-2., 4., box(p - vec2(0., 1.5), uTrackH, uTrackR).x);
   float L = max(strip(p - uK), 0.);
   float edge = smoothstep(0., 30., -box(p, uEdge, 0.).x);
-  vec3 add = uLight * (exp(-L / (18. * uU)) * .5 + exp(-L / (72. * uU)) * .2) * uLed * .6 * edge;
-  vec4 c = vec4(add, (1. - (1. - sh * .5) * (1. - sh2 * .3)) * edge);
+  float spill = (exp(-L / (18. * uU)) * .5 + exp(-L / (72. * uU)) * .2) * uLed * .6 * edge;
+  vec3 add = uLight * spill;
+  float sa = (1. - (1. - sh * .5) * (1. - sh2 * .3)) * edge;
+  vec4 c = vec4(add, sa);
+  // a bright page: the spill is a tint laid over it and the shadow takes the ground's own colour
+  if (uBP > .5) { float g = clamp(spill * .5, 0., .85), as = sa * uShadow; c = vec4(uLight * g + uShade * as * (1. - g), g + as * (1. - g)); }
   if (st < 2.) {
     vec3 t = under(p, 0., vec2(0.));
     float ksh = 1. - smoothstep(-6., 13. + uLift * 5., box(p - uK - vec2(0., 5. + uLift * 3.), uKH, uKR).x);
-    t *= 1. - ksh * .6;
+    t = mix(t * (1. - ksh * .6), mix(t, uShade, ksh * .26), uBF);
     float rim = 1. - smoothstep(0., 1.2, abs(st + .75));
-    t += rim * mix(.035, .09, smoothstep(-uTrackH.y * .6, uTrackH.y, p.y));
+    t = mix(t + rim * mix(.035, .09, smoothstep(-uTrackH.y * .6, uTrackH.y, p.y)), mix(t, uRim, rim * .92), uBF);
     c = mix(c, vec4(t, 1.), 1. - smoothstep(-.6, .6, st));
   }
   vec3 K = box(p - uK, uKH, uKR);
@@ -60,26 +65,42 @@ void main(){
   if (sk < 2.) {
     vec2 n = K.yz, q = p - uK;
     float d = max(-sk, 0.), slope = pow(1. - clamp(d / (26. * uU), 0., 1.), 2.6);
-    vec2 off = -n * slope * 40. * uU - q * .055;
-    vec3 g = under(p + off, .06 + .76 * slope, n * slope * 3.2 * uU + q * .006);
+    vec2 off = (-n * slope * 40. * uU - q * .055) * (1. - uMatte * .55);
+    vec3 g = under(p + off, .06 + .76 * slope + uMatte * .3, (n * slope * 3.2 * uU + q * .006) * (1. - uMatte));
     float vy = clamp((q.y + uKH.y) / (2. * uKH.y), 0., 1.);
-    vec3 k = g * .84 + vec3(.135) * (1. - vy * .55);
     float lq = max(strip(q), 0.);
-    k += uLight * (exp(-lq / (24. * uU)) * .8 + exp(-lq / (64. * uU)) * .2) * uLed * .8;
-    k += uLight * exp(-d / max(2.2 * uU, 1.1)) * exp(-lq / (40. * uU)) * uLed * 1.3;
+    float inner = (exp(-lq / (24. * uU)) * .8 + exp(-lq / (64. * uU)) * .2) * uLed * .8;
+    float trapped = exp(-d / max(2.2 * uU, 1.1)) * exp(-lq / (40. * uU)) * uLed * 1.3;
     float ndl = dot(n, normalize(vec2(-.35, -1.)));
-    k += pow(max(ndl, 0.), 2.) * exp(-d / 1.1) * .42;
-    k += max(ndl, 0.) * slope * .07;
-    k *= 1. - max(-ndl, 0.) * slope * .28;
-    k += exp(-d / .7) * .07;
+    vec3 k;
+    if (uBF > .5) {
+      // clear glass over paper: the paper shows through; only the bevel darkens, the light tints, one bright rim on top
+      k = g * (1.015 - vy * .045);
+      k = mix(k, uLight, clamp(inner * .2 + trapped * .34, 0., .92));
+      k *= 1. - slope * (.09 + max(-ndl, 0.) * .24);
+      k = mix(k, uRim, exp(-d / max(.9 * uU, .7)) * .7);
+      k += pow(max(ndl, 0.), 2.) * exp(-d / 1.1) * .5;
+    } else {
+      float shine = 1. - uMatte * .78;
+      k = g * .84 + vec3(.135) * (1. - vy * .55);
+      k += uLight * inner;
+      k += uLight * trapped * (1. - uMatte * .5);
+      k += pow(max(ndl, 0.), 2.) * exp(-d / 1.1) * .42 * shine;
+      k += max(ndl, 0.) * slope * .07 * shine;
+      k *= 1. - max(-ndl, 0.) * slope * .28;
+      k += exp(-d / .7) * .07 * shine;
+    }
     c = mix(c, vec4(k, 1.), 1. - smoothstep(-.7, .7, sk));
   }
   float ls = strip(p - uK);
   float lm = 1. - smoothstep(-.6, .6, ls);
-  vec3 lc = mix(uLight * 1.05, mix(uLight, vec3(1.), .65), smoothstep(-.1, -.8, ls)) * (.8 + .35 * uLed);
+  float bright = mix(uBP, uBF, 1. - smoothstep(-.6, .6, st));
+  vec3 lc = mix(uLight * 1.05, mix(uLight, vec3(1.), mix(.65, .16, bright)), smoothstep(-.1, -.8, ls)) * mix(.8 + .35 * uLed, 1., bright);
   c.rgb = mix(c.rgb, lc, lm);
   c.a = max(c.a, lm);
-  c.rgb += uLight * exp(-max(ls, 0.) / max(4.5 * uU, 2.4)) * .55 * uLed * (1. - lm) * edge;
+  float halo = exp(-max(ls, 0.) / max(4.5 * uU, 2.4)) * uLed * (1. - lm) * edge;
+  if (bright > .5) { float h = clamp(halo * .3, 0., .85); c = vec4(uLight * h + c.rgb * (1. - h), h + c.a * (1. - h)); }
+  else c.rgb += uLight * halo * .55;
   c.rgb += (hash(gl_FragCoord.xy) - .5) * .02 * max(c.a, min(1., length(add) * 8.));
   frag = vec4(clamp(c.rgb, 0., 1.), c.a);
 }`
@@ -96,9 +117,11 @@ void main(){
 const POINT_FS = `#version 300 es
 precision highp float;
 in float vR; in float vB; in float vD;
+uniform float uSquare;
 out vec4 frag;
 void main(){
-  float d = length(gl_PointCoord - .5) * vD;
+  vec2 q = abs(gl_PointCoord - .5) * vD;
+  float d = mix(length(q), max(q.x, q.y), uSquare);
   frag = vec4((1. - smoothstep(vR - .6, vR + .4, d)) * clamp(vB, 0., 1.));
 }`
 
@@ -144,6 +167,37 @@ function pairDots(pitch: number): Dot[] {
   })
 }
 
+type RGB = readonly [number, number, number]
+
+/** A world's own key: its colours, its material and its size. */
+export interface GlassLook {
+  light: RGB
+  /** the floor of the track under the glass */
+  floor: RGB
+  /** the words and the mark at rest */
+  ink: RGB
+  /** the mark once the key has arrived */
+  read: RGB
+  /** the hairline around the track and the glass on a bright floor */
+  rim: RGB
+  /** what a shadow is made of on a bright ground, and how much of it falls there */
+  shade: RGB
+  shadow: number
+  brightFloor: boolean
+  brightPage: boolean
+  /** 0 clear glass, 1 a matte slab: less bend, more frost, less shine */
+  matte: number
+  /** the mark's dots as a plotter's squares */
+  square: boolean
+  /** corners: of the track as a share of its height, of the glass as a share of its half */
+  trackR: number
+  keyR: number
+  /** the object's height below and from 900 px (the same test as the world's CSS) */
+  height: readonly [number, number]
+  /** the words' size */
+  text: number
+}
+
 export interface GlassKeyOptions {
   label: string
   after: string
@@ -153,16 +207,42 @@ export interface GlassKeyOptions {
   onArrive: () => void
   /** the GPU took the context back: the plain key returns */
   onLost: () => void
+  /** a world's own look; without it, the site's dark key */
+  look?: GlassLook
+  /** the element whose face the words are set in (the link itself by default) */
+  typeFrom?: HTMLElement
 }
 
 const MARGIN = 90
+const MARGIN_WORLD = 64
 const DOTS_HALF = 64
 const FBO = 256
 const RETURN_AFTER = 2600
 
+const SITE: GlassLook = {
+  light: LIGHT,
+  floor: [0.024, 0.026, 0.031],
+  ink: [0.93, 0.905, 0.855],
+  read: [(LIGHT[0] + (1 - LIGHT[0]) * 0.3) * 1.12, (LIGHT[1] + (1 - LIGHT[1]) * 0.3) * 1.12, (LIGHT[2] + (1 - LIGHT[2]) * 0.3) * 1.12],
+  rim: [0, 0, 0],
+  shade: [0, 0, 0],
+  shadow: 0.46,
+  brightFloor: false,
+  brightPage: false,
+  matte: 0,
+  square: false,
+  trackR: 0.34,
+  keyR: 0.62,
+  height: [104, 116],
+  text: 19,
+}
+
 export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit: HTMLAnchorElement, opts: GlassKeyOptions) {
+  const look = opts.look ?? SITE
+  const margin = opts.look ? MARGIN_WORLD : MARGIN
   const gl = canvas.getContext('webgl2', { antialias: false, alpha: true, premultipliedAlpha: true })
   if (!gl) return null
+  if (softwareGL(gl)) { loseContext(gl); return null }
   let main: ReturnType<typeof program>
   let pts: ReturnType<typeof program>
   try {
@@ -192,7 +272,7 @@ export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit
   const labelTex = gl.createTexture()
   const ptsBuf = gl.createBuffer()
 
-  const L = { W: 0, H: 0, pad: 7, kh: 0, kr: 0, tr: 0, x0: 0, cw: 0, ch: 0 }
+  const L = { W: 0, H: 0, pad: opts.look ? 6 : 7, kh: 0, kr: 0, tr: 0, x0: 0, cw: 0, ch: 0 }
   let dpr = 1
   let D: Dot[] = []
   let arr = new Float32Array(0)
@@ -209,7 +289,8 @@ export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit
     const x = c.getContext('2d')
     if (!x) return
     x.scale(2, 2)
-    x.font = `600 ${L.W < 380 ? 18 : 19}px ${getComputedStyle(hit).fontFamily}`
+    const face = getComputedStyle(opts.typeFrom ?? hit)
+    x.font = opts.look ? `${face.fontWeight} ${look.text}px ${face.fontFamily}` : `600 ${L.W < 380 ? 18 : 19}px ${face.fontFamily}`
     x.direction = 'rtl'
     x.textAlign = 'center'
     x.textBaseline = 'middle'
@@ -235,15 +316,15 @@ export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit
     const w = stage.clientWidth
     if (!w) return false
     L.W = Math.min(w, 440)
-    L.H = window.innerWidth < 420 ? 104 : 116
+    L.H = opts.look ? look.height[window.innerWidth < 900 ? 0 : 1] : (window.innerWidth < 420 ? look.height[0] : look.height[1])
     L.kh = (L.H - 2 * L.pad) / 2
-    L.kr = L.kh * 0.62
-    L.tr = L.H * 0.34
+    L.kr = L.kh * look.keyR
+    L.tr = L.H * look.trackR
     L.x0 = L.W / 2 - L.pad - L.kh
     stage.style.height = `${L.H}px`
     dpr = Math.min(window.devicePixelRatio || 1, 2)
-    L.cw = L.W + 2 * MARGIN
-    L.ch = L.H + 2 * MARGIN
+    L.cw = L.W + 2 * margin
+    L.ch = L.H + 2 * margin
     canvas.style.width = `${L.cw}px`
     canvas.style.height = `${L.ch}px`
     canvas.width = Math.round(L.cw * dpr)
@@ -332,6 +413,7 @@ export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit
     c.useProgram(pts.p)
     c.uniform1f(pts.u.uHalf, DOTS_HALF)
     c.uniform1f(pts.u.uPx, FBO / (2 * DOTS_HALF))
+    c.uniform1f(pts.u.uSquare, look.square ? 1 : 0)
     c.bindBuffer(c.ARRAY_BUFFER, ptsBuf)
     c.bufferSubData(c.ARRAY_BUFFER, 0, arr)
     c.enableVertexAttribArray(ptsA)
@@ -367,7 +449,16 @@ export function mountGlassKey(stage: HTMLElement, canvas: HTMLCanvasElement, hit
     c.uniform1f(U.uLift, S.hover * (1 - S.press))
     c.uniform1f(U.uRead, S.read)
     c.uniform1f(U.uDotsHalf, DOTS_HALF)
-    c.uniform3f(U.uLight, LIGHT[0], LIGHT[1], LIGHT[2])
+    c.uniform3f(U.uLight, look.light[0], look.light[1], look.light[2])
+    c.uniform3f(U.uFloor, look.floor[0], look.floor[1], look.floor[2])
+    c.uniform3f(U.uInk, look.ink[0], look.ink[1], look.ink[2])
+    c.uniform3f(U.uReadC, look.read[0], look.read[1], look.read[2])
+    c.uniform3f(U.uRim, look.rim[0], look.rim[1], look.rim[2])
+    c.uniform3f(U.uShade, look.shade[0], look.shade[1], look.shade[2])
+    c.uniform1f(U.uBF, look.brightFloor ? 1 : 0)
+    c.uniform1f(U.uBP, look.brightPage ? 1 : 0)
+    c.uniform1f(U.uMatte, look.matte)
+    c.uniform1f(U.uShadow, look.shadow)
     c.uniform4f(U.uLabelBox, -L.W / 2, -L.H / 2, L.W, L.H)
     c.bindBuffer(c.ARRAY_BUFFER, tri)
     c.enableVertexAttribArray(triA)
