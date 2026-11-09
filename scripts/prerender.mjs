@@ -48,7 +48,7 @@ const NOT_FOUND_ROUTE = '/__not-found__'
 // swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
 // The display face lives at a stable public URL: EFT Betaamango for k, m and km (DECISIONS #59),
 // mediawave-font1 for shot (D218, the H1's own face; Noto still sets the text).
-const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/mediawave-font1-Regular.woff2' }
+const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/mediawave-font1-Bold.woff2' }
 function fontPreloadLinks(look) {
   const DISPLAY_FONT = DISPLAY_FONTS[look] || DISPLAY_FONTS.shot
   if (!existsSync(resolve(DIST, DISPLAY_FONT.slice(1)))) {

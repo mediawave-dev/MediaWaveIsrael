@@ -24,13 +24,13 @@ const HTML = `<!DOCTYPE html>
   @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-hebrew-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; unicode-range: U+0590-05FF, U+20AA, U+FB1D-FB4F; }
   @font-face { font-family: 'MW Noto'; src: url('${pub('noto-sans-hebrew-latin-standard-normal.woff2')}') format('woff2'); font-weight: 100 900; font-stretch: 62.5% 100%; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  @font-face { font-family: 'mediawave-font1'; src: url('data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts/mediawave-font1-Regular.woff2')).toString('base64')}') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'mediawave-font1'; src: url('data:font/woff2;base64,${readFileSync(resolve(ROOT, 'public/fonts/mediawave-font1-Bold.woff2')).toString('base64')}') format('woff2'); font-weight: 700; }
   body { width: 1200px; height: 630px; overflow: hidden; font-family: 'MW Noto', sans-serif; direction: rtl; }
   .top { height: 400px; background: #1A1917; display: grid; place-items: center; }
   .logo { width: 360px; }
   .logo svg { display: block; width: 100%; height: auto; overflow: visible; }
   .ask { position: relative; height: 230px; background: #EDE7DA; display: grid; place-items: center; }
-  .line { font-family: 'mediawave-font1', 'MW Noto', sans-serif; font-size: 66px; font-weight: 400; color: #1A1917; line-height: 1.08; }
+  .line { font-family: 'mediawave-font1', 'MW Noto', sans-serif; font-size: 64px; font-weight: 700; color: #1A1917; line-height: 1.08; }
   .url { position: absolute; bottom: 22px; left: 40px; font-size: 22px; font-weight: 500; color: #4D4942; direction: ltr; }
 </style>
 </head>
