@@ -71,7 +71,7 @@ const chosen = read()
 
 /** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn.
     The colour round's gates start on the recommendations. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'tile', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on', copy: 'now' }
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'none', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on', copy: 'now' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>

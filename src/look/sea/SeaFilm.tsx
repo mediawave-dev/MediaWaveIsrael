@@ -10,10 +10,9 @@
 import { useEffect, useRef, useState } from 'react'
 import * as field from './field'
 import { opt } from './lab'
-import { Lines, Tag } from './parts'
+import { Lines } from './parts'
 import { CLIPS, avifOf, posterOf, posterSet, videoOf } from './media'
 import { GroundSource, useGround } from './SeaGround'
-import SeaInk from './SeaInk'
 
 const FILM = CLIPS['film-tapes']
 
@@ -62,8 +61,6 @@ export default function SeaFilm() {
   }, [how, veil])
 
   if (how === 'off') return null
-  // by itself (the default) the film needs no hint (D168: "רגע, והסרט מתפתח" left)
-  const hint = how === 'touch' ? 'געו בסרט, והוא מתפתח' : how === 'scroll' ? 'גללו, והסרט מתפתח' : ''
   return (
     <section ref={section} className={`sea-ch sea-film${veil ? ' sea-film--veil' : ''}`} aria-labelledby="film-title" data-chapter="film">
       {veil && <GroundSource video={source} />}
@@ -97,11 +94,8 @@ export default function SeaFilm() {
         )}
       </span>}
       <div className="sea-in" data-reveal="">
-        <Tag className="sea-fade">VIDEO · TAPES</Tag>
         {/* [קופי: נתי] S5, ?copy=new only until approved */}
         <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={['סרטון לעסק,', opt('copy') === 'new' ? 'והקלטות שלכם.' : 'וקלטות לזיכרון.']} /></h2>
-        <SeaInk className="sea-sub" text="עורכים את הסרטונים של העסק, ומעבירים קלטות ישנות לקובץ שאפשר לשמור ולשתף." />
-        {hint && <Tag className="sea-fade sea-film__hint" he>{hint}</Tag>}
       </div>
     </section>
   )

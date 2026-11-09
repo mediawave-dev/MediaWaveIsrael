@@ -12,27 +12,21 @@ import { SERVICES } from '../data'
 import { track } from '../../utils/analytics'
 import { docTop, useGear } from '../wave/clock'
 import { SCENE, reels, serviceAt } from './gears'
-import { Lines, Tag } from './parts'
+import { Lines } from './parts'
 import * as sound from './sound'
 import SeaImage from './SeaImage'
 import { CLIPS, SERVICE_MEDIA, posterOf, tileOf, videoOf } from './media'
 import { GroundSource } from './SeaGround'
-import SeaInk from './SeaInk'
 import * as field from './field'
 import { opt } from './lab'
-import { setText } from '../../utils/set-text'
 
 const N = SERVICES.length
 const TAPE_AT = SERVICES.findIndex((s) => s.id === 'video-editing')
-const pad = (n: number) => String(n).padStart(2, '0')
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
 
 export default function SeaServices() {
   const run = useRef<HTMLDivElement>(null)
   const list = useRef<HTMLOListElement>(null)
-  const count = useRef<HTMLSpanElement>(null)
-  const deck = useRef<HTMLSpanElement>(null)
-  const state = useRef<HTMLSpanElement>(null)
   const tape = useRef(reels())
   const shown = useRef(-1)
   const spot = useRef<HTMLSpanElement>(null)
@@ -45,7 +39,7 @@ export default function SeaServices() {
   const backdrop = useRef<{ id: number | null; posters: Record<string, HTMLImageElement>; now: string; show: (svc: string) => void }>({ id: null, posters: {}, now: '', show: () => {} })
   useEffect(() => {
     const el = stage.current
-    if (!el || field.tier() === 'still') return
+    if (!el || field.tier() === 'still' || opt('rows') !== 'tile') return
     let alive = true
     const b = backdrop.current
     const full = field.tier() === 'full'
@@ -94,7 +88,6 @@ export default function SeaServices() {
       list.current.querySelectorAll('li').forEach((li, i) => li.classList.toggle('is-on', i === active))
       // the stage's one slot takes the current service's scene; the last one fades out in place
       if (spot.current) spot.current.dataset.spot = SCENE[SERVICES[active].id] ?? 'quiet'
-      if (count.current) count.current.textContent = `${pad(active + 1)} / ${pad(N)}`
       // the header's mark follows the object on the stage (SeaWay)
       window.dispatchEvent(new CustomEvent('sea:svc', { detail: SERVICES[active].id }))
       backdrop.current.show(SERVICES[active].id)
@@ -105,9 +98,7 @@ export default function SeaServices() {
     // the websites row keeps the laptop where its chapter left it (open, the lead arrived)
     SERVICES.forEach((s, i) => { if (s.id !== 'websites' && s.id !== 'video-editing') serviceAt(s.id, at(i)) })
     const tp = at(TAPE_AT)
-    const dv = tape.current(tp)
-    setText(deck.current, String(Math.round(tp * 1800)).padStart(4, '0'))
-    setText(state.current, dv > 0.0004 ? '▶ PLAY' : dv < -0.0004 ? '◀◀ REW' : '■ STOP')
+    tape.current(tp)
   })
 
   return (
@@ -118,9 +109,7 @@ export default function SeaServices() {
           {/* one slot for the six objects (D139): above the words on a phone, beside them when wide */}
           <span ref={spot} className="sea-spot sea-spot--svc" data-spot={SCENE[SERVICES[0].id]} aria-hidden="true" />
           <header className="sea-head" data-reveal="">
-            <Tag className="sea-fade">02 · SERVICES</Tag>
             <h2 id="services-title" className="sea-h2 sea-svc__h2" data-zone="text"><Lines lines={['מה אנחנו עושים']} /></h2>
-            <span className="sea-tag sea-svc__count" aria-hidden="true"><span ref={count}>01 / {pad(N)}</span></span>
           </header>
           <ol ref={list} className={`sea-svc__list${rows === 'tile' ? ' sea-svc__list--pic' : ''}`}>
             {SERVICES.map((s, i) => (
@@ -133,37 +122,21 @@ export default function SeaServices() {
                   onPointerEnter={(e) => { if (e.pointerType !== 'touch') backdrop.current.show(s.id) }}
                   onPointerLeave={() => { const on = SERVICES[Math.max(0, shown.current)]; if (on) backdrop.current.show(on.id) }}
                 >
-                  <span className="sea-svc__n" aria-hidden="true">{pad(i + 1)}</span>
                   <span className="sea-svc__title" data-zone="text">{s.title}</span>
                   <span className="sea-svc__line" data-zone="text">{s.line}</span>
                   {rows === 'tile' && SERVICE_MEDIA[s.id] && <SeaImage src={tileOf(CLIPS[SERVICE_MEDIA[s.id][1] ?? SERVICE_MEDIA[s.id][0]])} w={384} h={240} when="row" look="quiet" className="sea-svc__pic" />}
-                  {i === TAPE_AT && (
-                    <span className="sea-deck" aria-hidden="true">
-                      <span ref={deck} className="sea-deck__count">0000</span>
-                      <span ref={state} className="sea-deck__state">■ STOP</span>
-                    </span>
-                  )}
                   <svg className="sea-svc__go" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
                 </a>
                 {/* the real sample lives in its service's row (Moria, 22.10: it left its own chapter) */}
                 {s.portfolio && s.portfolioLabel && (
                   <a className="sea-svc__sample" href={s.portfolio} data-cursor="לצפייה" data-zone="text" onClick={() => track('cta_click', { placement: `services_sample_${s.id}` })}>
-                    {s.portfolioLabel}<span className="sea-svc__sample-go" aria-hidden="true">( לצפייה + )</span>
+                    {s.portfolioLabel}
                   </a>
                 )}
               </li>
             ))}
           </ol>
         </div>
-      </div>
-      {/* video, a memories film and tapes, in their own words (moved here from "how we work", 22.10). [קופי: נתי] */}
-      <div className="sea-svc__after">
-        <SeaInk
-          reveal
-          className="sea-lede sea-svc__also"
-          before={<span className="sea-tag sea-lede__tag" aria-hidden="true">VIDEO · TAPES</span>}
-          text="ובנוסף, אם אתם צריכים עריכת וידאו, סרט זיכרון לאדם קרוב עם הנפשת AI מיוחדת, או להמיר קלטות ישנות לדיגיטל: מהתמונות באלבום ומהקלטות בארון, ועד סרט שאפשר להקרין באירוע, לשמור ולשלוח לכל המשפחה."
-        />
       </div>
     </section>
   )

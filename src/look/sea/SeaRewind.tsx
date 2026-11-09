@@ -7,9 +7,7 @@ import { useMotionEngine } from '../../motion/ScrollEngineProvider'
 import { track } from '../../utils/analytics'
 import { isCalm, isStill } from '../wave/clock'
 import * as field from './field'
-import { Clock, Tag } from './parts'
 import { opt } from './lab'
-import { SITE_CONTACT } from '../../data/site'
 import * as sound from './sound'
 import DotRing from '../parts/DotRing'
 
@@ -42,7 +40,6 @@ export default function SeaRewind() {
   return (
     <div className="sea-end">
       <span className="sea-spot sea-spot--end" data-spot="horizon" aria-hidden="true" />
-      <Tag>END OF TAPE</Tag>
       {/* the page's last line (S5): the websites chapter's "ונשאר שלכם", once more. [קופי: נתי] ?copy=new only until approved */}
       {opt('copy') === 'new' && <p className="sea-h3 sea-end__last" data-zone="text">האתר נשאר שלכם.</p>}
       <button type="button" className="sea-rew" onClick={go} data-cursor="◀◀ REW">
@@ -52,15 +49,6 @@ export default function SeaRewind() {
         <DotRing inset={2} />
       </button>
       <div className={`sea-rew__hud${on ? ' is-on' : ''}`} aria-hidden="true">◀◀ REW <span ref={count}>0000</span></div>
-      {/* the meta bar comes back at the end (D155, gate `bar`): the line, the labels, the live clock; the dock
-          slides away when it shows, so its INSTAGRAM link is never under WhatsApp (D203) */}
-      {opt('bar') === 'ends' && (
-        <div className="sea-meta sea-meta--end" data-reveal="" data-dock-hide="">
-          <Clock />
-          <Tag he className="sea-meta__mid">סטודיו לאתרים ולווידאו · ישראל</Tag>
-          <a className="sea-tag sea-meta__link" href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="MediaWave באינסטגרם">INSTAGRAM +</a>
-        </div>
-      )}
     </div>
   )
 }

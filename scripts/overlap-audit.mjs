@@ -84,6 +84,8 @@ function collect() {
     for (let a = el; a && a !== document.documentElement; a = a.parentElement) {
       const cs = getComputedStyle(a)
       if (cs.display === 'none' || cs.visibility === 'hidden' || cs.contentVisibility === 'hidden') { hidden = true; break }
+      // a closed <details> hides its body in ::details-content, a box no ancestor walk can see
+      if (a.tagName === 'DETAILS' && !a.open && !el.closest('summary')) { hidden = true; break }
       op *= Number(cs.opacity)
       if (a !== el && (cs.overflowX !== 'visible' || cs.overflowY !== 'visible')) {
         const ar = a.getBoundingClientRect()

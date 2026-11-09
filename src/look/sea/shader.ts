@@ -822,71 +822,6 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
   return mix(outc, res, K.x);
 }
 
-// ── each chapter its own effect on the screen (D165), all in the squares, all quiet at rest ──
-// a chapter's band on the screen, soft at its ends
-float chBand(vec4 ch, float y, float px1) { return smoothstep(ch.y, ch.y + 80.0 * px1, y) * (1.0 - smoothstep(ch.x - 80.0 * px1, ch.x, y)) * ch.z; }
-vec3 chapterFx(vec2 p, float t, float soft, vec3 outc) {
-  float px1 = 0.5 * uGrainPx;
-  float sq = uGrainPx;
-  float rk = rankAt(p);
-  float v = abs(uScrollV);
-  float dir = uScrollV < 0.0 ? -1.0 : 1.0;
-  // why (a fast site, one a bot can read): render lines. While the page moves, thin lines of squares run
-  // across behind the words, like a page drawing itself line by line; longer the faster it scrolls, the
-  // other way when it scrolls back; nothing at rest
-  float b0 = chBand(uCh[0], p.y, px1);
-  if (b0 > 0.001 && v > 0.02) {
-    float row = floor(p.y / (4.0 * sq));
-    float hr = hash(vec2(row, 7.0));
-    float L = uRes.x * (0.1 + 0.5 * min(1.0, v * 1.6)) * (0.45 + 0.55 * hash(vec2(row, 11.0)));
-    float run = fract(t * (0.3 + 0.5 * hash(vec2(row, 3.0))) + hr) * (uRes.x + L);
-    float head = dir > 0.0 ? uRes.x - run : run - L;
-    float d = dir > 0.0 ? p.x - head : head + L - p.x;
-    float line = step(0.62, hr) * step(0.0, d) * (1.0 - smoothstep(0.0, L, d));
-    float thin = step(mod(floor(p.y / sq), 4.0), 1.5);
-    outc = mix(outc, CREAM, sq16(rk, line * min(1.0, v * 3.0)) * thin * 0.62 * b0 * mix(0.05, 1.0, soft));
-  }
-  // process (talk, design, build, launch): an editor's playhead. A dotted line at the inline end with the
-  // timeline's ticks moving with the page and a longer mark at each step; the playhead holds the middle
-  // of the screen, and where it crosses a step a cut flashes across the screen in squares
-  float b1 = chBand(uCh[1], p.y, px1);
-  if (b1 > 0.001) {
-    float x0 = 7.0 * px1;
-    float mid = uRes.y * 0.5;
-    float a = 0.0;
-    float onLine = step(abs(p.x - x0), sq * 0.5) * step(mod(floor(p.y / sq), 2.0), 0.5);
-    a = max(a, onLine * mix(0.3, 0.85, step(mid, p.y)));
-    float tk = mod(uCh[1].x - p.y, 24.0 * px1);
-    a = max(a, step(tk, sq) * step(x0 - sq * 0.5, p.x) * step(p.x, x0 + 2.5 * sq) * 0.4);
-    for (int i = 0; i < 4; i++) a = max(a, step(abs(p.y - uChK[i]), sq * 0.5) * step(x0 - sq * 0.5, p.x) * step(p.x, x0 + 4.5 * sq) * 0.9);
-    a = max(a, step(abs(p.y - mid), sq * 0.5) * step(abs(p.x - x0), 4.5 * sq));
-    a = max(a, step(abs(p.y - mid), sq * 1.5) * step(abs(p.x - x0), sq * 1.5));
-    outc = mix(outc, CREAM, a * b1);
-    float cut = exp(-uCh[1].w * 5.0);
-    if (cut > 0.01) outc = mix(outc, CREAM, sq7(rk, cut * (1.0 - smoothstep(0.0, 3.0 * sq, abs(p.y - mid)))) * 0.75 * b1 * mix(0.05, 1.0, soft));
-  }
-  // questions: a tape being tracked. Two thin bands drift down the screen, their rows of squares slipping
-  // sideways in the deck's red and teal, stronger while the page moves; almost nothing at rest
-  float b2 = chBand(uCh[2], p.y, px1);
-  if (b2 > 0.001) {
-    float amt = b2 * (0.1 + 0.9 * min(1.0, v * 2.2));
-    float tb = 0.0;
-    for (int k = 0; k < 2; k++) {
-      float fk = float(k);
-      float yc = uRes.y * fract(t * (0.05 + 0.04 * fk) + fk * 0.53 - uCh[2].x / uRes.y * 0.5);
-      tb = max(tb, 1.0 - smoothstep(0.0, (14.0 + 22.0 * fk) * px1, abs(p.y - yc)));
-    }
-    if (tb * amt > 0.01) {
-      float row = floor(p.y / sq);
-      float slip = (hash(vec2(row, floor(t * 16.0))) - 0.5) * 48.0 * px1 * tb;
-      float lv = tb * amt * (0.35 + 0.65 * hash(vec2(floor((p.x + slip) / (6.0 * sq)), row)));
-      vec3 tint = mod(row, 2.0) < 1.0 ? vec3(0.93, 0.58, 0.52) : vec3(0.52, 0.8, 0.84);
-      outc = mix(outc, mix(CREAM, tint, 0.5), sq7(rankAt(p + vec2(slip, 0.0)), lv) * 0.45 * mix(0.05, 1.0, soft));
-    }
-  }
-  return outc;
-}
-
 // a drawing's centre sits on a column of dots, so its left and right halves fall on the grid alike and
 // every symmetric drawing stays symmetric (D163: the laptop's screen had stepped out at different heights)
 vec4 slot(vec4 s) { s.x = (floor(s.x / uCell) + 0.5) * uCell; gCU = uCell / max(s.z, 1.0); gCV = vec2(gCU); return s; }
@@ -931,22 +866,8 @@ void main() {
   // a quiet field everywhere, like grain on paper; after the opening it spreads out from the mark
   float reach = uAmb * length(uRes) * 1.1;
   float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC)) * uGrain;
-  // the sea of dots (D131) comes back as the ground of two chapters (D165: why, process). It swells in from
-  // each edge along a slow wave, as the logo's sea, and its waves drift a little slower than the page
   float dg = 0.0;
   float sea = 0.0;
-  for (int i = 0; i < 2; i++) {
-    vec4 ch = uCh[i];
-    if (ch.z < 0.01) continue;
-    float inside = min(ch.x - c.y, c.y - ch.y);
-    if (inside <= 0.0) continue;
-    float swell = sin(c.x * 0.011 + t * 0.5) * 0.5 + sin(c.x * 0.027 - t * 0.8) * 0.3;
-    float cov = clamp(inside / uGE + swell * 0.18 - 0.06, 0.0, 1.0) * ch.z;
-    float yy = c.y - ch.x * 0.4;
-    float w = 0.052 + 0.036 * sin(c.x * 0.021 + t * 0.4) * sin(yy * 0.017 - t * 0.3) + 0.012 * sin(c.x * 0.006 - yy * 0.009 + t * 0.2);
-    sea = max(sea, w * cov);
-    dg = max(dg, cov);
-  }
   // the words (D139): a safety net under every text block. It dims only what moves (a shape near the
   // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line.
   // calm (D174, Nati: "parts are dazzling... look how Lama Lama keep text easy to read"): the ground's
@@ -1024,7 +945,7 @@ void main() {
     vec2 fi = floor((px - sb.xy) / pit + 0.5);
     vec2 fc = sb.xy + fi * pit;
     float loose = (1.0 - uCh[3].w) * (1.0 - uCh[3].w);
-    vec2 qc = (fc - sb.xy) / sb.z + (vec2(hash(fi + 19.0), hash(fi + 23.0)) - 0.5) * 2.6 * loose;
+    vec2 qc = (fc - sb.xy) / sb.z + (vec2(hash(fi + 19.0), hash(fi + 23.0)) - 0.5) * 0.4 * loose;
     if (abs(qc.x) < 1.3 && qc.y > -1.05 && qc.y < 0.9) {
       float inS = step(0.5, bubbleIn(qc));
       float wait = 0.0;
@@ -1076,7 +997,6 @@ void main() {
   outc = imgLayer(px, t, flq, outc);
   if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
   if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
-  outc = chapterFx(p0, t, soft, outc);
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
   // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid. Under the words
   // it thins out, so it never sits on what is being read (D168)

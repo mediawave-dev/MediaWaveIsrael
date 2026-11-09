@@ -9,7 +9,7 @@
 // The H1 is the LCP and paints at first paint from the entry stylesheet (sea.css is eager).
 // Anchors kept: #why-us #services #process #faq #contact (Header, Footer and inner pages link to them).
 // [קופי: נתי] every new line: the hero's tag, the laptop chapter's line, the end of the tape.
-import { Fragment, useEffect, useRef, type RefObject } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import { LookButton } from '@look/button'
 import { HERO, STEPS } from '../data'
 import { WHY_ITEMS } from '../sections/WhyUs'
@@ -30,13 +30,15 @@ import SeaInk from './SeaInk'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
-import { Clock, DiscStill, Lines, Tag, useReveals } from './parts'
+import { DiscStill, Lines, useReveals } from './parts'
+import DotGlyph from './DotGlyph'
 import * as field from './field'
 import '../shot/shot-base.css'
 import '../shot/shot-dock.css' // the dock's skin (ShotDock is mounted by Layout)
 import './sea.css'
 import './sea-site.css'
 import './sea-optical.css' // the glass key (D219)
+import './sea-minimal.css' // the quiet pass (D230)
 import './sea-craft.css' // the finish (D211): hairlines that draw in, rolling labels
 import './sea-phone.css' // the phone's type scale, gutter and two corner controls
 
@@ -80,42 +82,6 @@ function useSun(spot: RefObject<HTMLSpanElement | null>, video: RefObject<HTMLVi
       field.dropFilm(id)
     }
   }, [spot, video])
-}
-
-/** The promise (D161, Nati: "each word arriving after the other, beautifully and elegantly"): its own
-    line under the two sentences, a little larger and in cream; once the headline has landed each word
-    rises out of a soft blur, one after another, and a soft light runs across the words from the right
-    when the last one is in. Calm, the widget's stop, ?reduce=1 or no script: the line stands. */
-function Promise() {
-  const ref = useRef<HTMLSpanElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const html = document.documentElement.classList
-    if (!html.contains('sea-reveal')) { el.classList.add('is-on'); return }
-    let t = 0
-    const go = (ms: number) => { window.clearTimeout(t); t = window.setTimeout(() => el.classList.add('is-on'), ms) }
-    // after the opening hands over, or a moment after a return visit's first paint
-    let mo: MutationObserver | null = null
-    if (html.contains('sea-opening')) {
-      mo = new MutationObserver(() => {
-        if (html.contains('sea-out') || !html.contains('sea-opening')) { mo?.disconnect(); go(1150) }
-      })
-      mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    } else go(700)
-    // (D210) the loop holds while the words are off screen
-    const io = new IntersectionObserver(([e]) => el.classList.toggle('is-off', !e.isIntersecting))
-    io.observe(el)
-    return () => { mo?.disconnect(); io.disconnect(); window.clearTimeout(t) }
-  }, [])
-  const words = HERO.pro.split(' ')
-  return (
-    <span ref={ref} className="sea-lead__pro">
-      {words.map((w, i) => (
-        <Fragment key={i}><span className="sea-word" style={{ ['--w' as string]: i }}>{w}</span>{i < words.length - 1 ? ' ' : ''}</Fragment>
-      ))}
-    </span>
-  )
 }
 
 /** The showreel's takes (public/media/reel, G:/tmp/mw-media/reel-clips.sh); the sea opens it. */
@@ -192,20 +158,13 @@ function Hero() {
         </h1>
         <div className="sea-row">
           <p className="sea-sub sea-lead sea-up" data-zone="text" style={{ ['--d' as string]: '0.1s' }}>
-            <span className="sea-lead__ln">{HERO.sub}</span>{' '}
-            <span className="sea-lead__ln">{HERO.sub2}</span>{' '}
-            <Promise />
+            <span className="sea-lead__ln">{HERO.sub2}</span>
           </p>
           <div className="sea-up" style={{ ['--d' as string]: '0.2s' }} data-dock-hide="">
             <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'hero' })}>
               {HERO.cta}
             </LookButton>
           </div>
-        </div>
-        <div className="sea-meta sea-up" style={{ ['--d' as string]: '0.32s' }}>
-          <Clock />
-          <Tag className="sea-meta__mid">WEBSITES · VIDEO · MEMORIES</Tag>
-          <Tag>SCROLL ↓</Tag>
         </div>
       </div>
     </section>
@@ -218,7 +177,6 @@ function Websites() {
     <section className="sea-ch sea-web" aria-labelledby="web-title" data-chapter="websites">
       <SeaLaptop>
         <div className="sea-in" data-reveal="">
-          <Tag className="sea-fade">01 · WEBSITES</Tag>
           <h2 id="web-title" className="sea-h2" data-zone="text"><Lines lines={['אתר שנבנה בשבילכם,', 'ונשאר שלכם.']} /></h2>
           <SeaInk hold className="sea-sub" text="מאפס ובלי תבנית. אחרי התשלום העיצוב, הקוד והתכנים עוברים אליכם." />
         </div>
@@ -231,13 +189,11 @@ function Why() {
   return (
     <section id="why-us" className="sea-ch sea-why" aria-labelledby="why-title" data-chapter="why">
       <header className="sea-head" data-reveal="">
-        <Tag className="sea-fade">WHY</Tag>
         <h2 id="why-title" className="sea-h3" data-zone="text"><Lines lines={['למה לעבוד איתנו?']} /></h2>
       </header>
       <ul className="sea-list">
-        {WHY_ITEMS.map((it, i) => (
+        {WHY_ITEMS.map((it) => (
           <li key={it.id} className="sea-list__item" data-reveal="">
-            <span className="sea-list__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3 className="sea-list__title sea-fade" data-zone="text">{it.title}</h3>
             <p className="sea-list__line sea-fade" data-zone="text">{it.line}</p>
           </li>
@@ -250,9 +206,8 @@ function Why() {
 function Steps({ steps, label }: { steps: { id: string; title: string; line: string }[]; label: string }) {
   return (
     <ol className="sea-list sea-list--steps" aria-label={label}>
-      {steps.map((s, i) => (
+      {steps.map((s) => (
         <li key={s.id} className="sea-list__item" data-reveal="">
-          <span className="sea-list__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
           <h3 className="sea-list__title sea-fade" data-zone="text">{s.title}</h3>
           <p className="sea-list__line sea-fade" data-zone="text">{s.line}</p>
         </li>
@@ -278,21 +233,18 @@ const INCLUDED = [
 
 function Included() {
   return (
-    <aside className="sea-incl" aria-labelledby="incl-title" data-reveal="">
-      <div className="sea-incl__head">
-        <Tag className="sea-fade">INCLUDED</Tag>
-        <h3 id="incl-title" className="sea-incl__h sea-fade" data-zone="text">מה כלול, תמיד</h3>
-      </div>
+    <details className="sea-incl" data-reveal="">
+      <summary className="sea-incl__sum sea-fade" data-zone="text">
+        <h3 className="sea-incl__h">מה כלול, תמיד</h3>
+        <span className="faq__sign" aria-hidden="true"><DotGlyph name="plus" n={9} /></span>
+      </summary>
       <ul className="sea-incl__list">
         {INCLUDED.map((t, i) => (
-          <li key={i} className="sea-incl__row sea-fade" data-zone="text" style={{ ['--i' as string]: i }}>
-            <span className="sea-incl__n" aria-hidden="true">( {String(i + 1).padStart(2, '0')} )</span>
-            <span className="sea-incl__t">{t}</span>
-          </li>
+          <li key={i} className="sea-incl__row" data-zone="text">{t}</li>
         ))}
       </ul>
-      <a className="sea-go sea-incl__more sea-fade" href="/terms/">הכל כתוב בתנאי השירות</a>
-    </aside>
+      <a className="sea-go sea-incl__more" href="/terms/">הכל כתוב בתנאי השירות</a>
+    </details>
   )
 }
 
@@ -300,10 +252,8 @@ function Process() {
   return (
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
       <header className="sea-head" data-reveal="">
-        <Tag className="sea-fade">03 · PROCESS</Tag>
         {/* [קופי: נתי] S5, ?copy=new only until approved; the menu's label in navigation.ts changes with it */}
         <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={opt('copy') === 'new' ? ['איך זה', 'נהיה שלכם'] : ['איך אנחנו', 'עובדים']} /></h2>
-        <SeaInk className="sea-proc__for" text="( כשבאים לבנות עבורכם אתר, דף נחיתה או בוט לעסק )" />
       </header>
       <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
       <Included />
@@ -360,11 +310,11 @@ export default function SeaHome() {
       <Process />
       <SeaStyles />
       <div className="sea-ch sea-faq">
-        <Faq chapter="faq" kicker={<Tag>04 · FAQ</Tag>} />
+        <Faq chapter="faq" />
       </div>
       <div className="sea-ch sea-contact">
         <span className="sea-spot sea-spot--contact" data-spot="bubble" aria-hidden="true" />
-        <Contact chapter="contact" art={false} kicker={<Tag>05 · CONTACT</Tag>} />
+        <Contact chapter="contact" art={false} />
       </div>
       <SeaRewind />
     </div>

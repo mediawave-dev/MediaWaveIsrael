@@ -1,0 +1,61 @@
+/* sea · the quiet pass (D230): no counters, no bracketed labels, plain ground under the words. What is left has room. */
+
+/* rows with no number column */
+.sea-list__item { grid-template-columns: minmax(0, 1fr); }
+.sea-list__title, .sea-list__line { grid-column: 1; }
+
+/* the contact rows and the time line lose their marks */
+.sea-contact .ct__ways a::after, .sea-contact .ct__ways a[target="_blank"]::after { content: none; }
+.sea-go::after { content: none; }
+.sea-foot__base nav::before, .sea-foot__base nav::after { content: none; }
+html[data-look="shot"] .sp--service .sp-kicker { display: none; }
+.sea-contact .ct__time::before, .sea-contact .ct__time::after { content: none; }
+.sea-contact .qs__n { display: none; }
+
+/* more air between chapters on a phone */
+@media (max-width: 767px) {
+  .sea-why, .sea-proc, .sea-styles { padding-block-start: clamp(88px, 22vw, 120px); }
+}
+
+/* what is included: one quiet row that opens */
+.sea-incl { display: block; margin-block-start: 40px; border-block: 1px solid var(--sea-rule); }
+.sea-incl__sum { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; cursor: pointer; list-style: none; }
+.sea-incl__sum::-webkit-details-marker { display: none; }
+.sea-incl__h { margin: 0; font: inherit; font-size: 19px; font-weight: 600; }
+.sea-incl__sum:focus-visible { outline: 3px solid #ede7da; outline-offset: -3px; }
+.sea-incl[open] .faq__sign { transform: rotate(45deg); }
+.sea-incl .faq__sign { transition: transform 0.3s var(--sea-ease); }
+.sea-incl__list { list-style: none; margin: 0; padding: 0 0 8px; }
+.sea-incl__row { padding-block: 10px; color: #a39d90; font-size: 17px; line-height: 1.6; }
+.sea-incl__more { display: inline-flex; min-height: 44px; align-items: center; margin-block-end: 12px; }
+
+/* the questions: more on request */
+.faq__reveal {
+  display: inline-flex; align-items: center; min-height: 48px; margin-block-start: 20px; padding: 0;
+  background: none; border: 0; color: #ede7da; font: 600 17px/1.2 var(--ui); cursor: pointer;
+}
+.faq__reveal:focus-visible { outline: 3px solid #ede7da; outline-offset: 3px; }
+
+/* the floating controls: a plain, quiet disc, no halftone around it */
+html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai) .isle { display: none; }
+html[data-look="shot"] :is(.sea-card, .shot-dock__wa, .shot-dock__chat-btn.is-ai),
+html[data-look="shot"] :is(.shot-dock__wa, .shot-dock__chat-btn.is-ai):hover {
+  background: rgba(23, 25, 27, 0.9); box-shadow: 0 0 0 1px rgba(237, 231, 218, 0.1);
+}
+
+/* the footer's rows, now one column of words */
+html[data-look="shot"] .sea-foot a.sea-foot__row { grid-template-columns: minmax(0, 1fr); grid-template-areas: "t"; }
+.sea-foot a.sea-foot__row .sea-foot__t { grid-area: t; }
+html[data-look="shot"] .sea-foot__rows--contact a.sea-foot__row { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "k t"; row-gap: 0; gap: 14px; padding-block: 10px; }
+
+/* the hero's words stand clear of the cookie strip's band from the first paint, so nothing moves when it goes */
+@media (min-width: 1100px) {
+  html[data-look="shot"] .sea-hero { padding-bottom: calc(var(--strip-h) + 20px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* the one honest label on the clips keeps its word and loses its brackets */
+.sea-clips__tag::before, .sea-clips__tag::after { content: none; }
+
+/* the service pages speak the same way: no bracketed kickers, no counted questions */
+html[data-look="shot"] main .sp--service .sp-kicker { display: none; }
+html[data-look="shot"] main .sp--service .sp-pad summary::before { content: none; }

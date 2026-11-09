@@ -20,8 +20,8 @@ const SITE_PLAN: GuidePlan = { chapters: '[data-chapter]', cool: 40000, max: 3, 
 // the site's own music for the invitation (D199): offered only while it is armed and not yet playing
 const SEA_SOUND: SoundSource = { isOn: () => sea.isRunning() || !sea.isOn(), turnOn: sea.startMusic, subscribe: sea.onChange }
 
-// phones (S2): nothing comes by while someone reads. The worlds and the sound are in the header's menu.
-const PHONE = '(max-width: 767px)'
+// (S2, D230) nothing comes by while someone reads. The worlds and the sound are in the header's menu.
+const PHONE = 'all' // D230: at every width now, the quiet pass
 const onPhoneChange = (cb: () => void) => {
   const m = window.matchMedia(PHONE)
   m.addEventListener('change', cb)

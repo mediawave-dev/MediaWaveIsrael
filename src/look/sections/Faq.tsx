@@ -29,6 +29,8 @@ interface FaqProps {
 
 export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) {
   const [open, setOpen] = useState<number | null>(null)
+  // the sea (D230): five questions at first; the rest stay in the page for search and open on request
+  const [more, setMore] = useState(LOOK !== 'shot')
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -51,7 +53,7 @@ export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) 
           {faqs.map((item, i) => {
             const isOpen = open === i
             return (
-              <li key={item._id} className="faq__row" data-open={isOpen ? '' : undefined}>
+              <li key={item._id} className="faq__row" hidden={!more && i >= 5} data-open={isOpen ? '' : undefined}>
                 <h3>
                   <button
                     type="button"
@@ -79,10 +81,13 @@ export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) 
             )
           })}
         </ul>
-        <div className="faq__more">
-          <p>לא מצאתם תשובה?</p>
-          <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'faq' })}>שאלו אותנו בוואטסאפ</LookButton>
-        </div>
+        {!more && faqs.length > 5 && <button type="button" className="faq__reveal" onClick={() => setMore(true)}>עוד שאלות</button>}
+        {LOOK !== 'shot' && (
+          <div className="faq__more">
+            <p>לא מצאתם תשובה?</p>
+            <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'faq' })}>שאלו אותנו בוואטסאפ</LookButton>
+          </div>
+        )}
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </section>

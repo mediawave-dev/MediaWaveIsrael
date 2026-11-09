@@ -11,7 +11,7 @@ import './why.css'
 
 export const WHY_ITEMS = [
   { id: 'tech', lottie: '/animations/2/computer%20technician.json', title: 'אתר מהיר שלא נתקע', line: 'נפתח מהר, גם בטלפון.' },
-  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'אתר שגם צ׳אטבוט יכול לקרוא', line: 'יש מי שמחפש בגוגל ויש מי ששואל צ׳אטבוט. הטקסט באתר בנוי כך ששניהם יכולים לקרוא אותו.' },
+  { id: 'ai', lottie: '/animations/AI/AI%20animation.json', title: 'אתר שגם צ׳אטבוט יכול לקרוא', line: 'גוגל וצ׳אטבוטים מבינים אותו.' },
   { id: 'personal', lottie: '/animations/6%20personal/contact%20us.json', title: 'ליווי אישי', line: 'מדברים ישירות עם המפתח, בלי מתווכים.' },
 ]
 

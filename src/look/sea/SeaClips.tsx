@@ -21,7 +21,7 @@ export default function SeaClips({ id }: { id: string }) {
   const band = useRef<HTMLSpanElement>(null)
   const source = useRef<HTMLVideoElement>(null)
   const veil = opt('bleed') === 'veil'
-  useGround(band, source, list?.[0] ?? 'svc-websites', { on: veil && Boolean(list?.length), edge: 0.46, top: 0.18, hi: true, style: EDGE[id] ?? 0 })
+  useGround(band, source, list?.[0] ?? 'svc-websites', { on: veil && Boolean(list?.length), edge: 0.1, top: 0.08, hi: true, style: EDGE[id] ?? 0 })
   if (!list?.length) return null
   const [main, ...more] = list
   const c = CLIPS[main]

@@ -6,8 +6,7 @@
 // the lede and the link.
 import { useEffect, useRef } from 'react'
 import { LookButton } from '@look/button'
-import { Lines, Tag } from './parts'
-import SeaInk from './SeaInk'
+import { Lines } from './parts'
 import { tier } from './field'
 import { track } from '../../utils/analytics'
 import { STYLE_META } from '../../studio/styles-meta'
@@ -41,10 +40,8 @@ export default function SeaStyles() {
   return (
     <section id="styles" className="sea-ch sea-styles" aria-labelledby="styles-title">
       <header className="sea-head" data-reveal="">
-        <Tag className="sea-fade">STYLE STUDIO</Tag>
         <h2 id="styles-title" className="sea-h2" data-zone="text"><Lines lines={['אותו אתר,', 'חמישה סגנונות.']} /></h2>
       </header>
-      <SeaInk className="sea-lede" text="בוחרים סגנון, רואים את האתר משתנה מול העיניים, ושולחים לנו הודעה עם הכיוון שאהבתם." />
       <ul ref={row} className="sea-styles__row">
         {STYLE_META.map((s, i) => (
           <li key={s.id} className="sea-styles__item" data-reveal="" style={{ ['--i' as string]: i }}>
@@ -55,9 +52,7 @@ export default function SeaStyles() {
                 <video muted loop playsInline preload="none" data-src={`/media/styles/${s.id}.mp4`} />
               </span>
               <span className="sea-style__meta" aria-hidden="true">
-                <span className="sea-style__n">0{i + 1}</span>
                 <span className="sea-style__name">{s.name}</span>
-                <span className="sea-style__by">{s.feel}</span>
               </span>
             </a>
           </li>
@@ -70,9 +65,6 @@ export default function SeaStyles() {
           האתר שלכם ב-60 שניות
         </LookButton>
       </div>
-      <a className="sea-go sea-styles__all" href="/styles/" lang="en" dir="ltr" onClick={() => track('cta_click', { placement: 'home_styles_all' })}>
-        Enter the Style Studio
-      </a>
     </section>
   )
 }

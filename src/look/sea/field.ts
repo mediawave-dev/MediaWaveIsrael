@@ -449,15 +449,12 @@ function readLab() {
   for (const film of films) {
     const r = film.el.getBoundingClientRect()
     if (film.veil) {
-      // the whole width, the chapter's height; the edge sits just above the words and climbs as the
-      // chapter scrolls away, until the whole clip has broken into dots
+      // the whole width, the chapter's height; a short, fine edge just above the words (D230: the words sit on
+      // the plain ground, and the clip no longer crumbles as it leaves)
       film.r = [0, (H - r.bottom) * DPR, W * DPR, r.height * DPR]
       const tr = film.text?.getBoundingClientRect()
       const e0 = tr && r.height > 4 ? clamp01(1 - (tr.top - r.top) / r.height + 0.1) : film.edge0
-      // it starts to climb once a third of the chapter has passed the top, while its words are read
-      const lift = smooth(0, 1, (-r.top - r.height * 0.3) / Math.max(1, r.height * 0.7))
-      const edge = e0 + (1.14 - e0) * lift
-      film.v = [edge, Math.max(0.14, edge * 0.96), film.focus[0], film.focus[1]]
+      film.v = [e0, 0.12, film.focus[0], film.focus[1]]
     } else if (film.disc) {
       // the disc's square, where the horizon draws its disc in the same slot
       const g = spotGeom(r)

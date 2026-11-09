@@ -71,34 +71,30 @@ export default function Footer() {
       <footer className="mw-foot sea-foot" data-theme="dark" data-intent="end">
         <div className="sea-foot__in">
           <div className="sea-foot__head">
-            <span className="sea-tag">END CREDITS</span>
             <p className="sea-foot__line">אתרים וסרטונים לעסקים.</p>
           </div>
           <div className="sea-foot__cols">
             <nav className="sea-foot__col" aria-labelledby="sea-foot-nav">
-              <h2 id="sea-foot-nav" className="sea-tag sea-tag--he">קישורים מהירים</h2>
+              <h2 id="sea-foot-nav" className="sr-only">קישורים מהירים</h2>
               <ul className="sea-foot__rows">
-                {footerLinks.map((link, i) => (
+                {footerLinks.map((link) => (
                   <li key={link.href}>
                     <a className="sea-foot__row" href={link.href.startsWith('#') && window.location.pathname !== '/' ? `/${link.href}` : link.href} onClick={(e) => go(e, link.href)}>
-                      <span className="sea-foot__k" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                       <span className="sea-foot__t sea-roll"><span>{link.label}</span><span aria-hidden="true">{link.label}</span></span>
-                      <span className="sea-foot__plus" aria-hidden="true">( + )</span>
                     </a>
                   </li>
                 ))}
               </ul>
             </nav>
             <div className="sea-foot__col">
-              <h2 className="sea-tag sea-tag--he">יצירת קשר</h2>
+              <h2 className="sr-only">יצירת קשר</h2>
               <ul className="sea-foot__rows sea-foot__rows--contact">
                 {contact.map((c) => (
                   <li key={c.k}>
                     <a className="sea-foot__row" href={c.href} {...(c.ext ? { target: '_blank', rel: 'noopener noreferrer' } : {})} onClick={() => track(c.ev, { placement: 'footer' })}>
                       {/* each key with its mark, the same dot glyphs as the letter above (22.10: back by request) */}
-                      <span className="sea-foot__k" aria-hidden="true"><span className="sea-foot__ico"><DotGlyph name={c.ico} /></span>{c.k}</span>
+                      <span className="sea-foot__k" aria-hidden="true"><span className="sea-foot__ico"><DotGlyph name={c.ico} /></span></span>
                       <span className="sea-foot__t" dir={c.ltr ? 'ltr' : undefined}>{c.t}</span>
-                      <span className="sea-foot__plus" aria-hidden="true">{c.ext ? '( ↗ )' : '( + )'}</span>
                     </a>
                   </li>
                 ))}
