@@ -1,6 +1,6 @@
 /* sea · the glass key (D219): a plain, usable key first, the glass on top once it loads */
 
-.sea-contact .ct { overflow-x: hidden; overflow-x: clip; }
+.sea-contact { overflow-x: hidden; overflow-x: clip; }
 .sea-glass { position: relative; width: 100%; max-width: 440px; height: 104px; margin-block: 4px 34px; }
 @media (min-width: 420px) { .sea-glass { height: 116px; } }
 .sea-glass canvas { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: block; pointer-events: none; }
