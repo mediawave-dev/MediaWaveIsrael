@@ -1,3 +1,41 @@
+# HANDOFF: the ink film, a pen draws the logo (10.11.2026, D232)
+
+## Goal
+Nati: "make an original film of your own: ballpoint pen, macro, real ASMR... blow my mind", then mid-work: "make MediaWave with the same pen, with our icon, a perfect premium brand". Free hand on the site; lean on agents.
+
+## Where
+Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `claude/mediawave-content-presentation-fabff6`, based on 780fdb8 (the other session's local merge of main's D218 into D221-D231; origin/preview/picks-20261109 is c2781cc). `node_modules` here is a junction to the stunning-visual-effects worktree's.
+
+## Completed
+- `design/film/ink/`: a renderer and a synth, all ours. `hand.js` reads the logo file and turns it into pen strokes with a hand's timing; `render.js` + `shaders.js` path-trace a macro shot in WebGL2 (paper fibres as a height map, ink as a distance-and-time map, a turned brass tip, a softbox, thin lens, open shutter); `audio.mjs` synthesises the pen's sound from the same strokes. README there has every command.
+- The film (second cut, after the critic): 502 frames, 1080x1080, 16.7 s. Frames in `G:/tmp/ink/frames` (not in git). Encodes in `public/media/ink/` (phone 720: 0.86 MB webm, 1.3 MB mp4; desktop: 2.2 and 3.4 MB; sound 276 KB; two stills).
+- Reviews (one workflow, two agents): a visual critic rejected the first cut (ink map seams, speckled shadow, a hand-less pen in the wide shot, a thin logo with an empty half disc) and a code reviewer found two blockers (the stop switch pressed after load, a refused play leaving an empty sheet). All fixed; the second cut was not sent back to a critic.
+- On the site: `src/look/sea/SeaSign.tsx` + `sea-sign.css`, mounted in `SeaEmpty` (SeaDive.tsx) under the sentence "אתר שנבנה בשבילכם, ונשאר שלכם." A disc of light; plays once when the stage empties, then stays signed, Replay draws again. still/no-JS: the signed sheet as a picture; calm: picture + Play; full: by itself.
+- `sound.ts`: `over(buffer, offset)` plays a voice beside the music and ducks the music; `decode(data)`.
+- `scripts/qa/ink-sign.mjs`: the feature's gate (five sizes, autoplay refused, the stop switch mid-film, ?calm=1, ?reduce=1).
+
+## Key decisions and why
+- A film rendered offline, not a live WebGL scene: the home already has 4-5 WebGL contexts and phones cap at 8; a video costs one decode.
+- It signs the thesis sentence instead of replacing it: the sentence is the promise, the pen signs it. The copy is untouched.
+- A round soft mask and the site's ground as the film's black: no frame, and it echoes the hero's disc.
+- Ink in the logo's Prussian blue; the key light behind and to the side (straight behind, wet ink glared white).
+- One pen, one ink, one weight: it is a rendition of the logo, the files in logos/horizon stay the source.
+
+## Known issues, not verified
+- The sound was never heard: judged by spectrum and levels only (-20.5 LUFS, peak -4 dBFS). Nati must listen.
+- No real phone test (iOS Safari autoplay of the muted film, the audio start after a tap).
+- `.claude/launch.json` (site-preview on 4317) is temporary: never commit it. `public/sitemap.xml` changes on every build: not part of this work.
+
+## Waiting for Nati
+1. Watch and listen: `G:/tmp/ink/enc/ink-film-with-sound.mp4`, and the preview.
+2. Copy: the alt text "הלוגו של MediaWave, מצויר בעט כדורי על דף נייר", the labels Replay and Play.
+3. Production: only on his word.
+
+## Next steps
+If he wants changes to the film: edit `design/film/ink`, render (10 min), encode with the README's commands, `npm run build`, `node scripts/qa/ink-sign.mjs http://localhost:4317`.
+
+---
+
 # HANDOFF: the quiet pass, some effects back, bold (10.11.2026, D230-D231)
 
 ## Goal

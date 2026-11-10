@@ -1,0 +1,37 @@
+/* sea · the signature (D232): the ink film under the sentence on the emptied stage. A square film shown as a disc
+   of light: the mask is round and soft, so the lit sheet melts into the ground with no edge (the film's own black
+   is the ground's colour too, design/film/ink). On a phone the disc is as wide as the screen; on a short screen
+   the height sets it, so the sentence, the disc and Replay always fit one screen together (a phone on its side
+   and a short window included). */
+
+.sea-sign {
+  position: relative; margin: 0; flex: none; padding-block-end: 44px; /* Replay's row is part of the height */
+  width: min(100vw, 56svh, 640px); margin-inline: calc(var(--gut, 16px) * -1);
+}
+@media (max-height: 520px) { .sea-sign { width: min(100vw, 40svh, 640px); } }
+.sea-sign__disc {
+  position: relative; aspect-ratio: 1; overflow: hidden; outline: none; /* focus only rests here when Replay leaves */
+  /* solid out past the ends of the finished logo (six tenths of the width), then a long ease to nothing at the rim */
+  -webkit-mask-image: radial-gradient(circle closest-side, #000 66%, rgba(0, 0, 0, 0.82) 76%, rgba(0, 0, 0, 0.36) 89%, transparent 100%);
+  mask-image: radial-gradient(circle closest-side, #000 66%, rgba(0, 0, 0, 0.82) 76%, rgba(0, 0, 0, 0.36) 89%, transparent 100%);
+}
+.sea-sign__sheet, .sea-sign__film { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.sea-sign__film { opacity: 0; transition: opacity 0.5s ease; }
+.sea-sign.is-live .sea-sign__film { opacity: 1; }
+
+/* Replay (and Play, where the film waits to be asked): a small label under the disc, in the stage's quiet voice */
+.sea-sign__again {
+  position: absolute; bottom: 0; left: 50%; translate: -50% 0;
+  min-width: 88px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  font: 600 12px/1 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; direction: ltr;
+  transition: color 0.3s ease;
+}
+.sea-sign__again[hidden] { display: none; }
+.sea-sign__again:focus-visible { outline: 3px solid #ede7da; outline-offset: -3px; }
+@media (hover: hover) and (pointer: fine) { .sea-sign__again:hover { color: #ede7da; } }
+
+/* held: the disc arrives a beat after the sentence */
+html.sea-held.sea-reveal .sea-sign { opacity: 0; transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s; }
+html.sea-held.sea-reveal .sea-empty.is-on .sea-sign { opacity: 1; }
+html.disable-animations .sea-sign { opacity: 1 !important; transition: none !important; }
+html.disable-animations .sea-sign__film { transition: none; }

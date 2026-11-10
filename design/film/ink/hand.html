@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>ink · the hand</title>
+<style>body { margin: 0; background: #ede7da; } canvas { display: block; }</style>
+<canvas id="c" width="1500" height="420"></canvas>
+<script type="module">
+// The logo as flat ink, to judge the hand before any light: line weight follows the pressure, the faint
+// arcs are the pen in the air, the ticks are every tenth of a second (close ticks = a slow hand).
+import { buildHand, DT, LINE } from './hand.js'
+const hand = buildHand()
+const c = document.getElementById('c'), x = c.getContext('2d')
+const S = 31, ox = 750, oy = 215
+x.lineCap = 'round'; x.lineJoin = 'round'
+for (let i = 1; i < hand.n; i++) {
+  if (hand.on[i] && hand.on[i - 1]) {
+    x.strokeStyle = '#1b2f9e'; x.lineWidth = 2 * LINE * S * (0.86 + 0.28 * hand.p[i])
+    x.beginPath(); x.moveTo(ox + hand.x[i - 1] * S, oy + hand.z[i - 1] * S); x.lineTo(ox + hand.x[i] * S, oy + hand.z[i] * S); x.stroke()
+  } else if (i % 12 === 0 && hand.y[i] < 4) {
+    x.fillStyle = 'rgba(0,0,0,0.25)'; x.fillRect(ox + hand.x[i] * S, oy + hand.z[i] * S, 1.5, 1.5)
+  }
+}
+x.fillStyle = '#d0432f'
+for (let i = 0; i < hand.n; i += Math.round(0.1 / DT)) if (hand.on[i]) { x.beginPath(); x.arc(ox + hand.x[i] * S, oy + hand.z[i] * S, 2.2, 0, 7); x.fill() }
+x.fillStyle = '#333'; x.font = '15px monospace'
+const ink = hand.strokes.reduce((a, s) => a + s.total, 0), time = hand.strokes.reduce((a, s) => a + s.time, 0)
+x.fillText(`duration ${hand.duration.toFixed(2)} s · name done ${hand.named.toFixed(2)} s · written ${hand.written.toFixed(2)} s · ${hand.strokes.length} strokes · ${ink.toFixed(0)} mm of ink in ${time.toFixed(1)} s`, 16, 24)
+window.done = true
+</script>

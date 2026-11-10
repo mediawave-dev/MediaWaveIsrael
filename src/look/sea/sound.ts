@@ -530,6 +530,46 @@ export function lendContext(): AudioContext | null {
   return ctx
 }
 
+/** (D232) A recorded voice beside the music: the ink film's pen. It plays straight to the output, from `offset`
+    seconds in, while the music steps back under it and returns when it ends. Only while the sound is awake (it
+    never wakes it): before the visitor's first tap the film is silent. Returns its stop, or null. */
+export function over(buffer: AudioBuffer, offset = 0): (() => void) | null {
+  if (!running || !ctx || !master) return null
+  const c = ctx
+  const src = c.createBufferSource()
+  src.buffer = buffer
+  const g = c.createGain()
+  g.gain.value = 0.9
+  src.connect(g).connect(c.destination)
+  const lean = (to: number, over: number) => {
+    if (!running || !ctx || !master) return
+    const t = ctx.currentTime
+    master.gain.cancelScheduledValues(t)
+    master.gain.setValueAtTime(master.gain.value, t)
+    master.gain.setTargetAtTime(to, t, over)
+  }
+  let done = false
+  const stop = () => {
+    if (done) return
+    done = true
+    src.onended = null
+    // a short fall before the cut: stopped at full level in the middle of a scratch, it clicked
+    const t = c.currentTime
+    g.gain.setTargetAtTime(0, t, 0.015)
+    try { src.stop(t + 0.08) } catch { /* it had ended */ }
+    lean(LEVEL, 0.8)
+  }
+  src.onended = stop
+  lean(LEVEL * 0.3, 0.35)
+  src.start(c.currentTime, Math.max(0, Math.min(offset, buffer.duration)))
+  return stop
+}
+
+/** Decode a sound file in the site's context (null while there is none: no tap yet). */
+export function decode(data: ArrayBuffer): Promise<AudioBuffer> | null {
+  return ctx ? ctx.decodeAudioData(data) : null
+}
+
 /** The pill's control: off, or on again (a click is the gesture browsers require). */
 export function toggle() {
   on = !on

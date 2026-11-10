@@ -18,9 +18,11 @@ html.sea-held .sea-web { z-index: 2; }
 
 .sea-empty { position: relative; }
 .sea-empty__mark { position: absolute; top: 8svh; bottom: 0; inset-inline: 0; pointer-events: none; }
-.sea-empty__stage { display: grid; place-items: center; padding: clamp(72px, 12svh, 140px) var(--gut, 16px); }
+/* one column: the sentence, and the signature under it (sea-sign.css) */
+.sea-empty__stage { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(8px, 2.4svh, 28px); padding: clamp(72px, 12svh, 140px) var(--gut, 16px); }
 .sea-empty__say {
-  margin: 0; text-align: center; font-family: var(--display); font-size: clamp(32px, 9.4vw, 84px); line-height: 1.14;
+  /* the height of the screen caps it too: on a short screen the sentence leaves room for the signature */
+  margin: 0; text-align: center; font-family: var(--display); font-size: clamp(32px, min(9.4vw, 12svh), 84px); line-height: 1.14;
   color: #ede7da; text-shadow: var(--sea-halo); text-wrap: balance;
 }
 .sea-empty__say span, .sea-empty__say strong { display: block; }
@@ -28,6 +30,8 @@ html.sea-held .sea-web { z-index: 2; }
 .sea-empty__say strong { font-weight: 700; }
 html.sea-held .sea-empty { height: 172svh; }
 html.sea-held .sea-empty__stage { position: sticky; top: 0; height: 100svh; padding-block: 0; }
+/* a phone on its side: the sentence starts under the header's island, not behind it */
+@media (max-height: 520px) { html.sea-held .sea-empty__stage { padding-block-start: 56px; } }
 html.sea-held.sea-reveal .sea-empty__say { opacity: 0; transition: opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1); }
 html.sea-held.sea-reveal .sea-empty.is-on .sea-empty__say { opacity: 1; }
 html.disable-animations .sea-empty__say { opacity: 1 !important; transition: none !important; }
