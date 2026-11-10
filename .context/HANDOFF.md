@@ -4,7 +4,14 @@
 Nati: "make an original film of your own: ballpoint pen, macro, real ASMR... blow my mind", then mid-work: "make MediaWave with the same pen, with our icon, a perfect premium brand". Free hand on the site; lean on agents.
 
 ## Where
-Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `claude/mediawave-content-presentation-fabff6`, based on 780fdb8 (the other session's local merge of main's D218 into D221-D231; origin/preview/picks-20261109 is c2781cc). `node_modules` here is a junction to the stunning-visual-effects worktree's.
+Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `claude/mediawave-content-presentation-fabff6` = 76562b3, one commit on top of main.
+**Preview, waiting for Nati:** https://preview-ink-20261110.mediawaveisrael.pages.dev/?motion=full (branch `preview/ink-20261110`). The signature is on the emptied stage, about a third of the way down the home page.
+**Live:** main = 50a31eb (the other session shipped D221-D231 on 10.11). The signature is NOT on production.
+`node_modules` here is a junction to the stunning-visual-effects worktree's: remove the link with `rmdir`, never with a recursive delete.
+
+## Gates on the final build (76562b3)
+`scripts/qa/ink-sign.mjs`: all checks pass. all-pages home at 390 and 1440: overflow 0, small text 0, targets 0, axe 0, errors 0. Overlap audit: 0 at 320, 390, 768, 1024, 1440.
+Lighthouse mobile, medians of 3, run back to back against the same tree without the signature: LCP 1.96 s against 1.97 s, CLS 0 against 0, FCP the same. TBT is noise on this machine (63 and 456 ms without, 287, 400 and 465 ms with), so perf swings 82-94 without and 83-88 with: no regression shown, none ruled out.
 
 ## Completed
 - `design/film/ink/`: a renderer and a synth, all ours. `hand.js` reads the logo file and turns it into pen strokes with a hand's timing; `render.js` + `shaders.js` path-trace a macro shot in WebGL2 (paper fibres as a height map, ink as a distance-and-time map, a turned brass tip, a softbox, thin lens, open shutter); `audio.mjs` synthesises the pen's sound from the same strokes. README there has every command.
