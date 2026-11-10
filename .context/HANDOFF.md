@@ -10,7 +10,7 @@ Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `clau
 `node_modules` here is a junction to the stunning-visual-effects worktree's: remove the link with `rmdir`, never with a recursive delete.
 
 ## Gates on the final build (76562b3)
-`scripts/qa/ink-sign.mjs`: all checks pass. all-pages home at 390 and 1440: overflow 0, small text 0, targets 0, axe 0, errors 0. Overlap audit: 0 at 320, 390, 768, 1024, 1440.
+`scripts/qa/ink-sign.mjs`: all checks pass, on the local build and on the live preview. `scripts/qa/ink-sound.mjs`: the pen's sound is fetched once, decodes (16.72 s, stereo) and plays when the sound is awake; never fetched before a tap. all-pages home at 390 and 1440: overflow 0, small text 0, targets 0, axe 0, errors 0. Overlap audit: 0 at 320, 390, 768, 1024, 1440.
 Lighthouse mobile, medians of 3, run back to back against the same tree without the signature: LCP 1.96 s against 1.97 s, CLS 0 against 0, FCP the same. TBT is noise on this machine (63 and 456 ms without, 287, 400 and 465 ms with), so perf swings 82-94 without and 83-88 with: no regression shown, none ruled out.
 
 ## Completed
