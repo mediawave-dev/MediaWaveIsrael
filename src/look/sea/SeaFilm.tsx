@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as field from './field'
 import { opt } from './lab'
+import { say } from './copy-new'
 import { Lines } from './parts'
 import { CLIPS, avifOf, posterOf, posterSet, videoOf } from './media'
 import { GroundSource, useGround } from './SeaGround'
@@ -95,7 +96,7 @@ export default function SeaFilm() {
       </span>}
       <div className="sea-in" data-reveal="">
         {/* [קופי: נתי] S5, ?copy=new only until approved */}
-        <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={['סרטון לעסק,', opt('copy') === 'new' ? 'והקלטות שלכם.' : 'וקלטות לזיכרון.']} /></h2>
+        <h2 id="film-title" className="sea-h2" data-zone="text"><Lines lines={[say('film.line1', 'סרטון לעסק,'), say('film.line2', 'וקלטות לזיכרון.')]} /></h2>
       </div>
     </section>
   )

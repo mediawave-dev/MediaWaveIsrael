@@ -312,7 +312,7 @@ export const FINISH = `#version 300 es
 precision highp float;
 uniform sampler2D uSum, uBloomA, uBloomB;
 uniform vec2 uRes;
-uniform float uN, uExposure, uGrain;
+uniform float uN, uExposure, uGrain, uEdge;
 uniform uint uFrame;
 uniform vec3 uGround;
 out vec4 o;
@@ -325,7 +325,7 @@ void main() {
   vec3 c = texture(uSum, uv).rgb / uN * uExposure;
   c += texture(uBloomA, uv).rgb * 0.10 + texture(uBloomB, uv).rgb * 0.09;
   float r = length(uv - 0.5) * 1.3;
-  c *= mix(1.0, 0.34, smoothstep(0.25, 1.0, r));
+  c *= mix(1.0, uEdge, smoothstep(0.25, 1.0, r));
   c = oetf(film(c));
   c = uGround + c * (1.0 - uGround);
   uint s = uint(gl_FragCoord.x) * 7919u + uint(gl_FragCoord.y) * 104729u + uFrame * 15485863u;

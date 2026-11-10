@@ -1128,6 +1128,7 @@ const reel = {
   seed: 0, ox: 0.5, oy: 0.5, ang: 0,
   w: 0, wt: 0, vis: 0, dev: 0, devT: 0, seenAt: 0,
   r: [0, 0, 0, 0] as [number, number, number, number], edge: 0.12,
+  covered: false,
 }
 const reelTex: (WebGLTexture | null)[] = [null, null]
 const RR = new Float32Array(4)
@@ -1186,6 +1187,8 @@ function stepReel(now: number, dt: number): boolean {
   if (mode !== 'full' || S.length < 2) return busy
   // the accessibility widget's stop: the reel holds its frame
   if (document.documentElement.classList.contains('disable-animations')) { S.forEach((s) => { if (!s.v.paused) s.v.pause() }); return busy }
+  // something opaque lies over it (the home page's sheet): it holds its frame too, and the field can rest
+  if (reel.covered) { S.forEach((s) => { if (!s.v.paused) s.v.pause() }); return busy }
   if (reel.w <= 0.02) { S.forEach((s) => { if (!s.v.paused) s.v.pause() }); return busy }
   const A = S[reel.cur]
   const B = S[1 - reel.cur]
@@ -1290,7 +1293,26 @@ export function setReel(el: HTMLElement | null, vids: HTMLVideoElement[] | null,
   reel.w = 0
   reel.recent = []
   reel.slots = (vids ?? []).map(reelSlot)
+  reel.covered = false
   readReel()
+  wake()
+}
+
+/** The showreel's two videos, given after its poster is already up: the takes begin, and what is on the screen
+    stays as it is (setReel would send it back to dots). */
+/** The showreel under something opaque (the home page's sheet at rest): its takes hold their frame while nobody can
+    see them, and go on when it is uncovered. */
+export function coverReel(on: boolean) {
+  if (reel.covered === on) return
+  reel.covered = on
+  wake()
+}
+
+export function playReel(vids: HTMLVideoElement[]) {
+  if (!reel.el || reel.slots.length || vids.length < 2) return
+  reel.slots = vids.map(reelSlot)
+  reel.phase = 'idle'
+  reel.cur = 0
   wake()
 }
 

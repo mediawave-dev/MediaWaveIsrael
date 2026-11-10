@@ -23,6 +23,7 @@ import { LOOK } from '../look'
 import './contact.css'
 import { WaIcon, PhoneIcon, MailIcon, InstagramIcon } from './ContactIcons'
 import DotGlyph from '../sea/DotGlyph'
+import { say } from '../sea/copy-new'
 import GlassKey from '../sea/GlassKey'
 import SeaSteps from '../sea/SeaSteps'
 import SeaInk from '../sea/SeaInk'
@@ -161,10 +162,10 @@ export default function Contact({ chapter, dossier, pal: palSrc, kicker, art = t
       <div className="ct__in">
         <div className="ct__side">
           {kicker}
-          <h2 id="contact-title" data-zone="text">דברו איתנו</h2>
+          <h2 id="contact-title" data-zone="text">{SHOT ? say('contact.title', 'דברו איתנו') : 'דברו איתנו'}</h2>
           {/* the sea (D201): the bubble no longer writes the words, so its line (D177) is gone; the first line stays */}
           {SHOT
-            ? <SeaInk className="ct__lead" text="כתבו כמה מילים על העסק ומה חסר לו." />
+            ? <SeaInk className="ct__lead" text={say('contact.lead', 'כתבו כמה מילים על העסק ומה חסר לו.')} />
             : <p className="ct__lead" data-zone="text">כתבו כמה מילים על העסק ומה חסר לו. המפתח קורא ועונה בעצמו.</p>}
           <Card>
             {art && (

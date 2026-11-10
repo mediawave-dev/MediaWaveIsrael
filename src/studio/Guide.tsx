@@ -33,9 +33,9 @@ export const STUDIO_PLAN: GuidePlan = { chapters: '[data-ch]', cool: 30000, max:
 /** where it rests: by the thumb if that spot is free, else the next free one; never on a button, a link,
     a field or a line of text (it looks at what lies under each candidate before it lands) */
 let spot = { x: 0, y: 0 }
-const BUSY = 'a, button, input, textarea, summary, label, h1, h2, h3, p, li, video, img, span, .st-sound'
+const BUSY = 'a, button, input, textarea, summary, label, h1, h2, h3, p, li, video, img, span, .st-sound, .gd-keep'
 /** a span is busy only when it holds text of its own (a label, a number), not when it wraps a decoration */
-const ownText = (el: HTMLElement) => el.tagName !== 'SPAN' || [...el.childNodes].some((n) => n.nodeType === 3 && !!n.textContent?.trim())
+const ownText = (el: HTMLElement) => el.tagName !== 'SPAN' || el.classList.contains('gd-keep') || [...el.childNodes].some((n) => n.nodeType === 3 && !!n.textContent?.trim())
 /** the boxes that must stay clear: not the guide's own parts, the map or the travel title, and not a wrapper
     the size of the screen (a label is small) */
 function busyBoxes(w: number, h: number): DOMRect[] {

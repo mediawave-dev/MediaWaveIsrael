@@ -13,7 +13,7 @@ import { WHATSAPP_URLS } from '../../utils/whatsapp'
 import { track } from '../../utils/analytics'
 import './faq.css'
 import DotGlyph from '../sea/DotGlyph'
-import { opt } from '../sea/lab'
+import { say } from '../sea/copy-new'
 import { LOOK } from '../look'
 
 interface FaqProps {
@@ -47,7 +47,7 @@ export default function Faq({ chapter, dossier, decor, kicker }: FaqProps = {}) 
         <div className="faq__head">
           {kicker}
           {/* [קופי: נתי] S5, the sea only, ?copy=new only until approved; the menu's label in navigation.ts changes with it */}
-          <h2 id="faq-title" data-zone="text">{LOOK === 'shot' && opt('copy') === 'new' ? 'השאלות שלכם' : 'שאלות נפוצות'}</h2>
+          <h2 id="faq-title" data-zone="text">{LOOK === 'shot' ? say('faq.title', 'שאלות נפוצות') : 'שאלות נפוצות'}</h2>
         </div>
         <ul className="faq__list">
           {faqs.map((item, i) => {

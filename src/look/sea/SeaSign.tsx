@@ -1,14 +1,16 @@
-// sea · the pen (D232, at the opening since D233). The first thing on the home page is ours: in the hero's disc a
-// ballpoint pen draws the MediaWave logo on a sheet of paper lit on a dark desk (the disc's two halves, the name,
-// and last the drop on the i). The film is ours from the first number to the last (design/film/ink: the sheet's
-// fibres, the ink, the brass tip, the light and the lens are computed, nothing is stock footage), and so is its
-// sound, built from the same strokes. It takes the place of the stock showreel and of the focus pull (gate `hero`).
+// sea · the pen (D232; the hero's ground since D234). The home page opens on a sheet of paper: the hero's whole
+// ground is our own film, in which a ballpoint pen draws the MediaWave logo (the disc's two halves, the name, and
+// last the drop on the i), and the headline is set on the same sheet, in ink. It is the one light chapter of a dark
+// site. The film is ours from the first number to the last (design/film/ink: the sheet's fibres, the ink, the brass
+// tip, the light and the lens are computed, nothing is stock footage), and so is its sound, built from the same
+// strokes. It takes the place of the stock showreel and of the focus pull (gate `hero`).
 //
-// The opening's dots gather into the mark on this very spot; the veil lifts on the lit sheet, and the pen comes
-// down. On the first scroll the words step back and the sheet comes to the middle of the screen and closer, held
-// there for most of a screen: the film alone on the stage (the WhatsApp dock takes the keys' place meanwhile).
-// Then the page goes on. The film plays once; after it the sheet stays signed, the hold shrinks to a short bow,
-// and Replay draws it again.
+// Two cuts of the same take, chosen by the screen's shape: upright (the pen in the upper half, the lower half of
+// the sheet left calm for the words) and wide (the pen on the left and high, the lower right left calm). The
+// opening's dots gather into the logo's disc where the pen will then draw it; the veil lifts on the lit sheet, and
+// the pen comes down. The sheet ends inside the first screen: its foot breaks into the site's dots, and under it
+// the showreel waits (SeaHome). The first scroll lifts the sheet off the films, like a page. The film plays once;
+// after it the signed still eases in over the last frame, and Replay, a caption under the logo, draws it again.
 //   still, no JavaScript     the signed sheet, a picture; no hold
 //   calm, or Save-Data       the signed sheet, and the film on request (its file is fetched only then); no hold
 //   full                     the film by itself, once; its sound only when the visitor's sound is already awake
@@ -20,12 +22,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import * as field from './field'
 import * as sound from './sound'
-import { releaseHold } from './hold'
 import './sea-sign.css'
 
 const BASE = '/media/ink/ink'
 const ALT = 'הלוגו של MediaWave, מצויר בעט כדורי על דף נייר'
 type Still = 'open' | 'signed'
+/** p: the upright cut (phones). w: the wide one. The same edge is in sea-sign.css (max-aspect-ratio: 19/20, itself included). */
+type Cut = 'p' | 'w'
+const cutNow = (): Cut => (window.innerWidth / window.innerHeight <= 0.95 ? 'p' : 'w')
 
 /** The film this visit gets: the page's tier, and "on request" where the browser was asked to save data. */
 function filmTier(): field.Tier {
@@ -35,30 +39,38 @@ function filmTier(): field.Tier {
 }
 
 let webm: boolean | null = null
-function source(): string {
+function source(cut: Cut): string {
   if (webm === null) webm = document.createElement('video').canPlayType('video/webm; codecs="vp9"') === 'probably'
-  const phone = !window.matchMedia('(min-width: 768px)').matches
-  return `${BASE}${phone ? '-m' : ''}.${webm ? 'webm' : 'mp4'}`
+  // the wide cut has a lighter encode for small screens (a phone on its side, a small tablet)
+  const light = cut === 'w' && !window.matchMedia('(min-width: 1100px)').matches
+  return `${BASE}-${cut}${light ? '-m' : ''}.${webm ? 'webm' : 'mp4'}`
 }
 
-// the two stills (the sheet before the pen, and signed): loaded once, never in the DOM
-const stills = new Map<Still, Promise<HTMLImageElement>>()
-function still(name: Still): Promise<HTMLImageElement> {
-  let p = stills.get(name)
+/** The signed sheet is what stays on the screen, so where the film's own size would be stretched (a dense or a
+    large screen) it comes at twice the size; the blank sheet has nothing to sharpen. */
+const dense = (cut: Cut) => {
+  const across = cut === 'p' ? Math.max(window.innerWidth, window.innerHeight * 0.5625) : Math.max(window.innerWidth, window.innerHeight * (16 / 9))
+  return across * (window.devicePixelRatio || 1) > (cut === 'p' ? 810 : 1600) * 1.25
+}
+// the stills of each cut (the sheet before the pen, and signed): loaded once, never in the DOM
+const stills = new Map<string, Promise<HTMLImageElement>>()
+function still(cut: Cut, name: Still): Promise<HTMLImageElement> {
+  const key = `${cut}-${name}${name === 'signed' && dense(cut) ? '-2x' : ''}`
+  let p = stills.get(key)
   if (!p) {
     p = new Promise<HTMLImageElement>((resolve, reject) => {
       const im = new Image()
       im.decoding = 'async'
       im.onload = () => resolve(im)
-      im.onerror = () => { stills.delete(name); reject(new Error(`Failed to load the ink film's still: ${name}`)) }
-      im.src = `${BASE}-${name}.webp`
+      im.onerror = () => { stills.delete(key); reject(new Error(`Failed to load the ink film's still: ${key}`)) }
+      im.src = `${BASE}-${key}.webp`
     })
-    stills.set(name, p)
+    stills.set(key, p)
   }
   return p
 }
 
-// the pen's sound: fetched once, decoded when the site's sound is awake (there is no context before a first tap)
+// the pen's sound (one for both cuts: the hand is the same): fetched once, decoded when the site's sound is awake
 let bytes: Promise<ArrayBuffer> | null = null
 let pen: AudioBuffer | null = null
 async function penSound(): Promise<AudioBuffer | null> {
@@ -75,23 +87,24 @@ async function penSound(): Promise<AudioBuffer | null> {
 /** The widget's stop switch, read at the moment it matters (it is a class on the root, set at any time). */
 const stoppedNow = () => { const c = document.documentElement.classList; return c.contains('disable-animations') || c.contains('motion-reduced') }
 const openingNow = () => document.documentElement.classList.contains('sea-opening')
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
-const ease = (v: number) => { const u = clamp01(v); return u * u * (3 - 2 * u) }
 
 /** wait: not played yet. refused: it did not start, or was stopped half way: the signed sheet, and Play. */
 type Phase = 'wait' | 'playing' | 'done' | 'refused'
 
 export default function SeaSign() {
   const root = useRef<HTMLElement>(null)
-  const disc = useRef<HTMLDivElement>(null)
+  const sheet = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const hush = useRef<(() => void) | null>(null)
   const want = useRef<Still | 'film'>('signed') // what the canvas should be showing
-  const seen = useRef(false) // the figure is on the screen
+  const seen = useRef(false) // the sheet is on the screen
   const rolling = useRef(false) // the film really started (a 'playing' event)
   const run = useRef(0) // the frame loop's turn: a newer one ends the older
   const now = useRef<Phase>('wait') // the phase, for the handlers that outlive a render
+  const shape = useRef<Cut>('p') // the cut, for the same handlers
+  const drawn = useRef<Cut | null>(null) // the cut whose picture is on the canvas
+  const [cut, setCut] = useState<Cut | null>(null) // null until the page is up: until then the stylesheet's own guess stands
   const [tier, setTier] = useState<field.Tier | null>(null) // null until the page is up: nothing is decided on the server
   const [stopped, setStopped] = useState(false)
   const [opening, setOpening] = useState(true)
@@ -99,6 +112,23 @@ export default function SeaSign() {
   const [inView, setInView] = useState(false)
   const [phase, setPhase] = useState<Phase>('wait')
   now.current = phase
+  if (cut) shape.current = cut
+
+  // the cut follows the screen's shape (a phone turned on its side, a window pulled wide), never under a running film
+  useEffect(() => {
+    const pick = () => { if (now.current !== 'playing') setCut(cutNow()) }
+    pick()
+    window.addEventListener('resize', pick)
+    return () => window.removeEventListener('resize', pick)
+  }, [])
+  useEffect(() => { if (phase !== 'playing') setCut(cutNow()) }, [phase])
+  // a file of the other cut is let go: the next play attaches the right one
+  useEffect(() => {
+    const v = video.current, src = v?.getAttribute('src')
+    if (!v || !cut || !src || src.startsWith(`${BASE}-${cut}`)) return
+    v.removeAttribute('src')
+    v.load()
+  }, [cut])
 
   // which film this visit gets; the stop switch and the opening, watched on the root's classes
   useEffect(() => {
@@ -113,12 +143,14 @@ export default function SeaSign() {
   /** A still on the canvas (when it has loaded, and only if it is still the one wanted). */
   const put = useCallback((name: Still) => {
     want.current = name
-    void still(name).then((im) => {
+    const of = shape.current
+    void still(of, name).then((im) => {
       const c = canvas.current
-      if (!c || want.current !== name) return
-      if (c.width !== im.naturalWidth) c.width = c.height = im.naturalWidth
+      if (!c || want.current !== name || shape.current !== of) return
+      if (c.width !== im.naturalWidth || c.height !== im.naturalHeight) { c.width = im.naturalWidth; c.height = im.naturalHeight }
       c.getContext('2d')?.drawImage(im, 0, 0)
       c.dataset.shows = name
+      drawn.current = of
     }).catch(() => { /* the sheet stays as it was */ })
   }, [])
 
@@ -126,9 +158,10 @@ export default function SeaSign() {
   const paint = useCallback(() => {
     const v = video.current, c = canvas.current
     if (!v || !c || want.current !== 'film' || v.readyState < 2 || !v.videoWidth) return
-    if (c.width !== v.videoWidth) c.width = c.height = v.videoWidth
+    if (c.width !== v.videoWidth || c.height !== v.videoHeight) { c.width = v.videoWidth; c.height = v.videoHeight }
     c.getContext('2d')?.drawImage(v, 0, 0, c.width, c.height)
     c.dataset.shows = 'film'
+    drawn.current = shape.current
   }, [])
   /** Every frame of the film on the canvas while it plays. A new run ends the one before it (a stall, a replay). */
   const roll = useCallback(() => {
@@ -144,17 +177,45 @@ export default function SeaSign() {
     }
     step()
   }, [paint])
+  /** After the film's last frame the signed still eases in over it: the sheet rests on the clean picture, not on
+      a frame of a compressed film (a bright flat sheet is where an encoder's steps show). */
+  const settle = useCallback(() => {
+    const of = shape.current
+    void still(of, 'signed').then((im) => {
+      const c = canvas.current, ctx = c?.getContext('2d'), v = video.current
+      if (!c || !ctx || !v?.ended || want.current !== 'film' || shape.current !== of) return
+      const mine = ++run.current
+      const t0 = performance.now()
+      const step = (t: number) => {
+        if (mine !== run.current || want.current !== 'film' || !v.ended) return
+        if (t - t0 < 600) {
+          // thin coats, one a frame: they close on the still with no step to see
+          ctx.globalAlpha = 0.16
+          ctx.drawImage(im, 0, 0, c.width, c.height)
+          ctx.globalAlpha = 1
+          requestAnimationFrame(step)
+          return
+        }
+        if (c.width !== im.naturalWidth || c.height !== im.naturalHeight) { c.width = im.naturalWidth; c.height = im.naturalHeight }
+        ctx.drawImage(im, 0, 0)
+      }
+      requestAnimationFrame(step)
+    }).catch(() => { /* the film's last frame stays */ })
+  }, [])
 
-  // what the sheet shows while no film runs: blank where the pen is about to come, signed everywhere else
+  // what the sheet shows while no film runs: blank where the pen is about to come, signed everywhere else. The
+  // film's own frames stay (its first, then its last) unless the screen changed shape under them
   useEffect(() => {
-    if (tier === null || ((phase === 'playing' || phase === 'done') && !stopped)) return
+    if (tier === null || cut === null) return
+    // (nothing drawn yet under a film that has begun: its own first frame is on its way, and a still must not take its place)
+    if ((phase === 'playing' || phase === 'done') && !stopped && (drawn.current === null || drawn.current === cut)) return
     put(tier === 'full' && !stopped && phase === 'wait' ? 'open' : 'signed')
-  }, [tier, stopped, phase, put])
+  }, [tier, cut, stopped, phase, put])
 
-  /** The film's file, chosen once: a later render (a phone turned on its side) must not swap it under the picture. */
+  /** The film's file, attached once per cut: a later render must not swap it under the picture. */
   const attach = useCallback(() => {
     const v = video.current
-    if (v && !v.getAttribute('src')) { v.preload = 'auto'; v.src = source() }
+    if (v && !v.getAttribute('src')) { v.preload = 'auto'; v.src = source(shape.current) }
     return v
   }, [])
 
@@ -173,7 +234,8 @@ export default function SeaSign() {
     }
   }, [tier, attach])
 
-  // on the screen or not: the film starts only where it can be seen, and holds its frame when it cannot
+  // on the screen or not: the film starts only where it can be seen, and holds its frame once half the sheet has
+  // left the screen (by then the films under it are playing: the pen does not decode alongside them)
   useEffect(() => {
     const el = root.current
     if (!el) return
@@ -184,7 +246,7 @@ export default function SeaSign() {
       if (!v) return
       if (!e.isIntersecting) { if (!v.paused) v.pause() }
       else if (now.current === 'playing' && v.paused && !v.ended && !document.hidden && !stoppedNow()) void v.play().catch(() => {})
-    }, { threshold: 0.2 })
+    }, { threshold: 0.5 })
     io.observe(el)
     return () => io.disconnect()
   }, [])
@@ -208,7 +270,7 @@ export default function SeaSign() {
     const v = attach()
     if (!v) return
     // the button that asked goes away while the film runs: its focus moves to the picture, not to nowhere
-    if (document.activeElement?.classList.contains('sea-sign__again')) disc.current?.focus()
+    if (document.activeElement?.classList.contains('sea-sign__again')) sheet.current?.focus()
     rolling.current = false
     // set here, not only at the next render: a film that is already buffered can start playing before React commits
     now.current = 'playing'
@@ -221,8 +283,12 @@ export default function SeaSign() {
   // full: when the opening has lifted and the sheet is on the screen, the pen comes down
   useEffect(() => {
     if (tier !== 'full' || stopped || opening || !armed || !inView || phase !== 'wait') return
-    const t = window.setTimeout(draw, 700)
-    return () => window.clearTimeout(t)
+    let t = 0
+    // (a tab nobody is looking at: the pen waits for them)
+    const go = () => { window.clearTimeout(t); if (!document.hidden) t = window.setTimeout(draw, 700) }
+    go()
+    document.addEventListener('visibilitychange', go)
+    return () => { window.clearTimeout(t); document.removeEventListener('visibilitychange', go) }
   }, [tier, stopped, opening, armed, inView, phase, draw])
 
   // while it plays: in a hidden tab the film holds its frame and its sound, and if nothing ever arrives the signed
@@ -265,102 +331,19 @@ export default function SeaSign() {
   }), [startSound, stopSound])
   useEffect(() => () => { run.current++; stopSound() }, [stopSound])
 
-  // the hold: on the first scroll the words step back and the sheet takes the middle of the screen, closer. Where
-  // there is no motion, the stop switch is on, or the hero is taller than the screen, the hold's scroll length
-  // leaves and the hero is a plain one.
-  useEffect(() => {
-    const fig = root.current, sheet = disc.current
-    const wrap = fig?.closest<HTMLElement>('.sea-focus'), hero = fig?.closest<HTMLElement>('.sea-hero')
-    const words = hero?.querySelector<HTMLElement>('.sea-in')
-    if (tier === null || !fig || !sheet || !wrap || !hero || !words || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
-    const html = document.documentElement.classList
-    const pin = () => parseFloat(getComputedStyle(hero).top) || 0
-    const fits = () => hero.offsetHeight + pin() <= window.innerHeight + 1
-    if (tier !== 'full' || stopped || !fits()) { releaseHold(wrap, hero); return }
-    let raf = 0
-    let rest: { x: number; y: number; w: number } | null = null
-    const again = fig.querySelector<HTMLElement>('.sea-sign__again')
-    const measure = () => {
-      const was = sheet.style.transform
-      sheet.style.transform = 'none'
-      // where the sheet rests while the hero is pinned: its place in the hero, with the hero at the pin
-      const h = hero.getBoundingClientRect(), d = sheet.getBoundingClientRect()
-      rest = { x: d.left + d.width / 2, y: d.top - h.top + pin() + d.height / 2, w: d.width }
-      sheet.style.transform = was
-    }
-    const apply = () => {
-      raf = 0
-      const hold = wrap.offsetHeight - hero.offsetHeight
-      const p = hold > 0 ? clamp01((pin() - wrap.getBoundingClientRect().top) / hold) : 0
-      const e = ease(p / 0.34)
-      // at rest nothing is remembered: the next move measures the sheet where it now is (a banner answered, a
-      // font arrived, the text made larger)
-      if (e <= 0.001) rest = null
-      else if (!rest) measure()
-      if (rest) {
-        const vw = window.innerWidth, vh = window.innerHeight
-        const phone = vw < 768
-        // a phone's sheet is already as wide as the screen: it comes closer, past the screen's sides
-        const size = phone ? Math.min(vw * 1.18, vh * 0.6) : Math.min(vw, vh * 0.76, 760)
-        const scale = 1 + (Math.min(3.2, Math.max(1, size / rest.w)) - 1) * e
-        const tx = (vw / 2 - rest.x) * e, ty = ((phone ? vh : vh + pin()) / 2 - rest.y) * e
-        sheet.style.transform = `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`
-      } else {
-        sheet.style.transform = ''
-      }
-      const away = p > 0 ? (1 - ease(p / 0.2)).toFixed(3) : ''
-      words.style.opacity = away
-      if (again) again.style.opacity = away
-      wrap.classList.toggle('is-out', p > 0.1)
-      // the hero's keys are gone from here on: the dock (ShotDock) reads this and takes their place
-      html.toggle('sea-focus-out', p > 0.2)
-    }
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(apply) }
-    const letGo = () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onResize)
-      ro.disconnect()
-      cancelAnimationFrame(raf)
-      sheet.style.transform = ''
-      words.style.opacity = ''
-      if (again) again.style.opacity = ''
-      wrap.classList.remove('is-out')
-      html.remove('sea-focus-out')
-    }
-    // a phone turned on its side: the hero no longer fits, so the hold lets go
-    function onResize() { rest = null; if (fits()) onScroll(); else { letGo(); releaseHold(wrap!, hero!) } }
-    const ro = new ResizeObserver(() => { rest = null; onScroll() })
-    ro.observe(hero)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onResize)
-    onScroll()
-    return letGo
-  }, [tier, stopped])
-
-  // after the film the hold is a short bow, not a stop on a still picture. Its length changes only at the very
-  // top of the page, where nobody's place depends on it
-  useEffect(() => {
-    const wrap = root.current?.closest<HTMLElement>('.sea-focus')
-    if (!wrap) return
-    const short = phase === 'done' || phase === 'refused'
-    const set = () => {
-      if (window.scrollY > 2 || wrap.classList.contains('is-signed') === short) return
-      wrap.classList.toggle('is-signed', short)
-      window.dispatchEvent(new Event('resize')) // the chapters below measured themselves with the hold
-    }
-    set()
-    window.addEventListener('scroll', set, { passive: true })
-    return () => window.removeEventListener('scroll', set)
-  }, [phase])
-
   const film = tier !== null && tier !== 'still'
+  // (the prerender's window is not the visitor's: its cut stays out of the snapshot, and the stylesheet decides)
+  const mine = (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__ ? null : cut
   const offer = film && !stopped && (phase === 'done' || phase === 'refused' || (tier === 'calm' && phase === 'wait'))
   return (
-    <figure ref={root} className="sea-sign">
-      <div ref={disc} className="sea-sign__disc" role="img" aria-label={ALT} data-zone="art" data-intro="" tabIndex={-1}>
+    <figure ref={root} className="sea-sign" data-cut={mine ?? undefined}>
+      {/* the film is the first screen of the sheet; a sheet longer than the screen goes on as plain paper */}
+      <div className="sea-sign__band">
+      <div ref={sheet} className="sea-sign__sheet" role="img" aria-label={ALT} tabIndex={-1}>
         <canvas ref={canvas} className="sea-sign__film" width="16" height="16" aria-hidden="true" />
-        {/* without JavaScript there is no canvas to draw on: the signed sheet as a plain picture */}
-        <noscript dangerouslySetInnerHTML={{ __html: `<img class="sea-sign__film" src="${BASE}-signed.webp" alt="" width="900" height="900">` }} />
+        {/* without JavaScript there is no canvas to draw on: the signed sheet as a plain picture, in the cut the
+            screen's shape asks for */}
+        <noscript dangerouslySetInnerHTML={{ __html: `<picture><source media="(max-aspect-ratio: 19/20)" srcset="${BASE}-p-signed.webp 1x, ${BASE}-p-signed-2x.webp 2x"><img class="sea-sign__film" src="${BASE}-w-signed.webp" srcset="${BASE}-w-signed.webp 1x, ${BASE}-w-signed-2x.webp 2x" alt=""></picture>` }} />
         {film && (
           <video
             ref={video}
@@ -375,18 +358,26 @@ export default function SeaSign() {
             onSeeked={paint}
             onWaiting={stopSound}
             onPause={stopSound}
-            onEnded={() => { stopSound(); paint(); setPhase('done') }}
+            onEnded={() => { stopSound(); paint(); settle(); setPhase('done') }}
             onError={() => setPhase((p) => (p === 'playing' ? 'refused' : p))}
           />
         )}
       </div>
+      {/* where the mark will be drawn: the opening's dots gather here (field.heroSpot) */}
+      <span className="sea-sign__mark" data-intro="" aria-hidden="true" />
+      {/* the pen's ground, in two boxes: the worlds' orb (studio/Guide) never comes to rest on it */}
+      <span className="sea-sign__keep gd-keep" aria-hidden="true" />
+      <span className="sea-sign__keep gd-keep" aria-hidden="true" />
       {film && (
         // the name starts with the word on the button (WCAG 2.5.3: "click Replay" finds it), said as English
         <button type="button" className="sea-sign__again" data-zone="text" hidden={!offer} onClick={draw}>
+          <span className="sea-sign__br" aria-hidden="true">[</span>
           <span lang="en">{phase === 'done' ? 'Replay' : 'Play'}</span>
           <span className="sr-only">{phase === 'done' ? ', לצייר שוב את הלוגו' : ', להציג את ציור הלוגו'}</span>
+          <span className="sea-sign__br" aria-hidden="true">]</span>
         </button>
       )}
+      </div>
     </figure>
   )
 }

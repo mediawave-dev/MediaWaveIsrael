@@ -2,12 +2,16 @@
 // nothing but numbers: no footage, no photo, no model file. The page builds the sheet (fibres laid one by one into
 // a height map), stamps the ink along the hand's path (hand.js) with the moment each point was reached, and then
 // path-traces every frame with a thin lens and an open shutter (shaders.js). render.mjs drives it frame by frame.
-//   ?size=1080&spp=96&paper=4096     window.renderFrame(i) -> a PNG data URL of frame i
+//   ?cut=p&w=810&h=1440&spp=96&paper=4096     window.renderFrame(i) -> a PNG data URL of frame i
+// Three cuts of the same take (the hand is one, the camera differs): `sq` a square with a pool of light, and the
+// two the site's hero uses as its ground, `p` for an upright screen and `w` for a wide one. In both the camera
+// leaves part of the sheet calm (the lower third, or the right half) for the words that are set over it.
 import { buildHand, at, BALL, LINE, LEAN, DT } from './hand.js'
 import { VERT, TRACE, BRIGHT, BLUR, FINISH } from './shaders.js'
 
 const Q = new URLSearchParams(location.search)
-const SIZE = Number(Q.get('size') ?? 1080)
+const CUT = Q.get('cut') ?? 'sq'
+const W = Number(Q.get('w') ?? Q.get('size') ?? 1080), H = Number(Q.get('h') ?? Q.get('size') ?? 1080)
 const SPP = Number(Q.get('spp') ?? 96)
 const PAPER = Number(Q.get('paper') ?? 4096)
 export const FPS = 30
@@ -16,13 +20,24 @@ const INK_MM = 0.01 // the ink map's texel, mm
 const GROUND = [15 / 255, 16 / 255, 17 / 255] // the site's ground, #0f1011: the film's black
 const SHUTTER = 0.5 // half the frame: a 180 degree shutter
 const EXPOSURE = Number(Q.get('ev') ?? 0.56)
-const APERTURE = Number(Q.get('ap') ?? 0.6) // the lens's radius in the close shot, mm
-const LEAD = 1.5 // millimetres the frame runs ahead of the eye while the hand writes
-const WIDE = 150 // how far the camera ends from the page: the logo across 58% of the frame, with clear space round it
+// the camera of each cut. close: how far it is from the tip, at the start and at the end of the name. lead: where
+// the frame's middle sits from the eye while the hand writes (x along the line, z down the page): it decides where
+// in the frame the tip is. far, at: how far it ends, and where the frame's middle is from the logo's: they decide
+// the logo's size and place in the last frame. lens: the aperture's radius, close and far. pool: the light's full
+// radius and where it is gone (the hero's cuts light the whole sheet). edge: how dark the frame's corners go.
+const SHOTS = {
+  sq: { close: [17, 21], lead: [1.5, -0.3], drop: [0.2, 0.8], far: 150, at: [0, 0], lens: [0.6, 0.45], pool: [27, 56], edge: 0.34 },
+  // upright: the tip in the upper third, the logo ending there; the lower third of the sheet stays calm
+  p: { close: [33, 38], lead: [0.5, 4.6], drop: [0.4, 5.0], far: 222, at: [0, 12.5], lens: [1.1, 0.6], pool: [70, 190], edge: 0.84 },
+  // wide: the pen on the left and high, the logo ending there; the lower right of the sheet stays calm
+  w: { close: [19, 23], lead: [2.6, 3.5], drop: [2.4, 3.9], far: 122, at: [15.5, 5.5], lens: [0.66, 0.5], pool: [70, 190], edge: 0.84 },
+}
+const SHOT = SHOTS[CUT] ?? SHOTS.sq
+const APERTURE = Number(Q.get('ap') ?? SHOT.lens[0]) // the lens's radius in the close shot, mm
 
 const hand = buildHand()
 const canvas = document.getElementById('c')
-canvas.width = canvas.height = SIZE
+canvas.width = W; canvas.height = H
 const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' })
 if (!gl) throw new Error('no WebGL2')
 if (!gl.getExtension('EXT_color_buffer_float')) throw new Error('no float render targets')
@@ -208,9 +223,9 @@ const t1 = performance.now()
 const trace = program(TRACE.replace('__BALL__', BALL.toFixed(3)))
 const bright = program(BRIGHT), blur = program(BLUR), finish = program(FINISH)
 console.log(`shaders ${Math.round(performance.now() - t1)} ms`)
-const sum = [target(SIZE, SIZE, false), target(SIZE, SIZE, false)]
-const half = SIZE >> 1
-const bloom = [target(half, half, true), target(half, half, true), target(half, half, true)]
+const sum = [target(W, H, false), target(W, H, false)]
+const hw = W >> 1, hh = H >> 1
+const bloom = [target(hw, hh, true), target(hw, hh, true), target(hw, hh, true)]
 
 // the steps of the sequence, one irrational per dimension (the generalised golden ratio in 14 dimensions)
 const ALPHA = (() => {
@@ -275,15 +290,15 @@ function camera(t) {
   const turn = ease((t - hand.rise) / (hand.crane * 0.62))
   const push = clamp01(t / hand.named)
   const az = mix(-0.42, 0, w), el = mix(0.52, 1.5, w)
-  const dist = mix(mix(17, 21, push), WIDE, w)
-  // the eye follows the tip a beat late, so the frame leads it: the pen keeps to the right third
-  let near = [h.eye[0] + LEAD, 0, h.eye[1] - 0.3]
+  const dist = mix(mix(SHOT.close[0], SHOT.close[1], push), SHOT.far, w)
+  // the eye follows the tip a beat late, so the frame leads it; the lead also sets the tip's place in the frame
+  let near = [h.eye[0] + SHOT.lead[0], 0, h.eye[1] + SHOT.lead[1]]
   if (t > hand.named) {
     // the way back to the i: the camera leaves with the pen and lands with it, so the pen never leaves the frame
     const from = at(hand, hand.named).eye, back = ease((t - hand.named) / hand.flight)
-    near = [mix(from[0] + LEAD, hand.drop[0] + 0.2, back), 0, mix(from[1] - 0.3, hand.drop[1] + 0.8, back)]
+    near = [mix(from[0] + SHOT.lead[0], hand.drop[0] + SHOT.drop[0], back), 0, mix(from[1] + SHOT.lead[1], hand.drop[1] + SHOT.drop[1], back)]
   }
-  const whole = [ink.word.cx, 0, ink.word.cz]
+  const whole = [ink.word.cx + SHOT.at[0], 0, ink.word.cz + SHOT.at[1]]
   const target = [mix(near[0], whole[0], turn), 0, mix(near[2], whole[2], turn)]
   const dir = [Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el)]
   const pos = V.add(target, V.mul(dir, dist))
@@ -293,7 +308,7 @@ function camera(t) {
   // the focus rides on the tip itself (before the first touch, on the spot where it will land)
   const sharp = t < hand.touch ? [hand.first[0], 0, hand.first[1]] : t > hand.written ? [hand.last[0], 0, hand.last[1]] : [h.x, 0, h.z]
   const focus = mix(V.dot(V.sub(sharp, pos), z), dist, w)
-  return { pos, x, y, z, focus, aperture: mix(APERTURE, 0.45, w), tan: 0.2 }
+  return { pos, x, y, z, focus, aperture: mix(APERTURE, SHOT.lens[1], w), tan: 0.2 }
 }
 
 function pass(prog, dst, w, h) {
@@ -312,9 +327,9 @@ async function draw(i, spp) {
   gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
   let from = 0
   for (let k = 0; k < spp; k++) {
-    pass(trace, sum[1 - from].fbo, SIZE, SIZE)
+    pass(trace, sum[1 - from].fbo, W, H)
     bind(0, sum[from].tex, trace.u('uSum')); bind(1, paper, trace.u('uPaper')); bind(2, ink.tex, trace.u('uInk'))
-    gl.uniform2f(trace.u('uRes'), SIZE, SIZE)
+    gl.uniform2f(trace.u('uRes'), W, H)
     gl.uniform1i(trace.u('uK'), k)
     gl.uniform1fv(trace.u('uA'), ALPHA)
     gl.uniform1ui(trace.u('uFrame'), i)
@@ -327,26 +342,26 @@ async function draw(i, spp) {
     gl.uniform1f(trace.u('uTile'), TILE); gl.uniform1f(trace.u('uPaperPx'), PAPER)
     gl.uniform3fv(trace.u('uKeyPos'), KEY.pos); gl.uniform3fv(trace.u('uKeyU'), KEY.u); gl.uniform3fv(trace.u('uKeyV'), KEY.v); gl.uniform3fv(trace.u('uKeyN'), KEY.n); gl.uniform3fv(trace.u('uKeyRad'), KEY.rad); gl.uniform1f(trace.u('uKeyArea'), KEY.area); gl.uniform1f(trace.u('uKeyD2'), KEY_D2)
     gl.uniform3fv(trace.u('uKickPos'), KICK.pos); gl.uniform3fv(trace.u('uKickU'), KICK.u); gl.uniform3fv(trace.u('uKickV'), KICK.v); gl.uniform3fv(trace.u('uKickN'), KICK.n); gl.uniform3fv(trace.u('uKickRad'), KICK.rad)
-    gl.uniform4f(trace.u('uPool'), ink.word.cx, ink.word.cz, 27, 56)
+    gl.uniform4f(trace.u('uPool'), ink.word.cx, ink.word.cz, SHOT.pool[0], SHOT.pool[1])
     gl.drawArrays(gl.TRIANGLES, 0, 3)
     from = 1 - from
     // let the GPU drain: a long queue of heavy passes can trip the driver's watchdog
     if (k % 6 === 5) { gl.flush(); await new Promise((r) => setTimeout(r, 0)) }
   }
-  pass(bright, bloom[0].fbo, half, half)
-  bind(0, sum[from].tex, bright.u('uSum')); gl.uniform2f(bright.u('uRes'), half, half); gl.uniform1f(bright.u('uN'), spp); gl.uniform1f(bright.u('uExposure'), EXPOSURE)
+  pass(bright, bloom[0].fbo, hw, hh)
+  bind(0, sum[from].tex, bright.u('uSum')); gl.uniform2f(bright.u('uRes'), hw, hh); gl.uniform1f(bright.u('uN'), spp); gl.uniform1f(bright.u('uExposure'), EXPOSURE)
   gl.drawArrays(gl.TRIANGLES, 0, 3)
   const blurTo = (src, dst, sx, sy) => {
-    pass(blur, dst.fbo, half, half)
-    bind(0, src.tex, blur.u('uTex')); gl.uniform2f(blur.u('uRes'), half, half); gl.uniform2f(blur.u('uStep'), sx / half, sy / half)
+    pass(blur, dst.fbo, hw, hh)
+    bind(0, src.tex, blur.u('uTex')); gl.uniform2f(blur.u('uRes'), hw, hh); gl.uniform2f(blur.u('uStep'), sx / hw, sy / hh)
     gl.drawArrays(gl.TRIANGLES, 0, 3)
   }
-  const s = SIZE / 1080
+  const s = Math.min(W, H) / 1080
   blurTo(bloom[0], bloom[1], 1.5 * s, 0); blurTo(bloom[1], bloom[0], 0, 1.5 * s) // a tight glow, in bloom[0]
   blurTo(bloom[0], bloom[1], 5 * s, 0); blurTo(bloom[1], bloom[2], 0, 5 * s) // and a wide one, in bloom[2]
-  pass(finish, null, SIZE, SIZE)
+  pass(finish, null, W, H)
   bind(0, sum[from].tex, finish.u('uSum')); bind(1, bloom[0].tex, finish.u('uBloomA')); bind(2, bloom[2].tex, finish.u('uBloomB'))
-  gl.uniform2f(finish.u('uRes'), SIZE, SIZE); gl.uniform1f(finish.u('uN'), spp); gl.uniform1f(finish.u('uExposure'), EXPOSURE)
+  gl.uniform2f(finish.u('uRes'), W, H); gl.uniform1f(finish.u('uN'), spp); gl.uniform1f(finish.u('uExposure'), EXPOSURE); gl.uniform1f(finish.u('uEdge'), SHOT.edge)
   gl.uniform1f(finish.u('uGrain'), 0.016); gl.uniform1ui(finish.u('uFrame'), i); gl.uniform3fv(finish.u('uGround'), GROUND)
   gl.drawArrays(gl.TRIANGLES, 0, 3)
   gl.finish()

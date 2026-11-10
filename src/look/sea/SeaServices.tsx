@@ -9,6 +9,7 @@
 // in the accessibility tree. No WebGL, still mode or no JS: a plain ruled index (html.sea-held off).
 import { useEffect, useRef } from 'react'
 import { SERVICES } from '../data'
+import { say, type CopyKey } from './copy-new'
 import { track } from '../../utils/analytics'
 import { docTop, useGear } from '../wave/clock'
 import { SCENE, reels, serviceAt } from './gears'
@@ -109,7 +110,7 @@ export default function SeaServices() {
           {/* one slot for the six objects (D139): above the words on a phone, beside them when wide */}
           <span ref={spot} className="sea-spot sea-spot--svc" data-spot={SCENE[SERVICES[0].id]} aria-hidden="true" />
           <header className="sea-head" data-reveal="">
-            <h2 id="services-title" className="sea-h2 sea-svc__h2" data-zone="text"><Lines lines={['מה אנחנו עושים']} /></h2>
+            <h2 id="services-title" className="sea-h2 sea-svc__h2" data-zone="text"><Lines lines={[say('svc.title', 'מה אנחנו עושים')]} /></h2>
           </header>
           <ol ref={list} className={`sea-svc__list${rows === 'tile' ? ' sea-svc__list--pic' : ''}`}>
             {SERVICES.map((s, i) => (
@@ -123,7 +124,7 @@ export default function SeaServices() {
                   onPointerLeave={() => { const on = SERVICES[Math.max(0, shown.current)]; if (on) backdrop.current.show(on.id) }}
                 >
                   <span className="sea-svc__title" data-zone="text">{s.title}</span>
-                  <span className="sea-svc__line" data-zone="text">{s.line}</span>
+                  <span className="sea-svc__line" data-zone="text">{say(`svc.${s.id}` as CopyKey, s.line)}</span>
                   {rows === 'tile' && SERVICE_MEDIA[s.id] && <SeaImage src={tileOf(CLIPS[SERVICE_MEDIA[s.id][1] ?? SERVICE_MEDIA[s.id][0]])} w={384} h={240} when="row" look="quiet" className="sea-svc__pic" />}
                   <svg className="sea-svc__go" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12.5 4.5 7 10l5.5 5.5" /></svg>
                 </a>

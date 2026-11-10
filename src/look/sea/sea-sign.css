@@ -1,67 +1,194 @@
-/* sea · the pen (D232, at the opening since D233): the ink film in the hero's slot. A square film shown as a disc
-   of light: the mask is round with a soft rim, so the lit sheet sits on the ground with no frame (the film's own
-   black is the ground's colour too, design/film/ink). The disc takes what the slot gives: the free space above
-   the words on a phone, the column beside them when wide. */
+/* sea · the pen (D232; the hero's ground since D234; the films under it, D235). The home page's hero is a lit
+   sheet of paper: the ink film fills it from the top of the screen, under the header's pill, and the words are set
+   on the same sheet, in ink. It is the one light chapter of a dark site. The sheet ends inside the first screen:
+   its foot breaks into the site's dots, and under it lies the showreel. The first scroll lifts the sheet off the
+   films, like a page. */
 
-/* (.sea-hero in the selector: sea.css comes later in the bundle, and its plain .sea-spot would win a tie) */
-.sea-hero .sea-spot--ink { display: grid; place-items: center; z-index: 2; }
-.sea-sign { position: relative; margin: 0; width: min(92cqw, 100cqh, 720px); }
-.sea-sign__disc {
-  position: relative; aspect-ratio: 1; overflow: hidden; outline: none; /* focus only rests here when Replay leaves */
-  will-change: transform; /* the hold moves it (SeaSign) */
-  /* the film fills its disc: only the last sixth of the radius eases to nothing (a wider fade left the picture a
-     keyhole in a fog, and the signed sheet a blurred moon) */
-  -webkit-mask-image: radial-gradient(circle closest-side, #000 84%, rgba(0, 0, 0, 0.75) 91%, rgba(0, 0, 0, 0.3) 96.5%, transparent 100%);
-  mask-image: radial-gradient(circle closest-side, #000 84%, rgba(0, 0, 0, 0.75) 91%, rgba(0, 0, 0, 0.3) 96.5%, transparent 100%);
+/* ── the lift: the sheet over the films ──
+   --c: the field's cell. --lip: how much of the first screen stays under the sheet (the lower half of its foot and
+   a strip of the dark page). --sh: the sheet's solid height on the first screen, which is the film's.
+   --stay: the room after the sheet in which the films stay put: the stage's own height, and a tenth of a screen
+   in which the films are alone before they scroll away too (as much held scroll as the focus pull it replaces;
+   in lvh where the stage is, so a phone's collapsing toolbar does not eat the tenth). */
+.sea-lift {
+  --c: 7px; --lip: calc(var(--c) * 5 + 21px); --sh: calc(100svh - var(--lip) - var(--c) * 5);
+  --stay: calc(100lvh + 10svh + var(--c) * 5);
+  position: relative;
 }
-/* the canvas, and without JavaScript the picture in its place: both fill the disc */
-.sea-sign__film { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
-/* the sheet arrives lit, not switched on: the canvas fades in once it has its first picture */
+@media (min-width: 768px) { .sea-lift { --c: 9px; --lip: calc(var(--c) * 5 + 27px); } }
+/* the words stand over the sheet; their box is as wide as the page, so only the words themselves take the pointer
+   (Replay, on the sheet under them, keeps its own) */
+.sea-lift .sea-in { position: relative; z-index: 1; pointer-events: none; }
+.sea-lift .sea-in > * { pointer-events: auto; }
+.sea-lift__under { position: absolute; inset: calc(-1 * var(--head)) 0 0; pointer-events: none; }
+.sea-lift__stage { position: sticky; top: 0; height: 100lvh; }
+/* the room is kept from the first paint wherever motion is on (html.sea-reveal), and given back where there turns
+   out to be no reel (SeaHome: no WebGL, the stop switch) */
+html.sea-held.sea-reveal .sea-lift:not(.is-plain)::after { content: ""; display: block; height: var(--stay); }
+
+/* ── the film's place on the sheet ──
+   object-fit: cover, worked out by hand as well, so the words can keep clear of where the pen passes and the
+   opening's mark and Replay can follow the picture. --a is the cut's shape; --px and --py say which part of the
+   film is kept when the screen's shape differs (the wide cut keeps its left, where the pen is); --calm is how far
+   down the film the pen, its shadow or the ink reach at some moment, measured over every frame
+   (design/film/ink/calm.py; scripts/qa/ink-sign.mjs holds the table). --mx, --my, --mw: where the pen draws the
+   disc in its close shot (the opening's dots gather there); --rx, --ry: under the finished logo (Replay). */
+.sea-hero--paper, .sea-sign {
+  --a: 1.7778; --px: 0; --py: 0.4; --calm: 0.6;
+  --mx: 0.285; --my: 0.37; --mw: 0.29; --rx: 0.123; --ry: 0.455; --rt: -16px 0; --rj: flex-start;
+}
+@media (max-aspect-ratio: 19/20) {
+  .sea-hero--paper, .sea-sign:not([data-cut="w"]) {
+    --a: 0.5625; --px: 0.5; --py: 0.6; --calm: 0.52;
+    --mx: 0.3; --my: 0.36; --mw: 0.377; --rx: 0.5; --ry: 0.405; --rt: -50% 0; --rj: center;
+  }
+}
+/* the cut the film really has (SeaSign: it never changes under a running film), where the screen has since turned */
+.sea-sign[data-cut="p"] {
+  --a: 0.5625; --px: 0.5; --py: 0.6; --calm: 0.52;
+  --mx: 0.3; --my: 0.36; --mw: 0.377; --rx: 0.5; --ry: 0.405; --rt: -50% 0; --rj: center;
+}
+.sea-hero--paper, .sea-sign {
+  --paper: #e8e5de;
+  --fw: max(100vw, var(--sh) * var(--a)); --fh: max(var(--sh), 100vw / var(--a));
+  --fx: calc((100vw - var(--fw)) * var(--px)); --fy: calc((var(--sh) - var(--fh)) * var(--py));
+}
+
+/* ── the sheet: the hero's ground, from the top of the screen to the top of its foot ── */
+.sea-sign { position: absolute; inset: calc(-1 * var(--head)) 0 calc(var(--c) * 5); z-index: 0; margin: 0; pointer-events: none; background: var(--paper); }
+/* the film is the first screen of it; a sheet longer than that goes on as plain paper */
+.sea-sign__band { position: absolute; inset: 0 0 auto; height: min(100%, var(--sh)); overflow: hidden; }
+/* a soft light from where the pen comes, so the signed sheet still has a direction */
+.sea-sign__band::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(80% 70% at 100% 0%, rgb(255 252 244 / 0.42), rgb(255 252 244 / 0) 72%);
+}
+.sea-sign__band::after {
+  content: ""; position: absolute; inset: auto 0 0; z-index: 1; height: 16%; pointer-events: none;
+  background: linear-gradient(to bottom, rgb(232 229 222 / 0), var(--paper));
+}
+.sea-sign__sheet { position: absolute; inset: 0; outline: none; /* focus only rests here when Replay leaves */ }
+/* the canvas, and without JavaScript the picture in its place */
+.sea-sign__film {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: calc(var(--px) * 100%) calc(var(--py) * 100%);
+}
+/* the sheet is paper from the first paint, and its picture arrives lit, not switched on */
 canvas.sea-sign__film { opacity: 0; transition: opacity 0.7s ease; }
 canvas.sea-sign__film[data-shows] { opacity: 1; }
 /* the film itself: a 2 px source for the canvas, like the site's other films (never the page's largest paint) */
 .sea-sign__src { position: absolute; top: 0; left: 0; width: 2px; height: 2px; opacity: 0.001; pointer-events: none; }
+.sea-sign__mark {
+  position: absolute; left: calc(var(--fx) + var(--fw) * var(--mx)); top: calc(var(--fy) + var(--fh) * var(--my));
+  width: calc(var(--fw) * var(--mw)); aspect-ratio: 2.9 / 2.25; translate: -50% -50%;
+}
 
-/* Replay (and Play, where the film waits to be asked): a small label just under the disc, in the page's quiet
-   voice. It reserves no room: on a phone it sits in the gap between the disc and the headline */
+/* the pen's ground, in two boxes the worlds' orb keeps off (studio/Guide: .gd-keep). Upright: the upper half of the
+   film, in two bands. Wide: its upper left, and the step under it */
+.sea-sign__keep { position: absolute; left: var(--fx); top: calc(var(--fy) + var(--fh) * 0.08); width: calc(var(--fw) * 0.66); height: calc(var(--fh) * 0.38); }
+.sea-sign__keep + .sea-sign__keep { top: calc(var(--fy) + var(--fh) * 0.46); width: calc(var(--fw) * 0.4); height: calc(var(--fh) * 0.18); }
+@media (max-aspect-ratio: 19/20) {
+  .sea-sign:not([data-cut="w"]) .sea-sign__keep { left: 0; width: 100%; height: calc(var(--fh) * 0.22); }
+  .sea-sign:not([data-cut="w"]) .sea-sign__keep + .sea-sign__keep { top: calc(var(--fy) + var(--fh) * 0.3); }
+}
+
+/* the paper's tooth: a still grain over the whole sheet, film and plain paper alike. A film of a bright flat sheet
+   comes out of any encoder in faint flat patches (8 bit colour has no steps that small); grain at the same
+   strength hides them, and gives the plain part of the sheet the film's surface. The tile is 64 px on purpose: a
+   background picture counts as a paint by its own size, and this one must never be the page's largest (the
+   headline's line is; scripts/qa/ink-sign.mjs holds it to that) */
+.sea-sign::before {
+  content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0.09;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 0 0 0 -0.32'/%3E%3C/filter%3E%3Crect width='64' height='64' filter='url(%23n)'/%3E%3C/svg%3E") 0 0 / 64px 64px;
+}
+
+/* the sheet's foot, a halftone in the field's cell: five rows of holes that grow, then five rows of paper dots
+   that shrink (set half a cell aside, as a halftone turns over). What lies under the sheet shows through: the
+   films, or the dark page */
+.sea-sign::after {
+  --hole: transparent; --rest: var(--paper);
+  content: ""; position: absolute; inset: 100% 0 auto; height: calc(var(--c) * 10); pointer-events: none;
+  background:
+    radial-gradient(circle, var(--hole) calc(var(--c) * 0.11), var(--rest) calc(var(--c) * 0.11 + 0.6px)) 50% 0 / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--hole) calc(var(--c) * 0.18), var(--rest) calc(var(--c) * 0.18 + 0.6px)) 50% calc(var(--c) * 1) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--hole) calc(var(--c) * 0.25), var(--rest) calc(var(--c) * 0.25 + 0.6px)) 50% calc(var(--c) * 2) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--hole) calc(var(--c) * 0.31), var(--rest) calc(var(--c) * 0.31 + 0.6px)) 50% calc(var(--c) * 3) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--hole) calc(var(--c) * 0.37), var(--rest) calc(var(--c) * 0.37 + 0.6px)) 50% calc(var(--c) * 4) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--rest) calc(var(--c) * 0.37), var(--hole) calc(var(--c) * 0.37 + 0.6px)) calc(50% + var(--c) * 0.5) calc(var(--c) * 5) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--rest) calc(var(--c) * 0.31), var(--hole) calc(var(--c) * 0.31 + 0.6px)) calc(50% + var(--c) * 0.5) calc(var(--c) * 6) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--rest) calc(var(--c) * 0.25), var(--hole) calc(var(--c) * 0.25 + 0.6px)) calc(50% + var(--c) * 0.5) calc(var(--c) * 7) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--rest) calc(var(--c) * 0.18), var(--hole) calc(var(--c) * 0.18 + 0.6px)) calc(50% + var(--c) * 0.5) calc(var(--c) * 8) / var(--c) var(--c) repeat-x,
+    radial-gradient(circle, var(--rest) calc(var(--c) * 0.11), var(--hole) calc(var(--c) * 0.11 + 0.6px)) calc(50% + var(--c) * 0.5) calc(var(--c) * 9) / var(--c) var(--c) repeat-x;
+}
+
+/* Replay (and Play, where the film waits to be asked): a caption under the finished logo, in the brackets the
+   site's small controls wear */
 .sea-sign__again {
-  position: absolute; top: calc(100% + 2px); left: 50%; translate: -50% 0; pointer-events: auto;
-  min-width: 88px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: none; cursor: pointer;
-  font: 600 12px/1 var(--sea-mono); letter-spacing: 0.08em; color: #a39d90; direction: ltr;
+  position: absolute; left: calc(var(--fx) + var(--fw) * var(--rx)); top: calc(var(--fy) + var(--fh) * var(--ry)); translate: var(--rt); z-index: 3;
+  display: inline-flex; align-items: center; justify-content: var(--rj); gap: 0.7em;
+  pointer-events: auto; min-width: 88px; min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: none; cursor: pointer;
+  font: 600 12px/1 var(--sea-mono); letter-spacing: 0.08em; color: #4d4942; direction: ltr; white-space: nowrap;
   transition: color 0.3s ease;
 }
+.sea-sign__br { color: #6b665c; }
 .sea-sign__again[hidden] { display: none; }
-.sea-sign__again:focus-visible { outline: 3px solid #ede7da; outline-offset: -3px; }
-@media (hover: hover) and (pointer: fine) { .sea-sign__again:hover { color: #ede7da; } }
+.sea-sign__again:focus-visible { outline: 3px solid #0f1011; outline-offset: -3px; }
+@media (hover: hover) and (pointer: fine) { .sea-sign__again:hover { color: #0f1011; } }
 
-/* one column (phones, tablets): the sheet above the words, though it comes after them in the document, and a gap
-   between them that holds Replay */
-@media (max-width: 1099px) {
-  html.sea-hero-ink .sea-hero > .sea-spot--ink { grid-row: 1; }
-  html.sea-hero-ink .sea-hero > .sea-in { grid-row: 2; }
-  html.sea-hero-ink .sea-hero { row-gap: 50px; }
+/* ── the words, in ink on the sheet ── */
+html[data-look="shot"] .sea-hero--paper .sea-h1 { color: #0f1011; text-shadow: none; }
+html[data-look="shot"] .sea-hero--paper .sea-sub { color: #4d4942; text-shadow: none; }
+html[data-look="shot"] .sea-hero--paper .key {
+  --k-on: #0f1011; --k-legend: #4d4942; --k-led: #0f1011; --k-ring: #0f1011; --k-dots: rgba(15, 16, 17, 0.88);
+  --k-ink: #0f1011; --k-ink-on: #ede7da; --k-ink-legend: rgba(237, 231, 218, 0.8);
+  --k-render: #0f1011; --k-render-on: #ede7da; --k-render-legend: rgba(237, 231, 218, 0.8);
 }
-/* short phones: the first screen keeps its key (sea-phone.css), so the gap goes and Replay stands beside the disc */
-@media (max-width: 599px) and (max-height: 700px) {
-  html.sea-hero-ink .sea-hero { row-gap: 12px; }
-  .sea-sign__again { top: 50%; left: 100%; translate: 2px -50%; min-width: 60px; padding: 0 8px; }
+html[data-look="shot"] .sea-hero--paper .key__cap > .key__label { text-shadow: none; }
+html[data-look="shot"] .sea-hero--paper .key .key__ink { background: #0f1011; }
+html[data-look="shot"] .sea-hero--paper .key .btn-br { color: #4d4942; }
+html[data-look="shot"] .sea-hero--paper :is(.key:focus-visible, .key[data-force="hover"], .key[data-pressed]) .btn-br { color: #0f1011; }
+@media (hover: hover) and (pointer: fine) { html[data-look="shot"] .sea-hero--paper .key:hover .btn-br { color: #0f1011; } }
+html[data-look="shot"] .sea-hero--paper .key:focus-visible { outline-color: #0f1011; }
+
+/* the hero ends where the sheet's foot turns over, a lip above the first screen's end. Its words stand clear of the
+   foot's holes, of the dock in the phone's corners and of the cookie strip's band (--safe-b and, wide, the strip),
+   and under the line the pen never crosses: the row above them is at least that tall (the hero's top padding and
+   row gap are the 32 px). On a screen too short for all of it the sheet grows longer than the screen and the
+   words go on down it, over plain paper. (#root: sea-phone.css sets the hero's rows with it) */
+.sea-hero--paper { --pb: max(calc(var(--c) * 5 + 16px), calc(var(--safe-b, 64px) + 8px - var(--lip))); }
+@media (min-width: 1100px) { .sea-hero--paper { --pb: max(calc(var(--c) * 5 + 16px), calc(var(--strip-h, 88px) + 20px - var(--lip))); } }
+#root .sea-hero.sea-hero--paper {
+  min-height: calc(100svh - var(--head) - var(--lip)); padding-bottom: var(--pb);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(calc(var(--fy) + var(--fh) * var(--calm) - var(--head) - 32px), 1fr) auto;
 }
-/* two columns: the sheet gets the larger share it needs to be the subject, the headline comes down a size, and the
-   key stands under its line instead of across the column from it */
-@media (min-width: 1100px) {
-  html.sea-hero-ink .sea-hero { grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); }
-  html.sea-hero-ink .sea-hero > .sea-spot--ink { height: min(74svh, 700px); }
-  html.sea-hero-ink .sea-hero .sea-h1 { font-size: min(6.6vw, 112px); }
-  html.sea-hero-ink .sea-hero .sea-row { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+#root .sea-hero--paper > .sea-in { grid-column: 1; grid-row: 2; }
+/* a wide sheet: the logo is drawn high on the left, the words stand low on the right. The pen's reach falls away
+   to the left as it goes down the sheet, so the headline may stand higher the narrower it is: of three places
+   (from 46, 50 or 54 hundredths of the film down, each with how far in from the left it must then keep) it takes
+   the one that lets it be largest. --bot is where the words end; the 88 px are what stands under the headline (its
+   margin, the gap, the line and the key); its longest line is 6.6 of its own size wide. The line and the key share
+   a row as wide as the headline, so the three read as one block. (1901/2000: the upright edge itself is upright) */
+@media (min-aspect-ratio: 1901/2000) and (min-width: 768px) {
+  .sea-hero--paper {
+    --calm: 0.46;
+    --bot: calc(var(--sh) + var(--c) * 5 - var(--pb));
+    --room: calc(100vw - var(--gut, 16px) - 12px);
+    --w1: min((var(--bot) - var(--fy) - var(--fh) * 0.46 - 88px) / 2, (var(--room) - var(--fw) * 0.56) / 6.6);
+    --w2: min((var(--bot) - var(--fy) - var(--fh) * 0.5 - 88px) / 2, (var(--room) - var(--fw) * 0.49) / 6.6);
+    --w3: min((var(--bot) - var(--fy) - var(--fh) * 0.54 - 88px) / 2, (var(--room) - var(--fw) * 0.38) / 6.6);
+    --h1: max(30px, min(7.7vw, 132px, max(var(--w1), var(--w2), var(--w3))));
+  }
+  #root .sea-hero--paper .sea-h1 { font-size: var(--h1); }
+  #root .sea-hero--paper .sea-row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; max-width: max(580px, var(--h1) * 6.55); }
+}
+/* a phone on its side: under the logo is where the floating invitations stand, so Replay stands at the logo's end */
+@media (min-aspect-ratio: 1901/2000) and (max-height: 480px) {
+  .sea-sign:not([data-cut="p"]) { --rx: 0.535; --ry: 0.387; --rt: 0 -50%; }
 }
 
-/* the hold: shorter than the focus pull's, since nothing has to rack; and once the sheet is signed, only a short
-   bow (SeaSign changes it at the top of the page). The sheet comes closer than the screen is wide on a phone, so
-   the hold clips sideways (clip, not hidden: the hero stays sticky). A key that takes the keyboard's focus while
-   the words are away brings them back. */
-html.sea-held.sea-reveal.sea-hero-ink .sea-focus:not(.is-plain):not(.is-calm)::after { height: 85svh; }
-html.sea-held.sea-reveal.sea-hero-ink .sea-focus.is-signed:not(.is-plain):not(.is-calm)::after { height: 30svh; }
-html.sea-hero-ink .sea-focus { overflow-x: clip; }
-html.sea-hero-ink .sea-hero .sea-in:focus-within { opacity: 1 !important; }
-
+/* forced colours: the system's ground and ink take over, so the lit sheet must not stay under them */
+@media (forced-colors: active) {
+  .sea-sign__film, .sea-sign::before, .sea-sign::after, .sea-sign__band::before, .sea-sign__band::after { display: none; }
+}
 html.disable-animations canvas.sea-sign__film { transition: none; }

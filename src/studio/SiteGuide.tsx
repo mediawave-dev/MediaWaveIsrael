@@ -12,6 +12,7 @@ import { preloadSound } from './sound'
 import SoundInvite, { type SoundSource } from './SoundInvite'
 import * as sea from '../look/sea/sound'
 import { tierNow } from './motion'
+import { opt } from '../look/sea/lab'
 import type { StyleDef } from './registry'
 import { travel } from './travel'
 
@@ -34,7 +35,8 @@ export default function SiteGuide() {
   const navigate = useNavigate()
   const tier = tierNow()
   // the music's invitation comes first; the guide waits until it has gone (never both at once)
-  const plan = useMemo(() => ({ ...SITE_PLAN, first: SEA_SOUND.isOn() ? SITE_PLAN.first : 13500 }), [])
+  // (and on the home page's sheet it waits for the pen to finish: nothing crosses the film while it draws, D235)
+  const plan = useMemo(() => ({ ...SITE_PLAN, first: Math.max(SEA_SOUND.isOn() ? SITE_PLAN.first : 13500, opt('hero') === 'ink' && window.location.pathname === '/' ? 23000 : 0) }), [])
   const go = (s: StyleDef, at: { x: number; y: number }) => {
     setMap(false)
     void travel(s, at, navigate, tier, 'site_guide')

@@ -6,8 +6,10 @@
 // results page, a chat, the cassette, a developing print), a chat bubble that types while the visitor
 // types, and the disc again at the end of the tape. Lama Lama's structure in our words: a title pill, a contact card, bracketed mono labels, a live
 // clock, type revealed in lines. Few words at the opening: two lines, one line, the WhatsApp key.
-// The hero's picture is ours (D233): a pen draws the logo in the disc's slot (SeaSign); the stock showreel and the
-// focus pull stay behind the gate (?hero=reel).
+// The hero's picture is ours (D233, D234): the hero is a lit sheet of paper on which a pen draws the logo, with the
+// words set on the same sheet (SeaSign). Under the sheet lies the showreel (D235): the first scroll lifts the sheet
+// off it, the sheet's dotted foot passing over the films. The old hero (the showreel behind the words, and the
+// focus pull) stays behind the gate (?hero=reel).
 // The H1 is the LCP and paints at first paint from the entry stylesheet (sea.css is eager).
 // Anchors kept: #why-us #services #process #faq #contact (Header, Footer and inner pages link to them).
 // [קופי: נתי] every new line: the hero's tag, the laptop chapter's line, the end of the tape.
@@ -31,6 +33,7 @@ import SeaStyles from './SeaStyles'
 import SeaInk from './SeaInk'
 import SeaSign from './SeaSign'
 import { opt } from './lab'
+import { say, type CopyKey } from './copy-new'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
 import { DiscStill, Lines, useReveals } from './parts'
@@ -94,16 +97,39 @@ const REEL = ['sea', 'sunset', 'burn', 'glow', 'library', 'code', 'lights', 'dar
 /** The hero's showreel (D157, gate `hero`): Lama Lama's hero, our takes. The field plays it across the
     hero behind the words, a take after a take, never the same change twice in a row (field.ts). It
     loads after the page has loaded and gone idle, never before the H1 (the LCP); the poster never
-    enters the DOM and the two videos are 2 px sources for the textures. Calm: the first poster. */
-function useReel(section: RefObject<HTMLElement | null>, a: RefObject<HTMLVideoElement | null>, b: RefObject<HTMLVideoElement | null>, on: boolean) {
+    enters the DOM and the two videos are 2 px sources for the textures. Calm: the first poster.
+    Under the sheet (D235, `under`): the same reel on a stage that stays put while the sheet lifts off it. Its first
+    poster comes up as before, ready under the sheet; its takes run only while the sheet is off it (they start at
+    the first scroll and hold their frame whenever the page is back at its top), so nothing decodes where nobody
+    can see it, and the pen's film is the one film running while it is the one to watch. Where there is no reel
+    (no motion, no WebGL) the stage gives its room back; calm and Save-Data get the sheet alone. */
+function useReel(section: RefObject<HTMLElement | null>, a: RefObject<HTMLVideoElement | null>, b: RefObject<HTMLVideoElement | null>, on: boolean, under = false) {
   useEffect(() => {
-    if (!on || field.tier() === 'still') return
-    const full = field.tier() === 'full'
+    if (!on) return
+    const lift = under ? section.current?.closest<HTMLElement>('.sea-lift') ?? null : null
+    // (the prerender's snapshot keeps the room, as the focus pull's does: the first paint and React's first commit
+    // must have the same height)
+    if (under && (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    const plain = () => { if (!lift || lift.classList.contains('is-plain')) return; lift.classList.add('is-plain'); window.dispatchEvent(new Event('resize')) }
+    if (field.tier() === 'still') { plain(); return }
+    const saver = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true
+    const full = field.tier() === 'full' && !(under && saver)
+    // under the sheet a poster alone would never be seen (calm has no room kept for it)
+    if (under && !full) { plain(); return }
     const phone = !window.matchMedia('(min-width: 768px)').matches
     const webm = document.createElement('video').canPlayType('video/webm; codecs="vp9"') === 'probably'
     const pool = REEL.map((n) => `/media/reel/${n}${phone ? '-m' : ''}.${webm ? 'webm' : 'mp4'}`)
     let alive = true
     let idle = 0
+    // under the sheet: covered while the page is at its top, where the sheet hides all of it
+    let lifted = false
+    const onLift = () => {
+      const up = window.scrollY > 24
+      if (up === lifted || !alive) return
+      lifted = up
+      field.coverReel(!up)
+      if (up && a.current && b.current) field.playReel([a.current, b.current])
+    }
     const go = () => {
       const el = section.current
       if (!alive || !el) return
@@ -112,11 +138,16 @@ function useReel(section: RefObject<HTMLElement | null>, a: RefObject<HTMLVideoE
       img.src = `/media/reel/sea-poster${phone ? '-m' : ''}.webp`
       img.onload = () => {
         if (!alive) return
-        field.setReel(el, full && a.current && b.current ? [a.current, b.current] : null, img, pool)
+        field.setReel(el, full && !under && a.current && b.current ? [a.current, b.current] : null, img, pool)
+        if (!under) return
+        field.coverReel(true)
+        window.addEventListener('scroll', onLift, { passive: true })
+        onLift()
       }
     }
     void field.ready.then((ok) => {
-      if (!alive || !ok) return
+      if (!alive) return
+      if (!ok) { plain(); return }
       const later = () => { idle = window.requestIdleCallback ? window.requestIdleCallback(go, { timeout: 2500 }) : window.setTimeout(go, 600) }
       if (document.readyState === 'complete') later()
       else window.addEventListener('load', later, { once: true })
@@ -125,58 +156,77 @@ function useReel(section: RefObject<HTMLElement | null>, a: RefObject<HTMLVideoE
       alive = false
       if (window.cancelIdleCallback) window.cancelIdleCallback(idle)
       window.clearTimeout(idle)
+      window.removeEventListener('scroll', onLift)
       field.setReel(null, null, null)
     }
-  }, [section, a, b, on])
+  }, [section, a, b, on, under])
 }
 
 function Hero() {
   const section = useRef<HTMLElement>(null)
   const spot = useRef<HTMLSpanElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   // the sea as the hero's ground (D156, gate `bleed`): the real sea above the words breaks into the
   // sea of dots at its bottom edge; otherwise the sunset inside the disc (useSun)
   const take = useRef<HTMLVideoElement>(null)
   const hero = opt('hero')
-  // the pen (D233): our own film in the disc's slot, in place of the stock showreel and the focus pull
+  // the pen (D233, the hero's ground since D234): our own film as a lit sheet of paper under the words, and under
+  // the sheet the showreel (D235)
   const ink = hero === 'ink'
   const veil = hero === 'sea'
   useSun(spot, video)
-  useReel(section, video, take, hero === 'reel')
+  useReel(ink ? stage : section, video, take, hero === 'reel' || ink, ink)
   useGround(section, video, 'hero-veil', { on: veil, after: true, text: () => section.current?.querySelector<HTMLElement>('.sea-in') ?? null, focus: [0.6, 0.5] })
+  const words = (
+    <div className="sea-in">
+      {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
+      <h1 id="hero-title" className="sea-h1" data-zone="text" tabIndex={-1}>
+        <span className="sea-h1__ln" style={{ ['--i' as string]: 0 }}>{say('hero.line1', HERO.line1)}</span>{' '}<br />
+        <span className="sea-h1__ln" style={{ ['--i' as string]: 1 }}>{say('hero.line2', HERO.line2)}</span>
+      </h1>
+      <div className="sea-row">
+        <p className="sea-sub sea-lead sea-up" data-zone="text" style={{ ['--d' as string]: '0.1s' }}>
+          <span className="sea-lead__ln">{say('hero.sub', HERO.sub2)}</span>
+        </p>
+        <div className="sea-up" style={{ ['--d' as string]: '0.2s' }} data-dock-hide="">
+          <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'hero' })}>
+            {say('hero.cta', HERO.cta)}
+          </LookButton>
+        </div>
+      </div>
+    </div>
+  )
+  if (ink) return (
+    <div className="sea-lift">
+      {/* the films under the sheet: a stage that stays put while the sheet lifts off it. The field draws the reel
+          in its box; the two videos are 2 px sources for the textures */}
+      <div className="sea-lift__under" aria-hidden="true">
+        <div ref={stage} className="sea-lift__stage">
+          <video ref={video} className="sea-sun" muted loop playsInline preload="none" tabIndex={-1} />
+          <video ref={take} className="sea-sun" muted loop playsInline preload="none" tabIndex={-1} />
+        </div>
+      </div>
+      <section ref={section} id="hero" className="sea-ch sea-hero sea-hero--paper" aria-labelledby="hero-title" data-chapter="hero">
+        {words}
+        {/* the pen comes after the words in the document, so the heading is read first; sea-sign.css lays it
+            under them, as the hero's whole ground */}
+        <SeaSign />
+      </section>
+    </div>
+  )
   return (
     <div className="sea-focus">
     <section ref={section} id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
       {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them.
           With the ground the field draws no disc here; the opening still gathers its dots into it */}
-      {!ink && (
-        <span ref={spot} className="sea-spot sea-spot--hero" data-spot={hero === 'disc' ? 'horizon' : undefined} data-intro="" aria-hidden="true">
-          <DiscStill />
-          <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
-          {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
-        </span>
-      )}
-      {!ink && <SeaFocus />}
-      <div className="sea-in">
-        {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
-        <h1 id="hero-title" className="sea-h1" data-zone="text" tabIndex={-1}>
-          <span className="sea-h1__ln" style={{ ['--i' as string]: 0 }}>{HERO.line1}</span>{' '}<br />
-          <span className="sea-h1__ln" style={{ ['--i' as string]: 1 }}>{HERO.line2}</span>
-        </h1>
-        <div className="sea-row">
-          <p className="sea-sub sea-lead sea-up" data-zone="text" style={{ ['--d' as string]: '0.1s' }}>
-            <span className="sea-lead__ln">{HERO.sub2}</span>
-          </p>
-          <div className="sea-up" style={{ ['--d' as string]: '0.2s' }} data-dock-hide="">
-            <LookButton href={WHATSAPP_URLS.general} target="_blank" rel="noopener noreferrer" zone="text" onClick={() => track('whatsapp_click', { placement: 'hero' })}>
-              {HERO.cta}
-            </LookButton>
-          </div>
-        </div>
-      </div>
-      {/* the pen (D233) comes after the words in the document, so the heading is read first; sea-sign.css puts it
-          above them on a phone and beside them when wide */}
-      {ink && <span className="sea-spot sea-spot--hero sea-spot--ink"><SeaSign /></span>}
+      <span ref={spot} className="sea-spot sea-spot--hero" data-spot={hero === 'disc' ? 'horizon' : undefined} data-intro="" aria-hidden="true">
+        <DiscStill />
+        <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
+        {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
+      </span>
+      <SeaFocus />
+      {words}
     </section>
     </div>
   )
@@ -187,8 +237,8 @@ function Websites() {
     <section className="sea-ch sea-web" aria-labelledby="web-title" data-chapter="websites">
       <SeaLaptop>
         <div className="sea-in" data-reveal="">
-          <h2 id="web-title" className="sea-h2" data-zone="text"><Lines lines={['אתר שנבנה בשבילכם,', 'ונשאר שלכם.']} /></h2>
-          <SeaInk hold className="sea-sub" text="מאפס ובלי תבנית. אחרי התשלום העיצוב, הקוד והתכנים עוברים אליכם." />
+          <h2 id="web-title" className="sea-h2" data-zone="text"><Lines lines={[say('web.line1', 'אתר שנבנה בשבילכם,'), say('web.line2', 'ונשאר שלכם.')]} /></h2>
+          <SeaInk hold className="sea-sub" text={say('web.sub', 'מאפס ובלי תבנית. אחרי התשלום העיצוב, הקוד והתכנים עוברים אליכם.')} />
         </div>
       </SeaLaptop>
     </section>
@@ -199,13 +249,13 @@ function Why() {
   return (
     <section id="why-us" className="sea-ch sea-why" aria-labelledby="why-title" data-chapter="why">
       <header className="sea-head" data-reveal="">
-        <h2 id="why-title" className="sea-h3" data-zone="text"><Lines lines={['למה לעבוד איתנו?']} /></h2>
+        <h2 id="why-title" className="sea-h3" data-zone="text"><Lines lines={[say('why.title', 'למה לעבוד איתנו?')]} /></h2>
       </header>
       <ul className="sea-list">
         {WHY_ITEMS.map((it) => (
           <li key={it.id} className="sea-list__item" data-reveal="">
-            <h3 className="sea-list__title sea-fade" data-zone="text">{it.title}</h3>
-            <p className="sea-list__line sea-fade" data-zone="text">{it.line}</p>
+            <h3 className="sea-list__title sea-fade" data-zone="text">{say(`why.${it.id}.t` as CopyKey, it.title)}</h3>
+            <p className="sea-list__line sea-fade" data-zone="text">{say(`why.${it.id}.l` as CopyKey, it.line)}</p>
           </li>
         ))}
       </ul>
@@ -262,10 +312,10 @@ function Process() {
   return (
     <section id="process" className="sea-ch sea-proc" aria-labelledby="how-we-work-title" data-chapter="process">
       <header className="sea-head" data-reveal="">
-        {/* [קופי: נתי] S5, ?copy=new only until approved; the menu's label in navigation.ts changes with it */}
-        <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={opt('copy') === 'new' ? ['איך זה', 'נהיה שלכם'] : ['איך אנחנו', 'עובדים']} /></h2>
+        {/* [קופי: נתי] ?copy=new only until approved (D236); the menu's label in navigation.ts changes with it */}
+        <h2 id="how-we-work-title" className="sea-h2" data-zone="text"><Lines lines={[say('proc.line1', 'איך אנחנו'), say('proc.line2', 'עובדים')]} /></h2>
       </header>
-      <Steps steps={STEPS} label="אתר, דף נחיתה או בוט" />
+      <Steps steps={STEPS.map((st) => ({ ...st, title: say(`step.${st.id}.t` as CopyKey, st.title), line: say(`step.${st.id}.l` as CopyKey, st.line) }))} label="אתר, דף נחיתה או בוט" />
       <Included />
     </section>
   )
