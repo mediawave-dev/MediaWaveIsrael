@@ -826,6 +826,31 @@ vec3 imgLayer(vec2 px, float t, vec4 fl, vec3 outc) {
 // every symmetric drawing stays symmetric (D163: the laptop's screen had stepped out at different heights)
 vec4 slot(vec4 s) { s.x = (floor(s.x / uCell) + 0.5) * uCell; gCU = uCell / max(s.z, 1.0); gCV = vec2(gCU); return s; }
 
+// ── the process's own effect (D165; back alone in D231): an editor's playhead at the screen's inline end ──
+// a chapter's band on the screen, soft at its ends
+float chBand(vec4 ch, float y, float px1) { return smoothstep(ch.y, ch.y + 80.0 * px1, y) * (1.0 - smoothstep(ch.x - 80.0 * px1, ch.x, y)) * ch.z; }
+vec3 chapterFx(vec2 p, float soft, vec3 outc) {
+  float px1 = 0.5 * uGrainPx;
+  float sq = uGrainPx;
+  // process (talk, design, build, launch): a dotted line at the inline end with the timeline's ticks moving
+  // with the page and a longer mark at each step; the playhead holds the middle of the screen, and where it
+  // crosses a step a cut flashes across the screen in squares, faint over the words
+  float b1 = chBand(uCh[1], p.y, px1);
+  if (b1 < 0.001) return outc;
+  float x0 = 7.0 * px1;
+  float mid = uRes.y * 0.5;
+  float a = step(abs(p.x - x0), sq * 0.5) * step(mod(floor(p.y / sq), 2.0), 0.5) * mix(0.3, 0.85, step(mid, p.y));
+  float tk = mod(uCh[1].x - p.y, 24.0 * px1);
+  a = max(a, step(tk, sq) * step(x0 - sq * 0.5, p.x) * step(p.x, x0 + 2.5 * sq) * 0.4);
+  for (int i = 0; i < 4; i++) a = max(a, step(abs(p.y - uChK[i]), sq * 0.5) * step(x0 - sq * 0.5, p.x) * step(p.x, x0 + 4.5 * sq) * 0.9);
+  a = max(a, step(abs(p.y - mid), sq * 0.5) * step(abs(p.x - x0), 4.5 * sq));
+  a = max(a, step(abs(p.y - mid), sq * 1.5) * step(abs(p.x - x0), sq * 1.5));
+  outc = mix(outc, CREAM, a * b1);
+  float cut = exp(-uCh[1].w * 5.0);
+  if (cut > 0.01) outc = mix(outc, CREAM, sq7(rankAt(p), cut * (1.0 - smoothstep(0.0, 3.0 * sq, abs(p.y - mid)))) * 0.75 * b1 * mix(0.05, 1.0, soft));
+  return outc;
+}
+
 void main() {
   vec2 px = gl_FragCoord.xy;
   // the finger (D163): under it everything swells a little, like a drop of water on the glass. p0 keeps
@@ -866,8 +891,24 @@ void main() {
   // a quiet field everywhere, like grain on paper; after the opening it spreads out from the mark
   float reach = uAmb * length(uRes) * 1.1;
   float amb = (0.05 + 0.04 * sin(c.x * 0.021 + t * 0.4) * sin(c.y * 0.017 - t * 0.3)) * smoothstep(reach, reach - 160.0, length(c - uC)) * uGrain;
+  // the sea of dots (D131) at the shores of two chapters (D231: why, process). It swells in from each edge
+  // along a slow wave, as the logo's sea, and ebbs away before the words: it marks the passage between the
+  // chapters, and their middle stays plain ground (D230)
   float dg = 0.0;
   float sea = 0.0;
+  for (int i = 0; i < 2; i++) {
+    vec4 ch = uCh[i];
+    if (ch.z < 0.01) continue;
+    float inside = min(ch.x - c.y, c.y - ch.y);
+    if (inside <= 0.0) continue;
+    float swell = sin(c.x * 0.011 + t * 0.5) * 0.5 + sin(c.x * 0.027 - t * 0.8) * 0.3;
+    float ebb = 1.0 - smoothstep(uGE * 0.9, uGE * 2.2, inside - swell * uGE * 0.5);
+    float cov = clamp(inside / uGE + swell * 0.18 - 0.06, 0.0, 1.0) * ebb * ch.z;
+    float yy = c.y - ch.x * 0.4;
+    float w = 0.052 + 0.036 * sin(c.x * 0.021 + t * 0.4) * sin(yy * 0.017 - t * 0.3) + 0.012 * sin(c.x * 0.006 - yy * 0.009 + t * 0.2);
+    sea = max(sea, w * cov);
+    dg = max(dg, cov);
+  }
   // the words (D139): a safety net under every text block. It dims only what moves (a shape near the
   // words, the music's rings, the ripple); the quiet grain stays even, so no box shows behind a line.
   // calm (D174, Nati: "parts are dazzling... look how Lama Lama keep text easy to read"): the ground's
@@ -895,7 +936,7 @@ void main() {
   float fill = smoothstep(0.1, 0.2, f.x) * (1.0 - smoothstep(0.84, 0.9, f.x));
   f.x *= mix(1.0, 0.68 + 0.32 * light, fill);
   // the music: the shapes and the grain breathe with its level, and each bell sends a ring out
-  float v = max(max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl)), sea * (1.0 + 1.1 * uLvl) * mix(0.1, 0.85, calm));
+  float v = max(max(f.x * (1.0 + 0.16 * uLvl) * give, amb * (1.0 + 1.1 * uLvl)), sea * (1.0 + 1.1 * uLvl) * mix(0.0, 0.85, calm));
   float nd = length(c - uNote.xy);
   v += uGrain * uNote.z * 0.36 * exp(-pow((nd - uNote.w) / (uCell * 4.0), 2.0)) * exp(-nd / (2.4 * uR)) * give;
   // the finger or the pointer ripples the dots like water
@@ -997,6 +1038,7 @@ void main() {
   outc = imgLayer(px, t, flq, outc);
   if (uFilmK[0].x > 0.001) outc = uFilmS[0] > 1.5 ? veilLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmA[0], uFilmV[0], uFilmS[0] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm0, uFilmR[0], uFilmK[0], uFilmP[0], uFilmA[0], uFilmS[0], c, px, cell, t, outc);
   if (uFilmK[1].x > 0.001) outc = uFilmS[1] > 1.5 ? veilLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmA[1], uFilmV[1], uFilmS[1] - 2.0, px, t, softV, flq, outc) : filmLayer(uFilm1, uFilmR[1], uFilmK[1], uFilmP[1], uFilmA[1], uFilmS[1], c, px, cell, t, outc);
+  outc = chapterFx(p0, soft, outc);
   // the pointer's trail (D162, Lama's): a ribbon of small cream squares, fuller where the pointer ran
   // fast, thinning behind it in a few tenths of a second; the glyph at most, never solid. Under the words
   // it thins out, so it never sits on what is being read (D168)

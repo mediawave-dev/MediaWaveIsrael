@@ -39,7 +39,7 @@ export default function SeaServices() {
   const backdrop = useRef<{ id: number | null; posters: Record<string, HTMLImageElement>; now: string; show: (svc: string) => void }>({ id: null, posters: {}, now: '', show: () => {} })
   useEffect(() => {
     const el = stage.current
-    if (!el || field.tier() === 'still' || opt('rows') !== 'tile') return
+    if (!el || field.tier() === 'still') return
     let alive = true
     const b = backdrop.current
     const full = field.tier() === 'full'

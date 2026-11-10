@@ -61,7 +61,11 @@ function fontPreloadLinks(look) {
     ? `
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>` : ''
-  return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>${extra}`
+  // the H1's second line is bold (D231): its face comes with the regular one
+  const bold = look === 'shot' && existsSync(resolve(DIST, 'fonts/mediawave-font1-Bold.woff2'))
+    ? `
+    <link rel="preload" href="/fonts/mediawave-font1-Bold.woff2" as="font" type="font/woff2" crossorigin>` : ''
+  return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>${bold}${extra}`
 }
 
 /** Serve dist/ as a static file server */

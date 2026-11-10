@@ -1,3 +1,39 @@
+# HANDOFF: the quiet pass, some effects back, bold (10.11.2026, D230-D231)
+
+## Goal
+Quality minimalism: plain ground under words, far fewer labels and less copy, effects still impressive.
+
+## D231 (after Nati saw D230: "removed too many effects, bring some back", "use bold wisely")
+Back: the film crumbling as its chapter leaves, the service footage behind the list (no row thumbnails), the process playhead at the inline edge, the sea of dots only at the shores of why and process, the worlds' orb on wide screens, a thicker clip edge on service pages.
+Still out: anything behind the FAQ (the contact bubble's wide scatter reached it on phones, so it stays narrow), the why render lines, the full sea ground, the corner halos, the labels and copy cut in D230.
+Bold: the second line of every two-line heading, the reason and step names (.sea-list__title, .sp-h3); the bold face is preloaded.
+Gates on the D231 build: overlap 0 at 5 widths, all-pages 390 and 1440 clean, Lighthouse perf 93, LCP 1.96s, TBT 143ms, CLS 0 (measured before the last shader constant changed back).
+
+## Where
+**Preview, waiting for Nati:** https://preview-picks-20261109.mediawaveisrael.pages.dev/?motion=full (branch `preview/picks-20261109` = 9e88da7, holds D221-D230).
+**Live:** still only the glass key (main d6a7e32, rollback tag `prod-before-d219`). Nothing from D221-D230 is on production.
+
+## Completed
+D230: the chapter dot effects and the background sea of dots are gone (reverses D165), no dots behind the FAQ. Tags, counters, 1540 PLAY, END CREDITS, END OF TAPE and hero meta removed. Five questions plus "עוד שאלות". "מה כלול" is a closed details. Orb and sound invitation gone at every width (sound stays in the header). Hero words clear the cookie strip at 1100px and up.
+Gates on the final build: overlap 0 at 5 widths (audit now skips the body of a closed details). All-pages and Lighthouse on the build before the last CSS line: perf 94, LCP 1.97s, TBT 20ms, CLS 0. Live preview: 200 on the pages checked, 0 errors, 0 overflow.
+
+## Decisions and why
+Kept the dive, focus pull, emptied stage, glass keys, laptop and cassette in dots: these are the effects with a job. Brackets stay on the main CTA only as the one signature.
+
+## Waiting for Nati
+1. Production, after he reviews the preview.
+2. New copy: "גוגל וצ׳אטבוטים מבינים אותו.", "עוד שאלות", "פותחים וואטסאפ".
+3. The "שלכם" strings behind `?copy=new`: "והקלטות שלכם.", "איך זה נהיה שלכם", "השאלות שלכם", "האתר נשאר שלכם."
+4. A new Fable session for materials and story: prompt in `.context/NEXT-SESSION-PROMPT-MATERIALS.rtl.md` (uncommitted).
+
+## Known issues
+No real phone or VoiceOver test. Home has 4-5 WebGL contexts.
+
+## Next steps
+On his approval: `git fetch`, tag `prod-before-d230` on main, push 9e88da7 to main with the helper in memory mediawave-github-deploy, verify by content in a real browser.
+
+---
+
 # HANDOFF: implementing Nati's picks (9.11.2026, D219-D229)
 
 ## Where

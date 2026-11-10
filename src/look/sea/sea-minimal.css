@@ -59,3 +59,11 @@ html[data-look="shot"] .sea-foot__rows--contact a.sea-foot__row { grid-template-
 /* the service pages speak the same way: no bracketed kickers, no counted questions */
 html[data-look="shot"] main .sp--service .sp-kicker { display: none; }
 html[data-look="shot"] main .sp--service .sp-pad summary::before { content: none; }
+
+/* the weight (D231): bold marks the payoff, never decoration. A two-line heading lands on its second line
+   ("המומחיות שלנו", "ונשאר שלכם."), and the names a reader scans (a reason, a step) stand bold over their
+   quiet line. Single-line headings, the services' big names and every paragraph keep the regular weight. */
+html[data-look="shot"] .sea-h1__ln:last-child,
+html[data-look="shot"] :is(.sea-h2, .sea-h3) .sea-ln:last-child:not(:first-child),
+html[data-look="shot"] .sea-list__title,
+html[data-look="shot"] main .sp-h3 { font-weight: 700; }

@@ -21,7 +21,7 @@ const SITE_PLAN: GuidePlan = { chapters: '[data-chapter]', cool: 40000, max: 3, 
 const SEA_SOUND: SoundSource = { isOn: () => sea.isRunning() || !sea.isOn(), turnOn: sea.startMusic, subscribe: sea.onChange }
 
 // (S2, D230) nothing comes by while someone reads. The worlds and the sound are in the header's menu.
-const PHONE = 'all' // D230: at every width now, the quiet pass
+const PHONE = '(max-width: 767px)' // D231: the worlds' orb is back on wide screens
 const onPhoneChange = (cb: () => void) => {
   const m = window.matchMedia(PHONE)
   m.addEventListener('change', cb)
