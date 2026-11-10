@@ -383,7 +383,7 @@ html[data-look="shot"] .sea-contact .ct__ico :is(.dot-glyph, .wa-dots, svg) { wi
 .qs__dots i.f { background: #ede7da; }
 @keyframes qs-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 html:not(.disable-animations):not(.motion-reduced) .qs__q { animation: qs-in 0.45s var(--sea-ease, cubic-bezier(0.16, 1, 0.3, 1)) both; }
-.qs__label { display: block; margin: 0 0 22px; font: var(--display-w) clamp(36px, 9.6vw, 56px)/1.05 var(--display); color: #ede7da; text-align: start; text-wrap: balance; }
+.qs__label { display: block; margin: 0 0 22px; font: 400 clamp(36px, 9.6vw, 56px)/1.05 var(--display); color: #ede7da; text-align: start; text-wrap: balance; }
 .qs__label small { display: block; margin-top: 12px; font: 500 16px/1.5 var(--text); color: #a39d90; }
 html[data-look="shot"] .sea-contact #contact .qs__field {
   --ul: #6f6a60;
@@ -818,3 +818,5 @@ html:is(.disable-animations, .motion-reduced) :is(.key__ink, .btn-br) { transiti
 
 /* (D200 audit) the skip link, when a keyboard focuses it: ink on cream (it was white on light sky) */
 html[data-look="shot"] a[href="#main-content"]:focus { background: #ede7da !important; color: #0f1011 !important; outline: 2px solid #ede7da; outline-offset: 3px; }
+/* the closing line, on the page's quiet ground: the Thin cut, where it is large enough to hold (D218) */
+@media (min-width: 768px) { html[data-look="shot"] .sea-foot__line { font-weight: 100; } }

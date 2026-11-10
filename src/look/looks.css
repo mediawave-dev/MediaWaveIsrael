@@ -176,7 +176,7 @@ html[data-look="shot"] {
   --lens: #ede7da;
   --err: var(--ink);                    /* [לבירור: נתי] red #b3261e only if Nati rules for it; the error is never colour-only */
   --display: "mediawave-font1", "mediawave-font1 Fallback", "MW Noto", "MW Noto Fallback", sans-serif;
-  --display-w: 700;
+  --display-w: 400;
   --text: "MW Noto", "MW Noto Fallback", sans-serif;
   --ui: "MW Noto", "MW Noto Fallback", sans-serif;
   --ui-w: 700;
