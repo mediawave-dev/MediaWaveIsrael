@@ -1,7 +1,7 @@
 # The ink film
 
-A 17 second macro film of a ballpoint pen drawing the MediaWave logo, with its sound. It plays on the home page's
-emptied stage (`src/look/sea/SeaSign.tsx`, D232). Nothing in it is footage, a photo, a 3D model or a sample: the
+A 17 second macro film of a ballpoint pen drawing the MediaWave logo, with its sound. It plays in the home page's
+hero (`src/look/sea/SeaSign.tsx`, D232 and D233). Nothing in it is footage, a photo, a 3D model or a sample: the
 sheet of paper, the ink, the brass tip, the light, the lens and the sound are all computed here.
 
 ## Files

@@ -33,8 +33,9 @@ export const GATES = {
   /** veil: the clip across its chapter, breaking into dots at its bottom edge; slot: in its own frame */
   bleed: ['veil', 'slot'],
   // ── Lama Lama, followed closely (D157) ──
-  /** the hero: a showreel that never repeats, the one sunset as a ground, or the sunset in the disc */
-  hero: ['reel', 'sea', 'disc'],
+  /** the hero: our pen film in the disc (D233), a showreel that never repeats, the one sunset as a ground, or the
+      sunset in the disc */
+  hero: ['ink', 'reel', 'sea', 'disc'],
   /** the quiet dot grain over the whole site: off (Lama's plain ground) or on */
   grain: ['off', 'on'],
   /** the pointer's trail: Lama's ribbon of small squares, a hairline, or the field's ripple */
@@ -71,15 +72,19 @@ const chosen = read()
 
 /** Nati's picks (20.10): the island, the film that develops by itself, both grounds, the cream turn.
     The colour round's gates start on the recommendations. */
-const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'none', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'reel', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on', copy: 'now' }
+const DEFAULTS: { [G in Gate]: Choice<G> } = { head: 'island', film: 'time', ground: 'deep', turn: 'cream', sun: 'time', rows: 'none', work: 'off', type: 'lama', menu: 'card', stack: 'off', bar: 'ends', bleed: 'veil', hero: 'ink', grain: 'off', trail: 'squares', finger: 'squares', media: 'colour', relief: 'on', copy: 'now' }
 
 export function opt<G extends Gate>(g: G): Choice<G> {
   return (chosen[g] ?? DEFAULTS[g]) as Choice<G>
 }
 
-// the gates the CSS reads, on the root from the start (type, menu, bar)
+// the gates the CSS reads, on the root from the start (type, menu, bar). The prerendered page already carries the
+// defaults' classes: they leave first, so a choice from the URL replaces the default instead of standing beside it
+// (with both sea-hero-ink and sea-hero-reel on the root, the old hero ran on the new one's hold)
 if (typeof document !== 'undefined') {
-  document.documentElement.classList.add(`sea-type-${opt('type')}`, `sea-menu-${opt('menu')}`, `sea-bar-${opt('bar')}`, `sea-bleed-${opt('bleed')}`, `sea-hero-${opt('hero')}`, `sea-grain-${opt('grain')}`, `sea-trail-${opt('trail')}`, `sea-finger-${opt('finger')}`, `sea-media-${opt('media')}`, `sea-relief-${opt('relief')}`)
+  const root = document.documentElement.classList
+  for (const c of [...root]) if (/^sea-(type|menu|bar|bleed|hero|grain|trail|finger|media|relief)-/.test(c)) root.remove(c)
+  root.add(`sea-type-${opt('type')}`, `sea-menu-${opt('menu')}`, `sea-bar-${opt('bar')}`, `sea-bleed-${opt('bleed')}`, `sea-hero-${opt('hero')}`, `sea-grain-${opt('grain')}`, `sea-trail-${opt('trail')}`, `sea-finger-${opt('finger')}`, `sea-media-${opt('media')}`, `sea-relief-${opt('relief')}`)
 }
 
 export const labOpen = () => typeof window !== 'undefined' && /[?&]lab=1(&|$)/.test(window.location.search)

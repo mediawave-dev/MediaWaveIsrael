@@ -1,4 +1,4 @@
-// QA · the signature's sound (D232): with the visitor's sound awake, the pen's sound is fetched, decoded and played
+// QA · the pen's sound (D232, D233): with the visitor's sound awake, the pen's sound is fetched, decoded and played
 // beside the film, and the music steps back under it; with the sound off it is never fetched.
 //   node scripts/qa/ink-sound.mjs http://localhost:4317
 // It cannot hear: it checks that the file was requested, that decoding raised no error, that the page's audio is
@@ -21,10 +21,10 @@ async function run(tap) {
   await page.goto(`${base}/?motion=full&lead=off`, { waitUntil: 'networkidle2' })
   await page.waitForFunction(() => document.documentElement.classList.contains('motion-ready'), { timeout: 20000 }).catch(() => {})
   if (tap) { await page.mouse.click(640, 400); await wait(2500) } // a first click wakes the sound, as a visitor's does
-  const top = await page.evaluate(() => { const el = document.querySelector('.sea-empty'); return el.getBoundingClientRect().top + window.scrollY })
-  await page.evaluate((y) => window.scrollTo(0, y + 160), top)
-  await wait(6000)
-  const s = await page.evaluate(() => { const p = window.__seaSound, v = document.querySelector('.sea-sign__film'); return { running: p?.isRunning(), state: p?.state(), level: p?.level(), t: v?.currentTime ?? 0, paused: v?.paused ?? true } })
+  // the film is in the hero: it starts by itself once the opening has lifted
+  await page.waitForFunction(() => { const v = document.querySelector('.sea-sign__src'); return !!v && !v.paused && v.currentTime > 2.2 }, { timeout: 25000 }).catch(() => {})
+  await wait(600)
+  const s = await page.evaluate(() => { const p = window.__seaSound, v = document.querySelector('.sea-sign__src'); return { running: p?.isRunning(), state: p?.state(), level: p?.level(), t: v?.currentTime ?? 0, paused: v?.paused ?? true } })
   await page.close()
   return { s, asked, errors }
 }

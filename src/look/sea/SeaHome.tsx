@@ -6,6 +6,8 @@
 // results page, a chat, the cassette, a developing print), a chat bubble that types while the visitor
 // types, and the disc again at the end of the tape. Lama Lama's structure in our words: a title pill, a contact card, bracketed mono labels, a live
 // clock, type revealed in lines. Few words at the opening: two lines, one line, the WhatsApp key.
+// The hero's picture is ours (D233): a pen draws the logo in the disc's slot (SeaSign); the stock showreel and the
+// focus pull stay behind the gate (?hero=reel).
 // The H1 is the LCP and paints at first paint from the entry stylesheet (sea.css is eager).
 // Anchors kept: #why-us #services #process #faq #contact (Header, Footer and inner pages link to them).
 // [קופי: נתי] every new line: the hero's tag, the laptop chapter's line, the end of the tape.
@@ -27,6 +29,7 @@ import SeaDive, { SeaEmpty } from './SeaDive'
 import SeaWork from './SeaWork'
 import SeaStyles from './SeaStyles'
 import SeaInk from './SeaInk'
+import SeaSign from './SeaSign'
 import { opt } from './lab'
 import { CLIPS, posterOf, videoOf } from './media'
 import { useGround } from './SeaGround'
@@ -135,6 +138,8 @@ function Hero() {
   // sea of dots at its bottom edge; otherwise the sunset inside the disc (useSun)
   const take = useRef<HTMLVideoElement>(null)
   const hero = opt('hero')
+  // the pen (D233): our own film in the disc's slot, in place of the stock showreel and the focus pull
+  const ink = hero === 'ink'
   const veil = hero === 'sea'
   useSun(spot, video)
   useReel(section, video, take, hero === 'reel')
@@ -144,12 +149,14 @@ function Hero() {
     <section ref={section} id="hero" className="sea-ch sea-hero" aria-labelledby="hero-title" data-chapter="hero">
       {/* the disc's slot (D139): above the words on a phone, beside them when wide; never under them.
           With the ground the field draws no disc here; the opening still gathers its dots into it */}
-      <span ref={spot} className="sea-spot sea-spot--hero" data-spot={hero === 'disc' ? 'horizon' : undefined} data-intro="" aria-hidden="true">
-        <DiscStill />
-        <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
-        {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
-      </span>
-      <SeaFocus />
+      {!ink && (
+        <span ref={spot} className="sea-spot sea-spot--hero" data-spot={hero === 'disc' ? 'horizon' : undefined} data-intro="" aria-hidden="true">
+          <DiscStill />
+          <video ref={video} className="sea-sun" muted loop playsInline preload="none" />
+          {hero === 'reel' && <video ref={take} className="sea-sun" muted loop playsInline preload="none" />}
+        </span>
+      )}
+      {!ink && <SeaFocus />}
       <div className="sea-in">
         {/* one block, two lines through <br>: one LCP text candidate; each line only moves */}
         <h1 id="hero-title" className="sea-h1" data-zone="text" tabIndex={-1}>
@@ -167,6 +174,9 @@ function Hero() {
           </div>
         </div>
       </div>
+      {/* the pen (D233) comes after the words in the document, so the heading is read first; sea-sign.css puts it
+          above them on a phone and beside them when wide */}
+      {ink && <span className="sea-spot sea-spot--hero sea-spot--ink"><SeaSign /></span>}
     </section>
     </div>
   )

@@ -235,8 +235,8 @@ function linked(gl: WebGL2RenderingContext, p: WebGLProgram) {
   })
 }
 
-interface Word { text: string; x: number; top: number; h: number }
-interface Type { words: Word[]; font: string; color: string; shadow: string; box: { x: number; y: number; w: number; h: number } }
+interface Word { text: string; x: number; top: number; h: number; font: string }
+interface Type { words: Word[]; color: string; shadow: string; box: { x: number; y: number; w: number; h: number } }
 interface Spring { x: number; v: number; target: number }
 
 /** the real headline, read from the browser: every word's own rect, relative to the canvas, and its computed look */
@@ -248,11 +248,15 @@ function readType(h1: HTMLElement, lens: HTMLElement, W: number, dpr: number): T
   h1.querySelectorAll('.sea-h1__ln').forEach((ln) => {
     const node = ln.firstChild
     if (!node || node.nodeType !== Node.TEXT_NODE) return
+    // each line carries its own weight (D231 set the second line bold): read with the heading's look, the copy
+    // drew both lines in one weight, and the headline changed face and width at the first scroll
+    const ls = getComputedStyle(ln)
+    const font = `${ls.fontStyle} ${ls.fontWeight} ${ls.fontSize} ${ls.fontFamily}`
     for (const m of (node.nodeValue ?? '').matchAll(/\S+/g)) {
       range.setStart(node, m.index)
       range.setEnd(node, m.index + m[0].length)
       const r = range.getBoundingClientRect()
-      words.push({ text: m[0], x: r.left - at.left, top: r.top - at.top, h: r.height })
+      words.push({ text: m[0], x: r.left - at.left, top: r.top - at.top, h: r.height, font })
     }
   })
   if (!words.length) return null
@@ -262,7 +266,7 @@ function readType(h1: HTMLElement, lens: HTMLElement, W: number, dpr: number): T
   const x = Math.floor((Math.max(0, rect.left - at.left - pad)) * dpr) / dpr
   const y = Math.floor((Math.max(0, rect.top - at.top - pad)) * dpr) / dpr
   const box = { x, y, w: Math.ceil((rect.width + pad * 2) * dpr) / dpr, h: Math.ceil((rect.height + pad * 2) * dpr) / dpr }
-  return { words, box, font: `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`, color: cs.color, shadow: cs.textShadow }
+  return { words, box, color: cs.color, shadow: cs.textShadow }
 }
 
 /** computed text-shadow to [colour, x, y, blur], outermost first as CSS paints them */
@@ -282,7 +286,6 @@ function paintType(t: Type, dpr: number) {
   const x = c.getContext('2d')
   if (!x) return null
   x.setTransform(dpr, 0, 0, dpr, -t.box.x * dpr, -t.box.y * dpr)
-  x.font = t.font
   x.fontKerning = 'normal'
   x.textRendering = 'optimizeLegibility'
   x.direction = 'rtl'
@@ -291,6 +294,7 @@ function paintType(t: Type, dpr: number) {
   x.fillStyle = t.color
   const write = () => {
     for (const w of t.words) {
+      x.font = w.font
       const m = x.measureText(w.text)
       const asc = m.fontBoundingBoxAscent
       const des = m.fontBoundingBoxDescent

@@ -1,45 +1,46 @@
-# HANDOFF: the ink film, a pen draws the logo (10.11.2026, D232)
+# HANDOFF: the pen film, now the hero (10.11.2026, D232-D233)
 
 ## Goal
-Nati: "make an original film of your own: ballpoint pen, macro, real ASMR... blow my mind", then mid-work: "make MediaWave with the same pen, with our icon, a perfect premium brand". Free hand on the site; lean on agents.
+Nati: "make an original film of your own: ballpoint pen, macro, real ASMR... blow my mind", then "make MediaWave with the same pen, with our icon, a perfect premium brand", then (after seeing it a third of the way down the page): "I want this film in a much smarter and more central place", "the main headline jumps down when you scroll a little", "the whole main font in bold". Free hand on the site; lean on agents.
 
 ## Where
-Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `claude/mediawave-content-presentation-fabff6` = 76562b3, one commit on top of main.
-**Preview, waiting for Nati:** https://preview-ink-20261110.mediawaveisrael.pages.dev/?motion=full (branch `preview/ink-20261110`). The signature is on the emptied stage, about a third of the way down the home page.
-**Live:** main = 50a31eb (the other session shipped D221-D231 on 10.11). The signature is NOT on production.
+Worktree `.claude/worktrees/mediawave-content-presentation-fabff6`, branch `claude/mediawave-content-presentation-fabff6`, on top of main (50a31eb).
+**Preview, waiting for Nati:** https://preview-ink-20261110.mediawaveisrael.pages.dev/?motion=full (branch `preview/ink-20261110`).
+**Live:** main = 50a31eb (the other session shipped D221-D231 on 10.11). Nothing of D232-D233 is on production.
 `node_modules` here is a junction to the stunning-visual-effects worktree's: remove the link with `rmdir`, never with a recursive delete.
 
-## Gates on the final build (76562b3)
-`scripts/qa/ink-sign.mjs`: all checks pass, on the local build and on the live preview. `scripts/qa/ink-sound.mjs`: the pen's sound is fetched once, decodes (16.72 s, stereo) and plays when the sound is awake; never fetched before a tap. all-pages home at 390 and 1440: overflow 0, small text 0, targets 0, axe 0, errors 0. Overlap audit: 0 at 320, 390, 768, 1024, 1440.
-Lighthouse mobile, medians of 3, run back to back against the same tree without the signature: LCP 1.96 s against 1.97 s, CLS 0 against 0, FCP the same. TBT is noise on this machine (63 and 456 ms without, 287, 400 and 465 ms with), so perf swings 82-94 without and 83-88 with: no regression shown, none ruled out.
-
 ## Completed
-- `design/film/ink/`: a renderer and a synth, all ours. `hand.js` reads the logo file and turns it into pen strokes with a hand's timing; `render.js` + `shaders.js` path-trace a macro shot in WebGL2 (paper fibres as a height map, ink as a distance-and-time map, a turned brass tip, a softbox, thin lens, open shutter); `audio.mjs` synthesises the pen's sound from the same strokes. README there has every command.
-- The film (second cut, after the critic): 502 frames, 1080x1080, 16.7 s. Frames in `G:/tmp/ink/frames` (not in git). Encodes in `public/media/ink/` (phone 720: 0.86 MB webm, 1.3 MB mp4; desktop: 2.2 and 3.4 MB; sound 276 KB; two stills).
-- Reviews (one workflow, two agents): a visual critic rejected the first cut (ink map seams, speckled shadow, a hand-less pen in the wide shot, a thin logo with an empty half disc) and a code reviewer found two blockers (the stop switch pressed after load, a refused play leaving an empty sheet). All fixed; the second cut was not sent back to a critic.
-- On the site: `src/look/sea/SeaSign.tsx` + `sea-sign.css`, mounted in `SeaEmpty` (SeaDive.tsx) under the sentence "אתר שנבנה בשבילכם, ונשאר שלכם." A disc of light; plays once when the stage empties, then stays signed, Replay draws again. still/no-JS: the signed sheet as a picture; calm: picture + Play; full: by itself.
-- `sound.ts`: `over(buffer, offset)` plays a voice beside the music and ducks the music; `decode(data)`.
-- `scripts/qa/ink-sign.mjs`: the feature's gate (five sizes, autoplay refused, the stop switch mid-film, ?calm=1, ?reduce=1).
+- The film (`design/film/ink/`, README has every command): `hand.js` reads the logo file and turns it into pen strokes with a hand's timing; `render.js` + `shaders.js` path-trace a macro shot in WebGL2; `audio.mjs` synthesises the pen's sound from the same strokes. 502 frames, 1080x1080, 16.7 s. Frames in `G:/tmp/ink/frames` (not in git). Encodes in `public/media/ink/` (phone 720: 0.86 MB webm, 1.3 MB mp4; desktop: 2.2 and 3.4 MB; sound 276 KB; two stills).
+- D233, the hero: `src/look/sea/SeaSign.tsx` + `sea-sign.css` in the hero's slot (gate `hero: ink`, the default). The film is drawn on a canvas from a 2 px video, so the H1 stays the LCP. The opening's dots gather on the disc; on the first scroll the words step back and the sheet comes to the middle and closer (hold 85svh, 30svh once signed); the WhatsApp dock takes the keys' place (`html.sea-focus-out`). still/no-JS: the signed sheet; calm or Save-Data: the sheet + Play; full: by itself. The stock showreel and the focus pull are behind `?hero=reel`.
+- D233, bold: every line in the display face is Bold (`--display-w: 700`, looks.css); the selective bold of D231 is gone (its files were taken back to 780fdb8's state).
+- D233, the headline bug: the focus pull's canvas copy drew both lines in one weight (`optical/focus.ts`); each line now carries its own font. It only matters behind `?hero=reel` now.
+- The emptied stage (S4) is the sentence alone again.
+- `sound.ts`: `over(buffer, offset)` and `decode(data)`. `hold.ts`: `releaseHold`, shared by the focus pull and the pen. `lab.ts`: stale gate classes from the prerendered page are removed before the chosen ones are added.
+- Gates: `scripts/qa/ink-sign.mjs` (five sizes, LCP element, the hold, refused autoplay, the stop switch, calm, reduce, no JavaScript, `?hero=reel`) and `scripts/qa/ink-sound.mjs`.
+
+## Reviews (two workflows of two agents each)
+- Film, first cut: a visual critic rejected it (ink map seams, speckled shadow, a hand-less pen in the wide shot, a thin logo with an empty half disc). All fixed and rendered again; the second cut was not sent back.
+- Hero: a code reviewer (no blockers; seven should-fix, all fixed: no contact path during the hold, a CSS tie that killed the slot's centring, the stale `sea-hero-ink` class under `?hero=reel`, the no-JS picture hidden, the hold ignoring the stop switch, measurements taken once, S4's first line wrapping in Bold) and a design critic ("the hero is the right place"; fixed: the fog round the disc, the disc's share on desktop, the hold after the film, the phone stage, the gap above the headline, the desktop key's row). Not done on purpose: a running timecode under the disc (D230 removed such labels) and hiding the header's wordmark.
 
 ## Key decisions and why
-- A film rendered offline, not a live WebGL scene: the home already has 4-5 WebGL contexts and phones cap at 8; a video costs one decode.
-- It signs the thesis sentence instead of replacing it: the sentence is the promise, the pen signs it. The copy is untouched.
-- A round soft mask and the site's ground as the film's black: no frame, and it echoes the hero's disc.
-- Ink in the logo's Prussian blue; the key light behind and to the side (straight behind, wet ink glared white).
-- One pen, one ink, one weight: it is a rendition of the logo, the files in logos/horizon stay the source.
+- The hero, in place of the stock showreel: it is the most central place there is, and it answers the first diagnosis (stock footage anyone can use) at the door.
+- A film rendered offline and drawn on a canvas: no new WebGL context (phones cap at 8), and no LCP candidate.
+- The hold replaces the focus pull instead of joining it: still two full camera moves on the page, and less pinned scroll than before (85svh for 110svh).
+- Ink in the logo's Prussian blue, the logo's own geometry, one pen and one weight: a rendition of the mark, the files in logos/horizon stay the source.
 
 ## Known issues, not verified
-- The sound was never heard: judged by spectrum and levels only (-20.5 LUFS, peak -4 dBFS). Nati must listen.
-- No real phone test (iOS Safari autoplay of the muted film, the audio start after a tap).
+- The sound was never heard: judged by spectrum and levels only. Nati must listen.
+- No real phone: iOS Safari drawing a 2 px muted video onto a canvas, autoplay in Low Power Mode (the fallback is the signed sheet and Play, and an 8 s watchdog).
+- Lighthouse on this machine is noise in TBT (150-740 ms on the same build for both heroes); LCP 1.81 s and CLS 0 for both.
 - `.claude/launch.json` (site-preview on 4317) is temporary: never commit it. `public/sitemap.xml` changes on every build: not part of this work.
 
 ## Waiting for Nati
-1. Watch and listen: `G:/tmp/ink/enc/ink-film-with-sound.mp4`, and the preview.
-2. Copy: the alt text "הלוגו של MediaWave, מצויר בעט כדורי על דף נייר", the labels Replay and Play.
+1. Watch and listen on the preview; the film alone: `G:/tmp/ink/enc/ink-film-with-sound.mp4`.
+2. Copy: the alt text "הלוגו של MediaWave, מצויר בעט כדורי על דף נייר", the labels Replay and Play and their spoken halves ("לצייר שוב את הלוגו", "להציג את ציור הלוגו").
 3. Production: only on his word.
 
 ## Next steps
-If he wants changes to the film: edit `design/film/ink`, render (10 min), encode with the README's commands, `npm run build`, `node scripts/qa/ink-sign.mjs http://localhost:4317`.
+Changes to the film: edit `design/film/ink`, render (10 min), encode with the README's commands, `npm run build`, `node scripts/qa/ink-sign.mjs http://localhost:4317`.
 
 ---
 

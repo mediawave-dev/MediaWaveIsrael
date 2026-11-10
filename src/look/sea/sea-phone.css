@@ -26,6 +26,9 @@
   #root :is(.sea-h2, .sea-h3, .sp-h2, .sp-big, .sea-foot__line, .sea-empty__say, .qs__label, .sea-faq .faq__head h2, .sea-contact .ct h2, .sl-body h2, .sp-lost__more h2) { font-size: var(--t-h2); line-height: 0.98; }
   #root .sp--service :is(.sp-head, .sp-check, .sp-slip__paper, .sp-prose__item) .sp-h2 { font-size: var(--t-h2); line-height: 0.98; }
   #root .sp-more .sp-h2 { font-size: var(--t-h2); }
+  /* the emptied stage's sentence: its first line in Bold (D233) is a few pixels wider than the column at the H2's
+     size, so it takes the Websites heading's (the same words, already fitted) */
+  #root .sea-empty__say { font-size: min(var(--t-h2), 8.7vw); }
 
   /* H3 */
   #root :is(.sea-list__title, .sea-incl__h, .sea-svc__title, .sea-style__name, .sea-work__title, .sp-h3, .sp-more__name) { font-size: var(--t-h3); line-height: 1.12; }

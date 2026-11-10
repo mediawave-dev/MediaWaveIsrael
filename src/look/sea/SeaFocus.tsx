@@ -4,6 +4,7 @@
 // the reader's place on the page is kept when the pin's scroll length goes away.
 import { useEffect, useRef } from 'react'
 import * as field from './field'
+import { releaseHold } from './hold'
 import './sea-focus.css'
 
 export default function SeaFocus() {
@@ -23,16 +24,7 @@ export default function SeaFocus() {
       alive = false // whatever is still queued (the load, the idle, the chunk) stops here
       dispose?.()
       dispose = null
-      if (wrap.classList.contains('is-plain')) return
-      const pin = parseFloat(getComputedStyle(hero).top) || 0
-      const gone = Math.max(0, pin - wrap.getBoundingClientRect().top)
-      const after = wrap.nextElementSibling
-      const was = after?.getBoundingClientRect().top ?? 0
-      wrap.classList.add('is-plain')
-      // where the browser's own scroll anchoring has not already kept the reader's place
-      const rose = was - (after?.getBoundingClientRect().top ?? 0)
-      if (gone > 0 && rose > 0) window.scrollBy(0, -Math.min(gone, rose))
-      window.dispatchEvent(new Event('resize')) // the chapters below measured themselves with the pin
+      releaseHold(wrap, hero)
     }
 
     const tier = field.tier()

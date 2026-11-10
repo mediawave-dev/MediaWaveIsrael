@@ -1,15 +1,13 @@
 // sea · the dive and the emptied stage (S3, S4). The dive holds the screen between the Websites chapter and the
 // film: the scroll falls into one dot of the laptop, and that dot's disc becomes the film chapter (optical/dive.ts).
 // It lies over the two chapters beside it (sea-dive.css), so it starts on the laptop as it stands and ends on the
-// film as it opens, with no cut. After the film everything has left, and one sentence stands alone on the ground,
-// and under it a pen signs it: the ink film draws the logo (SeaSign, D232).
+// film as it opens, with no cut. After the film everything has left, and one sentence stands alone on the ground.
 // Neither adds a data-chapter: the header's icons keep to the chapters they know. Still, calm or no WebGL: no held
 // dive, the film chapter simply follows; the sentence is a plain line of the page. [קופי: נתי] the sentence.
 import { useEffect, useRef, useState } from 'react'
 import * as field from './field'
 import { opt } from './lab'
 import { CLIPS, posterOf } from './media'
-import SeaSign from './SeaSign'
 import './sea-dive.css'
 
 export default function SeaDive() {
@@ -81,8 +79,7 @@ export default function SeaDive() {
   )
 }
 
-/** The sentence, alone, and the signature under it: they arrive once the screen has emptied (the top of the screen
-    has passed the mark). */
+/** The sentence, alone: it arrives once the screen has emptied (the top of the screen has passed the mark). */
 export function SeaEmpty() {
   const mark = useRef<HTMLSpanElement>(null)
   const [on, setOn] = useState(false)
@@ -101,7 +98,6 @@ export function SeaEmpty() {
       <div className="sea-empty__stage">
         {/* [קופי: נתי] the Websites heading once more, word for word, so a screen reader hears it once */}
         <p className="sea-empty__say" data-zone="text" aria-hidden="true"><span>אתר שנבנה בשבילכם,</span>{' '}<strong>ונשאר שלכם.</strong></p>
-        <SeaSign on={on} />
       </div>
     </div>
   )
