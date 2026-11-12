@@ -2,14 +2,14 @@
 // the promise with the wheel of sites, nice to meet you, what we build, how it goes, four questions, the form.
 // D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
 // the wheel; the work list, the page diagram and the price sheet left the page.
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import SEO from '../components/SEO'
 import { SITE_CONTACT } from '../data/site'
 import { getWhatsAppUrl } from '../utils/whatsapp'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { track } from '../utils/analytics'
 import Wheel from './Wheel'
-import { ABOUT, CONTACT, FAQ, HERO, OFFER, PROCESS, WA } from './content'
+import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
@@ -89,6 +89,33 @@ function Offer() {
   )
 }
 
+/** Seven working days (Sunday to Thursday) from the next working day: the "5 to 7 working days" as a real date. */
+function launchDates() {
+  const works = (d: Date) => d.getDay() <= 4
+  const d = new Date()
+  d.setHours(12, 0, 0, 0)
+  do d.setDate(d.getDate() + 1); while (!works(d))
+  const start = new Date(d)
+  for (let n = 1; n < 7;) { d.setDate(d.getDate() + 1); if (works(d)) n++ }
+  const fmt = (x: Date) => new Intl.DateTimeFormat('he-IL', { weekday: 'long', day: 'numeric', month: 'numeric' }).format(x)
+  return { start: fmt(start), end: fmt(d) }
+}
+
+/** Today's answer to "when would mine be live?". Computed in the browser only: a prerendered date would go stale. */
+function LaunchDate() {
+  const [dates, setDates] = useState<{ start: string; end: string } | null>(null)
+  useEffect(() => { setDates(launchDates()) }, [])
+  return (
+    <p className="launch">
+      {dates && (<>
+        <b>{LAUNCH.start}{dates.start}?</b>
+        <span>{LAUNCH.end} <strong>{dates.end}</strong>.</span>
+        <small>{LAUNCH.note}</small>
+      </>)}
+    </p>
+  )
+}
+
 /** One line from the first call to the day the page is live; the stops sit on it. */
 function Process() {
   return (
@@ -104,6 +131,7 @@ function Process() {
             </li>
           ))}
         </ol>
+        <LaunchDate />
         <div className="band__cta"><WhatsAppButton placement="process" /></div>
       </div>
     </section>
@@ -135,6 +163,9 @@ function Faq() {
 
 type Field = 'name' | 'phone'
 
+/** The one message the form produces: the bubble shows it while it is typed, and the send uses the same words. */
+const leadText = (name: string, phone: string) => `היי, אני ${name}.\nאשמח לשמוע על דף נחיתה או אתר.\nטלפון לחזרה: ${phone}`
+
 export function LeadForm({ placement = 'contact_form' }: { placement?: string }) {
   const [data, setData] = useState({ name: '', phone: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
@@ -154,7 +185,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
     // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
     if (!endpoint) {
-      const text = `היי, אני ${data.name.trim()}.\nאשמח לשמוע על דף נחיתה או אתר.\nטלפון לחזרה: ${data.phone.trim()}`
+      const text = leadText(data.name.trim(), data.phone.trim())
       track('form_submit', { placement, mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(text), '_blank', 'noopener')
       setStatus(CONTACT.viaWhatsApp)
@@ -186,6 +217,15 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     <form className="form" onSubmit={submit} noValidate>
       {input('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
       {input('phone', 'טלפון נייד', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', dir: 'ltr' })}
+      {/* what will actually be sent, written as the visitor types (the same text the send uses) */}
+      <div className="bubble" aria-hidden="true">
+        <p className="bubble__label">{import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.previewSent : CONTACT.previewWhatsApp}</p>
+        <p className="bubble__msg">
+          היי, אני {data.name.trim() ? <b>{data.name.trim()}</b> : <i className="blank" />}.<br />
+          אשמח לשמוע על דף נחיתה או אתר.<br />
+          טלפון לחזרה: {data.phone.trim() ? <b dir="ltr">{data.phone.trim()}</b> : <i className="blank" />}
+        </p>
+      </div>
       <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>
         <span>{state === 'loading' ? 'שולחים...' : CONTACT.submit}</span><IconChevrons />
       </button>

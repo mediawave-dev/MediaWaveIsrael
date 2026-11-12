@@ -92,6 +92,19 @@
       } catch (e) {} })();
     </script>
 
+    <!-- sun (D241): the home page's one opening. Decided here, before first paint, so the wheel is already in
+         its starting pose in the prerendered page and nothing shows and then replays. Wheel.tsx plays it and
+         removes the class; the timer is the safety net if the app never boots. ?reduce=1 skips it. -->
+    <script>
+      (function () { try {
+        if (window.__PRERENDER__) return;
+        var d = document.documentElement;
+        if (d.getAttribute('data-look') !== 'sun' || location.pathname !== '/' || /[?&]reduce=1(&|$)/.test(location.search)) return;
+        d.classList.add('sun-open');
+        setTimeout(function () { d.classList.remove('sun-open', 'sun-play'); }, 7000);
+      } catch (e) {} })();
+    </script>
+
     <!-- Structured Data - LocalBusiness -->
     <script type="application/ld+json">
     {

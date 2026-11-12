@@ -75,6 +75,13 @@ export const PROCESS = {
   ],
 }
 
+/** The date line under the steps. The dates are computed in the browser (Home.tsx, launchDates). [קופי: נתי] */
+export const LAUNCH = {
+  start: 'מתחילים ב',
+  end: 'דף נחיתה רגיל באוויר עד',
+  note: 'לפי 7 ימי עבודה, ראשון עד חמישי, מהיום שהחומרים אצלנו. חגים מזיזים את התאריך.',
+}
+
 const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']
 export const FAQ = {
   h2: 'שאלות |שחוזרות',
@@ -85,6 +92,8 @@ export const CONTACT = {
   h2: 'גם אתם רוצים דף |שמביא פניות?', // [קופי: נתי]
   lede: 'השאירו פרטים, ונחזור אליכם תוך 24 שעות בימי עסקים.', // [קופי: נתי]
   submit: 'שליחה',
+  previewWhatsApp: 'ההודעה שתיפתח אצלכם בוואטסאפ:', // [קופי: נתי]
+  previewSent: 'זה מה שיגיע אלינו:', // [קופי: נתי]
   viaWhatsApp: 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.',
   sent: 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.',
   failed: 'השליחה לא הצליחה. אפשר לכתוב לנו בוואטסאפ או להתקשר.',

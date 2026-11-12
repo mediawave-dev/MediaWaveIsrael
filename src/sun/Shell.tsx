@@ -107,8 +107,8 @@ function Footer() {
           <h2 className="foot__h">באתר</h2>
           {NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
         </nav>
-        <nav aria-label="שירותים נוספים">
-          <h2 className="foot__h">עוד דברים שאנחנו עושים</h2>
+        <nav aria-label="שירותים">
+          <h2 className="foot__h">שירותים</h2>
           {ALSO.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
         </nav>
         <div>

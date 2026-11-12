@@ -39,6 +39,9 @@ html[data-text="1"] { font-size: 112.5%; }
 html[data-text="2"] { font-size: 125%; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--text); font-size: 1.0625rem; line-height: 1.7; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; overflow-x: clip; }
 h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+::selection { background: var(--ink); color: var(--sun); }
+html { scrollbar-width: thin; scrollbar-color: rgba(23, 23, 23, .32) transparent; }
+h1, h2, h3 { font-kerning: normal; text-rendering: optimizeLegibility; }
 ul, ol { padding: 0; list-style: none; }
 img, video, svg { display: block; max-width: 100%; }
 img { height: auto; }
@@ -61,7 +64,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .h1 { font-size: clamp(2.25rem, 9.6vw, 5rem); line-height: 1.08; }
 .h1--page { font-size: clamp(2.125rem, 7vw, 3.75rem); }
 .h1__rest { display: inline-block; margin-block-start: .3em; font-size: .56em; font-weight: 800; line-height: 1.25; }
-.h1__mark { display: inline; padding-inline: .12em; background: linear-gradient(#fff, #fff) 50% 92% / 100% 34% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.h1__mark { display: inline; padding-inline: .12em; background: linear-gradient(#fff, #fff) 100% 92% / 100% 34% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .h2 { font-size: clamp(1.875rem, 6.4vw, 3.25rem); line-height: 1.12; margin-block-end: 28px; }
 .h3 { font-size: clamp(1.4375rem, 3vw, 1.75rem); line-height: 1.2; }
 .h4 { font-size: 1.1875rem; line-height: 1.3; }
@@ -217,6 +220,18 @@ html.menu-open .head { background: var(--paper); }
   .wheel__card img { border-radius: 23px; }
 }
 
+/* ---------- the opening (D241). html.sun-open is on the page from before first paint (index.html): the
+   wheel waits under the horizon, turned away; the brush is not drawn; the sticker is not stamped.
+   Wheel.tsx adds .sun-play and drives the wheel; these two run on CSS against the same clock. ---------- */
+html.sun-open .wheel__ring { transform: translateY(calc(var(--ch) * .86)) rotate(56deg); }
+html.sun-open .h1__mark { background-size: 0 34%; }
+html.sun-open .sticker { opacity: 0; transform: rotate(26deg) scale(1.7); }
+html.sun-open.sun-play .h1__mark { background-size: 100% 34%; transition: background-size .8s cubic-bezier(.2, .7, .1, 1) .15s; }
+html.sun-open.sun-play .sticker { opacity: 1; transform: rotate(8deg) scale(1); transition: opacity .14s linear 1.15s, transform .42s cubic-bezier(.3, 1.6, .5, 1) 1.15s; }
+html.disable-animations.sun-open .wheel__ring { transform: none; }
+html.disable-animations.sun-open .h1__mark { background-size: 100% 34%; }
+html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg); }
+
 /* ---------- about: nice to meet you. Plain lines, the last one is the point ---------- */
 .about__line { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; margin-block-end: 18px; max-width: 36em; text-wrap: pretty; }
 .about__close { margin-block-start: 28px; font: 900 clamp(1.5rem, 5.4vw, 2.25rem)/1.2 var(--display); font-stretch: 90%; }
@@ -252,6 +267,15 @@ html.menu-open .head { background: var(--paper); }
   .route__n { inset-inline-start: 0; top: -30px; }
 }
 
+/* the date a page started now goes live: a white slip on the yellow */
+.launch { min-height: 118px; margin: 40px auto 0; max-width: 560px; display: grid; gap: 4px; align-content: center; text-align: center; padding: 18px 20px; background: #fff; border-radius: 8px; box-shadow: 0 16px 30px -18px rgba(23, 24, 28, .5); }
+.launch:empty { background: none; box-shadow: none; }
+.launch b { font: 300 1.125rem/1.4 var(--display); }
+.launch span { font: 800 clamp(1.1875rem, 4.6vw, 1.5rem)/1.3 var(--display); font-stretch: 90%; }
+.launch strong { background: linear-gradient(var(--sun), var(--sun)) 50% 92% / 100% 36% no-repeat; padding-inline: .1em; }
+.launch small { margin-block-start: 6px; font-size: .8125rem; line-height: 1.5; color: var(--ink-2); }
+.launch + .band__cta { margin-block-start: 28px; }
+
 /* ---------- faq ---------- */
 .faq { border-block-start: 2px solid var(--ink); }
 .faq__item { border-block-end: 2px solid var(--ink); }
@@ -278,6 +302,12 @@ html.menu-open .head { background: var(--paper); }
 .field input[dir="ltr"] { text-align: start; }
 .field[data-invalid] input { border-color: #B3261E; }
 .field__err { color: #B3261E; font-size: .9375rem; font-weight: 600; line-height: 1.4; }
+/* the message itself, in WhatsApp's own green (the one green on the site: it is their bubble, not our palette) */
+.bubble { display: grid; gap: 6px; }
+.bubble__label { font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
+.bubble__msg { position: relative; padding: 10px 14px 12px; border-radius: 12px 12px 12px 2px; background: #D9FDD3; font-size: .9375rem; line-height: 1.55; overflow-wrap: anywhere; }
+.bubble__msg b { font-weight: 700; }
+.blank { display: inline-block; width: 4.2em; height: 1em; vertical-align: -.15em; border-block-end: 2px dotted rgba(23, 23, 23, .45); }
 .form__status { min-height: 1.6em; font-weight: 700; text-align: center; }
 .form__status:empty { display: none; }
 .form__legal { font-size: .875rem; color: var(--ink-2); text-align: center; line-height: 1.5; }

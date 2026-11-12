@@ -22,6 +22,9 @@ Libra's palette, measured on lbr.co.il: yellow #FFCF41 to #FFC20E (solid #FFC40C
 ## D240, the same day
 Nati: more minimal, no client names, no links to the sites, the copy too generic, "copy Noam Avikasis's content". Done: the home page is six stops (promise + wheel, nice to meet you, what we build, how it goes, four questions, the form); the work posters, the page diagram and the quote receipt left the page (their code is in git history, commit 24b03fb); the wheel cards are pictures only. The copy follows Noam's manner (direct promise, the client's problem, steps named אפיון / כתיבה שיווקית / עיצוב / פיתוח, a two-field form) in our own words and facts; his text and his proof (page counts, client revenue, testimonials) were not copied.
 
+## D241, the same day
+One opening moment and three upgrades, through site-director (moment mode + the finish layer). The opening: the wheel rises from under the horizon and turns in, a white brush stroke is drawn under the promise, the sticker is stamped; about 1.8 s, once per load of the home page; start pose set before first paint by `html.sun-open` (index.html), played by `src/sun/Wheel.tsx` (OPEN), CSS under "the opening" in sun.css. Upgrades: a WhatsApp bubble in the form that writes the real message as the visitor types; a slip under the steps with real dates (7 working days from the next working day, computed in the browser); a new share image `public/og-sun.png` (`node scripts/generate-og-sun.mjs` against the built site). Measured on the local build, phone: Lighthouse 98 / 100 / 100 / 100, LCP 2.1 s, CLS 0, axe 0. I picked the moment myself (Nati asked for autonomous work); his side-by-side verdict is still owed.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

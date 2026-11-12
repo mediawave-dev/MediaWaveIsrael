@@ -3,6 +3,10 @@
 // (compositor only). It drifts slowly, stops under a pointer, and a finger or a mouse can spin it.
 // The cards are pictures only: no names and no links to the sites (D240). Decorative, so hidden from assistive tech.
 // Geometry lives in sun.css (--cw, --ch, --R); 36 slots at 10 degrees, and phones show every second slot.
+// The opening (D241), the page's one staged moment: the wheel starts under the horizon, turned away, and
+// comes up and round like a heavy wheel settling, while a brush stroke is drawn under the promise and the
+// sticker is stamped on. index.html sets html.sun-open before first paint, so the prerendered page already
+// shows the starting pose; this effect plays it once and removes the class.
 import { useEffect, useRef } from 'react'
 import { PROJECTS, WA } from './content'
 import { IconWhatsApp } from './icons'
@@ -10,6 +14,8 @@ import { track } from '../utils/analytics'
 
 const SLOTS = 36
 const STEP = 360 / SLOTS
+/** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
+const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
 
 type Card = { kind: 'shot'; slug: string; crop: 'top' | 'mid' } | { kind: 'next' }
 
@@ -37,6 +43,12 @@ export default function Wheel() {
     const calm = /[?&]calm=1(&|$)/.test(location.search)
     let a = 0
     let v = 0 // deg per second from a fling
+    // the opening: seconds played (-1 = none), the extra turn still to come off, and how far below its place the ring sits
+    let open = html.classList.contains('sun-open') && !still() ? 0 : -1
+    let spin = open === 0 ? OPEN.turn : 0
+    let lift = 0
+    if (open < 0) html.classList.remove('sun-open', 'sun-play')
+    const cardH = () => parseFloat(getComputedStyle(el).getPropertyValue('--ch')) || 300
     let held = false
     let hover = false
     let seen = true
@@ -49,10 +61,20 @@ export default function Wheel() {
     // one card's width of travel every five seconds, whatever the wheel's size
     const drift = () => (window.matchMedia('(min-width: 900px)').matches ? STEP : STEP * 2) / 5
 
-    const paint = () => { r.style.transform = `rotate(${a.toFixed(3)}deg)` }
+    const paint = () => { r.style.transform = `translateY(${lift.toFixed(1)}px) rotate(${(a + spin).toFixed(3)}deg)` }
     const tick = (t: number) => {
-      const dt = Math.min(0.05, (t - last) / 1000 || 0)
+      // never negative: the first frame's timestamp can be a hair earlier than the clock read that started the loop
+      const dt = Math.max(0, Math.min(0.05, (t - last) / 1000 || 0))
       last = t
+      if (open >= 0) {
+        if (open === 0) html.classList.add('sun-play') // the brush and the sticker run on CSS, timed against this clock
+        open += dt
+        const k = Math.min(1, open / OPEN.seconds)
+        const up = Math.min(1, open / OPEN.rise)
+        spin = OPEN.turn * Math.pow(1 - k, 4) // a heavy wheel coming to rest
+        lift = cardH() * OPEN.below * Math.pow(1 - up, 3)
+        if (k >= 1) { open = -1; spin = 0; lift = 0; html.classList.remove('sun-open', 'sun-play') }
+      }
       if (!held) {
         if (Math.abs(v) > 0.05) { a += v * dt; v *= Math.pow(0.04, dt) } // a fling eases out in about a second
         else if (!hover && !calm && !still()) a -= drift() * dt
