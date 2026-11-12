@@ -16,10 +16,11 @@ export interface Project {
   name: string
   /** where the shots are taken from (scripts/capture-work.mjs); the site never links to it (D238) */
   url: string
-  /** 1: the wheel shows only the top of the page (default: the top and a part further down) */
-  crops?: number
-  /** more scenes of a page that photographs well: offsets in CSS px from the top of the 390 px wide page.
-      The wheel shows the first two (cards -card-s1 and -card-s2, made by scripts/capture-work.mjs). */
+  /** Where the project's main card is cut: CSS px from the top of the 390 px wide page (default 0, the hero).
+      Chosen so the card says something: a headline and an action, or a heading and text (D244). */
+  top?: number
+  /** Further cards of the same page, as offsets like `top`. The wheel shows the first two
+      (cards -card-s1 and -card-s2, made by scripts/capture-work.mjs). */
   scenes?: number[]
 }
 export const PROJECTS = workJson as Project[]

@@ -2,6 +2,8 @@
 // the way the Horizon logo's disc sits on its line. One transform on the ring moves everything
 // (compositor only). It drifts slowly, stops under a pointer, and a finger or a mouse can spin it.
 // The cards are pictures only: no names and no links to the sites (D240). Decorative, so hidden from assistive tech.
+// Each card is a part of a site that says something: a hero with its headline, a section with a heading and
+// text (D244). So that it can be read, a tap on the wheel holds it still for a few seconds.
 // Geometry lives in sun.css (--cw, --ch, --R); 36 slots at 10 degrees, and phones show every second slot.
 // The opening (D241), the page's one staged moment: the wheel starts under the horizon, turned away, and
 // comes up and round like a heavy wheel settling, while a brush stroke is drawn under the promise and the
@@ -20,25 +22,22 @@ const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
 /** Cards in one turn of the deck: odd, and a divisor of SLOTS. */
 const UNIT = 9
 
-/** `crop` names the picture: public/work/<slug>-card-<crop>.webp ("top", "mid", or a scene "s1", "s2"). */
+/** `crop` names the picture: public/work/<slug>-card-<crop>.webp ("top", or a scene "s1", "s2"). */
 type Shot = { kind: 'shot'; slug: string; crop: string }
 type Card = Shot | { kind: 'next' }
 
-/** The deck: every project's top, more scenes of the pages that photograph well, a lower crop of others,
-    and one "yours next" card. */
+/** The deck: every project's main card, more scenes of some, and one "yours next" card. */
 function deck(): Card[] {
   const shot = (slug: string, crop: string): Shot => ({ kind: 'shot', slug, crop })
   const tops = PROJECTS.map((p) => shot(p.slug, 'top'))
   // "scenes" in work.json (D243): further parts of a page worth showing. Two at most, so one site holds
   // three cards at most, and three cards can still stand three places apart on a deck of nine.
   const scenes = PROJECTS.flatMap((p) => (p.scenes ?? []).slice(0, 2).map((_, i) => shot(p.slug, `s${i + 1}`)))
-  // a lower crop for the others; none for a page that is mostly dark further down ("crops": 1) or that has scenes
-  const mids = PROJECTS.filter((p) => p.crops !== 1 && !p.scenes?.length).map((p) => shot(p.slug, 'mid'))
   // Always nine cards, whatever work.json holds: 36 slots take the unit exactly four times (no join), and a
   // phone, which shows every second slot, still walks all nine (nine is odd). Eight pictures and the "next"
-  // card. Tops first, then scenes, then lower crops; a short list repeats from its start.
+  // card. Main cards first, then scenes; a short list repeats from its start.
   // More than eight projects: the ninth is not on the wheel until the slot count is revisited.
-  const pictures = [...tops, ...scenes, ...mids].slice(0, UNIT - 1)
+  const pictures = [...tops, ...scenes].slice(0, UNIT - 1)
   const eight = pictures.length ? Array.from({ length: UNIT - 1 }, (_, i) => pictures[i % pictures.length]) : []
   // Spread them: the site with the most cards first, and each card three places after the one before it
   // (3 and 8 share no factor, so the walk fills all eight places). Cards of one site are then never
@@ -48,7 +47,11 @@ function deck(): Card[] {
   const ranked = [...bySite.values()].sort((a, b) => b.length - a.length).flat()
   const placed: Card[] = []
   ranked.forEach((c, i) => { placed[(i * 3) % (UNIT - 1)] = c })
-  const unit: Card[] = [...placed, { kind: 'next' }]
+  const ring: Card[] = [...placed, { kind: 'next' }]
+  // the wheel opens on the first project in work.json: its main card stands in the middle of the first view
+  // (turning a ring keeps every distance, so the spacing above still holds)
+  const lead = ring.findIndex((c) => c.kind === 'shot' && c.crop === 'top' && c.slug === PROJECTS[0]?.slug)
+  const unit = lead > 0 ? [...ring.slice(lead), ...ring.slice(0, lead)] : ring
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
@@ -74,6 +77,7 @@ export default function Wheel() {
     if (open < 0) html.classList.remove('sun-open', 'sun-play')
     const cardH = () => parseFloat(getComputedStyle(el).getPropertyValue('--ch')) || 300
     let held = false
+    let rest = 0 // until this moment (ms on the frame clock) the wheel stands still: a tap asked for time to read
     let hover = false
     let seen = true
     let raf = 0
@@ -101,7 +105,7 @@ export default function Wheel() {
       }
       if (!held) {
         if (Math.abs(v) > 0.05) { a += v * dt; v *= Math.pow(0.04, dt) } // a fling eases out in about a second
-        else if (!hover && !calm && !still()) a -= drift() * dt
+        else if (!hover && !calm && !still() && t >= rest) a -= drift() * dt
       }
       paint()
       raf = seen && !document.hidden ? requestAnimationFrame(tick) : 0
@@ -121,7 +125,14 @@ export default function Wheel() {
       lastX = e.clientX; lastT = e.timeStamp
       if (moved > 6 && !el.hasPointerCapture(e.pointerId)) el.setPointerCapture(e.pointerId)
     }
-    const up = () => { held = false; v = Math.max(-240, Math.min(240, v)); if (still()) v = 0 }
+    const up = (e: PointerEvent) => {
+      // a tap (a finger that did not drag) holds the wheel for six seconds so a card can be read; a second tap
+      // lets it go. Not for a mouse (it holds by hovering) and not on the WhatsApp card, which is a link.
+      if (held && moved <= 6 && e.pointerType !== 'mouse' && !(e.target as Element | null)?.closest?.('a')) {
+        rest = performance.now() < rest ? 0 : performance.now() + 6000
+      }
+      held = false; v = Math.max(-240, Math.min(240, v)); if (still()) v = 0
+    }
     // a drag must not open the card it started on
     const click = (e: MouseEvent) => { if (moved > 6) { e.preventDefault(); e.stopPropagation() } }
     const enter = (e: PointerEvent) => { if (e.pointerType === 'mouse') hover = true }
@@ -162,7 +173,7 @@ export default function Wheel() {
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
               <div className="wheel__card" data-crop={c.crop}>
-                <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={448} height={896} draggable={false}
+                <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
                   loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
               </div>
             ) : (

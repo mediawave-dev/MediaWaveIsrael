@@ -206,7 +206,7 @@ html.menu-open .head { background: var(--paper); }
 }
 
 /* the wheel: slots stand on a circle of radius --R around the ring's origin; the ring alone turns */
-.wheel { --cw: 150px; --ch: 300px; --R: 500px; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.wheel { --cw: 176px; --ch: 352px; --R: 568px; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .wheel:active { cursor: grabbing; }
 .wheel__ground { position: absolute; inset-inline: -3%; bottom: -1px; height: calc(var(--ch) * .46); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
 .wheel__ring { position: absolute; left: 50%; top: calc(18px + var(--ch) / 2 + var(--R)); width: 0; height: 0; will-change: transform; }

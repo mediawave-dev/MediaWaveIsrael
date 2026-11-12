@@ -2,33 +2,38 @@
   {
     "slug": "switchon",
     "name": "SwitchOn",
-    "url": "https://switchon.co.il"
+    "url": "https://switchon.co.il",
+    "scenes": [
+      745
+    ]
   },
   {
     "slug": "ben-david",
     "name": "בן דוד יודאיקה",
-    "url": "https://ben-david-judaica.com"
+    "url": "https://ben-david-judaica.com",
+    "top": 680
   },
   {
     "slug": "yael-levy",
     "name": "יעל לוי",
     "url": "https://www.yaelevy.co.il",
-    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/"
+    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/",
+    "top": 120
   },
   {
     "slug": "hila",
     "name": "הילה קלרמן",
     "url": "https://hila-kelerman-landing-page.vercel.app/",
+    "top": 860,
     "scenes": [
-      2620,
-      8300
+      3000,
+      1870
     ]
   },
   {
     "slug": "mediawave-2026",
     "name": "MediaWave, הגרסה הקודמת",
     "url": "https://mediawave.co.il",
-    "capture": false,
-    "crops": 1
+    "capture": false
   }
 ]

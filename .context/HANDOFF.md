@@ -31,6 +31,9 @@ Eight independent reviewers, a skeptic per finding (31 of 32 confirmed) and one 
 ## D243, the same day
 Two more scenes of Hila Kelerman's page on the wheel (her family-photos block and her gallery), three cards in all, and the wheel now opens on her. A project gets scenes through `"scenes": [offsets in CSS px]` in src/data/work.json and `node scripts/capture-work.mjs <slug>` (cards -card-s1, -card-s2). The deck (Wheel.tsx, deck()) orders itself: tops, then scenes, then lower crops, cut to eight pictures, and spread so that one site's cards stand three places apart.
 
+## D244, the same day
+Nati: cards that speak about the content, not pictures alone ("the hero of each site, like Yael's"), plus one more quality step on my own initiative. Every card is now one phone screen cut where the site says something (`top` and `scenes` offsets in src/data/work.json; scripts/capture-work.mjs makes only cards now, 528 px wide). Phone cards grew to 176 px so the text reads; a tap holds the wheel for six seconds (a second tap releases it); the wheel opens on the first project in work.json. The desktop shots, full-page shots and lower crops left the repo (in git history); mediawave-2026-phone.webp stays as the source of that hand-made card.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
