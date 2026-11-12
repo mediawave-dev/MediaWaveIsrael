@@ -46,6 +46,9 @@ Headings are back in mediawave-font1 (Bold, with its Regular for the lighter lea
 ## D248, the same day
 Nati asked to see option C live: the text face on the preview is now IBM Plex Sans Hebrew (`src/sun/fonts.css`, `--text` in sun.css), headings still mediawave-font1 Bold. On trial, not a final pick; back to Noto is one line (`--text`). The text-face decision is still his.
 
+## The font board, still open (12.11, evening)
+After seeing C live Nati asked for "examples from the others, not the ones I created": pairings made only of the EFT fonts in `C:\Users\User\OneDrive\Fonts\עברית\Lampner`. Sent as phone renders, all with Lampner as the text face (Light for text, Regular for emphasis, Bold for buttons): D Lampner Bold headings, E Asaf Bold, F OffSet Bold, G Artzisraeli, H Mashat. Left out: Ole Hadash (a handwriting face, unreadable in paragraphs) and Pnina with Tehilot (looked dated). The renders and the two scripts that made them are in `design/audit/sun/fonts/` (they inject the font files as bytes into a local browser; no EFT file is in the repo). In the samples the EFT faces cover Hebrew, digits and punctuation only, and Latin falls to Plex, because the EFT files carry a serif Latin. The preview still shows mediawave-font1 headings with Plex text (D248). No pick yet. Before any EFT font goes on the site: confirm the EFT licence covers web embedding, convert to woff2, and measure a fallback.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
