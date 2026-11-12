@@ -18,6 +18,9 @@ export interface Project {
   url: string
   /** 1: the wheel shows only the top of the page (default: the top and a part further down) */
   crops?: number
+  /** more scenes of a page that photographs well: offsets in CSS px from the top of the 390 px wide page.
+      The wheel shows the first two (cards -card-s1 and -card-s2, made by scripts/capture-work.mjs). */
+  scenes?: number[]
 }
 export const PROJECTS = workJson as Project[]
 

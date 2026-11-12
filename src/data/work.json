@@ -18,7 +18,11 @@
   {
     "slug": "hila",
     "name": "הילה קלרמן",
-    "url": "https://hila-kelerman-landing-page.vercel.app/"
+    "url": "https://hila-kelerman-landing-page.vercel.app/",
+    "scenes": [
+      2620,
+      8300
+    ]
   },
   {
     "slug": "mediawave-2026",

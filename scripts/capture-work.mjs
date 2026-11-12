@@ -2,6 +2,7 @@
 // Usage: node scripts/capture-work.mjs [slug ...]   (no slug = every project with a url)
 // Writes public/work/<slug>-phone.webp (tall phone page), -phone-s.webp (work list), -desk.webp,
 // and the wheel's two cards, -card-top.webp and -card-mid.webp.
+// A project with "scenes" (offsets in CSS px down its 390 px wide page) also gets -card-s1.webp, -card-s2.webp ...
 // Only new cards from the shots on disk: node scripts/capture-work.mjs --cards
 import puppeteer from 'puppeteer'
 import sharp from 'sharp'
@@ -46,6 +47,26 @@ for (const p of list) {
       await sharp(buf).resize({ width: 1280 }).webp({ quality: 74 }).toFile(`${base}.webp`)
     }
     console.log('  ', base)
+  }
+  // more scenes of the same page: the phone's own screen at each offset (a card is one screen, 390 x 780)
+  if (p.scenes?.length) {
+    const page = await browser.newPage()
+    await page.setViewport({ width: 390, height: 780, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }])
+    await page.evaluateOnNewDocument(() => { try { localStorage.setItem('mw_cookie_consent', 'accepted') } catch {} })
+    await page.goto(p.captureUrl || p.url, { waitUntil: 'networkidle2', timeout: 90000 }).catch((e) => console.log(p.slug, 'goto:', e.message))
+    await wait(3000)
+    // walk down to the last scene once, so lazy pictures on the way are loaded
+    for (let y = 0; y <= Math.max(...p.scenes) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
+    for (const [i, y] of p.scenes.entries()) {
+      await page.evaluate((v) => window.scrollTo(0, v), y)
+      await wait(1200)
+      // the viewport itself, not a clip: a clip is in document coordinates, and an RTL page's x origin is not its left edge
+      const buf = await page.screenshot({ type: 'png' })
+      await sharp(buf).resize({ width: 448 }).webp({ quality: 66 }).toFile(`public/work/${p.slug}-card-s${i + 1}.webp`)
+      console.log('  ', `public/work/${p.slug}-card-s${i + 1}`)
+    }
+    await page.close()
   }
 }
 await browser.close()
