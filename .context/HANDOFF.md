@@ -60,6 +60,11 @@ Nati picked font option G "combined with the mediawave font", and asked for Libr
 - **Palette: not changed yet, waiting for his pick.** He disliked the coffee-coloured logo and asked for a new palette. Sent: six options A to F, then, at his request, Yael Levy's mint measured from her site (`#E8F3F1`) with a gold icon: M1 (exact mint, gold icon, dark name), M2 (exact mint, half icon and "Wave" in gold), M3 (deeper mint `#C9E8E2`, gold icon). Renders and the scripts that made them (token overrides in the browser only): `design/audit/sun/palettes/`.
 - To apply a pick: the colour tokens at the top of `src/sun/sun.css` (`--sun`, `--sun-light`, `--sun-deep`, `--sun-pale`, `--sun-sweep`, `--ink`, `--ink-2`, `--cream`, `--blue`, `--blue-soft`, `--line`, `--logo-b`; a gold icon is `[data-part="mark"] { --logo-a; --logo-b }`), then `LOOK_GROUND` / `LOOK_LOGO` in vite.config.ts, `scripts/brand-palette.mjs` and the icons, the manifest theme colour, and `node scripts/generate-og-sun.mjs`. Check AA for `--ink-2` on the field.
 
+## D251, the same day (night): the palette is mint; the logo colour is open
+- Nati picked M3. The site's palette is now Yael Levy's mint one step deeper: field `#C9E8E2`, ink `#13241F` (tokens at the top of `src/sun/sun.css`; `LOOK_GROUND` / `LOOK_LOGO` in vite.config.ts; share image regenerated). This closes the palette question in the D250 note above.
+- **Logo colour: waiting for his pick** from a board of 20 numbered options (`design/audit/sun/logo-colours/`, script `logoboard.mjs` with the hex values). Until then the site shows M3's logo: name in ink, mark in two golds (`--mark-a`, `--mark-b`; the name's colours are `--logo-a`, `--logo-b`).
+- After he picks: set those four variables, then `scripts/brand-palette.mjs`, the favicon and app icons and `logos/horizon` (all still in the old ink and amber), and the loader logo colours in `LOOK_LOGO`.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
