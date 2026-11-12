@@ -6,7 +6,7 @@ import Logo from '../components/ui/Logo'
 import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
-import { IconA11y, IconClose, IconMenu, IconWhatsApp } from './icons'
+import { IconA11y, IconChevron, IconChevrons, IconClose, IconMenu, IconWhatsApp } from './icons'
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
@@ -60,14 +60,19 @@ function Header() {
   }, [menu])
   return (
     <header className="head">
-      <div className="wrap head__in">
+      {/* the ribbon (after Libra, D238): paper with a wave for its lower edge, and a blue wave at the far end */}
+      <svg className="head__wave" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path className="w-paper" d="M0 0H1440V92C1340 112 1210 78 1040 70C820 60 640 84 430 66C290 54 140 62 0 78Z" />
+        <path className="w-corner" d="M0 0H372C338 28 276 64 172 82C110 92 50 91 0 85Z" />
+      </svg>
+      <div className="head__in">
         <a className="head__logo" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
         <nav className="head__nav" aria-label="ניווט ראשי">
-          {NAV.slice(0, -1).map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
+          {NAV.slice(0, -1).map((n) => <a key={n.href} href={n.href}><span>{n.label}</span></a>)}
         </nav>
         <div className="head__tools">
-          <a className="btn btn--ink btn--small head__cta" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'header' })}>
-            <IconWhatsApp /><span>דברו איתנו</span>
+          <a className="head__cta" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'header' })}>
+            <IconWhatsApp /><span>דברו איתנו</span><IconChevrons />
           </a>
           <button type="button" className="icon-btn" aria-label="כלי נגישות" aria-expanded={a11y} onClick={() => setA11y((v) => !v)}><IconA11y width={22} height={22} /></button>
           <button type="button" className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={() => setMenu((v) => !v)}>
@@ -78,11 +83,12 @@ function Header() {
       </div>
       <div id="sheet" className="sheet" hidden={!menu}>
         <nav aria-label="תפריט">
-          {NAV.map((n) => <a key={n.href} href={n.href} onClick={() => setMenu(false)}>{n.label}</a>)}
+          {NAV.map((n) => <a key={n.href} href={n.href} onClick={() => setMenu(false)}><span>{n.label}</span><IconChevron /></a>)}
         </nav>
         <a className="btn btn--ink btn--wide" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'menu' })}>
-          <IconWhatsApp /><span>כתבו לנו בוואטסאפ</span>
+          <IconWhatsApp /><span>כתבו לנו בוואטסאפ</span><IconChevrons />
         </a>
+        <svg className="sheet__wave" viewBox="0 0 390 46" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0H390V8C318 44 232 6 150 24C92 37 40 40 0 30Z" /></svg>
       </div>
     </header>
   )
@@ -151,9 +157,11 @@ function Floating() {
           </div>
         </div>
       )}
-      <a className="fab" data-on={past ? '' : undefined} href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ"
-        tabIndex={past ? 0 : -1} onClick={() => track('whatsapp_click', { placement: 'fab' })}>
-        <IconWhatsApp width={28} height={28} />
+      {/* the corner wave (after Libra): WhatsApp stays one tap away once the hero button has left the screen */}
+      <a className="tab" data-on={past ? '' : undefined} href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ"
+        tabIndex={past ? 0 : -1} onClick={() => track('whatsapp_click', { placement: 'corner' })}>
+        <svg className="tab__wave" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 90V20C54 -10 140 24 200 90Z" /></svg>
+        <span><IconWhatsApp />כתבו לנו<IconChevrons width={18} height={18} /></span>
       </a>
     </aside>
   )

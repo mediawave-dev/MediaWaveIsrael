@@ -13,6 +13,9 @@ Branch `redesign/statement-20261112`, worktree `.claude/worktrees/statement-2026
 - Measured on the local build, phone: Lighthouse performance 90, accessibility 97, SEO 100, CLS 0; axe 0 violations on home, a service page and privacy; no sideways scroll at 390 and 1440.
 - Dev servers: launch configs `sun` (5188) and `sun-dist` (5189) in the main checkout's `.claude/launch.json`.
 
+## D238, the same day (after his first look)
+Nati: no AI slop, nothing templated; copy Libra's (lbr.co.il) menu wave and double chevrons; make it look like Libra; no links to the client sites. Done: header ribbon with a wave and a blue corner wave, phone menu sheet ending in a wave, one arrow for the site (thin double chevrons), waves between bands in CSS, ring circles with line icons for "what do you need", thin numerals in rings on one line for the process, two-weight headings ("a|b" in content.ts, the H2 component), rectangular buttons, posters for the work (Hila Kelerman added), a sample-quote receipt for the price, a corner wave tab for WhatsApp. The metric strip, the three equal cards and the outbound links are gone.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

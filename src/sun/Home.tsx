@@ -1,6 +1,9 @@
-// sun · the home page (D237): a statement first, the work in the first screen, then the answers a
+// sun · the home page (D237, D238): a statement first, the work in the first screen, then the answers a
 // visitor needs in the order they ask them: what do you build, show me, why does it work, how, how much.
 // One action on the whole page (WhatsApp), repeated; the form at the end has two fields.
+// D238 (Nati: "no AI slop, nothing templated"): no metric strip, no grid of equal cards, no numbered discs.
+// Each section has its own form: the visitor's situation as a spoken line, posters for the work, a diagram,
+// a route, a receipt.
 import { useState, type FormEvent } from 'react'
 import SEO from '../components/SEO'
 import { SITE_CONTACT } from '../data/site'
@@ -8,15 +11,28 @@ import { getWhatsAppUrl } from '../utils/whatsapp'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { track } from '../utils/analytics'
 import Wheel from './Wheel'
-import { ANATOMY, CONTACT, FACTS, FAQ, HERO, OFFER, PRICE, PROCESS, PROJECTS, WA, WORK } from './content'
-import { IconArrow, IconCheck, IconMail, IconOut, IconPhone, IconPlus, IconWhatsApp } from './icons'
+import { ANATOMY, CONTACT, FAQ, HERO, OFFER, PRICE, PROCESS, PROJECTS, WA, WORK } from './content'
+import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
+
+/** A section heading in two weights (after Libra, D238): a light lead-in, then the bold payoff. "a|b" in the copy. */
+export function H2({ id, children }: { id?: string; children: string }) {
+  const [lead, bold] = children.includes('|') ? children.split('|') : ['', children]
+  return <h2 id={id} className="h2">{lead}<b>{bold}</b></h2>
+}
+
+/** Line drawings for the three kinds of site: black outline, one yellow part (Libra's icon language). */
+const KIND_ICON: Record<string, JSX.Element> = {
+  sun: (<><rect x="14" y="6" width="20" height="36" rx="3" /><path d="M19 13h10M19 18h7" /><rect className="fill" x="19" y="27" width="10" height="6" rx="3" /></>),
+  blue: (<><rect x="6" y="10" width="36" height="26" rx="3" /><path d="M6 17h36M18 42h12M24 36v6" /><rect className="fill" x="11" y="22" width="11" height="9" rx="1.500" /><path d="M27 23h10M27 28h7" /></>),
+  coral: (<><circle className="fill" cx="24" cy="15" r="6" /><path d="M11 40c1-8 6-12 13-12s12 4 13 12" /><path d="M33 9l2 2 4-5" /></>),
+}
 
 export function WhatsAppButton({ href = WA.hero, placement, label = HERO.cta, tone = 'ink' }: { href?: string; placement: string; label?: string; tone?: 'ink' | 'sun' | 'paper' }) {
   return (
     <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)}>
-      <IconWhatsApp /><span>{label}</span>
+      <IconWhatsApp /><span>{label}</span><IconChevrons />
     </a>
   )
 }
@@ -29,7 +45,7 @@ function Hero() {
         <p className="lede hero__lede">{HERO.lede}</p>
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
-          <a className="btn btn--line" href="#work" onClick={() => track('cta_click', { location: 'hero_work' })}><span>{HERO.second}</span><IconArrow /></a>
+          <a className="btn btn--line" href="#work" onClick={() => track('cta_click', { location: 'hero_work' })}><span>{HERO.second}</span><IconChevrons /></a>
         </div>
         <p className="hero__note">{HERO.note}</p>
       </div>
@@ -41,87 +57,67 @@ function Hero() {
   )
 }
 
-function Facts() {
-  return (
-    <section className="facts" aria-label="מספרים שכתובים בהצעת המחיר">
-      <ul className="wrap facts__grid">
-        {FACTS.map((f) => (
-          <li key={f.line} className="fact">
-            <span className="fact__n" dir="ltr">{f.n}</span>
-            <span className="fact__unit">{f.unit}</span>
-            <span className="fact__line">{f.line}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )
-}
-
+/** Three situations in the visitor's own words; each one answered by what we build for it. */
 function Offer() {
   return (
     <section id="offer" className="band" aria-labelledby="offer-h">
       <div className="wrap">
-        <h2 id="offer-h" className="h2">{OFFER.h2}</h2>
-        <div className="offer">
+        <H2 id="offer-h">{OFFER.h2}</H2>
+        <ol className="asks">
           {OFFER.cards.map((c) => (
-            <article key={c.name} className={`offer__card offer__card--${c.tone}`}>
-              <h3 className="h3">{c.name}</h3>
-              <p className="offer__who">{c.who}</p>
-              <p className="offer__what">{c.what}</p>
-              <ul className="ticks">
-                {c.points.map((p) => <li key={p}><IconCheck width={18} height={18} /><span>{p}</span></li>)}
-              </ul>
-              <p className="offer__time">{c.time}</p>
-              <div className="offer__actions">
-                <a className="btn btn--card" href={c.wa} target="_blank" rel="noopener" onClick={wa(`offer_${c.tone}`)}>
-                  <IconWhatsApp /><span>דברו איתנו בוואטסאפ</span>
-                </a>
-                {c.href && <a className="more" href={c.href}><span>{c.more}</span><IconArrow width={18} height={18} /></a>}
+            <li key={c.name} className={`ask ask--${c.tone}`}>
+              <h3 className="ask__name">
+                <span className="ring">
+                  <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">{KIND_ICON[c.tone]}</svg>
+                  <span>{c.name}</span>
+                </span>
+              </h3>
+              <p className="ask__say">{c.who}</p>
+              <div className="ask__ans">
+                <p className="ask__what">{c.what}</p>
+                <ul className="ask__points">{c.points.map((p) => <li key={p}>{p}</li>)}</ul>
+                <p className="ask__time">{c.time}</p>
+                <div className="ask__actions">
+                  <a className="btn btn--ink" href={c.wa} target="_blank" rel="noopener" onClick={wa(`offer_${c.tone}`)}>
+                    <IconWhatsApp /><span>דברו איתנו</span><IconChevrons />
+                  </a>
+                  {c.href && <a className="more" href={c.href}><span>{c.more}</span><IconChevrons width={18} height={18} /></a>}
+                </div>
               </div>
-            </article>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   )
 }
 
+/** The work as posters: the name set large on its own colour, the site itself standing at the bottom edge. */
 function Work() {
   return (
     <section id="work" className="band band--cream" aria-labelledby="work-h">
       <div className="wrap">
-        <h2 id="work-h" className="h2">{WORK.h2}</h2>
+        <H2 id="work-h">{WORK.h2}</H2>
         <ol className="work">
           {PROJECTS.map((p) => (
-            <li key={p.slug} id={`work-${p.slug}`} className="work__row">
-              <div className="work__art">
-                <div className="frame frame--desk">
-                  <span className="frame__bar" aria-hidden="true"><i /><i /><i /></span>
-                  <img src={`/work/${p.slug}-desk.webp`} alt={`צילום מסך של ${p.name} במחשב`} width={1280} height={800} loading="lazy" decoding="async" />
-                </div>
-                <div className="frame frame--phone">
-                  <img src={`/work/${p.slug}-phone-s.webp`} alt={`צילום מסך של ${p.name} בטלפון`} width={360} height={1948} loading="lazy" decoding="async" />
-                </div>
+            <li key={p.slug} id={`work-${p.slug}`} className="poster">
+              <div className="poster__text">
+                <p className="poster__kind">{p.kind}</p>
+                <h3 className="poster__name">{p.name}</h3>
+                <p className="poster__client">{p.client}</p>
+                <p className="poster__goal">{p.goal}</p>
               </div>
-              <div className="work__text">
-                <p className="chip">{p.kind}</p>
-                <h3 className="h3">{p.name}</h3>
-                <p className="work__client">{p.client}</p>
-                <p className="work__goal">{p.goal}</p>
-                {p.live && (
-                  <a className="btn btn--line" href={p.url} target="_blank" rel="noopener" onClick={() => track('cta_click', { location: `work_${p.slug}` })}>
-                    <span>{WORK.liveLabel}</span><IconOut />
-                  </a>
-                )}
+              <div className="poster__art">
+                <img className="poster__desk" src={`/work/${p.slug}-desk.webp`} alt={`${p.name}: האתר במחשב`} width={1280} height={800} loading="lazy" decoding="async" />
+                <img className="poster__phone" src={`/work/${p.slug}-card-top.webp`} alt={`${p.name}: האתר בטלפון`} width={448} height={896} loading="lazy" decoding="async" />
               </div>
             </li>
           ))}
-          <li className="work__row work__row--next">
-            <div className="work__art work__art--next" aria-hidden="true"><span /></div>
-            <div className="work__text">
-              <h3 className="h3">{WORK.next.title}</h3>
-              <p className="work__goal">{WORK.next.line}</p>
-              <WhatsAppButton placement="work_next" label={WORK.next.cta} tone="sun" />
+          <li className="poster poster--next">
+            <div className="poster__text">
+              <h3 className="poster__name">{WORK.next.title}</h3>
+              <p className="poster__goal">{WORK.next.line}</p>
+              <WhatsAppButton placement="work_next" label={WORK.next.cta} />
             </div>
           </li>
         </ol>
@@ -150,7 +146,7 @@ function Anatomy() {
     <section id="anatomy" className="band" aria-labelledby="anatomy-h">
       <div className="wrap anatomy">
         <div className="anatomy__intro">
-          <h2 id="anatomy-h" className="h2">{ANATOMY.h2}</h2>
+          <H2 id="anatomy-h">{ANATOMY.h2}</H2>
           <p className="lede">{ANATOMY.lede}</p>
         </div>
         <Diagram />
@@ -167,15 +163,16 @@ function Anatomy() {
   )
 }
 
+/** One line from the first call to the day the page is live; the stops sit on it. */
 function Process() {
   return (
     <section id="process" className="band band--blue" aria-labelledby="process-h">
       <div className="wrap">
-        <h2 id="process-h" className="h2">{PROCESS.h2}</h2>
-        <ol className="steps">
+        <H2 id="process-h">{PROCESS.h2}</H2>
+        <ol className="route">
           {PROCESS.steps.map((s, i) => (
-            <li key={s.title} className="step">
-              <span className="step__n" aria-hidden="true">{i + 1}</span>
+            <li key={s.title} className="route__stop">
+              <span className="route__n" aria-hidden="true">{i + 1}</span>
               <h3 className="h3">{s.title}</h3>
               <p>{s.line}</p>
             </li>
@@ -187,25 +184,27 @@ function Process() {
   )
 }
 
+/** The price as the paper it arrives on: a sample quote, what is on it and what is not. */
 function Price() {
   return (
-    <section id="price" className="band" aria-labelledby="price-h">
+    <section id="price" className="band band--cream" aria-labelledby="price-h">
       <div className="wrap price">
-        <div>
-          <h2 id="price-h" className="h2">{PRICE.h2}</h2>
+        <div className="price__text">
+          <H2 id="price-h">{PRICE.h2}</H2>
           <p className="lede">{PRICE.lede}</p>
+          <p className="price__pay">{PRICE.pay}</p>
         </div>
-        <div className="price__cols">
-          <div className="price__col price__col--in">
-            <h3 className="h4">{PRICE.inTitle}</h3>
-            <ul className="ticks">{PRICE.in.map((l) => <li key={l}><IconCheck width={18} height={18} /><span>{l}</span></li>)}</ul>
-          </div>
-          <div className="price__col price__col--out">
-            <h3 className="h4">{PRICE.outTitle}</h3>
-            <ul className="ticks ticks--plus">{PRICE.out.map((l) => <li key={l}><IconPlus width={18} height={18} /><span>{l}</span></li>)}</ul>
-          </div>
-        </div>
-        <p className="price__pay">{PRICE.pay}</p>
+        <div className="price__paper"><div className="receipt">
+          <p className="receipt__head"><b>{PRICE.paper}</b><span>MediaWave</span></p>
+          <dl>
+            {PRICE.in.map((l) => <div key={l}><dt>{l}</dt><dd>{PRICE.inMark}</dd></div>)}
+          </dl>
+          <p className="receipt__sub">{PRICE.outTitle}</p>
+          <dl>
+            {PRICE.out.map((l) => <div key={l.name}><dt>{l.name}</dt><dd>{l.value}</dd></div>)}
+          </dl>
+          <p className="receipt__total"><b>{PRICE.totalLabel}</b><span>{PRICE.total}</span></p>
+        </div></div>
       </div>
     </section>
   )
@@ -217,14 +216,14 @@ function Faq() {
     mainEntity: FAQ.items.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
   }
   return (
-    <section id="faq" className="band band--cream" aria-labelledby="faq-h">
+    <section id="faq" className="band" aria-labelledby="faq-h">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <div className="wrap wrap--narrow">
-        <h2 id="faq-h" className="h2">{FAQ.h2}</h2>
+        <H2 id="faq-h">{FAQ.h2}</H2>
         <div className="faq">
           {FAQ.items.map((f) => (
             <details key={f._id} className="faq__item">
-              <summary><span>{f.question}</span><IconPlus /></summary>
+              <summary><span>{f.question}</span><IconChevron /></summary>
               <p>{f.answer}</p>
             </details>
           ))}
@@ -294,7 +293,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
         </select>
       </div>
       <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>
-        <span>{state === 'loading' ? 'שולחים...' : CONTACT.submit}</span><IconArrow />
+        <span>{state === 'loading' ? 'שולחים...' : CONTACT.submit}</span><IconChevrons />
       </button>
       <p className="form__status" role="status" aria-live="polite">{status}</p>
       <p className="form__legal">בשליחה אתם מאשרים את <a href="/privacy/">מדיניות הפרטיות</a>.</p>
@@ -308,7 +307,7 @@ export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero
     <section id="contact" className="contact" aria-labelledby="contact-h">
       <div className="wrap contact__in">
         <div className="contact__text">
-          <h2 id="contact-h" className="h2">{h2}</h2>
+          <H2 id="contact-h">{h2}</H2>
           <p className="lede">{lede}</p>
           <ul className="contact__ways">
             <li><a href={waHref} target="_blank" rel="noopener" onClick={wa('contact')}><IconWhatsApp /><span>וואטסאפ</span></a></li>
@@ -334,7 +333,6 @@ export default function Home() {
         canonical="/"
       />
       <Hero />
-      <Facts />
       <Offer />
       <Work />
       <Anatomy />

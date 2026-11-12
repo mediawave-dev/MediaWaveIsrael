@@ -10,12 +10,12 @@ import workJson from '../data/work.json'
 export interface Project {
   slug: string
   name: string
+  /** where the shots are taken from (scripts/capture-work.mjs). The site never links to it (D238): some of
+      the sites are not on their own domains. */
   url: string
   kind: string
   client: string
   goal: string
-  /** false: the address no longer shows this version, so the row has no link */
-  live: boolean
   /** 1: the wheel shows only the top of the page (default: the top and a part further down) */
   crops?: number
 }
@@ -49,16 +49,8 @@ export const HERO = {
   sticker: ['דף נחיתה', 'באוויר תוך', '5 עד 7', 'ימי עבודה'],
 }
 
-/** The numbers a written quote carries (services.ts: time, steps, features). */
-export const FACTS = [
-  { n: '5-7', unit: 'ימי עבודה', line: 'עד שדף נחיתה רגיל באוויר' },
-  { n: '2-3', unit: 'שבועות', line: 'עד שאתר תדמית בסיסי באוויר' },
-  { n: '2', unit: 'סבבי תיקונים', line: 'כלולים בעיצוב, לפני שבונים' },
-  { n: '12', unit: 'חודשים', line: 'של אחסון ודומיין כלולים במחיר' },
-]
-
 export const OFFER = {
-  h2: 'מה אתם צריכים?',
+  h2: 'מה אתם |צריכים?',
   cards: [
     {
       tone: 'sun',
@@ -97,14 +89,13 @@ export const OFFER = {
 }
 
 export const WORK = {
-  h2: 'אתרים שבנינו, ונמצאים באוויר', // [קופי: נתי]
-  liveLabel: 'לאתר החי',
+  h2: 'אתרים |שבנינו', // [קופי: נתי]
   // [קופי: נתי]
   next: { title: 'המקום הזה פנוי.', line: 'האתר הבא ברשימה יכול להיות שלכם.', cta: 'כתבו לנו בוואטסאפ' },
 }
 
 export const ANATOMY = {
-  h2: 'מה יש בדף שמביא פניות?', // [קופי: נתי]
+  h2: 'מה יש בדף |שמביא פניות?', // [קופי: נתי]
   lede: 'חמישה דברים שנמצאים בכל דף שאנחנו בונים. את כולם אפשר לבדוק בדף הזה עצמו.', // [קופי: נתי]
   items: [
     { name: 'כותרת שאומרת מה מקבלים', line: 'מי שנכנס מבין בשורה אחת מה מציעים לו, ולמי זה מתאים.' },
@@ -116,7 +107,7 @@ export const ANATOMY = {
 }
 
 export const PROCESS = {
-  h2: 'איך זה עובד?',
+  h2: 'איך זה |עובד?',
   steps: [
     { title: 'שיחה', line: 'מה ההצעה, למי היא מיועדת, ומאיפה יגיעו האנשים.' },
     { title: 'טקסט ועיצוב', line: 'כותבים יחד את הטקסט, ומקבלים עיצוב לאישור. עד שני סבבי תיקונים כלולים.' },
@@ -126,23 +117,30 @@ export const PROCESS = {
 }
 
 export const PRICE = {
-  h2: 'כמה זה עולה?',
-  lede: 'מחיר מדויק מגיע בהצעה כתובה, אחרי שיחה קצרה. את אלה אפשר לדעת כבר עכשיו:', // [קופי: נתי]
-  inTitle: 'בתוך המחיר',
-  in: ['עיצוב, בנייה והדרכה', 'שנה ראשונה של אחסון ודומיין, עם גיבויים', 'חודש ראשון של תמיכה אחרי ההשקה', 'מע״מ'],
-  outTitle: 'מחוץ למחיר',
-  out: ['כתיבת תוכן מלאה וקידום חודשי בגוגל, בתשלום נפרד', 'אחסון מהשנה השנייה: 500 עד 800 ₪ לשנה', 'עבודה מעבר להצעה: 200 עד 300 ₪ לשעה'],
+  h2: 'כמה זה |עולה?',
+  lede: 'מחיר מדויק מגיע בהצעה כתובה, אחרי שיחה קצרה. כך נראית הצעה כזו, ומה כתוב בה תמיד:', // [קופי: נתי]
   pay: 'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
+  paper: 'הצעת מחיר, לדוגמה', // [קופי: נתי]
+  inMark: 'כלול',
+  in: ['עיצוב, בנייה והדרכה', 'שנה ראשונה של אחסון ודומיין, עם גיבויים', 'חודש ראשון של תמיכה אחרי ההשקה', 'מע״מ'],
+  outTitle: 'לא כלול',
+  out: [
+    { name: 'אחסון מהשנה השנייה', value: '500 עד 800 ₪ לשנה' },
+    { name: 'עבודה מעבר להצעה', value: '200 עד 300 ₪ לשעה' },
+    { name: 'כתיבת תוכן מלאה, קידום חודשי בגוגל', value: 'בנפרד' },
+  ],
+  totalLabel: 'סך הכול',
+  total: 'בהצעה שלכם, אחרי השיחה', // [קופי: נתי]
 }
 
 const FAQ_IDS = ['faq-3', 'faq-own', 'faq-4', 'faq-6', 'faq-9']
 export const FAQ = {
-  h2: 'שאלות שחוזרות',
+  h2: 'שאלות |שחוזרות',
   items: FAQ_IDS.map((id) => faqs.find((f) => f._id === id)!).filter(Boolean),
 }
 
 export const CONTACT = {
-  h2: 'רוצים דף שמביא פניות?', // [קופי: נתי]
+  h2: 'רוצים דף |שמביא פניות?', // [קופי: נתי]
   lede: 'משאירים שם וטלפון, ואנחנו חוזרים אליכם תוך 24 שעות בימי עסקים.', // [קופי: נתי]
   needs: ['דף נחיתה', 'אתר תדמית', 'אתר לתוכנית ליווי או לקורס', 'עוד לא יודעים'],
   submit: 'שלחו לנו',

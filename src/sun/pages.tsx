@@ -11,8 +11,8 @@ import { getWhatsAppUrl } from '../utils/whatsapp'
 import { TermsBody } from '../components/pages/Terms'
 import { PrivacyBody } from '../components/pages/Privacy'
 import { AccessibilityBody } from '../components/pages/Accessibility'
-import { Contact, WhatsAppButton } from './Home'
-import { IconCheck, IconPlus } from './icons'
+import { Contact, H2, WhatsAppButton } from './Home'
+import { IconCheck, IconChevron } from './icons'
 
 function Crumbs({ name, path }: { name: string; path: string }) {
   const ld = {
@@ -87,7 +87,7 @@ export function Service() {
 
       <section className="band band--cream">
         <div className="wrap wrap--narrow">
-          <h2 className="h2">מה מקבלים?</h2>
+          <H2>מה מקבלים?</H2>
           <ul className="ticks ticks--cols">{s.features.map((f) => <li key={f}><IconCheck width={18} height={18} /><span>{f}</span></li>)}</ul>
           {s.portfolioLink && <p className="after"><a className="more" href={s.portfolioLink}><span>לדוגמה מעבודה שלנו</span></a></p>}
         </div>
@@ -96,28 +96,28 @@ export function Service() {
       {s.steps && (
         <section className="band band--blue">
           <div className="wrap">
-            <h2 className="h2">איך זה עובד?</h2>
-            <ol className="steps" data-n={s.steps.length}>
-              {s.steps.map((st, i) => (<li key={st.title} className="step"><span className="step__n" aria-hidden="true">{i + 1}</span><h3 className="h3">{st.title}</h3><p>{st.line}</p></li>))}
+            <H2>איך זה עובד?</H2>
+            <ol className="route" data-n={s.steps.length}>
+              {s.steps.map((st, i) => (<li key={st.title} className="route__stop"><span className="route__n" aria-hidden="true">{i + 1}</span><h3 className="h3">{st.title}</h3><p>{st.line}</p></li>))}
             </ol>
-            {s.time && <p className="steps__time">{s.time}</p>}
+            {s.time && <p className="route__time">{s.time}</p>}
           </div>
         </section>
       )}
 
       <section className="band">
         <div className="wrap wrap--narrow">
-          <h2 className="h2">כמה זה עולה?</h2>
+          <H2>כמה זה עולה?</H2>
           <ul className="ticks">{[...(s.price ?? []), ...PRICE_COMMON].map((l) => <li key={l}><IconCheck width={18} height={18} /><span>{l}</span></li>)}</ul>
         </div>
       </section>
 
       {s.faq.length > 0 && (
-        <section className="band band--cream">
+        <section className="band band--line">
           <div className="wrap wrap--narrow">
-            <h2 className="h2">שאלות שחוזרות</h2>
+            <H2>שאלות שחוזרות</H2>
             <div className="faq">
-              {s.faq.map((f) => (<details key={f.question} className="faq__item"><summary><span>{f.question}</span><IconPlus /></summary><p>{f.answer}</p></details>))}
+              {s.faq.map((f) => (<details key={f.question} className="faq__item"><summary><span>{f.question}</span><IconChevron /></summary><p>{f.answer}</p></details>))}
             </div>
           </div>
         </section>
