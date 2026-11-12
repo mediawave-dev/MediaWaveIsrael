@@ -46,8 +46,14 @@ Headings are back in mediawave-font1 (Bold, with its Regular for the lighter lea
 ## D248, the same day
 Nati asked to see option C live: the text face on the preview is now IBM Plex Sans Hebrew (`src/sun/fonts.css`, `--text` in sun.css), headings still mediawave-font1 Bold. On trial, not a final pick; back to Noto is one line (`--text`). The text-face decision is still his.
 
-## The font board, still open (12.11, evening)
-After seeing C live Nati asked for "examples from the others, not the ones I created": pairings made only of the EFT fonts in `C:\Users\User\OneDrive\Fonts\עברית\Lampner`. Sent as phone renders, all with Lampner as the text face (Light for text, Regular for emphasis, Bold for buttons): D Lampner Bold headings, E Asaf Bold, F OffSet Bold, G Artzisraeli, H Mashat. Left out: Ole Hadash (a handwriting face, unreadable in paragraphs) and Pnina with Tehilot (looked dated). The renders and the two scripts that made them are in `design/audit/sun/fonts/` (they inject the font files as bytes into a local browser; no EFT file is in the repo). In the samples the EFT faces cover Hebrew, digits and punctuation only, and Latin falls to Plex, because the EFT files carry a serif Latin. The preview still shows mediawave-font1 headings with Plex text (D248). No pick yet. Before any EFT font goes on the site: confirm the EFT licence covers web embedding, convert to woff2, and measure a fallback.
+## D249, the same day (evening): fonts G with mediawave, the pinned corner, the circle
+Nati picked font option G "combined with the mediawave font", and asked for Libra's pinned corner (the logo folds to its mark, a menu button beside it), a circle that breaks the page, and a premium feel everywhere.
+- Type (`src/sun/fonts.css`): heavy part of headings in EFT Artzisraeli, light lead-in and heading Latin in mediawave-font1, text in EFT Lampner. Subsets in `public/fonts/eft`. Fallbacks are Arial at measured widths. Faces only join into one family when their weight ranges are identical.
+- Header (`Shell.tsx` Header, "header" block in sun.css): the bar scrolls with the page; `.pin` is fixed. `--p` (0 to 1 over 140 px, eased per frame, also 1 while the menu is open) drives the wave's scale, the logo clip and the menu button. Sizes are unitless custom properties (`--w0`, `--h0`, `--w1`, `--h1`) so the scale can be computed; two narrow-phone tiers.
+- Contact (`Home.tsx` Contact, "contact" block in sun.css): one large yellow circle with the form, a paler circle behind, contact ways in a row below. The message preview bubble is gone.
+- Measured on the local build: Lighthouse mobile 98 / 100 / 100 / 100, CLS 0, LCP 2.4 s, axe 0. Proof shots: `design/audit/sun/*-d249.jpg`.
+- **Open: the EFT web licence.** Nati chose G without confirming that his EFT licence covers web embedding. It is on the preview by his instruction; production needs his confirmation first.
+- The earlier font board (options A to H, `design/audit/sun/fonts/`) is closed by this pick.
 
 ## Waiting for Nati
 1. The direction itself, on the preview.
@@ -55,6 +61,7 @@ After seeing C live Nati asked for "examples from the others, not the ones I cre
 3. More sites for the work list: Hila Kelerman's landing page is live on Vercel; horizon-eilat and hava-landing-page exist as repos.
 4. `/styles` and `/your-site` are not in the sun build (they would 404 in production): keep, redirect or rebuild.
 5. The chatbot and the lead popup are not in the new site.
+6. The EFT licence for web use (D249), before production.
 
 ## Known issues
 - The form opens WhatsApp because `VITE_CONTACT_ENDPOINT` is unset (same as before).

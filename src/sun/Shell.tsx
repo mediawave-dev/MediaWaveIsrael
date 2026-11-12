@@ -1,5 +1,7 @@
-// sun · the shell around every page (D237): a header that stays at the top of the page (it never follows
-// the scroll, D145), the footer, and the three floating tools: WhatsApp, accessibility, the cookie note.
+// sun · the shell around every page (D237, D249): the header, the footer and the floating tools.
+// The header has two parts. The bar (the links, the accessibility button) is part of the page and scrolls away.
+// The corner is pinned, as on Libra: a white corner wave that holds the logo. As the page scrolls the logo
+// folds down to its mark and a menu button comes in beside it; the move follows the scroll and is eased.
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import Logo from '../components/ui/Logo'
@@ -53,9 +55,15 @@ function Header() {
   // closing with the keyboard hands focus back to the button that opened it (only if focus was inside, and without scrolling)
   const a11yBtn = useRef<HTMLButtonElement>(null)
   const menuBtn = useRef<HTMLButtonElement>(null)
+  const pin = useRef<HTMLDivElement>(null)
+  const menuOpen = useRef(false)
+  const syncFold = useRef<() => void>(() => {})
   useEffect(() => { setMenu(false) }, [pathname, hash])
   useEffect(() => {
     document.documentElement.classList.toggle('menu-open', menu)
+    // an open menu folds the logo too, wherever the page is: the mark and the close button head the sheet
+    menuOpen.current = menu
+    syncFold.current()
     if (!menu) return
     const key = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
@@ -65,15 +73,39 @@ function Header() {
     document.addEventListener('keydown', key)
     return () => document.removeEventListener('keydown', key)
   }, [menu])
+
+  // The fold: --p goes from 0 (top of the page: the whole logo) to 1 (140 px down: the mark and a menu button).
+  // It follows the scroll and eases toward it, so a wheel's steps and a finger's jitter come out as one move.
+  // Only transform, opacity and one width change with it. With "ללא אנימציות" it jumps instead of easing.
+  useEffect(() => {
+    const el = pin.current
+    if (!el || PRERENDER) return
+    const html = document.documentElement
+    let p = 0
+    let target = 0
+    let raf = 0
+    const tick = () => {
+      raf = 0
+      p = html.classList.contains('disable-animations') ? target : p + (target - p) * 0.2
+      if (Math.abs(target - p) < 0.002) p = target
+      el.style.setProperty('--p', p.toFixed(4))
+      el.toggleAttribute('data-folded', p > 0.6)
+      if (p !== target) raf = requestAnimationFrame(tick)
+    }
+    const on = () => {
+      target = menuOpen.current ? 1 : Math.min(1, Math.max(0, window.scrollY / 140))
+      if (!raf) raf = requestAnimationFrame(tick)
+    }
+    syncFold.current = on
+    on()
+    window.addEventListener('scroll', on, { passive: true })
+    return () => { window.removeEventListener('scroll', on); cancelAnimationFrame(raf) }
+  }, [])
+
+  const toggleMenu = () => setMenu((v) => !v)
   return (
     <header className="head">
-      {/* D245: the logo sits in a black corner wave, the shape of the "כתבו לנו" tab at the bottom of the screen
-          turned to hang from the top corner. Nothing else is drawn in the header. */}
-      <svg className="head__blob" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path d="M0 0H200V70C146 100 60 66 0 0Z" />
-      </svg>
       <div className="head__in">
-        <a className="head__logo" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
         <nav className="head__nav" aria-label="ניווט ראשי">
           {NAV.slice(0, -1).map((n) => <a key={n.href} href={n.href}><span>{n.label}</span></a>)}
         </nav>
@@ -82,23 +114,36 @@ function Header() {
             <IconWhatsApp /><span>דברו איתנו</span><IconChevrons />
           </a>
           <button type="button" ref={a11yBtn} className="icon-btn" aria-label="כלי נגישות" aria-expanded={a11y} onClick={() => setA11y((v) => !v)}><IconA11y width={22} height={22} /></button>
-          <button type="button" ref={menuBtn} className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={() => setMenu((v) => !v)}>
-            {menu ? <IconClose width={22} height={22} /> : <IconMenu width={22} height={22} />}
+          <button type="button" className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={toggleMenu}>
+            <IconMenu width={22} height={22} />
           </button>
         </div>
-        <A11yPanel open={a11y} anchor="head" onClose={() => {
-          if (document.activeElement?.closest('.a11y')) a11yBtn.current?.focus({ preventScroll: true })
-          setA11y(false)
-        }} />
       </div>
+
+      {/* the pinned corner (D245, D249): the shape of the "כתבו לנו" tab, turned to hang from the top corner */}
+      <div className="pin" ref={pin}>
+        <svg className="pin__blob" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 0H200V70C146 100 60 66 0 0Z" />
+        </svg>
+        <button type="button" ref={menuBtn} className="icon-btn pin__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={toggleMenu}>
+          {menu ? <IconClose width={22} height={22} /> : <IconMenu width={22} height={22} />}
+        </button>
+        <a className="pin__logo" href="/" aria-label="MediaWave, לדף הבית"><span className="pin__clip"><Logo variant="compact" decorative /></span></a>
+      </div>
+
       <div id="sheet" className="sheet" hidden={!menu}>
         <nav aria-label="תפריט">
           {NAV.map((n) => <a key={n.href} href={n.href} onClick={() => setMenu(false)}><span>{n.label}</span><IconChevron /></a>)}
+          <button type="button" onClick={() => { setMenu(false); setA11y(true) }}><span>כלי נגישות</span><IconA11y width={22} height={22} /></button>
         </nav>
         <a className="btn btn--ink btn--wide" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'menu' })}>
           <IconWhatsApp /><span>כתבו לנו בוואטסאפ</span><IconChevrons />
         </a>
       </div>
+      <A11yPanel open={a11y} anchor="head" onClose={() => {
+        if (document.activeElement?.closest('.a11y')) a11yBtn.current?.focus({ preventScroll: true })
+        setA11y(false)
+      }} />
     </header>
   )
 }

@@ -220,16 +220,7 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
     <form className="form" onSubmit={submit} noValidate>
       {input('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
       {input('phone', 'טלפון נייד', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', dir: 'ltr' })}
-      {/* what will actually be sent, written as the visitor types (the same text the send uses) */}
-      <div className="bubble" aria-hidden="true">
-        <p className="bubble__label">{import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.previewSent : CONTACT.previewWhatsApp}</p>
-        <p className="bubble__msg">
-          היי, אני {data.name.trim() ? <b>{data.name.trim()}</b> : <i className="blank" />}.<br />
-          {ask}<br />
-          הטלפון שלי {data.phone.trim() ? <b dir="ltr">{data.phone.trim()}</b> : <i className="blank" />}
-        </p>
-      </div>
-      <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>
+      <button className="btn btn--white btn--wide" type="submit" disabled={state === 'loading'}>
         <span>{state === 'loading' ? 'שולחים...' : import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.submit : CONTACT.submitWhatsApp}</span><IconChevrons />
       </button>
       <p className="form__status" role="status" aria-live="polite">{status}</p>
@@ -238,22 +229,23 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
   )
 }
 
+/** The page breaks its bands here with one large circle, as Libra does: the form sits inside it. */
 export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero, ask }: { h2?: string; lede?: string; waHref?: string; ask?: string }) {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
   return (
     <section id="contact" className="contact" aria-labelledby="contact-h">
-      <div className="wrap contact__in">
-        <div className="contact__text">
+      <div className="contact__disc">
+        <div className="contact__in">
           <H2 id="contact-h">{h2}</H2>
-          <p className="lede">{lede}</p>
-          <ul className="contact__ways">
-            <li><a href={waHref} target="_blank" rel="noopener" onClick={wa('contact')}><IconWhatsApp /><span>וואטסאפ</span></a></li>
-            <li><a href={tel} onClick={() => track('tel_click', { placement: 'contact' })}><IconPhone /><span dir="ltr">{SITE_CONTACT.phone}</span></a></li>
-            <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
-          </ul>
+          <p className="contact__lede">{lede}</p>
+          <LeadForm ask={ask} />
         </div>
-        <div className="contact__disc"><LeadForm ask={ask} /></div>
       </div>
+      <ul className="contact__ways">
+        <li><a href={waHref} target="_blank" rel="noopener" onClick={wa('contact')}><IconWhatsApp /><span>וואטסאפ</span></a></li>
+        <li><a href={tel} onClick={() => track('tel_click', { placement: 'contact' })}><IconPhone /><span dir="ltr">{SITE_CONTACT.phone}</span></a></li>
+        <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
+      </ul>
     </section>
   )
 }

@@ -101,8 +101,6 @@ export const CONTACT = {
   lede: 'השאירו פרטים, ונחזור אליכם תוך 24 שעות בימי עסקים.', // [קופי: נתי]
   submit: 'שליחה',
   submitWhatsApp: 'שליחה בוואטסאפ', // [קופי: נתי] the button says what it does: it opens WhatsApp with the message
-  previewWhatsApp: 'זו ההודעה שתיפתח אצלכם בוואטסאפ', // [קופי: נתי]
-  previewSent: 'זה מה שיגיע אלינו', // [קופי: נתי]
   viaWhatsApp: 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.',
   sent: 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.',
   failed: 'השליחה לא הצליחה. אפשר לכתוב לנו בוואטסאפ או להתקשר.',
