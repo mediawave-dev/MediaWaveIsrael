@@ -1,0 +1,45 @@
+[
+  {
+    "slug": "switchon",
+    "name": "SwitchOn",
+    "url": "https://switchon.co.il",
+    "kind": "אתר לידים",
+    "client": "הצבת מכונות אוטומטיות בעסקים",
+    "goal": "מנהל משרד או מפעל שמחפש בגוגל מכונת שתייה מבין תוך דקה מה זה עולה לו, וממלא בדיקת התאמה קצרה.",
+    "ground": "#0B1B2B",
+    "live": true
+  },
+  {
+    "slug": "ben-david",
+    "name": "בן דוד יודאיקה",
+    "url": "https://ben-david-judaica.com",
+    "kind": "אתר תדמית",
+    "client": "פרוכות בעבודת יד לבתי כנסת",
+    "goal": "גבאי שמחפש פרוכת רואה את העבודות מקרוב, בגלריה שנפתחת בטלפון, ופונה ישר לבעל המלאכה.",
+    "ground": "#1A1410",
+    "live": true
+  },
+  {
+    "slug": "yael-levy",
+    "name": "יעל לוי",
+    "url": "https://www.yaelevy.co.il",
+    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/",
+    "kind": "אתר תדמית",
+    "client": "מטפלת באיזון גוף ונפש",
+    "goal": "מי ששוקלת טיפול רגשי מכירה את יעל ואת השיטה שלה, קוראת המלצות, ומתאמת שיחת היכרות.",
+    "ground": "#F2F5F1",
+    "live": false
+  },
+  {
+    "slug": "mediawave-2026",
+    "name": "MediaWave, הגרסה הקודמת",
+    "url": "https://mediawave.co.il",
+    "kind": "אתר תדמית",
+    "client": "האתר שלנו עד נובמבר 2026",
+    "goal": "אתר עם ים של נקודות, סרטים ואפקטים. יפה, ולא אמר מה אנחנו עושים. לכן בנינו את האתר שאתם קוראים עכשיו.",
+    "ground": "#0F1011",
+    "live": false,
+    "capture": false,
+    "crops": 1
+  }
+]

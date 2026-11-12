@@ -5,14 +5,14 @@ import { fileURLToPath } from 'node:url'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-type Look = 'k' | 'm' | 'km' | 'shot'
+type Look = 'k' | 'm' | 'km' | 'shot' | 'sun'
 
 /** First paint per look: the stage is black, the void is lavender (DECISIONS #50). */
-const LOOK_GROUND: Record<Look, string> = { k: '#00113D', m: '#FAFAF7', km: '#00113D', shot: '#0F1011' }
+const LOOK_GROUND: Record<Look, string> = { k: '#00113D', m: '#FAFAF7', km: '#00113D', shot: '#0F1011', sun: '#FFC933' }
 /** The Horizon mark's two tones on that ground (DECISIONS #52): upper (Media), lower (Wave) */
-const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#FFFFFF', '#6E8CFF'], m: ['#0E1016', '#002FA7'], km: ['#FFFFFF', '#6E8CFF'], shot: ['#EDE7DA', '#79A0C5'] }
+const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#FFFFFF', '#6E8CFF'], m: ['#0E1016', '#002FA7'], km: ['#FFFFFF', '#6E8CFF'], shot: ['#EDE7DA', '#79A0C5'], sun: ['#17181C', '#2447F0'] }
 
-/** The look is a build-time constant (.env.look-k|m|km|shot via --mode look-*; unset = shot).
+/** The look is a build-time constant (.env.look-k|m|km|shot via --mode look-*; unset = sun, D237).
     data-look goes into index.html, so the prerendered first paint is already the right
     look with no flash; the browser chrome and the dev loader take the look's ground. */
 function lookHtml(look: Look): Plugin {
@@ -39,9 +39,12 @@ function lookHtml(look: Look): Plugin {
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
-  const look: Look = env.VITE_LOOK === 'k' || env.VITE_LOOK === 'm' || env.VITE_LOOK === 'km' || env.VITE_LOOK === 'shot' ? env.VITE_LOOK : 'shot'
+  const look: Look = env.VITE_LOOK === 'k' || env.VITE_LOOK === 'm' || env.VITE_LOOK === 'km' || env.VITE_LOOK === 'shot' || env.VITE_LOOK === 'sun' ? env.VITE_LOOK : 'sun'
   // Dev serves every look (?look= switches at boot); a build ships only its own look's scenes
-  const pick = (name: string) => fileURLToPath(new URL(`./src/look/${name}.${command === 'serve' ? 'dev' : look}.ts`, import.meta.url))
+  // sun never imports the registry or the look's button; the alias still has to resolve for the legacy tree
+  const pick = (name: string) => fileURLToPath(new URL(`./src/look/${name}.${command === 'serve' ? 'dev' : look === 'sun' ? 'shot' : look}.ts`, import.meta.url))
+  // the site itself: sun (D237) is its own tree; every earlier look boots the legacy entry
+  const entry = fileURLToPath(new URL(look === 'sun' ? './src/sun/entry.tsx' : './src/entry.legacy.tsx', import.meta.url))
 
   return {
     plugins: [react(), tailwindcss(), lookHtml(look)],
@@ -49,6 +52,7 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       dedupe: ['react', 'react-dom', 'styled-components'],
       alias: {
+        '@look/entry': entry,
         '@look/registry': pick('registry'),
         '@look/button': pick('button'),
       },

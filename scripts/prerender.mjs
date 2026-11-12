@@ -29,7 +29,9 @@ function parseDataSlugs(relPath) {
 }
 
 // Static routes
-const STATIC_ROUTES = ['/', '/terms', '/privacy', '/accessibility', '/styles', '/your-site']
+// the build's look, read from the built shell: sun (D237) has no style studio and no /your-site
+const BUILD_LOOK = (readFileSync(resolve(DIST, 'index.html'), 'utf8').match(/<html[^>]*data-look="(k|m|km|shot|sun)"/) || [])[1] || 'sun'
+const STATIC_ROUTES = BUILD_LOOK === 'sun' ? ['/', '/terms', '/privacy', '/accessibility'] : ['/', '/terms', '/privacy', '/accessibility', '/styles', '/your-site']
 
 // Dynamic routes from data files
 const serviceRoutes = parseDataSlugs('src/data/services.ts').map(s => `/services/${s}`)
@@ -48,7 +50,7 @@ const NOT_FOUND_ROUTE = '/__not-found__'
 // swap from rewrapping. Hashes change per build, so links are resolved from dist/assets.
 // The display face lives at a stable public URL: EFT Betaamango for k, m and km (DECISIONS #59),
 // mediawave-font1 for shot (D218, the H1's own face; Noto still sets the text).
-const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/mediawave-font1-Regular.woff2' }
+const DISPLAY_FONTS = { k: '/fonts/EFT_Betaamango.woff2', m: '/fonts/EFT_Betaamango.woff2', km: '/fonts/EFT_Betaamango.woff2', shot: '/fonts/mediawave-font1-Regular.woff2', sun: '/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2' }
 function fontPreloadLinks(look) {
   const DISPLAY_FONT = DISPLAY_FONTS[look] || DISPLAY_FONTS.shot
   if (!existsSync(resolve(DIST, DISPLAY_FONT.slice(1)))) {
@@ -57,6 +59,9 @@ function fontPreloadLinks(look) {
   }
   // the sea (D133): the hero's line carries digits ("2 עד 3"), which live in Noto's Latin subset, and the
   // largest text at first paint can be that line: preload the Latin subset too, so it never waits
+  // sun (D237): Noto sets the headings too, so the display preload above is the Hebrew subset already
+  if (look === 'sun') return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -226,7 +231,7 @@ async function prerender() {
         : `<link rel="stylesheet" crossorigin="" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`)
 
     // Preload the look's display face (the H1), early in <head>
-    const look = (html.match(/<html[^>]*data-look="(k|m|km|shot)"/) || [])[1] || 'shot'
+    const look = (html.match(/<html[^>]*data-look="(k|m|km|shot|sun)"/) || [])[1] || 'sun'
     // the home page's font preloads came along in the served shell: one set per page
     html = html.replace(/<link rel="preload" href="[^"]+\.woff2" as="font" type="font\/woff2" crossorigin(?:="")?>\s*/g, '')
     html = html.replace('<title>', `${fontPreloadLinks(look)}${route === '/styles' ? studioFontPreload() : ''}<title>`)

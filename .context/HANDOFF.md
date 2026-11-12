@@ -1,3 +1,34 @@
+# HANDOFF: the statement site (12.11.2026, D237)
+
+## Goal
+Nati: the site "says nothing", only shows impressive design. He wants a happy, audience-led site that makes a visitor contact us, with our built sites in a special carousel, less animation and more content, phone first. References: noamavikasis.co.il and Libra.
+
+## Where
+Branch `redesign/statement-20261112`, worktree `.claude/worktrees/statement-20261112` (node_modules is a junction to the font1 worktree's). Preview only; production untouched.
+
+## Done
+- A fifth look, `sun`, with its own tree in `src/sun/`: entry.tsx, SunApp (routes), Shell (header, footer, WhatsApp, accessibility, cookie note), Home, Wheel, pages (service, sample, legal, 404), content.ts (every line), sun.css (the only stylesheet). No Tailwind, GSAP, WebGL or Lottie in this build.
+- `npm run build` builds sun. The previous site: `npm run build:shot` (boots from `src/entry.legacy.tsx`; vite.config picks the entry through `@look/entry`).
+- The work list: `src/data/work.json` + `node scripts/capture-work.mjs <slug>`; `--cards` rebuilds only the wheel crops. Today: SwitchOn, Ben David Judaica, Yael Levy (domain lapsed, shot from a January 2026 archive copy, no link), the previous MediaWave site (hand-made GPU shots, `capture: false`).
+- Measured on the local build, phone: Lighthouse performance 90, accessibility 97, SEO 100, CLS 0; axe 0 violations on home, a service page and privacy; no sideways scroll at 390 and 1440.
+- Dev servers: launch configs `sun` (5188) and `sun-dist` (5189) in the main checkout's `.claude/launch.json`.
+
+## Waiting for Nati
+1. The direction itself, on the preview.
+2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
+3. More sites for the work list: Hila Kelerman's landing page is live on Vercel; horizon-eilat and hava-landing-page exist as repos.
+4. `/styles` and `/your-site` are not in the sun build (they would 404 in production): keep, redirect or rebuild.
+5. The chatbot and the lead popup are not in the new site.
+
+## Known issues
+- The form opens WhatsApp because `VITE_CONTACT_ENDPOINT` is unset (same as before).
+- DESIGN.md and PRODUCT.md still describe the earlier looks; rewrite them once the direction is approved.
+- Not checked on a real phone or in Safari.
+
+## Next steps
+1. Nati reviews the preview; apply his notes.
+2. On approval: decide items 3-5, rewrite DESIGN.md / PRODUCT.md / CLAUDE.md "Current state", run site-gate-audit, then production with his explicit yes (rollback tag first).
+
 # HANDOFF: the quiet pass, some effects back, bold (10.11.2026, D230-D231)
 
 ## Goal
