@@ -16,6 +16,9 @@ Branch `redesign/statement-20261112`, worktree `.claude/worktrees/statement-2026
 ## D238, the same day (after his first look)
 Nati: no AI slop, nothing templated; copy Libra's (lbr.co.il) menu wave and double chevrons; make it look like Libra; no links to the client sites. Done: header ribbon with a wave and a blue corner wave, phone menu sheet ending in a wave, one arrow for the site (thin double chevrons), waves between bands in CSS, ring circles with line icons for "what do you need", thin numerals in rings on one line for the process, two-weight headings ("a|b" in content.ts, the H2 component), rectangular buttons, posters for the work (Hila Kelerman added), a sample-quote receipt for the price, a corner wave tab for WhatsApp. The metric strip, the three equal cards and the outbound links are gone.
 
+## D239, the same day
+Libra's palette, measured on lbr.co.il: yellow #FFCF41 to #FFC20E (solid #FFC40C), black #171717, white, greys #EBEBEB / #F0F0F0. No blue, no coral. The variable names --blue / --coral / --cream stay as roles and now point at black and grey. Logo: ink + dark amber #9A6B00. The H1's second line carries a white brush stroke. The next session is Moriah's: her prompt is `.context/NEXT-SESSION-PROMPT-MORIAH.rtl.md`.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

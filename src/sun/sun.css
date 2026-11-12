@@ -5,20 +5,25 @@
    Hebrew rules: logical properties only, no italics, no letter-spacing, no static underlines on UI links. */
 
 :root {
-  --sun: #FFC933;
-  --sun-sweep: linear-gradient(115deg, #FFD644 0%, #FFC933 45%, #FFB61E 100%);
-  --ink: #17181C;
-  --ink-2: #4A4D57;
+  /* D239: Libra's palette, measured on lbr.co.il. Yellow, black, white and two greys; no second colour.
+     The names --blue, --blue-soft, --cream and --coral are kept as roles (action, soft ground, band, third tone). */
+  --sun: #FFC40C;
+  --sun-light: #FFCF41;
+  --sun-deep: #FFC20E;
+  --sun-sweep: linear-gradient(180deg, #FFCF41 0%, #FFC20E 100%);
+  --ink: #171717;
+  --ink-2: #4A4A4A;
   --paper: #FFFFFF;
-  --cream: #FFF6DC;
-  --blue: #2447F0;
-  --blue-ink: #1B36C4;
-  --blue-soft: #E6EBFF;
-  --coral: #FF6F52;
-  --line: #E4DFCE;
+  --cream: #F0F0F0;
+  --blue: #171717;
+  --blue-ink: #171717;
+  --blue-soft: #EBEBEB;
+  --coral: #EBEBEB;
+  --line: #DADADA;
   --wa: #25D366;
   --logo-a: var(--ink);
-  --logo-b: var(--blue);
+  /* the logo on white: ink, and a dark amber from the yellow family that still reads as text (4.9:1) */
+  --logo-b: #9A6B00;
   --logo-tag: var(--ink-2);
   /* headings: Noto Sans Hebrew at its heaviest, slightly narrowed; the text is the same family, so one font file serves the page */
   --display: "MW Noto", "MW Noto Fallback", Arial, sans-serif;
@@ -41,7 +46,6 @@ a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: 0; padding: 0; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
-.band--blue :focus-visible, .offer__card--blue :focus-visible { outline-color: var(--sun); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 html.disable-animations { scroll-behavior: auto; }
 html.disable-animations *, html.disable-animations *::before, html.disable-animations *::after { animation: none !important; transition: none !important; }
@@ -56,7 +60,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .h3, .h4 { font-weight: 800; }
 .h1 { font-size: clamp(2.25rem, 9.6vw, 5rem); line-height: 1.08; }
 .h1--page { font-size: clamp(2.125rem, 7vw, 3.75rem); }
-.h1__mark { color: var(--blue); }
+.h1__mark { display: inline; padding-inline: .12em; background: linear-gradient(#fff, #fff) 50% 92% / 100% 34% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .h2 { font-size: clamp(1.875rem, 6.4vw, 3.25rem); line-height: 1.12; margin-block-end: 28px; }
 .h3 { font-size: clamp(1.4375rem, 3vw, 1.75rem); line-height: 1.2; }
 .h4 { font-size: 1.1875rem; line-height: 1.3; }
@@ -68,7 +72,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .band { padding-block: 72px; }
 .band--cream { background: var(--cream); }
 .band--line { padding-block-start: 0; }
-.band--blue { background: var(--blue); color: #fff; }
+.band--blue { background: var(--sun); color: var(--ink); }
 /* D238, after Libra: a coloured band never ends on a straight line. It rises into the section above and
    hangs into the one below as a slow, uneven wave (one mask each, stretched to the width). */
 :root {
@@ -82,9 +86,9 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .band--cream::before, .band--blue::before, .contact::before { bottom: calc(100% - 1px); -webkit-mask: var(--wave-up) center / 100% 100% no-repeat; mask: var(--wave-up) center / 100% 100% no-repeat; }
 .band--cream::after, .band--blue::after, .phero::after { top: calc(100% - 1px); -webkit-mask: var(--wave-down) center / 100% 100% no-repeat; mask: var(--wave-down) center / 100% 100% no-repeat; }
 .band--cream::before, .band--cream::after { background: var(--cream); }
-.band--blue::before, .band--blue::after { background: var(--blue); }
+.band--blue::before, .band--blue::after { background: var(--sun); }
 /* two coloured bands in a row: the first one's wave is the edge, the second adds none */
-.band--blue + .band--cream::before, .band--cream + .band--blue::before { display: none; }
+.band--blue + .band--cream::before { display: none; }
 .band--cream { z-index: 1; }
 .band--blue { z-index: 2; }
 .band:not(.band--cream):not(.band--blue) { padding-block: calc(72px + var(--wave-h) * .6); }
@@ -102,7 +106,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .btn svg { flex: none; transition: transform .25s var(--ease); }
 .btn:hover svg:last-child:not(:first-child) { transform: translateX(-4px); }
 .btn--ink { background: var(--ink); color: #fff; }
-.btn--ink:hover { background: var(--blue); }
+.btn--ink:hover { background: #fff; color: var(--ink); border-color: var(--ink); }
 .btn--sun { background: var(--sun); color: var(--ink); }
 .btn--sun:hover { background: #fff; }
 .btn--paper { background: #fff; color: var(--ink); border-color: var(--ink); }
@@ -130,7 +134,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 
 /* ---------- header (D238, after Libra): a white ribbon with a wave for its lower edge lies over the yellow;
    at the far end a blue wave holds the one action. Part of the page: it does not follow the scroll. ---------- */
-.head { position: relative; z-index: 40; background: #FFD644; }
+.head { position: relative; z-index: 40; background: var(--sun-light); }
 .head__wave { position: absolute; inset: 0 0 auto 0; width: 100%; height: 84px; pointer-events: none; }
 .head__wave .w-paper { fill: var(--paper); }
 .head__wave .w-corner { fill: var(--blue); display: none; }
@@ -172,7 +176,7 @@ html.menu-open .head { background: var(--paper); }
 .a11y__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .a11y__opt { min-height: 44px; padding: 4px 8px; border-radius: 12px; border: 2px solid var(--line); font-size: .9375rem; font-weight: 600; line-height: 1.2; }
 .a11y__opt[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
-.a11y__link { min-height: 44px; display: inline-flex; align-items: center; font-weight: 600; color: var(--blue-ink); }
+.a11y__link { min-height: 44px; display: inline-flex; align-items: center; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .a11y__link:hover { text-decoration: underline; }
 
 /* ---------- hero ---------- */
@@ -201,8 +205,8 @@ html.menu-open .head { background: var(--paper); }
 .wheel__slot:nth-child(even) { display: none; }
 .wheel__card { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 22px; background: #fff; border: 4px solid #fff; box-shadow: 0 16px 34px -14px rgba(23, 24, 28, .55); -webkit-user-drag: none; }
 .wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; border-radius: 18px; pointer-events: none; }
-.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--coral); border-color: var(--coral); color: var(--ink); font: 900 1.5rem/1.15 var(--display); font-stretch: 90%; }
-.wheel__card--next b { font-size: 2.25rem; }
+.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); border-color: var(--ink); color: #fff; font: 900 1.5rem/1.15 var(--display); font-stretch: 90%; }
+.wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
 @media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 620px; } }
 @media (min-width: 900px) {
   .wheel { --cw: 224px; --ch: 448px; --R: 1520px; height: calc(var(--ch) + 150px); }
@@ -219,8 +223,8 @@ html.menu-open .head { background: var(--paper); }
 .ring { display: grid; place-content: center; justify-items: center; gap: 6px; width: 148px; height: 148px; padding: 12px; text-align: center; border-radius: 50%; background: #fff; border: 2px solid var(--ink); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--sun), 0 16px 26px -14px rgba(23, 24, 28, .45); }
 .ring svg { fill: none; stroke: var(--ink); stroke-width: 1.800; stroke-linecap: round; stroke-linejoin: round; }
 .ring svg .fill { fill: var(--sun); }
-.ask--blue .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--blue), 0 16px 26px -14px rgba(23, 24, 28, .45); }
-.ask--coral .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--coral), 0 16px 26px -14px rgba(23, 24, 28, .45); }
+.ask--blue .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--sun), 0 16px 26px -14px rgba(23, 24, 28, .45); }
+.ask--coral .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--sun), 0 16px 26px -14px rgba(23, 24, 28, .45); }
 .ask__say { font: 800 clamp(1.5rem, 6vw, 2.375rem)/1.2 var(--display); font-stretch: 90%; text-wrap: balance; }
 .ask__ans { display: grid; gap: 14px; }
 .ask__what { font-size: 1.125rem; line-height: 1.6; }
@@ -237,10 +241,8 @@ html.menu-open .head { background: var(--paper); }
 /* ---------- work: posters. The name large on its own colour, the site standing on the bottom edge ---------- */
 .work { display: grid; gap: 18px; }
 .poster { display: grid; align-content: space-between; overflow: hidden; border-radius: 32px; padding: 28px 22px 0; background: var(--sun); scroll-margin-top: 20px; }
-.poster:nth-child(5n + 2) { background: var(--blue); color: #fff; }
-.poster:nth-child(5n + 3) { background: var(--coral); }
-.poster:nth-child(5n + 4) { background: var(--paper); }
-.poster:nth-child(5n + 5) { background: var(--ink); color: #fff; }
+.poster:nth-child(3n + 2) { background: var(--ink); color: #fff; }
+.poster:nth-child(3n + 3) { background: var(--blue-soft); }
 .poster__kind { justify-self: start; display: inline-block; padding: 3px 13px; border-radius: 999px; border: 2px solid currentColor; font-size: .9375rem; font-weight: 700; line-height: 1.4; }
 .poster__name { font: 900 clamp(2.25rem, 10vw, 3.75rem)/1.02 var(--display); font-stretch: 90%; margin-block-start: 14px; text-wrap: balance; }
 .poster__client { font-weight: 700; margin-block-start: 10px; }
@@ -290,13 +292,13 @@ html.menu-open .head { background: var(--paper); }
 }
 
 /* ---------- process: one line from the first call to the day it is live; the stops sit on it ---------- */
-.route { border-inline-start: 2px solid rgba(255, 255, 255, .6); margin-inline-start: 28px; padding-inline-start: 46px; display: grid; gap: 34px; }
+.route { border-inline-start: 2px solid var(--ink); margin-inline-start: 28px; padding-inline-start: 46px; display: grid; gap: 34px; }
 .route__stop { position: relative; }
-.route__n { position: absolute; inset-inline-start: -75px; top: -10px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--ink); font: 300 1.75rem/1 var(--display); box-shadow: 0 0 0 4px var(--blue), 0 0 0 6px var(--sun); }
+.route__n { position: absolute; inset-inline-start: -75px; top: -10px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--ink); font: 300 1.75rem/1 var(--display); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink); }
 .route__stop p { margin-block-start: 6px; line-height: 1.6; }
 .route__time { margin-block-start: 36px; font-weight: 700; }
 @media (min-width: 900px) {
-  .route { border-inline-start: 0; margin-inline-start: 0; margin-block-start: 60px; padding-inline-start: 0; border-block-start: 2px solid rgba(255, 255, 255, .6); grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .route { border-inline-start: 0; margin-inline-start: 0; margin-block-start: 60px; padding-inline-start: 0; border-block-start: 2px solid var(--ink); grid-template-columns: repeat(4, 1fr); gap: 32px; }
   .route[data-n="5"] { grid-template-columns: repeat(5, 1fr); gap: 22px; }
   .route__stop { padding-block-start: 46px; }
   .route__n { inset-inline-start: 0; top: -30px; }
@@ -331,8 +333,8 @@ html.menu-open .head { background: var(--paper); }
 .faq__item p { padding-block-end: 22px; max-width: 40em; }
 
 /* ---------- contact: the sun rises under the last question; the form sits in a white disc ---------- */
-.contact { background: var(--sun-sweep); padding-block: 64px 72px; }
-.contact::before { background: #FFD03B; }
+.contact { background: var(--sun); padding-block: 64px 72px; }
+.contact::before { background: var(--sun); }
 .contact__in { position: relative; display: grid; gap: 32px; }
 .contact__text .h2 { margin-block-end: 14px; }
 .contact__ways { display: grid; gap: 2px; margin-block-start: 20px; }
@@ -352,7 +354,7 @@ html.menu-open .head { background: var(--paper); }
 .form__status { min-height: 1.6em; font-weight: 700; text-align: center; }
 .form__status:empty { display: none; }
 .form__legal { font-size: .875rem; color: var(--ink-2); text-align: center; line-height: 1.5; }
-.form__legal a { color: var(--blue-ink); font-weight: 600; }
+.form__legal a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .form__legal a:hover { text-decoration: underline; }
 @media (min-width: 1000px) {
   .contact { padding-block: 90px 120px; }
@@ -389,7 +391,7 @@ html.menu-open .head { background: var(--paper); }
 .tab svg.tab__wave { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--blue); filter: drop-shadow(0 -6px 14px rgba(23, 24, 28, .28)); transition: fill .2s; }
 .tab span { position: relative; display: inline-flex; align-items: center; gap: 7px; padding-block-end: calc(13px + env(safe-area-inset-bottom, 0px)); padding-inline-end: 14px; margin-inline-start: auto; }
 .tab span svg:last-child { transition: transform .25s var(--ease); }
-.tab:hover svg.tab__wave { fill: var(--ink); }
+.tab:hover svg.tab__wave { fill: #000; }
 .tab:hover span svg:last-child { transform: translateX(-4px); }
 .tab[data-on] { opacity: 1; transform: none; pointer-events: auto; }
 html.menu-open .tab { opacity: 0; pointer-events: none; }
@@ -401,7 +403,7 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 
 /* ---------- inner pages ---------- */
 .phero { background: var(--sun-sweep); padding-block: 12px 40px; }
-.phero::after { background: #FFC42F; }
+.phero::after { background: var(--sun-deep); }
 .phero + .band { padding-block-start: calc(72px + var(--wave-h)); }
 .phero .lede { margin-block-start: 16px; }
 .phero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 28px; }
@@ -427,10 +429,13 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .legal th, .legal td { border: 1px solid var(--line); padding: 8px 10px; text-align: start; }
 
 /* ---------- high contrast (the accessibility panel): black on white, the blue goes darker ---------- */
-html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #0A1E9E; --blue-ink: #0A1E9E; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --line: #000000; --wa: #FFFFFF; }
+html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #000000; --blue-ink: #000000; --sun-light: #FFFFFF; --sun-deep: #FFFFFF; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --line: #000000; --wa: #FFFFFF; }
 html.high-contrast .head { background: #fff; }
+html.high-contrast :is(.band--blue, .contact, .hero, .phero) { border-block: 2px solid #000; }
+html.high-contrast .wheel__card--next { background: #000; }
+html.high-contrast .wheel__card--next b { color: #fff; }
 html.high-contrast :is(.contact__disc, .wheel__card, .foot, .receipt) { outline: 2px solid #000; outline-offset: -2px; }
 html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 html.high-contrast .poster { outline: 2px solid #000; outline-offset: -2px; color: #000; }
-html.high-contrast .poster:nth-child(5n + 5) { background: #fff; }
+html.high-contrast .poster:nth-child(3n + 2) { background: #fff; }
 html.high-contrast .work__row:nth-child(2) .work__art { background: #fff; }

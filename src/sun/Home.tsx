@@ -95,7 +95,7 @@ function Offer() {
 /** The work as posters: the name set large on its own colour, the site itself standing at the bottom edge. */
 function Work() {
   return (
-    <section id="work" className="band band--cream" aria-labelledby="work-h">
+    <section id="work" className="band" aria-labelledby="work-h">
       <div className="wrap">
         <H2 id="work-h">{WORK.h2}</H2>
         <ol className="work">
@@ -143,7 +143,7 @@ function Diagram() {
 
 function Anatomy() {
   return (
-    <section id="anatomy" className="band" aria-labelledby="anatomy-h">
+    <section id="anatomy" className="band band--cream" aria-labelledby="anatomy-h">
       <div className="wrap anatomy">
         <div className="anatomy__intro">
           <H2 id="anatomy-h">{ANATOMY.h2}</H2>
@@ -178,7 +178,7 @@ function Process() {
             </li>
           ))}
         </ol>
-        <div className="band__cta"><WhatsAppButton placement="process" tone="sun" /></div>
+        <div className="band__cta"><WhatsAppButton placement="process" /></div>
       </div>
     </section>
   )

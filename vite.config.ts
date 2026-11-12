@@ -8,9 +8,9 @@ import { resolve } from 'node:path'
 type Look = 'k' | 'm' | 'km' | 'shot' | 'sun'
 
 /** First paint per look: the stage is black, the void is lavender (DECISIONS #50). */
-const LOOK_GROUND: Record<Look, string> = { k: '#00113D', m: '#FAFAF7', km: '#00113D', shot: '#0F1011', sun: '#FFC933' }
+const LOOK_GROUND: Record<Look, string> = { k: '#00113D', m: '#FAFAF7', km: '#00113D', shot: '#0F1011', sun: '#FFC40C' }
 /** The Horizon mark's two tones on that ground (DECISIONS #52): upper (Media), lower (Wave) */
-const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#FFFFFF', '#6E8CFF'], m: ['#0E1016', '#002FA7'], km: ['#FFFFFF', '#6E8CFF'], shot: ['#EDE7DA', '#79A0C5'], sun: ['#17181C', '#2447F0'] }
+const LOOK_LOGO: Record<Look, [string, string]> = { k: ['#FFFFFF', '#6E8CFF'], m: ['#0E1016', '#002FA7'], km: ['#FFFFFF', '#6E8CFF'], shot: ['#EDE7DA', '#79A0C5'], sun: ['#171717', '#9A6B00'] }
 
 /** The look is a build-time constant (.env.look-k|m|km|shot via --mode look-*; unset = sun, D237).
     data-look goes into index.html, so the prerendered first paint is already the right
