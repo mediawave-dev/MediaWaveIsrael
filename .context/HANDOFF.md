@@ -19,6 +19,9 @@ Nati: no AI slop, nothing templated; copy Libra's (lbr.co.il) menu wave and doub
 ## D239, the same day
 Libra's palette, measured on lbr.co.il: yellow #FFCF41 to #FFC20E (solid #FFC40C), black #171717, white, greys #EBEBEB / #F0F0F0. No blue, no coral. The variable names --blue / --coral / --cream stay as roles and now point at black and grey. Logo: ink + dark amber #9A6B00. The H1's second line carries a white brush stroke. The next session is Moriah's: her prompt is `.context/NEXT-SESSION-PROMPT-MORIAH.rtl.md`.
 
+## D240, the same day
+Nati: more minimal, no client names, no links to the sites, the copy too generic, "copy Noam Avikasis's content". Done: the home page is six stops (promise + wheel, nice to meet you, what we build, how it goes, four questions, the form); the work posters, the page diagram and the quote receipt left the page (their code is in git history, commit 24b03fb); the wheel cards are pictures only. The copy follows Noam's manner (direct promise, the client's problem, steps named אפיון / כתיבה שיווקית / עיצוב / פיתוח, a two-field form) in our own words and facts; his text and his proof (page counts, client revenue, testimonials) were not copied.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

@@ -1,7 +1,7 @@
 // sun · the work wheel (D237). The sites we built ride a huge wheel that rises over the hero's horizon,
 // the way the Horizon logo's disc sits on its line. One transform on the ring moves everything
 // (compositor only). It drifts slowly, stops under a pointer, and a finger or a mouse can spin it.
-// The wheel repeats the work list below it, so it is hidden from assistive tech and from the tab order.
+// The cards are pictures only: no names and no links to the sites (D240). Decorative, so hidden from assistive tech.
 // Geometry lives in sun.css (--cw, --ch, --R); 36 slots at 10 degrees, and phones show every second slot.
 import { useEffect, useRef } from 'react'
 import { PROJECTS, WA } from './content'
@@ -11,13 +11,13 @@ import { track } from '../utils/analytics'
 const SLOTS = 36
 const STEP = 360 / SLOTS
 
-type Card = { kind: 'shot'; slug: string; name: string; crop: 'top' | 'mid' } | { kind: 'next' }
+type Card = { kind: 'shot'; slug: string; crop: 'top' | 'mid' } | { kind: 'next' }
 
 /** Every project twice (the top of its page, then further down), with one "yours next" card between. */
 function deck(): Card[] {
-  const tops: Card[] = PROJECTS.map((p) => ({ kind: 'shot', slug: p.slug, name: p.name, crop: 'top' }))
+  const tops: Card[] = PROJECTS.map((p) => ({ kind: 'shot', slug: p.slug, crop: 'top' }))
   // a project whose page is mostly dark further down shows its top only ("crops": 1 in work.json)
-  const mids: Card[] = PROJECTS.filter((p) => p.crops !== 1).map((p) => ({ kind: 'shot', slug: p.slug, name: p.name, crop: 'mid' }))
+  const mids: Card[] = PROJECTS.filter((p) => p.crops !== 1).map((p) => ({ kind: 'shot', slug: p.slug, crop: 'mid' }))
   const unit: Card[] = [...tops, { kind: 'next' }, ...mids]
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
@@ -114,10 +114,10 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <a className="wheel__card" href={`#work-${c.slug}`} tabIndex={-1} draggable={false} data-crop={c.crop}>
+              <div className="wheel__card" data-crop={c.crop}>
                 <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={448} height={896} draggable={false}
                   loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
-              </a>
+              </div>
             ) : (
               <a className="wheel__card wheel__card--next" href={WA.hero} target="_blank" rel="noopener" tabIndex={-1} draggable={false}
                 onClick={() => track('whatsapp_click', { placement: 'wheel_next' })}>

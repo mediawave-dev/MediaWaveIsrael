@@ -1,9 +1,7 @@
-// sun · the home page (D237, D238): a statement first, the work in the first screen, then the answers a
-// visitor needs in the order they ask them: what do you build, show me, why does it work, how, how much.
-// One action on the whole page (WhatsApp), repeated; the form at the end has two fields.
-// D238 (Nati: "no AI slop, nothing templated"): no metric strip, no grid of equal cards, no numbered discs.
-// Each section has its own form: the visitor's situation as a spoken line, posters for the work, a diagram,
-// a route, a receipt.
+// sun · the home page (D237-D240). Six short stops and one action (WhatsApp):
+// the promise with the wheel of sites, nice to meet you, what we build, how it goes, four questions, the form.
+// D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
+// the wheel; the work list, the page diagram and the price sheet left the page.
 import { useState, type FormEvent } from 'react'
 import SEO from '../components/SEO'
 import { SITE_CONTACT } from '../data/site'
@@ -11,7 +9,7 @@ import { getWhatsAppUrl } from '../utils/whatsapp'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { track } from '../utils/analytics'
 import Wheel from './Wheel'
-import { ANATOMY, CONTACT, FAQ, HERO, OFFER, PRICE, PROCESS, PROJECTS, WA, WORK } from './content'
+import { ABOUT, CONTACT, FAQ, HERO, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
@@ -25,7 +23,7 @@ export function H2({ id, children }: { id?: string; children: string }) {
 /** Line drawings for the three kinds of site: black outline, one yellow part (Libra's icon language). */
 const KIND_ICON: Record<string, JSX.Element> = {
   sun: (<><rect x="14" y="6" width="20" height="36" rx="3" /><path d="M19 13h10M19 18h7" /><rect className="fill" x="19" y="27" width="10" height="6" rx="3" /></>),
-  blue: (<><rect x="6" y="10" width="36" height="26" rx="3" /><path d="M6 17h36M18 42h12M24 36v6" /><rect className="fill" x="11" y="22" width="11" height="9" rx="1.500" /><path d="M27 23h10M27 28h7" /></>),
+  blue: (<><rect x="6" y="10" width="36" height="26" rx="3" /><path d="M6 17h36M18 42h12M24 36v6" /><rect className="fill" x="11" y="22" width="11" height="9" rx="1.5" /><path d="M27 23h10M27 28h7" /></>),
   coral: (<><circle className="fill" cx="24" cy="15" r="6" /><path d="M11 40c1-8 6-12 13-12s12 4 13 12" /><path d="M33 9l2 2 4-5" /></>),
 }
 
@@ -41,11 +39,11 @@ function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h">
       <div className="wrap hero__text">
-        <h1 id="hero-h" className="h1">{HERO.h1[0]}<br /><span className="h1__mark">{HERO.h1[1]}</span></h1>
+        <h1 id="hero-h" className="h1"><span className="h1__mark">{HERO.h1[0]}</span><br /><span className="h1__rest">{HERO.h1[1]}</span></h1>
         <p className="lede hero__lede">{HERO.lede}</p>
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
-          <a className="btn btn--line" href="#work" onClick={() => track('cta_click', { location: 'hero_work' })}><span>{HERO.second}</span><IconChevrons /></a>
+          <a className="btn btn--line" href="#process" onClick={() => track('cta_click', { location: 'hero_process' })}><span>{HERO.second}</span><IconChevrons /></a>
         </div>
         <p className="hero__note">{HERO.note}</p>
       </div>
@@ -57,107 +55,35 @@ function Hero() {
   )
 }
 
-/** Three situations in the visitor's own words; each one answered by what we build for it. */
+/** Nice to meet you: who we are, the problem we keep meeting, and what we do about it. */
+function About() {
+  return (
+    <section id="about" className="band about" aria-labelledby="about-h">
+      <div className="wrap wrap--narrow">
+        <H2 id="about-h">{ABOUT.h2}</H2>
+        {ABOUT.lines.map((l) => <p key={l} className="about__line">{l}</p>)}
+        <p className="about__close">{ABOUT.close}</p>
+      </div>
+    </section>
+  )
+}
+
 function Offer() {
   return (
-    <section id="offer" className="band" aria-labelledby="offer-h">
+    <section id="offer" className="band band--cream" aria-labelledby="offer-h">
       <div className="wrap">
         <H2 id="offer-h">{OFFER.h2}</H2>
-        <ol className="asks">
-          {OFFER.cards.map((c) => (
-            <li key={c.name} className={`ask ask--${c.tone}`}>
-              <h3 className="ask__name">
-                <span className="ring">
-                  <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" focusable="false">{KIND_ICON[c.tone]}</svg>
-                  <span>{c.name}</span>
-                </span>
-              </h3>
-              <p className="ask__say">{c.who}</p>
-              <div className="ask__ans">
-                <p className="ask__what">{c.what}</p>
-                <ul className="ask__points">{c.points.map((p) => <li key={p}>{p}</li>)}</ul>
-                <p className="ask__time">{c.time}</p>
-                <div className="ask__actions">
-                  <a className="btn btn--ink" href={c.wa} target="_blank" rel="noopener" onClick={wa(`offer_${c.tone}`)}>
-                    <IconWhatsApp /><span>דברו איתנו</span><IconChevrons />
-                  </a>
-                  {c.href && <a className="more" href={c.href}><span>{c.more}</span><IconChevrons width={18} height={18} /></a>}
-                </div>
-              </div>
+        <ul className="kinds">
+          {OFFER.kinds.map((k) => (
+            <li key={k.name} className="kind">
+              <span className="ring" aria-hidden="true">
+                <svg viewBox="0 0 48 48" width="56" height="56" focusable="false">{KIND_ICON[k.tone]}</svg>
+              </span>
+              <h3 className="h3">{k.name}</h3>
+              <p>{k.line}</p>
             </li>
           ))}
-        </ol>
-      </div>
-    </section>
-  )
-}
-
-/** The work as posters: the name set large on its own colour, the site itself standing at the bottom edge. */
-function Work() {
-  return (
-    <section id="work" className="band" aria-labelledby="work-h">
-      <div className="wrap">
-        <H2 id="work-h">{WORK.h2}</H2>
-        <ol className="work">
-          {PROJECTS.map((p) => (
-            <li key={p.slug} id={`work-${p.slug}`} className="poster">
-              <div className="poster__text">
-                <p className="poster__kind">{p.kind}</p>
-                <h3 className="poster__name">{p.name}</h3>
-                <p className="poster__client">{p.client}</p>
-                <p className="poster__goal">{p.goal}</p>
-              </div>
-              <div className="poster__art">
-                <img className="poster__desk" src={`/work/${p.slug}-desk.webp`} alt={`${p.name}: האתר במחשב`} width={1280} height={800} loading="lazy" decoding="async" />
-                <img className="poster__phone" src={`/work/${p.slug}-card-top.webp`} alt={`${p.name}: האתר בטלפון`} width={448} height={896} loading="lazy" decoding="async" />
-              </div>
-            </li>
-          ))}
-          <li className="poster poster--next">
-            <div className="poster__text">
-              <h3 className="poster__name">{WORK.next.title}</h3>
-              <p className="poster__goal">{WORK.next.line}</p>
-              <WhatsAppButton placement="work_next" label={WORK.next.cta} />
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
-  )
-}
-
-/** A landing page drawn as a diagram: five numbered parts, the same numbers as the list beside it. */
-function Diagram() {
-  return (
-    <div className="diagram" role="img" aria-label="שרטוט של דף נחיתה עם חמשת החלקים שברשימה">
-      <div className="diagram__page" aria-hidden="true">
-        <div className="dg dg--head"><i className="pin">1</i><b /><b /><em /></div>
-        <div className="dg dg--btn"><i className="pin">2</i><span /></div>
-        <div className="dg dg--proof"><i className="pin">3</i><span /><span /><span /></div>
-        <div className="dg dg--faq"><i className="pin">4</i><em /><em /><em /></div>
-        <div className="dg dg--form"><i className="pin">5</i><em /><em /><span /></div>
-      </div>
-    </div>
-  )
-}
-
-function Anatomy() {
-  return (
-    <section id="anatomy" className="band band--cream" aria-labelledby="anatomy-h">
-      <div className="wrap anatomy">
-        <div className="anatomy__intro">
-          <H2 id="anatomy-h">{ANATOMY.h2}</H2>
-          <p className="lede">{ANATOMY.lede}</p>
-        </div>
-        <Diagram />
-        <ol className="anatomy__list">
-          {ANATOMY.items.map((it, i) => (
-            <li key={it.name}>
-              <span className="pin" aria-hidden="true">{i + 1}</span>
-              <div><h3 className="h4">{it.name}</h3><p>{it.line}</p></div>
-            </li>
-          ))}
-        </ol>
+        </ul>
       </div>
     </section>
   )
@@ -179,32 +105,6 @@ function Process() {
           ))}
         </ol>
         <div className="band__cta"><WhatsAppButton placement="process" /></div>
-      </div>
-    </section>
-  )
-}
-
-/** The price as the paper it arrives on: a sample quote, what is on it and what is not. */
-function Price() {
-  return (
-    <section id="price" className="band band--cream" aria-labelledby="price-h">
-      <div className="wrap price">
-        <div className="price__text">
-          <H2 id="price-h">{PRICE.h2}</H2>
-          <p className="lede">{PRICE.lede}</p>
-          <p className="price__pay">{PRICE.pay}</p>
-        </div>
-        <div className="price__paper"><div className="receipt">
-          <p className="receipt__head"><b>{PRICE.paper}</b><span>MediaWave</span></p>
-          <dl>
-            {PRICE.in.map((l) => <div key={l}><dt>{l}</dt><dd>{PRICE.inMark}</dd></div>)}
-          </dl>
-          <p className="receipt__sub">{PRICE.outTitle}</p>
-          <dl>
-            {PRICE.out.map((l) => <div key={l.name}><dt>{l.name}</dt><dd>{l.value}</dd></div>)}
-          </dl>
-          <p className="receipt__total"><b>{PRICE.totalLabel}</b><span>{PRICE.total}</span></p>
-        </div></div>
       </div>
     </section>
   )
@@ -236,7 +136,7 @@ function Faq() {
 type Field = 'name' | 'phone'
 
 export function LeadForm({ placement = 'contact_form' }: { placement?: string }) {
-  const [data, setData] = useState({ name: '', phone: '', need: CONTACT.needs[0] })
+  const [data, setData] = useState({ name: '', phone: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
   const [state, setState] = useState<'idle' | 'loading' | 'done'>('idle')
   const [status, setStatus] = useState('')
@@ -254,7 +154,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
     // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
     if (!endpoint) {
-      const text = `היי, אני ${data.name.trim()}.\nמעניין אותי: ${data.need}.\nטלפון לחזרה: ${data.phone.trim()}`
+      const text = `היי, אני ${data.name.trim()}.\nאשמח לשמוע על דף נחיתה או אתר.\nטלפון לחזרה: ${data.phone.trim()}`
       track('form_submit', { placement, mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(text), '_blank', 'noopener')
       setStatus(CONTACT.viaWhatsApp)
@@ -264,10 +164,10 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     try {
       await fetch(endpoint, {
         method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({ fullName: data.name.trim(), phone: data.phone.trim(), message: `מעניין אותי: ${data.need}`, page: window.location.href, userAgent: navigator.userAgent }),
+        body: new URLSearchParams({ fullName: data.name.trim(), phone: data.phone.trim(), message: 'פנייה מהאתר', page: window.location.href, userAgent: navigator.userAgent }),
       })
       track('form_submit', { placement, mode: 'endpoint' })
-      setState('done'); setStatus(CONTACT.sent); setData({ name: '', phone: '', need: CONTACT.needs[0] })
+      setState('done'); setStatus(CONTACT.sent); setData({ name: '', phone: '' })
     } catch {
       setState('idle'); setStatus(CONTACT.failed)
     }
@@ -284,14 +184,8 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
 
   return (
     <form className="form" onSubmit={submit} noValidate>
-      {input('name', 'שם', { type: 'text', autoComplete: 'name' })}
-      {input('phone', 'טלפון', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', dir: 'ltr' })}
-      <div className="field">
-        <label htmlFor="lead-need">מה אתם צריכים?</label>
-        <select id="lead-need" value={data.need} onChange={(e) => setData((d) => ({ ...d, need: e.target.value }))}>
-          {CONTACT.needs.map((n) => <option key={n}>{n}</option>)}
-        </select>
-      </div>
+      {input('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
+      {input('phone', 'טלפון נייד', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', dir: 'ltr' })}
       <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>
         <span>{state === 'loading' ? 'שולחים...' : CONTACT.submit}</span><IconChevrons />
       </button>
@@ -315,10 +209,7 @@ export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero
             <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
           </ul>
         </div>
-        <div className="contact__disc">
-          <p className="badge" aria-hidden="true">עונים תוך<br /><b>24 שעות</b><br />בימי עסקים</p>
-          <LeadForm />
-        </div>
+        <div className="contact__disc"><LeadForm /></div>
       </div>
     </section>
   )
@@ -328,16 +219,14 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="דפי נחיתה ואתרי תדמית שמביאים פניות"
-        description="MediaWave בונה דפי נחיתה, אתרי תדמית ואתרים לתוכניות ליווי. דף נחיתה באוויר תוך 5 עד 7 ימי עבודה, וכל דף נבנה כדי שמי שנכנס יכתוב לכם."
+        title="דף נחיתה שמביא פניות לעסק, לקורס או לתוכנית ליווי"
+        description="MediaWave בונה דפי נחיתה, אתרי תדמית ואתרים לקורסים ולתוכניות ליווי: אפיון, כתיבה שיווקית, עיצוב ופיתוח. דף נחיתה באוויר תוך 5 עד 7 ימי עבודה."
         canonical="/"
       />
       <Hero />
+      <About />
       <Offer />
-      <Work />
-      <Anatomy />
       <Process />
-      <Price />
       <Faq />
       <Contact />
     </>

@@ -2,43 +2,28 @@
   {
     "slug": "switchon",
     "name": "SwitchOn",
-    "url": "https://switchon.co.il",
-    "kind": "אתר לידים",
-    "client": "הצבת מכונות אוטומטיות בעסקים",
-    "goal": "מנהל משרד או מפעל שמחפש בגוגל מכונת שתייה מבין תוך דקה מה זה עולה לו, וממלא בדיקת התאמה קצרה."
+    "url": "https://switchon.co.il"
   },
   {
     "slug": "ben-david",
     "name": "בן דוד יודאיקה",
-    "url": "https://ben-david-judaica.com",
-    "kind": "אתר תדמית",
-    "client": "פרוכות בעבודת יד לבתי כנסת",
-    "goal": "גבאי שמחפש פרוכת רואה את העבודות מקרוב, בגלריה שנפתחת בטלפון, ופונה ישר לבעל המלאכה."
+    "url": "https://ben-david-judaica.com"
   },
   {
     "slug": "yael-levy",
     "name": "יעל לוי",
     "url": "https://www.yaelevy.co.il",
-    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/",
-    "kind": "אתר תדמית",
-    "client": "מטפלת באיזון גוף ונפש",
-    "goal": "מי ששוקלת טיפול רגשי מכירה את יעל ואת השיטה שלה, קוראת המלצות, ומתאמת שיחת היכרות."
+    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/"
   },
   {
     "slug": "hila",
     "name": "הילה קלרמן",
-    "url": "https://hila-kelerman-landing-page.vercel.app/",
-    "kind": "דף נחיתה",
-    "client": "צלמת משפחה, זוגיות והריון",
-    "goal": "מי שמחפשת צלמת רואה את התמונות לפני כל מילה, ומשאירה פנייה לצילומים."
+    "url": "https://hila-kelerman-landing-page.vercel.app/"
   },
   {
     "slug": "mediawave-2026",
     "name": "MediaWave, הגרסה הקודמת",
     "url": "https://mediawave.co.il",
-    "kind": "אתר תדמית",
-    "client": "האתר שלנו עד נובמבר 2026",
-    "goal": "אתר עם ים של נקודות, סרטים ואפקטים. יפה, ולא אמר מה אנחנו עושים. לכן בנינו את האתר שאתם קוראים עכשיו.",
     "capture": false,
     "crops": 1
   }
