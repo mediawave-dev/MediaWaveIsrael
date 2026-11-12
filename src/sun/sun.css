@@ -10,6 +10,7 @@
   --sun: #FFC40C;
   --sun-light: #FFCF41;
   --sun-deep: #FFC20E;
+  --sun-pale: #FFE9A6;
   --sun-sweep: linear-gradient(180deg, #FFCF41 0%, #FFC20E 100%);
   --ink: #171717;
   --ink-2: #4A4A4A;
@@ -308,7 +309,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    than a phone's screen and is cut by its edges; a paler one stands behind it. The form inside is quiet: lines
    for fields, one white button. ---------- */
 .contact { position: relative; overflow: clip; background: var(--paper); padding-block: 40px 56px; }
-.contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -64px; width: 230px; aspect-ratio: 1; border-radius: 50%; background: #FFE9A6; }
+.contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -64px; width: 230px; aspect-ratio: 1; border-radius: 50%; background: var(--sun-pale); }
 .contact__disc { --d: clamp(620px, 168vw, 760px); position: relative; width: var(--d); height: var(--d); margin-inline: calc(50% - var(--d) / 2); display: grid; place-items: center; border-radius: 50%; background: var(--sun); box-shadow: 0 34px 60px -34px rgba(23, 24, 28, .55); }
 .contact__in { width: min(100vw - 56px, 348px); display: grid; text-align: center; }
 .contact__in .h2 { margin-block-end: 10px; font-size: clamp(1.75rem, 6.6vw, 2.5rem); }
