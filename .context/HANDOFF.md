@@ -37,6 +37,9 @@ Nati: cards that speak about the content, not pictures alone ("the hero of each 
 ## D245, the same day (Nati looked at it on his phone)
 He did not like the white wave ribbon at the top nor the main heading, its words and its look; he loves the black "כתבו לנו" corner tab. Done: the ribbon is gone and the logo sits in a black corner wave of the tab's shape, hanging from the top corner (Shell.tsx `head__blob`, logo in white and yellow); the tools stand on the yellow; the phone menu is a plain sheet. The H1 is now "אנחנו בונים דפי נחיתה." with a light second sentence "כאלה שאנשים משאירים בהם פרטים.", no brush highlight; the lede points at the wheel ("את האתרים שכאן למטה בנינו אנחנו"). The opening keeps the wheel and the sticker. What read as machine to him: the "X שמביא Y" mould, lists of three and four, "הכול במקום אחד".
 
+## D246, the same day
+The corner shape behind the logo is white (logo in ink and amber). The closing line of "נעים מאוד" is Nati's wording, "דף אחד, עם מטרה אחת בלבד. שיפנו אליכם.", set as a light sentence over a large heavy one beside a yellow bar. New standing rule from him: no colons in the copy, he reads them as a machine's habit; all of them were rewritten on the home page, in the WhatsApp message, the form labels, the error message and every service page (not in the legal texts).
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

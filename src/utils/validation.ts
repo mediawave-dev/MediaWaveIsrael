@@ -30,7 +30,7 @@ export function isValidMessage(message: string, min = 10, max = 2000): boolean {
 export const validationErrors = {
   name: 'נא להזין שם מלא (לפחות 2 תווים)',
   email: 'נא להזין כתובת אימייל תקינה',
-  phone: 'נא להזין מספר טלפון תקין (לדוגמה: 0528731808)',
+  phone: 'נא להזין מספר טלפון תקין, למשל 0528731808',
   message: 'כתבו לפחות משפט אחד (10 תווים ומעלה)',
   privacy: 'יש לאשר את מדיניות הפרטיות כדי לשלוח',
 } as const

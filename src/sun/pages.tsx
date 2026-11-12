@@ -156,7 +156,7 @@ function Legal({ name, path, updated, description, children }: { name: string; p
   return (
     <>
       <SEO title={name} description={description} canonical={path} />
-      <PageHero name={name} path={path} title={name} lede={`עודכן לאחרונה: ${updated}`} />
+      <PageHero name={name} path={path} title={name} lede={`עודכן לאחרונה ב${updated}`} />
       <section className="band"><div className="wrap wrap--narrow legal">{children}</div></section>
     </>
   )

@@ -62,7 +62,7 @@ function About() {
       <div className="wrap wrap--narrow">
         <H2 id="about-h">{ABOUT.h2}</H2>
         {ABOUT.lines.map((l) => <p key={l} className="about__line">{l}</p>)}
-        <p className="about__close">{ABOUT.close}</p>
+        <p className="about__close"><span>{ABOUT.close[0]}</span> <b>{ABOUT.close[1]}</b></p>
       </div>
     </section>
   )
@@ -166,7 +166,7 @@ type Field = 'name' | 'phone'
 
 /** The one message the form produces: the bubble shows it while it is typed, and the send uses the same words. */
 const ASK = 'אשמח לשמוע על דף נחיתה או אתר.'
-const leadText = (name: string, phone: string, ask = ASK) => `היי, אני ${name}.\n${ask}\nטלפון לחזרה: ${phone}`
+const leadText = (name: string, phone: string, ask = ASK) => `היי, אני ${name}.\n${ask}\nהטלפון שלי ${phone}`
 
 /** `ask` is the sentence about what the visitor wants: a service page passes its own, so the message fits the page. */
 export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?: string; ask?: string }) {
@@ -226,7 +226,7 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
         <p className="bubble__msg">
           היי, אני {data.name.trim() ? <b>{data.name.trim()}</b> : <i className="blank" />}.<br />
           {ask}<br />
-          טלפון לחזרה: {data.phone.trim() ? <b dir="ltr">{data.phone.trim()}</b> : <i className="blank" />}
+          הטלפון שלי {data.phone.trim() ? <b dir="ltr">{data.phone.trim()}</b> : <i className="blank" />}
         </p>
       </div>
       <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>

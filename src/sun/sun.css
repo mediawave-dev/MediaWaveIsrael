@@ -134,14 +134,13 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .tags li { padding: 6px 14px; border-radius: 999px; border: 2px solid var(--ink); font-size: .9375rem; font-weight: 600; line-height: 1.4; }
 .after { margin-block-start: 24px; }
 
-/* ---------- header (D245): the logo sits in a black corner wave, the shape of the "כתבו לנו" tab turned to hang
+/* ---------- header (D245, D246): the logo sits in a white corner wave, the shape of the "כתבו לנו" tab turned to hang
    from the top corner on the logo's side. Nothing else is drawn: the tools stand on the yellow.
    Part of the page: it does not follow the scroll. (The shape is drawn for the start corner of an RTL page.) ---------- */
 .head { position: relative; z-index: 40; background: var(--sun-light); }
-.head__blob { position: absolute; top: 0; inset-inline-start: 0; width: 322px; height: 96px; fill: var(--blue); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .28)); pointer-events: none; }
+.head__blob { position: absolute; top: 0; inset-inline-start: 0; width: 322px; height: 96px; fill: var(--paper); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .28)); pointer-events: none; }
 .head__in { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; min-height: 100px; padding: 11px var(--gutter) 0; }
-.head__logo { display: inline-flex; align-items: center; min-height: 44px; --logo-a: #fff; --logo-b: var(--sun); --logo-tag: #fff; }
-.head__logo:focus-visible { outline-color: #fff; }
+.head__logo { display: inline-flex; align-items: center; min-height: 44px; }
 .head__logo .mw-logo { height: 25px; width: auto; }
 .head__nav { display: none; }
 .head__tools { display: flex; align-items: center; gap: 2px; }
@@ -231,8 +230,10 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 
 /* ---------- about: nice to meet you. Plain lines, the last one is the point ---------- */
 .about__line { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; margin-block-end: 18px; max-width: 36em; text-wrap: pretty; }
-.about__close { margin-block-start: 28px; font: 900 clamp(1.5rem, 5.4vw, 2.25rem)/1.2 var(--display); font-stretch: 90%; }
-.about__close { display: inline; padding-inline: .14em; background: linear-gradient(var(--sun), var(--sun)) 50% 90% / 100% 36% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* the last line (D246): a light sentence, then the point, large. A yellow bar at the reading side holds them. */
+.about__close { margin-block-start: 36px; padding-inline-start: 20px; border-inline-start: 6px solid var(--sun); display: grid; gap: 6px; }
+.about__close span { font: 300 clamp(1.25rem, 4.8vw, 1.625rem)/1.3 var(--display); }
+.about__close b { font: 900 clamp(2.25rem, 9.6vw, 3.5rem)/1.05 var(--display); font-stretch: 90%; }
 
 /* ---------- what we build: three ring circles (Libra), a name and one line each ---------- */
 .kinds { display: grid; gap: 34px; }
@@ -388,7 +389,6 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 /* ---------- high contrast (the accessibility panel): black on white, the blue goes darker ---------- */
 html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #000000; --blue-ink: #000000; --sun-light: #FFFFFF; --sun-deep: #FFFFFF; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --line: #000000; --wa: #FFFFFF; }
 html.high-contrast .head { background: #fff; }
-html.high-contrast .head__logo { --logo-b: #fff; }
 html.high-contrast :is(.band--blue, .contact, .hero, .phero) { border-block: 2px solid #000; }
 html.high-contrast .wheel__card--next { background: #000; }
 html.high-contrast .wheel__card--next b { color: #fff; }
