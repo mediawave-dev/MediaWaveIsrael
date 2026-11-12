@@ -50,11 +50,18 @@ function Header() {
   const [menu, setMenu] = useState(false)
   const [a11y, setA11y] = useState(false)
   const { pathname, hash } = useLocation()
+  // closing with the keyboard hands focus back to the button that opened it (only if focus was inside, and without scrolling)
+  const a11yBtn = useRef<HTMLButtonElement>(null)
+  const menuBtn = useRef<HTMLButtonElement>(null)
   useEffect(() => { setMenu(false) }, [pathname, hash])
   useEffect(() => {
     document.documentElement.classList.toggle('menu-open', menu)
     if (!menu) return
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenu(false) }
+    const key = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      if (document.activeElement?.closest('#sheet')) menuBtn.current?.focus({ preventScroll: true })
+      setMenu(false)
+    }
     document.addEventListener('keydown', key)
     return () => document.removeEventListener('keydown', key)
   }, [menu])
@@ -74,12 +81,15 @@ function Header() {
           <a className="head__cta" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'header' })}>
             <IconWhatsApp /><span>דברו איתנו</span><IconChevrons />
           </a>
-          <button type="button" className="icon-btn" aria-label="כלי נגישות" aria-expanded={a11y} onClick={() => setA11y((v) => !v)}><IconA11y width={22} height={22} /></button>
-          <button type="button" className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={() => setMenu((v) => !v)}>
+          <button type="button" ref={a11yBtn} className="icon-btn" aria-label="כלי נגישות" aria-expanded={a11y} onClick={() => setA11y((v) => !v)}><IconA11y width={22} height={22} /></button>
+          <button type="button" ref={menuBtn} className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={() => setMenu((v) => !v)}>
             {menu ? <IconClose width={22} height={22} /> : <IconMenu width={22} height={22} />}
           </button>
         </div>
-        <A11yPanel open={a11y} onClose={() => setA11y(false)} anchor="head" />
+        <A11yPanel open={a11y} anchor="head" onClose={() => {
+          if (document.activeElement?.closest('.a11y')) a11yBtn.current?.focus({ preventScroll: true })
+          setA11y(false)
+        }} />
       </div>
       <div id="sheet" className="sheet" hidden={!menu}>
         <nav aria-label="תפריט">

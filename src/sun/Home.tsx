@@ -104,7 +104,8 @@ function launchDates() {
 /** Today's answer to "when would mine be live?". Computed in the browser only: a prerendered date would go stale. */
 function LaunchDate() {
   const [dates, setDates] = useState<{ start: string; end: string } | null>(null)
-  useEffect(() => { setDates(launchDates()) }, [])
+  // never in the prerendered HTML: a date baked at build time would be shown, stale, until the app boots
+  useEffect(() => { if (!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) setDates(launchDates()) }, [])
   return (
     <p className="launch">
       {dates && (<>
@@ -164,9 +165,11 @@ function Faq() {
 type Field = 'name' | 'phone'
 
 /** The one message the form produces: the bubble shows it while it is typed, and the send uses the same words. */
-const leadText = (name: string, phone: string) => `היי, אני ${name}.\nאשמח לשמוע על דף נחיתה או אתר.\nטלפון לחזרה: ${phone}`
+const ASK = 'אשמח לשמוע על דף נחיתה או אתר.'
+const leadText = (name: string, phone: string, ask = ASK) => `היי, אני ${name}.\n${ask}\nטלפון לחזרה: ${phone}`
 
-export function LeadForm({ placement = 'contact_form' }: { placement?: string }) {
+/** `ask` is the sentence about what the visitor wants: a service page passes its own, so the message fits the page. */
+export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?: string; ask?: string }) {
   const [data, setData] = useState({ name: '', phone: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
   const [state, setState] = useState<'idle' | 'loading' | 'done'>('idle')
@@ -185,7 +188,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
     // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
     if (!endpoint) {
-      const text = leadText(data.name.trim(), data.phone.trim())
+      const text = leadText(data.name.trim(), data.phone.trim(), ask)
       track('form_submit', { placement, mode: 'whatsapp_fallback' })
       window.open(getWhatsAppUrl(text), '_blank', 'noopener')
       setStatus(CONTACT.viaWhatsApp)
@@ -195,7 +198,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
     try {
       await fetch(endpoint, {
         method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({ fullName: data.name.trim(), phone: data.phone.trim(), message: 'פנייה מהאתר', page: window.location.href, userAgent: navigator.userAgent }),
+        body: new URLSearchParams({ fullName: data.name.trim(), phone: data.phone.trim(), message: leadText(data.name.trim(), data.phone.trim(), ask), page: window.location.href, userAgent: navigator.userAgent }),
       })
       track('form_submit', { placement, mode: 'endpoint' })
       setState('done'); setStatus(CONTACT.sent); setData({ name: '', phone: '' })
@@ -207,7 +210,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
   const input = (f: Field, label: string, props: Record<string, unknown>) => (
     <div className="field" data-invalid={errors[f] ? '' : undefined}>
       <label htmlFor={`lead-${f}`}>{label}</label>
-      <input id={`lead-${f}`} name={f} value={data[f]} required onChange={(e) => setData((d) => ({ ...d, [f]: e.target.value }))}
+      <input id={`lead-${f}`} name={f} value={data[f]} required onChange={(e) => { setData((d) => ({ ...d, [f]: e.target.value })); if (errors[f]) setErrors((x) => ({ ...x, [f]: undefined })) }}
         aria-invalid={errors[f] ? true : undefined} aria-describedby={errors[f] ? `lead-${f}-err` : undefined} {...props} />
       {errors[f] && <p id={`lead-${f}-err`} className="field__err">{errors[f]}</p>}
     </div>
@@ -222,12 +225,12 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
         <p className="bubble__label">{import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.previewSent : CONTACT.previewWhatsApp}</p>
         <p className="bubble__msg">
           היי, אני {data.name.trim() ? <b>{data.name.trim()}</b> : <i className="blank" />}.<br />
-          אשמח לשמוע על דף נחיתה או אתר.<br />
+          {ask}<br />
           טלפון לחזרה: {data.phone.trim() ? <b dir="ltr">{data.phone.trim()}</b> : <i className="blank" />}
         </p>
       </div>
       <button className="btn btn--ink btn--wide" type="submit" disabled={state === 'loading'}>
-        <span>{state === 'loading' ? 'שולחים...' : CONTACT.submit}</span><IconChevrons />
+        <span>{state === 'loading' ? 'שולחים...' : import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.submit : CONTACT.submitWhatsApp}</span><IconChevrons />
       </button>
       <p className="form__status" role="status" aria-live="polite">{status}</p>
       <p className="form__legal">בשליחה אתם מאשרים את <a href="/privacy/">מדיניות הפרטיות</a>.</p>
@@ -235,7 +238,7 @@ export function LeadForm({ placement = 'contact_form' }: { placement?: string })
   )
 }
 
-export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero }: { h2?: string; lede?: string; waHref?: string }) {
+export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero, ask }: { h2?: string; lede?: string; waHref?: string; ask?: string }) {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
   return (
     <section id="contact" className="contact" aria-labelledby="contact-h">
@@ -249,7 +252,7 @@ export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero
             <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
           </ul>
         </div>
-        <div className="contact__disc"><LeadForm /></div>
+        <div className="contact__disc"><LeadForm ask={ask} /></div>
       </div>
     </section>
   )

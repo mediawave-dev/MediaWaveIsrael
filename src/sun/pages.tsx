@@ -1,7 +1,7 @@
 // sun · the inner pages (D237): a service, a sample, the three legal pages and the 404, all on the
 // same bright sheet. The data and the legal text are the existing ones (src/data, TermsBody and friends);
 // only the presentation is new.
-import { useEffect, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
 import SEO from '../components/SEO'
 import { SITE_URL } from '../data/site'
@@ -57,7 +57,6 @@ export function NotFound() {
 export function Service() {
   const { slug = '' } = useParams()
   const s = getServiceBySlug(slug)
-  useEffect(() => { window.scrollTo(0, 0) }, [slug])
   if (!s) return <NotFound />
   const path = `/services/${s.slug}`
   const waHref = getWhatsAppUrl(s.waText ?? 'היי, אשמח לשמוע פרטים.')
@@ -75,7 +74,6 @@ export function Service() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       {s.faq.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       <PageHero name={s.title} path={path} title={s.title} lede={s.heroSubtitle}>
-        {s.tags && <ul className="tags">{s.tags.map((t) => <li key={t}>{t}</li>)}</ul>}
         <div className="phero__actions"><WhatsAppButton href={waHref} placement={`service_${s.slug}_hero`} /></div>
       </PageHero>
 
@@ -87,16 +85,16 @@ export function Service() {
 
       <section className="band band--cream">
         <div className="wrap wrap--narrow">
-          <H2>מה מקבלים?</H2>
+          <H2>מה |מקבלים?</H2>
           <ul className="ticks ticks--cols">{s.features.map((f) => <li key={f}><IconCheck width={18} height={18} /><span>{f}</span></li>)}</ul>
-          {s.portfolioLink && <p className="after"><a className="more" href={s.portfolioLink}><span>לדוגמה מעבודה שלנו</span></a></p>}
+          {s.portfolioLink && <p className="after"><a className="more" href={s.portfolioLink}><span>לצפייה בסרטון לדוגמה</span></a></p>}
         </div>
       </section>
 
       {s.steps && (
         <section className="band band--blue">
           <div className="wrap">
-            <H2>איך זה עובד?</H2>
+            <H2>איך זה |עובד?</H2>
             <ol className="route" data-n={s.steps.length}>
               {s.steps.map((st, i) => (<li key={st.title} className="route__stop"><span className="route__n" aria-hidden="true">{i + 1}</span><h3 className="h3">{st.title}</h3><p>{st.line}</p></li>))}
             </ol>
@@ -107,7 +105,7 @@ export function Service() {
 
       <section className="band">
         <div className="wrap wrap--narrow">
-          <H2>כמה זה עולה?</H2>
+          <H2>כמה זה |עולה?</H2>
           <ul className="ticks">{[...(s.price ?? []), ...PRICE_COMMON].map((l) => <li key={l}><IconCheck width={18} height={18} /><span>{l}</span></li>)}</ul>
         </div>
       </section>
@@ -115,14 +113,15 @@ export function Service() {
       {s.faq.length > 0 && (
         <section className="band band--line">
           <div className="wrap wrap--narrow">
-            <H2>שאלות שחוזרות</H2>
+            <H2>שאלות |שחוזרות</H2>
             <div className="faq">
               {s.faq.map((f) => (<details key={f.question} className="faq__item"><summary><span>{f.question}</span><IconChevron /></summary><p>{f.answer}</p></details>))}
             </div>
           </div>
         </section>
       )}
-      <Contact h2={s.cta} waHref={waHref} />
+      {/* the closing question in two weights like every heading; the form's message is the service's own */}
+      <Contact h2={s.cta.replace(/^(רוצים|יש לכם) /, '$1 |')} waHref={waHref} ask={s.waText?.replace(/^היי,\s*/, '')} />
     </>
   )
 }
@@ -130,7 +129,6 @@ export function Service() {
 export function Sample() {
   const { slug = '' } = useParams()
   const p = getPortfolioExampleBySlug(slug)
-  useEffect(() => { window.scrollTo(0, 0) }, [slug])
   if (!p) return <NotFound />
   const path = `/portfolio/${p.slug}`
   return (
@@ -146,16 +144,15 @@ export function Sample() {
           )}
           <p className="sample__text">{p.description}</p>
           <ul className="tags">{p.tags.map((t) => <li key={t}>{t}</li>)}</ul>
-          <p className="after"><a className="more" href={`/services/${p.serviceSlug === 'memory-videos' ? 'video-editing' : p.serviceSlug}/`}><span>עוד על השירות</span></a></p>
+          <p className="after"><a className="more" href={`/services/${p.serviceSlug}/`}><span>עוד על השירות</span></a></p>
         </div>
       </section>
-      <Contact h2="רוצים סרטון כזה?" waHref={getWhatsAppUrl('היי, אשמח לשמוע על סרטון זיכרונות.')} />
+      <Contact h2="רוצים |סרטון כזה?" waHref={getWhatsAppUrl('היי, אשמח לשמוע על סרטון זיכרונות.')} ask="אשמח לשמוע על סרטון זיכרונות." />
     </>
   )
 }
 
 function Legal({ name, path, updated, description, children }: { name: string; path: string; updated: string; description: string; children: ReactNode }) {
-  useEffect(() => { window.scrollTo(0, 0) }, [])
   return (
     <>
       <SEO title={name} description={description} canonical={path} />

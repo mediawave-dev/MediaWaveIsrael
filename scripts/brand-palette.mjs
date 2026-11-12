@@ -17,9 +17,10 @@ const BRAND = resolve(ROOT, 'logos/horizon')
 export const PALETTE = {
   // D117 "Cyanotype" (Nati, 18.10.2026): one Prussian blue at two strengths.
   // for dark grounds (the black desk #1A1917)
-  dark: { ground: '#1A1917', a: '#F4EFE4', b: '#79A0C5', t: '#B8B0A0' },
+  // D239 (12.11.2026): Libra's palette. White over the yellow on dark grounds; ink over a dark amber on white.
+  dark: { ground: '#171717', a: '#FFFFFF', b: '#FFC40C', t: '#B8B0A0' },
   // for light grounds (white paper, the cream desk)
-  light: { ground: '#FFFFFF', a: '#1A1917', b: '#225079', t: '#4D4942' },
+  light: { ground: '#FFFFFF', a: '#171717', b: '#9A6B00', t: '#4D4942' },
 }
 
 const classes = (p) => `.a{fill:${p.a}}.b{fill:${p.b}}.t{fill:${p.t}}.l{fill:none;stroke:${p.t};stroke-width:1.6;stroke-opacity:0.55}`

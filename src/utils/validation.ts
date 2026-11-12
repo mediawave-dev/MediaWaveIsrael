@@ -7,7 +7,8 @@ export function isValidEmail(email: string): boolean {
 
 /** Validate Israeli phone number (with or without dashes/spaces) */
 export function isValidPhone(phone: string): boolean {
-  const cleaned = phone.replace(/[\s-]/g, '')
+  // +972 52..., 00972 52... and 972 52... are the same number as 052...; brackets and dots are separators too
+  const cleaned = phone.replace(/[\s\-().]/g, '').replace(/^(?:\+|00)?9720?/, '0')
   // Israeli mobile: 05X-XXXXXXX (10 digits starting with 05)
   // Israeli landline: 0X-XXXXXXX (9 digits) or 1-XXX-XXXXXX
   return /^0[0-9]{8,9}$/.test(cleaned) || /^1[0-9]{9}$/.test(cleaned)
@@ -29,7 +30,7 @@ export function isValidMessage(message: string, min = 10, max = 2000): boolean {
 export const validationErrors = {
   name: 'נא להזין שם מלא (לפחות 2 תווים)',
   email: 'נא להזין כתובת אימייל תקינה',
-  phone: 'נא להזין מספר טלפון תקין (לדוגמה: 052-8731808)',
+  phone: 'נא להזין מספר טלפון תקין (לדוגמה: 0528731808)',
   message: 'כתבו לפחות משפט אחד (10 תווים ומעלה)',
   privacy: 'יש לאשר את מדיניות הפרטיות כדי לשלוח',
 } as const

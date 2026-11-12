@@ -11,3 +11,11 @@
 /blog / 301
 /blog/* / 301
 /feed.xml / 301
+
+# /your-site and /styles are not in the sun build (D237). Until Nati rules on them (keep, redirect
+# or rebuild) they lead to the home page instead of a 404. 302 on purpose: switch to 301 once they
+# are gone for good. Remove these four lines before deploying one of the earlier looks.
+/your-site / 302
+/your-site/* / 302
+/styles / 302
+/styles/* / 302

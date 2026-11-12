@@ -1,7 +1,7 @@
 {
   "name": "MediaWave Israel",
   "short_name": "MediaWave",
-  "description": "בניית אתרים ודפי נחיתה מקצועיים לעסקים",
+  "description": "דפי נחיתה, אתרי תדמית ואתרים לתוכניות ליווי, שנבנים כדי להביא פניות",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#00113D",

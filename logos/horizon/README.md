@@ -23,11 +23,11 @@ Each SVG paints its parts with four classes: `.a` (Media and the upper half of t
 
 | Palette | `.a` | `.b` | `.t` / `.l` | Background it is made for |
 |---|---|---|---|---|
-| dark | `#F4EFE4` | `#79A0C5` | `#B8B0A0` (rules at 55 % opacity) | the black desk `#1A1917`, or any dark ground |
-| light | `#1A1917` | `#225079` (Prussian blue) | `#4D4942` (rules at 55 % opacity) | white `#FFFFFF`, or the cream desk `#EDE7DA` |
+| dark | `#FFFFFF` | `#FFC40C` (the yellow) | `#B8B0A0` (rules at 55 % opacity) | ink `#171717`, or any dark ground |
+| light | `#171717` | `#9A6B00` (dark amber) | `#4D4942` (rules at 55 % opacity) | white `#FFFFFF` |
 | black / white | one colour for everything | | | print, photos |
 
-The brand's one colour is the Cyanotype blue: Prussian blue `#225079` on light grounds and `#79A0C5` on dark ones (a cyanotype is a sheet of paper laid in the light; the site's opening is a white sheet lit on a black desk). It lives in the logo; buttons stay ink. The favicon is the mark on a dark rounded tile, so its two tones separate on any tab bar. The palette lives in `scripts/brand-palette.mjs`, which rewrites these files and re-renders the PNG icons from vector.
+Since D239 (12.11.2026, branch redesign/statement-20261112) the palette is the statement site's: yellow `#FFC40C`, ink `#171717`, white. On dark grounds the lower half is the yellow itself; on white it is a dark amber `#9A6B00` from the same family, because pure yellow on white does not read as text (the wordmark's "Wave" is text). The favicon is the mark on an ink rounded tile. The palette lives in `scripts/brand-palette.mjs`, which rewrites these files and re-renders the PNG icons from vector. The earlier palette (Cyanotype, D117: `#225079` on light, `#79A0C5` on dark) is in git history.
 
 ## Rules
 

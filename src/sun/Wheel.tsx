@@ -17,14 +17,26 @@ const STEP = 360 / SLOTS
 /** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
 const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
 
+/** Cards in one turn of the deck: odd, and a divisor of SLOTS. */
+const UNIT = 9
+
 type Card = { kind: 'shot'; slug: string; crop: 'top' | 'mid' } | { kind: 'next' }
 
-/** Every project twice (the top of its page, then further down), with one "yours next" card between. */
+/** The deck: the tops of all the projects, a lower crop of the first three, and one "yours next" card. */
 function deck(): Card[] {
   const tops: Card[] = PROJECTS.map((p) => ({ kind: 'shot', slug: p.slug, crop: 'top' }))
   // a project whose page is mostly dark further down shows its top only ("crops": 1 in work.json)
   const mids: Card[] = PROJECTS.filter((p) => p.crops !== 1).map((p) => ({ kind: 'shot', slug: p.slug, crop: 'mid' }))
-  const unit: Card[] = [...tops, { kind: 'next' }, ...mids]
+  // Always nine cards, whatever work.json holds: 36 slots take the unit exactly four times (no join), and a
+  // phone, which shows every second slot, still walks all nine (nine is odd). Eight pictures and the "next"
+  // card. Every project's top comes first; lower crops fill what is left; a short list repeats from its start.
+  // More than eight projects: the ninth is not on the wheel until the slot count is revisited.
+  const pictures = [...tops, ...mids].slice(0, UNIT - 1)
+  const shown = (c: Card) => pictures.includes(c)
+  // on the wheel: three tops, their lower crops, then the other tops, so one site's two crops are not neighbours
+  const order = [...tops.slice(0, 3), ...mids, ...tops.slice(3)].filter(shown)
+  const eight = order.length ? Array.from({ length: UNIT - 1 }, (_, i) => order[i % order.length]) : []
+  const unit: Card[] = [...eight, { kind: 'next' }]
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
@@ -107,8 +119,9 @@ export default function Wheel() {
 
     el.addEventListener('pointerdown', down)
     el.addEventListener('pointermove', move)
-    el.addEventListener('pointerup', up)
-    el.addEventListener('pointercancel', up)
+    // on the window: a press let go outside the wheel must still end the hold, or the drift never comes back
+    window.addEventListener('pointerup', up)
+    window.addEventListener('pointercancel', up)
     el.addEventListener('click', click, true)
     el.addEventListener('pointerenter', enter)
     el.addEventListener('pointerleave', leave)
@@ -121,8 +134,8 @@ export default function Wheel() {
       document.removeEventListener('visibilitychange', vis)
       el.removeEventListener('pointerdown', down)
       el.removeEventListener('pointermove', move)
-      el.removeEventListener('pointerup', up)
-      el.removeEventListener('pointercancel', up)
+      window.removeEventListener('pointerup', up)
+      window.removeEventListener('pointercancel', up)
       el.removeEventListener('click', click, true)
       el.removeEventListener('pointerenter', enter)
       el.removeEventListener('pointerleave', leave)

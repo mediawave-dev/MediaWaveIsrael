@@ -35,7 +35,8 @@ export const NAV = [
 
 export const HERO = {
   // [קופי: נתי]
-  h1: ['דף נחיתה שמביא פניות', 'לעסק, לקורס או לתוכנית הליווי שלכם.'],
+  // no-break space: "שמביא פניות" stays together, so "פניות" never sits alone on a line
+  h1: ['דף נחיתה שמביא\u00A0פניות', 'לעסק, לקורס או לתוכנית הליווי שלכם.'],
   // [קופי: נתי]
   lede: 'אפיון, כתיבה שיווקית, עיצוב ופיתוח. הכול במקום אחד, מהשיחה הראשונה ועד שהדף באוויר.',
   cta: 'כתבו לנו בוואטסאפ',
@@ -66,12 +67,12 @@ export const OFFER = {
 
 export const PROCESS = {
   h2: 'איך זה |הולך לעבוד?',
-  // [קופי: נתי] all four; the facts are from services.ts (two rounds of changes, 5 to 7 working days)
+  // [קופי: נתי] all four; the facts are from services.ts and faqs.ts (two rounds of changes; writing is extra, faq-9); the time is said once, by the slip below
   steps: [
     { title: 'אפיון', line: 'מתחילים בשיחה. מבינים מה אתם מוכרים, למי, ומה עוצר היום את הלקוחות שלכם מלפנות.' },
-    { title: 'כתיבה שיווקית', line: 'כותבים יחד את הטקסט של הדף: כותרת שאומרת מה מקבלים, ותשובות לשאלות שעולות לפני שפונים.' },
+    { title: 'כתיבה שיווקית', line: 'כותרת שאומרת מה מקבלים, ותשובות לשאלות שעולות לפני שפונים. עובדים עם הטקסט שלכם, או כותבים אותו יחד בתשלום נוסף.' },
     { title: 'עיצוב', line: 'מקבלים עיצוב מלא לאישור, לפני שבונים. עד שני סבבי תיקונים כלולים.' },
-    { title: 'פיתוח', line: 'בונים דף שנפתח מהר בטלפון, ומחברים אותו לוואטסאפ, למודעות ולמדידה. דף נחיתה רגיל באוויר תוך 5 עד 7 ימי עבודה.' },
+    { title: 'פיתוח', line: 'בונים דף שנפתח מהר בטלפון, ומחברים אותו לוואטסאפ, למודעות ולמדידה.' },
   ],
 }
 
@@ -92,6 +93,7 @@ export const CONTACT = {
   h2: 'גם אתם רוצים דף |שמביא פניות?', // [קופי: נתי]
   lede: 'השאירו פרטים, ונחזור אליכם תוך 24 שעות בימי עסקים.', // [קופי: נתי]
   submit: 'שליחה',
+  submitWhatsApp: 'שליחה בוואטסאפ', // [קופי: נתי] the button says what it does: it opens WhatsApp with the message
   previewWhatsApp: 'ההודעה שתיפתח אצלכם בוואטסאפ:', // [קופי: נתי]
   previewSent: 'זה מה שיגיע אלינו:', // [קופי: נתי]
   viaWhatsApp: 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.',
@@ -103,5 +105,7 @@ export const ALSO = [
   { href: '/services/landing-pages/', label: 'דפי נחיתה' },
   { href: '/services/building-websites/', label: 'אתרי תדמית' },
   { href: '/services/seo-promotion/', label: 'קידום בגוגל' },
+  { href: '/services/chatbots/', label: 'צ׳אטבוט לעסק' },
   { href: '/services/video-editing/', label: 'עריכת וידאו והמרת קלטות' },
+  { href: '/services/memory-videos/', label: 'סרטוני זיכרונות' },
 ]

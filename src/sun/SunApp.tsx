@@ -25,11 +25,12 @@ const Fallback = () => (PRERENDERED.html && PRERENDERED.path === window.location
   ? <div style={{ display: 'contents' }} dangerouslySetInnerHTML={{ __html: PRERENDERED.html }} />
   : <div style={{ minHeight: '120vh' }} aria-hidden="true" />)
 
-/** In-page links (/#work) land on their section after the route has painted. */
+/** A link to a section (/#process). On the prerendered build the browser has already landed on it, so this
+    only serves a first paint that had no content yet (the dev server): it never pulls a reader back. */
 function useHashScroll() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
-    if (!hash) return
+    if (!hash || window.scrollY > 0) return
     const id = decodeURIComponent(hash.slice(1))
     const t = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }), 60)
     return () => clearTimeout(t)
