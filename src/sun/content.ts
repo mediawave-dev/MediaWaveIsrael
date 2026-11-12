@@ -5,10 +5,14 @@
 // words and every fact are ours (src/data/services.ts, src/data/faqs.ts, the Terms). Nothing of his proof
 // (page counts, client revenue, testimonials) is borrowed: we have none of our own to state yet.
 // Lines new in this round are marked [קופי: נתי] until Nati approves them.
+// Three other versions of these words wait for his pick in ./copy (a, b, c): the page shows one with ?copy=a,
+// or one block of one with ?about=c (./copy/index.ts). Each block below ends with the version's lines, which
+// replace its own only when the address asks for them; with no parameter the text is the one written here.
 import { getWhatsAppUrl } from '../utils/whatsapp'
 import { SITE_CONTACT } from '../data/site'
 import { faqs } from '../data/faqs'
 import workJson from '../data/work.json'
+import { versionFor } from './copy'
 
 export interface Project {
   slug: string
@@ -49,6 +53,7 @@ export const HERO = {
   second: 'איך זה עובד',
   note: SITE_CONTACT.responseTime,
   sticker: ['דף נחיתה', 'באוויר תוך', '5 עד 7', 'ימי עבודה'],
+  ...versionFor('hero')?.HERO,
 }
 
 export const ABOUT = {
@@ -61,6 +66,7 @@ export const ABOUT = {
   ],
   // Nati's own wording (D246). No colon anywhere in the copy: he reads them as a machine's habit.
   close: ['דף אחד, עם מטרה אחת בלבד.', 'שיפנו אליכם.'],
+  ...versionFor('about')?.ABOUT,
 }
 
 export const OFFER = {
@@ -70,6 +76,7 @@ export const OFFER = {
     { tone: 'blue', name: 'אתר תדמית', line: 'למי שמחפשים אותו בגוגל, ורוצים לראות מי הוא לפני שמתקשרים.' }, // [קופי: נתי]
     { tone: 'coral', name: 'אתר לתוכנית ליווי', line: 'לקורס, לליווי או לסדנה, כשרוב המתעניינים מתלבטים.' }, // [קופי: נתי]
   ],
+  ...versionFor('offer')?.OFFER,
 }
 
 export const PROCESS = {
@@ -81,6 +88,7 @@ export const PROCESS = {
     { title: 'עיצוב', line: 'מקבלים עיצוב מלא לאישור, לפני שבונים. עד שני סבבי תיקונים כלולים.' },
     { title: 'פיתוח', line: 'בונים דף שנפתח מהר בטלפון, ומחברים אותו לוואטסאפ, למודעות ולמדידה.' },
   ],
+  ...versionFor('process')?.PROCESS,
 }
 
 /** The date line under the steps. The dates are computed in the browser (Home.tsx, launchDates). [קופי: נתי] */
@@ -88,11 +96,14 @@ export const LAUNCH = {
   start: 'מתחילים ב',
   end: 'דף נחיתה רגיל באוויר עד',
   note: 'לפי 7 ימי עבודה, ראשון עד חמישי, מהיום שהחומרים אצלנו. חגים מזיזים את התאריך.',
+  ...versionFor('launch')?.LAUNCH,
 }
 
-const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']
+/** A version may choose other questions from faqs.ts and name the block; the answers are the same everywhere. */
+const faqPick = versionFor('faq')?.FAQ
+const FAQ_IDS = faqPick?.ids ?? ['faq-price', 'faq-8', 'faq-own', 'faq-9']
 export const FAQ = {
-  h2: 'שאלות |שחוזרות',
+  h2: faqPick?.h2 ?? 'שאלות |שחוזרות',
   items: FAQ_IDS.map((id) => faqs.find((f) => f._id === id)!).filter(Boolean),
 }
 
@@ -104,11 +115,13 @@ export const CONTACT = {
   viaWhatsApp: 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.',
   sent: 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.',
   failed: 'השליחה לא הצליחה. אפשר לכתוב לנו בוואטסאפ או להתקשר.',
+  ...versionFor('contact')?.CONTACT,
 }
 
 export const ALSO = [
   { href: '/services/landing-pages/', label: 'דפי נחיתה' },
   { href: '/services/building-websites/', label: 'אתרי תדמית' },
+  { href: '/services/program-sites/', label: 'אתרים לקורסים ולתוכניות ליווי' },
   { href: '/services/seo-promotion/', label: 'קידום בגוגל' },
   { href: '/services/chatbots/', label: 'צ׳אטבוט לעסק' },
   { href: '/services/video-editing/', label: 'עריכת וידאו והמרת קלטות' },

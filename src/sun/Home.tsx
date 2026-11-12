@@ -2,12 +2,14 @@
 // the promise with the wheel of sites, nice to meet you, what we build, how it goes, four questions, the form.
 // D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
 // the wheel; the work list, the page diagram and the price sheet left the page.
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import SEO from '../components/SEO'
 import { SITE_CONTACT } from '../data/site'
 import { getWhatsAppUrl } from '../utils/whatsapp'
 import { isValidName, isValidPhone, validationErrors } from '../utils/validation'
 import { track } from '../utils/analytics'
+import { MIN_FILL_MS, TRAP_FIELD, leadReady, sendLead } from '../utils/lead'
+import './lead.css'
 import Wheel from './Wheel'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
@@ -21,6 +23,8 @@ export function H2({ id, children }: { id?: string; children: string }) {
 }
 
 /** Line drawings for the three kinds of site: black outline, one yellow part (Libra's icon language). */
+/** Each kind's own page. The key is the kind's tone, which every version of the copy keeps. */
+const KIND_HREF: Record<string, string> = { sun: '/services/landing-pages/', blue: '/services/building-websites/', coral: '/services/program-sites/' }
 const KIND_ICON: Record<string, JSX.Element> = {
   sun: (<><rect x="14" y="6" width="20" height="36" rx="3" /><path d="M19 13h10M19 18h7" /><rect className="fill" x="19" y="27" width="10" height="6" rx="3" /></>),
   blue: (<><rect x="6" y="10" width="36" height="26" rx="3" /><path d="M6 17h36M18 42h12M24 36v6" /><rect className="fill" x="11" y="22" width="11" height="9" rx="1.5" /><path d="M27 23h10M27 28h7" /></>),
@@ -82,7 +86,7 @@ function Offer() {
               <span className="ring" aria-hidden="true">
                 <svg viewBox="0 0 48 48" width="56" height="56" focusable="false">{KIND_ICON[k.tone]}</svg>
               </span>
-              <h3 className="h3">{k.name}</h3>
+              <h3 className="h3"><a className="kind__link" href={KIND_HREF[k.tone]} onClick={() => track('cta_click', { placement: `offer_${k.tone}` })}><span>{k.name}</span><IconChevrons /></a></h3>
               <p>{k.line}</p>
             </li>
           ))}
@@ -171,60 +175,127 @@ type Field = 'name' | 'phone'
 const ASK = 'אשמח לשמוע על דף נחיתה או אתר.'
 const leadText = (name: string, phone: string, ask = ASK) => `היי, אני ${name}.\n${ask}\nהטלפון שלי ${phone}`
 
-/** `ask` is the sentence about what the visitor wants: a service page passes its own, so the message fits the page. */
+/** `ask` is the sentence about what the visitor wants: a service page passes its own, so the message fits the page.
+    The form sends in one of two ways and its button says which. Where the server can mail (/api/lead answers
+    that it is ready) the enquiry is posted and reaches the studio whatever the visitor does next. Everywhere
+    else, and after a send that failed, the same words open in WhatsApp for the visitor to send. */
 export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?: string; ask?: string }) {
   const [data, setData] = useState({ name: '', phone: '' })
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
-  const [state, setState] = useState<'idle' | 'loading' | 'done'>('idle')
+  const [sending, setSending] = useState(false)
   const [status, setStatus] = useState('')
+  const [mail, setMail] = useState(false)
+  const form = useRef<HTMLFormElement>(null)
+  const trap = useRef<HTMLInputElement>(null)
+  // refs, not state: they are read inside handlers and must be true the moment they are set
+  const busy = useRef(false)
+  const mailFailed = useRef(false)
+  const started = useRef(false)
+  const seenAt = useRef(0)
+  const openedAt = useRef(0)
+
+  // The server is asked only when the form is about to come into view, so the answer is there before the
+  // button is read and a visit that never reaches the form costs no request. Seeing the form is counted once.
+  useEffect(() => {
+    const el = form.current
+    if (!el || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    let live = true
+    const near = () => { void leadReady().then((ok) => { if (live && ok && !mailFailed.current) setMail(true) }) }
+    const seen = () => { seenAt.current ||= Date.now(); track('form_view', { placement }) }
+    if (!('IntersectionObserver' in window)) { near(); seen(); return () => { live = false } }
+    const once = (run: () => void, init: IntersectionObserverInit) => {
+      const io = new IntersectionObserver((entries) => { if (entries.some((x) => x.isIntersecting)) { io.disconnect(); run() } }, init)
+      io.observe(el)
+      return io
+    }
+    const a = once(near, { rootMargin: '800px 0px' })
+    const b = once(seen, { threshold: 0.5 })
+    return () => { live = false; a.disconnect(); b.disconnect() }
+  }, [placement])
+
+  const change = (f: Field) => (e: ChangeEvent<HTMLInputElement>) => {
+    if (!started.current) { started.current = true; seenAt.current ||= Date.now(); track('form_start', { placement }) }
+    setData((d) => ({ ...d, [f]: e.target.value }))
+    if (errors[f]) setErrors((x) => ({ ...x, [f]: undefined }))
+  }
+
+  const refuse = (errs: Partial<Record<Field, string>>) => {
+    setErrors(errs)
+    const first = (['name', 'phone'] as Field[]).find((f) => errs[f])
+    if (first) requestAnimationFrame(() => document.getElementById(`lead-${first}`)?.focus())
+    return !!first
+  }
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
-    if (state === 'loading') return
-    const errs: Partial<Record<Field, string>> = {}
-    if (!isValidName(data.name)) errs.name = validationErrors.name
-    if (!isValidPhone(data.phone)) errs.phone = validationErrors.phone
-    setErrors(errs)
-    const first = (['name', 'phone'] as Field[]).find((f) => errs[f])
-    if (first) { requestAnimationFrame(() => document.getElementById(`lead-${first}`)?.focus()); return }
+    // a second press while the first is on its way is not a second enquiry
+    if (busy.current) return
+    // one more press right after "received" (the fields are empty again) is not a new enquiry with two errors
+    if (status === CONTACT.sent && !data.name && !data.phone) return
+    const name = data.name.trim()
+    const phone = data.phone.trim()
+    if (refuse({ ...(!isValidName(name) && { name: validationErrors.name }), ...(!isValidPhone(phone) && { phone: validationErrors.phone }) })) return
 
-    const endpoint = import.meta.env.VITE_CONTACT_ENDPOINT
-    // No endpoint: hand the message to WhatsApp, prefilled. Never pretend it was sent.
-    if (!endpoint) {
-      const text = leadText(data.name.trim(), data.phone.trim(), ask)
-      track('form_submit', { placement, mode: 'whatsapp_fallback' })
-      window.open(getWhatsAppUrl(text), '_blank', 'noopener')
+    // No mail here, or the mail just failed: hand the message to WhatsApp, prefilled. Never pretend it was sent.
+    // Opened inside the press itself, before anything is awaited, so no browser blocks the new tab.
+    if (!mail) {
+      // a double click is one message, not two WhatsApp tabs and two counted sends
+      if (Date.now() - openedAt.current < 1000) return
+      openedAt.current = Date.now()
+      track('form_submit', { placement, mode: mailFailed.current ? 'whatsapp_after_fail' : 'whatsapp' })
+      window.open(getWhatsAppUrl(leadText(name, phone, ask)), '_blank', 'noopener')
       setStatus(CONTACT.viaWhatsApp)
       return
     }
-    setState('loading')
-    try {
-      await fetch(endpoint, {
-        method: 'POST', mode: 'no-cors',
-        body: new URLSearchParams({ fullName: data.name.trim(), phone: data.phone.trim(), message: leadText(data.name.trim(), data.phone.trim(), ask), page: window.location.href, userAgent: navigator.userAgent }),
-      })
-      track('form_submit', { placement, mode: 'endpoint' })
-      setState('done'); setStatus(CONTACT.sent); setData({ name: '', phone: '' })
-    } catch {
-      setState('idle'); setStatus(CONTACT.failed)
+
+    busy.current = true
+    setSending(true)
+    setStatus('')
+    // the server refuses a send that comes too soon after the form was seen; a person this quick waits it out
+    const since = seenAt.current || (seenAt.current = Date.now())
+    const early = MIN_FILL_MS - (Date.now() - since)
+    if (early > 0) await new Promise((r) => window.setTimeout(r, early))
+    const out = await sendLead({ name, phone, ask, t: Date.now() - since, trap: trap.current?.value ?? '' })
+    busy.current = false
+    setSending(false)
+
+    if (out.ok) {
+      track('form_submit', { placement, mode: 'mail' })
+      setData({ name: '', phone: '' })
+      setStatus(CONTACT.sent)
+      return
     }
+    // the server's own check refused a field the browser let through: say it on the field
+    if (out.error === 'name' || out.error === 'phone') { refuse({ [out.error]: validationErrors[out.error] }); return }
+    // Not sent, and the form says so. What the visitor typed stays, and the button now sends it through WhatsApp.
+    track('form_submit', { placement, mode: 'mail_failed' })
+    mailFailed.current = true
+    setMail(false)
+    setStatus(CONTACT.failed)
   }
 
   const input = (f: Field, label: string, props: Record<string, unknown>) => (
     <div className="field" data-invalid={errors[f] ? '' : undefined}>
       <label htmlFor={`lead-${f}`}>{label}</label>
-      <input id={`lead-${f}`} name={f} value={data[f]} required onChange={(e) => { setData((d) => ({ ...d, [f]: e.target.value })); if (errors[f]) setErrors((x) => ({ ...x, [f]: undefined })) }}
+      <input id={`lead-${f}`} name={f} value={data[f]} required onChange={change(f)}
         aria-invalid={errors[f] ? true : undefined} aria-describedby={errors[f] ? `lead-${f}-err` : undefined} {...props} />
       {errors[f] && <p id={`lead-${f}-err`} className="field__err">{errors[f]}</p>}
     </div>
   )
 
   return (
-    <form className="form" onSubmit={submit} noValidate>
+    // method="dialog" outside a dialog submits nowhere: a press before the script is alive (the prerendered
+    // page on a slow phone) leaves the page and the typed fields as they are. Without it the browser would
+    // reload the page with the name and the phone in the address.
+    <form ref={form} className="form" method="dialog" onSubmit={submit} noValidate>
       {input('name', 'שם מלא', { type: 'text', autoComplete: 'name' })}
       {input('phone', 'טלפון נייד', { type: 'tel', inputMode: 'tel', autoComplete: 'tel', dir: 'ltr' })}
-      <button className="btn btn--white btn--wide" type="submit" disabled={state === 'loading'}>
-        <span>{state === 'loading' ? 'שולחים...' : import.meta.env.VITE_CONTACT_ENDPOINT ? CONTACT.submit : CONTACT.submitWhatsApp}</span><IconChevrons />
+      {/* the field people never see (lead.css): a script that fills it is refused by the server */}
+      <div className="form__trap" aria-hidden="true"><input ref={trap} type="text" name={TRAP_FIELD} tabIndex={-1} autoComplete="off" /></div>
+      {/* aria-disabled, not disabled: a disabled button drops the keyboard focus to the page body, and the
+          visitor would have to hunt for the button again after the answer. busy blocks a second send. */}
+      <button className="btn btn--white btn--wide" type="submit" aria-disabled={sending || undefined}>
+        <span>{sending ? 'שולחים...' : mail ? CONTACT.submit : CONTACT.submitWhatsApp}</span><IconChevrons />
       </button>
       <p className="form__status" role="status" aria-live="polite">{status}</p>
       <p className="form__legal">בשליחה אתם מאשרים את <a href="/privacy/">מדיניות הפרטיות</a>.</p>

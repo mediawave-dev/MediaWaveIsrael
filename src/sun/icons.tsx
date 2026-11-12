@@ -15,8 +15,6 @@ export const IconPhone = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...
 export const IconMail = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 8 8 6 8-6" /></svg>)
 export const IconMenu = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="M4 7h16M4 12h16M4 17h10" /></svg>)
 export const IconClose = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="m6 6 12 12M18 6 6 18" /></svg>)
-export const IconCheck = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="m5 12.500 4.500 4.500L19 7" /></svg>)
-export const IconPlus = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="M12 5v14M5 12h14" /></svg>)
 export const IconA11y = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base(p)} {...line}><circle cx="12" cy="4.500" r="1.700" fill="currentColor" stroke="none" /><path d="M5 8.500c2.300.700 4.600 1 7 1s4.700-.300 7-1M12 9.500v5m0 0-3 6m3-6 3 6" /></svg>
 )

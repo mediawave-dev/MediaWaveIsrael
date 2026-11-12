@@ -4,6 +4,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Shell from './Shell'
 import Home from './Home'
+import { trackView } from '../utils/analytics'
 
 const pages = () => import('./pages')
 const Service = lazy(() => pages().then((m) => ({ default: m.Service })))
@@ -39,6 +40,8 @@ function useHashScroll() {
 
 export default function SunApp() {
   useHashScroll()
+  const { pathname } = useLocation()
+  useEffect(() => { trackView() }, [pathname])
   const L = (el: React.ReactNode) => <Suspense fallback={<Fallback />}>{el}</Suspense>
   return (
     <Shell>

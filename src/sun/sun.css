@@ -69,6 +69,9 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .h2 b { font-weight: 700; }
 .h1 { font-size: clamp(2.375rem, 10.4vw, 5.25rem); line-height: 1.06; }
 .h1--page { font-size: clamp(2.125rem, 7vw, 3.75rem); }
+/* a service page says its name the way every heading is said (D253): a light lead-in, then the heavy name */
+.h1--two { font-weight: 400; font-size: clamp(2.5rem, 11vw, 4.25rem); }
+.h1--two b { font-weight: 700; }
 /* the heading (D245): one heavy statement, then a lighter sentence. No highlight, no box: black on the yellow. */
 .h1__rest { display: block; margin-block-start: .2em; font-size: .6em; font-weight: 400; line-height: 1.2; }
 .h2 { font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.12; margin-block-end: 28px; }
@@ -110,7 +113,6 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
   .band:not(.band--cream):not(.band--blue) { padding-block: calc(96px + var(--wave-h) * .6); }
   .h2 { margin-block-end: 44px; }
 }
-.band--line:not(.band--cream):not(.band--blue) { padding-block-start: 0; }
 
 /* ---------- buttons: a pill, one colour change, the icon nudges inside its own padding ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 0 26px; border-radius: 5px; border: 2px solid transparent; font-weight: 700; font-size: 1.0625rem; line-height: 1.2; text-align: center; transition: background-color .2s, color .2s, border-color .2s; }
@@ -132,17 +134,11 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .btn[disabled] { opacity: .6; cursor: default; }
 .icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; transition: background-color .2s; }
 @media (hover: hover) { .icon-btn:hover { background: rgba(23, 24, 28, .1); } }
-.more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; }
+/* a link onward inside the text: heavy words and the site's one arrow, which nudges inside the link's own box */
+.more { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-inline-end: 6px; font-weight: 700; line-height: 1.3; }
 .more span { background: linear-gradient(currentColor, currentColor) 100% 100% / 0 2px no-repeat; transition: background-size .25s var(--ease); padding-block-end: 2px; }
-@media (hover: hover) { .more:hover span { background-size: 100% 2px; } }
-.ticks { display: grid; gap: 12px; }
-.ticks li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; line-height: 1.5; }
-.ticks svg { margin-block-start: 4px; }
-.ticks--cols { gap: 14px 32px; }
-@media (min-width: 700px) { .ticks--cols { grid-template-columns: 1fr 1fr; } }
-.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 24px; }
-.tags li { padding: 6px 14px; border-radius: 999px; border: 2px solid var(--ink); font-size: .9375rem; font-weight: 600; line-height: 1.4; }
-.after { margin-block-start: 24px; }
+.more svg { flex: none; transition: transform .25s var(--ease); }
+@media (hover: hover) { .more:hover span { background-size: 100% 2px; } .more:hover svg { transform: translateX(-4px); } }
 
 /* ---------- header (D245, D246, D249), after Libra. Two parts:
    the bar is part of the page (links, accessibility) and scrolls away;
@@ -269,6 +265,19 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .kind .ring { grid-row: span 2; }
 .kind .h3 { align-self: end; }
 .kind p { align-self: start; margin-block-start: 4px; line-height: 1.55; color: var(--ink-2); }
+/* a kind leads to its page: the name is the link and the whole row takes the tap */
+.kind { position: relative; }
+.kind__link { display: inline-flex; align-items: center; gap: 8px; }
+.kind__link::after { content: ""; position: absolute; inset: -8px; }
+.kind__link svg { flex: none; transition: transform .25s var(--ease); }
+.kind__link:focus-visible { outline: none; }
+.kind:has(.kind__link:focus-visible) { outline: 3px solid var(--ink); outline-offset: 8px; border-radius: 6px; }
+@media (hover: hover) {
+  .kind:hover .kind__link svg { transform: translateX(-4px); }
+  .kind:hover .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink), 0 14px 24px -14px rgba(23, 24, 28, .45); }
+}
+/* running text never leaves one word alone on its last line */
+.kind p, .route__stop p, .launch small, .contact__lede { text-wrap: pretty; }
 .ring { display: grid; place-items: center; width: 104px; height: 104px; margin: 4px; border-radius: 50%; background: #fff; border: 2px solid var(--ink); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--sun), 0 14px 24px -14px rgba(23, 24, 28, .45); }
 .ring svg { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .ring svg .fill { fill: var(--sun); }
@@ -285,7 +294,6 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .route__stop { position: relative; }
 .route__n { position: absolute; inset-inline-start: -75px; top: -10px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--ink); font: 400 1.75rem/1 var(--display); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink); }
 .route__stop p { margin-block-start: 6px; line-height: 1.6; }
-.route__time { margin-block-start: 36px; font-weight: 700; }
 @media (min-width: 900px) {
   .route { border-inline-start: 0; margin-inline-start: 0; margin-block-start: 60px; padding-inline-start: 0; border-block-start: 2px solid var(--ink); grid-template-columns: repeat(4, 1fr); gap: 32px; }
   .route[data-n="5"] { grid-template-columns: repeat(5, 1fr); gap: 22px; }
@@ -317,6 +325,8 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    for fields, one white button. ---------- */
 .contact { position: relative; overflow: clip; background: var(--paper); padding-block: 40px 56px; }
 .contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -64px; width: 230px; aspect-ratio: 1; border-radius: 50%; background: var(--sun-pale); }
+/* a side service ends on its price band (D254): the circles start below the band's hanging wave, not under it */
+:is(.band--cream, .band--blue) + .contact { margin-block-start: var(--wave-h); }
 .contact__disc { --d: clamp(620px, 168vw, 760px); position: relative; width: var(--d); height: var(--d); margin-inline: calc(50% - var(--d) / 2); display: grid; place-items: center; border-radius: 50%; background: var(--sun); box-shadow: 0 34px 60px -34px rgba(23, 24, 28, .55); }
 .contact__in { width: min(100vw - 56px, 348px); display: grid; text-align: center; }
 .contact__in .h2 { margin-block-end: 10px; font-size: clamp(1.75rem, 6.6vw, 2.5rem); }
@@ -378,9 +388,11 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .tab[data-on] { opacity: 1; transform: none; }
 html:not(.menu-open) .tab[data-on] .tab__wave path, html:not(.menu-open) .tab[data-on] span { pointer-events: auto; }
 html.menu-open .tab { opacity: 0; pointer-events: none; }
-.consent { position: fixed; z-index: 69; inset-inline: 12px; bottom: calc(92px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); max-width: 420px; display: grid; gap: 10px; padding: 14px 16px; background: #fff; border-radius: 20px; box-shadow: 0 0 0 2px var(--ink), 0 18px 36px -14px rgba(23, 24, 28, .5); font-size: .9375rem; line-height: 1.45; transition: bottom .4s var(--ease); }
-.consent:has(+ .tab:not([data-on])) { bottom: calc(12px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); }
-.consent a { color: var(--blue-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+/* the note stands at the lower place and is lifted over the WhatsApp corner by a transform: moving it by `bottom` counted as layout shift while a phone scrolled */
+.consent { position: fixed; z-index: 69; inset-inline: 12px; bottom: calc(12px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); transform: translateY(-80px); max-width: 420px; display: grid; gap: 10px; padding: 14px 16px; background: #fff; border-radius: 20px; box-shadow: 0 0 0 2px var(--ink), 0 18px 36px -14px rgba(23, 24, 28, .5); font-size: .9375rem; line-height: 1.45; transition: transform .4s var(--ease); }
+.consent:has(+ .tab:not([data-on])) { transform: none; }
+/* the link's target is 44 px; the negative margin keeps the line it stands in at its own height */
+.consent a { display: inline-block; padding: 12px 4px; margin: -12px -4px; color: var(--blue-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .consent div { display: flex; align-items: center; gap: 14px; }
 .consent__no { min-height: 44px; padding-inline: 6px; font-weight: 600; }
 @media (hover: hover) { .consent__no:hover { text-decoration: underline; } }
@@ -395,11 +407,75 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-block-end: 22px; font-size: .9375rem; font-weight: 600; }
 .crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (hover: hover) { .crumbs a:hover { text-decoration: underline; text-underline-offset: 4px; } }
-.prose-blocks { display: grid; gap: 36px; }
-.prose-blocks .h3 { margin-block-end: 8px; }
-.sample__video { width: 100%; border-radius: 28px; background: var(--ink); aspect-ratio: 16 / 9; }
-.sample__text { margin-block-start: 28px; }
 @media (min-width: 900px) { .phero { padding-block: 24px 56px; } }
+
+/* ---------- a service page (D253). Its hero is the home page's, standing still: the promise, then two cards
+   of our work turned as two neighbours on the wheel are, in front of the same white horizon. The cards sink
+   under the hero's edge on a phone, so the words stay the largest thing in the first screen. ---------- */
+.phero--shots { --cw: clamp(112px, 34vw, 132px); --ch: calc(var(--cw) * 2); --R: calc(var(--cw) * 5.6); --turn: 5.5deg; padding-block-end: 0; overflow: clip; }
+.phero--shots::after { display: none; }
+.phero--shots::before { content: ""; position: absolute; inset-inline: -3%; bottom: -1px; height: calc(var(--ch) * .4); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; pointer-events: none; }
+.phero__in { position: relative; }
+.shots { position: relative; height: calc(var(--ch) * .66); margin-block-start: 34px; }
+.shots .wheel__card { position: absolute; top: 12px; inset-inline-start: 50%; width: var(--cw); height: var(--ch); margin-inline-start: calc(var(--cw) / -2); transform-origin: 50% calc(var(--ch) / 2 + var(--R)); transform: rotate(var(--turn)); }
+.shots .wheel__card + .wheel__card { transform: rotate(calc(var(--turn) * -1)); }
+.phero--shots + .band:not(.band--cream):not(.band--blue) { padding-block-start: 64px; }
+@media (min-width: 600px) { .phero--shots { --cw: 190px; } }
+@media (min-width: 900px) {
+  .h1--two { font-size: clamp(2.75rem, 4.7vw, 4.25rem); }
+  .phero--shots { --cw: clamp(150px, 15.5vw, 224px); --R: calc(var(--cw) * 6.8); --turn: 5deg; }
+  .phero--shots::before { height: calc(var(--ch) * .22); }
+  .phero--shots .phero__in { display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--cw) * 2.42); column-gap: 40px; align-items: start; }
+  /* the words end clear of the horizon, however many lines the name takes */
+  .phero--shots .phero__text { padding-block: 36px 128px; }
+  .shots { align-self: end; height: calc(var(--ch) + 64px); margin-block-start: 0; }
+  .shots .wheel__card { top: 20px; }
+  .phero--shots + .band:not(.band--cream):not(.band--blue) { padding-block-start: 104px; }
+}
+
+/* the questions before the price: a heading that asks, and the answer in its first words */
+.asks { display: grid; gap: 60px; }
+.ask .h2 { margin-block-end: 14px; }
+.ask > p:not(.about__close) { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; max-width: 36em; text-wrap: pretty; }
+.ask > p + p:not(.about__close) { margin-block-start: 14px; }
+.ask .about__close { margin-block-start: 30px; }
+.ask .about__close :is(span, b) { text-wrap: balance; }
+.ask .about__close b { font-size: clamp(1.875rem, 8vw, 2.75rem); line-height: 1.1; }
+.ask .more { margin-block-start: 10px; }
+/* a sample film (D254): the frame the wheel's cards wear, at the film's own shape. As an answer it stands
+   right under its question and the words come after it. The 16:9 is the picture's box, inside the white edge,
+   so no sliver of the ground shows beside the still. */
+.film { --edge: 4px; box-sizing: content-box; width: calc(100% - 2 * var(--edge)); height: auto; aspect-ratio: 16 / 9; border-radius: 22px; border: var(--edge) solid #fff; background: var(--ink); box-shadow: 0 16px 34px -14px rgba(23, 24, 28, .55); }
+.ask .film { margin-block: 6px 24px; }
+@media (min-width: 900px) {
+  .asks { gap: 92px; }
+  .ask .h2 { margin-block-end: 20px; }
+  .film { --edge: 5px; border-radius: 28px; }
+  .ask .film { margin-block: 8px 32px; }
+}
+
+/* the quote slip: the written quote every job starts with (Terms 3.1), drawn simply. Of the launch slip's
+   family: a white sheet, one heavy line, small notes. Once per page. Its order is the visitor's: how the
+   price is set (the answer to the heading over it), what it includes, what costs extra, the terms. */
+.quote { padding: 22px 18px 20px; background: #fff; border-radius: 8px; box-shadow: 0 16px 30px -18px rgba(23, 24, 28, .5); }
+.quote__head { padding-block-end: 14px; border-block-end: 2px solid var(--ink); font: 400 clamp(1.3125rem, 5vw, 1.75rem)/1.25 var(--display); }
+.quote__head b { display: block; font-weight: 700; }
+.quote__sum { margin-block-start: 18px; font: 700 clamp(1.1875rem, 4.6vw, 1.5rem)/1.3 var(--display); text-wrap: balance; }
+.quote__in { margin-block: 22px 2px; font-size: .875rem; color: var(--ink-2); }
+.quote__rows li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-block: 12px; border-block-end: 1px solid var(--line); line-height: 1.45; text-wrap: balance; }
+.quote__rows small { flex: none; font-size: .875rem; font-weight: 700; }
+.quote__notes { margin-block-start: 16px; display: grid; gap: 4px; font-size: .9375rem; line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
+.quote__notes strong { color: var(--ink); background: linear-gradient(var(--sun), var(--sun)) 50% 92% / 100% 36% no-repeat; padding-inline: .1em; white-space: nowrap; }
+.quote + .band__cta { margin-block-start: 32px; }
+@media (min-width: 900px) {
+  .quote { padding: 36px 44px 34px; }
+  .quote__head { padding-block-end: 18px; }
+  .quote__head b { display: inline; }
+  .quote__sum { margin-block-start: 24px; }
+  .quote__in { margin-block-start: 28px; }
+  .quote__rows li { padding-block: 14px; }
+  .quote__notes { margin-block-start: 20px; }
+}
 
 /* the legal text keeps its own markup (TermsBody and friends); only its dress is set here */
 .legal section { margin-block-end: 44px; }
@@ -420,5 +496,5 @@ html.high-contrast :is(.band--blue, .hero, .phero) { border-block: 2px solid #00
 html.high-contrast .contact__disc { outline: 3px solid #000; }
 html.high-contrast .wheel__card--next { background: #000; }
 html.high-contrast .wheel__card--next b { color: #fff; }
-html.high-contrast :is(.contact__disc, .wheel__card, .foot) { outline: 2px solid #000; outline-offset: -2px; }
+html.high-contrast :is(.contact__disc, .wheel__card, .foot, .quote, .film) { outline: 2px solid #000; outline-offset: -2px; }
 html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }

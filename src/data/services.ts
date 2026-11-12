@@ -1,4 +1,5 @@
-// The six services: one source for the home page cards, the service pages and their JSON-LD.
+// The services: one source for the service pages, their JSON-LD and the routes (the prerender and the sitemap
+// read every `slug` in this file, so the word is used for a service's own address only).
 // Copy rewritten 2026-10-17 (SOTD round, design/copy/CHANGELOG.rtl.md): outcome first, plain Hebrew,
 // no stack names, every fact traceable to the Terms (src/components/pages/Terms.tsx), the home FAQ
 // (src/data/faqs.ts) or the portfolio sample. No invented numbers, clients or prices.
@@ -6,6 +7,32 @@
 export interface ServiceStep {
   title: string
   line: string
+}
+
+/** One of the customer's questions and its answer (sun, D253). */
+export interface ServiceAsk {
+  /** the question a business owner asks, in the two weights of every heading: "light|heavy" */
+  q: string
+  /** the answer, one paragraph per entry; it starts in the first words */
+  a: string[]
+  /** a closing pair set large, a light sentence then the heavy point (the home page's .about__close); one per page at most */
+  close?: [string, string]
+  /** the answer is the service's own sample film (portfolio-examples.ts): it stands right under the question, the text after it */
+  sample?: boolean
+}
+
+/** The written quote every job starts with (Terms 3.1), as the page draws it (sun, D253). */
+export interface ServiceQuote {
+  /** what the quote is for, in two weights: "light|heavy" */
+  name: string
+  /** what the price includes; the slip says "כלול במחיר" once, over these rows */
+  rows: string[]
+  /** what it does not include: the row, and the note at its end (a real figure or "בתשלום נוסף") */
+  extra?: [string, string][]
+  /** the first line is how the price is set: it stands right under the slip's name, set heavy, because the
+      heading over the slip asks what it costs. The rest stand under the rows: how long it takes and how it
+      is paid. *Stars* mark the one number worth a highlight. The page adds the VAT line itself (PRICE_COMMON). */
+  lines: string[]
 }
 
 export interface ServicePageData {
@@ -44,6 +71,27 @@ export interface ServicePageData {
   cta: string
   /** the WhatsApp prefill for this service (first person, gender-free) */
   waText?: string
+
+  // ---- sun (D253): the page as the customer's questions, in the order they ask them. Every service carries
+  // these four; the older fields above are read only by the earlier looks and the SEO scripts.
+  /** the page's name in two weights, chosen with search in mind: "light|heavy" (no bar: all of it heavy) */
+  h1: string
+  /** the answer under the H1: what it is, and one number where the service has one */
+  lede: string
+  /** the questions before the price, one or two */
+  asks: ServiceAsk[]
+  /** the quote slip, the answer to "what does it cost" */
+  quote: ServiceQuote
+  /** two phone cards of our work for the hero, file names in public/work without ".webp". Only cards of the
+      kind of site the page is about: a page with no such work of ours shows none */
+  shots?: string[]
+  /** the page's name on the line that says where one stands, when the title is not what the site calls
+      the page (default: title) */
+  crumb?: string
+  /** a side service: about half a main page. The promise, two questions, the slip, the form. What its steps
+      and its faq say is told in the answers and in the slip's notes, so the page draws neither block
+      (both fields stay as they are for the older looks). */
+  brief?: boolean
 }
 
 /** Lines every price sheet ends with (Terms 3.1, 3.2, 3.4). */
@@ -60,7 +108,7 @@ export const servicesData: ServicePageData[] = [
     shortDescription: 'אתר שנבנה מאפס בשבילכם, ונשאר שלכם.',
     metaTitle: 'בניית אתרים לעסקים',
     metaDescription:
-      'בניית אתר לעסק, מאפס ובלי תבנית, עם כל פנייה ישר לוואטסאפ. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות, והוא שלכם אחרי התשלום.',
+      'בניית אתר תדמית לעסק, מאפס ובלי תבנית. כל פנייה מגיעה ישר לוואטסאפ. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות, והוא שלכם אחרי התשלום.',
     heroSubtitle: 'אתר שנבנה מאפס בשביל העסק שלכם, וכל פנייה ממנו מגיעה ישר לוואטסאפ.',
     lottieAnimation: '/animations/1/web-design.json',
     tags: ['אתר בסיסי תוך 2 עד 3 שבועות', 'שנה של אחסון ודומיין כלולה', 'האתר שלכם אחרי התשלום'],
@@ -93,10 +141,11 @@ export const servicesData: ServicePageData[] = [
     ],
     steps: [
       { title: 'שיחה', line: 'מספרים על העסק, ומבינים יחד מה האתר צריך לעשות.' },
-      { title: 'הצעת מחיר', line: 'מקבלים בכתב מה נבנה, כמה זמן ייקח וכמה זה עולה.' },
+      { title: 'הצעת מחיר', line: 'מקבלים בכתב מה נבנה וכמה זה עולה.' },
       { title: 'עיצוב לאישור', line: 'רואים את העיצוב לפני שבונים. עד שני סבבי תיקונים כלולים.' },
       { title: 'בנייה', line: 'מקבלים קישור לטלפון, ורואים את האתר נבנה.' },
-      { title: 'השקה', line: 'האתר עולה לאוויר. בחודש הראשון התמיכה עלינו.' },
+      // the month of support is the slip's to say (its last row)
+      { title: 'השקה', line: 'האתר עולה לאוויר.' },
     ],
     time: 'אתר בסיסי לוקח 2 עד 3 שבועות. אתר גדול יותר לוקח 4 עד 6. טקסטים ותמונות מוכנים מקצרים את הזמן.',
     price: [
@@ -105,16 +154,12 @@ export const servicesData: ServicePageData[] = [
       'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
       'מהשנה השנייה האחסון עולה 500 עד 800 ₪ לשנה.',
     ],
+    // only what the page has not answered above (the price is the slip's, D253)
     faq: [
       {
-        question: 'כמה עולה אתר?',
+        question: 'האתר יופיע בגוגל?',
         answer:
-          'תלוי במספר העמודים ובמה שהאתר צריך לעשות. אחרי שיחה קצרה מקבלים הצעה בכתב, כולל מע״מ. עבודה מעבר להצעה מתומחרת לפי שעה, 200 עד 300 ₪.',
-      },
-      {
-        question: 'מה יכול לעכב?',
-        answer:
-          'בעיקר חומרים ואישורים. כשהטקסטים והתמונות מוכנים, ועל כל גרסה עונים תוך 7 ימי עסקים, לוח הזמנים נשמר.',
+          'כן. כל אתר נבנה כך שגוגל יכול למצוא אותו ולהבין מה יש בו. מי שרוצה לטפס גבוה יותר מוסיף קידום חודשי, בתשלום נפרד.',
       },
       {
         question: 'אצטרך לדעת תכנות כדי לעדכן את האתר?',
@@ -122,20 +167,66 @@ export const servicesData: ServicePageData[] = [
           'לא. מקבלים מערכת פשוטה לעדכון טקסטים ותמונות, והדרכה איך להשתמש בה.',
       },
       {
+        question: 'מה יכול לעכב?',
+        answer:
+          'בעיקר חומרים ואישורים. כשהטקסטים והתמונות מוכנים, ועל כל גרסה עונים תוך 7 ימי עסקים, לוח הזמנים נשמר.',
+      },
+      {
+        question: 'ומה אם ארצה שינויים שלא היו בהצעה?',
+        answer:
+          'עד שני סבבי תיקונים כלולים במחיר. עבודה מעבר להצעה מתומחרת לפי שעה, 200 עד 300 ₪.',
+      },
+      {
         question: 'של מי האתר בסוף?',
         answer:
-          'שלכם. אחרי תשלום מלא העיצוב, הקוד והתכנים עוברים אליכם.',
+          'שלכם. אחרי תשלום מלא האתר עובר אליכם, עם העיצוב והקוד.',
       },
     ],
-    cta: 'רוצים אתר שנבנה בשביל העסק שלכם?',
+    cta: 'רוצים אתר תדמית לעסק שלכם?',
     waText: 'היי, אשמח לשמוע על בניית אתר לעסק שלי.',
+    // "בניית אתר" is what people search, "אתר תדמית" is what the home page calls it: the H1 holds both
+    h1: 'בניית |אתר\u00A0תדמית',
+    lede: 'אתר שנבנה מאפס בשביל העסק שלכם, וכל פנייה ממנו מגיעה ישר לוואטסאפ. אתר בסיסי עולה לאוויר תוך 2\u00A0עד\u00A03\u00A0שבועות.',
+    // the footer and the home page call this page "אתרי תדמית"
+    crumb: 'אתרי תדמית',
+    // two image sites; the landing page of ours stands on the landing page's own page
+    shots: ['ben-david-card-top', 'yael-levy-card-top'],
+    asks: [
+      {
+        q: 'דף נחיתה או |אתר תדמית?',
+        a: [
+          'אתר תדמית מתאים כשמחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שמתקשרים. יש בו כמה עמודים ומידע על כל העסק.',
+          'דף נחיתה הוא עמוד אחד עם מטרה אחת, בדרך כלל לקמפיין.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לאתר תדמית',
+      rows: [
+        'עיצוב מאפס לעסק שלכם',
+        'בנייה לטלפון ולמחשב',
+        'כפתור וואטסאפ וטופס פנייה',
+        'מערכת לעדכון טקסטים ותמונות, עם הדרכה',
+        'אחסון ודומיין לשנה הראשונה, עם גיבויים',
+        'חודש ראשון של תמיכה אחרי ההשקה',
+      ],
+      extra: [
+        ['אחסון מהשנה השנייה', '500 עד 800 ₪ לשנה'],
+        ['כתיבת תוכן', 'בתשלום נפרד'],
+      ],
+      lines: [
+        'המחיר נקבע לפי מספר העמודים ולפי מה שהאתר צריך לעשות, למשל חנות.',
+        'אתר בסיסי לוקח *2 עד 3 שבועות*. אתר גדול יותר לוקח 4 עד 6 שבועות.',
+        'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
+      ],
+    },
   },
   {
     id: 'landing',
     slug: 'landing-pages',
     title: 'דפי נחיתה',
     shortDescription: 'דף אחד עם הצעה אחת, שמוביל ישר לוואטסאפ.',
-    metaTitle: 'דף נחיתה לעסק ולקמפיין',
+    metaTitle: 'בניית דף נחיתה לעסק ולקמפיין',
     metaDescription:
       'דף נחיתה לעסק או לקמפיין. דף אחד עם מטרה אחת, שמוביל את מי שנכנס לכתוב לכם בוואטסאפ. נבנה מאפס ומוכן תוך 5 עד 7 ימי עבודה.',
     heroSubtitle: 'דף אחד עם מטרה אחת, שמי שנכנס יכתוב לכם בוואטסאפ.',
@@ -166,31 +257,183 @@ export const servicesData: ServicePageData[] = [
       'נפתח מהר בטלפון',
       'מדידה של כמה פניות הגיעו מכל מודעה',
     ],
+    // the four steps carry the names the home page gives them (content.ts PROCESS); the lines say what the
+    // page has not said yet (what is included and what costs extra is the slip's to say)
     steps: [
-      { title: 'שיחה', line: 'מה ההצעה, למי היא מיועדת, ומאיפה יגיעו האנשים.' },
-      { title: 'טקסט ועיצוב', line: 'כותבים יחד את הטקסט, ומקבלים עיצוב לאישור.' },
-      { title: 'בנייה ובדיקה', line: 'בודקים יחד את הדף בטלפון ובמחשב.' },
-      { title: 'באוויר', line: 'הדף עולה, ומחברים אותו למודעות ולמדידה.' },
+      { title: 'אפיון', line: 'מתחילים בשיחה. מבינים מה ההצעה שלכם, ומה עוצר היום את הלקוחות מלפנות.' },
+      { title: 'כתיבה שיווקית', line: 'עובדים עם הטקסט שלכם, או כותבים אותו יחד.' },
+      { title: 'עיצוב', line: 'רואים את הדף מעוצב לפני שבונים אותו, ומבקשים שינויים.' },
+      { title: 'פיתוח', line: 'בונים את הדף ובודקים אותו יחד בטלפון ובמחשב. כשהוא עולה, מחברים אותו למודעות ולמדידה.' },
     ],
     time: 'דף רגיל מוכן תוך 5 עד 7 ימי עבודה. דף עם אנימציות מיוחדות לוקח עד שבועיים.',
     price: [
       'המחיר נקבע לפי אורך הדף, ולפי כמה אנימציות ותוכן מיוחד יש בו.',
       'משלמים חצי כשמתחילים, ואת השאר לפני שהדף עולה לאוויר.',
     ],
+    // only what the page has not answered above (landing page or site is the first question, D253)
     faq: [
       {
-        question: 'מה ההבדל בין דף נחיתה לאתר?',
+        question: 'מה יכול לעכב את הדף?',
         answer:
-          'באתר יש כמה עמודים ומידע על כל העסק. דף נחיתה הוא עמוד אחד עם מטרה אחת, בדרך כלל לקמפיין, להשקה או למבצע.',
+          'בעיקר חומרים ואישורים. כשהטקסט והתמונות מוכנים, ועל כל גרסה עונים תוך 7 ימי עסקים, לוח הזמנים נשמר.',
       },
       {
-        question: 'אפשר לשנות את הטקסט אחר כך?',
+        question: 'ומה אם ארצה שינויים אחרי שני הסבבים?',
         answer:
-          'כן. מקבלים מערכת פשוטה לעדכון טקסטים, תמונות ופרטי קשר.',
+          'עבודה מעבר להצעה מתומחרת לפי שעה, 200 עד 300 ₪.',
+      },
+      {
+        question: 'אפשר לשנות את הטקסט אחרי שהדף עלה?',
+        answer:
+          'כן. מקבלים מערכת פשוטה שבה מעדכנים טקסטים ותמונות לבד.',
+      },
+      {
+        question: 'של מי הדף בסוף?',
+        answer:
+          'שלכם. אחרי תשלום מלא הדף עובר אליכם, עם העיצוב והקוד.',
       },
     ],
     cta: 'יש לכם הצעה שצריכה דף?',
     waText: 'היי, אשמח לשמוע על דף נחיתה לעסק שלי.',
+    h1: 'בניית |דף\u00A0נחיתה',
+    lede: 'דף אחד עם מטרה אחת. מי שנכנס אליו כותב לכם בוואטסאפ או משאיר פרטים. דף רגיל באוויר תוך 5\u00A0עד\u00A07 ימי\u00A0עבודה.',
+    shots: ['switchon-card-top', 'hila-card-top'],
+    asks: [
+      {
+        q: 'מתי צריך |דף נחיתה?',
+        a: [
+          'כשיש לכם הצעה אחת ברורה, ואנשים מגיעים אליה ממודעה בגוגל או בפייסבוק. גם להשקה של שירות חדש ולמבצע בונים דף כזה.',
+        ],
+        close: ['באתר שלם יש הרבה דרכים להתפזר.', 'בדף נחיתה יש דרך אחת.'],
+      },
+      {
+        q: 'מה יהיה |בדף שלכם?',
+        a: [
+          'בראש הדף עומדת כותרת שאומרת מה מקבלים ולמי זה מתאים. אחריה באות התשובות לשאלות שעולות לפני שפונים אליכם.',
+          'כפתור הוואטסאפ נמצא לאורך כל הדף. דף שמגיעים אליו ממודעה נבנה סביב מה שהמודעה אמרה.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לדף נחיתה',
+      rows: [
+        'עיצוב מלא לאישור, לפני שבונים',
+        'בנייה קודם לטלפון, ואחר כך למחשב',
+        'כפתור וואטסאפ עם הודעה מוכנה',
+        'טופס קצר למי שמעדיף להשאיר פרטים',
+        'מדידה של כמה פניות הגיעו מכל מודעה',
+        'עד שני סבבי תיקונים',
+      ],
+      // the home page says the same (content.ts PROCESS, step two; faqs.ts faq-9)
+      extra: [['כתיבת הטקסט יחד איתכם', 'בתשלום נוסף']],
+      lines: [
+        'המחיר נקבע לפי אורך הדף, ולפי כמה אנימציות ותוכן מיוחד יש בו.',
+        'דף רגיל מוכן תוך *5 עד 7 ימי עבודה*. דף עם אנימציות מיוחדות לוקח עד שבועיים.',
+        'משלמים חצי כשמתחילים, ואת השאר לפני שהדף עולה לאוויר.',
+      ],
+    },
+  },
+  // The third kind the home page promises (content.ts OFFER). Written 13.11.2026 from what such a site has to
+  // answer for someone who hesitates, and from the studio's own process and terms; the times and the price
+  // lines are the ones every site of ours carries (faqs.ts, Terms 3.2, 4.2, 7.1 to 7.3).
+  {
+    id: 'programs',
+    slug: 'program-sites',
+    title: 'אתר לקורס ולתוכנית ליווי',
+    shortDescription: 'אתר שעונה למי שמתלבט לפני שהוא נרשם.',
+    metaTitle: 'בניית אתר לקורס ולתוכנית ליווי',
+    metaDescription:
+      'בניית אתר לקורס או לתוכנית ליווי. מי שמתלבט מוצא בו למי התוכנית מתאימה ומה יש בה, עם מחיר ותאריכים. אתר בסיסי עולה לאוויר תוך 2 עד 3 שבועות.',
+    heroSubtitle: 'מי שמתעניין בקורס או בליווי מתלבט לפני שהוא נרשם. האתר עונה לו על השאלות שעוצרות אותו.',
+    lottieAnimation: '/animations/1/web-design.json',
+    sections: [
+      {
+        heading: 'מה צריך להיות באתר של תוכנית?',
+        content:
+          'האתר פותח בשתי תשובות, למי התוכנית מתאימה ומה יש בה. אחר כך באים המחיר והתאריכים.',
+      },
+      {
+        heading: 'איך נרשמים דרך האתר?',
+        content:
+          'באתר יש כפתור וואטסאפ וטופס קצר להשארת פרטים. כשרוצים שישלמו באתר עצמו, מחברים אליו תשלום מאובטח.',
+      },
+    ],
+    features: [
+      'עיצוב מאפס לתוכנית שלכם',
+      'בנייה לטלפון ולמחשב',
+      'כפתור וואטסאפ וטופס להשארת פרטים',
+      'מערכת לעדכון טקסטים ותמונות, עם הדרכה',
+      'אחסון ודומיין לשנה הראשונה, עם גיבויים',
+      'חודש ראשון של תמיכה אחרי ההשקה',
+    ],
+    // no steps of its own: they would be the image site's five with one word changed
+    time: 'אתר בסיסי לוקח 2 עד 3 שבועות. אתר גדול יותר לוקח 4 עד 6.',
+    price: [
+      'המחיר נקבע לפי מספר העמודים ולפי מה שהאתר צריך לעשות, למשל תשלום באתר.',
+      'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
+      'מהשנה השנייה האחסון עולה 500 עד 800 ₪ לשנה.',
+    ],
+    faq: [
+      {
+        question: 'המחזור נפתח בקרוב. מה יכול לעכב?',
+        answer:
+          'בעיקר חומרים ואישורים. כשהטקסטים והתמונות מוכנים, ועל כל גרסה עונים תוך 7 ימי עסקים, לוח הזמנים נשמר.',
+      },
+      {
+        question: 'אפשר לעדכן לבד מחיר ותאריכים?',
+        answer:
+          'כן. מקבלים מערכת פשוטה שבה מעדכנים טקסטים ותמונות לבד, והדרכה איך להשתמש בה.',
+      },
+      {
+        question: 'מה ההבדל בין אתר כזה לדף נחיתה?',
+        answer:
+          'דף נחיתה הוא עמוד אחד להצעה אחת. אתר לתוכנית עונה על יותר שאלות, כי מי ששוקל קורס או ליווי מתלבט יותר לפני שהוא מחליט.',
+      },
+      {
+        question: 'של מי האתר בסוף?',
+        answer:
+          'שלכם. אחרי תשלום מלא האתר עובר אליכם, עם העיצוב והקוד.',
+      },
+    ],
+    cta: 'יש לכם קורס או תוכנית ליווי?',
+    waText: 'היי, אשמח לשמוע על אתר לקורס או לתוכנית ליווי.',
+    h1: 'בניית |אתר לקורס ולתוכנית\u00A0ליווי',
+    lede: 'מי שמתעניין בקורס או בליווי מתלבט לפני שהוא נרשם. האתר עונה לו על השאלות שעוצרות אותו, ומשאיר לו דרך קצרה להירשם.',
+    // no cards in the hero: none of the sites we have built is a course or a programme (src/data/work.json)
+    asks: [
+      {
+        q: 'מה צריך להיות |באתר של תוכנית?',
+        a: [
+          'האתר פותח בשתי תשובות, למי התוכנית מתאימה ומה יש בה. אחר כך באים המחיר והתאריכים.',
+        ],
+      },
+      {
+        q: 'איך נרשמים |דרך האתר?',
+        a: [
+          'באתר יש כפתור וואטסאפ וטופס קצר להשארת פרטים. כשרוצים שישלמו באתר עצמו, מחברים אליו תשלום מאובטח.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לאתר של תוכנית',
+      rows: [
+        'עיצוב מאפס לתוכנית שלכם',
+        'בנייה לטלפון ולמחשב',
+        'כפתור וואטסאפ וטופס להשארת פרטים',
+        'מערכת לעדכון טקסטים ותמונות, עם הדרכה',
+        'אחסון ודומיין לשנה הראשונה, עם גיבויים',
+        'חודש ראשון של תמיכה אחרי ההשקה',
+      ],
+      extra: [
+        ['אחסון מהשנה השנייה', '500 עד 800 ₪ לשנה'],
+        ['כתיבת תוכן', 'בתשלום נפרד'],
+      ],
+      lines: [
+        'המחיר נקבע לפי מספר העמודים ולפי מה שהאתר צריך לעשות, למשל תשלום באתר.',
+        'אתר בסיסי לוקח *2 עד 3 שבועות*. אתר גדול יותר לוקח 4 עד 6 שבועות.',
+        'משלמים חצי כשמתחילים, ואת השאר לפני שהאתר עולה לאוויר.',
+      ],
+    },
   },
   {
     id: 'seo',
@@ -199,7 +442,7 @@ export const servicesData: ServicePageData[] = [
     shortDescription: 'עבודה חודשית כדי שמי שמחפש את מה שאתם עושים יגיע אליכם.',
     metaTitle: 'קידום אורגני בגוגל לעסקים',
     metaDescription:
-      'קידום אורגני בגוגל לעסקים. בודקים מה הלקוחות שלכם מחפשים, מסדרים את האתר, כותבים עמודים ומדווחים כל חודש עם נתונים.',
+      'קידום אורגני בגוגל לעסקים. עבודה חודשית על האתר ועל הפרופיל העסקי בגוגל מפות, עם דוח נתונים כל חודש. תוצאות ראשונות נראות בדרך כלל אחרי 2 עד 3 חודשים.',
     heroSubtitle: 'עבודה חודשית, כדי שמי שמחפש בגוגל את מה שאתם עושים יגיע אליכם.',
     lottieAnimation: '/animations/4%20SEO/Website%20SEO%20Audit.json',
     tags: ['דוח כל חודש', 'בלי הבטחות למקום ראשון', 'גם הפרופיל שלכם בגוגל מפות'],
@@ -256,6 +499,42 @@ export const servicesData: ServicePageData[] = [
     ],
     cta: 'רוצים לדעת איפה אתם עומדים בגוגל?',
     waText: 'היי, אשמח לשמוע על קידום בגוגל לעסק שלי.',
+    // sun (D254), and the same in the three side services below: the fields above stay as they were for the
+    // older looks; the page is the promise, two questions and the slip (see `brief` in ServicePageData).
+    brief: true,
+    h1: 'קידום |בגוגל',
+    lede: 'קידום הוא עבודה חודשית, כדי שמי שמחפש בגוגל את מה שאתם עושים יגיע אליכם. כל חודש מקבלים דוח על מה שהשתנה.',
+    asks: [
+      {
+        q: 'מודעות או |קידום בגוגל?',
+        a: [
+          'מודעות מביאות אנשים מיד, ונעצרות כשמפסיקים לשלם. קידום לוקח יותר זמן, וממשיך להביא אנשים בלי לשלם על כל כניסה. כדאי לשלב את שניהם.',
+        ],
+      },
+      {
+        q: 'מתי רואים |תוצאות?',
+        a: [
+          'אחרי 2 עד 3 חודשים רואים בדרך כלל תוצאות ראשונות. תוצאות של ממש מגיעות אחרי 4 עד 6 חודשים.',
+          'אף אחד לא יכול להבטיח מקום ראשון בגוגל, וגם אנחנו לא מבטיחים.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לקידום בגוגל',
+      rows: [
+        'בדיקה של מה שהלקוחות שלכם מחפשים',
+        'סידור האתר כך שגוגל יבין אותו',
+        'כתיבת עמודים שעונים על החיפושים',
+        'שיפור המהירות של האתר',
+        'סידור הפרופיל העסקי בגוגל מפות',
+        'דוח חודשי על מה שהשתנה',
+      ],
+      // the first two steps, as the slip's note
+      lines: [
+        'המחיר הוא חודשי. הוא נקבע לפי התחרות בתחום שלכם, ולפי מספר העמודים שצריך לכתוב.',
+        'לפני שמתחילים בודקים איפה האתר שלכם עומד היום. אחר כך מקבלים בכתב על מה עובדים ובאיזה סדר.',
+      ],
+    },
   },
   {
     id: 'chatbots',
@@ -264,7 +543,7 @@ export const servicesData: ServicePageData[] = [
     shortDescription: 'עונה ללקוחות גם כשאתם בפגישה.',
     metaTitle: 'צ׳אטבוט לעסק, מענה ללקוחות באתר ובוואטסאפ',
     metaDescription:
-      'צ׳אטבוט לעסק קטן. עונה על השאלות שחוזרות כל יום, אוסף פרטים ממי שמתעניין ומעביר אליכם את מי שצריך אתכם. באתר, בוואטסאפ ובפייסבוק. בוט בסיסי מוכן תוך שבוע.',
+      'צ׳אטבוט לעסק קטן. הבוט עונה על השאלות שחוזרות כל יום, ומעביר אליכם את מי שצריך אתכם, עם שם וטלפון. הוא עובד באתר ובוואטסאפ. בוט בסיסי מוכן תוך שבוע.',
     heroSubtitle: 'עונה על השאלות שחוזרות כל יום, גם בלילה, ומעביר אליכם את מי שצריך אתכם.',
     lottieAnimation: '/animations/14%20chatbot/Live%20chatbot.json',
     lottieSize: 200,
@@ -319,6 +598,39 @@ export const servicesData: ServicePageData[] = [
     ],
     cta: 'רוצים בוט שעונה ללקוחות שלכם?',
     waText: 'היי, אשמח לשמוע על צ׳אטבוט לעסק שלי.',
+    brief: true,
+    h1: 'בניית |צ׳אטבוט\u00A0לעסק',
+    lede: 'הבוט עונה ללקוחות גם כשאתם בפגישה, וגם בלילה. את מי שצריך אתכם הוא מעביר אליכם. בוט בסיסי מוכן תוך שבוע.',
+    asks: [
+      {
+        q: 'על מה |הבוט עונה?',
+        a: [
+          'הבוט עונה על השאלות שחוזרות אצלכם כל יום, כמו שעות ומחירים. הוא מבין שאלות שנכתבות במילים רגילות, ואין בו תפריט של כפתורים.',
+          'שאלה שרק אתם יכולים לענות עליה הוא מעביר אליכם, עם השם והטלפון של מי ששאל.',
+        ],
+      },
+      {
+        q: 'איפה |הבוט עובד?',
+        a: [
+          'הבוט עובד באתר שלכם ובוואטסאפ, וגם בפייסבוק מסנג׳ר ובאינסטגרם. בוחרים לפי המקום שבו הלקוחות שלכם כבר כותבים.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לצ׳אטבוט',
+      rows: [
+        'כתיבת התשובות יחד איתכם',
+        'בדיקה משותפת לפני שהבוט פוגש לקוחות',
+        'חיבור לאתר או לוואטסאפ',
+        'מסך שבו מעדכנים את התשובות לבד',
+        'רשימה של מה ששאלו את הבוט',
+      ],
+      lines: [
+        'המחיר נקבע לפי מספר המקומות שבהם הבוט עונה, ולפי החיבורים למערכות שכבר יש לכם.',
+        'בוט שמתחבר למערכות שכבר יש לכם לוקח 2 עד 3 שבועות.',
+        'משלמים חצי כשמתחילים, ואת השאר לפני שהבוט עולה לאוויר.',
+      ],
+    },
   },
   {
     id: 'video-editing',
@@ -378,6 +690,39 @@ export const servicesData: ServicePageData[] = [
     ],
     cta: 'יש לכם צילומים או קלטות שמחכים?',
     waText: 'היי, יש לי צילומים או קלטות ואשמח לשמוע על עריכה או המרה.',
+    brief: true,
+    // two services of equal weight, so the name has no light part
+    h1: 'עריכת וידאו והמרת\u00A0קלטות',
+    lede: 'מהצילומים שלכם יוצא סרטון גמור, עם מוזיקה וכתוביות. מהקלטות שבמגירה יוצא קובץ שנפתח בכל טלפון.',
+    asks: [
+      {
+        q: 'מה שולחים |לעריכה?',
+        a: [
+          'שולחים בקישור את מה שצילמתם, בטלפון או במצלמה. עורכים ממנו סרטון לאירוע משפחתי או לעסק.',
+          'את הסרטון רואים לפני שהוא נסגר, ומבקשים שינויים.',
+        ],
+      },
+      {
+        q: 'אילו קלטות |אפשר להמיר?',
+        a: [
+          'ממירים קלטות VHS וקלטות MiniDV. קלטות מסוג אחר ממירים גם כן.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לעריכת וידאו',
+      rows: [
+        'חיתוך ועריכה של הצילומים שלכם',
+        'מוזיקה וכתוביות',
+        'עד שני סבבי תיקונים',
+        'קובץ שנפתח בכל טלפון ומחשב',
+      ],
+      extra: [['שינויים גדולים אחרי שני הסבבים', 'מתומחרים מראש']],
+      // one line for both services: it is the answer to the heading over the slip
+      lines: [
+        'בעריכה המחיר נקבע לפי אורך הסרטון וכמות החומר. בהמרת\u00A0קלטות הוא נקבע לפי מספר הקלטות.',
+      ],
+    },
   },
   {
     id: 'memory-videos',
@@ -386,7 +731,7 @@ export const servicesData: ServicePageData[] = [
     shortDescription: 'תמונות מהאלבום שחוזרות לזוז.',
     metaTitle: 'סרטון זיכרונות מתמונות ישנות',
     metaDescription:
-      'סרטון זיכרונות מתמונות ישנות מהאלבום. כל תמונה זזה, עם מוזיקה וכיתובים, להקרנה ביום הולדת, בחתונה או באירוע משפחתי. מוכן תוך 5 עד 7 ימי עבודה.',
+      'סרטון זיכרונות מתמונות ישנות מהאלבום. כל תמונה זזה, עם מוזיקה וכיתובים, להקרנה ביום הולדת או בחתונה. סרטון רגיל מוכן תוך 5 עד 7 ימי עבודה.',
     heroSubtitle: 'שולחים תמונות מהאלבום, ומקבלים סרטון שבו הן זזות, עם מוזיקה וכיתובים.',
     portfolioLink: '/portfolio/memory-videos/',
     imageIcon: '/animations/photo%20edit.svg',
@@ -446,6 +791,41 @@ export const servicesData: ServicePageData[] = [
     ],
     cta: 'יש לכם אירוע בקרוב?',
     waText: 'היי, אשמח לשמוע על סרטון זיכרונות מתמונות.',
+    brief: true,
+    h1: 'סרטון |זיכרונות',
+    lede: 'שולחים תמונות מהאלבום, ומקבלים סרטון שבו הן זזות, עם מוזיקה וכיתובים. סרטון רגיל מוכן תוך 5\u00A0עד\u00A07 ימי\u00A0עבודה.',
+    asks: [
+      {
+        q: 'כמה |תמונות צריך?',
+        a: [
+          '15 עד 30 תמונות מספיקות לסרטון של 2 עד 3 דקות. אפשר לשלוח יותר או פחות, והקצב משתנה בהתאם.',
+          'כל איכות מתאימה, גם תמונה סרוקה מאלבום ישן. משפרים אותה בדרך.',
+        ],
+      },
+      {
+        // the answer is the film itself; the text under it says only what the film cannot
+        q: 'איך נראה |סרטון כזה?',
+        sample: true,
+        a: [
+          'הקטע הזה לקוח מסרטון שהוקרן בערב יום\u00A0הולדת\u00A060. הבינה המלאכותית מזיזה את התמונות. את הסדר שלהן ואת השיר בחרנו בעצמנו, תמונה אחרי תמונה.',
+        ],
+      },
+    ],
+    quote: {
+      name: 'הצעת מחיר |לסרטון זיכרונות',
+      rows: [
+        'הנפשה של כל תמונה',
+        'שיפור של תמונות ישנות וסרוקות',
+        'מוזיקה שנבחרת לסרטון',
+        'כיתוב קצר לכל תקופה',
+        'קובץ להקרנה באולם ובבית',
+      ],
+      lines: [
+        'המחיר נקבע לפי אורך הסרטון ולפי מספר התמונות.',
+        'לאירוע קרוב אפשר לזרז, ואז הסרטון מוכן תוך יומיים או שלושה.',
+        'את הסרטון רואים לפני האירוע, ומבקשים שינויים.',
+      ],
+    },
   },
 ]
 

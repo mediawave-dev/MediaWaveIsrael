@@ -10,3 +10,13 @@ Scripts from the sessions of 12.11.2026 (D237 to D252). Each takes the site's ba
 - `fallback.mjs` (dev server on :5188): the measured width of each web face against Arial, for the fallback `size-adjust`.
 
 Servers: launch configs `sun` (dev, :5188) and `sun-dist` (`vite preview`, :5189) in the main checkout's `.claude/launch.json`. `/api/event` answers 404 on both, which is expected.
+
+## Safari's engine (added 13.11.2026)
+
+`webkit-check.mjs <base> [route ...]` runs the site in WebKit through Playwright at two iPhone sizes: errors, sideways scroll, fonts, the pinned corner's fold, the menu, the contact circle, the form, the wheel's drift. Playwright and its WebKit build are not in this repo's dependencies. Install them once in a folder of their own and run the script from there:
+
+```
+mkdir C:\tmp\night\webkit && cd C:\tmp\night\webkit && npm init -y && npm install playwright@1 && npx playwright install webkit
+```
+
+In Git Bash a route argument that starts with a slash is rewritten to a Windows path; run it from PowerShell, or give no routes and take the default four.

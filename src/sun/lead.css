@@ -1,0 +1,8 @@
+/* sun · the lead form's hidden field (functions/api/lead.ts). People never meet it: it takes no room in
+   the form's grid, no pointer and no tab stop reach it, and it is hidden from screen readers in the markup.
+   A script that fills every field it finds fills this one too, and its enquiry is refused. */
+.form__trap { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); opacity: 0; pointer-events: none; }
+
+/* While the enquiry is on its way the button looks as a disabled one does (.btn[disabled] in sun.css) but
+   keeps the keyboard focus, so the answer finds the visitor where they pressed. */
+.btn[aria-disabled="true"] { opacity: .6; cursor: default; }

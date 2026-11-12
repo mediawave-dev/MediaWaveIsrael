@@ -179,7 +179,7 @@ export default function Wheel() {
               <a className="wheel__card wheel__card--next" href={WA.hero} target="_blank" rel="noopener" tabIndex={-1} draggable={false}
                 onClick={() => track('whatsapp_click', { placement: 'wheel_next' })}>
                 <IconWhatsApp width={30} height={30} />
-                <span>האתר<br />הבא:<br /><b>שלכם</b></span>
+                <span>האתר<br />הבא<br /><b>שלכם</b></span>
               </a>
             )}
           </div>
