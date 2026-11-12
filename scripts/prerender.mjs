@@ -63,8 +63,8 @@ function fontPreloadLinks(look) {
   // D247: the headings are mediawave-font1 again (its Bold and, for the lighter lead-ins, its Regular; 6 KB each)
   if (look === 'sun') return `<link rel="preload" href="/fonts/mediawave-font1-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/mediawave-font1-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>`
+    <link rel="preload" href="/fonts/IBMPlexSansHebrew-Hebrew-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/IBMPlexSansHebrew-Latin-400.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>

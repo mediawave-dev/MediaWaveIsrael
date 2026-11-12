@@ -26,9 +26,9 @@
   --logo-b: #9A6B00;
   --logo-tag: var(--ink-2);
   /* headings (D247): mediawave-font1, the studio's own face, in its Bold; the lighter lead-ins in its Regular.
-     The text face is still open: Nati picks it from rendered options. */
-  --display: "mediawave-font1", "mediawave-font1 Fallback", "MW Noto", "MW Noto Fallback", Arial, sans-serif;
-  --text: "MW Noto", "MW Noto Fallback", Arial, sans-serif;
+     The text is IBM Plex Sans Hebrew (D248, on trial: Nati asked to see option C live). */
+  --display: "mediawave-font1", "mediawave-font1 Fallback", "MW Plex", "MW Plex Fallback", Arial, sans-serif;
+  --text: "MW Plex", "MW Plex Fallback", Arial, sans-serif;
   --gutter: 16px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --browser-chrome-bottom: 0px;

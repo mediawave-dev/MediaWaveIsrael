@@ -43,6 +43,9 @@ The corner shape behind the logo is white (logo in ink and amber). The closing l
 ## D247, the same day
 Headings are back in mediawave-font1 (Bold, with its Regular for the lighter lead-ins), sizes one step up, both files preloaded. OPEN: the text face. Nati was sent three phone renders (A Noto as today, B EFT Lampner from his OneDrive folder, C IBM Plex Sans Hebrew) and has not picked yet. If he picks B: check that the EFT licence allows web embedding, convert the three Lampner TTFs (Light, Regular, Bold in `C:\Users\User\OneDrive\Fonts\עברית\Lampner`) to woff2 into public/fonts, declare them in a sun font sheet with Light as 400, Regular as 500-650, Bold as 700+, and keep Noto's Latin as the fallback (Lampner has no Latin).
 
+## D248, the same day
+Nati asked to see option C live: the text face on the preview is now IBM Plex Sans Hebrew (`src/sun/fonts.css`, `--text` in sun.css), headings still mediawave-font1 Bold. On trial, not a final pick; back to Noto is one line (`--text`). The text-face decision is still his.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
