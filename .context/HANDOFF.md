@@ -65,6 +65,10 @@ Nati picked font option G "combined with the mediawave font", and asked for Libr
 - **Logo colour: waiting for his pick** from a board of 20 numbered options (`design/audit/sun/logo-colours/`, script `logoboard.mjs` with the hex values). Until then the site shows M3's logo: name in ink, mark in two golds (`--mark-a`, `--mark-b`; the name's colours are `--logo-a`, `--logo-b`).
 - After he picks: set those four variables, then `scripts/brand-palette.mjs`, the favicon and app icons and `logos/horizon` (all still in the old ink and amber), and the loader logo colours in `LOOK_LOGO`.
 
+## D252, the same day (night): the logo colour is picked
+Nati picked option 5 of the logo board: the mark is ink over turquoise `#14A390`, the word Wave a deeper turquoise `#0F8478`. Applied to the site, the loader, `logos/horizon`, the favicon and the app icons (`scripts/brand-palette.mjs`); this closes the open logo question in the D251 note above. The colours are settled: mint field, green-black ink, turquoise logo.
+The checks of these rounds now live in the repo (`design/audit/sun/qa/`). Four prompts for an overnight run, one per direction, are in `.context/OVERNIGHT-PROMPTS.rtl.md`; my recommendation to him was direction 1 (the service pages).
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

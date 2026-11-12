@@ -18,9 +18,10 @@ export const PALETTE = {
   // D117 "Cyanotype" (Nati, 18.10.2026): one Prussian blue at two strengths.
   // for dark grounds (the black desk #1A1917)
   // D239 (12.11.2026): Libra's palette. White over the yellow on dark grounds; ink over a dark amber on white.
-  dark: { ground: '#171717', a: '#FFFFFF', b: '#FFC40C', t: '#B8B0A0' },
+  // D252 (12.11.2026): the mint site's logo, ink over turquoise. On the green black: white over a bright turquoise.
+  dark: { ground: '#13241F', a: '#FFFFFF', b: '#2CC5B3', t: '#A9B8B2' },
   // for light grounds (white paper, the cream desk)
-  light: { ground: '#FFFFFF', a: '#171717', b: '#9A6B00', t: '#4D4942' },
+  light: { ground: '#FFFFFF', a: '#13241F', b: '#0F8478', t: '#3F4D48' },
 }
 
 const classes = (p) => `.a{fill:${p.a}}.b{fill:${p.b}}.t{fill:${p.t}}.l{fill:none;stroke:${p.t};stroke-width:1.6;stroke-opacity:0.55}`

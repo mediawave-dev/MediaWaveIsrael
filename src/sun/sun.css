@@ -24,12 +24,13 @@
   --coral: #E6EEEB;
   --line: #D6DFDB;
   --wa: #25D366;
-  /* the logo (D251, on trial until Nati picks from the logo board): the name in ink, the mark in two golds */
+  /* the logo (D252, Nati's pick 5 of the logo board): ink over turquoise. The mark's lower half is the brighter
+     turquoise; the word Wave is a step deeper so it reads as text on white (4.5:1). */
   --logo-a: var(--ink);
-  --logo-b: var(--ink);
+  --logo-b: #0F8478;
   --logo-tag: var(--ink-2);
-  --mark-a: #E6C769;
-  --mark-b: #C3942A;
+  --mark-a: var(--ink);
+  --mark-b: #14A390;
   /* the type (D249, fonts.css): headings say their heavy part in EFT Artzisraeli (weight 700) and their light
      lead-in in mediawave-font1 (weight 400); the text is EFT Lampner. */
   --display: "MW Head", "MW Head Fallback", Arial, sans-serif;

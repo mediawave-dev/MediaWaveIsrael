@@ -63,3 +63,5 @@ Since D239 (12.11.2026, branch redesign/statement-20261112) the palette is the s
 ```
 
 **PNG for tools that do not take SVG** (Canva, Word, social uploads): export from the SVG at 2x or 3x the size you need (Inkscape, Figma, or any browser screenshot of the SVG on a matching background); keep the clear space.
+
+Since D252 (12.11.2026, same branch) the palette is the mint site's: ink `#13241F` over turquoise. On white the second colour is `#0F8478` (the word Wave must read as text); on the green-black ground it is `#2CC5B3`. On the site itself the mark's lower half is a brighter `#14A390` (`--mark-b` in `src/sun/sun.css`), the one place where the mark and the word differ.
