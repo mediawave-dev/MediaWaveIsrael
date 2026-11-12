@@ -41,15 +41,18 @@ function Hero() {
       <div className="wrap hero__text">
         <h1 id="hero-h" className="h1">{HERO.h1[0]} <span className="h1__rest">{HERO.h1[1]}</span></h1>
         <p className="lede hero__lede">{HERO.lede}</p>
+      </div>
+      {/* the work comes right under the promise (Nati, D250); the two actions stand below it, on the paper */}
+      <div className="hero__stage">
+        <p className="sticker"><span>{HERO.sticker[0]}<br />{HERO.sticker[1]}<br /><b>{HERO.sticker[2]}</b><br />{HERO.sticker[3]}</span></p>
+        <Wheel />
+      </div>
+      <div className="hero__cta">
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
           <a className="btn btn--line" href="#process" onClick={() => track('cta_click', { location: 'hero_process' })}><span>{HERO.second}</span><IconChevrons /></a>
         </div>
         <p className="hero__note">{HERO.note}</p>
-      </div>
-      <div className="hero__stage">
-        <p className="sticker"><span>{HERO.sticker[0]}<br />{HERO.sticker[1]}<br /><b>{HERO.sticker[2]}</b><br />{HERO.sticker[3]}</span></p>
-        <Wheel />
       </div>
     </section>
   )

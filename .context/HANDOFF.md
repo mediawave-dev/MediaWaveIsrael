@@ -55,6 +55,11 @@ Nati picked font option G "combined with the mediawave font", and asked for Libr
 - **Open: the EFT web licence.** Nati chose G without confirming that his EFT licence covers web embedding. It is on the preview by his instruction; production needs his confirmation first.
 - The earlier font board (options A to H, `design/audit/sun/fonts/`) is closed by this pick.
 
+## D250, the same day (night): the work right under the promise; the palette is open
+- Hero: the second sentence is gone; the wheel sits right under the opening lines and the two buttons with the reply note moved below it (`.hero__cta` in Home.tsx and sun.css).
+- **Palette: not changed yet, waiting for his pick.** He disliked the coffee-coloured logo and asked for a new palette. Sent: six options A to F, then, at his request, Yael Levy's mint measured from her site (`#E8F3F1`) with a gold icon: M1 (exact mint, gold icon, dark name), M2 (exact mint, half icon and "Wave" in gold), M3 (deeper mint `#C9E8E2`, gold icon). Renders and the scripts that made them (token overrides in the browser only): `design/audit/sun/palettes/`.
+- To apply a pick: the colour tokens at the top of `src/sun/sun.css` (`--sun`, `--sun-light`, `--sun-deep`, `--sun-pale`, `--sun-sweep`, `--ink`, `--ink-2`, `--cream`, `--blue`, `--blue-soft`, `--line`, `--logo-b`; a gold icon is `[data-part="mark"] { --logo-a; --logo-b }`), then `LOOK_GROUND` / `LOOK_LOGO` in vite.config.ts, `scripts/brand-palette.mjs` and the icons, the manifest theme colour, and `node scripts/generate-og-sun.mjs`. Check AA for `--ink-2` on the field.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

@@ -201,9 +201,10 @@ html.menu-open .pin__blob { filter: none; }
 .hero { background: var(--sun-sweep); padding-block-start: 20px; overflow: clip; }
 .hero__text { text-align: center; display: grid; justify-items: center; gap: 18px; }
 .hero__lede { max-width: 31em; }
-.hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-block-start: 6px; }
+.hero__cta { display: grid; justify-items: center; gap: 14px; padding: 22px var(--gutter) 4px; background: var(--paper); text-align: center; }
+.hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .hero__note { font-size: .9375rem; font-weight: 600; }
-.hero__stage { position: relative; margin-block-start: 34px; }
+.hero__stage { position: relative; margin-block-start: 46px; }
 .sticker { position: absolute; z-index: 3; top: -34px; inset-inline-start: max(10px, 50% - 560px); width: 112px; height: 112px; display: grid; place-items: center; text-align: center; border-radius: 50%; background: var(--blue); color: #fff; font-size: .8125rem; font-weight: 600; line-height: 1.2; transform: rotate(8deg); box-shadow: 0 10px 24px -10px rgba(23, 24, 28, .5); pointer-events: none; }
 .sticker b { display: inline-block; font: 700 1.5rem/1.1 var(--display); color: var(--sun); }
 @media (min-width: 900px) {
