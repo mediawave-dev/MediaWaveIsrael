@@ -25,8 +25,9 @@
   /* the logo on white: ink, and a dark amber from the yellow family that still reads as text (4.9:1) */
   --logo-b: #9A6B00;
   --logo-tag: var(--ink-2);
-  /* headings: Noto Sans Hebrew at its heaviest, slightly narrowed; the text is the same family, so one font file serves the page */
-  --display: "MW Noto", "MW Noto Fallback", Arial, sans-serif;
+  /* headings (D247): mediawave-font1, the studio's own face, in its Bold; the lighter lead-ins in its Regular.
+     The text face is still open: Nati picks it from rendered options. */
+  --display: "mediawave-font1", "mediawave-font1 Fallback", "MW Noto", "MW Noto Fallback", Arial, sans-serif;
   --text: "MW Noto", "MW Noto Fallback", Arial, sans-serif;
   --gutter: 16px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
@@ -57,17 +58,17 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .skip:focus { top: 12px; }
 
 /* ---------- type ---------- */
-.h1, .h2, .h3, .h4 { font-family: var(--display); font-weight: 900; font-stretch: 90%; text-wrap: balance; }
-.h2 { font-weight: 300; }
-.h2 b { font-weight: 900; }
-.h3, .h4 { font-weight: 800; }
-.h1 { font-size: clamp(2.25rem, 9.6vw, 5rem); line-height: 1.08; }
+.h1, .h2, .h3, .h4 { font-family: var(--display); font-weight: 700; text-wrap: balance; }
+.h2 { font-weight: 400; }
+.h2 b { font-weight: 700; }
+/* mediawave-font1 is set at 83% of its em (shot-fonts.css), so the sizes are a step larger than the numbers suggest */
+.h1 { font-size: clamp(2.5rem, 11.2vw, 5.5rem); line-height: 1.08; }
 .h1--page { font-size: clamp(2.125rem, 7vw, 3.75rem); }
 /* the heading (D245): one heavy statement, then a lighter sentence. No highlight, no box: black on the yellow. */
-.h1__rest { display: block; margin-block-start: .2em; font-size: .6em; font-weight: 300; line-height: 1.2; }
-.h2 { font-size: clamp(1.875rem, 6.4vw, 3.25rem); line-height: 1.12; margin-block-end: 28px; }
-.h3 { font-size: clamp(1.4375rem, 3vw, 1.75rem); line-height: 1.2; }
-.h4 { font-size: 1.1875rem; line-height: 1.3; }
+.h1__rest { display: block; margin-block-start: .2em; font-size: .6em; font-weight: 400; line-height: 1.2; }
+.h2 { font-size: clamp(2.125rem, 7.4vw, 3.625rem); line-height: 1.12; margin-block-end: 28px; }
+.h3 { font-size: clamp(1.5625rem, 3.2vw, 1.875rem); line-height: 1.2; }
+.h4 { font-size: 1.3125rem; line-height: 1.3; }
 .lede { font-size: clamp(1.125rem, 2.2vw, 1.375rem); line-height: 1.6; max-width: 38em; text-wrap: pretty; }
 
 /* ---------- layout ---------- */
@@ -149,7 +150,7 @@ html.menu-open .head { background: var(--paper); }
 /* the menu: a sheet of paper under the header; rows open with one chevron */
 .sheet { position: absolute; inset-inline: 0; top: 100%; background: var(--paper); padding: 4px var(--gutter) 22px; border-radius: 0 0 24px 24px; box-shadow: 0 26px 30px -20px rgba(23, 24, 28, .35); }
 .sheet nav { display: grid; margin-block-end: 18px; }
-.sheet nav a { display: flex; align-items: center; justify-content: space-between; min-height: 54px; font: 800 1.25rem/1.2 var(--display); font-stretch: 90%; border-block-end: 1px solid var(--line); }
+.sheet nav a { display: flex; align-items: center; justify-content: space-between; min-height: 54px; font: 700 1.25rem/1.2 var(--display); border-block-end: 1px solid var(--line); }
 .sheet nav a svg { opacity: .55; }
 @media (min-width: 1100px) {
   .head__blob { width: 436px; height: 124px; }
@@ -184,7 +185,7 @@ html.menu-open .head { background: var(--paper); }
 .hero__note { font-size: .9375rem; font-weight: 600; }
 .hero__stage { position: relative; margin-block-start: 34px; }
 .sticker { position: absolute; z-index: 3; top: -34px; inset-inline-start: max(10px, 50% - 560px); width: 112px; height: 112px; display: grid; place-items: center; text-align: center; border-radius: 50%; background: var(--blue); color: #fff; font-size: .8125rem; font-weight: 600; line-height: 1.2; transform: rotate(8deg); box-shadow: 0 10px 24px -10px rgba(23, 24, 28, .5); pointer-events: none; }
-.sticker b { display: inline-block; font: 900 1.5rem/1.1 var(--display); font-stretch: 90%; color: var(--sun); }
+.sticker b { display: inline-block; font: 700 1.5rem/1.1 var(--display); color: var(--sun); }
 @media (min-width: 900px) {
   .hero { padding-block-start: 40px; }
   .hero__text { gap: 22px; }
@@ -208,7 +209,7 @@ html.menu-open .head { background: var(--paper); }
 .wheel__slot:nth-child(even) { display: none; }
 .wheel__card { display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: 22px; background: #fff; border: 4px solid #fff; box-shadow: 0 16px 34px -14px rgba(23, 24, 28, .55); -webkit-user-drag: none; }
 .wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; border-radius: 18px; pointer-events: none; }
-.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); border-color: var(--ink); color: #fff; font: 900 1.5rem/1.15 var(--display); font-stretch: 90%; }
+.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); border-color: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
 .wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
 @media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 620px; } }
 @media (min-width: 900px) {
@@ -232,8 +233,8 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .about__line { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; margin-block-end: 18px; max-width: 36em; text-wrap: pretty; }
 /* the last line (D246): a light sentence, then the point, large. A yellow bar at the reading side holds them. */
 .about__close { margin-block-start: 36px; padding-inline-start: 20px; border-inline-start: 6px solid var(--sun); display: grid; gap: 6px; }
-.about__close span { font: 300 clamp(1.25rem, 4.8vw, 1.625rem)/1.3 var(--display); }
-.about__close b { font: 900 clamp(2.25rem, 9.6vw, 3.5rem)/1.05 var(--display); font-stretch: 90%; }
+.about__close span { font: 400 clamp(1.25rem, 4.8vw, 1.625rem)/1.3 var(--display); }
+.about__close b { font: 700 clamp(2.25rem, 9.6vw, 3.5rem)/1.05 var(--display); }
 
 /* ---------- what we build: three ring circles (Libra), a name and one line each ---------- */
 .kinds { display: grid; gap: 34px; }
@@ -255,7 +256,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 /* ---------- process: one line from the first call to the day it is live; the stops sit on it ---------- */
 .route { border-inline-start: 2px solid var(--ink); margin-inline-start: 28px; padding-inline-start: 46px; display: grid; gap: 34px; }
 .route__stop { position: relative; }
-.route__n { position: absolute; inset-inline-start: -75px; top: -10px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--ink); font: 300 1.75rem/1 var(--display); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink); }
+.route__n { position: absolute; inset-inline-start: -75px; top: -10px; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; background: #fff; color: var(--ink); font: 400 1.75rem/1 var(--display); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink); }
 .route__stop p { margin-block-start: 6px; line-height: 1.6; }
 .route__time { margin-block-start: 36px; font-weight: 700; }
 @media (min-width: 900px) {
@@ -269,8 +270,8 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .launch { min-height: 118px; margin: 40px auto 0; max-width: 560px; display: grid; gap: 4px; align-content: center; text-align: center; padding: 18px 20px; background: #fff; border-radius: 8px; box-shadow: 0 16px 30px -18px rgba(23, 24, 28, .5); }
 .launch:empty { min-height: 164px; background: none; box-shadow: none; }
 @media (min-width: 540px) { .launch:empty { min-height: 126px; } }
-.launch b { font: 300 1.125rem/1.4 var(--display); }
-.launch span { font: 800 clamp(1.1875rem, 4.6vw, 1.5rem)/1.3 var(--display); font-stretch: 90%; }
+.launch b { font: 400 1.125rem/1.4 var(--display); }
+.launch span { font: 700 clamp(1.1875rem, 4.6vw, 1.5rem)/1.3 var(--display); }
 .launch strong { background: linear-gradient(var(--sun), var(--sun)) 50% 92% / 100% 36% no-repeat; padding-inline: .1em; white-space: nowrap; }
 .launch small { margin-block-start: 6px; font-size: .8125rem; line-height: 1.5; color: var(--ink-2); }
 .launch + .band__cta { margin-block-start: 28px; }
@@ -278,7 +279,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 /* ---------- faq ---------- */
 .faq { border-block-start: 2px solid var(--ink); }
 .faq__item { border-block-end: 2px solid var(--ink); }
-.faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding-block: 12px; cursor: pointer; list-style: none; font: 900 1.1875rem/1.35 var(--display); font-stretch: 90%; }
+.faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding-block: 12px; cursor: pointer; list-style: none; font: 700 1.1875rem/1.35 var(--display); }
 .faq__item summary::-webkit-details-marker { display: none; }
 .faq__item summary svg { flex: none; width: 24px; height: 24px; transition: transform .25s var(--ease); }
 .faq__item[open] summary svg { transform: rotate(-90deg); }
@@ -326,7 +327,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .foot__in > div:last-child .foot__h { width: 100%; }
 .foot__brand .mw-logo { height: 34px; width: auto; }
 .foot__brand p { margin-block-start: 14px; font-weight: 600; max-width: 18em; text-wrap: balance; }
-.foot__h { font: 900 1.0625rem/1.3 var(--display); font-stretch: 90%; margin-block-end: 6px; }
+.foot__h { font: 700 1.0625rem/1.3 var(--display); margin-block-end: 6px; }
 .foot nav a, .foot__in > div > a { display: flex; align-items: center; min-height: 44px; font-weight: 500; text-wrap: balance; }
 .foot__in a { width: fit-content; min-width: 44px; }
 @media (hover: hover) { .foot__in a:hover, .foot__legal a:hover { text-decoration: underline; text-underline-offset: 4px; } }
@@ -376,7 +377,7 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 
 /* the legal text keeps its own markup (TermsBody and friends); only its dress is set here */
 .legal section { margin-block-end: 44px; }
-.legal h2 { font: 900 1.5rem/1.25 var(--display); font-stretch: 90%; margin-block-end: 14px; padding-block-end: 10px; border-block-end: 2px solid var(--ink); }
+.legal h2 { font: 700 1.5rem/1.25 var(--display); margin-block-end: 14px; padding-block-end: 10px; border-block-end: 2px solid var(--ink); }
 .legal h3 { font-weight: 700; font-size: 1.125rem; margin-block: 22px 8px; }
 .legal p { margin-block-end: 12px; }
 .legal ul, .legal ol { list-style: disc; padding-inline-start: 1.3em; margin-block-end: 14px; }

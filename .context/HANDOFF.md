@@ -40,6 +40,9 @@ He did not like the white wave ribbon at the top nor the main heading, its words
 ## D246, the same day
 The corner shape behind the logo is white (logo in ink and amber). The closing line of "נעים מאוד" is Nati's wording, "דף אחד, עם מטרה אחת בלבד. שיפנו אליכם.", set as a light sentence over a large heavy one beside a yellow bar. New standing rule from him: no colons in the copy, he reads them as a machine's habit; all of them were rewritten on the home page, in the WhatsApp message, the form labels, the error message and every service page (not in the legal texts).
 
+## D247, the same day
+Headings are back in mediawave-font1 (Bold, with its Regular for the lighter lead-ins), sizes one step up, both files preloaded. OPEN: the text face. Nati was sent three phone renders (A Noto as today, B EFT Lampner from his OneDrive folder, C IBM Plex Sans Hebrew) and has not picked yet. If he picks B: check that the EFT licence allows web embedding, convert the three Lampner TTFs (Light, Regular, Bold in `C:\Users\User\OneDrive\Fonts\עברית\Lampner`) to woff2 into public/fonts, declare them in a sun font sheet with Light as 400, Regular as 500-650, Bold as 700+, and keep Noto's Latin as the fallback (Lampner has no Latin).
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

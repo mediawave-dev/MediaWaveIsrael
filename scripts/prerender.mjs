@@ -60,7 +60,10 @@ function fontPreloadLinks(look) {
   // the sea (D133): the hero's line carries digits ("2 עד 3"), which live in Noto's Latin subset, and the
   // largest text at first paint can be that line: preload the Latin subset too, so it never waits
   // sun (D237): Noto sets the headings too, so the display preload above is the Hebrew subset already
-  if (look === 'sun') return `<link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>
+  // D247: the headings are mediawave-font1 again (its Bold and, for the lighter lead-ins, its Regular; 6 KB each)
+  if (look === 'sun') return `<link rel="preload" href="/fonts/mediawave-font1-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/mediawave-font1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${DISPLAY_FONT}" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
