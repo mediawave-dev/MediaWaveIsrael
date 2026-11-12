@@ -6,8 +6,7 @@
 // text (D244). So that it can be read, a tap on the wheel holds it still for a few seconds.
 // Geometry lives in sun.css (--cw, --ch, --R); 36 slots at 10 degrees, and phones show every second slot.
 // The opening (D241), the page's one staged moment: the wheel starts under the horizon, turned away, and
-// comes up and round like a heavy wheel settling, while a brush stroke is drawn under the promise and the
-// sticker is stamped on. index.html sets html.sun-open before first paint, so the prerendered page already
+// comes up and round like a heavy wheel settling, and then the sticker is stamped on. index.html sets html.sun-open before first paint, so the prerendered page already
 // shows the starting pose; this effect plays it once and removes the class.
 import { useEffect, useRef } from 'react'
 import { PROJECTS, WA } from './content'
@@ -95,7 +94,7 @@ export default function Wheel() {
       const dt = Math.max(0, Math.min(0.05, (t - last) / 1000 || 0))
       last = t
       if (open >= 0) {
-        if (open === 0) html.classList.add('sun-play') // the brush and the sticker run on CSS, timed against this clock
+        if (open === 0) html.classList.add('sun-play') // the sticker runs on CSS, timed against this clock
         open += dt
         const k = Math.min(1, open / OPEN.seconds)
         const up = Math.min(1, open / OPEN.rise)

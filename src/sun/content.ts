@@ -38,11 +38,13 @@ export const NAV = [
 ]
 
 export const HERO = {
+  // [קופי: נתי] D245: he found the earlier heading machine-like ("X שמביא Y", a list of three, "הכול במקום אחד").
+  // Now it is what a person would say: who we are and what we do, then what kind, then what else and whose
+  // work is on the wheel. A subject in every sentence, no list, no slogan.
+  // no-break space: "דפי נחיתה" stays together, so "נחיתה." never sits alone on a line
+  h1: ['אנחנו בונים דפי\u00A0נחיתה.', 'כאלה שאנשים משאירים בהם פרטים.'],
   // [קופי: נתי]
-  // no-break space: "שמביא פניות" stays together, so "פניות" never sits alone on a line
-  h1: ['דף נחיתה שמביא\u00A0פניות', 'לעסק, לקורס או לתוכנית הליווי שלכם.'],
-  // [קופי: נתי]
-  lede: 'אפיון, כתיבה שיווקית, עיצוב ופיתוח. הכול במקום אחד, מהשיחה הראשונה ועד שהדף באוויר.',
+  lede: 'וגם אתרי תדמית, ואתרים לקורסים ולתוכניות ליווי. את האתרים שכאן למטה בנינו אנחנו.',
   cta: 'כתבו לנו בוואטסאפ',
   second: 'איך זה עובד',
   note: SITE_CONTACT.responseTime,

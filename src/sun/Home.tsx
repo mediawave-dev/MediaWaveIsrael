@@ -39,7 +39,7 @@ function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h">
       <div className="wrap hero__text">
-        <h1 id="hero-h" className="h1"><span className="h1__mark">{HERO.h1[0]}</span><br /><span className="h1__rest">{HERO.h1[1]}</span></h1>
+        <h1 id="hero-h" className="h1">{HERO.h1[0]} <span className="h1__rest">{HERO.h1[1]}</span></h1>
         <p className="lede hero__lede">{HERO.lede}</p>
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
@@ -262,8 +262,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="דף נחיתה שמביא פניות לעסק, לקורס או לתוכנית ליווי"
-        description="MediaWave בונה דפי נחיתה, אתרי תדמית ואתרים לקורסים ולתוכניות ליווי: אפיון, כתיבה שיווקית, עיצוב ופיתוח. דף נחיתה באוויר תוך 5 עד 7 ימי עבודה."
+        title="בונים דפי נחיתה, אתרי תדמית ואתרים לקורסים ולתוכניות ליווי"
+        description="MediaWave בונה דפי נחיתה שאנשים משאירים בהם פרטים, וגם אתרי תדמית ואתרים לקורסים ולתוכניות ליווי. דף נחיתה רגיל באוויר תוך 5 עד 7 ימי עבודה."
         canonical="/"
       />
       <Hero />

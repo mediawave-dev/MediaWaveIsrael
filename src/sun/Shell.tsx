@@ -67,10 +67,10 @@ function Header() {
   }, [menu])
   return (
     <header className="head">
-      {/* the ribbon (after Libra, D238): paper with a wave for its lower edge, and a blue wave at the far end */}
-      <svg className="head__wave" viewBox="0 0 1440 110" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <path className="w-paper" d="M0 0H1440V92C1340 112 1210 78 1040 70C820 60 640 84 430 66C290 54 140 62 0 78Z" />
-        <path className="w-corner" d="M0 0H372C338 28 276 64 172 82C110 92 50 91 0 85Z" />
+      {/* D245: the logo sits in a black corner wave, the shape of the "כתבו לנו" tab at the bottom of the screen
+          turned to hang from the top corner. Nothing else is drawn in the header. */}
+      <svg className="head__blob" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M0 0H200V70C146 100 60 66 0 0Z" />
       </svg>
       <div className="head__in">
         <a className="head__logo" href="/" aria-label="MediaWave, לדף הבית"><Logo variant="compact" decorative /></a>
@@ -98,7 +98,6 @@ function Header() {
         <a className="btn btn--ink btn--wide" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'menu' })}>
           <IconWhatsApp /><span>כתבו לנו בוואטסאפ</span><IconChevrons />
         </a>
-        <svg className="sheet__wave" viewBox="0 0 390 46" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 0H390V8C318 44 232 6 150 24C92 37 40 40 0 30Z" /></svg>
       </div>
     </header>
   )

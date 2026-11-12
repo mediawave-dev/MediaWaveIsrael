@@ -34,6 +34,9 @@ Two more scenes of Hila Kelerman's page on the wheel (her family-photos block an
 ## D244, the same day
 Nati: cards that speak about the content, not pictures alone ("the hero of each site, like Yael's"), plus one more quality step on my own initiative. Every card is now one phone screen cut where the site says something (`top` and `scenes` offsets in src/data/work.json; scripts/capture-work.mjs makes only cards now, 528 px wide). Phone cards grew to 176 px so the text reads; a tap holds the wheel for six seconds (a second tap releases it); the wheel opens on the first project in work.json. The desktop shots, full-page shots and lower crops left the repo (in git history); mediawave-2026-phone.webp stays as the source of that hand-made card.
 
+## D245, the same day (Nati looked at it on his phone)
+He did not like the white wave ribbon at the top nor the main heading, its words and its look; he loves the black "כתבו לנו" corner tab. Done: the ribbon is gone and the logo sits in a black corner wave of the tab's shape, hanging from the top corner (Shell.tsx `head__blob`, logo in white and yellow); the tools stand on the yellow; the phone menu is a plain sheet. The H1 is now "אנחנו בונים דפי נחיתה." with a light second sentence "כאלה שאנשים משאירים בהם פרטים.", no brush highlight; the lede points at the wheel ("את האתרים שכאן למטה בנינו אנחנו"). The opening keeps the wheel and the sticker. What read as machine to him: the "X שמביא Y" mould, lists of three and four, "הכול במקום אחד".
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.

@@ -63,8 +63,8 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .h3, .h4 { font-weight: 800; }
 .h1 { font-size: clamp(2.25rem, 9.6vw, 5rem); line-height: 1.08; }
 .h1--page { font-size: clamp(2.125rem, 7vw, 3.75rem); }
-.h1__rest { display: inline-block; margin-block-start: .3em; font-size: .56em; font-weight: 800; line-height: 1.25; }
-.h1__mark { display: inline; padding-inline: .12em; background: linear-gradient(#fff, #fff) 100% 92% / 100% 34% no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* the heading (D245): one heavy statement, then a lighter sentence. No highlight, no box: black on the yellow. */
+.h1__rest { display: block; margin-block-start: .2em; font-size: .6em; font-weight: 300; line-height: 1.2; }
 .h2 { font-size: clamp(1.875rem, 6.4vw, 3.25rem); line-height: 1.12; margin-block-end: 28px; }
 .h3 { font-size: clamp(1.4375rem, 3vw, 1.75rem); line-height: 1.2; }
 .h4 { font-size: 1.1875rem; line-height: 1.3; }
@@ -134,42 +134,37 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .tags li { padding: 6px 14px; border-radius: 999px; border: 2px solid var(--ink); font-size: .9375rem; font-weight: 600; line-height: 1.4; }
 .after { margin-block-start: 24px; }
 
-/* ---------- header (D238, after Libra): a white ribbon with a wave for its lower edge lies over the yellow;
-   at the far end a blue wave holds the one action. Part of the page: it does not follow the scroll. ---------- */
+/* ---------- header (D245): the logo sits in a black corner wave, the shape of the "כתבו לנו" tab turned to hang
+   from the top corner on the logo's side. Nothing else is drawn: the tools stand on the yellow.
+   Part of the page: it does not follow the scroll. (The shape is drawn for the start corner of an RTL page.) ---------- */
 .head { position: relative; z-index: 40; background: var(--sun-light); }
-.head__wave { position: absolute; inset: 0 0 auto 0; width: 100%; height: 84px; pointer-events: none; }
-.head__wave .w-paper { fill: var(--paper); }
-.head__wave .w-corner { fill: var(--blue); display: none; }
-.head__in { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 54px; padding-inline: var(--gutter); padding-block-end: 30px; }
-.head__logo { display: inline-flex; align-items: center; min-height: 44px; }
+.head__blob { position: absolute; top: 0; inset-inline-start: 0; width: 322px; height: 96px; fill: var(--blue); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .28)); pointer-events: none; }
+.head__in { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; min-height: 100px; padding: 11px var(--gutter) 0; }
+.head__logo { display: inline-flex; align-items: center; min-height: 44px; --logo-a: #fff; --logo-b: var(--sun); --logo-tag: #fff; }
+.head__logo:focus-visible { outline-color: #fff; }
 .head__logo .mw-logo { height: 25px; width: auto; }
 .head__nav { display: none; }
 .head__tools { display: flex; align-items: center; gap: 2px; }
 .head__cta { display: none; }
 html.menu-open .head { background: var(--paper); }
-/* the menu: the ribbon continues down as a sheet and ends in its own wave; rows open with one chevron */
-.sheet { position: absolute; inset-inline: 0; top: 52px; background: var(--paper); padding: 4px var(--gutter) 6px; }
-.sheet__wave { position: absolute; inset-inline: 0; top: calc(100% - 1px); width: 100%; height: 46px; fill: var(--paper); filter: drop-shadow(0 14px 12px rgba(23, 24, 28, .22)); pointer-events: none; }
+/* the menu: a sheet of paper under the header; rows open with one chevron */
+.sheet { position: absolute; inset-inline: 0; top: 100%; background: var(--paper); padding: 4px var(--gutter) 22px; border-radius: 0 0 24px 24px; box-shadow: 0 26px 30px -20px rgba(23, 24, 28, .35); }
 .sheet nav { display: grid; margin-block-end: 18px; }
 .sheet nav a { display: flex; align-items: center; justify-content: space-between; min-height: 54px; font: 800 1.25rem/1.2 var(--display); font-stretch: 90%; border-block-end: 1px solid var(--line); }
 .sheet nav a svg { opacity: .55; }
 @media (min-width: 1100px) {
-  .head__wave { height: 112px; }
-  .head__wave .w-corner { display: block; }
-  .head__in { min-height: 62px; padding-inline: 40px; padding-block-end: 50px; justify-content: flex-start; gap: 36px; }
+  .head__blob { width: 436px; height: 124px; }
+  .head__in { min-height: 116px; padding: 20px 40px 0; justify-content: flex-start; gap: 36px; }
   .head__logo .mw-logo { height: 30px; }
-  .head__nav { display: flex; gap: 2px; }
+  /* the links start clear of the corner wave */
+  .head__nav { display: flex; gap: 2px; margin-inline-start: 150px; }
   .head__nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 12px; font-weight: 600; font-size: 1rem; }
-  .head__nav a span { background: linear-gradient(var(--sun), var(--sun)) 100% 86% / 0 9px no-repeat; transition: background-size .25s var(--ease); }
-  @media (hover: hover) { .head__nav a:hover span { background-size: 100% 9px; } }
+  .head__nav a span { background: linear-gradient(var(--ink), var(--ink)) 100% 96% / 0 2px no-repeat; transition: background-size .25s var(--ease); padding-block-end: 3px; }
+  @media (hover: hover) { .head__nav a:hover span { background-size: 100% 2px; } }
   .head__tools { margin-inline-start: auto; gap: 10px; flex-direction: row-reverse; }
-  .head__cta { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #fff; font-weight: 700; }
+  .head__cta { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; }
   .head__cta svg:last-child { transition: transform .25s var(--ease); }
   @media (hover: hover) { .head__cta:hover svg:last-child { transform: translateX(-4px); } }
-  .head__tools .icon-btn { color: #fff; }
-  @media (hover: hover) { .head__tools .icon-btn:hover { background: rgba(255, 255, 255, .18); } }
-  /* F13: on the black corner the black focus ring cannot be seen; a white band sits inside it */
-  .head__tools :focus-visible { box-shadow: 0 0 0 3px #fff; }
   .head__menu, .sheet { display: none; }
 }
 
@@ -226,15 +221,12 @@ html.menu-open .head { background: var(--paper); }
 }
 
 /* ---------- the opening (D241). html.sun-open is on the page from before first paint (index.html): the
-   wheel waits under the horizon, turned away; the brush is not drawn; the sticker is not stamped.
-   Wheel.tsx adds .sun-play and drives the wheel; these two run on CSS against the same clock. ---------- */
+   wheel waits under the horizon, turned away; the sticker is not stamped.
+   Wheel.tsx adds .sun-play and drives the wheel; the sticker runs on CSS against the same clock. ---------- */
 html.sun-open .wheel__ring { transform: translateY(calc(var(--ch) * .86)) rotate(56deg); }
-html.sun-open .h1__mark { background-size: 0 34%; }
 html.sun-open .sticker { opacity: 0; transform: rotate(26deg) scale(1.7); }
-html.sun-open.sun-play .h1__mark { background-size: 100% 34%; transition: background-size .8s cubic-bezier(.2, .7, .1, 1) .15s; }
 html.sun-open.sun-play .sticker { opacity: 1; transform: rotate(8deg) scale(1); transition: opacity .14s linear 1.15s, transform .42s cubic-bezier(.3, 1.6, .5, 1) 1.15s; }
 html.disable-animations.sun-open .wheel__ring { transform: none; }
-html.disable-animations.sun-open .h1__mark { background-size: 100% 34%; }
 html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg); }
 
 /* ---------- about: nice to meet you. Plain lines, the last one is the point ---------- */
@@ -396,6 +388,7 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 /* ---------- high contrast (the accessibility panel): black on white, the blue goes darker ---------- */
 html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #000000; --blue-ink: #000000; --sun-light: #FFFFFF; --sun-deep: #FFFFFF; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --line: #000000; --wa: #FFFFFF; }
 html.high-contrast .head { background: #fff; }
+html.high-contrast .head__logo { --logo-b: #fff; }
 html.high-contrast :is(.band--blue, .contact, .hero, .phero) { border-block: 2px solid #000; }
 html.high-contrast .wheel__card--next { background: #000; }
 html.high-contrast .wheel__card--next b { color: #fff; }
