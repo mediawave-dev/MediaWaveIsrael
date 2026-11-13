@@ -1,43 +1,94 @@
 ---
 name: MediaWave Israel
-description: Hebrew RTL site for a one-developer web studio - "one shot" (shot): one camera move over Nati's desk, a cream desk, white paper, black ink, the end credits on black; the site's sheets land on the table one by one, a closed laptop opens and builds this very site, and the camera pulls back until the whole site is one phone on the desk. Mobile first.
+description: Hebrew RTL site of a small web studio, the statement site (look sun, D237 to D266). A happy, audience-led page that says what we build (landing pages, image sites, sites for courses and mentoring programmes) and asks the visitor to write to us. Mint field, green-black ink, a turquoise logo, the sites we built turning on a wheel of phones. Mobile first.
 colors:
-  table: "#EDE7DA"
+  field: "#C9E8E2"
+  field-light: "#D3EDE8"
+  field-deep: "#C2E4DD"
   paper: "#FFFFFF"
-  ink: "#1A1917"
-  ink-2: "#4D4942"
-  line: "rgba(26, 25, 23, 0.14)"
-  line-ui: "rgba(26, 25, 23, 0.62)"
-  logo-a: "#1A1917"
-  logo-b: "#225079"
-  logo-tag: "#4D4942"
-  logo-b-on-ink: "#79A0C5"
-  face: "#FFFFFF"
+  cream: "#F5F7F3"
+  ink: "#13241F"
+  ink-2: "#3F4D48"
+  line: "#D6DFDB"
+  contact-circle: "#BFE0F5"
+  logo-media: "#2F5249 to #13241F"
+  logo-wave: "#22BBA8 to #0F8478"
+  mark-upper: "#13241F"
+  mark-lower: "#14A390"
 typography:
   display:
-    fontFamily: "mediawave-font1 (the studio's own wide face, Hebrew + Latin), Arial metric-matched fallback, then MW Noto"
-    fontWeight: 400
-    lineHeight: 1.02-1.2
-  body:
-    fontFamily: "MW Noto"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.65
-  ui:
-    fontFamily: "MW Noto"
-    fontWeight: 700
+    fontFamily: "MW Head: EFT Artzisraeli for Hebrew, digits and punctuation; mediawave-font1 Bold for Latin; Arial metric fallback"
+    use: "headings, buttons, labels, menus, emphasis inside text"
+  text:
+    fontFamily: "MW Text: EFT Tirosh for Hebrew; mediawave-font1 Bold for Latin"
+    fontSize: "1rem to 1.125rem"
+    lineHeight: 1.7
 components:
-  key-button:
-    backgroundColor: "{colors.ink}"
-    textColor: "#FFFFFF"
-    rounded: "2px"
-  key-button-paper:
-    backgroundColor: "#FFFFFF"
-    textColor: "{colors.ink}"
-    rounded: "2px"
+  button:
+    minHeight: "56px"
+    rounded: "5px"
+    ink: "ink ground, white label"
+    line: "2px ink border"
 ---
 
-# Design System: MediaWave Israel (19 October 2026, "the wave")
+# Design System: MediaWave Israel (14 November 2026, the statement site, look `sun`)
+
+Code: `src/sun/` (entry.tsx, SunApp.tsx, Shell.tsx, Home.tsx, Wheel.tsx, Tide.tsx, Proof.tsx, pages.tsx, Brand.tsx, Emblem.tsx,
+content.ts with every line of copy; sun.css with the tokens at the top; fonts.css, lead.css, proof.css, tide.css).
+Decisions D237 to D266 in `DECISIONS.rtl.md`. `npm run build` builds this look.
+
+## The idea
+The site stopped showing off and started saying something (Nati, 12.11.2026): what we build, for whom, how it goes, what it
+costs, and one easy way to write to us. The proof is the work itself: the sites we built turn on a wheel of phones right
+under the promise, each a real recording of the live site. Everything else is calm.
+
+## Tokens
+| Token | Value | Use |
+|---|---|---|
+| field | `#C9E8E2` | the mint ground of the bands (Yael Levy's mint one step deeper, D251) |
+| paper | `#FFFFFF` | the white bands, the pinned corner, the footer |
+| ink | `#13241F` | type, buttons, the dark cards |
+| ink-2 | `#3F4D48` | secondary type (AA on the field) |
+| contact circle | `#BFE0F5` | the one break from the green: the circle that holds the form (D262) |
+| logo | `#2F5249` to `#13241F` across Media, `#22BBA8` to `#0F8478` across Wave | the drawn wordmark (D266) |
+| mark | `#13241F` over `#14A390` | the disc; its two halves walk slowly through six colours (D262) |
+
+Type: headings and everything a hand presses in EFT Artzisraeli (D249, "present everywhere"); running text in EFT Tirosh
+(D264), which has one weight, so emphasis inside text is set in the heading face; Latin in mediawave-font1 Bold. Each face
+is one cut declared 100 to 900 so no browser fakes a bold. **The EFT web licence is not confirmed yet: it blocks production.**
+
+## The parts
+- **The pinned corner** (Shell.tsx, Brand.tsx): a white corner wave holds the logo, the disc and the drawn name. As the
+  page scrolls the name fades and the corner folds to the disc alone beside the menu button (after Libra, D249). The disc
+  keeps its size.
+- **The wheel** (Wheel.tsx, D255 to D261): 16 slots, seven sites and the "next site is yours" card, each twice on opposite
+  sides, never two of one site on screen. Every card is a looping 60 fps recording of the real site in a phone frame
+  (`scripts/record-work.mjs`, `src/data/work.json`); only phones on screen play. A tap holds it six seconds.
+- **The living mark** (Tide.tsx, D263): the disc as a buoy button on the waves between sections, and as water rising in the
+  step rings.
+- **The contact circle** (Home.tsx, D256, D262): the form in a sky-blue circle with an envelope; WhatsApp is the default
+  path, mail through `/api/lead` once the Cloudflare keys exist.
+- **The footer mark** (Emblem.tsx, D266): the MW mark, M and W between code brackets, the disc on its horizon line, WEB
+  DEVELOPMENT. The first time it comes into view the full name folds into it (about two seconds, once). The logo kit is in
+  `logos/mediawave-v2`.
+- **Service pages** (pages.tsx, `src/data/services.ts`): the customer's questions as headings, one price slip, steps.
+
+## Motion
+Full motion on every regular visit, even when the OS asks for reduced motion (D160). It stops with the accessibility
+panel's "ללא אנימציות", with `?calm=1` and in the prerender. The wheel's drift, its videos, the mark's colour walk, the
+buoys and the footer fold all obey that. One staged moment at the top (the wheel rises, D241) and one at the bottom (the
+footer fold); nothing else plays on its own.
+
+## Rules that do not move
+Overlap audit 0; axe 0 on every page; AA contrast; 44 px targets; logical CSS properties; no static underlines, contained
+hovers only under a hovering pointer; accessibility choices never persist; Hebrew without italics or letter-spacing; no
+colons, no lists of three and no long dashes in the copy; no invented proof, no client names or links to client sites,
+never the owners' faces; content visible without JavaScript and the H1 is the LCP.
+
+---
+
+# History: "the wave" (19 October 2026), production until the statement site
+
 
 Production since D124. Code: `src/look/wave/` (WaveHome, WaveLine, WaveLaptop, WaveTape, WaveServices, clock.ts, wave.css); the look id stays `shot` (registry.shot.ts renders WaveHome as the home page; inner pages keep their shot components in the wave's material). Decisions D118-D128. The sketches Nati picked from: `design/eye/` (bike-translations.html, details-lab.html).
 
