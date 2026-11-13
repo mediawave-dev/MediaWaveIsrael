@@ -52,4 +52,5 @@ export const GOOGLE: GoogleProfile | null = null
 
 /** One line under the "נעים מאוד" block about the people behind the studio (who answers the WhatsApp,
     who builds the page). No faces. Empty means no line. */
-export const SIGNATURE = ''
+// Nati's wording (13.11.2026); the link is the site's own WhatsApp, which Moriah answers
+export const SIGNATURE = 'לפרטים נוספים, תמיד אפשר לפנות למוריה.'

@@ -9,7 +9,8 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { SITE_URL } from '../data/site'
 import { GOOGLE, SIGNATURE, VOICES, type ClientVoice, type ProofPlace } from '../data/proof'
 import { track } from '../utils/analytics'
-import { IconChevrons } from './icons'
+import { IconChevrons, IconWhatsApp } from './icons'
+import { WA } from './content'
 import type { ProofDemo } from './proof-demo'
 import './proof.css'
 
@@ -142,5 +143,7 @@ export function Signature() {
   const real = SIGNATURE.trim()
   const text = real || demo?.signature
   if (!text) return null
-  return <p className="sign"><Tag word={real ? undefined : demo?.tag} />{text}</p>
+  return (
+    <p className="sign"><Tag word={real ? undefined : demo?.tag} />{text}{real && <>{" "}<a className="more" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'signature' })}><IconWhatsApp /><span>לכתוב לה בוואטסאפ</span></a></>}</p>
+  )
 }

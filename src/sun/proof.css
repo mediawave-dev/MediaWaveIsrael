@@ -67,3 +67,5 @@ html.high-contrast .voice__shot { outline: 2px solid #000; outline-offset: -2px;
 
 /* a sentence with a screenshot in the form place: room for the frame's shadow above the pale circle */
 .proof--form .voice[data-shot] { margin-block-end: 32px; }
+
+.sign .more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--ink); }
