@@ -20,6 +20,7 @@ import { TermsBody } from '../components/pages/Terms'
 import { PrivacyBody } from '../components/pages/Privacy'
 import { AccessibilityBody } from '../components/pages/Accessibility'
 import { Contact, H2, WhatsAppButton } from './Home'
+import { VoiceAt } from './Proof'
 import { IconChevron, IconChevrons } from './icons'
 
 /** "light|heavy": the two weights every heading is said in. No bar: all of it heavy. */
@@ -84,6 +85,21 @@ function Film({ p }: { p: PortfolioExampleData }) {
     <video className="film" controls playsInline preload="none" width={1280} height={720} poster={p.poster} aria-label={p.title}>
       <source src={p.localVideoPath} type="video/mp4" />
     </video>
+  )
+}
+
+/** A still in the film's frame, so the two video pages are drawn by one hand. It is content: the alt says
+    what is seen. It waits until the reader is near it. Its three files in public/media (a still without
+    all three does not fit here): the avif, and for a browser without AVIF the webp, the phone's one on a
+    narrow screen. */
+function Still({ name, alt }: { name: string; alt: string }) {
+  const file = `/media/${name}-poster`
+  return (
+    <picture>
+      <source type="image/avif" srcSet={`${file}.avif`} />
+      <source type="image/webp" media="(max-width: 699px)" srcSet={`${file}-m.webp`} />
+      <img className="film" src={`${file}.webp`} alt={alt} width={1280} height={720} loading="lazy" decoding="async" />
+    </picture>
   )
 }
 
@@ -180,6 +196,7 @@ export function Service() {
             <div key={a.q} className="ask">
               <H2>{a.q}</H2>
               {a.sample && sample && <Film p={sample} />}
+              {a.still && <Still {...a.still} />}
               {a.a.map((p) => <p key={p}>{tie(p)}</p>)}
               {a.close && <p className="about__close"><span>{a.close[0]}</span> <b>{a.close[1]}</b></p>}
             </div>
@@ -191,6 +208,7 @@ export function Service() {
         <div className="wrap wrap--narrow">
           <H2 id="price-h">כמה זה |עולה?</H2>
           <Quote q={s.quote} />
+          <VoiceAt place="price" service={s.slug} />
           {/* on a side page the form stands right under the slip, so the slip needs no button of its own */}
           {!s.brief && <div className="band__cta"><WhatsAppButton href={waHref} placement={`service_${s.slug}_quote`} label="בקשו הצעת מחיר" /></div>}
         </div>

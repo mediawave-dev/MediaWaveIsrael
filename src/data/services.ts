@@ -19,6 +19,10 @@ export interface ServiceAsk {
   close?: [string, string]
   /** the answer is the service's own sample film (portfolio-examples.ts): it stands right under the question, the text after it */
   sample?: boolean
+  /** a still of what the question is about, in the film's frame and in the film's place (right under the
+      question, the text after it). `name` is the file in public/media without its "-poster" endings
+      (licences in design/media-ledger.rtl.md); `alt` says what is seen in it. One per page. */
+  still?: { name: string; alt: string }
 }
 
 /** The written quote every job starts with (Terms 3.1), as the page draws it (sun, D253). */
@@ -704,6 +708,8 @@ export const servicesData: ServicePageData[] = [
       },
       {
         q: 'אילו קלטות |אפשר להמיר?',
+        // the tapes stand where the tapes are asked about (the wall of VHS tapes the earlier site carried)
+        still: { name: 'svc-memories-2', alt: 'קלטות וידאו ישנות' },
         a: [
           'ממירים קלטות VHS וקלטות MiniDV. קלטות מסוג אחר ממירים גם כן.',
         ],

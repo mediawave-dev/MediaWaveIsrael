@@ -11,6 +11,7 @@ import { track } from '../utils/analytics'
 import { MIN_FILL_MS, TRAP_FIELD, leadReady, sendLead } from '../utils/lead'
 import './lead.css'
 import Wheel from './Wheel'
+import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
 
@@ -70,6 +71,7 @@ function About() {
         <H2 id="about-h">{ABOUT.h2}</H2>
         {ABOUT.lines.map((l) => <p key={l} className="about__line">{l}</p>)}
         <p className="about__close"><span>{ABOUT.close[0]}</span> <b>{ABOUT.close[1]}</b></p>
+        <Signature />
       </div>
     </section>
   )
@@ -139,7 +141,10 @@ function Process() {
             </li>
           ))}
         </ol>
+        {/* proof (Proof.tsx): the page's own speed for the visitor to measure, and a client's sentence once there is one */}
+        <SpeedCheck steps={PROCESS.steps.length} />
         <LaunchDate />
+        <VoiceAt place="steps" />
         <div className="band__cta"><WhatsAppButton placement="process" /></div>
       </div>
     </section>
@@ -307,6 +312,9 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
 export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero, ask }: { h2?: string; lede?: string; waHref?: string; ask?: string }) {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
   return (
+    <>
+    {/* a client's sentence stands right over the circle, on every page that ends with the form */}
+    <VoiceAt place="form" />
     <section id="contact" className="contact" aria-labelledby="contact-h">
       <div className="contact__disc">
         <div className="contact__in">
@@ -315,12 +323,14 @@ export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero
           <LeadForm ask={ask} />
         </div>
       </div>
+      <GoogleLine />
       <ul className="contact__ways">
         <li><a href={waHref} target="_blank" rel="noopener" onClick={wa('contact')}><IconWhatsApp /><span>וואטסאפ</span></a></li>
         <li><a href={tel} onClick={() => track('tel_click', { placement: 'contact' })}><IconPhone /><span dir="ltr">{SITE_CONTACT.phone}</span></a></li>
         <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
       </ul>
     </section>
+    </>
   )
 }
 
@@ -333,6 +343,7 @@ export default function Home() {
         canonical="/"
       />
       <Hero />
+      <VoiceAt place="hero" />
       <About />
       <Offer />
       <Process />

@@ -444,8 +444,10 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .ask .more { margin-block-start: 10px; }
 /* a sample film (D254): the frame the wheel's cards wear, at the film's own shape. As an answer it stands
    right under its question and the words come after it. The 16:9 is the picture's box, inside the white edge,
-   so no sliver of the ground shows beside the still. */
+   so no sliver of the ground shows beside the still. A still of the same shape (the tapes on the video page)
+   wears the same frame in the same place. */
 .film { --edge: 4px; box-sizing: content-box; width: calc(100% - 2 * var(--edge)); height: auto; aspect-ratio: 16 / 9; border-radius: 22px; border: var(--edge) solid #fff; background: var(--ink); box-shadow: 0 16px 34px -14px rgba(23, 24, 28, .55); }
+.ask picture { display: block; }
 .ask .film { margin-block: 6px 24px; }
 @media (min-width: 900px) {
   .asks { gap: 92px; }
