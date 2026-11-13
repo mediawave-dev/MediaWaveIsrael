@@ -552,8 +552,6 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
    The accessibility panel's stop and ?reduce=1 stop it (the global rule on html.disable-animations). ---------- */
 .wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 6px 6px 24px 24px; container-type: size; }
 .wheel__screen img { border-radius: 0 !important; }
-.wheel__card[data-long] .wheel__screen img { position: absolute; inset: 0 0 auto; height: auto; object-fit: initial; will-change: transform;
-  animation: screen-scroll 26s cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--i) * -3.7s); }
-@keyframes screen-scroll { 0%, 12% { transform: translateY(0); } 50%, 62% { transform: translateY(calc(-100% + 100cqh)); } 100% { transform: translateY(0); } }
+/* D259: the recording lies over the first screen; the still picture stays under it as the poster and the fallback */
+.wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
 @media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
-.wheel[data-off] .wheel__screen img { animation-play-state: paused; }

@@ -36,22 +36,15 @@ function deck(): Card[] {
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
-/** Every card has a long strip (scripts/capture-work.mjs): -card-long for a main card, -card-<scene>-long for the others. */
-const longOf = (slug: string, crop: string) => `/work/${slug}-card-${crop === 'top' ? '' : crop + '-'}long.webp`
-
-/** D257: once the page has loaded and gone quiet, each main card swaps its first screen for the long strip of the
-    same page (same top, so the swap is invisible), and the strip scrolls slowly down and back inside the phone. */
-function useLongScreens() {
+/** D259: every card is a real recording of its site (scripts/record-work.mjs): scrolled slowly with all its own motion.
+    The first screen stays as the poster; the videos are attached only once the page has loaded and gone quiet. */
+const videoOf = (slug: string, crop: string) => `/work/${slug}-card-${crop}.mp4`
+function useVideosReady() {
   const [on, setOn] = useState(false)
   useEffect(() => {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
     let t = 0
-    const go = () => {
-      t = window.setTimeout(() => {
-        const urls = ORDER.map(([slug, crop]) => longOf(slug, crop))
-        Promise.all(urls.map((u) => new Promise((res) => { const i = new Image(); i.onload = i.onerror = res; i.src = u }))).then(() => setOn(true))
-      }, 1800)
-    }
+    const go = () => { t = window.setTimeout(() => setOn(true), 1500) }
     if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
     return () => { clearTimeout(t); window.removeEventListener('load', go) }
   }, [])
@@ -59,17 +52,25 @@ function useLongScreens() {
 }
 
 export default function Wheel() {
-  const long = useLongScreens()
-  // the screens rest while the wheel is out of view, and on ?calm=1
+  const box = useRef<HTMLDivElement>(null)
+  const videos = useVideosReady()
+  // the videos play while the wheel is in view; they rest out of view, on ?calm=1 and with the panel's "ללא אנימציות"
   useEffect(() => {
     const el = box.current
-    if (!el) return
-    if (/[?&]calm=1(&|$)/.test(location.search)) { el.dataset.off = ''; return }
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) delete el.dataset.off; else el.dataset.off = '' })
+    if (!el || !videos) return
+    const html = document.documentElement
+    const calm = /[?&]calm=1(&|$)/.test(location.search)
+    let seen = false
+    const sync = () => {
+      const run = seen && !calm && !html.classList.contains('disable-animations')
+      el.querySelectorAll('video').forEach((v) => { if (run) v.play().catch(() => {}); else v.pause() })
+    }
+    const io = new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync() })
     io.observe(el)
-    return () => io.disconnect()
-  }, [])
-  const box = useRef<HTMLDivElement>(null)
+    const mo = new MutationObserver(sync)
+    mo.observe(html, { attributes: true, attributeFilter: ['class'] })
+    return () => { io.disconnect(); mo.disconnect() }
+  }, [videos])
   const ring = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -185,9 +186,11 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <div className="wheel__card" data-crop={c.crop} data-long={long ? '' : undefined}>
+              <div className="wheel__card" data-crop={c.crop}>
                 <div className="wheel__screen">
-                  <img src={long ? longOf(c.slug, c.crop) : `/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
+                  {videos && <video src={videoOf(c.slug, c.crop)} poster={`/work/${c.slug}-card-${c.crop}.webp`} muted loop playsInline preload="metadata" tabIndex={-1}
+                    onLoadedMetadata={(e) => { const v = e.currentTarget; v.currentTime = (i * 3.1) % (v.duration || 1) }} />}
+                  <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
                     loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
                 </div>
               </div>

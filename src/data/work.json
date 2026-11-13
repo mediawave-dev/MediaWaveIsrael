@@ -26,7 +26,19 @@
       7220,
       8020,
       8820
-    ]
+    ],
+    "rec": {
+      "top": [
+        0,
+        7300,
+        16
+      ],
+      "s1": [
+        6420,
+        8900,
+        11
+      ]
+    }
   },
   {
     "slug": "ben-david",
@@ -42,7 +54,14 @@
   {
     "slug": "hila",
     "name": "הילה קלרמן",
-    "url": "https://hila-kelerman-landing-page.vercel.app/"
+    "url": "https://hila-kelerman-landing-page.vercel.app/",
+    "rec": {
+      "top": [
+        0,
+        120,
+        9
+      ]
+    }
   },
   {
     "slug": "mediawave-2026",
