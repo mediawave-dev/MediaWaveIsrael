@@ -28,11 +28,12 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Service pages are built as the customer's questions (`src/data/services.ts`), with a new `program-sites` page. Proof places exist and are empty until real approved quotes arrive (`src/data/proof.ts`, `docs/PROOF.rtl.md`).
 - Copy: Nati's picks from the morning board are folded into `content.ts` (D254). Landing pages start at 1,999 ₪ and writing the text is included.
 
-## The logo (D265, built on the preview)
-- History, all in `design/logo/mw-initials/`: round 1 of MW proposals (rejected as generic), web research (`RESEARCH.rtl.md`), round 2 (seven constructed marks, none picked), then **an MW logo another agent drew for him, which he liked** (`picked/source.svg`).
-- His ruling (13.11): the MW logo does **not** replace the logo at the top; the floating corner keeps **the icon alone**; "make the original logo in the style of this logo, at the highest quality".
-- Built: the Horizon logo redrawn in that style. His M and W untouched, "edia" and "ave" from Urbanist Black Italic (OFL) at the same height and lean, the drop on the i kept, a soft diagonal light across each half of the name. Sources, the SVG kit and the boards he was sent: `design/logo/mediawave-v2/` (README there). On the site: `src/sun/Brand.tsx` + `src/sun/brand-art.ts`, in the pinned corner (whole logo at the top, the disc alone on scroll) and in the footer (with the WEB DEVELOPMENT line).
-- **Waiting for his verdict on it.** Not done: the `logos/horizon` kit and its README rules, the share image, a proximity check, Lighthouse after the change. The MW monogram itself has no place on the site yet; his call whether it gets one (footer, share card) or stays out.
+## The logo (D265): drawn, NOT on the site
+- History in `design/logo/mw-initials/`: round 1 of MW proposals (generic), web research, round 2 (none picked), then **an MW logo another agent drew for him, which he liked** (`picked/source.svg`).
+- He asked for the original logo in that style. It was drawn (his M and W, the rest from Urbanist Black Italic) and I built it into the site and pushed it to the preview **without his approval**. He had it removed: "לא אישרתי שיעבור לתצוגה מקדימה". The site code is back to the first logo; Brand.tsx and brand-art.ts are gone from src.
+- **Rule: nothing new goes to the preview branches before he has seen it as an image and said yes.**
+- The drawing, its SVG files and the boards stay in `design/logo/mediawave-v2/` as a design record only.
+- What he asked for next (13.11): (1) "maybe" redraw the other seven letters so they really resemble his M and W, as images only; (2) the short MW with the icon under it, **only in the footer**.
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
@@ -47,7 +48,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Few agents, and only for building. Images to his phone with SendUserFile. Hebrew replies, a new line after each long sentence.
 
 ## Waiting for Nati
-1. His verdict on the redrawn logo (D265) on the preview, and whether the MW monogram gets a place of its own.
+1. His approval, from an image, before the MW footer mark or any logo change is pushed to the preview.
 2. The EFT web licence for Artzisraeli and Tirosh. It blocks production.
 3. Cloudflare keys for lead mail (`CF_ACCOUNT_ID`, `LEAD_TOKEN`, `LEAD_TO`).
 4. Which past clients to ask for a sentence, and the Google Business profile link.
@@ -62,7 +63,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - The last Lighthouse run after D264 was a single run on the local build: performance 95, accessibility 100, CLS 0. The pushed preview was not re-checked by content after D264.
 
 ## Next steps
-1. Apply his notes on the redrawn logo; on approval replace the `logos/horizon` kit, regenerate the share image, run Lighthouse.
+1. Show him the MW footer mark and the letters redrawn like his M and W as images; push only what he approves.
 2. On approval of the whole direction: rewrite DESIGN.md / PRODUCT.md / CLAUDE.md "Current state", run `site-gate-audit`, tag a rollback point, then production with his explicit yes.
 
 ## Important files
@@ -72,4 +73,3 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - `functions/api/lead.ts`, `stats.ts`, `event.ts`
 - `design/audit/sun/qa/` (the checks: `behave.mjs`, `tap.mjs`, `qa.mjs`, `webkit-check.mjs`, README)
 - `design/logo/mw-initials/` (the MW rounds and his pick), `design/logo/mediawave-v2/` (the redrawn logo)
-- `src/sun/Brand.tsx`, `src/sun/brand-art.ts`
