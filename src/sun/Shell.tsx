@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
 import Logo from '../components/ui/Logo'
+import Emblem from './Emblem'
 import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
@@ -155,7 +156,7 @@ function Footer() {
     <footer className="foot">
       <div className="wrap foot__in">
         <div className="foot__brand">
-          <Logo variant="horizontal" title="MediaWave" />
+          <Emblem title="MediaWave" />
           <p>דפי נחיתה, אתרי תדמית ואתרים לתוכניות ליווי.</p>
         </div>
         <nav aria-label="בדף הבית">

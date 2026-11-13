@@ -372,6 +372,9 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .foot__in > div:last-child { display: flex; flex-wrap: wrap; column-gap: 22px; }
 .foot__in > div:last-child .foot__h { width: 100%; }
 .foot__brand .mw-logo { height: 34px; width: auto; }
+/* the MW mark (13.11.2026): the short form of the name, only here. Its two lights run from the first colour to the second */
+.foot__brand .mw-emblem { display: block; height: auto; width: 196px; --mw-m0: #2A4A42; --mw-m1: var(--ink); --mw-w0: #27C2AE; --mw-w1: #0F8478; }
+html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 .foot__brand p { margin-block-start: 14px; font-weight: 600; max-width: 18em; text-wrap: balance; }
 .foot__h { font: 700 1.0625rem/1.3 var(--display); margin-block-end: 6px; }
 .foot nav a, .foot__in > div > a { display: flex; align-items: center; min-height: 44px; font-weight: 500; text-wrap: balance; }
