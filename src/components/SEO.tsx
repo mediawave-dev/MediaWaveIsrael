@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async'
 const SITE_URL = 'https://mediawave.co.il'
 const SITE_NAME = 'MediaWave Israel'
 // versioned: the share card changed (18.10.2026) and social networks cache previews by URL
-// sun (D241) has its own card; the earlier looks (built with a VITE_LOOK) keep theirs
+// sun (D241) has its own card; the earlier looks (built with a VITE_LOOK) keep theirs. v=20261114: the card with the drawn wordmark (D266)
 const LEGACY_LOOK = ['k', 'm', 'km', 'shot'].includes(String(import.meta.env.VITE_LOOK))
-const DEFAULT_IMAGE = LEGACY_LOOK ? `${SITE_URL}/og-image.png?v=20261018c` : `${SITE_URL}/og-sun.png?v=20261112`
+const DEFAULT_IMAGE = LEGACY_LOOK ? `${SITE_URL}/og-image.png?v=20261018c` : `${SITE_URL}/og-sun.png?v=20261114`
 
 interface SEOProps {
   title: string

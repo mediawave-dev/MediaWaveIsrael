@@ -263,10 +263,17 @@ async function prerender() {
   // rewrites to /index.html into a 308 redirect to / (verified on preview),
   // so the SPA shell is copied to studio/index.html — /studio and /studio/
   // then serve natively and React Router takes over client-side.
-  const studioDir = resolve(DIST, 'studio')
-  if (!existsSync(studioDir)) mkdirSync(studioDir, { recursive: true })
-  writeFileSync(resolve(studioDir, 'index.html'), readFileSync(resolve(DIST, 'index.html')))
-  console.log('  Copied SPA shell to /studio/index.html')
+  // sun has no studio: no copy of the home page at /studio, and no rewrite to it, so /studio answers with the real 404
+  if (BUILD_LOOK === 'sun') {
+    const redirects = resolve(DIST, '_redirects')
+    if (existsSync(redirects)) writeFileSync(redirects, readFileSync(redirects, 'utf8').replace(/^\/studio\/\*.*\r?\n/m, ''))
+    console.log('  sun: no /studio (rewrite removed from _redirects)')
+  } else {
+    const studioDir = resolve(DIST, 'studio')
+    if (!existsSync(studioDir)) mkdirSync(studioDir, { recursive: true })
+    writeFileSync(resolve(studioDir, 'index.html'), readFileSync(resolve(DIST, 'index.html')))
+    console.log('  Copied SPA shell to /studio/index.html')
+  }
 
   await browser.close()
   server.close()

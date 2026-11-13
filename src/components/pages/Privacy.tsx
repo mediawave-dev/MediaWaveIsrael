@@ -61,7 +61,7 @@ export default function Privacy() {
             מדיניות פרטיות | MediaWave Israel
           </h1>
           <p className="text-brown-light">
-            <strong>עודכן לאחרונה:</strong> ינואר 2026
+            <strong>עודכן לאחרונה:</strong> נובמבר 2026
           </p>
         </m.header>
 
@@ -127,7 +127,7 @@ export function PrivacyBody() {
               <li><strong>מקור ההפניה</strong> (מאיפה הגעת לאתר)</li>
             </ul>
             <p className="text-brown leading-relaxed mt-3">
-              מידע זה נאסף באמצעות עוגיות (Cookies) וטכנולוגיות דומות.
+              האתר לא משתמש בעוגיות מעקב. ספק האחסון (Cloudflare) מקבל את כתובת ה-IP כדי להציג לך את האתר. אנחנו שומרים רק מניין אנונימי של צפיות בדפים ושל לחיצות (למשל על וואטסאפ), בלי כתובת IP, בלי מיקום ובלי מזהה אישי.
             </p>
 
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">2.3 מידע ממקורות חיצוניים</h3>
@@ -190,9 +190,9 @@ export function PrivacyBody() {
               אנו עשויים לשתף מידע עם ספקי שירות שעוזרים לנו להפעיל את העסק, כגון:
             </p>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
-              <li><strong>שירותי אחסון</strong> (Cloudflare Pages, Netlify)</li>
-              <li><strong>שירותי אימייל</strong> (Gmail, SendGrid)</li>
-              <li><strong>כלי ניתוח</strong> (Google Analytics, אם משתמשים)</li>
+              <li><strong>שירותי אחסון</strong> (Cloudflare Pages)</li>
+              <li><strong>שירותי אימייל</strong> (Gmail, ושליחת הפניות מהטופס דרך Cloudflare)</li>
+              <li><strong>מדידה</strong> (מניין אנונימי של צפיות ולחיצות, בשרת שלנו ב-Cloudflare)</li>
             </ul>
             <p className="text-brown leading-relaxed mt-3">
               כל ספקי השירות מחויבים לשמור על פרטיותך ואינם רשאים להשתמש במידע למטרות אחרות.
@@ -284,7 +284,7 @@ export function PrivacyBody() {
             <h3 className="text-[18px] font-semibold text-brown-dark mt-6 mb-3">7.2 כיצד אנו משתמשים בעוגיות?</h3>
             <ul className="list-disc list-inside space-y-2 text-brown leading-relaxed mr-4">
               <li><strong>עוגיות חיוניות:</strong> נדרשות לתפקוד בסיסי של האתר</li>
-              <li><strong>עוגיות ניתוח:</strong> עוזרות לנו להבין כיצד משתמשים מנווטים באתר (Google Analytics)</li>
+              <li><strong>מדידה בלי עוגיות:</strong> האתר סופר צפיות בדפים ולחיצות בלי עוגיות ובלי לזהות אותך. אם בחרת &quot;רק חיוניות&quot; בהודעה על העוגיות, גם המניין הזה לא נשלח.</li>
               <li><strong>עוגיות פונקציונליות:</strong> זוכרות את ההעדפות שלך</li>
             </ul>
 
@@ -405,7 +405,7 @@ export function PrivacyBody() {
 
           {/* Last updated */}
           <div className="mt-12 pt-6 border-t border-cream-darker text-brown-muted text-sm">
-            <p><strong>תאריך עדכון אחרון:</strong> ינואר 2026</p>
+            <p><strong>תאריך עדכון אחרון:</strong> נובמבר 2026</p>
             <p className="mt-2">אנו מחויבים להגן על פרטיותך ולספק שירות שקוף ואמין.</p>
           </div>
     </>

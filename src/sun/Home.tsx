@@ -335,8 +335,12 @@ function useContactMotion() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
+    // already on the screen when the page wakes (a link to /#contact, a restored scroll): it stays as it was painted,
+    // instead of vanishing and coming in again
+    const r = el.getBoundingClientRect()
+    const onScreen = r.top < innerHeight && r.bottom > 0
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect() } }, { threshold: 0.3 })
-    io.observe(el)
+    if (!onScreen) io.observe(el)
     const status = el.querySelector('.form__status')
     const mo = status ? new MutationObserver(() => {
       const t = status.textContent || ''

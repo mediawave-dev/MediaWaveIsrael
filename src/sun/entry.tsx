@@ -14,6 +14,8 @@ installStaleChunkReload()
 
 // the accessibility statement's two addresses: ?reduce=1 stops all motion, ?calm=1 stops what moves by itself
 if (/[?&]reduce=1(&|$)/.test(location.search)) document.documentElement.classList.add('disable-animations')
+// ?calm=1 also has to reach the CSS loops (the buoys, the water, the logo's colour walk): they read this class
+if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.add('calm')
 
 const root = createRoot(document.getElementById('root')!)
 startTransition(() => {

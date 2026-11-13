@@ -61,9 +61,10 @@ a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: 0; padding: 0; }
 :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 html.disable-animations { scroll-behavior: auto; }
 html.disable-animations *, html.disable-animations *::before, html.disable-animations *::after { animation: none !important; transition: none !important; }
+/* ?calm=1 stops what moves by itself (the loops), not what answers a hand */
+html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path) { animation: none !important; }
 
 .skip { position: absolute; inset-inline-start: 12px; top: -80px; z-index: 100; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 12px; }
 .skip:focus { top: 12px; }
@@ -85,7 +86,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .lede { font-size: clamp(1.125rem, 2.2vw, 1.375rem); line-height: 1.6; max-width: 38em; text-wrap: pretty; }
 
 /* ---------- layout ---------- */
-.wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: var(--gutter); }
+.wrap { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: var(--gutter); padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
 .wrap--narrow { max-width: 820px; }
 .band { padding-block: 72px; }
 .band--cream { background: var(--cream); }
@@ -151,12 +152,12 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
    scrolls, --p goes 0 to 1 (Shell.tsx): the wave shrinks, the logo folds down to its mark, a menu button comes
    in beside it. Everything that changes is transform, opacity and one width. ---------- */
 .head { position: relative; z-index: 40; background: var(--sun-light); }
-.head__in { position: relative; display: flex; align-items: flex-start; justify-content: flex-end; gap: 12px; min-height: 100px; padding: 11px var(--gutter) 0; }
+.head__in { position: relative; display: flex; align-items: flex-start; justify-content: flex-end; gap: 12px; min-height: 100px; padding: 11px var(--gutter) 0; padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
 .head__nav { display: none; }
 .head__tools { display: flex; align-items: center; gap: 2px; }
 .head__cta { display: none; }
 
-.pin { --p: 0; --lh: 28px; --w0: 322; --h0: 96; --w1: 132; --h1: 76; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: 12px; pointer-events: none; }
+.pin { --p: 0; --lh: 28px; --w0: 322; --h0: 96; --w1: 132; --h1: 76; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: calc(12px + env(safe-area-inset-right, 0px)); pointer-events: none; }
 .pin > * { pointer-events: auto; }
 .pin__blob { position: absolute; top: 0; inset-inline-start: 0; width: calc(var(--w0) * 1px); height: calc(var(--h0) * 1px); max-width: none; fill: var(--paper); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .22)); pointer-events: none; transform-origin: 100% 0; transform: scale(calc(1 - (1 - var(--w1) / var(--w0)) * var(--p)), calc(1 - (1 - var(--h1) / var(--h0)) * var(--p))); will-change: transform; }
 .pin__menu { position: relative; flex: none; width: calc(44px * var(--p)); opacity: calc(var(--p) * 1.6 - .6); visibility: hidden; overflow: hidden; }
@@ -196,7 +197,7 @@ html.menu-open .pin__blob { filter: none; }
 }
 
 /* ---------- accessibility panel ---------- */
-.a11y { position: fixed; top: 70px; inset-inline-end: var(--gutter); z-index: 60; width: min(300px, calc(100vw - 2 * var(--gutter))); padding: 16px; display: grid; gap: 10px; background: #fff; color: var(--ink); border-radius: 22px; box-shadow: 0 0 0 2px var(--ink), 0 24px 40px -16px rgba(23, 24, 28, .4); }
+.a11y { position: fixed; top: 70px; inset-inline-end: var(--gutter); z-index: 60; width: min(300px, calc(100vw - 2 * var(--gutter))); padding: 16px; display: grid; gap: 10px; background: #fff; color: var(--ink); border-radius: 22px; box-shadow: 0 0 0 2px var(--ink), 0 24px 40px -16px rgba(23, 24, 28, .4); max-height: calc(100dvh - 86px); overflow-y: auto; overscroll-behavior: contain; }
 .a11y__head { display: flex; align-items: center; justify-content: space-between; }
 .a11y__label { font-size: .9375rem; font-weight: 600; }
 .a11y__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -355,7 +356,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .field__err { margin-block-start: 6px; color: #8C1D18; font-size: .9375rem; font-weight: 700; line-height: 1.4; }
 .form .btn { margin-block-start: 10px; }
 .form__status { min-height: 1.6em; font-weight: 700; text-align: center; }
-.form__status:empty { display: none; }
+.form__status:empty { position: absolute; width: 1px; height: 1px; min-height: 0; overflow: hidden; clip-path: inset(50%); }
 .form__legal { font-size: .875rem; text-align: center; line-height: 1.5; }
 .form__legal a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; padding-block: 13px; }
 .contact__ways { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 26px; margin-block-start: 34px; padding-inline: var(--gutter); }
@@ -398,7 +399,7 @@ html.high-contrast .mw-logo--word { --logo-a0: var(--logo-a); --logo-b0: var(--l
 /* ---------- floating: WhatsApp and the cookie note ---------- */
 .tab { position: fixed; z-index: 70; inset-inline-end: 0; bottom: var(--browser-chrome-bottom); width: 178px; height: 84px; display: flex; align-items: flex-end; color: #fff; font-weight: 700; opacity: 0; transform: translateY(100%); pointer-events: none; transition: opacity .25s, transform .4s var(--ease); }
 .tab svg.tab__wave { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--blue); filter: drop-shadow(0 -6px 14px rgba(23, 24, 28, .28)); transition: fill .2s; }
-.tab span { position: relative; display: inline-flex; align-items: center; gap: 7px; padding-block-end: calc(13px + env(safe-area-inset-bottom, 0px)); padding-inline-end: 14px; margin-inline-start: auto; }
+.tab span { position: relative; display: inline-flex; align-items: center; gap: 7px; padding-block-end: calc(13px + env(safe-area-inset-bottom, 0px)); padding-inline-end: calc(14px + env(safe-area-inset-left, 0px)); margin-inline-start: auto; }
 .tab span svg:last-child { transition: transform .25s var(--ease); }
 @media (hover: hover) { .tab:hover svg.tab__wave { fill: #000; } }
 @media (hover: hover) { .tab:hover span svg:last-child { transform: translateX(-4px); } }
@@ -592,3 +593,9 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
    running text is said in the headings' face. ---------- */
 :where(p, li, dd, td, small, label, figcaption) :where(b, strong) { font-family: var(--display); font-weight: 700; }
 .hero__note, .foot__brand p, .form__status, .field__err, .a11y__label, .a11y__opt, .a11y__link, .consent a, .consent__no, .quote__rows small, .legal h3, .legal a, .form__legal a, .voice__who, .proof__tag { font-family: var(--display); }
+
+/* when part of a page fails to load (SunApp, Oops): never a blank page, always a way to write to us */
+.oops { display: grid; gap: 18px; justify-items: start; padding-block: 48px 72px; }
+.oops--full { min-height: 80vh; align-content: center; }
+.oops p { margin: 0; font-size: 1.125rem; }
+.oops__acts { display: flex; flex-wrap: wrap; gap: 12px; }

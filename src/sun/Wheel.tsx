@@ -45,6 +45,9 @@ function useVideosReady() {
   const [on, setOn] = useState(false)
   useEffect(() => {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    // a visitor who saves data, or is on a slow line, keeps the stills: the videos are about 9 MB together
+    const net = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+    if (net?.saveData || /(^|-)(2g|3g)$/.test(net?.effectiveType || '')) return
     let t = 0
     const go = () => { t = window.setTimeout(() => setOn(true), 1500) }
     if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
@@ -128,13 +131,16 @@ export default function Wheel() {
         else if (!hover && !calm && !still() && t >= rest) a -= drift() * dt
       }
       paint()
-      raf = seen && !document.hidden ? requestAnimationFrame(tick) : 0
+      // nothing left to move (calm, "ללא אנימציות", no fling, no opening): the loop sleeps until a hand or the panel wakes it
+      const idle = open < 0 && !held && Math.abs(v) <= 0.05 && (calm || still())
+      raf = seen && !document.hidden && !idle ? requestAnimationFrame(tick) : 0
     }
     const run = () => { if (!raf && seen && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(tick) } }
 
     const down = (e: PointerEvent) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return
       held = true; moved = 0; v = 0; lastX = e.clientX; lastT = e.timeStamp
+      run()
     }
     const move = (e: PointerEvent) => {
       if (!held) return
@@ -159,6 +165,9 @@ export default function Wheel() {
     const leave = (e: PointerEvent) => { if (e.pointerType === 'mouse') hover = false }
     const vis = () => run()
     const io = new IntersectionObserver(([en]) => { seen = en.isIntersecting; run() }, { rootMargin: '80px' })
+    // the panel's "ללא אנימציות" turned off again: the drift comes back
+    const mo = new MutationObserver(() => run())
+    mo.observe(html, { attributes: true, attributeFilter: ['class'] })
 
     el.addEventListener('pointerdown', down)
     el.addEventListener('pointermove', move)
@@ -174,6 +183,7 @@ export default function Wheel() {
     return () => {
       cancelAnimationFrame(raf)
       io.disconnect()
+      mo.disconnect()
       document.removeEventListener('visibilitychange', vis)
       el.removeEventListener('pointerdown', down)
       el.removeEventListener('pointermove', move)

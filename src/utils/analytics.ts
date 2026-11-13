@@ -42,8 +42,12 @@ const CAME_FROM = (() => {
   return from
 })()
 
+/** The cookie note's "רק חיוניות" (key written by the sun Shell): then not even the anonymous counts are sent. */
+const declined = () => { try { return localStorage.getItem('mw_cookie_consent') === 'rejected' } catch { return false } }
+
 export function track(event: TrackEvent, props: Record<string, string> = {}): void {
   try {
+    if (declined()) return
     const payload = JSON.stringify({
       event,
       props: { ...CAME_FROM, ...props },

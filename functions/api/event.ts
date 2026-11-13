@@ -84,8 +84,24 @@ async function bodyWithin(request: Request, max: number): Promise<Uint8Array | n
   return bytes.subarray(0, size)
 }
 
-/** events from another site's pages are refused; a request with no Origin (an old browser's beacon) passes */
+/** A counter per address, per worker instance (the same idea as /api/lead): a visit sends a few dozen events at most,
+    so a script that floods the counts is cut off without touching real visitors behind one shared address. */
+const EVENT_WINDOW_MS = 10 * 60_000
+const EVENT_MAX = 200
+const seen = new Map<string, number[]>()
+function flooding(ip: string): boolean {
+  const now = Date.now()
+  const recent = (seen.get(ip) ?? []).filter((at) => now - at < EVENT_WINDOW_MS)
+  recent.push(now)
+  seen.set(ip, recent)
+  if (seen.size > 5000) seen.clear()
+  return recent.length > EVENT_MAX
+}
+
+/** events from another site's pages are refused; a request with no Origin (an old browser's beacon) passes, unless
+    the browser says outright that it comes from another site */
 function foreign(request: Request): boolean {
+  if (request.headers.get('sec-fetch-site') === 'cross-site') return true
   const origin = request.headers.get('origin')
   if (!origin) return false
   try {
@@ -97,6 +113,7 @@ function foreign(request: Request): boolean {
 
 export const onRequestPost: Handler = async ({ request, env }) => {
   if (foreign(request)) return new Response(null, { status: 403 })
+  if (flooding(request.headers.get('cf-connecting-ip') ?? 'unknown')) return new Response(null, { status: 429 })
   try {
     const bytes = await bodyWithin(request, MAX_BODY_BYTES)
     if (!bytes) return new Response(null, { status: 413 })

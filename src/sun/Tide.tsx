@@ -48,6 +48,9 @@ export function useRise<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current
     if (!el || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    // already on the screen when the page wakes (a link to /#process): the rings stay at their levels, no second rise
+    const r = el.getBoundingClientRect()
+    if (r.top < innerHeight && r.bottom > 0) return
     el.classList.add('tide-wait')
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect() } }, { threshold: 0.25 })
     io.observe(el)

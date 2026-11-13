@@ -5,6 +5,23 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Shell from './Shell'
 import Home from './Home'
 import { trackView } from '../utils/analytics'
+import { ErrorBoundary } from '../components/ErrorBoundary'
+import { WA } from './content'
+
+/** What a visitor sees if a part of the page fails to load or breaks: never a blank page, always a way to write to us.
+    A chunk left over from the previous deploy reloads the page once on its own (ErrorBoundary). */
+function Oops({ full = false }: { full?: boolean }) {
+  return (
+    <section className={`oops wrap${full ? ' oops--full' : ''}`} dir="rtl">
+      <h1 className="h1 h1--page">משהו בדף לא נטען.</h1>
+      <p>אפשר לרענן את הדף, או לכתוב לנו ישר בוואטסאפ.</p>
+      <div className="oops__acts">
+        <button type="button" className="btn btn--ink" onClick={() => window.location.reload()}>רענון הדף</button>
+        <a className="btn btn--paper" href={WA.hero} target="_blank" rel="noopener">כתבו לנו בוואטסאפ</a>
+      </div>
+    </section>
+  )
+}
 
 const pages = () => import('./pages')
 const Service = lazy(() => pages().then((m) => ({ default: m.Service })))
@@ -32,7 +49,9 @@ function useHashScroll() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
     if (!hash || window.scrollY > 0) return
-    const id = decodeURIComponent(hash.slice(1))
+    // a malformed hash (#% from a mistyped or crafted link) must not take the page down
+    let id = hash.slice(1)
+    try { id = decodeURIComponent(id) } catch { /* keep it as it came */ }
     const t = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }), 60)
     return () => clearTimeout(t)
   }, [pathname, hash])
@@ -43,17 +62,22 @@ export default function SunApp() {
   const { pathname } = useLocation()
   useEffect(() => { trackView() }, [pathname])
   const L = (el: React.ReactNode) => <Suspense fallback={<Fallback />}>{el}</Suspense>
+  // two nets: the page's content (the header and footer stay), and the whole shell
   return (
-    <Shell>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/services/:slug" element={L(<Service />)} />
-        <Route path="/portfolio/:slug" element={L(<Sample />)} />
-        <Route path="/terms" element={L(<Terms />)} />
-        <Route path="/privacy" element={L(<Privacy />)} />
-        <Route path="/accessibility" element={L(<Accessibility />)} />
-        <Route path="*" element={L(<NotFound />)} />
-      </Routes>
-    </Shell>
+    <ErrorBoundary fallback={<Oops full />}>
+      <Shell>
+        <ErrorBoundary key={pathname} fallback={<Oops />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/services/:slug" element={L(<Service />)} />
+            <Route path="/portfolio/:slug" element={L(<Sample />)} />
+            <Route path="/terms" element={L(<Terms />)} />
+            <Route path="/privacy" element={L(<Privacy />)} />
+            <Route path="/accessibility" element={L(<Accessibility />)} />
+            <Route path="*" element={L(<NotFound />)} />
+          </Routes>
+        </ErrorBoundary>
+      </Shell>
+    </ErrorBoundary>
   )
 }

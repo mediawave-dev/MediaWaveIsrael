@@ -26,13 +26,17 @@ function A11yPanel({ open, onClose, anchor }: { open: boolean; onClose: () => vo
     d.classList.toggle('high-contrast', contrast)
     d.classList.toggle('disable-animations', still || /[?&]reduce=1(&|$)/.test(location.search))
   }, [size, contrast, still])
+  // the caller passes a new onClose on every render: kept in a ref, so a re-render of the header never pulls
+  // the focus back into the panel (focus moves in once, when the panel opens)
+  const close = useRef(onClose)
+  close.current = onClose
   useEffect(() => {
     if (!open) return
     ref.current?.querySelector<HTMLElement>('button')?.focus()
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') close.current() }
     document.addEventListener('keydown', key)
     return () => document.removeEventListener('keydown', key)
-  }, [open, onClose])
+  }, [open])
   if (!open) return null
   return (
     <div className={`a11y a11y--${anchor}`} ref={ref} role="dialog" aria-label="כלי נגישות">
@@ -94,8 +98,11 @@ function Header() {
       el.toggleAttribute('data-folded', p > 0.6)
       if (p !== target) raf = requestAnimationFrame(tick)
     }
+    let first = true
     const on = () => {
       target = menuOpen.current ? 1 : Math.min(1, Math.max(0, window.scrollY / 140))
+      // the first reading (a reload in the middle of the page) takes the corner straight to where it belongs
+      if (first) { first = false; p = target }
       if (!raf) raf = requestAnimationFrame(tick)
     }
     syncFold.current = on
@@ -215,7 +222,7 @@ function Floating() {
         </div>
       )}
       {/* the corner wave (after Libra): WhatsApp stays one tap away once the hero button has left the screen */}
-      <a className="tab" data-on={past ? '' : undefined} href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ"
+      <a className="tab" data-on={past ? '' : undefined} href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ" aria-hidden={past ? undefined : true}
         tabIndex={past ? 0 : -1} onClick={() => track('whatsapp_click', { placement: 'corner' })}>
         <svg className="tab__wave" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 90V20C54 -10 140 24 200 90Z" /></svg>
         <span><IconWhatsApp />כתבו לנו<IconChevrons width={18} height={18} /></span>
