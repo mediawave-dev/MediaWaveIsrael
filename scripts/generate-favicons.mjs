@@ -6,7 +6,8 @@
  *    the 16/32 px icons use their own geometry (a deeper wave, a wider gap) to survive at
  *    16 px, and favicon.svg switches tones with the browser's light or dark mode.
  * 2. Rasterizes the horizontal lockup (light palette) onto a padded white canvas as
- *    public/logo.png, the schema.org logo (Organization / Article publisher).
+ *    public/logo.png, the schema.org logo (Organization / Article publisher). Since D266 the lockup is the
+ *    drawn wordmark in logos/mediawave-v2; the icons stay the Horizon disc from logos/horizon.
  * Run: node scripts/generate-favicons.mjs
  */
 import { copyFileSync, readFileSync } from 'fs'
@@ -21,7 +22,7 @@ const BRAND = resolve(ROOT, 'logos/horizon')
 const COPY = ['favicon.svg', 'favicon-32x32.png', 'favicon-16x16.png', 'apple-touch-icon.png', 'icon-512.png']
 
 async function schemaLogo() {
-  const lockup = readFileSync(resolve(BRAND, 'mediawave-horizontal-light.svg'))
+  const lockup = readFileSync(resolve(ROOT, 'logos/mediawave-v2/mediawave-horizontal-light.svg'))
   const W = 1000
   const H = 380
   // 820 px wide leaves clear space well beyond half the disc on every side
