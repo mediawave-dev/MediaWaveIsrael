@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 13.11.2026 after D264
+# HANDOFF: the statement site (look `sun`), state on 13.11.2026 after D265
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D264). The next decision number is **D265**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D265). The next decision number is **D266**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -28,16 +28,11 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Service pages are built as the customer's questions (`src/data/services.ts`), with a new `program-sites` page. Proof places exist and are empty until real approved quotes arrive (`src/data/proof.ts`, `docs/PROOF.rtl.md`).
 - Copy: Nati's picks from the morning board are folded into `content.ts` (D254). Landing pages start at 1,999 ₪ and writing the text is included.
 
-## In progress: the MW logo
-- Rounds 1 and 2 of my own proposals are closed (`design/logo/mw-initials/`: round 1, `RESEARCH.rtl.md`, `round2/`). Round 1 he called generic; round 2 he did not pick from.
-- **His pick (13.11): an MW logo another agent drew for him**, pasted as SVG: a bold slanted M and W that share a stroke, code brackets on both sides, a rule, and the line WEB DEVELOPMENT. Kept as `design/logo/mw-initials/picked/source.svg`. He asked for "a beautiful combination with the icon" (the Horizon disc) and for the smartest places to put it on the site.
-- **What I sent him** (`picked/board-1.jpg` to `board-3.jpg`; geometry in `picked/parts.mjs`):
-  - his M and W outlines untouched, recoloured to the site (M ink, W turquoise; his sage and cyan fail contrast on the mint);
-  - the emblem: brackets and MW, the rule with the disc sitting on it (the rule becomes the disc's horizon), the tagline outlined from mediawave-font1 Bold (`tag.json`, no live text);
-  - the header lockup: brackets, disc, MW; one-colour version with a channel between M and W;
-  - placement, shown as screenshots of the built site with the logo swapped in the page only (`picked/site.mjs`): the white pinned corner on every page; folding to the disc on scroll as today; the full emblem in the footer; the emblem on dark as the share image (WhatsApp card); favicon and app icon stay the disc.
-- Told him: the header no longer spells "MediaWave" (the name stays in the tab title, the footer line and the share card); offered to keep the name on desktop.
-- **Waiting for his go-ahead. Nothing is built in the site's code.** To build it: a new variant in `src/components/ui/logo-paths.ts` (`scripts/build-logo-paths.mjs`) and `Logo.tsx` (gradients need ids per instance), the `.pin` sizes in sun.css (`--lh`, `--w0`; the clip must fold to the disc), the footer brand block, `scripts/generate-og-sun.mjs`, `logos/horizon` kit and its README rules, structured-data logo. Check contrast and the 320 px header. Record as D265. A proximity check against existing MW marks has not been done.
+## The logo (D265, built on the preview)
+- History, all in `design/logo/mw-initials/`: round 1 of MW proposals (rejected as generic), web research (`RESEARCH.rtl.md`), round 2 (seven constructed marks, none picked), then **an MW logo another agent drew for him, which he liked** (`picked/source.svg`).
+- His ruling (13.11): the MW logo does **not** replace the logo at the top; the floating corner keeps **the icon alone**; "make the original logo in the style of this logo, at the highest quality".
+- Built: the Horizon logo redrawn in that style. His M and W untouched, "edia" and "ave" from Urbanist Black Italic (OFL) at the same height and lean, the drop on the i kept, a soft diagonal light across each half of the name. Sources, the SVG kit and the boards he was sent: `design/logo/mediawave-v2/` (README there). On the site: `src/sun/Brand.tsx` + `src/sun/brand-art.ts`, in the pinned corner (whole logo at the top, the disc alone on scroll) and in the footer (with the WEB DEVELOPMENT line).
+- **Waiting for his verdict on it.** Not done: the `logos/horizon` kit and its README rules, the share image, a proximity check, Lighthouse after the change. The MW monogram itself has no place on the site yet; his call whether it gets one (footer, share card) or stays out.
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
@@ -52,7 +47,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Few agents, and only for building. Images to his phone with SendUserFile. Hebrew replies, a new line after each long sentence.
 
 ## Waiting for Nati
-1. His go-ahead to build the MW logo with the disc into the site (header, footer, share image).
+1. His verdict on the redrawn logo (D265) on the preview, and whether the MW monogram gets a place of its own.
 2. The EFT web licence for Artzisraeli and Tirosh. It blocks production.
 3. Cloudflare keys for lead mail (`CF_ACCOUNT_ID`, `LEAD_TOKEN`, `LEAD_TO`).
 4. Which past clients to ask for a sentence, and the Google Business profile link.
@@ -67,7 +62,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - The last Lighthouse run after D264 was a single run on the local build: performance 95, accessibility 100, CLS 0. The pushed preview was not re-checked by content after D264.
 
 ## Next steps
-1. Apply his MW pick as described above, record it as D265, show it on the preview.
+1. Apply his notes on the redrawn logo; on approval replace the `logos/horizon` kit, regenerate the share image, run Lighthouse.
 2. On approval of the whole direction: rewrite DESIGN.md / PRODUCT.md / CLAUDE.md "Current state", run `site-gate-audit`, tag a rollback point, then production with his explicit yes.
 
 ## Important files
@@ -76,4 +71,5 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - `scripts/record-work.mjs`, `scripts/posters-from-video.mjs`, `scripts/prerender.mjs`, `scripts/brand-palette.mjs`
 - `functions/api/lead.ts`, `stats.ts`, `event.ts`
 - `design/audit/sun/qa/` (the checks: `behave.mjs`, `tap.mjs`, `qa.mjs`, `webkit-check.mjs`, README)
-- `design/logo/mw-initials/` (round 1, the research, and `round2/`)
+- `design/logo/mw-initials/` (the MW rounds and his pick), `design/logo/mediawave-v2/` (the redrawn logo)
+- `src/sun/Brand.tsx`, `src/sun/brand-art.ts`

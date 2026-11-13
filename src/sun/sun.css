@@ -30,6 +30,9 @@
      turquoise; the word Wave is a step deeper so it reads as text on white (4.5:1). */
   --logo-a: var(--ink);
   --logo-b: #0F8478;
+  /* D265, the second drawing of the logo: one soft light runs across each half of the name, from these to the two above */
+  --logo-a0: #2F5249;
+  --logo-b0: #22BBA8;
   --logo-tag: var(--ink-2);
   --mark-a: var(--ink);
   --mark-b: #14A390;
@@ -90,6 +93,8 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 /* D238, after Libra: a coloured band never ends on a straight line. It rises into the section above and
    hangs into the one below as a slow, uneven wave (one mask each, stretched to the width). */
 .mw-logo [data-part="mark"] { --logo-a: var(--mark-a); --logo-b: var(--mark-b); }
+/* high contrast: the name in its two plain colours, no light across it */
+html.high-contrast .mw-logo--v2 { --logo-a0: var(--logo-a); --logo-b0: var(--logo-b); }
 :root {
   --wave-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V64C210 16 430 2 700 44C960 84 1210 72 1440 12V100Z'/%3E%3C/svg%3E");
   --wave-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0V26C250 94 520 88 800 52C1050 20 1270 26 1440 74V0Z'/%3E%3C/svg%3E");
@@ -153,7 +158,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .head__tools { display: flex; align-items: center; gap: 2px; }
 .head__cta { display: none; }
 
-.pin { --p: 0; --lh: 25px; --w0: 322; --h0: 96; --w1: 132; --h1: 76; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: 12px; pointer-events: none; }
+.pin { --p: 0; --lh: 27px; --w0: 322; --h0: 96; --w1: 132; --h1: 76; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: 12px; pointer-events: none; }
 .pin > * { pointer-events: auto; }
 .pin__blob { position: absolute; top: 0; inset-inline-start: 0; width: calc(var(--w0) * 1px); height: calc(var(--h0) * 1px); max-width: none; fill: var(--paper); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .22)); pointer-events: none; transform-origin: 100% 0; transform: scale(calc(1 - (1 - var(--w1) / var(--w0)) * var(--p)), calc(1 - (1 - var(--h1) / var(--h0)) * var(--p))); will-change: transform; }
 .pin__menu { position: relative; flex: none; width: calc(44px * var(--p)); opacity: calc(var(--p) * 1.6 - .6); visibility: hidden; overflow: hidden; }
@@ -161,7 +166,7 @@ html.disable-animations *, html.disable-animations *::before, html.disable-anima
 .pin__logo { position: relative; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-inline-start: 4px; }
 /* the logo art is drawn left to right (the mark, then the name): the clip narrows from the name's end, the mark
    stays, and because the clip is held at its far side the mark travels toward the corner as it narrows */
-.pin__clip { display: block; direction: ltr; overflow: hidden; width: calc(var(--lh) * (1.1 + 7.16 * (1 - var(--p)))); -webkit-mask-image: linear-gradient(to left, transparent, #000 calc(48px * min(1, var(--p) * 5) * (1 - var(--p)))); mask-image: linear-gradient(to left, transparent, #000 calc(48px * min(1, var(--p) * 5) * (1 - var(--p)))); }
+.pin__clip { display: block; direction: ltr; overflow: hidden; width: calc(var(--lh) * (1.09 + 6.4 * (1 - var(--p)))); -webkit-mask-image: linear-gradient(to left, transparent, #000 calc(48px * min(1, var(--p) * 5) * (1 - var(--p)))); mask-image: linear-gradient(to left, transparent, #000 calc(48px * min(1, var(--p) * 5) * (1 - var(--p)))); }
 .pin__clip .mw-logo { display: block; height: var(--lh); width: auto; max-width: none; }
 .pin__clip [data-part="name"], .pin__clip [data-part="drop"] { opacity: calc(1 - var(--p) * 1.7); }
 html.menu-open .pin__blob { filter: none; }
@@ -174,8 +179,8 @@ html.menu-open .pin__blob { filter: none; }
 .sheet nav :is(a, button) { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 54px; font: 700 1.25rem/1.2 var(--display); text-align: start; border-block-end: 1px solid var(--line); }
 .sheet nav svg { opacity: .55; }
 /* narrow phones: a smaller logo, so the corner wave stays clear of the two buttons beside it */
-@media (max-width: 389px) { .pin { --lh: 22px; --w0: 284; --h0: 88; --w1: 128; --h1: 74; height: 64px; } }
-@media (max-width: 339px) { .pin { --lh: 19px; --w0: 244; --h0: 80; --w1: 122; --h1: 70; height: 60px; } }
+@media (max-width: 389px) { .pin { --lh: 24px; --w0: 284; --h0: 88; --w1: 128; --h1: 74; height: 64px; } }
+@media (max-width: 339px) { .pin { --lh: 21px; --w0: 244; --h0: 80; --w1: 122; --h1: 70; height: 60px; } }
 @media (min-width: 1100px) {
   .head__in { min-height: 116px; padding: 20px 40px 0; justify-content: flex-start; gap: 36px; }
   /* the links start clear of the corner wave */
@@ -188,7 +193,7 @@ html.menu-open .pin__blob { filter: none; }
   .head__cta svg:last-child { transition: transform .25s var(--ease); }
   @media (hover: hover) { .head__cta:hover svg:last-child { transform: translateX(-4px); } }
   .head__menu { display: none; }
-  .pin { --lh: 30px; --w0: 436; --h0: 124; --w1: 150; --h1: 84; height: 84px; padding-inline-start: 34px; transform: translateX(calc(var(--p) * 18px)); }
+  .pin { --lh: 32px; --w0: 436; --h0: 124; --w1: 150; --h1: 84; height: 84px; padding-inline-start: 34px; transform: translateX(calc(var(--p) * 18px)); }
   .sheet { inset-inline: 0 auto; width: 420px; padding: 96px 34px 28px; border-radius: 0; border-end-end-radius: 32px; }
 }
 
@@ -371,7 +376,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .foot__brand, .foot__in > div:last-child { grid-column: 1 / -1; }
 .foot__in > div:last-child { display: flex; flex-wrap: wrap; column-gap: 22px; }
 .foot__in > div:last-child .foot__h { width: 100%; }
-.foot__brand .mw-logo { height: 34px; width: auto; }
+.foot__brand .mw-logo { display: block; height: auto; width: min(100%, 300px); }
 .foot__brand p { margin-block-start: 14px; font-weight: 600; max-width: 18em; text-wrap: balance; }
 .foot__h { font: 700 1.0625rem/1.3 var(--display); margin-block-end: 6px; }
 .foot nav a, .foot__in > div > a { display: flex; align-items: center; min-height: 44px; font-weight: 500; text-wrap: balance; }
