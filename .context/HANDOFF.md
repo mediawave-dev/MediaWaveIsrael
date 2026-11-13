@@ -29,11 +29,14 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Copy: Nati's picks from the morning board are folded into `content.ts` (D254). Landing pages start at 1,999 ₪ and writing the text is included.
 
 ## In progress: the initials MW in the logo
-Nati (13.11): add the two initials MW, shown together with the logo; ten proposals; premium, high-tech, real quality; no agent fleets; invest only in the direction he picks.
-- Ten proposals were sent to him as five phone images. They and the script that draws them are in `design/logo/mw-initials/` (`mw-board.mjs`, `mw-1.jpg` to `mw-5.jpg`). Every letter comes from the wordmark's own outlines in `src/components/ui/logo-paths.ts`.
-- The ten: 1 letters cut by the sea line; 2 one continuous stroke, a signal; 3 M and its reflection W; 4 the disc between the letters (reads "MOW"); 5 disc whose horizon is a zigzag MW (reads as mountains); 6 disc with a two-crest sea line; 7 MW standing over a lower sea line inside the disc; 8 dot-matrix letters; 9 the name in two lines with a dark initial column; 10 M beside a W drawn as a soft wave.
-- My recommendation to him: 2, with 10 and 7 next.
-- **Waiting for his pick. Nothing of this is on the site.** After the pick, with the `svg-logo-designer` skill (refresh mode) for that one direction only: optical fixes, a small-size master for 16 to 32 px, a reversed version, then `logo-paths.ts`, `scripts/brand-palette.mjs`, `logos/horizon`, the favicon and app icons, and the pinned corner in `Shell.tsx`.
+Nati (13.11): add the two initials MW, shown together with the logo; premium, high-tech, real quality; no agent fleets; invest only in the direction he picks.
+- **Round 1 was rejected**: "כל מה שהצעת נראה מאוד גנרי. 2 היחידי שקצת הביא משהו מקורי. שום דבר פה לא משדר לי הייטק". It was the wordmark's own letters, coloured or cut (`design/logo/mw-initials/mw-1.jpg` to `mw-5.jpg`). He then asked for web research first.
+- **Research**: `design/logo/mw-initials/RESEARCH.rtl.md` (LogoLounge 2026 and tech-logo reviews). The rule taken from it: a mark constructed from a few exact modules, with motion and depth in the still image, that survives one colour and 16 px. Never typed letters.
+- **Round 2, sent to him as four phone images** (`design/logo/mw-initials/round2/`: `mw2-marks.mjs` holds the geometry, `mw2-board.mjs` renders the board, `mw2-1.jpg` to `mw2-4.jpg`). Fourteen sketches were drawn and judged as renders; seven held:
+  1 fold (a folded strip, the grown-up form of round 1's number 2); 2 blades (triangle, slash, triangle); 3 channels (the zigzag as three parallel lines, solid below 40 px); 4 pulse (a square-cornered stroke, m above the horizon and w below); 5 sample (a smooth m and a w built of pixels); 6 roll (one ribbon rolling through mw); 7 lock (m and w as two interlocking combs).
+- My recommendation to him: 1, with 4 and 5 next. Told him honestly: 2 is the boldest but its W is the least readable; 7 can read as columns.
+- The board shows each mark beside the name without the present disc, as the new symbol. Whether the disc stays next to it is his call after the pick.
+- **Waiting for his pick. Nothing of this is on the site.** After the pick, with the `svg-logo-designer` skill (refresh mode) for that one direction only: optical fixes, the small-size master, a reversed version, a proximity check against Miro and Webflow, then `logo-paths.ts`, `scripts/brand-palette.mjs`, `logos/horizon`, the favicon and app icons, the pinned corner in `Shell.tsx`, and a moving state for the mark.
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
@@ -48,7 +51,7 @@ Nati (13.11): add the two initials MW, shown together with the logo; ten proposa
 - Few agents, and only for building. Images to his phone with SendUserFile. Hebrew replies, a new line after each long sentence.
 
 ## Waiting for Nati
-1. Which MW proposal to develop.
+1. Which MW proposal of round 2 to develop (or a third round).
 2. The EFT web licence for Artzisraeli and Tirosh. It blocks production.
 3. Cloudflare keys for lead mail (`CF_ACCOUNT_ID`, `LEAD_TOKEN`, `LEAD_TO`).
 4. Which past clients to ask for a sentence, and the Google Business profile link.
@@ -72,4 +75,4 @@ Nati (13.11): add the two initials MW, shown together with the logo; ten proposa
 - `scripts/record-work.mjs`, `scripts/posters-from-video.mjs`, `scripts/prerender.mjs`, `scripts/brand-palette.mjs`
 - `functions/api/lead.ts`, `stats.ts`, `event.ts`
 - `design/audit/sun/qa/` (the checks: `behave.mjs`, `tap.mjs`, `qa.mjs`, `webkit-check.mjs`, README)
-- `design/logo/mw-initials/`
+- `design/logo/mw-initials/` (round 1, the research, and `round2/`)
