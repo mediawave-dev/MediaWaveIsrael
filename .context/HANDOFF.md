@@ -28,15 +28,16 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Service pages are built as the customer's questions (`src/data/services.ts`), with a new `program-sites` page. Proof places exist and are empty until real approved quotes arrive (`src/data/proof.ts`, `docs/PROOF.rtl.md`).
 - Copy: Nati's picks from the morning board are folded into `content.ts` (D254). Landing pages start at 1,999 ₪ and writing the text is included.
 
-## In progress: the initials MW in the logo
-Nati (13.11): add the two initials MW, shown together with the logo; premium, high-tech, real quality; no agent fleets; invest only in the direction he picks.
-- **Round 1 was rejected**: "כל מה שהצעת נראה מאוד גנרי. 2 היחידי שקצת הביא משהו מקורי. שום דבר פה לא משדר לי הייטק". It was the wordmark's own letters, coloured or cut (`design/logo/mw-initials/mw-1.jpg` to `mw-5.jpg`). He then asked for web research first.
-- **Research**: `design/logo/mw-initials/RESEARCH.rtl.md` (LogoLounge 2026 and tech-logo reviews). The rule taken from it: a mark constructed from a few exact modules, with motion and depth in the still image, that survives one colour and 16 px. Never typed letters.
-- **Round 2, sent to him as four phone images** (`design/logo/mw-initials/round2/`: `mw2-marks.mjs` holds the geometry, `mw2-board.mjs` renders the board, `mw2-1.jpg` to `mw2-4.jpg`). Fourteen sketches were drawn and judged as renders; seven held:
-  1 fold (a folded strip, the grown-up form of round 1's number 2); 2 blades (triangle, slash, triangle); 3 channels (the zigzag as three parallel lines, solid below 40 px); 4 pulse (a square-cornered stroke, m above the horizon and w below); 5 sample (a smooth m and a w built of pixels); 6 roll (one ribbon rolling through mw); 7 lock (m and w as two interlocking combs).
-- My recommendation to him: 1, with 4 and 5 next. Told him honestly: 2 is the boldest but its W is the least readable; 7 can read as columns.
-- The board shows each mark beside the name without the present disc, as the new symbol. Whether the disc stays next to it is his call after the pick.
-- **Waiting for his pick. Nothing of this is on the site.** After the pick, with the `svg-logo-designer` skill (refresh mode) for that one direction only: optical fixes, the small-size master, a reversed version, a proximity check against Miro and Webflow, then `logo-paths.ts`, `scripts/brand-palette.mjs`, `logos/horizon`, the favicon and app icons, the pinned corner in `Shell.tsx`, and a moving state for the mark.
+## In progress: the MW logo
+- Rounds 1 and 2 of my own proposals are closed (`design/logo/mw-initials/`: round 1, `RESEARCH.rtl.md`, `round2/`). Round 1 he called generic; round 2 he did not pick from.
+- **His pick (13.11): an MW logo another agent drew for him**, pasted as SVG: a bold slanted M and W that share a stroke, code brackets on both sides, a rule, and the line WEB DEVELOPMENT. Kept as `design/logo/mw-initials/picked/source.svg`. He asked for "a beautiful combination with the icon" (the Horizon disc) and for the smartest places to put it on the site.
+- **What I sent him** (`picked/board-1.jpg` to `board-3.jpg`; geometry in `picked/parts.mjs`):
+  - his M and W outlines untouched, recoloured to the site (M ink, W turquoise; his sage and cyan fail contrast on the mint);
+  - the emblem: brackets and MW, the rule with the disc sitting on it (the rule becomes the disc's horizon), the tagline outlined from mediawave-font1 Bold (`tag.json`, no live text);
+  - the header lockup: brackets, disc, MW; one-colour version with a channel between M and W;
+  - placement, shown as screenshots of the built site with the logo swapped in the page only (`picked/site.mjs`): the white pinned corner on every page; folding to the disc on scroll as today; the full emblem in the footer; the emblem on dark as the share image (WhatsApp card); favicon and app icon stay the disc.
+- Told him: the header no longer spells "MediaWave" (the name stays in the tab title, the footer line and the share card); offered to keep the name on desktop.
+- **Waiting for his go-ahead. Nothing is built in the site's code.** To build it: a new variant in `src/components/ui/logo-paths.ts` (`scripts/build-logo-paths.mjs`) and `Logo.tsx` (gradients need ids per instance), the `.pin` sizes in sun.css (`--lh`, `--w0`; the clip must fold to the disc), the footer brand block, `scripts/generate-og-sun.mjs`, `logos/horizon` kit and its README rules, structured-data logo. Check contrast and the 320 px header. Record as D265. A proximity check against existing MW marks has not been done.
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
@@ -51,7 +52,7 @@ Nati (13.11): add the two initials MW, shown together with the logo; premium, hi
 - Few agents, and only for building. Images to his phone with SendUserFile. Hebrew replies, a new line after each long sentence.
 
 ## Waiting for Nati
-1. Which MW proposal of round 2 to develop (or a third round).
+1. His go-ahead to build the MW logo with the disc into the site (header, footer, share image).
 2. The EFT web licence for Artzisraeli and Tirosh. It blocks production.
 3. Cloudflare keys for lead mail (`CF_ACCOUNT_ID`, `LEAD_TOKEN`, `LEAD_TO`).
 4. Which past clients to ask for a sentence, and the Google Business profile link.
