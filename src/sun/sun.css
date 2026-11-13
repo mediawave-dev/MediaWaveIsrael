@@ -226,12 +226,11 @@ html.menu-open .pin__blob { filter: none; }
 }
 
 /* the wheel: slots stand on a circle of radius --R around the ring's origin; the ring alone turns */
-.wheel { --cw: 176px; --ch: 352px; --R: 568px; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.wheel { --cw: 176px; --ch: 352px; --R: 568px; --step: 22.5deg; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .wheel:active { cursor: grabbing; }
 .wheel__ground { position: absolute; inset-inline: -3%; bottom: -1px; height: calc(var(--ch) * .46); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
 .wheel__ring { position: absolute; left: 50%; top: calc(18px + var(--ch) / 2 + var(--R)); width: 0; height: 0; will-change: transform; }
-.wheel__slot { position: absolute; left: calc(var(--cw) / -2); top: calc(var(--ch) / -2); width: var(--cw); height: var(--ch); transform: rotate(calc(var(--i) * 10deg)) translateY(calc(var(--R) * -1)); }
-.wheel__slot:nth-child(even) { display: none; }
+.wheel__slot { position: absolute; left: calc(var(--cw) / -2); top: calc(var(--ch) / -2); width: var(--cw); height: var(--ch); transform: rotate(calc(var(--i) * var(--step))) translateY(calc(var(--R) * -1)); }
 /* D255: every site stands in the same phone, as noamavikasis.co.il shows his work: a dark bezel, a rounded screen
    and the small island at the top, so eight different sites read as one set */
 .wheel__card { position: relative; display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: 30px; background: #0E1512; border: 6px solid #0E1512; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset, 0 22px 40px -18px rgba(19, 36, 31, .6), 0 4px 10px -4px rgba(19, 36, 31, .3); -webkit-user-drag: none; }
@@ -244,8 +243,8 @@ html.menu-open .pin__blob { filter: none; }
 .wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
 @media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 620px; } }
 @media (min-width: 900px) {
-  .wheel { --cw: 224px; --ch: 448px; --R: 1520px; height: calc(var(--ch) + 150px); }
-  .wheel__slot:nth-child(even) { display: block; }
+  /* 22.5 degrees apart: the radius that keeps a calm gap between two phones (D261) */
+  .wheel { --cw: 236px; --ch: 472px; --R: 780px; height: calc(var(--ch) + 150px); }
   .wheel__ground { height: calc(var(--ch) * .62); }
   .wheel__card { border-radius: 36px; border-width: 7px; }
   .wheel__card img { border-radius: 8px 8px 29px 29px; }

@@ -3,19 +3,11 @@
     "slug": "switchon",
     "name": "SwitchOn",
     "url": "https://switchon.co.il",
-    "scenes": [
-      745
-    ],
     "rec": {
       "top": [
         0,
         0,
         7.1
-      ],
-      "s1": [
-        745,
-        2466,
-        9.5
       ]
     },
     "poke": true
@@ -24,20 +16,12 @@
     "slug": "machtesh",
     "name": "מכתש, בית קלייה (אתר לדוגמה)",
     "url": "https://machtesh-coffee.netlify.app/",
-    "scenes": [
-      6355
-    ],
     "hide": "#nl-badge-frame",
     "rec": {
       "top": [
         0,
         4540,
         16
-      ],
-      "s1": [
-        6355,
-        8019,
-        9.5
       ]
     }
   },
@@ -76,6 +60,19 @@
         0,
         0,
         12.2535
+      ]
+    }
+  },
+  {
+    "slug": "horizon",
+    "name": "הורייזן, טיולי ג'יפים באילת",
+    "url": "https://www.horizon-eilat.com/",
+    "hide": "#consentBar, .wa-float, .a11y-fab, .skip-links",
+    "rec": {
+      "top": [
+        0,
+        3950,
+        16
       ]
     }
   },

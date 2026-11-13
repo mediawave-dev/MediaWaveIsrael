@@ -4,7 +4,9 @@
 // The cards are pictures only: no names and no links to the sites (D240). Decorative, so hidden from assistive tech.
 // Each card is a part of a site that says something: a hero with its headline, a section with a heading and
 // text (D244). So that it can be read, a tap on the wheel holds it still for a few seconds.
-// Geometry lives in sun.css (--cw, --ch, --R); 36 slots at 10 degrees, and phones show every second slot.
+// Geometry lives in sun.css (--cw, --ch, --R). D261: 16 slots at 22.5 degrees, every one shown: one card per site plus
+// the "next" card make eight, and each stands twice, on opposite sides of the ring, so a site is never on the screen twice
+// at once and passes twice in a full turn (Nati: "אי אפשר שאתר יופיע יותר מפעמיים בקרוסלה").
 // The opening (D241), the page's one staged moment: the wheel starts under the horizon, turned away, and
 // comes up and round like a heavy wheel settling, and then the sticker is stamped on. index.html sets html.sun-open before first paint, so the prerendered page already
 // shows the starting pose; this effect plays it once and removes the class.
@@ -13,7 +15,7 @@ import { PROJECTS, WA } from './content'
 import { IconWhatsApp } from './icons'
 import { track } from '../utils/analytics'
 
-const SLOTS = 36
+const SLOTS = 16
 const STEP = 360 / SLOTS
 /** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
 const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
@@ -23,12 +25,12 @@ const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
 type Shot = { kind: 'shot'; slug: string; crop: string }
 type Card = Shot | { kind: 'next' }
 
-/** The deck, set by hand (Nati, 13.11.2026): eight pictures and the "next" card. Light and dark screens take
-    turns, and the two sites with a woman's face in the hero (sisters' sites) stand apart: four places on a desktop,
-    two on a phone, which shows every second card. A card whose file is missing in work.json is skipped. */
+/** The deck, set by hand (Nati, 13.11.2026): one card per site, then the "next" card. Light and dark screens take
+    turns, and the two sites with a woman's face in the hero (sisters' sites) stand four places apart (90 degrees),
+    so they are never side by side. A card whose project is missing from work.json is skipped. */
 const ORDER: [string, string][] = [
-  ['switchon', 'top'], ['machtesh', 'top'], ['yael-levy', 'top'], ['ben-david', 'top'],
-  ['switchon', 's1'], ['mediawave-2026', 'top'], ['hila', 'top'], ['machtesh', 's1'],
+  ['switchon', 'top'], ['machtesh', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
+  ['horizon', 'top'], ['ben-david', 'top'], ['hila', 'top'],
 ]
 function deck(): Card[] {
   const known = new Set(PROJECTS.map((p) => p.slug))
@@ -105,7 +107,7 @@ export default function Wheel() {
     let lastT = 0
     const radius = () => parseFloat(getComputedStyle(el).getPropertyValue('--R')) || 500
     // one card's width of travel every five seconds, whatever the wheel's size
-    const drift = () => (window.matchMedia('(min-width: 900px)').matches ? STEP : STEP * 2) / 5
+    const drift = () => STEP / 5
 
     const paint = () => { r.style.transform = `translateY(${lift.toFixed(1)}px) rotate(${(a + spin).toFixed(3)}deg)` }
     const tick = (t: number) => {
