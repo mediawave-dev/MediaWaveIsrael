@@ -20,6 +20,12 @@
       3640,
       6420,
       4800
+    ],
+    "long_s1": [
+      6420,
+      7220,
+      8020,
+      8820
     ]
   },
   {
@@ -40,8 +46,17 @@
   },
   {
     "slug": "mediawave-2026",
-    "name": "MediaWave, הגרסה הקודמת",
-    "url": "https://mediawave.co.il",
-    "capture": false
+    "name": "MediaWave, הגרסה הקודמת (בלי השם על הכרטיס)",
+    "url": "https://mediawave.co.il/",
+    "captureUrl": "https://mediawave.co.il/?reduce=1",
+    "still": true,
+    "hide": ".mw-head, [class*=\"consent\" i], [role=\"dialog\"], [class*=\"lead-modal\" i], .sea-foot",
+    "long": [
+      0,
+      2660,
+      3200,
+      4330,
+      5210
+    ]
   }
 ]

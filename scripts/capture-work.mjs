@@ -17,7 +17,8 @@ const list = all.filter((p) => p.url && p.capture !== false && (!only.length || 
 mkdirSync('public/work', { recursive: true })
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 
-const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] })
+// WebGL in software, so a page drawn on a canvas (the old MediaWave hero) still renders
+const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] })
 for (const p of list) {
   const cuts = [['top', p.top ?? 0], ...(p.scenes ?? []).map((y, i) => [`s${i + 1}`, y])]
   const page = await browser.newPage()
@@ -43,29 +44,36 @@ for (const p of list) {
   if (p.hide) await page.addStyleTag({ content: p.hide + " { display: none !important }" })
   // walk down to the last cut once, so lazy pictures and reveal-on-scroll blocks on the way are in
   for (let y = 0; y <= Math.max(...cuts.map((c) => c[1])) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
-  // D257: the first 2600 px of the page as one tall strip (-card-long), which scrolls slowly inside the phone
-  {
-    // blocks that reveal on scroll are walked into view first, with motion allowed, so the strip has no empty sections
-    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }])
-    const H = await page.evaluate(() => document.documentElement.scrollHeight)
-    for (let y = 0; y <= Math.min(H, 2800); y += 250) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(350) }
-    await wait(800)
-    await page.evaluate(() => window.scrollTo(0, 0))
-    await wait(1200)
-    await hideFloating()
-    // a page whose top is a scroll scene (empty space between screens) names its screens instead: "long": [y, y, ...]
-    let strip
-    if (Array.isArray(p.long)) {
+  // D257: every card also gets a tall strip that starts where the card starts and runs 2600 px down the page
+  // (-card-long for the main card, -card-<scene>-long for the others); it scrolls slowly inside the phone.
+  // Blocks that reveal on scroll are walked into view first, with motion allowed, unless the project keeps the
+  // reduced mode ("still": true, a page whose own reduced mode is its clean state).
+  if (!p.still) await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }])
+  const H = await page.evaluate(() => document.documentElement.scrollHeight)
+  for (let y = 0; y <= H; y += 300) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
+  await wait(800)
+  for (const [tag, y0] of cuts) {
+    // a page whose top is a scroll scene (empty space between screens) names the screens of its main strip: "long": [y, y, ...]
+    let strip, from = y0
+    // a scene card names its own screens the same way: "long_s1": [y, y, ...]
+    const screens = tag === 'top' ? p.long : p['long_' + tag]
+    if (Array.isArray(screens)) {
       const shots = []
-      for (const y of p.long) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(1300); await hideFloating(); shots.push(await page.screenshot({ type: 'png' })) }
+      for (const y of screens) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(1300); await hideFloating(); shots.push(await page.screenshot({ type: 'png' })) }
       const m0 = await sharp(shots[0]).metadata()
       strip = await sharp({ create: { width: m0.width, height: m0.height * shots.length, channels: 3, background: '#000' } }).composite(shots.map((input, i) => ({ input, left: 0, top: i * m0.height }))).png().toBuffer()
-    } else strip = await page.screenshot({ type: 'png', fullPage: true })
+      from = 0
+    } else {
+      await page.evaluate(() => window.scrollTo(0, 0)); await wait(1000); await hideFloating()
+      strip = await page.screenshot({ type: 'png', fullPage: true })
+    }
     const meta = await sharp(strip).metadata()
     const k = meta.width / 390
-    const h = Math.min(meta.height, Math.round(2600 * k))
-    await sharp(strip).extract({ left: 0, top: 0, width: meta.width, height: h }).resize({ width: 480 }).webp({ quality: 66 }).toFile(`public/work/${p.slug}-card-long.webp`)
-    console.log('  ', `public/work/${p.slug}-card-long`)
+    const top = Math.min(Math.round(from * k), meta.height - 10)
+    const h = Math.min(meta.height - top, Math.round(2600 * k))
+    const name = tag === 'top' ? `${p.slug}-card-long` : `${p.slug}-card-${tag}-long`
+    await sharp(strip).extract({ left: 0, top, width: meta.width, height: h }).resize({ width: 480 }).webp({ quality: 66 }).toFile(`public/work/${name}.webp`)
+    console.log('  ', `public/work/${name}`)
   }
   for (const [tag, y] of cuts) {
     await page.evaluate((v) => window.scrollTo(0, v), y)

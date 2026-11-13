@@ -556,3 +556,4 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
   animation: screen-scroll 26s cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--i) * -3.7s); }
 @keyframes screen-scroll { 0%, 12% { transform: translateY(0); } 50%, 62% { transform: translateY(calc(-100% + 100cqh)); } 100% { transform: translateY(0); } }
 @media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
+.wheel[data-off] .wheel__screen img { animation-play-state: paused; }

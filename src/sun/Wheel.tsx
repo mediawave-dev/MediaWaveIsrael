@@ -36,8 +36,8 @@ function deck(): Card[] {
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
-/** Sites with a long strip (scripts/capture-work.mjs writes it for every captured project). */
-const LONG = new Set(PROJECTS.filter((p) => (p as { capture?: boolean }).capture !== false).map((p) => p.slug))
+/** Every card has a long strip (scripts/capture-work.mjs): -card-long for a main card, -card-<scene>-long for the others. */
+const longOf = (slug: string, crop: string) => `/work/${slug}-card-${crop === 'top' ? '' : crop + '-'}long.webp`
 
 /** D257: once the page has loaded and gone quiet, each main card swaps its first screen for the long strip of the
     same page (same top, so the swap is invisible), and the strip scrolls slowly down and back inside the phone. */
@@ -48,7 +48,7 @@ function useLongScreens() {
     let t = 0
     const go = () => {
       t = window.setTimeout(() => {
-        const urls = [...LONG].map((s) => `/work/${s}-card-long.webp`)
+        const urls = ORDER.map(([slug, crop]) => longOf(slug, crop))
         Promise.all(urls.map((u) => new Promise((res) => { const i = new Image(); i.onload = i.onerror = res; i.src = u }))).then(() => setOn(true))
       }, 1800)
     }
@@ -60,6 +60,15 @@ function useLongScreens() {
 
 export default function Wheel() {
   const long = useLongScreens()
+  // the screens rest while the wheel is out of view, and on ?calm=1
+  useEffect(() => {
+    const el = box.current
+    if (!el) return
+    if (/[?&]calm=1(&|$)/.test(location.search)) { el.dataset.off = ''; return }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) delete el.dataset.off; else el.dataset.off = '' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const box = useRef<HTMLDivElement>(null)
   const ring = useRef<HTMLDivElement>(null)
 
@@ -176,9 +185,9 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <div className="wheel__card" data-crop={c.crop} data-long={long && c.crop === 'top' && LONG.has(c.slug) ? '' : undefined}>
+              <div className="wheel__card" data-crop={c.crop} data-long={long ? '' : undefined}>
                 <div className="wheel__screen">
-                  <img src={long && c.crop === 'top' && LONG.has(c.slug) ? `/work/${c.slug}-card-long.webp` : `/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
+                  <img src={long ? longOf(c.slug, c.crop) : `/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
                     loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
                 </div>
               </div>
