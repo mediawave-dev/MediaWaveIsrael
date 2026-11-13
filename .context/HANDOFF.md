@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 13.11.2026 after D265
+# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D266
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D265). The next decision number is **D266**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D266). The next decision number is **D267**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -28,15 +28,21 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Service pages are built as the customer's questions (`src/data/services.ts`), with a new `program-sites` page. Proof places exist and are empty until real approved quotes arrive (`src/data/proof.ts`, `docs/PROOF.rtl.md`).
 - Copy: Nati's picks from the morning board are folded into `content.ts` (D254). Landing pages start at 1,999 ₪ and writing the text is included.
 
-## The logo (D265): drawn, NOT on the site
-- History in `design/logo/mw-initials/`: round 1 of MW proposals (generic), web research, round 2 (none picked), then **an MW logo another agent drew for him, which he liked** (`picked/source.svg`).
-- He asked for the original logo in that style. It was drawn (his M and W, the rest from Urbanist Black Italic) and I built it into the site and pushed it to the preview **without his approval**. He had it removed: "לא אישרתי שיעבור לתצוגה מקדימה". The site code is back to the first logo; Brand.tsx and brand-art.ts are gone from src.
-- **Rule: nothing new goes to the preview branches before he has seen it as an image and said yes.**
-- The drawing, its SVG files and the boards stay in `design/logo/mediawave-v2/` as a design record only.
-- What he asked for next (13.11): (1) "maybe" redraw the other seven letters so they really resemble his M and W, as images only; (2) the short MW with the icon under it, **only in the footer**.
-- Sent to him as images (`design/logo/mediawave-v2/letters/`): `board-letters.jpg`, the name with the other letters drawn as leaning blocks with one sharp wedge each (`glyphs.mjs`): option 1 mixed case, option 2 all capitals with the A as a turned V, option 3 the typeface version for comparison. And `board-footer.jpg`, the MW mark in the footer.
-- **Uncommitted in this working tree, on purpose:** the MW mark in the footer (`src/sun/Emblem.tsx`, `src/sun/emblem-art.ts`, one line in `src/sun/Shell.tsx`, three lines in `src/sun/sun.css`). It was photographed on the local dev server for the board. Commit and push it only after he says yes; if he says no, `git checkout -- src/sun/Shell.tsx src/sun/sun.css` and delete the two new files.
-- Verified after the removal: both preview addresses serve the first logo again (class mw-logo--compact in the HTML, no mw-logo--v2).
+## Tonight (13 to 14.11, D266): the logo on the site, the pre-production audit
+- **Branches.** `redesign/statement-20261112` (the main preview Nati looks at) has everything up to the MW mark in the footer, which he approved (735fda8). Tonight's work is on `night/statement-20261114`, pushed with its own preview https://night-statement-20261114.mediawaveisrael.pages.dev and **not merged** into the main preview: he decides on the board.
+- **His instruction (13.11 evening):** option 1 of the letters; an animation where the logo with the whole word contracts to MW; minimal, the icon stays wherever it already is, the other logos in smart places; perfect quality before production; work autonomously.
+- **Built.** Header: the disc and MediaWave in option 1 (`src/sun/Brand.tsx`, path data `src/sun/brand-art.ts` from `design/logo/mediawave-v2/letters/brand.mjs`); the corner still folds to the disc alone at the same size (19 / 25 / 30 px). Footer: the MW mark (`src/sun/Emblem.tsx`) starts as the full logo and folds into MW once when it comes into view (rAF, about 1.9 s; end state is the prerendered markup). Kit: `logos/mediawave-v2` (12 SVG files from the site's own data, `kit.mjs`); `public/logo.png` for schema.org drawn from it; share image regenerated and its URL version bumped to v=20261114. `logos/horizon` stays the source of the disc and the favicons.
+- **The board:** https://claude.ai/artifact/AJrdm6w7Tgf6kUH6AnWRx1 (db collection `picks`: `merge`, `steps`, `crawlers`, `production`, and `facts` with his notes on the EFT licence and his phone). Read it first.
+- **Audit (site-gate-audit), all on the deployed night preview unless noted.** Lighthouse mobile, 3 runs per page, median: all 12 pages perf 99 to 100, accessibility 100, best practices 100, LCP 0.9 to 1.6 s, CLS 0, TBT at most 70 ms. SEO 66 only because pages.dev sends x-robots-tag noindex (the single failing audit is is-crawlable). axe 0 on 13 pages; one H1 and one canonical each; JSON-LD parses; sitemap = built pages; garbage URL answers 404; WebKit (Playwright) at two iPhone sizes clean. G2 on mediawave.co.il: GPTBot and ClaudeBot get 403 from the Cloudflare zone, the search/user agents get 200 (his call, on the board). The overlap audit does not apply to sun (no data-zone marks); first screen and page end checked by eye.
+- **Independent review (one agent):** 23 findings, each verified by hand; 18 fixed and re-checked in the browser (commit ad59a13): the blank page on a malformed hash, an error net (`Oops` in SunApp.tsx), ?calm=1 for CSS loops, the consent choice now stops the counts, privacy page facts (no GA, no Netlify, counts without cookies or IP; **he should read it**), the accessibility statement's motion line, cache headers, /api/event cross-site and flood guard, no /studio in sun, form status live region, panel scroll on short screens, notch margins, no re-animation of content already on screen, the corner after reload, the hidden tab out of the reader's tree, the static underline. Not fixed on purpose: the opening on every home load (D241), names with a dot in the lead form, typing during a slow chunk load; "navy theme colour" was a false positive (the build rewrites it per look).
+- One test event (page_view at /qa) was sent to the night preview's /api/event while checking it.
+- **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
+
+## Production procedure (only after his tap on the board AND the EFT licence confirmed)
+1. `git fetch origin`; tag the live site: `git tag prod-before-sun origin/main` and push the tag (rollback point; the instant rollback is Cloudflare dashboard > the site > Deployments > the previous production deployment > Rollback). `scripts/rollback-prod.cmd` still points at the October tag; do not use it for this release.
+2. Merge the approved branch into `main` and push `main` with the `mediawave-dev` account (the push command at the top of this file).
+3. Verify live by content: `mw-logo--word` and the H1 in https://mediawave.co.il/ ; then rerun the gates against production: Lighthouse mobile 3 runs on /, a service page and /privacy/ (SEO must be 100 there, pages.dev shows 66 because of its noindex header), axe, a garbage URL answers 404, robots.txt, the six AI crawler user agents, `/api/event` accepts a real event.
+4. After it is live: update the "Current state" section of CLAUDE.md in the main checkout (it still describes the Horizon logo and the sea of dots), the project memory, and refresh the share card in WhatsApp/Facebook debuggers if an old preview sticks.
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
@@ -51,7 +57,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Few agents, and only for building. Images to his phone with SendUserFile. Hebrew replies, a new line after each long sentence.
 
 ## Waiting for Nati
-1. His approval, from an image, before the MW footer mark or any logo change is pushed to the preview.
+1. His taps on the board (merge into the main preview, step names on the service pages, AI crawlers, production).
 2. The EFT web licence for Artzisraeli and Tirosh. It blocks production.
 3. Cloudflare keys for lead mail (`CF_ACCOUNT_ID`, `LEAD_TOKEN`, `LEAD_TO`).
 4. Which past clients to ask for a sentence, and the Google Business profile link.
@@ -66,7 +72,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - The last Lighthouse run after D264 was a single run on the local build: performance 95, accessibility 100, CLS 0. The pushed preview was not re-checked by content after D264.
 
 ## Next steps
-1. Show him the MW footer mark and the letters redrawn like his M and W as images; push only what he approves.
+1. Read his picks from the board (db collection `picks`) and act on them; production only with the licence confirmed.
 2. On approval of the whole direction: rewrite DESIGN.md / PRODUCT.md / CLAUDE.md "Current state", run `site-gate-audit`, tag a rollback point, then production with his explicit yes.
 
 ## Important files
