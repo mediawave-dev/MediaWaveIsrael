@@ -12,6 +12,7 @@ export const IconChevrons = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {
 /** A row that opens: one thin chevron. */
 export const IconChevron = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line} strokeWidth={1.8}><path d="M15 5l-7 7 7 7" /></svg>)
 export const IconPhone = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></svg>)
+export const IconInstagram = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.500" cy="6.500" r="1" fill="currentColor" stroke="none" /></svg>)
 export const IconMail = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="m4 8 8 6 8-6" /></svg>)
 export const IconMenu = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="M4 7h16M4 12h16M4 17h10" /></svg>)
 export const IconClose = (p: SVGProps<SVGSVGElement>) => (<svg {...base(p)} {...line}><path d="m6 6 12 12M18 6 6 18" /></svg>)

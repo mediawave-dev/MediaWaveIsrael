@@ -13,7 +13,7 @@ import './lead.css'
 import Wheel from './Wheel'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
-import { IconChevron, IconChevrons, IconMail, IconPhone, IconWhatsApp } from './icons'
+import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
 
@@ -328,6 +328,7 @@ export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero
         <li><a href={waHref} target="_blank" rel="noopener" onClick={wa('contact')}><IconWhatsApp /><span>וואטסאפ</span></a></li>
         <li><a href={tel} onClick={() => track('tel_click', { placement: 'contact' })}><IconPhone /><span dir="ltr">{SITE_CONTACT.phone}</span></a></li>
         <li><a href={`mailto:${SITE_CONTACT.email}`} onClick={() => track('mailto_click', { placement: 'contact' })}><IconMail /><span dir="ltr">{SITE_CONTACT.email}</span></a></li>
+        <li><a href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener" onClick={() => track('instagram_click', { placement: 'contact' })}><IconInstagram /><span>אינסטגרם</span></a></li>
       </ul>
     </section>
     </>

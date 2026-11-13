@@ -69,6 +69,12 @@ Nati picked font option G "combined with the mediawave font", and asked for Libr
 Nati picked option 5 of the logo board: the mark is ink over turquoise `#14A390`, the word Wave a deeper turquoise `#0F8478`. Applied to the site, the loader, `logos/horizon`, the favicon and the app icons (`scripts/brand-palette.mjs`); this closes the open logo question in the D251 note above. The colours are settled: mint field, green-black ink, turquoise logo.
 The checks of these rounds now live in the repo (`design/audit/sun/qa/`). Four prompts for an overnight run, one per direction, are in `.context/OVERNIGHT-PROMPTS.rtl.md`; my recommendation to him was direction 1 (the service pages).
 
+## D253, the night of 13.11: the night branch
+All of tonight's work is on `night/statement-20261113` (pushed; preview https://night-statement-20261113.mediawaveisrael.pages.dev). It is NOT merged into `redesign/statement-20261112`: Nati decides on the morning board (a private Artifact, picks stored in its db collection `picks`).
+- Service pages rebuilt (src/sun/pages.tsx, src/data/services.ts), new `program-sites`. Lead mail (functions/api/lead.ts, stats.ts; dormant until LEAD_TO, LEAD_TOKEN, CF_ACCOUNT_ID). Copy versions (src/sun/copy, ?copy=a|b|c). Proof places (src/sun/Proof.tsx, empty until approved; ?proof=demo). Tapes still on video-editing. Latin text in mediawave-font1; Instagram in the contact row.
+- After the pick: fold the chosen copy blocks into content.ts and delete src/sun/copy; merge the branch; fill src/data/proof.ts with real, approved sentences only.
+- Not verified: a real phone, a live mail send (no keys), the stats page with real data.
+
 ## Waiting for Nati
 1. The direction itself, on the preview.
 2. The lines marked [קופי: נתי] in `src/sun/content.ts`.
