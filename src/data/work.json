@@ -8,6 +8,15 @@
     ]
   },
   {
+    "slug": "machtesh",
+    "name": "מכתש, בית קלייה (אתר לדוגמה)",
+    "url": "https://machtesh-coffee.netlify.app/",
+    "scenes": [
+      6420
+    ],
+    "hide": "#nl-badge-frame"
+  },
+  {
     "slug": "ben-david",
     "name": "בן דוד יודאיקה",
     "url": "https://ben-david-judaica.com",
@@ -24,11 +33,7 @@
     "slug": "hila",
     "name": "הילה קלרמן",
     "url": "https://hila-kelerman-landing-page.vercel.app/",
-    "top": 860,
-    "scenes": [
-      3000,
-      1870
-    ]
+    "top": 860
   },
   {
     "slug": "mediawave-2026",

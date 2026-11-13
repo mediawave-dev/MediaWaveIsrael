@@ -93,6 +93,7 @@ function Offer() {
             </li>
           ))}
         </ul>
+        <p className="about__close offer__close"><span>{OFFER.close[0]}</span> <b>{OFFER.close[1]}</b></p>
       </div>
     </section>
   )

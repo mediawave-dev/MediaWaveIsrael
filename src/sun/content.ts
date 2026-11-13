@@ -5,14 +5,10 @@
 // words and every fact are ours (src/data/services.ts, src/data/faqs.ts, the Terms). Nothing of his proof
 // (page counts, client revenue, testimonials) is borrowed: we have none of our own to state yet.
 // Lines new in this round are marked [קופי: נתי] until Nati approves them.
-// Three other versions of these words wait for his pick in ./copy (a, b, c): the page shows one with ?copy=a,
-// or one block of one with ?about=c (./copy/index.ts). Each block below ends with the version's lines, which
-// replace its own only when the address asks for them; with no parameter the text is the one written here.
 import { getWhatsAppUrl } from '../utils/whatsapp'
 import { SITE_CONTACT } from '../data/site'
 import { faqs } from '../data/faqs'
 import workJson from '../data/work.json'
-import { versionFor } from './copy'
 
 export interface Project {
   slug: string
@@ -53,69 +49,61 @@ export const HERO = {
   second: 'איך זה עובד',
   note: SITE_CONTACT.responseTime,
   sticker: ['דף נחיתה', 'באוויר תוך', '5 עד 7', 'ימי עבודה'],
-  ...versionFor('hero')?.HERO,
 }
 
+// D254 (Nati's picks from the morning board, 13.11.2026): about B, what we build C plus his line, steps C,
+// slip C, form B. Writing the text is inside a landing page's price (his answer), so step two says so.
 export const ABOUT = {
   h2: 'נעים מאוד, |MediaWave',
-  // [קופי: נתי] all four
   lines: [
-    'אנחנו בונים ומעצבים דפי נחיתה, אתרי תדמית ואתרים לקורסים ולתוכניות ליווי, לבעלי עסקים בישראל.',
-    'אנחנו פוגשים הרבה בעלי עסקים שיש להם מה להציע, והדף שלהם לא מסביר את זה. הגולש נכנס, לא מבין מה מציעים לו, ויוצא. הכסף על הפרסום יוצא, והפניות לא מגיעות.',
-    'לכן כל דף אצלנו מתחיל בשאלה אחת. מה הגולש צריך להבין כדי לפנות אליכם? סביב התשובה נבנים הטקסט, העיצוב והכפתור.',
+    'כל דף אצלנו מתחיל בשאלה אחת. מה צריך להבין מי שנכנס אליו? סביב התשובה אנחנו בונים את הטקסט ואת העיצוב.',
   ],
   // Nati's own wording (D246). No colon anywhere in the copy: he reads them as a machine's habit.
   close: ['דף אחד, עם מטרה אחת בלבד.', 'שיפנו אליכם.'],
-  ...versionFor('about')?.ABOUT,
 }
 
 export const OFFER = {
-  h2: 'מה אנחנו |בונים?',
+  h2: 'מה |אתם צריכים?',
   kinds: [
-    { tone: 'sun', name: 'דף נחיתה', line: 'להצעה אחת ולקמפיין שמביא אליה אנשים.' }, // [קופי: נתי]
-    { tone: 'blue', name: 'אתר תדמית', line: 'למי שמחפשים אותו בגוגל, ורוצים לראות מי הוא לפני שמתקשרים.' }, // [קופי: נתי]
-    { tone: 'coral', name: 'אתר לתוכנית ליווי', line: 'לקורס, לליווי או לסדנה, כשרוב המתעניינים מתלבטים.' }, // [קופי: נתי]
+    { tone: 'sun', name: 'דף נחיתה', line: 'אתם משלמים על מודעות, ומי שלוחץ עליהן צריך מקום אחד להשאיר בו פרטים.' },
+    { tone: 'blue', name: 'אתר תדמית', line: 'לקוחות מחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שהם מרימים טלפון.' },
+    { tone: 'coral', name: 'אתר לתוכנית ליווי', line: 'אתם מוכרים קורס או ליווי, ורוב המתעניינים עוד מתלבטים.' },
   ],
-  ...versionFor('offer')?.OFFER,
+  // Nati's line (D254), said after the three situations it answers
+  close: ['אתם יודעים מה אתם רוצים שיקרה.', 'אנחנו נעזור לזה לקרות.'],
 }
 
 export const PROCESS = {
-  h2: 'איך זה |הולך לעבוד?',
-  // [קופי: נתי] all four; the facts are from services.ts and faqs.ts (two rounds of changes; writing is extra, faq-9); the time is said once, by the slip below
+  h2: 'איך זה |עובד?',
   steps: [
-    { title: 'אפיון', line: 'מתחילים בשיחה. מבינים מה אתם מוכרים, למי, ומה עוצר היום את הלקוחות שלכם מלפנות.' },
-    { title: 'כתיבה שיווקית', line: 'כותרת שאומרת מה מקבלים, ותשובות לשאלות שעולות לפני שפונים. עובדים עם הטקסט שלכם, או כותבים אותו יחד בתשלום נוסף.' },
-    { title: 'עיצוב', line: 'מקבלים עיצוב מלא לאישור, לפני שבונים. עד שני סבבי תיקונים כלולים.' },
-    { title: 'פיתוח', line: 'בונים דף שנפתח מהר בטלפון, ומחברים אותו לוואטסאפ, למודעות ולמדידה.' },
+    { title: 'שיחה', line: 'אתם מספרים מה אתם מוכרים, ומה עוצר היום את הלקוחות שלכם מלפנות.' },
+    { title: 'חומרים', line: 'אתם שולחים את הטקסט ואת התמונות שיש לכם. אין טקסט? אנחנו כותבים אותו יחד איתכם, וזה כלול במחיר.' },
+    { title: 'עיצוב', line: 'לפני שאנחנו בונים, אתם רואים את הדף מעוצב ומאשרים אותו. שני סבבי תיקונים כלולים במחיר.' },
+    { title: 'בנייה', line: 'אנחנו בונים דף שנפתח מהר בטלפון, ומחברים אותו לוואטסאפ ולמודעות שלכם.' },
   ],
-  ...versionFor('process')?.PROCESS,
 }
 
-/** The date line under the steps. The dates are computed in the browser (Home.tsx, launchDates). [קופי: נתי] */
+/** The date line under the steps. The dates are computed in the browser each day (Home.tsx, launchDates). */
 export const LAUNCH = {
-  start: 'מתחילים ב',
+  start: 'שלחתם חומרים ב',
   end: 'דף נחיתה רגיל באוויר עד',
-  note: 'לפי 7 ימי עבודה, ראשון עד חמישי, מהיום שהחומרים אצלנו. חגים מזיזים את התאריך.',
-  ...versionFor('launch')?.LAUNCH,
+  note: 'אנחנו סופרים 7 ימי עבודה, ראשון עד חמישי. חג באמצע מזיז את התאריך.',
 }
 
-/** A version may choose other questions from faqs.ts and name the block; the answers are the same everywhere. */
-const faqPick = versionFor('faq')?.FAQ
-const FAQ_IDS = faqPick?.ids ?? ['faq-price', 'faq-8', 'faq-own', 'faq-9']
+const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']
 export const FAQ = {
-  h2: faqPick?.h2 ?? 'שאלות |שחוזרות',
+  h2: 'שאלות |שחוזרות',
   items: FAQ_IDS.map((id) => faqs.find((f) => f._id === id)!).filter(Boolean),
 }
 
 export const CONTACT = {
-  h2: 'גם אתם רוצים דף |שמביא פניות?', // [קופי: נתי]
-  lede: 'השאירו פרטים, ונחזור אליכם תוך 24 שעות בימי עסקים.', // [קופי: נתי]
+  h2: 'השאירו |פרטים',
+  lede: 'אנחנו חוזרים אליכם תוך 24 שעות בימי עסקים.',
   submit: 'שליחה',
   submitWhatsApp: 'שליחה בוואטסאפ', // [קופי: נתי] the button says what it does: it opens WhatsApp with the message
   viaWhatsApp: 'ההודעה מחכה לכם בוואטסאפ. נשאר רק לשלוח.',
   sent: 'קיבלנו. נחזור אליכם תוך 24 שעות בימי עסקים.',
   failed: 'השליחה לא הצליחה. אפשר לכתוב לנו בוואטסאפ או להתקשר.',
-  ...versionFor('contact')?.CONTACT,
 }
 
 export const ALSO = [

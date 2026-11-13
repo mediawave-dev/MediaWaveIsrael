@@ -27,6 +27,9 @@ for (const p of list) {
   await page.evaluateOnNewDocument(() => { try { localStorage.setItem('mw_cookie_consent', 'accepted') } catch {} })
   await page.goto(p.captureUrl || p.url, { waitUntil: 'networkidle2', timeout: 90000 }).catch((e) => console.log(p.slug, 'goto:', e.message))
   await wait(3000)
+  // "hide": selectors of things on the client's page that are not their site (a host's badge)
+  await wait(1500)
+  if (p.hide) await page.addStyleTag({ content: p.hide + " { display: none !important }" })
   // walk down to the last cut once, so lazy pictures and reveal-on-scroll blocks on the way are in
   for (let y = 0; y <= Math.max(...cuts.map((c) => c[1])) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
   for (const [tag, y] of cuts) {

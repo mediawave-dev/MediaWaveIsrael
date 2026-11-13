@@ -18,39 +18,21 @@ const STEP = 360 / SLOTS
 /** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
 const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
 
-/** Cards in one turn of the deck: odd, and a divisor of SLOTS. */
-const UNIT = 9
 
 /** `crop` names the picture: public/work/<slug>-card-<crop>.webp ("top", or a scene "s1", "s2"). */
 type Shot = { kind: 'shot'; slug: string; crop: string }
 type Card = Shot | { kind: 'next' }
 
-/** The deck: every project's main card, more scenes of some, and one "yours next" card. */
+/** The deck, set by hand (Nati, 13.11.2026): eight pictures and the "next" card. Light and dark screens take
+    turns, and the two sites with a woman's face in the hero (sisters' sites) stand apart: four places on a desktop,
+    two on a phone, which shows every second card. A card whose file is missing in work.json is skipped. */
+const ORDER: [string, string][] = [
+  ['switchon', 'top'], ['machtesh', 'top'], ['yael-levy', 'top'], ['ben-david', 'top'],
+  ['switchon', 's1'], ['mediawave-2026', 'top'], ['hila', 'top'], ['machtesh', 's1'],
+]
 function deck(): Card[] {
-  const shot = (slug: string, crop: string): Shot => ({ kind: 'shot', slug, crop })
-  const tops = PROJECTS.map((p) => shot(p.slug, 'top'))
-  // "scenes" in work.json (D243): further parts of a page worth showing. Two at most, so one site holds
-  // three cards at most, and three cards can still stand three places apart on a deck of nine.
-  const scenes = PROJECTS.flatMap((p) => (p.scenes ?? []).slice(0, 2).map((_, i) => shot(p.slug, `s${i + 1}`)))
-  // Always nine cards, whatever work.json holds: 36 slots take the unit exactly four times (no join), and a
-  // phone, which shows every second slot, still walks all nine (nine is odd). Eight pictures and the "next"
-  // card. Main cards first, then scenes; a short list repeats from its start.
-  // More than eight projects: the ninth is not on the wheel until the slot count is revisited.
-  const pictures = [...tops, ...scenes].slice(0, UNIT - 1)
-  const eight = pictures.length ? Array.from({ length: UNIT - 1 }, (_, i) => pictures[i % pictures.length]) : []
-  // Spread them: the site with the most cards first, and each card three places after the one before it
-  // (3 and 8 share no factor, so the walk fills all eight places). Cards of one site are then never
-  // neighbours, on a desktop (every slot) or on a phone (every second slot).
-  const bySite = new Map<string, Shot[]>()
-  for (const c of eight) bySite.set(c.slug, [...(bySite.get(c.slug) ?? []), c])
-  const ranked = [...bySite.values()].sort((a, b) => b.length - a.length).flat()
-  const placed: Card[] = []
-  ranked.forEach((c, i) => { placed[(i * 3) % (UNIT - 1)] = c })
-  const ring: Card[] = [...placed, { kind: 'next' }]
-  // the wheel opens on the first project in work.json: its main card stands in the middle of the first view
-  // (turning a ring keeps every distance, so the spacing above still holds)
-  const lead = ring.findIndex((c) => c.kind === 'shot' && c.crop === 'top' && c.slug === PROJECTS[0]?.slug)
-  const unit = lead > 0 ? [...ring.slice(lead), ...ring.slice(0, lead)] : ring
+  const known = new Set(PROJECTS.map((p) => p.slug))
+  const unit: Card[] = [...ORDER.filter(([slug]) => known.has(slug)).map(([slug, crop]): Card => ({ kind: 'shot', slug, crop })), { kind: 'next' }]
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
