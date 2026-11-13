@@ -61,11 +61,10 @@ function fontPreloadLinks(look) {
   // largest text at first paint can be that line: preload the Latin subset too, so it never waits
   // sun (D237): Noto sets the headings too, so the display preload above is the Hebrew subset already
   // D247: the headings are mediawave-font1 again (its Bold and, for the lighter lead-ins, its Regular; 6 KB each)
-  // D249: headings in EFT Artzisraeli (heavy) and mediawave-font1 Regular (light lead-in), text in EFT Lampner Light
+  // D264: headings in EFT Artzisraeli, their Latin in mediawave-font1 Bold, text in EFT Tirosh
   if (look === 'sun') return `<link rel="preload" href="/fonts/eft/artzisraeli.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/mediawave-font1-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/eft/lampner-light.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/eft/lampner-bold.woff2" as="font" type="font/woff2" crossorigin>`
+    <link rel="preload" href="/fonts/eft/tirosh.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>

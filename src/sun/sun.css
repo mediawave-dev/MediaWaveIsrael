@@ -36,7 +36,7 @@
   /* the type (D249, fonts.css): headings say their heavy part in EFT Artzisraeli (weight 700) and their light
      lead-in in mediawave-font1 (weight 400); the text is EFT Lampner. */
   --display: "MW Head", "MW Head Fallback", Arial, sans-serif;
-  --text: "MW Lampner", "MW Lampner Fallback", Arial, sans-serif;
+  --text: "MW Text", "MW Text Fallback", Arial, sans-serif;
   --gutter: 16px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --browser-chrome-bottom: 0px;
@@ -580,3 +580,8 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
   66.66% { fill: #3B2412; }
   83.33% { fill: #17301A; }
 }
+
+/* ---------- D264: the text face is EFT Tirosh, which has one cut. What used to be said by a bolder weight inside
+   running text is said in the headings' face. ---------- */
+:where(p, li, dd, td, small, label, figcaption) :where(b, strong) { font-family: var(--display); font-weight: 700; }
+.hero__note, .foot__brand p, .form__status, .field__err, .a11y__label, .a11y__opt, .a11y__link, .consent a, .consent__no, .quote__rows small, .legal h3, .legal a, .form__legal a, .voice__who, .proof__tag { font-family: var(--display); }
