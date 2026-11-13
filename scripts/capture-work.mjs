@@ -29,12 +29,24 @@ for (const p of list) {
   await wait(3000)
   // "hide": selectors of things on the client's page that are not their site (a host's badge)
   await wait(1500)
+  // D255: a card is the site's own page and nothing on top of it. Floating buttons and badges that sit in the
+  // lower part of the screen (WhatsApp, call, chat, cookie notes, a host's badge) are hidden; the header stays.
+  const hideFloating = () => page.evaluate(() => {
+    for (const el of document.querySelectorAll('body *')) {
+      const cs = getComputedStyle(el)
+      if (cs.position !== 'fixed' && cs.position !== 'sticky') continue
+      const r = el.getBoundingClientRect()
+      if (r.top > innerHeight * 0.3 && r.height < innerHeight * 0.5) el.style.setProperty('display', 'none', 'important')
+    }
+  })
+  await hideFloating()
   if (p.hide) await page.addStyleTag({ content: p.hide + " { display: none !important }" })
   // walk down to the last cut once, so lazy pictures and reveal-on-scroll blocks on the way are in
   for (let y = 0; y <= Math.max(...cuts.map((c) => c[1])) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
   for (const [tag, y] of cuts) {
     await page.evaluate((v) => window.scrollTo(0, v), y)
     await wait(1200)
+    await hideFloating()
     // the viewport itself, not a clip: a clip is in document coordinates, and an RTL page's x origin is not its left edge
     const buf = await page.screenshot({ type: 'png' })
     // 528 px: a 176 px card on a phone with three device pixels to the CSS pixel, so the text in it stays sharp

@@ -19,21 +19,18 @@
   {
     "slug": "ben-david",
     "name": "בן דוד יודאיקה",
-    "url": "https://ben-david-judaica.com",
-    "top": 680
+    "url": "https://ben-david-judaica.com"
   },
   {
     "slug": "yael-levy",
     "name": "יעל לוי",
     "url": "https://www.yaelevy.co.il",
-    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/",
-    "top": 120
+    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/"
   },
   {
     "slug": "hila",
     "name": "הילה קלרמן",
-    "url": "https://hila-kelerman-landing-page.vercel.app/",
-    "top": 860
+    "url": "https://hila-kelerman-landing-page.vercel.app/"
   },
   {
     "slug": "mediawave-2026",

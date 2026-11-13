@@ -230,8 +230,14 @@ html.menu-open .pin__blob { filter: none; }
 .wheel__ring { position: absolute; left: 50%; top: calc(18px + var(--ch) / 2 + var(--R)); width: 0; height: 0; will-change: transform; }
 .wheel__slot { position: absolute; left: calc(var(--cw) / -2); top: calc(var(--ch) / -2); width: var(--cw); height: var(--ch); transform: rotate(calc(var(--i) * 10deg)) translateY(calc(var(--R) * -1)); }
 .wheel__slot:nth-child(even) { display: none; }
-.wheel__card { display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: 22px; background: #fff; border: 4px solid #fff; box-shadow: 0 16px 34px -14px rgba(23, 24, 28, .55); -webkit-user-drag: none; }
-.wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; border-radius: 18px; pointer-events: none; }
+/* D255: every site stands in the same phone, as noamavikasis.co.il shows his work: a dark bezel, a rounded screen
+   and the small island at the top, so eight different sites read as one set */
+.wheel__card { position: relative; display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: 30px; background: #0E1512; border: 6px solid #0E1512; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset, 0 22px 40px -18px rgba(19, 36, 31, .6), 0 4px 10px -4px rgba(19, 36, 31, .3); -webkit-user-drag: none; }
+.wheel__card::before { content: ""; position: absolute; z-index: 2; top: 7px; left: 50%; width: 30%; height: 13px; transform: translateX(-50%); border-radius: 99px; background: #0E1512; }
+/* the screen starts under a status bar, so the island never covers the site's own header */
+.wheel__card:not(.wheel__card--next) { padding-block-start: 22px; }
+.wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; border-radius: 6px 6px 24px 24px; pointer-events: none; }
+.wheel__card--next::before { display: none; }
 .wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); border-color: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
 .wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
 @media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 620px; } }
@@ -239,8 +245,10 @@ html.menu-open .pin__blob { filter: none; }
   .wheel { --cw: 224px; --ch: 448px; --R: 1520px; height: calc(var(--ch) + 150px); }
   .wheel__slot:nth-child(even) { display: block; }
   .wheel__ground { height: calc(var(--ch) * .62); }
-  .wheel__card { border-radius: 28px; border-width: 5px; }
-  .wheel__card img { border-radius: 23px; }
+  .wheel__card { border-radius: 36px; border-width: 7px; }
+  .wheel__card img { border-radius: 8px 8px 29px 29px; }
+  .wheel__card:not(.wheel__card--next) { padding-block-start: 26px; }
+  .wheel__card::before { top: 7px; height: 14px; }
 }
 
 /* ---------- the opening (D241). html.sun-open is on the page from before first paint (index.html): the
