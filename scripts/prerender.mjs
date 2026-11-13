@@ -63,7 +63,7 @@ function fontPreloadLinks(look) {
   // D247: the headings are mediawave-font1 again (its Bold and, for the lighter lead-ins, its Regular; 6 KB each)
   // D249: headings in EFT Artzisraeli (heavy) and mediawave-font1 Regular (light lead-in), text in EFT Lampner Light
   if (look === 'sun') return `<link rel="preload" href="/fonts/eft/artzisraeli.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/mediawave-font1-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/mediawave-font1-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/eft/lampner-light.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/eft/lampner-bold.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
