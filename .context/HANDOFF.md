@@ -34,6 +34,9 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - **Rule: nothing new goes to the preview branches before he has seen it as an image and said yes.**
 - The drawing, its SVG files and the boards stay in `design/logo/mediawave-v2/` as a design record only.
 - What he asked for next (13.11): (1) "maybe" redraw the other seven letters so they really resemble his M and W, as images only; (2) the short MW with the icon under it, **only in the footer**.
+- Sent to him as images (`design/logo/mediawave-v2/letters/`): `board-letters.jpg`, the name with the other letters drawn as leaning blocks with one sharp wedge each (`glyphs.mjs`): option 1 mixed case, option 2 all capitals with the A as a turned V, option 3 the typeface version for comparison. And `board-footer.jpg`, the MW mark in the footer.
+- **Uncommitted in this working tree, on purpose:** the MW mark in the footer (`src/sun/Emblem.tsx`, `src/sun/emblem-art.ts`, one line in `src/sun/Shell.tsx`, three lines in `src/sun/sun.css`). It was photographed on the local dev server for the board. Commit and push it only after he says yes; if he says no, `git checkout -- src/sun/Shell.tsx src/sun/sun.css` and delete the two new files.
+- Verified after the removal: both preview addresses serve the first logo again (class mw-logo--compact in the HTML, no mw-logo--v2).
 
 ## Decisions of this stretch (details in DECISIONS.rtl.md)
 - D254 his picks from the morning board. D255 the wheel as phones, like Noam Avikasis.
