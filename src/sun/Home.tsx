@@ -56,7 +56,7 @@ function Hero() {
       <div className="hero__cta">
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
-          <a className="btn btn--line" href="#process" onClick={() => track('cta_click', { location: 'hero_process' })}><span>{HERO.second}</span><IconChevrons /></a>
+          <a className="btn btn--line" href="#process" onClick={() => track('cta_click', { placement: 'hero_process' })}><span>{HERO.second}</span><IconChevrons /></a>
         </div>
         <p className="hero__note">{HERO.note}</p>
       </div>
