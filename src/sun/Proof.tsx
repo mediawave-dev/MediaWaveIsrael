@@ -144,6 +144,6 @@ export function Signature() {
   const text = real || demo?.signature
   if (!text) return null
   return (
-    <p className="sign"><Tag word={real ? undefined : demo?.tag} />{text}{real && <>{" "}<a className="more" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'signature' })}><IconWhatsApp /><span>לכתוב לה בוואטסאפ</span></a></>}</p>
+    <p className="sign"><Tag word={real ? undefined : demo?.tag} />{real ? <a className="sign__wa" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'signature' })}><IconWhatsApp /><span>{text}</span></a> : text}</p>
   )
 }

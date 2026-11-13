@@ -440,6 +440,7 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .ask > p + p:not(.about__close) { margin-block-start: 14px; }
 .ask .about__close { margin-block-start: 30px; }
 .offer__close { margin-block-start: 44px; }
+.offer__close span { font-weight: 700; }
 @media (min-width: 900px) { .offer__close { width: fit-content; margin-inline: auto; margin-block-start: 56px; } }
 .ask .about__close :is(span, b) { text-wrap: balance; }
 .ask .about__close b { font-size: clamp(1.875rem, 8vw, 2.75rem); line-height: 1.1; }

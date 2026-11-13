@@ -68,4 +68,6 @@ html.high-contrast .voice__shot { outline: 2px solid #000; outline-offset: -2px;
 /* a sentence with a screenshot in the form place: room for the frame's shadow above the pale circle */
 .proof--form .voice[data-shot] { margin-block-end: 32px; }
 
-.sign .more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--ink); }
+/* the whole line is the site's WhatsApp link (Nati, 13.11) */
+.sign__wa { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--ink); }
+.sign__wa span { text-decoration: underline; text-underline-offset: 4px; }
