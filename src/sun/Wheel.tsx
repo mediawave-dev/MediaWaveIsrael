@@ -54,22 +54,26 @@ function useVideosReady() {
 export default function Wheel() {
   const box = useRef<HTMLDivElement>(null)
   const videos = useVideosReady()
-  // the videos play while the wheel is in view; they rest out of view, on ?calm=1 and with the panel's "ללא אנימציות"
+  // D260: a video plays only while its own phone is on the screen (the ring holds 32 phones, most of them out of
+  // view), so a phone decodes three or four at a time and every one of them stays smooth. They all rest on ?calm=1
+  // and with the panel's "ללא אנימציות". A video shows only once it is really playing, fading in over its still.
   useEffect(() => {
     const el = box.current
     if (!el || !videos) return
     const html = document.documentElement
     const calm = /[?&]calm=1(&|$)/.test(location.search)
-    let seen = false
-    const sync = () => {
-      const run = seen && !calm && !html.classList.contains('disable-animations')
-      el.querySelectorAll('video').forEach((v) => { if (run) v.play().catch(() => {}); else v.pause() })
-    }
-    const io = new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync() })
-    io.observe(el)
-    const mo = new MutationObserver(sync)
+    const visible = new Set<HTMLVideoElement>()
+    const run = () => !calm && !html.classList.contains('disable-animations')
+    const sync = (v: HTMLVideoElement) => { if (run() && visible.has(v)) v.play().catch(() => {}); else if (!v.paused) v.pause() }
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) { const v = e.target as HTMLVideoElement; if (e.isIntersecting) visible.add(v); else visible.delete(v); sync(v) }
+    }, { rootMargin: '80px', threshold: 0.02 })
+    const vids = [...el.querySelectorAll('video')]
+    const shown = (e: Event) => (e.currentTarget as HTMLVideoElement).setAttribute('data-on', '')
+    vids.forEach((v) => { io.observe(v); v.addEventListener('playing', shown) })
+    const mo = new MutationObserver(() => vids.forEach(sync))
     mo.observe(html, { attributes: true, attributeFilter: ['class'] })
-    return () => { io.disconnect(); mo.disconnect() }
+    return () => { io.disconnect(); mo.disconnect(); vids.forEach((v) => v.removeEventListener('playing', shown)) }
   }, [videos])
   const ring = useRef<HTMLDivElement>(null)
 
@@ -188,7 +192,7 @@ export default function Wheel() {
             {c.kind === 'shot' ? (
               <div className="wheel__card" data-crop={c.crop}>
                 <div className="wheel__screen">
-                  {videos && <video src={videoOf(c.slug, c.crop)} poster={`/work/${c.slug}-card-${c.crop}.webp`} muted loop playsInline preload="metadata" tabIndex={-1}
+                  {videos && <video src={videoOf(c.slug, c.crop)} muted loop playsInline preload="none" tabIndex={-1} disablePictureInPicture disableRemotePlayback
                     onLoadedMetadata={(e) => { const v = e.currentTarget; v.currentTime = (i * 3.1) % (v.duration || 1) }} />}
                   <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
                     loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />

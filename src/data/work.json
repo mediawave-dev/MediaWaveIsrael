@@ -5,51 +5,67 @@
     "url": "https://switchon.co.il",
     "scenes": [
       745
-    ]
+    ],
+    "rec": {
+      "top": [
+        0,
+        0,
+        7.1
+      ],
+      "s1": [
+        745,
+        2466,
+        9.5
+      ]
+    },
+    "poke": true
   },
   {
     "slug": "machtesh",
     "name": "מכתש, בית קלייה (אתר לדוגמה)",
     "url": "https://machtesh-coffee.netlify.app/",
     "scenes": [
-      6420
+      6355
     ],
     "hide": "#nl-badge-frame",
-    "long": [
-      0,
-      3640,
-      6420,
-      4800
-    ],
-    "long_s1": [
-      6420,
-      7220,
-      8020,
-      8820
-    ],
     "rec": {
       "top": [
         0,
-        7300,
+        4540,
         16
       ],
       "s1": [
-        6420,
-        8900,
-        11
+        6355,
+        8019,
+        9.5
       ]
     }
   },
   {
     "slug": "ben-david",
     "name": "בן דוד יודאיקה",
-    "url": "https://ben-david-judaica.com"
+    "url": "https://ben-david-judaica.com",
+    "hide": "#construction-popup",
+    "rec": {
+      "top": [
+        0,
+        2455,
+        13.66
+      ]
+    }
   },
   {
     "slug": "yael-levy",
     "name": "יעל לוי",
     "url": "https://www.yaelevy.co.il",
-    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/"
+    "captureUrl": "https://web.archive.org/web/20260127215131if_/https://yaelevy.co.il/",
+    "rec": {
+      "top": [
+        0,
+        1600,
+        9.437
+      ]
+    }
   },
   {
     "slug": "hila",
@@ -58,8 +74,8 @@
     "rec": {
       "top": [
         0,
-        120,
-        9
+        0,
+        12.2535
       ]
     }
   },
@@ -67,15 +83,14 @@
     "slug": "mediawave-2026",
     "name": "MediaWave, הגרסה הקודמת (בלי השם על הכרטיס)",
     "url": "https://mediawave.co.il/",
-    "captureUrl": "https://mediawave.co.il/?reduce=1",
-    "still": true,
-    "hide": ".mw-head, [class*=\"consent\" i], [role=\"dialog\"], [class*=\"lead-modal\" i], .sea-foot",
-    "long": [
-      0,
-      2660,
-      3200,
-      4330,
-      5210
-    ]
+    "hide": ".mw-head, [class*=\"consent\" i], [role=\"dialog\"], [class*=\"lead-modal\" i], .lm, .sea-foot",
+    "gpu": true,
+    "rec": {
+      "top": [
+        0,
+        4300,
+        17
+      ]
+    }
   }
 ]

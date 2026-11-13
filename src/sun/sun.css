@@ -553,5 +553,6 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 6px 6px 24px 24px; container-type: size; }
 .wheel__screen img { border-radius: 0 !important; }
 /* D259: the recording lies over the first screen; the still picture stays under it as the poster and the fallback */
-.wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
+.wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
+.wheel__screen video[data-on] { opacity: 1; }
 @media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
