@@ -10,12 +10,10 @@
    that does not belong here), made with fontTools from Nati's licensed copies in OneDrive\Fonts\עברית\Lampner.
    Latin in running text is mediawave-font1 too. */
 
-/* headings, heavy: Artzisraeli */
-@font-face { font-family: "MW Head"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 600 900; font-display: swap; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+/* headings, every weight: Artzisraeli for Hebrew, digits and punctuation (Nati, 13.11: the site's most present face) */
+@font-face { font-family: "MW Head"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
 /* headings, heavy, Latin letters: the Bold of mediawave-font1 */
-@font-face { font-family: "MW Head"; src: url("/fonts/mediawave-font1-Bold.woff2") format("woff2"); font-weight: 600 900; font-display: swap; size-adjust: 83%; unicode-range: U+0041-005A, U+0061-007A; }
-/* headings, light lead-in: the Regular of mediawave-font1 */
-@font-face { font-family: "MW Head"; src: url("/fonts/mediawave-font1-Bold.woff2") format("woff2"); font-weight: 100 500; font-display: swap; size-adjust: 83%; }
+@font-face { font-family: "MW Head"; src: url("/fonts/mediawave-font1-Bold.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 83%; unicode-range: U+0041-005A, U+0061-007A; }
 /* the fallbacks: Arial set to the measured width of each face on this page's own text (12.11.2026), so the swap moves nothing */
 @font-face { font-family: "MW Head Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 91.5%; }
 @font-face { font-family: "MW Head Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 500; size-adjust: 107%; }

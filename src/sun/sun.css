@@ -503,3 +503,8 @@ html.high-contrast .wheel__card--next { background: #000; }
 html.high-contrast .wheel__card--next b { color: #fff; }
 html.high-contrast :is(.contact__disc, .wheel__card, .foot, .quote, .film) { outline: 2px solid #000; outline-offset: -2px; }
 html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
+
+/* Artzisraeli carries the voice of the site (Nati, 13.11.2026): headings, buttons, the menu, labels, the slip,
+   the contact ways and the footer's heads. Running text stays EFT Lampner. */
+.btn, .head__nav a, .head__cta, .tab span, .field label, .contact__ways a, .launch small, .crumbs, .faq summary, .sticker, .kind__link, .more, .foot nav a, .foot__in > div > a, .foot__legal { font-family: var(--display); }
+.h2, .h1 .h1__rest, .launch b, .about__close span, .sign { font-weight: 700; }
