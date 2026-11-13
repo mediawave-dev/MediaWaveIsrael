@@ -310,15 +310,50 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
 }
 
 /** The page breaks its bands here with one large circle, as Libra does: the form sits inside it. */
+/** The envelope over the form (D256): drawn in the site's line, it flies in with the circle and flies off when the form is sent. */
+function Envelope() {
+  return (
+    <svg className="env" viewBox="0 0 120 64" width="96" height="52" aria-hidden="true" focusable="false">
+      <g className="env__lines"><path d="M6 14h22M2 26h16M8 38h12" /></g>
+      <g className="env__body">
+        <path d="M38 8h70a6 6 0 0 1 6 7l-8 36a7 7 0 0 1-7 6H29a6 6 0 0 1-6-7l8-36a7 7 0 0 1 7-6Z" />
+        <path className="env__flap" d="M36 11l32 26 40-26" />
+        <path d="M30 52l24-20M100 52l-17-19" />
+      </g>
+    </svg>
+  )
+}
+
+/** Adds .is-in once the circle is a third into view, and .is-sent when the form goes out (WhatsApp or mail). */
+function useContactMotion() {
+  const ref = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect() } }, { threshold: 0.3 })
+    io.observe(el)
+    const status = el.querySelector('.form__status')
+    const mo = status ? new MutationObserver(() => {
+      const t = status.textContent || ''
+      el.classList.toggle('is-sent', t === CONTACT.viaWhatsApp || t === CONTACT.sent)
+    }) : null
+    if (status && mo) mo.observe(status, { childList: true, characterData: true, subtree: true })
+    return () => { io.disconnect(); mo?.disconnect() }
+  }, [])
+  return ref
+}
+
 export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero, ask }: { h2?: string; lede?: string; waHref?: string; ask?: string }) {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
+  const motion = useContactMotion()
   return (
     <>
     {/* a client's sentence stands right over the circle, on every page that ends with the form */}
     <VoiceAt place="form" />
-    <section id="contact" className="contact" aria-labelledby="contact-h">
+    <section id="contact" className="contact" aria-labelledby="contact-h" ref={motion}>
       <div className="contact__disc">
         <div className="contact__in">
+          <Envelope />
           <H2 id="contact-h">{h2}</H2>
           <p className="contact__lede">{lede}</p>
           <LeadForm ask={ask} />

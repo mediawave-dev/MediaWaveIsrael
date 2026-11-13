@@ -14,7 +14,13 @@
     "scenes": [
       6420
     ],
-    "hide": "#nl-badge-frame"
+    "hide": "#nl-badge-frame",
+    "long": [
+      0,
+      3640,
+      6420,
+      4800
+    ]
   },
   {
     "slug": "ben-david",

@@ -43,6 +43,30 @@ for (const p of list) {
   if (p.hide) await page.addStyleTag({ content: p.hide + " { display: none !important }" })
   // walk down to the last cut once, so lazy pictures and reveal-on-scroll blocks on the way are in
   for (let y = 0; y <= Math.max(...cuts.map((c) => c[1])) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
+  // D257: the first 2600 px of the page as one tall strip (-card-long), which scrolls slowly inside the phone
+  {
+    // blocks that reveal on scroll are walked into view first, with motion allowed, so the strip has no empty sections
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }])
+    const H = await page.evaluate(() => document.documentElement.scrollHeight)
+    for (let y = 0; y <= Math.min(H, 2800); y += 250) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(350) }
+    await wait(800)
+    await page.evaluate(() => window.scrollTo(0, 0))
+    await wait(1200)
+    await hideFloating()
+    // a page whose top is a scroll scene (empty space between screens) names its screens instead: "long": [y, y, ...]
+    let strip
+    if (Array.isArray(p.long)) {
+      const shots = []
+      for (const y of p.long) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(1300); await hideFloating(); shots.push(await page.screenshot({ type: 'png' })) }
+      const m0 = await sharp(shots[0]).metadata()
+      strip = await sharp({ create: { width: m0.width, height: m0.height * shots.length, channels: 3, background: '#000' } }).composite(shots.map((input, i) => ({ input, left: 0, top: i * m0.height }))).png().toBuffer()
+    } else strip = await page.screenshot({ type: 'png', fullPage: true })
+    const meta = await sharp(strip).metadata()
+    const k = meta.width / 390
+    const h = Math.min(meta.height, Math.round(2600 * k))
+    await sharp(strip).extract({ left: 0, top: 0, width: meta.width, height: h }).resize({ width: 480 }).webp({ quality: 66 }).toFile(`public/work/${p.slug}-card-long.webp`)
+    console.log('  ', `public/work/${p.slug}-card-long`)
+  }
   for (const [tag, y] of cuts) {
     await page.evaluate((v) => window.scrollTo(0, v), y)
     await wait(1200)

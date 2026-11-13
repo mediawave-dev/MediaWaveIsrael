@@ -8,7 +8,7 @@
 // The opening (D241), the page's one staged moment: the wheel starts under the horizon, turned away, and
 // comes up and round like a heavy wheel settling, and then the sticker is stamped on. index.html sets html.sun-open before first paint, so the prerendered page already
 // shows the starting pose; this effect plays it once and removes the class.
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PROJECTS, WA } from './content'
 import { IconWhatsApp } from './icons'
 import { track } from '../utils/analytics'
@@ -36,7 +36,30 @@ function deck(): Card[] {
   return Array.from({ length: SLOTS }, (_, i) => unit[i % unit.length])
 }
 
+/** Sites with a long strip (scripts/capture-work.mjs writes it for every captured project). */
+const LONG = new Set(PROJECTS.filter((p) => (p as { capture?: boolean }).capture !== false).map((p) => p.slug))
+
+/** D257: once the page has loaded and gone quiet, each main card swaps its first screen for the long strip of the
+    same page (same top, so the swap is invisible), and the strip scrolls slowly down and back inside the phone. */
+function useLongScreens() {
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
+    let t = 0
+    const go = () => {
+      t = window.setTimeout(() => {
+        const urls = [...LONG].map((s) => `/work/${s}-card-long.webp`)
+        Promise.all(urls.map((u) => new Promise((res) => { const i = new Image(); i.onload = i.onerror = res; i.src = u }))).then(() => setOn(true))
+      }, 1800)
+    }
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
+    return () => { clearTimeout(t); window.removeEventListener('load', go) }
+  }, [])
+  return on
+}
+
 export default function Wheel() {
+  const long = useLongScreens()
   const box = useRef<HTMLDivElement>(null)
   const ring = useRef<HTMLDivElement>(null)
 
@@ -153,9 +176,11 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <div className="wheel__card" data-crop={c.crop}>
-                <img src={`/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
-                  loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
+              <div className="wheel__card" data-crop={c.crop} data-long={long && c.crop === 'top' && LONG.has(c.slug) ? '' : undefined}>
+                <div className="wheel__screen">
+                  <img src={long && c.crop === 'top' && LONG.has(c.slug) ? `/work/${c.slug}-card-long.webp` : `/work/${c.slug}-card-${c.crop}.webp`} alt="" width={528} height={1056} draggable={false}
+                    loading={i < 3 || i > SLOTS - 3 ? 'eager' : 'lazy'} decoding="async" {...(i === 0 ? { fetchpriority: 'high' } : {})} />
+                </div>
               </div>
             ) : (
               <a className="wheel__card wheel__card--next" href={WA.hero} target="_blank" rel="noopener" tabIndex={-1} draggable={false}

@@ -13,6 +13,8 @@
   --sun-light: #D3EDE8;
   --sun-deep: #C2E4DD;
   --sun-pale: #FFE8A3;
+  /* D256: the contact circle, Libra's yellow made softer (Nati, 13.11.2026) */
+  --pastel: #FFD966;
   --sun-sweep: linear-gradient(180deg, #D3EDE8 0%, #C2E4DD 100%);
   --ink: #13241F;
   --ink-2: #3F4D48;
@@ -332,7 +334,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    than a phone's screen and is cut by its edges; a paler one stands behind it. The form inside is quiet: lines
    for fields, one white button. ---------- */
 .contact { position: relative; overflow: clip; background: var(--paper); padding-block: 40px 56px; }
-.contact::before { content: ""; position: absolute; top: -10px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--sun-pale); }
+.contact::before { content: ""; position: absolute; top: -10px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--sun); }
 /* a side service ends on its price band (D254): the circles start below the band's hanging wave, not under it */
 :is(.band--cream, .band--blue) + .contact { margin-block-start: var(--wave-h); }
 .contact__disc { --d: clamp(620px, 168vw, 760px); position: relative; width: var(--d); height: var(--d); margin-inline: calc(50% - var(--d) / 2); display: grid; place-items: center; border-radius: 50%; background: var(--sun); box-shadow: 0 34px 60px -34px rgba(23, 24, 28, .55); }
@@ -516,3 +518,41 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
    the contact ways and the footer's heads. Running text stays EFT Lampner. */
 .btn, .head__nav a, .head__cta, .tab span, .field label, .contact__ways a, .launch small, .crumbs, .faq summary, .sticker, .kind__link, .more, .foot nav a, .foot__in > div > a, .foot__legal { font-family: var(--display); }
 .h2, .h1 .h1__rest, .launch b, .about__close span, .sign { font-weight: 700; }
+
+/* ---------- the contact circle (D256): pastel yellow, an envelope, and one moment as it comes into view.
+   Before the observer runs (no script, the prerender) everything stands in its final place. ---------- */
+.contact__disc { background: var(--pastel); }
+.env { display: block; justify-self: center; margin-block-end: 8px; overflow: visible; }
+.env path { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.env__body > path:first-child { fill: #FFF6D6; }
+.env__lines path { stroke-dasharray: 24; stroke-dashoffset: 0; }
+.contact.is-in .contact__disc { animation: disc-in .9s var(--ease) both; }
+.contact.is-in::before { animation: pale-in 1.1s var(--ease) both; }
+.contact.is-in .env__body { animation: env-in .9s var(--ease) .25s both; }
+.contact.is-in .env__lines path { animation: env-lines .6s ease-out .55s both; }
+.contact.is-in .env__lines path:nth-child(2) { animation-delay: .62s; }
+.contact.is-in .env__lines path:nth-child(3) { animation-delay: .69s; }
+.contact.is-in .env__flap { animation: env-flap .5s var(--ease) 1s both; transform-box: fill-box; transform-origin: 50% 0; }
+.contact.is-in :is(.contact__in .h2, .contact__lede, .form) { animation: rise .7s var(--ease) both; }
+.contact.is-in .contact__lede { animation-delay: .08s; }
+.contact.is-in .form { animation-delay: .16s; }
+.contact.is-sent .env__body { animation: env-out .9s cubic-bezier(.55, 0, .7, .4) both; }
+.contact.is-sent .env__lines { opacity: 0; transition: opacity .2s; }
+@keyframes disc-in { from { transform: scale(.86); opacity: 0; } }
+@keyframes pale-in { from { transform: scale(.6) translateY(30px); opacity: 0; } }
+@keyframes env-in { from { transform: translateX(-70px) rotate(-8deg); opacity: 0; } 70% { transform: translateX(4px) rotate(1deg); opacity: 1; } }
+@keyframes env-lines { from { stroke-dashoffset: 24; } }
+@keyframes env-flap { 40% { transform: scaleY(.6); } }
+@keyframes env-out { 20% { transform: translateX(-10px) rotate(-4deg); } to { transform: translateX(160px) translateY(-40px) rotate(10deg); opacity: 0; } }
+@keyframes rise { from { transform: translateY(14px); opacity: 0; } }
+@media (hover: hover) { .contact.is-in .contact__disc:hover .env__body { transform: translateY(-3px) rotate(-2deg); transition: transform .35s var(--ease); } }
+
+/* ---------- D257: the sites scroll slowly inside the phones. Each main card holds a tall strip of its page; it rests
+   at the top, glides down over about twenty seconds, rests, and comes back. Cards start at different moments.
+   The accessibility panel's stop and ?reduce=1 stop it (the global rule on html.disable-animations). ---------- */
+.wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 6px 6px 24px 24px; container-type: size; }
+.wheel__screen img { border-radius: 0 !important; }
+.wheel__card[data-long] .wheel__screen img { position: absolute; inset: 0 0 auto; height: auto; object-fit: initial; will-change: transform;
+  animation: screen-scroll 26s cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--i) * -3.7s); }
+@keyframes screen-scroll { 0%, 12% { transform: translateY(0); } 50%, 62% { transform: translateY(calc(-100% + 100cqh)); } 100% { transform: translateY(0); } }
+@media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
