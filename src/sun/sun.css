@@ -13,8 +13,8 @@
   --sun-light: #D3EDE8;
   --sun-deep: #C2E4DD;
   --sun-pale: #FFE8A3;
-  /* D256: the contact circle, Libra's yellow made softer (Nati, 13.11.2026) */
-  --pastel: #FFD966;
+  /* D262: the contact circle in sky blue (Nati's pick 5 of ten, 13.11.2026); D256 had Libra's yellow made softer */
+  --pastel: #BFE0F5;
   --sun-sweep: linear-gradient(180deg, #D3EDE8 0%, #C2E4DD 100%);
   --ink: #13241F;
   --ink-2: #3F4D48;
@@ -555,3 +555,27 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
 .wheel__screen video[data-on] { opacity: 1; }
 @media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
+
+/* ---------- D262: the logo's mark never stands still in colour (Nati, 13.11.2026). The lower half walks slowly through
+   six clear colours and the upper half through the deep tone of each, one full round in 36 seconds, so the change
+   is felt more than seen. Only the fill of two small paths changes (paint only, no layout). A keyframe
+   animation outranks the paths' inline fill. The accessibility panel's "ללא אנימציות" stops it on the brand colours. ---------- */
+.mw-logo [data-part="mark"] path:nth-child(1) { animation: mark-deep 36s linear infinite; }
+.mw-logo [data-part="mark"] path:nth-child(2) { animation: mark-clear 36s linear infinite; }
+@keyframes mark-clear {
+  0%, 100% { fill: #14A390; }
+  16.66% { fill: #2E9BE6; }
+  33.33% { fill: #7B6CF0; }
+  50% { fill: #EE6A8C; }
+  66.66% { fill: #F59A3C; }
+  75% { fill: #EFC53A; } /* through yellow, so orange never turns olive on its way to green */
+  83.33% { fill: #5DBB4F; }
+}
+@keyframes mark-deep {
+  0%, 100% { fill: #13241F; }
+  16.66% { fill: #12233F; }
+  33.33% { fill: #1F1B45; }
+  50% { fill: #3A1630; }
+  66.66% { fill: #3B2412; }
+  83.33% { fill: #17301A; }
+}
