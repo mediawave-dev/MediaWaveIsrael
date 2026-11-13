@@ -332,8 +332,9 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 /* ---------- contact (D249): the page breaks its bands with one large circle, as Libra does. The circle is wider
    than a phone's screen and is cut by its edges; a paler one stands behind it. The form inside is quiet: lines
    for fields, one white button. ---------- */
-.contact { position: relative; overflow: clip; background: var(--paper); padding-block: 40px 56px; }
-.contact::before { content: ""; position: absolute; top: -10px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--sun); }
+/* D263: only the sides are cut (the screen's edge), never the top: the small circle stands whole above the big one */
+.contact { position: relative; overflow-x: clip; background: var(--paper); padding-block: 64px 56px; }
+.contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--sun); }
 /* a side service ends on its price band (D254): the circles start below the band's hanging wave, not under it */
 :is(.band--cream, .band--blue) + .contact { margin-block-start: var(--wave-h); }
 .contact__disc { --d: clamp(620px, 168vw, 760px); position: relative; width: var(--d); height: var(--d); margin-inline: calc(50% - var(--d) / 2); display: grid; place-items: center; border-radius: 50%; background: var(--sun); box-shadow: 0 34px 60px -34px rgba(23, 24, 28, .55); }
@@ -360,7 +361,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 @media (hover: hover) { .contact__ways a:hover span { background-size: 100% 2px; } }
 @media (min-width: 900px) {
   .contact { padding-block: 72px 80px; }
-  .contact::before { width: 460px; top: 0; inset-inline-end: calc(50% - 620px); }
+  .contact::before { width: 460px; top: 14px; inset-inline-end: calc(50% - 620px); }
   .contact__in { width: 380px; }
 }
 

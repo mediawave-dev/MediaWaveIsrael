@@ -11,6 +11,7 @@ import { track } from '../utils/analytics'
 import { MIN_FILL_MS, TRAP_FIELD, leadReady, sendLead } from '../utils/lead'
 import './lead.css'
 import Wheel from './Wheel'
+import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
@@ -80,6 +81,7 @@ function About() {
 function Offer() {
   return (
     <section id="offer" className="band band--cream" aria-labelledby="offer-h">
+      <Buoy at="top" to="offer" label="לחלק הבא, מה אתם צריכים" />
       <div className="wrap">
         <H2 id="offer-h">{OFFER.h2}</H2>
         <ul className="kinds">
@@ -129,14 +131,16 @@ function LaunchDate() {
 
 /** One line from the first call to the day the page is live; the stops sit on it. */
 function Process() {
+  const rise = useRise<HTMLOListElement>()
   return (
     <section id="process" className="band band--blue" aria-labelledby="process-h">
+      <Buoy at="top" to="process" label="לחלק הבא, איך זה עובד" />
       <div className="wrap">
         <H2 id="process-h">{PROCESS.h2}</H2>
-        <ol className="route">
+        <ol className="route" ref={rise}>
           {PROCESS.steps.map((s, i) => (
             <li key={s.title} className="route__stop">
-              <span className="route__n" aria-hidden="true">{i + 1}</span>
+              <span className="route__n" aria-hidden="true"><Tide level={(i + 1) / PROCESS.steps.length} /><b>{i + 1}</b></span>
               <h3 className="h3">{s.title}</h3>
               <p>{s.line}</p>
             </li>
@@ -148,6 +152,7 @@ function Process() {
         <VoiceAt place="steps" />
         <div className="band__cta"><WhatsAppButton placement="process" /></div>
       </div>
+      <Buoy at="bottom" to="faq" label="לחלק הבא, שאלות שחוזרות" />
     </section>
   )
 }

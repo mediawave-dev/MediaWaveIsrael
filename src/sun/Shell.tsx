@@ -9,6 +9,7 @@ import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
 import { IconA11y, IconChevron, IconChevrons, IconClose, IconMenu, IconWhatsApp } from './icons'
+import { Buoy } from './Tide'
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
@@ -104,7 +105,7 @@ function Header() {
 
   const toggleMenu = () => setMenu((v) => !v)
   return (
-    <header className="head">
+    <header className="head" id="top">
       <div className="head__in">
         <nav className="head__nav" aria-label="ניווט ראשי">
           {NAV.slice(0, -1).map((n) => <a key={n.href} href={n.href}><span>{n.label}</span></a>)}
@@ -178,6 +179,7 @@ function Footer() {
         <a href="/terms/">תקנון</a>
         <a href="/privacy/">פרטיות</a>
         <a href="/accessibility/">נגישות</a>
+        <Buoy at="foot" to="top" label="חזרה לראש הדף" />
       </div>
     </footer>
   )

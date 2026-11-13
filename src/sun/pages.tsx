@@ -21,6 +21,7 @@ import { PrivacyBody } from '../components/pages/Privacy'
 import { AccessibilityBody } from '../components/pages/Accessibility'
 import { Contact, H2, WhatsAppButton } from './Home'
 import { VoiceAt } from './Proof'
+import { Tide } from './Tide'
 import { IconChevron, IconChevrons } from './icons'
 
 /** "light|heavy": the two weights every heading is said in. No bar: all of it heavy. */
@@ -219,7 +220,7 @@ export function Service() {
           <div className="wrap">
             <H2 id="steps-h">מה קורה |אחרי שפונים?</H2>
             <ol className="route" data-n={steps.length}>
-              {steps.map((st, i) => (<li key={st.title} className="route__stop"><span className="route__n" aria-hidden="true">{i + 1}</span><h3 className="h3">{st.title}</h3><p>{tie(st.line)}</p></li>))}
+              {steps.map((st, i) => (<li key={st.title} className="route__stop"><span className="route__n" aria-hidden="true"><Tide level={(i + 1) / steps.length} /><b>{i + 1}</b></span><h3 className="h3">{st.title}</h3><p>{tie(st.line)}</p></li>))}
             </ol>
           </div>
         </section>
