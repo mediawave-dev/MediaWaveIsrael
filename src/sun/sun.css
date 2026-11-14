@@ -209,7 +209,9 @@ html.menu-open .pin__blob { filter: none; }
 .hero__text { text-align: center; display: grid; justify-items: center; gap: 18px; }
 .hero__lede { max-width: 31em; }
 .hero__cta { display: grid; justify-items: center; gap: 14px; padding: 22px var(--gutter) 4px; background: var(--paper); text-align: center; }
-.hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+/* D275: buttons that stand together share one width, centred one under the other on a phone and side by side wider */
+.hero__actions { display: grid; grid-template-columns: minmax(0, 300px); justify-content: center; gap: 12px; }
+@media (min-width: 640px) { .hero__actions { grid-template-columns: repeat(2, 280px); } }
 .hero__note { font-size: .9375rem; font-weight: 600; }
 .hero__stage { position: relative; margin-block-start: 46px; }
 .sticker { position: absolute; z-index: 3; top: -34px; inset-inline-start: max(10px, 50% - 560px); width: 112px; height: 112px; display: grid; place-items: center; text-align: center; border-radius: 50%; background: var(--blue); color: #fff; font-size: .8125rem; font-weight: 600; line-height: 1.2; transform: rotate(8deg); box-shadow: 0 10px 24px -10px rgba(23, 24, 28, .5); pointer-events: none; }
@@ -442,7 +444,8 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .phero + .band { padding-block-start: calc(72px + var(--wave-h)); }
 .phero:last-child { margin-block-end: var(--wave-h); }
 .phero .lede { margin-block-start: 16px; }
-.phero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 28px; }
+.phero__actions { display: grid; grid-template-columns: minmax(0, 300px); gap: 12px; margin-block-start: 28px; }
+@media (min-width: 640px) { .phero__actions:has(> :nth-child(2)) { grid-template-columns: repeat(2, 280px); } }
 .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-block-end: 22px; font-size: .9375rem; font-weight: 600; }
 .crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (hover: hover) { .crumbs a:hover { text-decoration: underline; text-underline-offset: 4px; } }

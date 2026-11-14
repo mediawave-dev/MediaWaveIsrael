@@ -6,7 +6,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import './fonts.css'
 import './sun.css'
+import './glass.css'
 import SunApp from './SunApp'
+import { startGlass } from './glass'
 import { installStaleChunkReload } from '../utils/stale-chunk'
 
 // a tab from before a deploy reloads once instead of failing on chunks that are gone
@@ -16,6 +18,8 @@ installStaleChunkReload()
 if (/[?&]reduce=1(&|$)/.test(location.search)) document.documentElement.classList.add('disable-animations')
 // ?calm=1 also has to reach the CSS loops (the buoys, the water, the logo's colour walk): they read this class
 if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.add('calm')
+// the light on the glass buttons follows a pointer (D275)
+startGlass()
 
 const root = createRoot(document.getElementById('root')!)
 startTransition(() => {
