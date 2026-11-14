@@ -15,7 +15,7 @@ import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
-import { Glyph, Go, Say } from './ButtonParts'
+import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue, keepFlowing } from './btn'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
@@ -35,11 +35,12 @@ const KIND_ICON: Record<string, JSX.Element> = {
   coral: (<><circle className="fill" cx="24" cy="15" r="6" /><path d="M11 40c1-8 6-12 13-12s12 4 13 12" /><path d="M33 9l2 2 4-5" /></>),
 }
 
-/** D275: its beats, in turn (btn.ts): the chevrons flow, the handset types, the label gives way to WA.ready. */
+/** D275 (Nati: "קודם החיצים מתחילים באמצע וזזים שמאלה עד שנעלמים, ואז מופיע הכיתוב של ההודעה, ואז האייקון של וואטסאפ,
+    ושוב החיצים וחוזר חלילה"): in its turn the label steps aside for the stage (btn.ts, relay). */
 export function WhatsAppButton({ href = WA.hero, placement, label = HERO.cta, tone = 'ink' }: { href?: string; placement: string; label?: string; tone?: 'ink' | 'sun' | 'paper' }) {
   return (
-    <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)} data-beats="flow type say">
-      <Glyph /><Say alt={WA.ready}>{label}</Say><Go />
+    <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)} data-beats="relay">
+      <Glyph /><Say alt={WA.ready}>{label}</Say><Go /><Stage />
     </a>
   )
 }

@@ -18,8 +18,7 @@ installStaleChunkReload()
 if (/[?&]reduce=1(&|$)/.test(location.search)) document.documentElement.classList.add('disable-animations')
 // ?calm=1 also has to reach the CSS loops (the buoys, the water, the logo's colour walk): they read this class
 if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.add('calm')
-// D275: the buttons' material while Nati compares the two (pearl by default, ?mat=lens for the lens), and their beats
-if (/[?&]mat=lens(&|$)/.test(location.search)) document.documentElement.dataset.mat = 'lens'
+// D275: the buttons' beats (and the lens filter where the browser can draw it)
 startButtons()
 
 const root = createRoot(document.getElementById('root')!)

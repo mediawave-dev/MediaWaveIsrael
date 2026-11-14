@@ -30,6 +30,22 @@ export function Go() {
   )
 }
 
+/** The middle of a WhatsApp button, empty at rest. In its turn (btn.ts, relay) the label steps aside and this stage
+    plays: chevrons set off from the middle and run out at the end, the second line, the WhatsApp mark typing, the
+    chevrons again, and the label comes back. */
+export function Stage() {
+  return (
+    <span className="stage" aria-hidden="true">
+      <span className="stage__go">
+        <i><svg {...svg}><path {...CHEVRON} d="M14 6l-6 6 6 6" /></svg></i>
+        <i><svg {...svg}><path {...CHEVRON} d="M14 6l-6 6 6 6" /></svg></i>
+        <i><svg {...svg}><path {...CHEVRON} d="M14 6l-6 6 6 6" /></svg></i>
+      </span>
+      <span className="stage__wa"><Glyph /></span>
+    </span>
+  )
+}
+
 const words = (s: string) => s.split(' ').map((w, i) => <span key={i}>{i > 0 && ' '}<span className="w">{w}</span></span>)
 
 /** The label. `alt` is a second line that takes the label's place for a moment; it is not part of the button's name. */

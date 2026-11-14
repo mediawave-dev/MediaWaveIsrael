@@ -11,7 +11,7 @@ import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
 import { IconA11y, IconChevron, IconClose, IconMenu } from './icons'
 import { Buoy } from './Tide'
-import { Glyph, Go, Say } from './ButtonParts'
+import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue } from './btn'
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
@@ -65,8 +65,8 @@ function Header() {
   const menuBtn = useRef<HTMLButtonElement>(null)
   const pin = useRef<HTMLDivElement>(null)
   const sheetWa = useRef<HTMLAnchorElement>(null)
-  // D275: the menu settles, then its WhatsApp button types once
-  useEffect(() => { if (menu) cue(sheetWa.current, 'type', 420) }, [menu])
+  // D275: the menu settles, then its WhatsApp button plays its relay once
+  useEffect(() => { if (menu) cue(sheetWa.current, 'relay', 420) }, [menu])
   const menuOpen = useRef(false)
   const syncFold = useRef<() => void>(() => {})
   useEffect(() => { setMenu(false) }, [pathname, hash])
@@ -151,7 +151,7 @@ function Header() {
           <button type="button" onClick={() => { setMenu(false); setA11y(true) }}><span>כלי נגישות</span><IconA11y width={22} height={22} /></button>
         </nav>
         <a ref={sheetWa} className="btn btn--ink btn--wide" href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'menu' })}>
-          <Glyph /><Say>כתבו לנו בוואטסאפ</Say><Go />
+          <Glyph /><Say>כתבו לנו בוואטסאפ</Say><Go /><Stage />
         </a>
       </div>
       <A11yPanel open={a11y} anchor="head" onClose={() => {
@@ -215,7 +215,7 @@ function Floating() {
   }, [])
   const choose = (v: 'accepted' | 'rejected') => { try { localStorage.setItem(CONSENT_KEY, v) } catch { /* nothing to keep */ } setConsent(false) }
   const tab = useRef<HTMLAnchorElement>(null)
-  useEffect(() => { if (past) cue(tab.current, 'type', 620) }, [past])
+  useEffect(() => { if (past) cue(tab.current, 'relay', 700) }, [past])
   if (PRERENDER) return null
   return (
     <aside aria-label="כלים ופעולות מהירות">
@@ -231,10 +231,10 @@ function Floating() {
       {/* the corner wave (after Libra): WhatsApp stays one tap away once the hero button has left the screen */}
       {/* D275: a capsule that rises when the hero's button has left the screen and types once as it arrives; then it
           takes its turns with the other buttons (it types, its chevrons flow) */}
-      <a ref={tab} className="tab" data-on={past ? '' : undefined} data-beats="type flow" href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ" aria-hidden={past ? undefined : true}
+      <a ref={tab} className="tab" data-on={past ? '' : undefined} data-beats="relay" href={WA.hero} target="_blank" rel="noopener" aria-label="כתבו לנו בוואטסאפ" aria-hidden={past ? undefined : true}
         tabIndex={past ? 0 : -1} onClick={() => track('whatsapp_click', { placement: 'corner' })}>
         <svg className="tab__wave" viewBox="0 0 200 90" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 90V20C54 -10 140 24 200 90Z" /></svg>
-        <span><Glyph />כתבו לנו<Go /></span>
+        <span className="tab__in"><Glyph />כתבו לנו<Go /></span><Stage />
       </a>
     </aside>
   )

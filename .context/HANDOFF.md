@@ -1,14 +1,13 @@
-# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D276
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D277
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D276). The next decision number is **D277**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D277). The next decision number is **D278**.
 
-## In progress (15.11 evening): D275 and D276, local only, waiting for Nati
-- **D275 buttons.** Two materials behind one switch: pearl (default) and lens (`?mat=lens`, Chromium only refracts; iPhone gets frosted glass). One conductor plays the beats (`src/sun/btn.ts`, parts in `ButtonParts.tsx`, styles in `btn.css`; glass.css/glass.ts are gone). He was sent `beats-pearl.mp4` and `beats-lens.mp4` and decides which material stays.
-- **When he picks:** delete the other material's block in `btn.css`, the `?mat=lens` line in `entry.tsx`, and (if pearl) the lens filter injection in `btn.ts`; rebuild, gates, then push both branches only after he approves.
-- **D276 phones:** iPhone 17 look in `sun.css` (`.wheel__card`, `--bz`, `--rad`, `--sb`, the island, the status strip from `--shot`), `--shot` set in `Wheel.tsx` and the service page shots in `pages.tsx`.
-- Two new copy lines await his eye: "ההודעה כבר כתובה" and "4 שלבים".
-- Scratch scripts: `C:\tmp\night\fonts\beats-video.mjs` (slow-motion recorder, dev hook `window.__mwBeat`), `conductor-check.mjs`, `lens-scroll.mjs`, `phones-shot.mjs`, `btn-check.mjs`.
+## Latest (15.11 evening): D275 to D277 on both previews
+- **Buttons (D275, D277):** every button is a capsule of lens glass (`src/sun/btn.css`; the refraction filter is injected by `btn.ts` only in Chromium, the iPhone shows frosted glass). One conductor in `btn.ts` plays one beat at a time; every WhatsApp button plays the relay he described (chevrons from the middle out to the left, "ההודעה כבר כתובה", the WhatsApp mark typing, chevrons again, label back); "איך זה עובד" dives and says "4 שלבים". Parts in `ButtonParts.tsx` (Glyph, Go, Say, Stage).
+- **Phones (D276):** iPhone 17 look in `sun.css` (`.wheel__card`, `--bz`, `--rad`, `--sb`, the island, the status strip from `--shot` set in `Wheel.tsx` and the service shots in `pages.tsx`).
+- Not checked on a real iPhone. Production untouched; still blocked by the EFT web licence and his go.
+- Scratch scripts in `C:/tmp/night/fonts/`: `beats-video.mjs relay` (slow-motion recorder, dev hook `window.__mwBeat`), `conductor-check.mjs`, `lens-scroll.mjs`, `phones-shot.mjs`.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
