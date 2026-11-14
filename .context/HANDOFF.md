@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D266
+# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D267
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D266). The next decision number is **D267**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D267). The next decision number is **D268**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -36,6 +36,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - **Audit (site-gate-audit), all on the deployed night preview unless noted.** Lighthouse mobile, 3 runs per page, median: all 12 pages perf 99 to 100, accessibility 100, best practices 100, LCP 0.9 to 1.6 s, CLS 0, TBT at most 70 ms. SEO 66 only because pages.dev sends x-robots-tag noindex (the single failing audit is is-crawlable). axe 0 on 13 pages; one H1 and one canonical each; JSON-LD parses; sitemap = built pages; garbage URL answers 404; WebKit (Playwright) at two iPhone sizes clean. G2 on mediawave.co.il: GPTBot and ClaudeBot get 403 from the Cloudflare zone, the search/user agents get 200 (his call, on the board). The overlap audit does not apply to sun (no data-zone marks); first screen and page end checked by eye.
 - **Independent review (one agent):** 23 findings, each verified by hand; 18 fixed and re-checked in the browser (commit ad59a13): the blank page on a malformed hash, an error net (`Oops` in SunApp.tsx), ?calm=1 for CSS loops, the consent choice now stops the counts, privacy page facts (no GA, no Netlify, counts without cookies or IP; **he should read it**), the accessibility statement's motion line, cache headers, /api/event cross-site and flood guard, no /studio in sun, form status live region, panel scroll on short screens, notch margins, no re-animation of content already on screen, the corner after reload, the hidden tab out of the reader's tree, the static underline. Not fixed on purpose: the opening on every home load (D241), names with a dot in the lead form, typing during a slow chunk load; "navy theme colour" was a false positive (the build rewrites it per look).
 - One test event (page_view at /qa) was sent to the night preview's /api/event while checking it.
+- **14.11 morning, from his phone:** "תמרכז כל מיני דברים שיהיו סימטריים" (the footer, e853a3d: one centre axis, three even columns on desktop, the back-to-top buoy on the middle of the bottom rule), then **D267** "תחזיר את הלוגו העליון הקודם": the header shows the original Horizon logo again (sizes as before D266), the share image and public/logo.png follow it. The footer MW and its fold stay. Both are on the night branch only.
 - **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
 
 ## Production procedure (only after his tap on the board AND the EFT licence confirmed)

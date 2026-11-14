@@ -1,6 +1,6 @@
 # MediaWave logo: "Horizon" (chosen 2026-10-13; palette "Cyanotype" since 2026-10-18, before that "Klein")
 
-> **Since 14.11.2026 (D266) the name is drawn anew: the current wordmark and the MW mark are in `logos/mediawave-v2`.** This folder stays the source of the disc, the favicons and the app icons, which did not change. Its wordmark files are the first drawing, kept for the older looks of the site (`scripts/build-logo-paths.mjs`) and for the record.
+> **14.11.2026 (D267):** this folder's logo is the one in the site's header, and `public/logo.png` is drawn from it. The MW mark of the footer, and a drawn version of the name that is not in use, are in `logos/mediawave-v2`.
 
 A disc split by a wave into two tones, the MediaWave wordmark with a drop on the i, and the tagline "Web Development". This folder is the source of truth: every file here is final, vector, and drawn once. Copy the files; never redraw, retype or trace them.
 

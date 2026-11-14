@@ -4,7 +4,7 @@
 // folds down to its mark and a menu button comes in beside it; the move follows the scroll and is eased.
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
-import Brand from './Brand'
+import Logo from '../components/ui/Logo'
 import Emblem from './Emblem'
 import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
@@ -137,7 +137,7 @@ function Header() {
         <button type="button" ref={menuBtn} className="icon-btn pin__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={toggleMenu}>
           {menu ? <IconClose width={22} height={22} /> : <IconMenu width={22} height={22} />}
         </button>
-        <a className="pin__logo" href="/" aria-label="MediaWave, לדף הבית"><span className="pin__clip"><Brand decorative /></span></a>
+        <a className="pin__logo" href="/" aria-label="MediaWave, לדף הבית"><span className="pin__clip"><Logo variant="compact" decorative /></span></a>
       </div>
 
       <div id="sheet" className="sheet" hidden={!menu}>

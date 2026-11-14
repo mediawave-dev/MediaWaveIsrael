@@ -1,5 +1,7 @@
 # MediaWave logo, the drawn wordmark (D266, 14.11.2026)
 
+> **D267 (14.11.2026):** Nati brought the original logo back to the header. In use from this folder: the MW mark (`mediawave-mw-*`) in the footer. The compact and horizontal files of the drawn name are kept, not in use.
+
 The Horizon disc beside the name MediaWave in drawn letters. The M and W come from the MW logo Nati picked on 13.11.2026;
 the small letters are drawn as the same heavy leaning blocks with sharp wedge cuts, and the drop sits on the i.
 The MW mark is the short form: the M and W between code brackets, the disc on a horizon line, the words Web Development.
