@@ -45,9 +45,9 @@ function useVideosReady() {
   const [on, setOn] = useState(false)
   useEffect(() => {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
-    // a visitor who saves data, or is on a slow line, keeps the stills: the videos are about 9 MB together
-    const net = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection
-    if (net?.saveData || /(^|-)(2g|3g)$/.test(net?.effectiveType || '')) return
+    // D270: every regular visit gets the moving phones, as with the rest of the motion (D160). A guard on Save-Data and on
+    // a "3g" estimate left real phones on stills (Nati, 14.11: "האתרים בקרוסלה לא נגללים"): Chrome on Android calls any
+    // line with 270 ms round trips "3g". The cost stays small anyway: only the phones on the screen load and play.
     let t = 0
     const go = () => { t = window.setTimeout(() => setOn(true), 1500) }
     if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
@@ -69,7 +69,13 @@ export default function Wheel() {
     const calm = /[?&]calm=1(&|$)/.test(location.search)
     const visible = new Set<HTMLVideoElement>()
     const run = () => !calm && !html.classList.contains('disable-animations')
-    const sync = (v: HTMLVideoElement) => { if (run() && visible.has(v)) v.play().catch(() => {}); else if (!v.paused) v.pause() }
+    // D270: a browser may refuse to start a video by itself (an iPhone in Low Power Mode does). Then the visitor's next
+    // tap anywhere starts the phones on the screen: play() called inside a tap is allowed.
+    let refused = false
+    const sync = (v: HTMLVideoElement) => {
+      if (run() && visible.has(v)) v.play().catch((err: unknown) => { if ((err as { name?: string })?.name === 'NotAllowedError') refused = true })
+      else if (!v.paused) v.pause()
+    }
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) { const v = e.target as HTMLVideoElement; if (e.isIntersecting) visible.add(v); else visible.delete(v); sync(v) }
     }, { rootMargin: '80px', threshold: 0.02 })
@@ -78,7 +84,13 @@ export default function Wheel() {
     vids.forEach((v) => { io.observe(v); v.addEventListener('playing', shown) })
     const mo = new MutationObserver(() => vids.forEach(sync))
     mo.observe(html, { attributes: true, attributeFilter: ['class'] })
-    return () => { io.disconnect(); mo.disconnect(); vids.forEach((v) => v.removeEventListener('playing', shown)) }
+    const wake = () => { if (refused) { refused = false; vids.forEach(sync) } }
+    document.addEventListener('touchend', wake, { passive: true })
+    document.addEventListener('click', wake)
+    return () => {
+      io.disconnect(); mo.disconnect(); vids.forEach((v) => v.removeEventListener('playing', shown))
+      document.removeEventListener('touchend', wake); document.removeEventListener('click', wake)
+    }
   }, [videos])
   const ring = useRef<HTMLDivElement>(null)
 

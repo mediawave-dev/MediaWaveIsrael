@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D269
+# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D270
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D269). The next decision number is **D270**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D270). The next decision number is **D271**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -41,6 +41,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - Smoothness on the main preview (Chrome, CPU slowed 4x, phone size): service pages a steady 60 fps; the home page 98% of frames on time, one 180 ms hitch that a trace shows is a GPU raster task of the software renderer, not page code (main thread at most 22 ms). Check on a real phone.
 - All addresses in the live sitemap resolve on the new site (200, or a redirect for /your-site, /styles and the old blog).
 - **14.11 evening, D269:** the running text is David Libre (his pick 12 of fourteen faces rendered on the real page) and every Latin letter is Saira Semi Condensed (he kept option D's Latin). Both OFL; Artzisraeli is now the only EFT face (its licence still blocks production). Bold inside text is David Libre Bold again (the D264 move to Artzisraeli is undone). Rejected on the way: Lampner, Miriam Libre, IBM Plex Sans Hebrew. The specimen tools are in `C:/tmp/night/fonts` (specimen2.mjs, compose.mjs); note that a candidate must get its own family name, because under the same name Chrome kept the old 100-900 face for weight 400.
+- **D270:** "the sites in the carousel don't scroll": the review's Save-Data / "3g" guard (ad59a13) left real Android phones on stills. Removed; a refused autoplay (iPhone Low Power Mode) now starts on the visitor's next tap. Test: `node C:/tmp/night/fonts/wheel.mjs <base> 3g|savedata|refuse`.
 - **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
 
 ## Production procedure (only after his tap on the board AND the EFT licence confirmed)
