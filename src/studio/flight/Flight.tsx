@@ -92,6 +92,7 @@ export default function Flight({ tier, def }: StyleProps) {
       <canvas className="fl-canvas" ref={canvas} aria-hidden="true" />
 
       <section className="fl-hero" data-ch="hero" aria-labelledby="fl-h1">
+        {hero.pics?.[0] && <img className="fl-hero__photo" src={hero.pics[0].src} alt={hero.pics[0].alt} width={1600} height={1000} decoding="async" />}
         <h1 id="fl-h1" className="fl-h1">
           <span className="fl-h1__small">{hero.line1}</span>
           <span className="fl-h1__big">{hero.brand ? <bdi className="s60-name">{hero.line2}</bdi> : hero.line2}</span>

@@ -15,7 +15,8 @@ import { PROJECTS, WA } from './content'
 import { IconWhatsApp } from './icons'
 import { track } from '../utils/analytics'
 
-const SLOTS = 16
+// D270/D271: 20 slots at 18 degrees (nine sites and the "next" card, each twice); the radius grew with them (sun.css)
+const SLOTS = 20
 const STEP = 360 / SLOTS
 /** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
 const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
@@ -27,10 +28,12 @@ type Card = Shot | { kind: 'next' }
 
 /** The deck, set by hand (Nati, 13.11.2026): one card per site, then the "next" card. Light and dark screens take
     turns, and the two sites with a woman's face in the hero (sisters' sites) stand four places apart (90 degrees),
-    so they are never side by side. A card whose project is missing from work.json is skipped. */
+    so they are never side by side. A card whose project is missing from work.json is skipped.
+    D271: the two concept sites (maof, zimzum) go in without moving the rest, four places apart, and neither stands
+    beside the old MediaWave site (Nati: "תשלב אותם (לא אחד ליד השני)"). */
 const ORDER: [string, string][] = [
-  ['switchon', 'top'], ['machtesh', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
-  ['horizon', 'top'], ['ben-david', 'top'], ['hila', 'top'],
+  ['switchon', 'top'], ['machtesh', 'top'], ['maof', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
+  ['horizon', 'top'], ['zimzum', 'top'], ['ben-david', 'top'], ['hila', 'top'],
 ]
 function deck(): Card[] {
   const known = new Set(PROJECTS.map((p) => p.slug))

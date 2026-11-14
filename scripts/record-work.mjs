@@ -167,7 +167,9 @@ for (const p of list) {
     const stillArg = args.find((x) => x.startsWith(`--still=${p.slug}:`))
     const urlArg = args.find((x) => x.startsWith(`--url=${p.slug}:`))
     const still = stillArg ? stillArg.endsWith(':1') : p.still
-    const address = urlArg ? urlArg.slice(`--url=${p.slug}:`.length) : p.captureUrl || p.url
+    // D271: a concept site lives only on the dev server of the legacy app (npm run dev -- --mode look-shot --port 5187),
+    // so its address is not written into work.json, which ships inside the site's bundle
+    const address = urlArg ? urlArg.slice(`--url=${p.slug}:`.length) : p.captureUrl || p.url || (p.concept ? `http://localhost:5187/concept/${p.slug}` : '')
     // always say which motion mode we want: Chrome otherwise follows the Windows animation setting (reduce on this machine)
     await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: still ? 'reduce' : 'no-preference' }])
     await page.goto(address, { waitUntil: 'domcontentloaded', timeout: 90000 }).catch((e) => console.log(p.slug, 'goto:', e.message))

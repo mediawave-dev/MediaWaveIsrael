@@ -57,6 +57,15 @@ html[data-style="buzz"] .st { background: transparent; }
 @keyframes bz-type { 0%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
 
 .bz-hero { min-height: 100svh; display: flex; align-items: center; padding: 96px clamp(18px, 3vw, 40px) 150px; }
+/* (D271) a concept site's opening: two real photographs as cards at the foot of the first screen, between the two
+   swarms (the front bees cross them); they arrive with the bees, after the word's opening */
+.bz-hero:has(.bz-hero__pics) { position: relative; }
+.bz-hero__pics { position: absolute; z-index: 2; inset-inline: 0; bottom: 4svh; height: 25svh; pointer-events: none; opacity: 0; transform: translateY(26px); transition: opacity 0.8s var(--bz-ease), transform 0.8s var(--bz-ease); }
+.bz[data-stage="done"] .bz-hero__pics { opacity: 1; transform: none; }
+.bz-hero__pic { position: absolute; bottom: 0; height: 100%; width: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; border: 6px solid #fff; box-shadow: 0 22px 44px -20px rgba(35, 30, 30, 0.55); }
+.bz-hero__pic:nth-child(1) { inset-inline-start: 13%; transform: rotate(-7deg); }
+.bz-hero__pic:nth-child(2) { inset-inline-end: 11%; transform: rotate(6deg) translateY(-16px); }
+@media (min-width: 900px) { .bz-hero__pics { inset-inline: auto 4%; bottom: auto; top: 26%; width: 38%; height: 44svh; } }
 .bz-hero__in {
   position: relative; z-index: 2; width: 100%; display: grid; gap: 14px 6vw;
   opacity: clamp(0, calc((1 - var(--bz-hero, 0)) / 0.28), 1); transform: translateY(calc(var(--bz-hero, 0) * -44px));

@@ -1,4 +1,4 @@
-// Concept site (D271): "צוף הגבעה", a family apiary in the Galilee, set in the style זמזום (Buzz). A fictional
+// Concept site (D271): "מכוורת השקד", a family apiary in the Galilee, set in the style זמזום (Buzz). A fictional
 // business, built to show the style's motion in the work wheel (Nati, 14.11.2026). Here the swarm is bees that flee the
 // pointer and gather at the order form. General facts only (raw honey crystallises, citrus and eucalyptus honey);
 // no prices, no people, no reviews. A web search found no business by this name (14.11.2026).
@@ -11,20 +11,21 @@ const M = '/src/concept/media/'
 export const ZIMZUM: Site = {
   concept: true,
   hero: {
-    line1: 'מכוורת משפחתית בגליל',
-    line2: 'צוף הגבעה',
-    brand: 'צוף הגבעה',
+    line1: 'דבש משפחתי מהגליל',
+    line2: 'מכוורת השקד',
+    brand: 'מכוורת השקד',
     tags: 'RAW HONEY · FAMILY VISITS',
     sub: 'דבש שלא עבר חימום, ישר מהכוורת לצנצנת.',
     sub2: 'בימי שישי פותחים את המכוורת למשפחות.',
     cta: 'להזמנת דבש',
+    pics: [{ src: M + 'zimzum-hero-jars.webp', alt: 'שתי צנצנות דבש על שולחן עץ בגינה' }, { src: M + 'zimzum-hero-frame.webp', alt: 'מסגרת כוורת מלאה דבורים' }],
   },
   clips: { citrus: M + 'zimzum-citrus', eucalyptus: M + 'zimzum-eucalyptus', workshop: M + 'zimzum-workshop', gift: M + 'zimzum-gift' },
   buzz: {
     swarm: 'bee',
     endWord: 'דבש',
     lines: [
-      'צוף הגבעה, מכוורת משפחתית בגליל',
+      'מכוורת השקד, דבש משפחתי מהגליל',
       'דבש שלא עבר חימום, ישר מהכוורת לצנצנת.',
       'בימי שישי פותחים את המכוורת למשפחות.',
       'משלוח עד הבית תוך שלושה ימי עבודה.',

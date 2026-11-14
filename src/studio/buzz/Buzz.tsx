@@ -311,6 +311,11 @@ export default function Buzz({ tier, def }: StyleProps) {
             <WorldKey def={def} tier={tier} label={hero.cta} plain="bz-pill" look={KEY} to={concept ? '#bz-contact-t' : undefined} />
           </div>
         </div>
+        {hero.pics && hero.pics.length > 0 && (
+          <div className="bz-hero__pics">
+            {hero.pics.slice(0, 2).map((p) => <img key={p.src} className="bz-hero__pic" src={p.src} alt={p.alt} width={640} height={800} decoding="async" />)}
+          </div>
+        )}
         <div className="bz-swarm bz-swarm--front" ref={front} aria-hidden="true" />
         <span className="bz-down" aria-hidden="true" />
       </section>

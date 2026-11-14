@@ -24,6 +24,8 @@ export interface Hero {
   brand?: string
   /** a world's small label row (Buzz) */
   tags?: string
+  /** a concept site's photographs in the opening (D271): Flight lays the first under the sky, Buzz shows two cards */
+  pics?: { src: string; alt: string }[]
 }
 
 const OURS: Hero = { ...C.hero }

@@ -1,4 +1,4 @@
-// Concept site (D271): "שחר עגורים", guided crane tours in the Hula Valley, set in the style מעוף (Flight).
+// Concept site (D271): "צפרות עם עומר", guided crane tours in the Hula Valley, set in the style מעוף (Flight).
 // A fictional business, built to show the style's motion in the work wheel (Nati, 14.11.2026: "הרעיון הוא להציג
 // יכולת בקרוסלה ולאו דווקא עסקים אמיתיים"). The glass bird crosses a sky that turns from day to dusk, night and dawn:
 // the hours these tours go out. General facts only (cranes winter in the Hula, November to February); no prices,
@@ -13,11 +13,12 @@ export const MAOF: Site = {
   concept: true,
   hero: {
     line1: 'סיורים מודרכים בעמק החולה',
-    line2: 'שחר עגורים',
-    brand: 'שחר עגורים',
+    line2: 'צפרות עם עומר',
+    brand: 'צפרות עם עומר',
     sub: 'יוצאים לפני הזריחה, כשעשרות אלפי עגורים קמים מהאגם בבת אחת.',
     sub2: 'סיור בוקר וסיור שקיעה, מאוקטובר עד מרץ.',
     cta: 'לתאם סיור',
+    pics: [{ src: M + 'maof-hero.webp', alt: 'שני עגורים עפים נמוך מעל העמק, הרים ברקע' }],
   },
   clips: {},
   C: {

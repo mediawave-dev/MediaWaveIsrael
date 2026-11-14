@@ -72,6 +72,13 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-go::after { content: "( + )"; font: 600 12px/1 ui-monospace, Consolas, monospace; direction: ltr; }
 .fl-go:hover, .fl-go:focus-visible { background: rgba(255, 255, 255, 0.5); }
 .fl-word [data-fl] { display: flex; flex-direction: column; align-items: center; }
+/* (D271) a concept site's opening: the real valley rises out of the sky at the foot of the first screen, under the
+   words; it lives in the hero's own layer, so the sky, the sun and the bird above it stay as they are */
+.fl-hero__photo {
+  position: absolute; z-index: -1; inset-inline: 0; bottom: 0; width: 100%; height: 31svh; object-fit: cover; object-position: 50% 62%;
+  -webkit-mask-image: linear-gradient(to top, #000 48%, transparent); mask-image: linear-gradient(to top, #000 48%, transparent); pointer-events: none;
+}
+@media (min-width: 900px) { .fl-hero__photo { height: 38svh; object-position: 50% 66%; } }
 /* (D271) a concept site's service carries its photograph under the word, in the film's glass frame */
 .fl-word__pic {
   display: block; width: min(80vw, 460px); aspect-ratio: 4 / 3; margin: 22px auto 0; object-fit: cover; border-radius: 22px;
