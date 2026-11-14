@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D267
+# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D268
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D267). The next decision number is **D268**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D268). The next decision number is **D269**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -37,6 +37,9 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - **Independent review (one agent):** 23 findings, each verified by hand; 18 fixed and re-checked in the browser (commit ad59a13): the blank page on a malformed hash, an error net (`Oops` in SunApp.tsx), ?calm=1 for CSS loops, the consent choice now stops the counts, privacy page facts (no GA, no Netlify, counts without cookies or IP; **he should read it**), the accessibility statement's motion line, cache headers, /api/event cross-site and flood guard, no /studio in sun, form status live region, panel scroll on short screens, notch margins, no re-animation of content already on screen, the corner after reload, the hidden tab out of the reader's tree, the static underline. Not fixed on purpose: the opening on every home load (D241), names with a dot in the lead form, typing during a slow chunk load; "navy theme colour" was a false positive (the build rewrites it per look).
 - One test event (page_view at /qa) was sent to the night preview's /api/event while checking it.
 - **14.11 morning, from his phone:** "תמרכז כל מיני דברים שיהיו סימטריים" (the footer, e853a3d: one centre axis, three even columns on desktop, the back-to-top buoy on the middle of the bottom rule), then **D267** "תחזיר את הלוגו העליון הקודם": the header shows the original Horizon logo again (sizes as before D266), the share image and public/logo.png follow it. The footer MW and its fold stay. Both are on the night branch only.
+- **14.11 afternoon:** he approved merging the night into the main preview ("כן. שהכל יהיה חלק"); both branches carry the same commits. Then **D268**: "Wave" in the header and the footer's W walk through the disc's colours on one clock; the footer MW is a button that opens into the header's logo and closes back, with a letter-by-letter swap under a brief blur (`Emblem.tsx`, `emblem-open.ts` from `design/logo/mediawave-v2/letters/open-art.mjs`).
+- Smoothness on the main preview (Chrome, CPU slowed 4x, phone size): service pages a steady 60 fps; the home page 98% of frames on time, one 180 ms hitch that a trace shows is a GPU raster task of the software renderer, not page code (main thread at most 22 ms). Check on a real phone.
+- All addresses in the live sitemap resolve on the new site (200, or a redirect for /your-site, /styles and the old blog).
 - **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
 
 ## Production procedure (only after his tap on the board AND the EFT licence confirmed)

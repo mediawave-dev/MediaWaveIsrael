@@ -163,7 +163,7 @@ function Footer() {
     <footer className="foot">
       <div className="wrap foot__in">
         <div className="foot__brand">
-          <Emblem title="MediaWave" />
+          <Emblem />
           <p>דפי נחיתה, אתרי תדמית ואתרים לתוכניות ליווי.</p>
         </div>
         <nav aria-label="בדף הבית">
@@ -231,7 +231,22 @@ function Floating() {
   )
 }
 
+/** D268: every colour walk on the page (the disc, "Wave", the footer's W, the buoys) keeps one clock, the page's own,
+    whenever its element appeared: each walk is set to have started at the page's time zero. */
+function useOneColourClock() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    if (PRERENDER || typeof document.getAnimations !== 'function') return
+    const sync = () => document.getAnimations().forEach((a) => { const name = (a as CSSAnimation).animationName; if (name && /^(mark|walk)-/.test(name)) a.startTime = 0 })
+    const t = window.setTimeout(sync, 60)
+    const mo = new MutationObserver(() => window.setTimeout(sync, 60))
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => { clearTimeout(t); mo.disconnect() }
+  }, [pathname])
+}
+
 export default function Shell({ children, route }: { children: ReactNode; route?: string }) {
+  useOneColourClock()
   return (
     <>
       <a className="skip" href="#main-content">דלג לתוכן הראשי</a>

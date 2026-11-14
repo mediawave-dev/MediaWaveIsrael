@@ -61,7 +61,7 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
 html.disable-animations { scroll-behavior: auto; }
 html.disable-animations *, html.disable-animations *::before, html.disable-animations *::after { animation: none !important; transition: none !important; }
 /* ?calm=1 stops what moves by itself (the loops), not what answers a hand */
-html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path) { animation: none !important; }
+html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path, .mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text, .walk-w0, .walk-w1, .walk-stroke) { animation: none !important; }
 
 .skip { position: absolute; inset-inline-start: 12px; top: -80px; z-index: 100; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 12px; }
 .skip:focus { top: 12px; }
@@ -374,7 +374,16 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 .foot__in > div:last-child .foot__h { width: 100%; }
 .foot__brand .mw-logo { height: 34px; width: auto; }
 /* the MW mark (13.11.2026): the short form of the name, only here. Its two lights run from the first colour to the second */
-.foot__brand .mw-emblem { display: block; height: auto; width: 196px; --mw-m0: #2A4A42; --mw-m1: var(--ink); --mw-w0: #27C2AE; --mw-w1: #0F8478; }
+/* D268: the mark is a button that opens it into the header's logo and closes it back (Emblem.tsx) */
+.foot__mark { --mw-m0: #2A4A42; --mw-m1: var(--ink); --mw-w0: #27C2AE; --mw-w1: #0F8478; display: block; width: min(100%, 330px); margin-inline: auto; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; }
+.foot__mark:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
+.foot__brand .mw-emblem { display: block; width: 100%; height: auto; }
+/* a pointer over it: the brackets lean the way they point (outward to open, inward to close) */
+@media (hover: hover) {
+  .foot__mark :is([data-k="bl"], [data-k="br"]) polyline { transition: transform .35s var(--ease); }
+  .foot__mark:hover [data-k="bl"] polyline { transform: translateX(-8px); }
+  .foot__mark:hover [data-k="br"] polyline { transform: translateX(8px); }
+}
 html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 .foot__brand p { margin-block-start: 14px; font-weight: 600; max-width: 18em; text-wrap: balance; }
 .foot__h { font: 700 1.0625rem/1.3 var(--display); margin-block-end: 6px; }
@@ -597,6 +606,50 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
   66.66% { fill: #3B2412; }
   83.33% { fill: #17301A; }
 }
+/* D268 (Nati, 14.11.2026): "Wave" in the header, its drop, and the footer's W change with the disc, on the same clock
+   (Shell syncs every walk to the page's start). Text takes a deeper shade of each colour, as "Wave" always did
+   (#0F8478 beside the disc's #14A390), so the word stays readable even in yellow. */
+.mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text { animation: walk-text 36s linear infinite; }
+.walk-w0 { animation: walk-w0 36s linear infinite; }
+.walk-w1 { animation: walk-w1 36s linear infinite; }
+.walk-stroke { animation: walk-stroke 36s linear infinite; }
+@keyframes walk-text {
+  0%, 100% { fill: #0F8478; }
+  16.66% { fill: #257CB8; }
+  33.33% { fill: #6256C0; }
+  50% { fill: #BE5570; }
+  66.66% { fill: #C47B30; }
+  75% { fill: #BF9E2E; }
+  83.33% { fill: #4A963F; }
+}
+@keyframes walk-w0 {
+  0%, 100% { stop-color: #27C2AE; }
+  16.66% { stop-color: #4DAAEA; }
+  33.33% { stop-color: #8F82F2; }
+  50% { stop-color: #F1809D; }
+  66.66% { stop-color: #F7A959; }
+  75% { stop-color: #F1CE58; }
+  83.33% { stop-color: #75C569; }
+}
+@keyframes walk-w1 {
+  0%, 100% { stop-color: #0F8478; }
+  16.66% { stop-color: #257CB8; }
+  33.33% { stop-color: #6256C0; }
+  50% { stop-color: #BE5570; }
+  66.66% { stop-color: #C47B30; }
+  75% { stop-color: #BF9E2E; }
+  83.33% { stop-color: #4A963F; }
+}
+@keyframes walk-stroke {
+  0%, 100% { stroke: #14A390; }
+  16.66% { stroke: #2E9BE6; }
+  33.33% { stroke: #7B6CF0; }
+  50% { stroke: #EE6A8C; }
+  66.66% { stroke: #F59A3C; }
+  75% { stroke: #EFC53A; }
+  83.33% { stroke: #5DBB4F; }
+}
+
 
 /* ---------- D264: the text face is EFT Tirosh, which has one cut. What used to be said by a bolder weight inside
    running text is said in the headings' face. ---------- */
