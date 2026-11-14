@@ -1,19 +1,17 @@
-/* sun · the type (D249; faces D264 and D269).
-   Three voices, each with one job:
-   - EFT Artzisraeli says every heading, button, label and the menu (the site's most present face).
-   - David Libre carries the running text (D269, Nati's pick 12 of fourteen, 14.11.2026; Tirosh until then), in its
-     Bold everywhere (D272).
-   - Saira Semi Condensed says every Latin letter, in headings and in text (D269, from option D: an address,
-     the word MediaWave), narrow and square like Artzisraeli's letters.
-   The EFT file in public/fonts/eft is a subset (Hebrew letters, digits, punctuation; its Latin is a serif that does
-   not belong here), made with fontTools from Nati's licensed copy in OneDrive\Fonts\עברית\Lampner.
-   David Libre and Saira are OFL (licences beside the files), subset with fontTools the same way:
-     python -m fontTools.subset DavidLibre-400.ttf --unicodes="<the Hebrew range below>" --flavor=woff2 --layout-features='*'
+/* sun · the type (D249; faces D264, D269, D274).
+   One Hebrew voice, EFT Artzisraeli, everywhere (D274, Nati's pick 4 of five styles, 15.11.2026: "תנסה לשים את הפונט של
+   הכותרות גם בתוכן, אבל שיהיה פחות מודגש. ככה תהיה אחידות וייחודיות לאתר"). The font has one cut, so the hierarchy is
+   said by size and tone: the headings stand 10% larger ("MW Head XL", sun.css), the running text 6% smaller ("MW Text")
+   and in a softer ink (sun.css, --ink-text). Saira Semi Condensed SemiBold says every Latin letter, narrow and square
+   like Artzisraeli's.
+   The EFT file in public/fonts/eft is a subset (Hebrew letters, digits, punctuation; its Latin is a serif that does not
+   belong here), made with fontTools from Nati's licensed copy in OneDrive\Fonts\עברית\Lampner. Saira is OFL (licence
+   beside the file), subset the same way:
      python -m fontTools.subset SairaSemiCondensed-600.ttf --unicodes="U+0041-005A,U+0061-007A,U+00C0-00FF" --flavor=woff2 --layout-features='*'
-   Sizes are set by size-adjust so each face's letters stand as tall as the faces the page was tuned for:
-   David Libre's Hebrew as tall as Tirosh's (110%), Saira's capitals a hair above the Hebrew beside them. */
+   Saira's size-adjust stands its capitals a hair above the Hebrew beside them (90% beside Artzisraeli at 100%).
+   History: Tirosh (D264), then David Libre (D269, Bold from D272), then Artzisraeli for the text too (D274). */
 
-/* headings, every weight: Artzisraeli for Hebrew, digits and punctuation */
+/* headings, buttons, labels, every weight: Artzisraeli for Hebrew, digits and punctuation */
 @font-face { font-family: "MW Head"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
 /* headings, Latin letters: Saira Semi Condensed SemiBold */
 @font-face { font-family: "MW Head"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 90%; unicode-range: U+0041-005A, U+0061-007A; }
@@ -21,11 +19,13 @@
 @font-face { font-family: "MW Head Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 91.5%; }
 @font-face { font-family: "MW Head Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 500; size-adjust: 107%; }
 
-/* text: David Libre Bold, at every weight (D272, Nati 14.11.2026: "תעשה את כל הפונט של david שיהיה מודגש. בכל האתר").
-   One cut answers 100 to 900, so the browser never fakes a heavier bold; emphasis inside text is said in the headings'
-   face again (sun.css, as D264 did for Tirosh). Hebrew, digits and punctuation. */
-@font-face { font-family: "MW Text"; src: url("/fonts/david/david-libre-700.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 110%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
-/* text, Latin letters only: Saira Semi Condensed SemiBold, the weight that stands beside David's Bold */
-@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 93%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
-/* Arial Bold at David Libre Bold's measured width on the home page's text (14.11.2026) */
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 108.4%; }
+/* the headings (h1 to h4): the same faces, 10% larger (D274) */
+@font-face { font-family: "MW Head XL"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 110%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+@font-face { font-family: "MW Head XL"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 99%; unicode-range: U+0041-005A, U+0061-007A; }
+@font-face { font-family: "MW Head XL Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 100.6%; }
+
+/* the running text: the same faces, 6% smaller (D274) */
+@font-face { font-family: "MW Text"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 94%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 85%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
+/* Arial Bold at the headings' fallback width, 6% smaller */
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 86%; }

@@ -18,6 +18,8 @@
   --sun-sweep: linear-gradient(180deg, #D3EDE8 0%, #C2E4DD 100%);
   --ink: #13241F;
   --ink-2: #3F4D48;
+  /* D274: the running text's ink, softer than the headings' (5.2:1 on the contact circle, 5.5 on the mint, 7.2 on white) */
+  --ink-text: #4A5A54;
   --paper: #FFFFFF;
   --cream: #F5F7F3;
   --blue: #13241F;
@@ -532,7 +534,7 @@ html.menu-open .tab { opacity: 0; pointer-events: none; }
 .legal th, .legal td { border: 1px solid var(--line); padding: 8px 10px; text-align: start; }
 
 /* ---------- high contrast (the accessibility panel): black on white, the blue goes darker ---------- */
-html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #000000; --blue-ink: #000000; --sun-light: #FFFFFF; --sun-deep: #FFFFFF; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --line: #000000; --wa: #FFFFFF; }
+html.high-contrast { --sun-sweep: #FFFFFF; --sun: #FFFFFF; --cream: #FFFFFF; --blue: #000000; --blue-ink: #000000; --sun-light: #FFFFFF; --sun-deep: #FFFFFF; --blue-soft: #FFFFFF; --coral: #FFFFFF; --ink: #000000; --ink-2: #000000; --ink-text: #000000; --line: #000000; --wa: #FFFFFF; }
 html.high-contrast .head { background: #fff; }
 html.high-contrast :is(.band--blue, .hero, .phero) { border-block: 2px solid #000; }
 html.high-contrast .contact__disc { outline: 3px solid #000; }
@@ -655,6 +657,14 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 /* ---------- the small voices in the headings' face (D264). D272: the text is David Libre Bold throughout, so a bolder
    weight no longer stands out; emphasis inside running text is said in the headings' face again, as D264 did. ---------- */
 :where(p, li, dd, td, small, label, figcaption) :where(b, strong) { font-family: var(--display); font-weight: 700; }
+
+/* ---------- D274: one face (Artzisraeli) for headings and text; the hierarchy is said in size and tone. The headings
+   stand 10% larger, the text 6% smaller (fonts.css) and in a softer ink; the small voices in the headings' face and
+   emphasis inside the text keep the full ink. ---------- */
+main :is(h1, h2, h3, h4) { font-family: "MW Head XL", "MW Head XL Fallback", Arial, sans-serif; }
+:where(main) :where(p, li, dd, td, figcaption, blockquote) { color: var(--ink-text); }
+:where(main) :where(.hero__note, .form__status, .field__err, .launch, .crumbs, .voice__q, .faq summary) { color: var(--ink); }
+:where(main) :where(p, li, dd, td) :where(b, strong) { color: var(--ink); }
 .hero__note, .foot__brand p, .form__status, .field__err, .a11y__label, .a11y__opt, .a11y__link, .consent a, .consent__no, .quote__rows small, .legal h3, .legal a, .form__legal a, .voice__who, .proof__tag { font-family: var(--display); }
 
 /* when part of a page fails to load (SunApp, Oops): never a blank page, always a way to write to us */

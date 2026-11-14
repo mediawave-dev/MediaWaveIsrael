@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D273
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D274
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D273). The next decision number is **D274**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D274). The next decision number is **D275**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -45,6 +45,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - **D271:** two concept sites in the wheel, Maof as "צפרות עם עומר" (crane tours) and Zimzum as "מכוורת השקד" (an apiary), fictional businesses at Nati's request, with real Pexels photographs (ledger `src/concept/media/LEDGER.md`). Dev-only route `/concept/:id` in the legacy app: run the `concept` launch config (`npm run dev -- --mode look-shot --port 5187`), then `node scripts/record-work.mjs maof zimzum`; never edit worktree files while a recording runs (Vite reloads the page and the run dies). The wheel is now 20 phones at 18 degrees.
 - **D272:** all running text is David Libre Bold (one cut for every weight; Latin in text is Saira SemiBold); in-text emphasis is in Artzisraeli again.
 - **D273:** the contact circle and the steps' rings follow the scroll (progress from position, eased both ends, light lerp); no threshold-triggered entrances left on the sun pages except the footer MW fold (D268). Tests: `C:/tmp/night/fonts/contact-scrub.mjs`, `rings-scrub.mjs`. Two dev servers must not share Vite's optimizer cache (vite.config `cacheDir` per mode).
+- **D274 (15.11):** one face for all text: Artzisraeli (headings 10% larger via "MW Head XL", text 6% smaller and #4A5A54); David Libre removed. Nati asked to see the full preview and then decide on production. Production still needs the EFT web licence (Artzisraeli now carries every word), real-phone checks, and his go.
 - **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
 
 ## Production procedure (only after his tap on the board AND the EFT licence confirmed)

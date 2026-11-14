@@ -18,9 +18,10 @@ colors:
 typography:
   display:
     fontFamily: "MW Head: EFT Artzisraeli for Hebrew, digits and punctuation; Saira Semi Condensed SemiBold for Latin; Arial metric fallback"
-    use: "headings, buttons, labels, menus"
+    use: "buttons, labels, menus; headings (h1-h4) through MW Head XL, the same faces 10% larger"
   text:
-    fontFamily: "MW Text: David Libre 400 and 700 for Hebrew, digits and punctuation; Saira Semi Condensed 400 and 600 for Latin; Arial metric fallback"
+    fontFamily: "MW Text: EFT Artzisraeli (the same face) 6% smaller for Hebrew; Saira Semi Condensed SemiBold for Latin; Arial metric fallback"
+    color: "#4A5A54 (--ink-text), emphasis and the small voices in --ink"
     fontSize: "1rem to 1.125rem"
     lineHeight: 1.7
 components:
@@ -53,11 +54,11 @@ under the promise, each a real recording of the live site. Everything else is ca
 | logo | `#2F5249` to `#13241F` across Media, `#22BBA8` to `#0F8478` across Wave | the drawn wordmark (D266) |
 | mark | `#13241F` over `#14A390` | the disc; its two halves walk slowly through six colours (D262) |
 
-Type: headings and everything a hand presses in EFT Artzisraeli (D249, "present everywhere"), one cut declared 100 to 900
-so no browser fakes a bold; running text in David Libre Bold at every weight (D269, D272, OFL), with emphasis inside text
-in the headings' face; every Latin letter in Saira Semi Condensed (D269, OFL), narrow and square like Artzisraeli, SemiBold
-in text. Sizes are matched by
-size-adjust (fonts.css). **Artzisraeli is now the only EFT face, and its web licence is not confirmed yet: it blocks production.**
+Type: one Hebrew face, EFT Artzisraeli, for everything (D274; before it Tirosh, then David Libre). It has one cut declared
+100 to 900, so the hierarchy is said in size and tone: headings 10% larger, running text 6% smaller in a softer ink
+(#4A5A54), emphasis and the small voices in full ink. Every Latin letter in Saira Semi Condensed SemiBold (D269, OFL).
+Sizes are set by size-adjust (fonts.css). **Artzisraeli carries every word of the site, and its web licence is not
+confirmed yet: it blocks production.**
 
 ## The parts
 - **The pinned corner** (Shell.tsx, Brand.tsx): a white corner wave holds the logo, the disc and the drawn name. As the
