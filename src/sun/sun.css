@@ -33,8 +33,8 @@
   --logo-tag: var(--ink-2);
   --mark-a: var(--ink);
   --mark-b: #14A390;
-  /* the type (D249, fonts.css): headings say their heavy part in EFT Artzisraeli (weight 700) and their light
-     lead-in in mediawave-font1 (weight 400); the text is EFT Lampner. */
+  /* the type (fonts.css): headings, buttons and labels in EFT Artzisraeli; the running text in David Libre (D269);
+     every Latin letter in Saira Semi Condensed. */
   --display: "MW Head", "MW Head Fallback", Arial, sans-serif;
   --text: "MW Text", "MW Text Fallback", Arial, sans-serif;
   --gutter: 16px;
@@ -541,7 +541,7 @@ html.high-contrast :is(.contact__disc, .wheel__card, .foot, .quote, .film) { out
 html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 
 /* Artzisraeli carries the voice of the site (Nati, 13.11.2026): headings, buttons, the menu, labels, the slip,
-   the contact ways and the footer's heads. Running text stays EFT Lampner. */
+   the contact ways and the footer's heads. Running text is David Libre (D269). */
 .btn, .head__nav a, .head__cta, .tab span, .field label, .contact__ways a, .launch small, .crumbs, .faq summary, .sticker, .kind__link, .more, .foot nav a, .foot__in > div > a, .foot__legal { font-family: var(--display); }
 .h2, .h1 .h1__rest, .launch b, .about__close span, .sign { font-weight: 700; }
 
@@ -651,9 +651,8 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 }
 
 
-/* ---------- D264: the text face is EFT Tirosh, which has one cut. What used to be said by a bolder weight inside
-   running text is said in the headings' face. ---------- */
-:where(p, li, dd, td, small, label, figcaption) :where(b, strong) { font-family: var(--display); font-weight: 700; }
+/* ---------- the small voices in the headings' face (D264). Emphasis inside running text stays in the text face
+   since D269: David Libre has a real Bold (Tirosh had one cut, so D264 said it in Artzisraeli). ---------- */
 .hero__note, .foot__brand p, .form__status, .field__err, .a11y__label, .a11y__opt, .a11y__link, .consent a, .consent__no, .quote__rows small, .legal h3, .legal a, .form__legal a, .voice__who, .proof__tag { font-family: var(--display); }
 
 /* when part of a page fails to load (SunApp, Oops): never a blank page, always a way to write to us */

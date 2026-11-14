@@ -17,10 +17,10 @@ colors:
   mark-lower: "#14A390"
 typography:
   display:
-    fontFamily: "MW Head: EFT Artzisraeli for Hebrew, digits and punctuation; mediawave-font1 Bold for Latin; Arial metric fallback"
-    use: "headings, buttons, labels, menus, emphasis inside text"
+    fontFamily: "MW Head: EFT Artzisraeli for Hebrew, digits and punctuation; Saira Semi Condensed SemiBold for Latin; Arial metric fallback"
+    use: "headings, buttons, labels, menus"
   text:
-    fontFamily: "MW Text: EFT Tirosh for Hebrew; mediawave-font1 Bold for Latin"
+    fontFamily: "MW Text: David Libre 400 and 700 for Hebrew, digits and punctuation; Saira Semi Condensed 400 and 600 for Latin; Arial metric fallback"
     fontSize: "1rem to 1.125rem"
     lineHeight: 1.7
 components:
@@ -35,7 +35,7 @@ components:
 
 Code: `src/sun/` (entry.tsx, SunApp.tsx, Shell.tsx, Home.tsx, Wheel.tsx, Tide.tsx, Proof.tsx, pages.tsx, Brand.tsx, Emblem.tsx,
 content.ts with every line of copy; sun.css with the tokens at the top; fonts.css, lead.css, proof.css, tide.css).
-Decisions D237 to D266 in `DECISIONS.rtl.md`. `npm run build` builds this look.
+Decisions D237 to D269 in `DECISIONS.rtl.md`. `npm run build` builds this look.
 
 ## The idea
 The site stopped showing off and started saying something (Nati, 12.11.2026): what we build, for whom, how it goes, what it
@@ -53,9 +53,10 @@ under the promise, each a real recording of the live site. Everything else is ca
 | logo | `#2F5249` to `#13241F` across Media, `#22BBA8` to `#0F8478` across Wave | the drawn wordmark (D266) |
 | mark | `#13241F` over `#14A390` | the disc; its two halves walk slowly through six colours (D262) |
 
-Type: headings and everything a hand presses in EFT Artzisraeli (D249, "present everywhere"); running text in EFT Tirosh
-(D264), which has one weight, so emphasis inside text is set in the heading face; Latin in mediawave-font1 Bold. Each face
-is one cut declared 100 to 900 so no browser fakes a bold. **The EFT web licence is not confirmed yet: it blocks production.**
+Type: headings and everything a hand presses in EFT Artzisraeli (D249, "present everywhere"), one cut declared 100 to 900
+so no browser fakes a bold; running text in David Libre (D269, OFL), Regular and Bold, so emphasis inside text stays in the
+text face; every Latin letter in Saira Semi Condensed (D269, OFL), narrow and square like Artzisraeli. Sizes are matched by
+size-adjust (fonts.css). **Artzisraeli is now the only EFT face, and its web licence is not confirmed yet: it blocks production.**
 
 ## The parts
 - **The pinned corner** (Shell.tsx, Brand.tsx): a white corner wave holds the logo, the disc and the drawn name. As the

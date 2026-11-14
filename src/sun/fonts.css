@@ -1,25 +1,31 @@
-/* sun · the type (D249, Nati's pick G "combined with the mediawave font").
+/* sun · the type (D249; faces D264 and D269).
    Three voices, each with one job:
-   - EFT Artzisraeli says the heavy part of every heading (the payoff).
-   - mediawave-font1, the studio's own face, says the light lead-in before it, and the Latin inside headings
-     (the word MediaWave), so the brand's letters stay on the page.
-   - EFT Tirosh carries the running text (D264; Lampner until then).
-   The EFT files in public/fonts/eft are subsets (Hebrew letters, digits, punctuation; their Latin is a serif
-   that does not belong here), made with fontTools from Nati's licensed copies in OneDrive\Fonts\עברית\Lampner.
-   Latin in running text is mediawave-font1 too. */
+   - EFT Artzisraeli says every heading, button, label and the menu (the site's most present face).
+   - David Libre carries the running text (D269, Nati's pick 12 of fourteen, 14.11.2026; Tirosh until then).
+   - Saira Semi Condensed says every Latin letter, in headings and in text (D269, from option D: an address,
+     the word MediaWave), narrow and square like Artzisraeli's letters.
+   The EFT file in public/fonts/eft is a subset (Hebrew letters, digits, punctuation; its Latin is a serif that does
+   not belong here), made with fontTools from Nati's licensed copy in OneDrive\Fonts\עברית\Lampner.
+   David Libre and Saira are OFL (licences beside the files), subset with fontTools the same way:
+     python -m fontTools.subset DavidLibre-400.ttf --unicodes="<the Hebrew range below>" --flavor=woff2 --layout-features='*'
+     python -m fontTools.subset SairaSemiCondensed-600.ttf --unicodes="U+0041-005A,U+0061-007A,U+00C0-00FF" --flavor=woff2 --layout-features='*'
+   Sizes are set by size-adjust so each face's letters stand as tall as the faces the page was tuned for:
+   David Libre's Hebrew as tall as Tirosh's (110%), Saira's capitals a hair above the Hebrew beside them. */
 
-/* headings, every weight: Artzisraeli for Hebrew, digits and punctuation (Nati, 13.11: the site's most present face) */
+/* headings, every weight: Artzisraeli for Hebrew, digits and punctuation */
 @font-face { font-family: "MW Head"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
-/* headings, heavy, Latin letters: the Bold of mediawave-font1 */
-@font-face { font-family: "MW Head"; src: url("/fonts/mediawave-font1-Bold.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 83%; unicode-range: U+0041-005A, U+0061-007A; }
+/* headings, Latin letters: Saira Semi Condensed SemiBold */
+@font-face { font-family: "MW Head"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 90%; unicode-range: U+0041-005A, U+0061-007A; }
 /* the fallbacks: Arial set to the measured width of each face on this page's own text (12.11.2026), so the swap moves nothing */
 @font-face { font-family: "MW Head Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 600 900; size-adjust: 91.5%; }
 @font-face { font-family: "MW Head Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 500; size-adjust: 107%; }
 
-/* text: EFT Tirosh (D264, Nati's pick 8 of the text-font board, 13.11.2026). The font has one cut, so the family
-   answers every weight with it and the browser never fakes a bold. Emphasis inside running text is said in the
-   headings' face instead (sun.css: b, strong). Hebrew, digits and punctuation only; its Latin is not used. */
-@font-face { font-family: "MW Text"; src: url("/fonts/eft/tirosh.woff2") format("woff2"); font-weight: 100 900; font-display: swap; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
-/* text, Latin letters only (an address, the name MediaWave): mediawave-font1 Bold, the face the headings use for Latin */
-@font-face { font-family: "MW Text"; src: url("/fonts/mediawave-font1-Bold.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 92%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 100%; }
+/* text: David Libre, a real Regular and Bold. Hebrew, digits and punctuation. */
+@font-face { font-family: "MW Text"; src: url("/fonts/david/david-libre-400.woff2") format("woff2"); font-weight: 100 549; font-display: swap; size-adjust: 110%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+@font-face { font-family: "MW Text"; src: url("/fonts/david/david-libre-700.woff2") format("woff2"); font-weight: 550 900; font-display: swap; size-adjust: 110%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+/* text, Latin letters only: Saira Semi Condensed, Regular and SemiBold */
+@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-400.woff2") format("woff2"); font-weight: 100 549; font-display: swap; size-adjust: 93%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
+@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 550 900; font-display: swap; size-adjust: 93%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
+/* Arial at David Libre's measured width on the home page's text (14.11.2026) */
+@font-face { font-family: "MW Text Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 549; size-adjust: 113.6%; }
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 550 900; size-adjust: 108.4%; }
