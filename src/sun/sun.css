@@ -385,15 +385,28 @@ html.high-contrast .mw-logo--word { --logo-a0: var(--logo-a); --logo-b0: var(--l
 .foot nav a, .foot__in > div > a { display: flex; align-items: center; min-height: 44px; font-weight: 500; text-wrap: balance; }
 .foot__in a { width: fit-content; min-width: 44px; }
 @media (hover: hover) { .foot__in a:hover, .foot__legal a:hover { text-decoration: underline; text-underline-offset: 4px; } }
-.foot__legal { border-block-start: 2px solid var(--ink); padding-block-start: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; font-size: .9375rem; padding-block-end: calc(72px + var(--browser-chrome-bottom)); }
+.foot__legal { border-block-start: 2px solid var(--ink); padding-block-start: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; font-size: .9375rem; padding-block-end: calc(104px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); }
 .foot__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; }
 .foot__legal span { flex-basis: 100%; }
 @media (min-width: 900px) {
-  .foot__in { grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr; gap: 40px; padding-block: 56px 48px; }
-  .foot__brand, .foot__in > div:last-child { grid-column: auto; }
-  .foot__in > div:last-child { display: block; }
+  .foot__in { gap: 40px; padding-block: 56px 48px; }
   .foot__legal { padding-block-end: 0; }
   .foot__legal span { flex-basis: auto; }
+}
+/* 14.11.2026, Nati: "תמרכז כל מיני דברים שיהיו סימטריים". The footer stands on one centre axis at every width: the MW
+   mark and its line, the two link columns side by side (the contact row under them on a phone, a third column on a
+   wide screen), and the bottom line with the back-to-top buoy riding the middle of the rule, like the buoys on the
+   waves between the sections. */
+.foot__in { text-align: center; justify-items: center; }
+.foot__brand { display: grid; justify-items: center; }
+.foot__brand p { margin-inline: auto; }
+.foot__in > nav { display: grid; justify-items: center; align-content: start; }
+.foot nav a, .foot__in > div > a { justify-content: center; }
+.foot__in > div:last-child { justify-content: center; }
+.foot__legal { position: relative; justify-content: center; text-align: center; padding-block-start: 40px; }
+@media (min-width: 900px) {
+  .foot__in { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1040px; }
+  .foot__in > div:last-child { grid-column: auto; display: grid; justify-items: center; align-content: start; }
 }
 
 /* ---------- floating: WhatsApp and the cookie note ---------- */
