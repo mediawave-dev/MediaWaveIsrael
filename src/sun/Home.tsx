@@ -329,25 +329,70 @@ function Envelope() {
   )
 }
 
-/** Adds .is-in once the circle is a third into view, and .is-sent when the form goes out (WhatsApp or mail). */
+/** D273: the circle's moment follows the visitor's scroll (Nati, 14.11: "כשגוללים זה נראה סטטי ופתאום עושה את ההנפשה...
+    ההנפשה צריכה להיות סופר טבעית בגלילה של היוזר"). From the moment the section's top comes up from the bottom of the screen
+    until it stands at about a third of it, every part moves with the finger, back and forth, lightly smoothed: the circle
+    grows in, the envelope flies in (a touch past its place and back), its lines draw, its flap breathes, the words rise.
+    Nothing waits for a threshold and plays on its own. Already in view when the page wakes, it stands finished; with no
+    motion (?calm=1, the panel's "ללא אנימציות") or no script, it stands finished (sun.css reads var(--x, 1)).
+    Adds .is-sent when the form goes out (WhatsApp or mail): the envelope flies off. */
 function useContactMotion() {
   const ref = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    // already on the screen when the page wakes (a link to /#contact, a restored scroll): it stays as it was painted,
-    // instead of vanishing and coming in again
-    const r = el.getBoundingClientRect()
-    const onScreen = r.top < innerHeight && r.bottom > 0
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect() } }, { threshold: 0.3 })
-    if (!onScreen) io.observe(el)
+    const html = document.documentElement
+    // the prerender must keep the finished circle in the page's HTML (nothing written inline), for the first paint and no-JS
+    const prerender = !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
+    const still = () => prerender || /[?&]calm=1(&|$)/.test(location.search) || html.classList.contains('disable-animations')
+    const seg = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)))
+    // soft at both ends, so a part never leaps at the first pixels of scroll nor stops dead (an ease-out front-loaded
+    // a quarter of the circle into 30 px, measured 14.11)
+    const soft = (k: number) => k * k * (3 - 2 * k)
+    // a throw that passes its place a little and settles (the old keyframes' 70% step, now on the scroll)
+    const back = (k: number) => { const s = soft(k); return s + 0.06 * Math.sin(Math.PI * s) * s }
+    const last: Record<string, string> = {}
+    const put = (k: string, v: number) => { const s = v.toFixed(4); if (last[k] !== s) { last[k] = s; el.style.setProperty(k, s) } }
+    const paint = (p: number) => {
+      put('--cp', soft(seg(p, 0, 0.75)))
+      put('--ep', back(seg(p, 0.2, 0.85)))
+      put('--l1', soft(seg(p, 0.45, 0.78)))
+      put('--l2', soft(seg(p, 0.5, 0.83)))
+      put('--l3', soft(seg(p, 0.55, 0.88)))
+      put('--fp', Math.sin(Math.PI * seg(p, 0.75, 1)))
+      put('--tp', soft(seg(p, 0.15, 0.8)))
+      el.classList.toggle('is-done', p >= 0.999)
+    }
+    // 0 while the section's top is under the screen, 1 once it stands at 30% from the top
+    const measure = () => (still() ? 1 : seg(innerHeight - el.getBoundingClientRect().top, 0, innerHeight * 0.7))
+    let target = measure()
+    let shown = target
+    let raf = 0
+    const tick = () => {
+      raf = 0
+      shown += (target - shown) * 0.24
+      if (Math.abs(target - shown) < 0.0015) shown = target
+      paint(shown)
+      if (shown !== target) raf = requestAnimationFrame(tick)
+    }
+    const onScroll = () => { target = measure(); if (!raf) raf = requestAnimationFrame(tick) }
+    if (!prerender) paint(shown)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    const calm = new MutationObserver(onScroll)
+    calm.observe(html, { attributes: true, attributeFilter: ['class'] })
     const status = el.querySelector('.form__status')
     const mo = status ? new MutationObserver(() => {
       const t = status.textContent || ''
       el.classList.toggle('is-sent', t === CONTACT.viaWhatsApp || t === CONTACT.sent)
     }) : null
     if (status && mo) mo.observe(status, { childList: true, characterData: true, subtree: true })
-    return () => { io.disconnect(); mo?.disconnect() }
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      calm.disconnect(); mo?.disconnect()
+    }
   }, [])
   return ref
 }

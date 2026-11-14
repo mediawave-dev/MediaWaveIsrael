@@ -41,20 +41,53 @@ export function Buoy({ to, label, at }: { to: string; label: string; at: 'top' |
   )
 }
 
-/** Marks a block once it has come into view (class is-in), so the water in its rings rises from empty then.
-    Before the script runs, and with scripts off, the rings already stand at their levels. */
+/** D273: the water in a block's rings follows the visitor's scroll (Nati, 14.11: "ההנפשה צריכה להיות סופר טבעית בגלילה
+    של היוזר"; it used to wait at empty and then rise on its own once a quarter of the block was in view). Each ring fills by
+    its own place on the screen: empty while it is under the screen, at its level once it stands at 55% of the height, back
+    and forth with the finger, lightly smoothed; so the rings fill one after another on the way down. Already in view when
+    the page wakes, with no motion (?calm=1, the panel's "ללא אנימציות") or with scripts off, they stand at their levels. */
 export function useRise<T extends HTMLElement>() {
   const ref = useRef<T>(null)
   useEffect(() => {
     const el = ref.current
     if (!el || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
-    // already on the screen when the page wakes (a link to /#process): the rings stay at their levels, no second rise
-    const r = el.getBoundingClientRect()
-    if (r.top < innerHeight && r.bottom > 0) return
+    const html = document.documentElement
+    const still = () => /[?&]calm=1(&|$)/.test(location.search) || html.classList.contains('disable-animations')
+    const rings = [...el.querySelectorAll<SVGSVGElement>('.tide')]
+    if (!rings.length) return
+    const soft = (k: number) => k * k * (3 - 2 * k)
+    const fillOf = (ring: Element) => {
+      if (still()) return 1
+      const k = (innerHeight - ring.getBoundingClientRect().top) / (innerHeight * 0.45)
+      return soft(Math.min(1, Math.max(0, k)))
+    }
+    let target = rings.map(fillOf)
+    const shown = [...target]
+    const put = (i: number) => rings[i].style.setProperty('--fill', shown[i].toFixed(4))
+    let raf = 0
+    const tick = () => {
+      raf = 0
+      let moving = false
+      for (let i = 0; i < rings.length; i++) {
+        shown[i] += (target[i] - shown[i]) * 0.2
+        if (Math.abs(target[i] - shown[i]) < 0.002) shown[i] = target[i]; else moving = true
+        put(i)
+      }
+      if (moving) raf = requestAnimationFrame(tick)
+    }
+    const onScroll = () => { target = rings.map(fillOf); if (!raf) raf = requestAnimationFrame(tick) }
     el.classList.add('tide-wait')
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('is-in'); io.disconnect() } }, { threshold: 0.25 })
-    io.observe(el)
-    return () => io.disconnect()
+    rings.forEach((_, i) => put(i))
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    const calm = new MutationObserver(onScroll)
+    calm.observe(html, { attributes: true, attributeFilter: ['class'] })
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      calm.disconnect()
+    }
   }, [])
   return ref
 }

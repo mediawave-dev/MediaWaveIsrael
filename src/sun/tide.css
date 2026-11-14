@@ -31,13 +31,10 @@
 .route__n { overflow: hidden; isolation: isolate; }
 .route__n .tide { z-index: -1; opacity: .42; }
 .route__n > b { font-weight: inherit; }
-/* rising from empty when the steps come into view, one ring after the other */
-.tide-wait:not(.is-in) .tide__rise { transform: translateY(70px); transition: none; }
-.tide-wait .route__stop:nth-child(2) .tide__rise { transition-delay: .18s; }
-.tide-wait .route__stop:nth-child(3) .tide__rise { transition-delay: .36s; }
-.tide-wait .route__stop:nth-child(4) .tide__rise { transition-delay: .54s; }
-.tide-wait .route__stop:nth-child(5) .tide__rise { transition-delay: .72s; }
+/* D273: each ring's water follows the scroll (Tide.tsx, useRise writes --fill, 0 empty to 1 at its level); the script
+   eases it, so no transition here. Without the script --fill is unset and the rings stand at their levels. */
+.tide-wait .tide__rise { transform: translateY(calc(64px - var(--lvl) * var(--fill, 1) * 64px)); transition: none; }
 
 html.high-contrast .route__n .tide { display: none; }
 html.high-contrast .buoy { box-shadow: 0 0 0 3px #000; }
-html.disable-animations .tide-wait:not(.is-in) .tide__rise { transform: translateY(calc(64px - var(--lvl) * 64px)); }
+html.disable-animations .tide-wait .tide__rise { transform: translateY(calc(64px - var(--lvl) * 64px)); }

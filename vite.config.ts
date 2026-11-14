@@ -52,6 +52,9 @@ export default defineConfig(({ command, mode }) => {
     // dev: a worktree's node_modules may be a link to another checkout's; serve its real folder too, or the
     // @fontsource files under it answer 403 (D271, the studio's fonts on /concept)
     server: { fs: { allow: ['.', ...(existsSync('node_modules') ? [realpathSync('node_modules')] : [])] } },
+    // dev: each mode its own optimizer cache, so the site's dev server (5188) and the concept sites' (look-shot, 5187)
+    // never mix each other's pre-bundled chunks (two copies of React, "Invalid hook call", 14.11.2026)
+    cacheDir: `node_modules/.vite-${mode}`,
     resolve: {
       dedupe: ['react', 'react-dom', 'styled-components'],
       alias: {
