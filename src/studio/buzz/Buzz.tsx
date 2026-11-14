@@ -7,14 +7,14 @@ import '@fontsource/heebo/hebrew-400.css'
 import '@fontsource/heebo/hebrew-700.css'
 import '@fontsource/heebo/latin-400.css'
 import '@fontsource/heebo/latin-700.css'
-import { C, CLIPS } from '../content'
 import type { GlassLook } from '../../look/sea/optical/glass-key'
-import { useHero } from '../preview'
+import { C as STUDIO } from '../content'
 import type { StyleProps } from '../registry'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
+import { useSite } from '../site'
 import WorldKey, { hex } from '../WorldKey'
-import { createSwarm, placeStill } from './swarm'
+import { beeBody, createSwarm, placeStill, type SwarmOptions } from './swarm'
 import { useSideways } from '../sideways'
 import './buzz.css'
 
@@ -29,8 +29,11 @@ const KEY: GlassLook = {
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 let OPENED = false
 
-/** [קופי: נתי] the end lines are the site's own sentences */
-const LINES = [`${C.hero.line1} ${C.hero.line2}`, C.hero.sub, C.hero.sub2, 'מדברים ישירות עם המפתח, בלי מתווכים.']
+/** [קופי: נתי] the end lines are the site's own sentences (a concept site brings its own) */
+const LINES = [`${STUDIO.hero.line1} ${STUDIO.hero.line2}`, STUDIO.hero.sub, STUDIO.hero.sub2, 'מדברים ישירות עם המפתח, בלי מתווכים.']
+
+/** a concept site's bees (D271): honey and pale gold instead of our sky and lime */
+const HONEY = { ['--bz-b' as string]: '#f2b02e', ['--bz-lime' as string]: '#ffd866' }
 
 type Stage = 'mark' | 'word' | 'reveal' | 'done'
 
@@ -46,20 +49,21 @@ function trackWind() {
   windT = now
 }
 
-function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: StyleProps['tier'], delay: number, run: boolean, windy = false) {
+function useSwarm(ref: React.RefObject<HTMLDivElement>, count: number, tier: StyleProps['tier'], delay: number, run: boolean, windy = false, kind: SwarmOptions['kind'] = 'bubble') {
   useEffect(() => {
     const host = ref.current
     if (!host || PRERENDER || !run) return
     const n = window.innerWidth < 640 ? Math.round(count / 2) : count
-    if (tier === 'still') return placeStill(host, n)
-    const sw = createSwarm(host, { count: n, pointer: finePointer() && tier === 'full', delay, size: windy ? [22, 17] : [28, 22], flap: tier === 'calm' ? 0.4 : 0.13, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
+    // the still swarm is drawn as DOM in the bubble's shape: a concept's bees simply stay away
+    if (tier === 'still') return kind === 'bee' ? undefined : placeStill(host, n)
+    const sw = createSwarm(host, { kind, count: n, pointer: finePointer() && tier === 'full', delay, size: windy ? [22, 17] : [28, 22], flap: tier === 'calm' ? 0.4 : 0.13, wind: windy && tier === 'full' ? () => { wind *= 0.96; return Math.max(-2400, Math.min(2400, wind)) } : undefined })
     const io = new IntersectionObserver(([e]) => sw.pause(!e.isIntersecting), { rootMargin: '120px' })
     io.observe(host)
     return () => { io.disconnect(); sw.stop() }
-  }, [ref, count, tier, delay, run, windy])
+  }, [ref, count, tier, delay, run, windy, kind])
 }
 
-function Typer({ tier }: { tier: StyleProps['tier'] }) {
+function Typer({ tier, lines: LINES }: { tier: StyleProps['tier']; lines: string[] }) {
   const [text, setText] = useState(LINES[0])
   useEffect(() => {
     if (tier === 'still' || PRERENDER) return
@@ -84,13 +88,15 @@ function Typer({ tier }: { tier: StyleProps['tier'] }) {
     }
     id = window.setTimeout(tick, 1500)
     return () => clearTimeout(id)
-  }, [tier])
+  }, [tier, LINES])
   return <p className="bz-typer" aria-hidden="true">{text}<span className="bz-caret" /></p>
 }
 
 export default function Buzz({ tier, def }: StyleProps) {
   const root = useRef<HTMLDivElement>(null)
-  const hero = useHero()
+  const { C, hero, clips: CLIPS, concept, buzz } = useSite()
+  const kind = buzz?.swarm ?? 'bubble'
+  const lines = buzz?.lines ?? LINES
   const back = useRef<HTMLDivElement>(null)
   const front = useRef<HTMLDivElement>(null)
   const formSw = useRef<HTMLDivElement>(null)
@@ -140,12 +146,12 @@ export default function Buzz({ tier, def }: StyleProps) {
   }, [])
 
   const bees = stage === 'done'
-  useSwarm(back, 44, tier, 0, bees)
-  useSwarm(front, 50, tier, 120, bees)
-  useSwarm(formSw, 14, tier, 0, bees)
-  useSwarm(endSw, 52, tier, 0, bees)
+  useSwarm(back, 44, tier, 0, bees, false, kind)
+  useSwarm(front, 50, tier, 120, bees, false, kind)
+  useSwarm(formSw, 14, tier, 0, bees, false, kind)
+  useSwarm(endSw, 52, tier, 0, bees, false, kind)
   // the escort (D191): a few bubbles travel down the page with the visitor and stream against the scroll
-  useSwarm(escort, 16, tier, 600, bees, true)
+  useSwarm(escort, 16, tier, 600, bees, true, kind)
   useEffect(() => {
     const on = () => trackWind()
     window.addEventListener('scroll', on, { passive: true })
@@ -269,7 +275,7 @@ export default function Buzz({ tier, def }: StyleProps) {
   }, [tier])
 
   return (
-    <div className="bz" ref={root} data-stage={stage}>
+    <div className="bz" ref={root} data-stage={stage} style={kind === 'bee' ? HONEY : undefined}>
       <div className="bz-sheet" aria-hidden="true" />
       <svg className="bz-defs" aria-hidden="true" focusable="false">
         <filter id="bz-fuzz" x="-10%" y="-30%" width="120%" height="160%" colorInterpolationFilters="sRGB">
@@ -289,7 +295,9 @@ export default function Buzz({ tier, def }: StyleProps) {
       <section className="bz-hero" data-ch="hero" aria-labelledby="bz-h1">
         <div className="bz-swarm bz-swarm--back" ref={back} aria-hidden="true" />
         <div className="bz-openmark" aria-hidden="true">
-          <svg viewBox="0 0 40 32"><g className="w"><ellipse cx="14" cy="8.5" rx="7.2" ry="4.6" transform="rotate(-24 14 8.5)" /><ellipse cx="26" cy="8.5" rx="7.2" ry="4.6" transform="rotate(24 26 8.5)" /></g><path className="b" d="M12.5 10.5h15a8.5 8.5 0 0 1 0 17h-13.2l-6.1 3.6 1.6-4.6a8.5 8.5 0 0 1 2.7-16z" /><g className="d"><circle cx="13.6" cy="19" r="2" /><circle cx="20" cy="19" r="2" /><circle cx="26.4" cy="19" r="2" /></g></svg>
+          {kind === 'bee'
+            ? <svg viewBox="0 0 40 32"><g className="w"><ellipse cx="14" cy="8.5" rx="7.2" ry="4.6" transform="rotate(-24 14 8.5)" /><ellipse cx="26" cy="8.5" rx="7.2" ry="4.6" transform="rotate(24 26 8.5)" /></g><g dangerouslySetInnerHTML={{ __html: beeBody('#f2b02e', '#231e1e') }} /></svg>
+            : <svg viewBox="0 0 40 32"><g className="w"><ellipse cx="14" cy="8.5" rx="7.2" ry="4.6" transform="rotate(-24 14 8.5)" /><ellipse cx="26" cy="8.5" rx="7.2" ry="4.6" transform="rotate(24 26 8.5)" /></g><path className="b" d="M12.5 10.5h15a8.5 8.5 0 0 1 0 17h-13.2l-6.1 3.6 1.6-4.6a8.5 8.5 0 0 1 2.7-16z" /><g className="d"><circle cx="13.6" cy="19" r="2" /><circle cx="20" cy="19" r="2" /><circle cx="26.4" cy="19" r="2" /></g></svg>}
         </div>
         <div className="bz-hero__in">
           <h1 id="bz-h1" className="bz-h1">
@@ -300,7 +308,7 @@ export default function Buzz({ tier, def }: StyleProps) {
           <p className="bz-label" dir="ltr">{hero.tags ?? 'WEBSITES · VIDEO · TAPES'}</p>
           <div className="bz-tag">
             <p>{hero.sub} {hero.sub2}</p>
-            <WorldKey def={def} tier={tier} label={hero.cta} plain="bz-pill" look={KEY} />
+            <WorldKey def={def} tier={tier} label={hero.cta} plain="bz-pill" look={KEY} to={concept ? '#bz-contact-t' : undefined} />
           </div>
         </div>
         <div className="bz-swarm bz-swarm--front" ref={front} aria-hidden="true" />
@@ -311,14 +319,14 @@ export default function Buzz({ tier, def }: StyleProps) {
         <div className="sw bz-sw" ref={swWrap}>
         <div className="sw__stage bz-sw__stage">
         <h2 id="bz-svc-t" className="bz-h2">{C.services.title}</h2>
-        <p className="bz-p">{C.hero.sub}</p>
+        <p className="bz-p">{hero.sub}</p>
         <ul className="bz-cards" ref={swTrack}>
           {C.services.items.map((s, i) => (
             <li key={s.id} className="bz-card" style={{ ['--i' as string]: i }}>
-              <a href={s.href}>
+              <a href={s.href || undefined}>
                 <span className="bz-card__pic">
-                  <video src={`${CLIPS[s.id]}-m.mp4`} poster={`${CLIPS[s.id]}-poster-m.webp`} muted loop playsInline preload="none" aria-hidden="true"
-                    onMouseEnter={(e) => { void e.currentTarget.play().catch(() => {}) }} onMouseLeave={(e) => e.currentTarget.pause()} />
+                  {CLIPS[s.id] && <video src={`${CLIPS[s.id]}-m.mp4`} poster={`${CLIPS[s.id]}-poster-m.webp`} muted loop playsInline preload="none" aria-hidden="true"
+                    onMouseEnter={(e) => { void e.currentTarget.play().catch(() => {}) }} onMouseLeave={(e) => e.currentTarget.pause()} />}
                 </span>
                 <span className="bz-card__t">{s.title}</span>
                 <span className="bz-card__l">{s.line}</span>
@@ -334,9 +342,11 @@ export default function Buzz({ tier, def }: StyleProps) {
         <h2 id="bz-work-t" className="bz-h2" data-bz>{C.work.name}</h2>
         <p className="bz-p" data-bz>{C.work.line}</p>
         <div className="bz-device" data-bz>
-          <video src="/media/svc-memories-2.mp4" poster="/media/svc-memories-2-poster.webp" muted loop playsInline autoPlay preload="metadata" aria-hidden="true" />
+          {(C.work.film ?? (concept ? '' : '/media/svc-memories-2.mp4')) && (
+            <video src={C.work.film ?? '/media/svc-memories-2.mp4'} poster={C.work.filmPoster ?? '/media/svc-memories-2-poster.webp'} muted loop playsInline autoPlay preload="metadata" aria-hidden="true" />
+          )}
         </div>
-        <a className="bz-pill bz-pill--line" href={C.work.href} data-bz lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>
+        {C.work.href && <a className="bz-pill bz-pill--line" href={C.work.href} data-bz lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>}
       </section>
 
       <section className="bz-sec bz-proc" data-ch="process" aria-labelledby="bz-proc-t">
@@ -368,12 +378,12 @@ export default function Buzz({ tier, def }: StyleProps) {
         <div className="bz-formbox">
           <h2 id="bz-contact-t" className="bz-h3" data-bz>{C.contact.title}</h2>
           <p className="bz-p" data-bz>{C.contact.lead}</p>
-          <LeadForm def={def} className="bz-form" send="שליחה" />
+          <LeadForm def={def} className="bz-form" send="שליחה" demo={concept ? C.contact : undefined} />
           <div className="bz-swarm bz-swarm--form" ref={formSw} aria-hidden="true" />
         </div>
         <div className="bz-end">
-          <Typer tier={tier} />
-          <p className="bz-end__word" aria-hidden="true">פניות</p>
+          <Typer tier={tier} lines={lines} />
+          <p className="bz-end__word" aria-hidden="true">{buzz?.endWord ?? 'פניות'}</p>
           <div className="bz-swarm bz-swarm--end" ref={endSw} aria-hidden="true" />
         </div>
       </section>

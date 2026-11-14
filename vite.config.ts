@@ -2,7 +2,7 @@ import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 type Look = 'k' | 'm' | 'km' | 'shot' | 'sun'
@@ -49,6 +49,9 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [react(), tailwindcss(), lookHtml(look)],
     envPrefix: ['VITE_', 'SANITY_STUDIO_'],
+    // dev: a worktree's node_modules may be a link to another checkout's; serve its real folder too, or the
+    // @fontsource files under it answer 403 (D271, the studio's fonts on /concept)
+    server: { fs: { allow: ['.', ...(existsSync('node_modules') ? [realpathSync('node_modules')] : [])] } },
     resolve: {
       dedupe: ['react', 'react-dom', 'styled-components'],
       alias: {

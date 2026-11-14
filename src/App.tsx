@@ -35,6 +35,8 @@ const Board = import.meta.env.DEV ? lazy(() => import('./board/Board')) : null
 const States = import.meta.env.DEV ? lazy(() => import('./look/dev/States')) : null
 // site-director stage 3 prototype (dev only): the new hero and one chapter
 const Proto = import.meta.env.DEV ? lazy(() => import('./proto/Proto')) : null
+// D271: the concept sites the work wheel records (a studio style dressed as a fictional business), dev only
+const Concept = import.meta.env.DEV ? lazy(() => import('./concept/ConceptPage')) : null
 const ProtoC = import.meta.env.DEV ? lazy(() => import('./proto/ProtoC')) : null
 
 // Sanity Studio: lazy-loaded, rendered WITHOUT Layout wrapper
@@ -165,6 +167,9 @@ function App() {
           )}
           {States && (
             <Route path="/states" element={<Suspense fallback={<PageFallback />}><States /></Suspense>} />
+          )}
+          {Concept && (
+            <Route path="/concept/:id" element={<Suspense fallback={<PageFallback />}><Concept /></Suspense>} />
           )}
 
           {/* All other routes — wrapped in Layout */}

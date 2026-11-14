@@ -4,7 +4,13 @@
 // keep apart, flee a mouse, are pulled softly home (homes spread on the plastic-number sequence) and
 // fly in from outside the box over 1.05 s.
 
-export interface SwarmOptions { count: number; pointer: boolean; delay?: number; /** the bee's box in px (CSS: 28 x 22, the escort 22 x 17) */ size?: [number, number]; /** px/s added to every bee's vertical speed (the scroll's wind) */ wind?: () => number; /** seconds per wing stroke (0: still wings) */ flap?: number }
+export interface SwarmOptions { count: number; pointer: boolean; delay?: number; /** the bee's box in px (CSS: 28 x 22, the escort 22 x 17) */ size?: [number, number]; /** px/s added to every bee's vertical speed (the scroll's wind) */ wind?: () => number; /** seconds per wing stroke (0: still wings) */ flap?: number; /** what flies: our winged chat bubble, or a bee (D271, the apiary's concept site) */ kind?: 'bubble' | 'bee' }
+
+/** A bee in the bubble's 40 x 32 box, under the same wings: a striped body, the head ahead, the sting behind (D271). */
+export const beeBody = (body: string, ink: string) =>
+  `<ellipse cx="21" cy="19.5" rx="11.5" ry="7.6" fill="${body}" stroke="${ink}" stroke-width="1.7"/>`
+  + `<path d="M17.4 12.4c-1.6 4.6-1.6 9.6 0 14.2M23.6 12.1c-1.6 4.8-1.6 10 0 14.8" fill="none" stroke="${ink}" stroke-width="2.8" stroke-linecap="round"/>`
+  + `<circle cx="8.4" cy="19.5" r="4.4" fill="${ink}"/><path d="M32.2 18 36.8 19.5 32.2 21z" fill="${ink}"/>`
 export interface Swarm { stop: () => void; pause: (on: boolean) => void }
 
 interface Bee { up: boolean; s: number; x: number; y: number; vx: number; vy: number; h: number; hx: number; hy: number; sx: number; sy: number; flip: number; rot: number }
@@ -38,15 +44,16 @@ export function makeBee(i: number): HTMLElement {
     recalculation and a layer to composite every frame (and each wing stroke a layout), which held Buzz at 30
     frames a second on a phone. The bee is rasterised once per colour and wing stroke from the same drawing. */
 const PAD = 4
-function beeSvg(body: string, ink: string, down: boolean, px: number): string {
+function beeSvg(body: string, ink: string, down: boolean, px: number, kind: SwarmOptions['kind']): string {
   const wing = `<g fill="rgba(255,255,255,0.72)" stroke="${ink}" stroke-width="1.3"${down ? ' transform="translate(0 13.6) scale(1 0.42) translate(0 -13.6)"' : ''}>`
     + '<ellipse cx="14" cy="8.5" rx="7.2" ry="4.6" transform="rotate(-24 14 8.5)"/><ellipse cx="26" cy="8.5" rx="7.2" ry="4.6" transform="rotate(24 26 8.5)"/></g>'
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-PAD} ${-PAD} ${40 + 2 * PAD} ${32 + 2 * PAD}" width="${(40 + 2 * PAD) * px}" height="${(32 + 2 * PAD) * px}">${wing}`
-    + `<path fill="${body}" stroke="${ink}" stroke-width="1.7" stroke-linejoin="round" d="M12.5 10.5h15a8.5 8.5 0 0 1 0 17h-13.2l-6.1 3.6 1.6-4.6a8.5 8.5 0 0 1 2.7-16z"/>`
-    + `<g fill="${ink}"><circle cx="13.6" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="26.4" cy="19" r="2"/></g></svg>`
+  const shape = kind === 'bee' ? beeBody(body, ink)
+    : `<path fill="${body}" stroke="${ink}" stroke-width="1.7" stroke-linejoin="round" d="M12.5 10.5h15a8.5 8.5 0 0 1 0 17h-13.2l-6.1 3.6 1.6-4.6a8.5 8.5 0 0 1 2.7-16z"/>`
+      + `<g fill="${ink}"><circle cx="13.6" cy="19" r="2"/><circle cx="20" cy="19" r="2"/><circle cx="26.4" cy="19" r="2"/></g>`
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-PAD} ${-PAD} ${40 + 2 * PAD} ${32 + 2 * PAD}" width="${(40 + 2 * PAD) * px}" height="${(32 + 2 * PAD) * px}">${wing}${shape}</svg>`
 }
 /** four sprites: [sky up, sky down, lime up, lime down], each a canvas at `px` device px per drawing unit */
-async function sprites(host: HTMLElement, px: number): Promise<HTMLCanvasElement[]> {
+async function sprites(host: HTMLElement, px: number, kind: SwarmOptions['kind']): Promise<HTMLCanvasElement[]> {
   const cs = getComputedStyle(host)
   const v = (n: string, d: string) => cs.getPropertyValue(n).trim() || d
   const ink = v('--bz-ink', '#231e1e')
@@ -55,7 +62,7 @@ async function sprites(host: HTMLElement, px: number): Promise<HTMLCanvasElement
   for (const body of bodies) {
     for (const down of [false, true]) {
       const im = new Image()
-      im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(beeSvg(body, ink, down, px))
+      im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(beeSvg(body, ink, down, px, kind))
       await im.decode()
       const c = document.createElement('canvas')
       c.width = Math.ceil((40 + 2 * PAD) * px)
@@ -78,7 +85,7 @@ export function createSwarm(host: HTMLElement, opt: SwarmOptions): Swarm {
   host.appendChild(cv)
   const ctx = cv.getContext('2d')
   let art: HTMLCanvasElement[] = []
-  void sprites(host, unit * DPR * 1.5).then((list) => { art = list }).catch(() => {})
+  void sprites(host, unit * DPR * 1.5, opt.kind).then((list) => { art = list }).catch(() => {})
   const bees: Bee[] = []
   let W = host.clientWidth
   let H = host.clientHeight

@@ -29,15 +29,20 @@ interface Props {
   look: GlassLook
   /** clay's pointer pill names what it is over */
   pill?: string
+  /** a concept site (D271): the key leads to this place on the page (#id) instead of our WhatsApp, and is not counted */
+  to?: string
   children?: ReactNode
 }
 
-export default function WorldKey({ def, tier, label, plain, look, pill, children }: Props) {
+/** the concept key's way: to its place on the page, smoothly */
+const goTo = (to: string) => document.querySelector(to)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+export default function WorldKey({ def, tier, label, plain, look, pill, to, children }: Props) {
   const stage = useRef<HTMLDivElement>(null)
   const link = useRef<HTMLAnchorElement>(null)
   const face = useRef<HTMLSpanElement>(null)
   const [live, setLive] = useState(false)
-  const href = waForStyle(def)
+  const href = to ?? waForStyle(def)
   const location = `styles_hero_${def.id}`
 
   useEffect(() => {
@@ -60,6 +65,7 @@ export default function WorldKey({ def, tier, label, plain, look, pill, children
           label, after: AFTER, look, typeFrom: face.current,
           reduce: tierNow() !== 'full',
           onArrive: () => {
+            if (to) { goTo(to); return }
             track('cta_click', { location })
             // no features string: with noopener in it window.open returns null even when the tab opened
             const w = window.open(href, '_blank')
@@ -92,7 +98,10 @@ export default function WorldKey({ def, tier, label, plain, look, pill, children
       reset()
       setLive(false)
     }
-  }, [tier, label, look, href, location])
+  }, [tier, label, look, href, location, to])
+
+  // a concept site's key (D271) is the world's own button: the glass knob carries our WhatsApp mark
+  if (to) return <a className={plain} href={to} data-pill={pill} onClick={(e) => { e.preventDefault(); goTo(to) }}>{label}{children}</a>
 
   // inside the frame of /your-site/ the world keeps exactly the button it always had
   if (PREVIEW) return <a className={plain} href={href} target="_blank" rel="noopener noreferrer" data-pill={pill}>{label}{children}</a>
@@ -103,11 +112,13 @@ export default function WorldKey({ def, tier, label, plain, look, pill, children
         ref={link}
         className="st-key__hit"
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(to ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
         draggable={false}
         data-pill={pill}
-        onClick={() => { if (!live) track('cta_click', { location }) }}
+        onClick={(e) => {
+          if (to) { e.preventDefault(); if (!live) goTo(to); return }
+          if (!live) track('cta_click', { location })
+        }}
       >
         <span ref={face} className={`st-key__face ${plain}`}>{label}{children}</span>
       </a>

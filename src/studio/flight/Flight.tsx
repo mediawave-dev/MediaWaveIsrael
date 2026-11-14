@@ -6,10 +6,9 @@ import { useEffect, useRef, useState } from 'react'
 import '@fontsource/bellefair/hebrew-400.css'
 import '@fontsource/bellefair/latin-400.css'
 import { useScene } from '../../motion/ScrollEngineProvider'
-import { C } from '../content'
 import type { GlassLook } from '../../look/sea/optical/glass-key'
-import { useHero } from '../preview'
 import type { StyleProps } from '../registry'
+import { useSite } from '../site'
 import LeadForm from '../LeadForm'
 import { finePointer } from '../motion'
 import WorldKey, { hex } from '../WorldKey'
@@ -26,9 +25,10 @@ const KEY: GlassLook = {
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
 /** The work chapter's film: the four photos that come to life, one after another (3 s each). */
-function WorkFilm() {
+function WorkFilm({ clips }: { clips: string[] }) {
   const [i, setI] = useState(0)
-  const clip = C.work.clips[i]
+  const clip = clips[i]
+  if (!clip) return <div className="fl-film" aria-hidden="true" />
   return (
     <div className="fl-film">
       <video
@@ -40,10 +40,10 @@ function WorkFilm() {
         playsInline
         autoPlay
         preload="metadata"
-        onEnded={() => setI((n) => (n + 1) % C.work.clips.length)}
+        onEnded={() => setI((n) => (n + 1) % clips.length)}
         aria-hidden="true"
       />
-      <span className="fl-film__n" aria-hidden="true">0{i + 1} / 04</span>
+      <span className="fl-film__n" aria-hidden="true">0{i + 1} / 0{clips.length}</span>
     </div>
   )
 }
@@ -51,7 +51,7 @@ function WorkFilm() {
 export default function Flight({ tier, def }: StyleProps) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const [live, setLive] = useState(false)
-  const hero = useHero()
+  const { C, hero, concept } = useSite()
 
   useEffect(() => {
     if (PRERENDER || !canvas.current) return
@@ -98,7 +98,7 @@ export default function Flight({ tier, def }: StyleProps) {
         </h1>
         <div className="fl-hero__foot">
           <p className="fl-hero__sub">{hero.sub}{hero.sub2 && <><br />{hero.sub2}</>}</p>
-          <WorldKey def={def} tier={tier} label={hero.cta} plain="fl-pill" look={KEY} />
+          <WorldKey def={def} tier={tier} label={hero.cta} plain="fl-pill" look={KEY} to={concept ? '#fl-contact-t' : undefined} />
         </div>
         {/* [קופי: נתי] */}
         <p className="fl-hint" aria-hidden="true" lang="en" dir="ltr">Scroll down</p>
@@ -112,7 +112,7 @@ export default function Flight({ tier, def }: StyleProps) {
               <p className="fl-word__n" data-ln aria-hidden="true">0{i + 1}</p>
               <h3 className="fl-giant" data-ln>{s.title}</h3>
               <p className="fl-word__line" data-ln>{s.line}</p>
-              <a className="fl-go" data-ln href={s.href} lang="en" aria-label={`לפרטים על ${s.title}`}>Details</a>
+              {s.href && <a className="fl-go" data-ln href={s.href} lang="en" aria-label={`לפרטים על ${s.title}`}>Details</a>}
             </div>
           </article>
         ))}
@@ -122,9 +122,9 @@ export default function Flight({ tier, def }: StyleProps) {
         <div className="fl-work__in">
           <p className="fl-kicker" data-fl lang="en" dir="ltr">{C.work.title}</p>
           <h2 id="fl-work-t" className="fl-giant fl-giant--m" data-fl>{C.work.name}</h2>
-          <div data-fl><WorkFilm /></div>
+          <div data-fl><WorkFilm clips={C.work.clips} /></div>
           <p className="fl-word__line" data-fl>{C.work.line}</p>
-          <a className="fl-go" data-fl href={C.work.href} lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>
+          {C.work.href && <a className="fl-go" data-fl href={C.work.href} lang="en" aria-label={`${C.work.name} - צפייה`}>{C.work.linkLabel}</a>}
         </div>
       </section>
 
@@ -160,11 +160,13 @@ export default function Flight({ tier, def }: StyleProps) {
         <h2 id="fl-contact-t" className="fl-giant fl-giant--m" data-fl data-stay><span data-ln>{C.contact.title}</span></h2>
         <div className="fl-panel">
           <p className="fl-word__line">{C.contact.lead}</p>
-          <LeadForm def={def} className="fl-form" />
-          <p className="fl-contact__alt">
-            <a href={`tel:${C.contact.phone}`} dir="ltr">{C.contact.phone}</a>
-            <a href={`mailto:${C.contact.email}`} dir="ltr">{C.contact.email}</a>
-          </p>
+          <LeadForm def={def} className="fl-form" demo={concept ? C.contact : undefined} />
+          {(C.contact.phone || C.contact.email) && (
+            <p className="fl-contact__alt">
+              {C.contact.phone && <a href={`tel:${C.contact.phone}`} dir="ltr">{C.contact.phone}</a>}
+              {C.contact.email && <a href={`mailto:${C.contact.email}`} dir="ltr">{C.contact.email}</a>}
+            </p>
+          )}
         </div>
       </section>
     </div>
