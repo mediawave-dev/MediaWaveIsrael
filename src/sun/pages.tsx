@@ -23,6 +23,7 @@ import { Contact, H2, WhatsAppButton } from './Home'
 import { VoiceAt } from './Proof'
 import { Tide } from './Tide'
 import { IconChevron, IconChevrons } from './icons'
+import { Go } from './ButtonParts'
 
 /** "light|heavy": the two weights every heading is said in. No bar: all of it heavy. */
 const weights = (t: string): [string, string] => { const i = t.indexOf('|'); return i < 0 ? ['', t] : [t.slice(0, i), t.slice(i + 1)] }
@@ -73,7 +74,7 @@ export function NotFound() {
     <>
       <SEO title="הדף לא נמצא" description="הדף שחיפשתם לא נמצא." noindex />
       <PageHero name="הדף לא נמצא" path="/404" listed={false} title={'הדף הזה |לא\u00A0נמצא.'} lede="ייתכן שהכתובת השתנתה. דף הבית מראה את כל מה שאנחנו בונים.">
-        <div className="phero__actions"><a className="btn btn--ink" href="/"><span>לדף הבית</span><IconChevrons /></a><WhatsAppButton placement="404" tone="paper" /></div>
+        <div className="phero__actions"><a className="btn btn--ink" href="/" data-beats="flow"><span>לדף הבית</span><Go /></a><WhatsAppButton placement="404" tone="paper" /></div>
       </PageHero>
     </>
   )
@@ -122,7 +123,7 @@ function ServiceHero({ s, path, waHref }: { s: ServicePageData; path: string; wa
           <div className="shots" aria-hidden="true">
             {/* the first card is the largest paint from a tablet's width up, so only the second one waits */}
             {s.shots.slice(0, 2).map((name, i) => (
-              <span key={name} className="wheel__card">
+              <span key={name} className="wheel__card" style={{ '--shot': `url(/work/${name}.webp)` } as React.CSSProperties}>
                 <img src={`/work/${name}.webp`} alt="" width={528} height={1056} draggable={false} decoding="async" {...(i ? { fetchpriority: 'low' } : {})} />
               </span>
             ))}

@@ -15,6 +15,8 @@ import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
+import { Glyph, Go, Say } from './ButtonParts'
+import { cue, keepFlowing } from './btn'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
 
@@ -33,10 +35,11 @@ const KIND_ICON: Record<string, JSX.Element> = {
   coral: (<><circle className="fill" cx="24" cy="15" r="6" /><path d="M11 40c1-8 6-12 13-12s12 4 13 12" /><path d="M33 9l2 2 4-5" /></>),
 }
 
+/** D275: its beats, in turn (btn.ts): the chevrons flow, the handset types, the label gives way to WA.ready. */
 export function WhatsAppButton({ href = WA.hero, placement, label = HERO.cta, tone = 'ink' }: { href?: string; placement: string; label?: string; tone?: 'ink' | 'sun' | 'paper' }) {
   return (
-    <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)}>
-      <IconWhatsApp /><span>{label}</span><IconChevrons />
+    <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)} data-beats="flow type say">
+      <Glyph /><Say alt={WA.ready}>{label}</Say><Go />
     </a>
   )
 }
@@ -56,7 +59,10 @@ function Hero() {
       <div className="hero__cta">
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
-          <a className="btn btn--line" href="#process" onClick={() => track('cta_click', { placement: 'hero_process' })}><span>{HERO.second}</span><IconChevrons /></a>
+          {/* the answer is further down: its chevrons turn down now and then, and its label says how many steps */}
+          <a className="btn btn--line" href="#process" data-beats="dive say" onClick={() => track('cta_click', { placement: 'hero_process' })}>
+            <Say alt={`${PROCESS.steps.length} שלבים`}>{HERO.second}</Say><Go />
+          </a>
         </div>
         <p className="hero__note">{HERO.note}</p>
       </div>
@@ -198,6 +204,12 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
   const [mail, setMail] = useState(false)
   const form = useRef<HTMLFormElement>(null)
   const trap = useRef<HTMLInputElement>(null)
+  const send = useRef<HTMLButtonElement>(null)
+  // D275: the button answers the form. The moment both fields are right its chevrons step forward once (ready to
+  // send), and while the enquiry is on its way they keep flowing.
+  const ready = isValidName(data.name.trim()) && isValidPhone(data.phone.trim())
+  useEffect(() => { if (ready) cue(send.current, 'flow') }, [ready])
+  useEffect(() => { keepFlowing(send.current, sending) }, [sending])
   // refs, not state: they are read inside handlers and must be true the moment they are set
   const busy = useRef(false)
   const mailFailed = useRef(false)
@@ -305,8 +317,8 @@ export function LeadForm({ placement = 'contact_form', ask = ASK }: { placement?
       <div className="form__trap" aria-hidden="true"><input ref={trap} type="text" name={TRAP_FIELD} tabIndex={-1} autoComplete="off" /></div>
       {/* aria-disabled, not disabled: a disabled button drops the keyboard focus to the page body, and the
           visitor would have to hunt for the button again after the answer. busy blocks a second send. */}
-      <button className="btn btn--white btn--wide" type="submit" aria-disabled={sending || undefined}>
-        <span>{sending ? 'שולחים...' : mail ? CONTACT.submit : CONTACT.submitWhatsApp}</span><IconChevrons />
+      <button ref={send} className="btn btn--white btn--wide" type="submit" aria-disabled={sending || undefined}>
+        <span>{sending ? 'שולחים...' : mail ? CONTACT.submit : CONTACT.submitWhatsApp}</span><Go />
       </button>
       <p className="form__status" role="status" aria-live="polite">{status}</p>
       <p className="form__legal">בשליחה אתם מאשרים את <a href="/privacy/">מדיניות הפרטיות</a>.</p>

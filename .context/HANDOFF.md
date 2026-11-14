@@ -1,7 +1,14 @@
-# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D274
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D276
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D274). The next decision number is **D275**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D276). The next decision number is **D277**.
+
+## In progress (15.11 evening): D275 and D276, local only, waiting for Nati
+- **D275 buttons.** Two materials behind one switch: pearl (default) and lens (`?mat=lens`, Chromium only refracts; iPhone gets frosted glass). One conductor plays the beats (`src/sun/btn.ts`, parts in `ButtonParts.tsx`, styles in `btn.css`; glass.css/glass.ts are gone). He was sent `beats-pearl.mp4` and `beats-lens.mp4` and decides which material stays.
+- **When he picks:** delete the other material's block in `btn.css`, the `?mat=lens` line in `entry.tsx`, and (if pearl) the lens filter injection in `btn.ts`; rebuild, gates, then push both branches only after he approves.
+- **D276 phones:** iPhone 17 look in `sun.css` (`.wheel__card`, `--bz`, `--rad`, `--sb`, the island, the status strip from `--shot`), `--shot` set in `Wheel.tsx` and the service page shots in `pages.tsx`.
+- Two new copy lines await his eye: "ההודעה כבר כתובה" and "4 שלבים".
+- Scratch scripts: `C:\tmp\night\fonts\beats-video.mjs` (slow-motion recorder, dev hook `window.__mwBeat`), `conductor-check.mjs`, `lens-scroll.mjs`, `phones-shot.mjs`, `btn-check.mjs`.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.

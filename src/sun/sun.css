@@ -237,25 +237,26 @@ html.menu-open .pin__blob { filter: none; }
 .wheel__ground { position: absolute; inset-inline: -3%; bottom: -1px; height: calc(var(--ch) * .46); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
 .wheel__ring { position: absolute; left: 50%; top: calc(18px + var(--ch) / 2 + var(--R)); width: 0; height: 0; will-change: transform; }
 .wheel__slot { position: absolute; left: calc(var(--cw) / -2); top: calc(var(--ch) / -2); width: var(--cw); height: var(--ch); transform: rotate(calc(var(--i) * var(--step))) translateY(calc(var(--R) * -1)); }
-/* D255: every site stands in the same phone, as noamavikasis.co.il shows his work: a dark bezel, a rounded screen
-   and the small island at the top, so eight different sites read as one set */
-.wheel__card { position: relative; display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: 30px; background: #0E1512; border: 6px solid #0E1512; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08) inset, 0 22px 40px -18px rgba(19, 36, 31, .6), 0 4px 10px -4px rgba(19, 36, 31, .3); -webkit-user-drag: none; }
-.wheel__card::before { content: ""; position: absolute; z-index: 2; top: 7px; left: 50%; width: 30%; height: 13px; transform: translateX(-50%); border-radius: 99px; background: #0E1512; }
-/* the screen starts under a status bar, so the island never covers the site's own header */
-.wheel__card:not(.wheel__card--next) { padding-block-start: 22px; }
-.wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; border-radius: 6px 6px 24px 24px; pointer-events: none; }
-.wheel__card--next::before { display: none; }
-.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); border-color: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
+/* D255: every site stands in the same phone, so eight different sites read as one set.
+   D276 (Nati 15.11.2026: "המסכים בקרוסלה צריכים להיראות שאין שוליים בכלל ואין מסגרת, כמו טלפונים מודרניים... שכולם ייראו
+   כמו אייפון 17 החדש ולא כמו טלפונים ישנים"): a phone of today. The screen runs to the edges under a hairline of black
+   glass (the black band over the screen is gone), the corners are the iPhone's (14% of the width), a thin metal edge
+   catches the light, and the camera sits in a floating island over the screen (31% of the width, as on the iPhone 17).
+   Every length is a share of the card's width, so the wheel's phones and the service pages' are one phone at any size. */
+.wheel__card { --bz: calc(var(--cw) * .017); --rad: calc(var(--cw) * .14); --sb: calc(var(--cw) * .134); position: relative; display: block; cursor: inherit; width: 100%; height: 100%; overflow: hidden; border-radius: var(--rad); background: #050807; border: var(--bz) solid #050807; box-shadow: 0 0 0 1px rgba(168, 178, 175, .75), 0 0 0 1.6px rgba(5, 8, 7, .55), 0 22px 40px -18px rgba(19, 36, 31, .6), 0 4px 10px -4px rgba(19, 36, 31, .3); -webkit-user-drag: none; }
+/* the island: black glass with the camera's lens at its far end */
+/* the status bar, as on a real iPhone: the site's own colour runs up behind the island (the top row of its picture,
+   stretched; --shot is set on the card), so the island never covers the site's header and no black band is left */
+.wheel__card:not(.wheel__card--next) { padding-block-start: var(--sb); background: var(--shot, none) 50% 0 / 100% 40000% no-repeat padding-box, #050807; }
+.wheel__card::before { content: ""; position: absolute; z-index: 2; top: calc(var(--cw) * .027); left: 50%; width: 31%; height: calc(var(--cw) * .092); transform: translateX(-50%); border-radius: 99px; background: radial-gradient(circle at 80% 50%, #22344a 0 calc(var(--cw) * .011), rgba(34, 52, 74, 0) calc(var(--cw) * .02)), #000; }
+.wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
+.wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
 .wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
 @media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 775px; } }
 @media (min-width: 900px) {
   /* the radius that keeps a calm gap between two phones (D261; x1.25 for 18 degrees, D271) */
   .wheel { --cw: 236px; --ch: 472px; --R: 975px; height: calc(var(--ch) + 150px); }
   .wheel__ground { height: calc(var(--ch) * .62); }
-  .wheel__card { border-radius: 36px; border-width: 7px; }
-  .wheel__card img { border-radius: 8px 8px 29px 29px; }
-  .wheel__card:not(.wheel__card--next) { padding-block-start: 26px; }
-  .wheel__card::before { top: 7px; height: 14px; }
 }
 
 /* ---------- the opening (D241). html.sun-open is on the page from before first paint (index.html): the
@@ -422,12 +423,12 @@ html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 /* ---------- floating: WhatsApp and the cookie note ---------- */
 .tab { position: fixed; z-index: 70; inset-inline-end: 0; bottom: var(--browser-chrome-bottom); width: 178px; height: 84px; display: flex; align-items: flex-end; color: #fff; font-weight: 700; opacity: 0; transform: translateY(100%); pointer-events: none; transition: opacity .25s, transform .4s var(--ease); }
 .tab svg.tab__wave { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--blue); filter: drop-shadow(0 -6px 14px rgba(23, 24, 28, .28)); transition: fill .2s; }
-.tab span { position: relative; display: inline-flex; align-items: center; gap: 7px; padding-block-end: calc(13px + env(safe-area-inset-bottom, 0px)); padding-inline-end: calc(14px + env(safe-area-inset-left, 0px)); margin-inline-start: auto; }
-.tab span svg:last-child { transition: transform .25s var(--ease); }
+.tab > span { position: relative; display: inline-flex; align-items: center; gap: 7px; padding-block-end: calc(13px + env(safe-area-inset-bottom, 0px)); padding-inline-end: calc(14px + env(safe-area-inset-left, 0px)); margin-inline-start: auto; }
+.tab > span > svg:last-child { transition: transform .25s var(--ease); }
 @media (hover: hover) { .tab:hover svg.tab__wave { fill: #000; } }
-@media (hover: hover) { .tab:hover span svg:last-child { transform: translateX(-4px); } }
+@media (hover: hover) { .tab:hover > span > svg:last-child { transform: translateX(-4px); } }
 .tab[data-on] { opacity: 1; transform: none; }
-html:not(.menu-open) .tab[data-on] .tab__wave path, html:not(.menu-open) .tab[data-on] span { pointer-events: auto; }
+html:not(.menu-open) .tab[data-on] .tab__wave path, html:not(.menu-open) .tab[data-on] > span { pointer-events: auto; }
 html.menu-open .tab { opacity: 0; pointer-events: none; }
 /* the note stands at the lower place and is lifted over the WhatsApp corner by a transform: moving it by `bottom` counted as layout shift while a phone scrolled */
 .consent { position: fixed; z-index: 69; inset-inline: 12px; bottom: calc(12px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); transform: translateY(-80px); max-width: 420px; display: grid; gap: 10px; padding: 14px 16px; background: #fff; border-radius: 20px; box-shadow: 0 0 0 2px var(--ink), 0 18px 36px -14px rgba(23, 24, 28, .5); font-size: .9375rem; line-height: 1.45; transition: transform .4s var(--ease); }
@@ -582,12 +583,11 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 /* ---------- D257: the sites scroll slowly inside the phones. Each main card holds a tall strip of its page; it rests
    at the top, glides down over about twenty seconds, rests, and comes back. Cards start at different moments.
    The accessibility panel's stop and ?reduce=1 stop it (the global rule on html.disable-animations). ---------- */
-.wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 6px 6px 24px 24px; container-type: size; }
+.wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 0 0 calc(var(--rad) - var(--bz)) calc(var(--rad) - var(--bz)); container-type: size; }
 .wheel__screen img { border-radius: 0 !important; }
 /* D259: the recording lies over the first screen; the still picture stays under it as the poster and the fallback */
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
 .wheel__screen video[data-on] { opacity: 1; }
-@media (min-width: 900px) { .wheel__screen { border-radius: 8px 8px 29px 29px; } }
 
 /* ---------- D262: the logo's mark never stands still in colour (Nati, 13.11.2026). The lower half walks slowly through
    six clear colours and the upper half through the deep tone of each, one full round in 36 seconds, so the change

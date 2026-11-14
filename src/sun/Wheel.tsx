@@ -217,7 +217,7 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <div className="wheel__card" data-crop={c.crop}>
+              <div className="wheel__card" data-crop={c.crop} style={{ '--shot': `url(/work/${c.slug}-card-${c.crop}.webp)` } as React.CSSProperties}>
                 <div className="wheel__screen">
                   {videos && <video src={videoOf(c.slug, c.crop)} muted loop playsInline preload="none" tabIndex={-1} disablePictureInPicture disableRemotePlayback
                     onLoadedMetadata={(e) => { const v = e.currentTarget; v.currentTime = (i * 3.1) % (v.duration || 1) }} />}

@@ -27,6 +27,9 @@ export const PROJECTS = workJson as Project[]
 
 export const WA = {
   hero: getWhatsAppUrl('היי, אשמח לשמוע על דף נחיתה או אתר לעסק שלי.'),
+  // D275: the line a WhatsApp button shows now and then in place of its label. True of every WhatsApp link on the
+  // site: each one opens the chat with the message already written (getWhatsAppUrl), so the visitor only sends it.
+  ready: 'ההודעה כבר כתובה',
 }
 
 export const NAV = [

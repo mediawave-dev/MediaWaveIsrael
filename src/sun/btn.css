@@ -1,0 +1,135 @@
+/* sun · the buttons (D275, Nati 15.11.2026). Every button is a capsule, after Apple's buttons, in one of two materials
+   that Nati is choosing between (bubble option 3 and glass option 4 of the two boards):
+     pearl (the default)  a solid pearl: the ink buttons a dark pearl, the light ones a white pearl with a cool tint, a
+                          satin sheen across both that stands where the light is (the pointer, on a computer)
+     lens (?mat=lens)     clear glass that bends what is behind it (Chromium; every other browser keeps frosted glass)
+   Symmetry: the label stands exactly in the middle; the WhatsApp glyph and the onward chevrons stand at the same 20px
+   from the two ends; buttons that stand together share one width (sun.css, the action groups).
+   The parts that move (Btn.tsx, btn.ts) are laid out here at rest. With "ניגודיות גבוהה": plain black and white. */
+
+/* ---------- anatomy ---------- */
+.btn.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: 56px; padding-inline: 52px; border: 0; border-radius: 999px;
+  transition: transform .55s cubic-bezier(.2, 1.5, .4, 1), box-shadow .3s ease, filter .3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn.btn--small { min-height: 44px; padding-inline: 22px; }
+.btn.btn::before, .btn.btn::after, .tab.tab::before, .tab.tab::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.btn.btn::before, .tab.tab::before { z-index: -1; }
+
+/* the two ends, at the same distance */
+.btn.btn > .glyph, .btn.btn > svg:first-child:not(:last-child) { position: absolute; inset-inline-start: 20px; }
+.btn.btn > .go, .btn.btn > svg:last-child:not(:first-child) { position: absolute; inset-inline-end: 20px; }
+
+.glyph, .go { position: relative; display: inline-block; flex: none; width: 20px; height: 20px; }
+.glyph svg, .go svg { display: block; width: 100%; height: 100%; }
+.glyph > svg, .glyph__set, .glyph__dots, .go i { position: absolute; inset: 0; }
+.glyph__set { display: block; }
+.glyph__dots { display: flex; align-items: center; justify-content: center; gap: 1.2px; }
+.glyph__dots i { width: 2.5px; height: 2.5px; border-radius: 50%; background: currentColor; opacity: 0; }
+.go i { display: block; }
+/* the third chevron waits behind the second, unseen, one step back */
+.go i:nth-child(3) { opacity: 0; transform: translateX(29.1667%); }
+
+/* the label and its second line share one place; the second waits below, unseen */
+.say { display: inline-grid; white-space: nowrap; }
+.say > span { grid-area: 1 / 1; }
+.say .w { display: inline-block; }
+.say__b .w { opacity: 0; transform: translateY(62%); }
+
+/* light on it, then the press: it gives like jelly and springs back */
+@media (hover: hover) {
+  .btn.btn:hover { transform: translateY(-1px); }
+  .btn.btn:hover::before { opacity: 1; }
+  .btn.btn:hover svg { transform: none; }
+}
+.btn.btn:active { transform: scale(.955); transition-duration: .12s; filter: brightness(1.03); }
+.btn.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+/* the floating WhatsApp tab: a capsule on the middle of the screen's foot, the page passing under it */
+.tab.tab {
+  inset-inline: 0; margin-inline: auto; bottom: calc(14px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px));
+  width: max-content; height: 56px; padding-inline: 24px; align-items: center; justify-content: center;
+  border-radius: 999px; overflow: hidden; isolation: isolate;
+  transform: translateY(calc(100% + 30px));
+  transition: opacity .25s, transform .7s cubic-bezier(.2, 1.35, .4, 1);
+}
+.tab.tab svg.tab__wave { display: none; }
+.tab.tab > span { padding: 0; margin: 0; gap: 10px; pointer-events: auto; }
+.tab.tab .go { width: 18px; height: 18px; }
+.tab.tab[data-on] { transform: none; pointer-events: auto; }
+.tab.tab:active { transform: scale(.955); transition: transform .12s; }
+
+.consent:has(+ .tab[data-on]) { transform: translateY(-74px); }
+
+/* the header's "דברו איתנו" (a computer's header): the same parts, no capsule; its chevrons flow under the pointer */
+@media (hover: hover) { .head__cta:hover svg:last-child { transform: none; } }
+
+.icon-btn { transition: transform .45s cubic-bezier(.2, 1.5, .4, 1), background-color .2s; }
+.icon-btn:active { transform: scale(.92); transition-duration: .12s; }
+
+/* ---------- pearl ---------- */
+.btn.btn {
+  color: var(--ink);
+  background: linear-gradient(160deg, #FFFFFF 0%, #F1F8F6 42%, #EAF2F8 72%, #FFFFFF 100%);
+  box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(19, 36, 31, .07), 0 12px 26px -12px rgba(19, 36, 31, .26), 0 2px 4px -2px rgba(19, 36, 31, .12);
+}
+/* the satin: a soft band of light, and a fainter second one, standing where the light is */
+.btn.btn::before {
+  --x: var(--gx, 42%);
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0) calc(var(--x) - 20%), rgba(255, 255, 255, .95) var(--x), rgba(255, 255, 255, 0) calc(var(--x) + 20%)),
+    radial-gradient(70% 120% at 88% 110%, rgba(214, 228, 250, .55), rgba(214, 228, 250, 0) 70%);
+  opacity: .9; transition: opacity .3s ease;
+}
+.btn.btn--ink, .tab.tab {
+  color: #fff;
+  background: linear-gradient(160deg, #2C4840 0%, #13241F 55%, #1E3630 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 12px 26px -10px rgba(19, 36, 31, .5), 0 2px 4px rgba(19, 36, 31, .2);
+}
+.btn.btn--ink::before, .tab.tab::before {
+  --x: var(--gx, 42%);
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0) calc(var(--x) - 20%), rgba(255, 255, 255, .16) var(--x), rgba(255, 255, 255, 0) calc(var(--x) + 20%)),
+    radial-gradient(60% 110% at 90% 115%, rgba(120, 200, 180, .18), rgba(120, 200, 180, 0) 70%);
+  opacity: 1;
+}
+.btn.btn--sun { background: linear-gradient(160deg, #FFFFFF 0%, #E4F4F0 45%, #D5ECE6 75%, #F4FBF9 100%); }
+.icon-btn {
+  background: linear-gradient(160deg, #FFFFFF 0%, #F1F8F6 50%, #EAF2F8 100%);
+  box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(19, 36, 31, .08), 0 6px 14px -8px rgba(19, 36, 31, .35);
+}
+
+/* ---------- lens (?mat=lens) ---------- */
+html[data-mat="lens"] :is(.btn.btn, .tab.tab) {
+  color: var(--ink);
+  background: rgba(255, 255, 255, .16);
+  -webkit-backdrop-filter: blur(12px) saturate(1.6); backdrop-filter: blur(12px) saturate(1.6);
+  box-shadow: 0 0 0 .5px rgba(19, 36, 31, .14), inset 1.5px 1.5px 1px rgba(255, 255, 255, .95), inset -1.5px -1.5px 1px rgba(255, 255, 255, .7), inset 0 0 14px rgba(255, 255, 255, .35), 0 10px 26px -8px rgba(19, 36, 31, .22);
+}
+html.lens-ok[data-mat="lens"] :is(.btn.btn, .tab.tab) { -webkit-backdrop-filter: blur(3px) url(#mw-lens) saturate(1.6); backdrop-filter: blur(3px) url(#mw-lens) saturate(1.6); }
+html[data-mat="lens"] :is(.btn.btn, .tab.tab)::before {
+  background:
+    radial-gradient(60% 90% at calc(var(--gx, 12%)) 0%, rgba(255, 255, 255, .85), rgba(255, 255, 255, 0) 60%),
+    radial-gradient(50% 80% at calc(104% - var(--gx, 12%)) 110%, rgba(255, 255, 255, .6), rgba(255, 255, 255, 0) 60%);
+  opacity: 1;
+}
+/* the rim: light through the lens edge, strong at the two far corners */
+html[data-mat="lens"] :is(.btn.btn, .tab.tab)::after {
+  padding: 1.2px;
+  background: linear-gradient(135deg, #fff, rgba(255, 255, 255, .08) 34%, rgba(255, 255, 255, .04) 50%, rgba(255, 255, 255, .08) 66%, #fff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+}
+html[data-mat="lens"] :is(.btn.btn--ink, .tab.tab) { color: #fff; background: rgba(19, 36, 31, .72); }
+html[data-mat="lens"] .icon-btn {
+  background: rgba(255, 255, 255, .3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6);
+  box-shadow: 0 0 0 .5px rgba(19, 36, 31, .14), inset 1px 1px 1px rgba(255, 255, 255, .95), inset -1px -1px 1px rgba(255, 255, 255, .6), 0 6px 14px -8px rgba(19, 36, 31, .3);
+}
+
+/* ---------- high contrast: plain black and white, no material ---------- */
+html.high-contrast :is(.btn.btn, .tab.tab, .icon-btn) { background: #fff; color: #000; box-shadow: 0 0 0 2px #000; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.high-contrast :is(.btn.btn--ink, .tab.tab) { background: #000; color: #fff; }
+html.high-contrast :is(.btn.btn, .tab.tab)::before, html.high-contrast :is(.btn.btn, .tab.tab)::after { display: none; }
