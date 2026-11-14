@@ -1,7 +1,7 @@
-# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D271
+# HANDOFF: the statement site (look `sun`), state on 14.11.2026 after D272
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D271). The next decision number is **D272**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D272). The next decision number is **D273**.
 
 ## Goal
 Nati (12.11): the site "says nothing", it only shows impressive design.
@@ -43,6 +43,7 @@ Minimal, intuitive, premium, phone first, nothing that reads as AI slop. Preview
 - **14.11 evening, D269:** the running text is David Libre (his pick 12 of fourteen faces rendered on the real page) and every Latin letter is Saira Semi Condensed (he kept option D's Latin). Both OFL; Artzisraeli is now the only EFT face (its licence still blocks production). Bold inside text is David Libre Bold again (the D264 move to Artzisraeli is undone). Rejected on the way: Lampner, Miriam Libre, IBM Plex Sans Hebrew. The specimen tools are in `C:/tmp/night/fonts` (specimen2.mjs, compose.mjs); note that a candidate must get its own family name, because under the same name Chrome kept the old 100-900 face for weight 400.
 - **D270:** "the sites in the carousel don't scroll": the review's Save-Data / "3g" guard (ad59a13) left real Android phones on stills. Removed; a refused autoplay (iPhone Low Power Mode) now starts on the visitor's next tap. Test: `node C:/tmp/night/fonts/wheel.mjs <base> 3g|savedata|refuse`.
 - **D271:** two concept sites in the wheel, Maof as "צפרות עם עומר" (crane tours) and Zimzum as "מכוורת השקד" (an apiary), fictional businesses at Nati's request, with real Pexels photographs (ledger `src/concept/media/LEDGER.md`). Dev-only route `/concept/:id` in the legacy app: run the `concept` launch config (`npm run dev -- --mode look-shot --port 5187`), then `node scripts/record-work.mjs maof zimzum`; never edit worktree files while a recording runs (Vite reloads the page and the run dies). The wheel is now 20 phones at 18 degrees.
+- **D272:** all running text is David Libre Bold (one cut for every weight; Latin in text is Saira SemiBold); in-text emphasis is in Artzisraeli again.
 - **Rule learned tonight:** nothing new goes to the main preview before he has seen it and said yes (memory note preview-needs-approval).
 
 ## Production procedure (only after his tap on the board AND the EFT licence confirmed)

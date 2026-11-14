@@ -54,7 +54,7 @@ under the promise, each a real recording of the live site. Everything else is ca
 | mark | `#13241F` over `#14A390` | the disc; its two halves walk slowly through six colours (D262) |
 
 Type: headings and everything a hand presses in EFT Artzisraeli (D249, "present everywhere"), one cut declared 100 to 900
-so no browser fakes a bold; running text in David Libre (D269, OFL), Regular and Bold, so emphasis inside text stays in the
+so no browser fakes a bold; running text in David Libre Bold (D269, D272, OFL), with emphasis inside text in the headings face; the
 text face; every Latin letter in Saira Semi Condensed (D269, OFL), narrow and square like Artzisraeli. Sizes are matched by
 size-adjust (fonts.css). **Artzisraeli is now the only EFT face, and its web licence is not confirmed yet: it blocks production.**
 
