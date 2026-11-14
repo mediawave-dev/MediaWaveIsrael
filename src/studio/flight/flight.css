@@ -72,6 +72,11 @@ html[data-style="flight"] .st-bar { --logo-a: #29345a; --logo-b: #29345a; }
 .fl-go::after { content: "( + )"; font: 600 12px/1 ui-monospace, Consolas, monospace; direction: ltr; }
 .fl-go:hover, .fl-go:focus-visible { background: rgba(255, 255, 255, 0.5); }
 .fl-word [data-fl] { display: flex; flex-direction: column; align-items: center; }
+/* (D271) a concept site's service carries its photograph under the word, in the film's glass frame */
+.fl-word__pic {
+  display: block; width: min(80vw, 460px); aspect-ratio: 4 / 3; margin: 22px auto 0; object-fit: cover; border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.85); box-shadow: 0 34px 80px -38px rgba(70, 30, 110, 0.7), 0 0 0 6px rgba(255, 255, 255, 0.22);
+}
 
 /* ---- the work: dusk, one film in a glass frame ---- */
 .fl-work { min-height: 120svh; display: grid; place-items: center; padding: 12vh clamp(18px, 4vw, 56px); text-align: center; }

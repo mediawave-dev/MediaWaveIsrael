@@ -6,7 +6,8 @@ import { C as STUDIO, CLIPS as STUDIO_CLIPS } from './content'
 import { useHero, type Hero } from './preview'
 
 export interface Copy {
-  services: { title: string; items: { id: string; title: string; line: string; href: string }[] }
+  /** img (D271): a concept site's photograph for the service (Flight shows it under the word) */
+  services: { title: string; items: { id: string; title: string; line: string; href: string; img?: string; alt?: string }[] }
   work: {
     title: string; name: string; line: string; href: string; linkLabel: string
     /** Flight's film: stills that come to life one after another (path without extension: .webp poster, .mp4) */

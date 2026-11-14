@@ -112,7 +112,8 @@ export default function Flight({ tier, def }: StyleProps) {
               <p className="fl-word__n" data-ln aria-hidden="true">0{i + 1}</p>
               <h3 className="fl-giant" data-ln>{s.title}</h3>
               <p className="fl-word__line" data-ln>{s.line}</p>
-              {s.href && <a className="fl-go" data-ln href={s.href} lang="en" aria-label={`לפרטים על ${s.title}`}>Details</a>}
+              {s.img && <img className="fl-word__pic" data-ln src={s.img} alt={s.alt ?? ''} width={1120} height={840} loading="lazy" decoding="async" />}
+              {s.href &&<a className="fl-go" data-ln href={s.href} lang="en" aria-label={`לפרטים על ${s.title}`}>Details</a>}
             </div>
           </article>
         ))}

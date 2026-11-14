@@ -4,6 +4,10 @@
 // no prices, no people, no reviews. A web search found no business by this name (14.11.2026).
 import type { Site } from '../studio/site'
 
+/** the clips and photographs (Pexels License, free to use, no credit required; ledger in src/concept/media/LEDGER.md).
+    Served by the dev server from src/, so nothing of them ships with the site. */
+const M = '/src/concept/media/'
+
 export const ZIMZUM: Site = {
   concept: true,
   hero: {
@@ -15,7 +19,7 @@ export const ZIMZUM: Site = {
     sub2: 'בימי שישי פותחים את המכוורת למשפחות.',
     cta: 'להזמנת דבש',
   },
-  clips: {},
+  clips: { citrus: M + 'zimzum-citrus', eucalyptus: M + 'zimzum-eucalyptus', workshop: M + 'zimzum-workshop', gift: M + 'zimzum-gift' },
   buzz: {
     swarm: 'bee',
     endWord: 'דבש',
@@ -36,7 +40,7 @@ export const ZIMZUM: Site = {
         { id: 'gift', title: 'מארזי חג', line: 'צנצנות בקופסת עץ, עם כרטיס ברכה בכתב יד.', href: '' },
       ],
     },
-    work: { title: 'From the hive', name: 'הקטיף של יולי', line: 'יום אחד במכוורת, מהכוורת ועד הצנצנת.', href: '', linkLabel: '', clips: [] },
+    work: { title: 'From the hive', name: 'הקטיף של יולי', line: 'יום אחד במכוורת, מהכוורת ועד הצנצנת.', href: '', linkLabel: '', clips: [], film: M + 'zimzum-film.mp4', filmPoster: M + 'zimzum-film.webp' },
     process: {
       title: 'איך מזמינים',
       steps: [
