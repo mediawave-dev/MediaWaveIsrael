@@ -24,8 +24,13 @@
 @font-face { font-family: "MW Head XL"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 99%; unicode-range: U+0041-005A, U+0061-007A; }
 @font-face { font-family: "MW Head XL Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 100.6%; }
 
-/* the running text: the same faces, 6% smaller (D274) */
-@font-face { font-family: "MW Text"; src: url("/fonts/eft/artzisraeli.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 94%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
+/* the running text (D281, Nati 16.11.2026: "אני רוצה שבתוכן תשתמש בפונט... כמובן כל התוכן חוץ מהכותרות"): EFT OffSet Bold
+   for Hebrew, digits and punctuation, from his licensed copy in OneDrive\Fonts\עברית\Lampner (EFT_OffSet-Bold.ttf),
+   subset to the range below with a no-break space added (the font has none; it takes the space's glyph):
+     python -m fontTools.subset offset-nbsp.ttf --unicodes="<the range below>" --flavor=woff2 --layout-features='*'
+   OffSet's letters stand 4% lower than Artzisraeli's and run 4% wider: at 96% they stand 2% under the old text size
+   and its lines run about 6% longer (98% would match the height, 91% the width). Latin stays Saira, as everywhere. */
+@font-face { font-family: "MW Text"; src: url("/fonts/eft/offset-bold.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 96%; unicode-range: U+0020-0040, U+005B-0060, U+007B-007E, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+20AA, U+2010-2027; }
 @font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 85%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
-/* Arial Bold at the headings' fallback width, 6% smaller */
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 86%; }
+/* Arial Bold at OffSet's width (its Hebrew letters' average advance at 96%), so the swap barely moves a line */
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 93%; }

@@ -63,7 +63,9 @@ function fontPreloadLinks(look) {
   // D247: the headings are mediawave-font1 again (its Bold and, for the lighter lead-ins, its Regular; 6 KB each)
   // D274: one face, EFT Artzisraeli, for headings and text (one file serves both aliases). The Latin (Saira) is rare
   // above the fold and loads on use.
-  if (look === 'sun') return `<link rel="preload" href="/fonts/eft/artzisraeli.woff2" as="font" type="font/woff2" crossorigin>`
+  // D281: the running text is EFT OffSet (7 KB); the hero's lede is on the first screen, so it is preloaded too.
+  if (look === 'sun') return `<link rel="preload" href="/fonts/eft/artzisraeli.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/eft/offset-bold.woff2" as="font" type="font/woff2" crossorigin>`
   const extra = look === 'shot' && existsSync(resolve(DIST, 'fonts/noto/noto-sans-hebrew-latin-standard-normal.woff2'))
     ? `
     <link rel="preload" href="/fonts/noto/noto-sans-hebrew-hebrew-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
