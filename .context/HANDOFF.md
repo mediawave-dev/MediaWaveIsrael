@@ -1,13 +1,14 @@
-# HANDOFF: the statement site (look `sun`), state on 16.11.2026 after D284 (in production)
+# HANDOFF: the statement site (look `sun`), state on 16.11.2026 after D287 (in production)
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D284). The next decision number is **D285**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D287). The next decision number is **D288**.
 
-## IN PRODUCTION since 16.11.2026 (main 0c44b78; rollback tag `prod-before-sun` = 50a31eb)
+## IN PRODUCTION since 16.11.2026 (main e1d0243 after D285-D287; rollback tag `prod-before-sun` = 50a31eb)
 - Checked on https://mediawave.co.il after the deploy: the new bundle, 12 pages clean at 390 and 1440 (axe 0, no overflow, no layout jump), a garbage URL answers 404, /your-site 302 to home, /api/event rejects an empty POST with 400 (no fake event sent), /api/lead 200.
 - Lighthouse mobile, median of 3: / 95, /services/landing-pages/ 98, /privacy/ 97; a11y and best practices 100; CLS 0; LCP 2.6 / 1.9 / 2.4 s (lab, the same level as D274 before the day's work). SEO 92 only because Cloudflare's managed robots.txt adds a `Content-Signal` line Lighthouse does not know (not in the repo; there before the release too); his call in the Cloudflare dashboard.
 - GPTBot and ClaudeBot still get 403 from the Cloudflare zone; the search and user agents get 200 (his call, unchanged).
 - Open: real-iPhone check; whether Fontype's free licence covers web embedding (flagged to him, D283); the main checkout's CLAUDE.md "Current state" was updated in its working copy, not committed.
+- D285-D287 (live, checked): the menu glyph is three waves (the disc's horizon), no bubble in the folded corner; the corner is one module, the disc's diameter: waves the same size, half a diameter between them, above them and to the screen's side, a full one of white under the disc (measured live at 320, 375, 390, 768, 1440). The folded corner's size per breakpoint follows from it (`--h1`, desktop `--w1: 190`). Measuring script: `C:/tmp/night/fonts/corner-measure.mjs`.
 - Cloudflare builds production for `main` minutes after the branch preview of the same commit: wait for the production bundle name to change before judging a deploy.
 
 ## Latest (15.11 night): D275 to D278 on both previews
