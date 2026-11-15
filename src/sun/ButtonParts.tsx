@@ -66,3 +66,18 @@ export function Say({ children, alt }: { children: string; alt?: string }) {
     </span>
   )
 }
+
+/** D285 (Nati, 16.11.2026: "תוריד את הבועה מכפתור ההמבורגר. שיהיה בלי בכלל. ותעצב אותו אחרת שיהיה סופר יפהפה וייחודי"):
+    the menu's glyph. Three strokes, and the middle one is a wave: the horizon line of the MediaWave disc that stands
+    beside it in the corner. The button's aria-expanded drives it (btn.css): open, the two straight strokes turn into
+    an X and the wave flattens away; under a pointer the wave turns over. All three are one line laid at the middle,
+    placed by transforms, so every change is a transform that eases. */
+export function MenuGlyph() {
+  return (
+    <svg className="menu-glyph" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+      <path className="menu-glyph__a" d="M4 12H20" />
+      <path className="menu-glyph__w" d="M4 12c2.67 2.4 5.33 2.4 8 0s5.33-2.4 8 0" />
+      <path className="menu-glyph__b" d="M4 12H20" />
+    </svg>
+  )
+}

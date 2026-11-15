@@ -9,9 +9,9 @@ import Emblem from './Emblem'
 import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
-import { IconA11y, IconChevron, IconClose, IconMenu } from './icons'
+import { IconA11y, IconChevron, IconClose } from './icons'
 import { Buoy } from './Tide'
-import { Glyph, Go, Say, Stage } from './ButtonParts'
+import { Glyph, Go, MenuGlyph, Say, Stage } from './ButtonParts'
 import { cue } from './btn'
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
@@ -129,7 +129,7 @@ function Header() {
           </a>
           <button type="button" ref={a11yBtn} className="icon-btn" aria-label="כלי נגישות" aria-expanded={a11y} onClick={() => setA11y((v) => !v)}><IconA11y width={22} height={22} /></button>
           <button type="button" className="icon-btn head__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={toggleMenu}>
-            <IconMenu width={22} height={22} />
+            <MenuGlyph />
           </button>
         </div>
       </div>
@@ -140,7 +140,7 @@ function Header() {
           <path d="M0 0H200V70C146 100 60 66 0 0Z" />
         </svg>
         <button type="button" ref={menuBtn} className="icon-btn pin__menu" aria-label={menu ? 'סגירת התפריט' : 'פתיחת התפריט'} aria-expanded={menu} aria-controls="sheet" onClick={toggleMenu}>
-          {menu ? <IconClose width={22} height={22} /> : <IconMenu width={22} height={22} />}
+          <MenuGlyph />
         </button>
         <a className="pin__logo" href="/" aria-label="MediaWave, לדף הבית"><span className="pin__clip"><Logo variant="compact" decorative /></span></a>
       </div>

@@ -123,19 +123,25 @@ html.high-contrast :is(.btn.btn, .tab.tab)::before, html.high-contrast :is(.btn.
    the clear glass vanishes into the paper. There the glass carries the field's mint itself, at the share that gives the
    header's buttons' colour over the field (#C9E8E2 at 70% over white = white glass at 30% over the mint). */
 .a11y__head .icon-btn { background: rgba(201, 232, 226, .7); }
-/* D284 (Nati: "את הכפתור המבורגר תעשה ללא צבע מוגדר אבל כן שיהיה בצורת הבועה כמו הכפתורים שמשמאל"): the corner's
-   menu button has no colour of its own. It is a clear bubble on the white corner. On the mint, the header's buttons
-   read as bubbles through their white light. On white that light is lost, so the volume is drawn in light and neutral
-   shade: a lens of light at the upper side, a shade gathered inside the lower edge, a hairline rim, the same shadow
-   under it. */
-.pin__menu {
-  background: radial-gradient(90% 80% at 35% 18%, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 62%);
-  -webkit-backdrop-filter: none; backdrop-filter: none;
-  box-shadow:
-    0 0 0 .5px rgba(19, 36, 31, .22),
-    inset 1px 1.5px 1px #fff,
-    inset 0 -7px 10px -6px rgba(19, 36, 31, .16),
-    inset -1px -1px 2px rgba(19, 36, 31, .08),
-    0 6px 14px -8px rgba(19, 36, 31, .35);
+/* D285 (Nati: "תוריד את הבועה מכפתור ההמבורגר. שיהיה בלי בכלל"): the corner's menu button is its glyph alone, no
+   bubble, no ground, no hover disc (D284's clear bubble is gone). */
+.pin .pin__menu, .pin .pin__menu:hover { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html.high-contrast .a11y__head .icon-btn { background: #fff; }
+
+/* the menu's glyph (ButtonParts, MenuGlyph): three strokes, the middle one the disc's horizon wave. At rest the
+   straight ones stand above and below it, the lower one shorter (the old menu's rhythm); open, they turn into an X
+   about the middle and the wave flattens away; under a pointer the wave turns over. Strokes keep their width under
+   the scale (non-scaling-stroke), so the short stroke's round ends stay round. */
+.menu-glyph { display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.9px; stroke-linecap: round; stroke-linejoin: round; }
+.menu-glyph path { vector-effect: non-scaling-stroke; transform-box: view-box; transform-origin: 12px 12px; transition: transform .5s cubic-bezier(.3, 1.3, .4, 1), opacity .25s ease; }
+.menu-glyph__a { transform: translate(0, -5.6px) rotate(0deg) scale(1, 1); }
+.menu-glyph__b { transform: translate(-3px, 5.6px) rotate(0deg) scale(.625, 1); }
+.menu-glyph__w { transform: scale(1, 1); }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__a { transform: translate(0, 0) rotate(45deg) scale(1, 1); }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__b { transform: translate(0, 0) rotate(-45deg) scale(1, 1); }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__w { transform: scale(.15, 1); opacity: 0; }
+@media (hover: hover) {
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__w { transform: scale(1, -1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, 1); }
 }
-html.high-contrast :is(.pin__menu, .a11y__head .icon-btn) { background: #fff; }
+html.disable-animations .menu-glyph path { transition: none; }
