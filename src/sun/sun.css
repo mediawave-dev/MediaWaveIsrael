@@ -386,7 +386,9 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    the four ways to reach us; the line is the disc's wave (down on the left, up on the right); below it, on the deep
    teal, the site's two link lists and the legal line, the back-to-top buoy riding its rule. The teal is deep enough
    for white text (6.0:1) and the pale labels (5.4:1). The light motion: a paler swell behind the wave drifts while the
-   footer is on screen (data-live), and the wave moves a few pixels with the scroll (--fx). */
+   footer is on screen (data-live), and the wave moves a few pixels with the scroll (--fx). D289: while it is on screen
+   the sea and the swell walk through the disc's colours on the disc's clock (Shell.tsx, useHorizon writes --sea and
+   --swell); here they rest on the brand's teal. */
 .foot { --sea: #0D6F65; background: var(--paper); }
 .foot__top { display: grid; justify-items: center; text-align: center; padding-block: 48px 26px; }
 .foot__brand { display: grid; justify-items: center; }
@@ -418,7 +420,7 @@ html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 .foot__swell { top: -7px; left: 0; width: 200%; opacity: .5; }
 .foot__front { left: -6%; width: 112%; transform: translateX(calc(var(--fx, 0) * 1px)); }
 .foot__horizon svg { display: block; width: 100%; height: 100%; }
-.foot__swell svg { fill: #14A390; }
+.foot__swell svg { fill: var(--swell, #14A390); }
 .foot__front svg { fill: var(--sea); }
 .foot[data-live] .foot__swell { animation: foot-swell 22s linear infinite; }
 @keyframes foot-swell { to { transform: translateX(-50%); } }
