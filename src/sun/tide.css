@@ -6,7 +6,7 @@
 /* the surface stands at 64 * (1 - level) from the top of the 64-unit disc */
 .tide__rise { transform: translateY(calc(64px - var(--lvl) * 64px)); transition: transform 1.6s cubic-bezier(.2, .8, .2, 1); }
 .tide__run { animation: tide-run 7s linear infinite; }
-.tide__water { fill: #14A390; animation: mark-clear 36s linear infinite; }
+.tide__water { fill: #14A390; animation: mark-clear 28s linear infinite; }
 .tide__line { fill: none; stroke: #fff; stroke-width: 3; }
 @keyframes tide-run { to { transform: translateX(64px); } }
 

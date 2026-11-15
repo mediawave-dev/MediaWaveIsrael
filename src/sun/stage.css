@@ -24,7 +24,7 @@
 .pitch .pitch__jump { --bump: calc(4 * var(--e) * (1 - var(--e))); transform: translateY(calc((1 - var(--e)) * 112% - var(--bump) * 30%)) rotate(calc(var(--bump) * -6deg)); }
 /* "לקוחות": a marker sweeps under it in reading direction, in the happy walk's clear colour */
 .pitch__mark { position: relative; isolation: isolate; background: none; color: inherit; padding-inline: .04em; }
-.pitch__mark::before { content: ""; position: absolute; z-index: -1; inset-inline: -.06em; bottom: .1em; height: .38em; border-radius: .14em; background: #F5E198; transform: scaleX(var(--m, 1)); transform-origin: right; animation: walk-mark 36s linear infinite; }
+.pitch__mark::before { content: ""; position: absolute; z-index: -1; inset-inline: -.06em; bottom: .1em; height: .38em; border-radius: .14em; background: #F1BC0C; transform: scaleX(var(--m, 1)); transform-origin: right; animation: walk-mark 28s linear infinite; }
 html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 
 /* the button comes up last with a small throw (--l5), and a ring spreads from it once as it settles (--h) */

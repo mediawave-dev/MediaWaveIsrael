@@ -388,9 +388,9 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    swell behind the wave drifts while the footer is on screen (data-live), and the wave moves a few pixels with the
    scroll (--fx). D289: while it is on screen the sea walks through the disc's colours on the disc's clock (Shell.tsx,
    useHorizon writes --sea). D290: the sea is the disc's water, its lower half, with the ink on it; the swell is the
-   same colour at half strength. D291: the pastel spectrum (sun.css, mark-clear); here it rests on the first of it,
-   aqua (ink on it 12:1). */
-.foot { --sea: #93E3D8; background: var(--paper); }
+   same colour at half strength. D293: the vivid walk (sun.css, mark-clear); here it rests on the first of it,
+   turquoise (ink on it 8:1). */
+.foot { --sea: #12CCBC; background: var(--paper); }
 .foot__top { display: grid; justify-items: center; text-align: center; padding-block: 48px 26px; }
 .foot__brand { display: grid; justify-items: center; }
 .foot__brand p { margin: 14px auto 0; font-weight: 600; max-width: 20em; text-wrap: balance; color: var(--ink-text); }
@@ -620,70 +620,172 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
 .wheel__screen video[data-on] { opacity: 1; }
 
-/* D291 (Nati, 15.11.2026: "אולי בצבעים ניצמד פשוט לצבעי פסטל וזהו. כל ספקטרום צבעי הפסטל זה מה שישתנה בצבעים של
-   האייקון והפוטר והלוגו של mw. שייראה איכותי ביותר", and "אני רוצה שהחלק העליון של האייקון יישאר בצבע שהיה. שיישאר
-   סטטי. מה שמשתנה מבחינת צבעים זה רק החלק התחתון בלבד"): the walk is the pastel spectrum, eight shades at one
-   lightness and one strength (OKLCH 0.86 / 0.08, the yellow a little lighter so it stays butter, not khaki), a round in
-   36 s: aqua, sky, periwinkle, lilac, pink, peach, butter, pistachio. It colours only the disc's lower half (the
-   water, also in the buoys and the step rings), the footer's sea (ink on it 9:1 or more), the footer MW's W (two stronger
-   shades of the same hue, so the letter keeps its weight beside the ink M) and its brackets, and the marker in the
-   closing statement. The disc's upper half, "Wave" and every text colour stand still in the brand's colours.
-   D262 (13.11.2026): the change is slow enough to be felt more than seen; only fills change (paint, no layout); a
-   keyframe animation outranks the inline fill; ?calm=1 and "ללא אנימציות" stop it on the brand colours. */
-.mw-logo [data-part="mark"] path:nth-child(2) { animation: mark-clear 36s linear infinite; }
-.walk-w0 { animation: walk-w0 36s linear infinite; }
-.walk-w1 { animation: walk-w1 36s linear infinite; }
-.walk-stroke { animation: walk-stroke 36s linear infinite; }
+/* D293 (Nati, 15.11.2026: "אולי בכל זאת כדי לשבור את הצבעי פסטל של האתר כן תעשה את האייקון והפוטר והלוגו שמשתנים עם
+   צבעים מעניינים, שישתנו כל הזמן"): the walk leaves the pastels for seven vivid colours that break the site's calm
+   paper and mint, turquoise, azure, orchid, watermelon, tangerine, saffron, lime, a round in 28 s (4 s a colour, so it
+   is seen to change, not only felt). Each is OKLCH 0.76 with as much chroma as the screen can show (saffron at 0.82 so it
+   stays gold, not mustard); ink on every one of them is 7:1 or more, so the footer's text stays ink. The footer MW's W
+   walks two deeper shades of the same hue (0.64 and 0.54) so the letter keeps its weight beside the ink M. Still only
+   the disc's lower half (also in the buoys and the step rings), the footer's sea, the footer MW's W and brackets, and
+   the marker in the closing statement; the disc's upper half, "Wave" and every text colour stand still (D291).
+   D262: only fills change (paint, no layout); a keyframe animation outranks the inline fill; ?calm=1 and "ללא אנימציות"
+   stop it on the brand colours. History: D290 happy, D291 pastel. */
+.mw-logo [data-part="mark"] path:nth-child(2) { animation: mark-clear 28s linear infinite; }
+.walk-w0 { animation: walk-w0 28s linear infinite; }
+.walk-w1 { animation: walk-w1 28s linear infinite; }
+.walk-stroke { animation: walk-stroke 28s linear infinite; }
 .walk-ink { color: #0F8478; }
+/* the walk between the seven is drawn in OKLCH, four stops a colour (keyframes interpolate in sRGB, which went olive
+   between saffron and lime); the W's deeper shades are lifted around yellow, where a dark shade turns brown or olive */
 @keyframes mark-clear {
-  0%, 100% { fill: #93E3D8; }
-  12.5% { fill: #9DDAFE; }
-  25% { fill: #C3C9FF; }
-  37.5% { fill: #E7C1F4; }
-  50% { fill: #FCBCD4; }
-  62.5% { fill: #FEC1A6; }
-  75% { fill: #F5E198; }
-  87.5% { fill: #B6DEAD; }
+  0%, 100% { fill: #12CCBC; }
+  3.571% { fill: #0CC9D1; }
+  7.143% { fill: #03C6E6; }
+  10.714% { fill: #0CC1FD; }
+  14.286% { fill: #63B9FE; }
+  17.857% { fill: #83B2FE; }
+  21.429% { fill: #9BAAFE; }
+  25.0% { fill: #B0A2FF; }
+  28.571% { fill: #C896FF; }
+  32.143% { fill: #E584FB; }
+  35.714% { fill: #F87CE0; }
+  39.286% { fill: #FE7FC0; }
+  42.857% { fill: #FE85A4; }
+  46.429% { fill: #FF8893; }
+  50.0% { fill: #FF8A83; }
+  53.571% { fill: #FE8D70; }
+  57.143% { fill: #FE8F5B; }
+  60.714% { fill: #FF933B; }
+  64.286% { fill: #FF9D05; }
+  67.857% { fill: #FBAF02; }
+  71.429% { fill: #F1BC0C; }
+  75.0% { fill: #D8BF05; }
+  78.571% { fill: #BABF06; }
+  82.143% { fill: #9CC409; }
+  85.714% { fill: #78CA3E; }
+  89.286% { fill: #46D065; }
+  92.857% { fill: #0FD18B; }
+  96.429% { fill: #06CEA7; }
 }
 @keyframes walk-w0 {
-  0%, 100% { stop-color: #49C4B7; }
-  12.5% { stop-color: #61B9EA; }
-  25% { stop-color: #9EA4E9; }
-  37.5% { stop-color: #CB98DB; }
-  50% { stop-color: #E590B1; }
-  62.5% { stop-color: #E89772; }
-  75% { stop-color: #E3C566; }
-  87.5% { stop-color: #88BF7C; }
+  0%, 100% { stop-color: #06A295; }
+  3.571% { stop-color: #069FA6; }
+  7.143% { stop-color: #079DB6; }
+  10.714% { stop-color: #0999C9; }
+  14.286% { stop-color: #0593E6; }
+  17.857% { stop-color: #3F87FE; }
+  21.429% { stop-color: #6E7BFE; }
+  25.0% { stop-color: #8E6FFB; }
+  28.571% { stop-color: #A964EB; }
+  32.143% { stop-color: #BF5AD6; }
+  35.714% { stop-color: #D152BB; }
+  39.286% { stop-color: #DF4B9D; }
+  42.857% { stop-color: #E8477C; }
+  46.429% { stop-color: #EC4764; }
+  50.0% { stop-color: #ED4A4A; }
+  53.571% { stop-color: #ED5028; }
+  57.143% { stop-color: #E76001; }
+  60.714% { stop-color: #DE7401; }
+  64.286% { stop-color: #DD8705; }
+  67.857% { stop-color: #DE9B0A; }
+  71.429% { stop-color: #DBAB01; }
+  75.0% { stop-color: #CCB409; }
+  78.571% { stop-color: #AFB307; }
+  82.143% { stop-color: #8AAE01; }
+  85.714% { stop-color: #5AAD03; }
+  89.286% { stop-color: #01AC41; }
+  92.857% { stop-color: #07A76E; }
+  96.429% { stop-color: #0AA484; }
 }
 @keyframes walk-w1 {
-  0%, 100% { stop-color: #2AA99C; }
-  12.5% { stop-color: #369DD1; }
-  25% { stop-color: #8489DA; }
-  37.5% { stop-color: #B17AC2; }
-  50% { stop-color: #CB7196; }
-  62.5% { stop-color: #CE7951; }
-  75% { stop-color: #C6A848; }
-  87.5% { stop-color: #69A45C; }
+  0%, 100% { stop-color: #068076; }
+  3.571% { stop-color: #0A7E83; }
+  7.143% { stop-color: #077C91; }
+  10.714% { stop-color: #0779A0; }
+  14.286% { stop-color: #0074B8; }
+  17.857% { stop-color: #2067DA; }
+  21.429% { stop-color: #535CDA; }
+  25.0% { stop-color: #7151D3; }
+  28.571% { stop-color: #8947C5; }
+  32.143% { stop-color: #9D3EB1; }
+  35.714% { stop-color: #AC3599; }
+  39.286% { stop-color: #B92D7E; }
+  42.857% { stop-color: #C12860; }
+  46.429% { stop-color: #C4284A; }
+  50.0% { stop-color: #C62B30; }
+  53.571% { stop-color: #C63202; }
+  57.143% { stop-color: #B94B00; }
+  60.714% { stop-color: #B45D00; }
+  64.286% { stop-color: #B56F07; }
+  67.857% { stop-color: #BA8002; }
+  71.429% { stop-color: #B99009; }
+  75.0% { stop-color: #AC9803; }
+  78.571% { stop-color: #929603; }
+  82.143% { stop-color: #718F02; }
+  85.714% { stop-color: #478B01; }
+  89.286% { stop-color: #048933; }
+  92.857% { stop-color: #038456; }
+  96.429% { stop-color: #018268; }
 }
 @keyframes walk-stroke {
-  0%, 100% { stroke: #49C4B7; }
-  12.5% { stroke: #61B9EA; }
-  25% { stroke: #9EA4E9; }
-  37.5% { stroke: #CB98DB; }
-  50% { stroke: #E590B1; }
-  62.5% { stroke: #E89772; }
-  75% { stroke: #E3C566; }
-  87.5% { stroke: #88BF7C; }
+  0%, 100% { stroke: #06A295; }
+  3.571% { stroke: #069FA6; }
+  7.143% { stroke: #079DB6; }
+  10.714% { stroke: #0999C9; }
+  14.286% { stroke: #0593E6; }
+  17.857% { stroke: #3F87FE; }
+  21.429% { stroke: #6E7BFE; }
+  25.0% { stroke: #8E6FFB; }
+  28.571% { stroke: #A964EB; }
+  32.143% { stroke: #BF5AD6; }
+  35.714% { stroke: #D152BB; }
+  39.286% { stroke: #DF4B9D; }
+  42.857% { stroke: #E8477C; }
+  46.429% { stroke: #EC4764; }
+  50.0% { stroke: #ED4A4A; }
+  53.571% { stroke: #ED5028; }
+  57.143% { stroke: #E76001; }
+  60.714% { stroke: #DE7401; }
+  64.286% { stroke: #DD8705; }
+  67.857% { stroke: #DE9B0A; }
+  71.429% { stroke: #DBAB01; }
+  75.0% { stroke: #CCB409; }
+  78.571% { stroke: #AFB307; }
+  82.143% { stroke: #8AAE01; }
+  85.714% { stroke: #5AAD03; }
+  89.286% { stroke: #01AC41; }
+  92.857% { stroke: #07A76E; }
+  96.429% { stroke: #0AA484; }
 }
 @keyframes walk-mark {
-  0%, 100% { background-color: #93E3D8; }
-  12.5% { background-color: #9DDAFE; }
-  25% { background-color: #C3C9FF; }
-  37.5% { background-color: #E7C1F4; }
-  50% { background-color: #FCBCD4; }
-  62.5% { background-color: #FEC1A6; }
-  75% { background-color: #F5E198; }
-  87.5% { background-color: #B6DEAD; }
+  0%, 100% { background-color: #12CCBC; }
+  3.571% { background-color: #0CC9D1; }
+  7.143% { background-color: #03C6E6; }
+  10.714% { background-color: #0CC1FD; }
+  14.286% { background-color: #63B9FE; }
+  17.857% { background-color: #83B2FE; }
+  21.429% { background-color: #9BAAFE; }
+  25.0% { background-color: #B0A2FF; }
+  28.571% { background-color: #C896FF; }
+  32.143% { background-color: #E584FB; }
+  35.714% { background-color: #F87CE0; }
+  39.286% { background-color: #FE7FC0; }
+  42.857% { background-color: #FE85A4; }
+  46.429% { background-color: #FF8893; }
+  50.0% { background-color: #FF8A83; }
+  53.571% { background-color: #FE8D70; }
+  57.143% { background-color: #FE8F5B; }
+  60.714% { background-color: #FF933B; }
+  64.286% { background-color: #FF9D05; }
+  67.857% { background-color: #FBAF02; }
+  71.429% { background-color: #F1BC0C; }
+  75.0% { background-color: #D8BF05; }
+  78.571% { background-color: #BABF06; }
+  82.143% { background-color: #9CC409; }
+  85.714% { background-color: #78CA3E; }
+  89.286% { background-color: #46D065; }
+  92.857% { background-color: #0FD18B; }
+  96.429% { background-color: #06CEA7; }
 }
 
 
