@@ -131,7 +131,6 @@ function LaunchDate() {
       {dates && (<>
         <b>{LAUNCH.start}{dates.start}?</b>
         <span>{LAUNCH.end} <strong>{dates.end}</strong>.</span>
-        <small>{LAUNCH.note}</small>
       </>)}
     </p>
   )

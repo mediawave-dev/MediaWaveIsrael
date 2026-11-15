@@ -293,7 +293,7 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
   .kind:hover .ring { box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--ink), 0 14px 24px -14px rgba(23, 24, 28, .45); }
 }
 /* running text never leaves one word alone on its last line */
-.kind p, .route__stop p, .launch small, .contact__lede { text-wrap: pretty; }
+.kind p, .route__stop p, .contact__lede { text-wrap: pretty; }
 .ring { display: grid; place-items: center; width: 104px; height: 104px; margin: 4px; border-radius: 50%; background: #fff; border: 2px solid var(--ink); box-shadow: 0 0 0 5px #fff, 0 0 0 7px var(--sun), 0 14px 24px -14px rgba(23, 24, 28, .45); }
 .ring svg { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .ring svg .fill { fill: var(--sun); }
@@ -319,12 +319,12 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
 
 /* the date a page started now goes live: a white slip on the yellow */
 .launch { min-height: 118px; margin: 40px auto 0; max-width: 560px; display: grid; gap: 4px; align-content: center; text-align: center; padding: 18px 20px; background: #fff; border-radius: 8px; box-shadow: 0 16px 30px -18px rgba(23, 24, 28, .5); }
-.launch:empty { min-height: 164px; background: none; box-shadow: none; }
-@media (min-width: 540px) { .launch:empty { min-height: 126px; } }
+/* before the dates are written (the app's first moment) the slip keeps its place: two lines, 118px at every width
+   since the note under them left (D284), so the page never moves when they arrive */
+.launch:empty { min-height: 118px; background: none; box-shadow: none; }
 .launch b { font: 400 1.125rem/1.4 var(--display); }
 .launch span { font: 700 clamp(1.1875rem, 4.6vw, 1.5rem)/1.3 var(--display); }
 .launch strong { background: linear-gradient(var(--sun), var(--sun)) 50% 92% / 100% 36% no-repeat; padding-inline: .1em; white-space: nowrap; }
-.launch small { margin-block-start: 6px; font-size: .8125rem; line-height: 1.5; color: var(--ink-2); }
 .launch + .band__cta { margin-block-start: 28px; }
 
 /* ---------- faq ---------- */
@@ -549,7 +549,7 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 
 /* Artzisraeli carries the voice of the site (Nati, 13.11.2026): headings, buttons, the menu, labels, the slip,
    the contact ways and the footer's heads. Running text is David Libre (D269). */
-.btn, .head__nav a, .head__cta, .tab span, .field label, .contact__ways a, .launch small, .crumbs, .faq summary, .sticker, .kind__link, .more, .foot nav a, .foot__in > div > a, .foot__legal { font-family: var(--display); }
+.btn, .head__nav a, .head__cta, .tab span, .field label, .contact__ways a, .crumbs, .faq summary, .sticker, .kind__link, .more, .foot nav a, .foot__in > div > a, .foot__legal { font-family: var(--display); }
 .h2, .h1 .h1__rest, .launch b, .about__close span, .sign { font-weight: 700; }
 
 /* ---------- the contact circle (D256): pastel yellow, an envelope, and one moment as it comes into view.

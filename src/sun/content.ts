@@ -87,7 +87,6 @@ export const PROCESS = {
 export const LAUNCH = {
   start: 'שלחתם חומרים ב',
   end: 'דף נחיתה רגיל באוויר עד',
-  note: 'אנחנו סופרים 7 ימי עבודה, ראשון עד חמישי. חג באמצע מזיז את התאריך.',
 }
 
 const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']

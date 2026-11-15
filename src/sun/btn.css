@@ -122,5 +122,20 @@ html.high-contrast :is(.btn.btn, .tab.tab)::before, html.high-contrast :is(.btn.
 /* D279 (Nati, 16.11.2026: "תעצב אותן גם כמו את הכפתורים שמצד שמאל למעלה"): on the white corner and the white panel
    the clear glass vanishes into the paper. There the glass carries the field's mint itself, at the share that gives the
    header's buttons' colour over the field (#C9E8E2 at 70% over white = white glass at 30% over the mint). */
-:is(.pin__menu, .a11y__head .icon-btn) { background: rgba(201, 232, 226, .7); }
+.a11y__head .icon-btn { background: rgba(201, 232, 226, .7); }
+/* D284 (Nati: "את הכפתור המבורגר תעשה ללא צבע מוגדר אבל כן שיהיה בצורת הבועה כמו הכפתורים שמשמאל"): the corner's
+   menu button has no colour of its own. It is a clear bubble on the white corner. On the mint, the header's buttons
+   read as bubbles through their white light. On white that light is lost, so the volume is drawn in light and neutral
+   shade: a lens of light at the upper side, a shade gathered inside the lower edge, a hairline rim, the same shadow
+   under it. */
+.pin__menu {
+  background: radial-gradient(90% 80% at 35% 18%, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 62%);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow:
+    0 0 0 .5px rgba(19, 36, 31, .22),
+    inset 1px 1.5px 1px #fff,
+    inset 0 -7px 10px -6px rgba(19, 36, 31, .16),
+    inset -1px -1px 2px rgba(19, 36, 31, .08),
+    0 6px 14px -8px rgba(19, 36, 31, .35);
+}
 html.high-contrast :is(.pin__menu, .a11y__head .icon-btn) { background: #fff; }
