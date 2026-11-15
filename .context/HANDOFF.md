@@ -1,12 +1,12 @@
-# HANDOFF: the statement site (look `sun`), state on 16.11.2026 after D281
+# HANDOFF: the statement site (look `sun`), state on 16.11.2026 after D282
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D281). The next decision number is **D282**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D282). The next decision number is **D283**.
 
 ## Latest (15.11 night): D275 to D278 on both previews
 - **Buttons (D275, D277):** every button is a capsule of lens glass (`src/sun/btn.css`; the refraction filter is injected by `btn.ts` only in Chromium, the iPhone shows frosted glass). One conductor in `btn.ts` plays one beat at a time; every WhatsApp button plays the relay he described, as amended in D278 (chevrons from the middle out to the left, the MediaWave disc rolling in on its horizon in the header disc's colours, chevrons again, label back; the message line is gone; the ink glass is 84%); "איך זה עובד" dives in every turn (D280). Parts in `ButtonParts.tsx` (Glyph, Go, Say, Stage).
 - **Phones (D276, D279):** only switchon, mediawave-2026 and maof keep the status strip (`STEADY_TOP` in `Wheel.tsx`); the rest run full screen under the island. iPhone 17 look in `sun.css` (`.wheel__card`, `--bz`, `--rad`, `--sb`, the island, the status strip from `--shot` set in `Wheel.tsx` and the service shots in `pages.tsx`).
-- **Body text (D281):** EFT OffSet Bold (`public/fonts/eft/offset-bold.woff2`, "MW Text" in `fonts.css`, preloaded); headings, buttons and labels stay Artzisraeli. Committed locally; push only after Nati approves the images.
+- **Body text (D281):** EFT OffSet Bold (`public/fonts/eft/offset-bold.woff2`, "MW Text" in `fonts.css`, preloaded); headings, buttons and labels stay Artzisraeli. D282: everything centred (`src/sun/center.css`, loaded last) and a new line after every sentence (`src/sun/sentences.ts`, a DOM pass after each render, prerendered too). D281 and D282 are committed locally; push only after Nati approves the images.
 - Not checked on a real iPhone. Production untouched; still blocked by the EFT web licence and his go.
 - Scratch scripts in `C:/tmp/night/fonts/`: `beats-video.mjs relay` (slow-motion recorder, dev hook `window.__mwBeat`), `conductor-check.mjs`, `lens-scroll.mjs`, `phones-shot.mjs`.
 

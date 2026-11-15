@@ -8,7 +8,10 @@ import './fonts.css'
 import './sun.css'
 import './btn.css'
 import SunApp from './SunApp'
+// D282: everything centred; last, so it outranks the sections' own CSS wherever it lands
+import './center.css'
 import { startButtons } from './btn'
+import { startSentences } from './sentences'
 import { installStaleChunkReload } from '../utils/stale-chunk'
 
 // a tab from before a deploy reloads once instead of failing on chunks that are gone
@@ -20,6 +23,8 @@ if (/[?&]reduce=1(&|$)/.test(location.search)) document.documentElement.classLis
 if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.add('calm')
 // D275: the buttons' beats (and the lens filter where the browser can draw it)
 startButtons()
+// D282: a new line after every sentence in the running text (sentences.ts)
+startSentences()
 
 const root = createRoot(document.getElementById('root')!)
 startTransition(() => {
