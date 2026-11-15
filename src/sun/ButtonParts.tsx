@@ -67,17 +67,19 @@ export function Say({ children, alt }: { children: string; alt?: string }) {
   )
 }
 
-/** D285 (Nati, 16.11.2026: "תוריד את הבועה מכפתור ההמבורגר. שיהיה בלי בכלל. ותעצב אותו אחרת שיהיה סופר יפהפה וייחודי"):
-    the menu's glyph. Three strokes, and the middle one is a wave: the horizon line of the MediaWave disc that stands
-    beside it in the corner. The button's aria-expanded drives it (btn.css): open, the two straight strokes turn into
-    an X and the wave flattens away; under a pointer the wave turns over. All three are one line laid at the middle,
-    placed by transforms, so every change is a transform that eases. */
+/** D285, D286 (Nati, 16.11.2026: "תוריד את הבועה מכפתור ההמבורגר... ותעצב אותו אחרת שיהיה סופר יפהפה וייחודי", then
+    "תעשה פשוט שלושה גלים יפהפיים"): the menu's glyph is three waves, one above the other, each the horizon line of the
+    MediaWave disc that stands beside it in the corner (the same dip at the start and rise at the end). The button's
+    aria-expanded drives it (btn.css): open, the outer two flatten into straight strokes as they turn into an X and the
+    middle one flattens away; under a pointer the three turn over one after the other, a ripple passing. One wave,
+    laid at the middle three times and placed by transforms, so every change is a transform that eases. */
+const WAVE = 'M4 12c2.67 2 5.33 2 8 0s5.33-2 8 0'
 export function MenuGlyph() {
   return (
     <svg className="menu-glyph" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-      <path className="menu-glyph__a" d="M4 12H20" />
-      <path className="menu-glyph__w" d="M4 12c2.67 2.4 5.33 2.4 8 0s5.33-2.4 8 0" />
-      <path className="menu-glyph__b" d="M4 12H20" />
+      <path className="menu-glyph__a" d={WAVE} />
+      <path className="menu-glyph__w" d={WAVE} />
+      <path className="menu-glyph__b" d={WAVE} />
     </svg>
   )
 }

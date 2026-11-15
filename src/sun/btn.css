@@ -128,20 +128,22 @@ html.high-contrast :is(.btn.btn, .tab.tab)::before, html.high-contrast :is(.btn.
 .pin .pin__menu, .pin .pin__menu:hover { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
 html.high-contrast .a11y__head .icon-btn { background: #fff; }
 
-/* the menu's glyph (ButtonParts, MenuGlyph): three strokes, the middle one the disc's horizon wave. At rest the
-   straight ones stand above and below it, the lower one shorter (the old menu's rhythm); open, they turn into an X
-   about the middle and the wave flattens away; under a pointer the wave turns over. Strokes keep their width under
-   the scale (non-scaling-stroke), so the short stroke's round ends stay round. */
+/* the menu's glyph (ButtonParts, MenuGlyph; D286): three waves, the disc's horizon, one above the other. Open, the outer
+   two flatten into straight strokes (a thousandth of their height: at zero the browser would stop drawing them) as they turn into an X about the middle, and the middle one
+   flattens away. Under a pointer the three turn over one after the other, a ripple passing down. Strokes keep their
+   width under every scale (non-scaling-stroke), so a flattened wave is a clean stroke with round ends. */
 .menu-glyph { display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.9px; stroke-linecap: round; stroke-linejoin: round; }
-.menu-glyph path { vector-effect: non-scaling-stroke; transform-box: view-box; transform-origin: 12px 12px; transition: transform .5s cubic-bezier(.3, 1.3, .4, 1), opacity .25s ease; }
+.menu-glyph path { vector-effect: non-scaling-stroke; transform-box: view-box; transform-origin: 12px 12px; transition: transform .55s cubic-bezier(.3, 1.25, .4, 1), opacity .25s ease; }
 .menu-glyph__a { transform: translate(0, -5.6px) rotate(0deg) scale(1, 1); }
-.menu-glyph__b { transform: translate(-3px, 5.6px) rotate(0deg) scale(.625, 1); }
-.menu-glyph__w { transform: scale(1, 1); }
-[aria-expanded="true"] > .menu-glyph .menu-glyph__a { transform: translate(0, 0) rotate(45deg) scale(1, 1); }
-[aria-expanded="true"] > .menu-glyph .menu-glyph__b { transform: translate(0, 0) rotate(-45deg) scale(1, 1); }
-[aria-expanded="true"] > .menu-glyph .menu-glyph__w { transform: scale(.15, 1); opacity: 0; }
+.menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(1, 1); transition-delay: .05s; }
+.menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, 1); transition-delay: .1s; }
+[aria-expanded="true"] > .menu-glyph path { transition-delay: 0s; }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__a { transform: translate(0, 0) rotate(45deg) scale(1, .001); }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__b { transform: translate(0, 0) rotate(-45deg) scale(1, .001); }
+[aria-expanded="true"] > .menu-glyph .menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(.15, .001); opacity: 0; }
 @media (hover: hover) {
-  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__w { transform: scale(1, -1); }
-  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, 1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__a { transform: translate(0, -5.6px) rotate(0deg) scale(1, -1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(1, -1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, -1); }
 }
 html.disable-animations .menu-glyph path { transition: none; }
