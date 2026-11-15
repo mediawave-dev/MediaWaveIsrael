@@ -35,7 +35,7 @@ const ORDER: [string, string][] = [
   ['switchon', 'top'], ['machtesh', 'top'], ['maof', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
   ['horizon', 'top'], ['zimzum', 'top'], ['ben-david', 'top'], ['hila', 'top'],
 ]
-/** D279 (Nati, 16.11.2026, on the Machtesh phone: "תסדר שבאתר מכתש האתר יהיה על כל המסך. בחלק העליון זה לא טבעי"):
+/** D279 (Nati, 15.11.2026, on the Machtesh phone: "תסדר שבאתר מכתש האתר יהיה על כל המסך. בחלק העליון זה לא טבעי"):
     the status strip behind the island (D276) is painted from the top of the still picture, so it is right only where
     the recording keeps that colour at its top all the way through. Measured on every recording (the top row at 1, 5,
     9 and 13 s against the picture): these three keep it. Every other site scrolls to another colour (Machtesh to its

@@ -162,9 +162,9 @@ function Header() {
   )
 }
 
-/** D288 (Nati, 16.11.2026, option 6 of six: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי"): the footer is the logo's
+/** D288 (Nati, 15.11.2026, option 6 of six: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי"): the footer is the logo's
     horizon drawn across the page's end. Above the line, on the paper, the MW mark, its line and the four ways to reach
-    us; the line is the disc's own wave; below it, on the deep teal, the two link lists and the legal line, with the
+    us; the line is the disc's own wave; below it, on the sea, the two link lists and the legal line, with the
     back-to-top buoy on its rule. The light motion (useHorizon): a paler swell behind the wave drifts slowly sideways
     while the footer is on screen, and the wave moves a little with the scroll. */
 function Footer() {
@@ -226,13 +226,12 @@ const FRONT = 'M0 22C100 40 100 40 200 22S300 4 400 22V44H0Z'
 const SWELL = 'M0 22C100 40 100 40 200 22S300 4 400 22S500 40 600 22S700 4 800 22V44H0Z'
 
 /** D289 (Nati: "אני רוצה שהצבע למטה ישתנה כל הזמן כמו האייקון שמשתנה. בצורה טבעית ואיכותית"): the sea walks through the
-    disc's colours on the disc's own clock (D262, D268: 36 s a round, every walk started at the page's time zero), each
-    one deep enough for the white text on it (5.75 to 7.8:1 along the whole walk, the pale labels at least 5.1:1); the swell behind the wave
-    takes the disc's clear colour itself. The stops and their places are the disc's (sun.css, mark-clear), yellow
-    becoming a deep amber so the white stays readable. */
+    disc's colours on the disc's own clock (D262, D268: 36 s a round, every walk started at the page's time zero).
+    D290 (the happier walk): the sea is the disc's water, its clear half (sun.css, mark-clear: the same stops in the
+    same places), bright, with the ink on it at 5.0:1 or more along the whole walk; the swell behind the wave is the
+    same colour at half strength. */
 const WALK_MS = 36000
-const SEA: [number, string][] = [[0, '#0D6F65'], [1 / 6, '#1D5E9A'], [2 / 6, '#4B3FB8'], [3 / 6, '#A8345A'], [4 / 6, '#A34E10'], [0.75, '#8F5A0C'], [5 / 6, '#2F6E2A'], [1, '#0D6F65']]
-const CLEAR: [number, string][] = [[0, '#14A390'], [1 / 6, '#2E9BE6'], [2 / 6, '#7B6CF0'], [3 / 6, '#EE6A8C'], [4 / 6, '#F59A3C'], [0.75, '#EFC53A'], [5 / 6, '#5DBB4F'], [1, '#14A390']]
+const CLEAR: [number, string][] = [[0, '#19C4B1'], [1 / 7, '#3AA8FF'], [2 / 7, '#8E7CFF'], [3 / 7, '#FF6BAE'], [4 / 7, '#FF8558'], [5 / 7, '#FFC53D'], [6 / 7, '#66D36E'], [1, '#19C4B1']]
 const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 function walkAt(stops: [number, string][], k: number) {
   let i = 0
@@ -246,9 +245,9 @@ function walkAt(stops: [number, string][], k: number) {
 
 /** The footer's light motion. The swell drifts only while the footer is on screen (data-live, a CSS animation of a
     transform on its own box, the compositor's work); the wave follows the scroll a few pixels (--fx), read in the
-    scroll event and written once a frame; and while it is on screen the sea and the swell walk through the disc's
-    colours (--sea, --swell, written every other frame from the page's clock). Nothing moves, and the sea stays the
-    brand's teal, with ?calm=1, "ללא אנימציות", high contrast, or in the prerender. */
+    scroll event and written once a frame; and while it is on screen the sea walks through the disc's colours (--sea,
+    written every other frame from the page's clock). Nothing moves, and the sea stays the brand's teal, with ?calm=1,
+    "ללא אנימציות", high contrast, or in the prerender. */
 function useHorizon(foot: React.RefObject<HTMLElement>) {
   useEffect(() => {
     const el = foot.current
@@ -269,7 +268,7 @@ function useHorizon(foot: React.RefObject<HTMLElement>) {
       fx = (k - 0.5) * 36
       if (!raf) raf = requestAnimationFrame(write)
     }
-    const rest = () => { el.style.removeProperty('--sea'); el.style.removeProperty('--swell') }
+    const rest = () => el.style.removeProperty('--sea')
     const colour = () => {
       walk = 0
       if (!live) return
@@ -281,8 +280,7 @@ function useHorizon(foot: React.RefObject<HTMLElement>) {
         const now = disc ? Number(disc.currentTime ?? 0) : null
         if (now === null) { rest(); walk = 0; return }
         const k = ((now % WALK_MS) + WALK_MS) % WALK_MS / WALK_MS
-        el.style.setProperty('--sea', walkAt(SEA, k))
-        el.style.setProperty('--swell', walkAt(CLEAR, k))
+        el.style.setProperty('--sea', walkAt(CLEAR, k))
       }
       walk = requestAnimationFrame(colour)
     }

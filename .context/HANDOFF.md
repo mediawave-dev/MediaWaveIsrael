@@ -1,9 +1,16 @@
-# HANDOFF: the statement site (look `sun`), state on 16.11.2026 after D289 (D289 local)
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D290 (D289 and D290 local)
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D289). The next decision number is **D290**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D290). The next decision number is **D291**.
 
-## IN PRODUCTION since 16.11.2026 (main e1d0243 after D285-D287; rollback tag `prod-before-sun` = 50a31eb)
+## Waiting for his go (local on `night/statement-20261114`, not pushed anywhere)
+- **D289:** the footer's sea walks with the disc's colours, read from the disc's own animation clock (`useHorizon` in `Shell.tsx`).
+- **D290:** the happier walk (seven colours; the clear half = the disc's water and now the footer's sea with ink text, 4.98:1 or more; the deep half turns back through fuchsia and purple so it never goes olive or brown), plus two sections that enter with the scroll: `Custom` (a WhatsApp thread, after Offer) and `Pitch` ("אנחנו MediaWave", before Contact) in `Home.tsx`, the motion hook `src/sun/stage.ts`, styles `src/sun/stage.css`, copy `PITCH` and `CUSTOM` in `content.ts` (his wording turned to the plural).
+- Checked on the build: 12 pages clean at 390 and 1440, axe 0, no layout jump; the two sections stand finished with ?calm=1 and the stop switch; the footer in its four modes. Scripts: `C:/tmp/night/fonts/stage-still.mjs`, `foot-modes.mjs`, `walk-contrast.mjs`, recorders `stage-video.mjs`, `sea-walk.mjs`.
+- On his yes: push `night/statement-20261114:main` (command below), wait for the production bundle to change, rerun the gates on mediawave.co.il.
+- Records fixed in D290: D279 to D289 were logged as 16.11 by mistake; everything, the release included, happened on 15.11.
+
+## IN PRODUCTION since 15.11.2026 (main 8da3de1 after D288; rollback tag `prod-before-sun` = 50a31eb)
 - Checked on https://mediawave.co.il after the deploy: the new bundle, 12 pages clean at 390 and 1440 (axe 0, no overflow, no layout jump), a garbage URL answers 404, /your-site 302 to home, /api/event rejects an empty POST with 400 (no fake event sent), /api/lead 200.
 - Lighthouse mobile, median of 3: / 95, /services/landing-pages/ 98, /privacy/ 97; a11y and best practices 100; CLS 0; LCP 2.6 / 1.9 / 2.4 s (lab, the same level as D274 before the day's work). SEO 92 only because Cloudflare's managed robots.txt adds a `Content-Signal` line Lighthouse does not know (not in the repo; there before the release too); his call in the Cloudflare dashboard.
 - GPTBot and ClaudeBot still get 403 from the Cloudflare zone; the search and user agents get 200 (his call, unchanged).

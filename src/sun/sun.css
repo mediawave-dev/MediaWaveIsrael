@@ -63,7 +63,7 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
 html.disable-animations { scroll-behavior: auto; }
 html.disable-animations *, html.disable-animations *::before, html.disable-animations *::after { animation: none !important; transition: none !important; }
 /* ?calm=1 stops what moves by itself (the loops), not what answers a hand */
-html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path, .mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text, .walk-w0, .walk-w1, .walk-stroke) { animation: none !important; }
+html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path, .mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text, .walk-w0, .walk-w1, .walk-stroke, .walk-ink, .walk-bg) { animation: none !important; }
 
 .skip { position: absolute; inset-inline-start: 12px; top: -80px; z-index: 100; background: var(--ink); color: #fff; padding: 12px 18px; border-radius: 12px; }
 .skip:focus { top: 12px; }
@@ -381,15 +381,16 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
   .contact__in { width: 380px; }
 }
 
-/* ---------- footer (D288, Nati 16.11.2026, option 6: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי") ----------
+/* ---------- footer (D288, Nati 15.11.2026, option 6: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי") ----------
    The logo's horizon across the page's end (Shell.tsx, Footer): above the line, on the paper, the MW mark, its line and
    the four ways to reach us; the line is the disc's wave (down on the left, up on the right); below it, on the deep
-   teal, the site's two link lists and the legal line, the back-to-top buoy riding its rule. The teal is deep enough
-   for white text (6.0:1) and the pale labels (5.4:1). The light motion: a paler swell behind the wave drifts while the
-   footer is on screen (data-live), and the wave moves a few pixels with the scroll (--fx). D289: while it is on screen
-   the sea and the swell walk through the disc's colours on the disc's clock (Shell.tsx, useHorizon writes --sea and
-   --swell); here they rest on the brand's teal. */
-.foot { --sea: #0D6F65; background: var(--paper); }
+   teal, the site's two link lists and the legal line, the back-to-top buoy riding its rule. The light motion: a paler
+   swell behind the wave drifts while the footer is on screen (data-live), and the wave moves a few pixels with the
+   scroll (--fx). D289: while it is on screen the sea walks through the disc's colours on the disc's clock (Shell.tsx,
+   useHorizon writes --sea). D290 (the happier walk): the sea is the disc's water, its clear half, bright, with the
+   ink on it (5.0:1 or more along the whole walk); the swell is the same colour at half strength. Here it rests on the
+   brand's teal (ink on it 5.1:1). */
+.foot { --sea: #14A390; background: var(--paper); }
 .foot__top { display: grid; justify-items: center; text-align: center; padding-block: 48px 26px; }
 .foot__brand { display: grid; justify-items: center; }
 .foot__brand p { margin: 14px auto 0; font-weight: 600; max-width: 20em; text-wrap: balance; color: var(--ink-text); }
@@ -410,7 +411,7 @@ html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 .foot__ways { display: flex; justify-content: center; gap: 14px; margin: 24px 0 0; padding: 0; list-style: none; }
 .foot__way { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: #fff; box-shadow: 0 10px 18px -12px rgba(19, 36, 31, .6); transition: transform .45s cubic-bezier(.2, 1.5, .4, 1), background-color .25s ease; -webkit-tap-highlight-color: transparent; }
 .foot__way svg { width: 22px; height: 22px; }
-@media (hover: hover) { .foot__way:hover { transform: translateY(-3px); background: var(--sea); } }
+@media (hover: hover) { .foot__way:hover { transform: translateY(-3px); background: var(--sea); color: var(--ink); } }
 .foot__way:active { transform: scale(.94); transition-duration: .12s; }
 .foot__way:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
 
@@ -420,22 +421,21 @@ html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
 .foot__swell { top: -7px; left: 0; width: 200%; opacity: .5; }
 .foot__front { left: -6%; width: 112%; transform: translateX(calc(var(--fx, 0) * 1px)); }
 .foot__horizon svg { display: block; width: 100%; height: 100%; }
-.foot__swell svg { fill: var(--swell, #14A390); }
-.foot__front svg { fill: var(--sea); }
+.foot__horizon svg { fill: var(--sea); }
 .foot[data-live] .foot__swell { animation: foot-swell 22s linear infinite; }
 @keyframes foot-swell { to { transform: translateX(-50%); } }
 html:is(.calm, .disable-animations) .foot .foot__swell { animation: none; }
 html:is(.calm, .disable-animations) .foot__front { transform: none; }
 
 /* the sea: the two lists side by side, the legal line under them, room at the end for the floating capsule */
-.foot__sea { background: var(--sea); color: #fff; margin-block-start: -1px; }
+.foot__sea { background: var(--sea); color: var(--ink); margin-block-start: -1px; }
 .foot__in { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-block: 20px 28px; text-align: center; }
 .foot__in nav { display: grid; justify-items: center; align-content: start; }
-.foot__h { font: 700 .75rem/1 var(--display); letter-spacing: .14em; color: #E2F6F2; margin: 0 0 10px; }
-.foot .foot__in a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 44px; font: 600 .9375rem/1.3 var(--text); color: #fff; text-wrap: balance; }
-.foot__legal { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 20px; border-block-start: 1px solid rgba(255, 255, 255, .32); padding-block: 36px calc(104px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: .9375rem; }
-.foot__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; font-weight: 600; color: #fff; }
-.foot__legal span { order: 2; flex-basis: 100%; font-size: .8125rem; color: rgba(255, 255, 255, .85); }
+.foot__h { font: 700 .75rem/1 var(--display); letter-spacing: .14em; color: var(--ink); margin: 0 0 10px; }
+.foot .foot__in a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 44px; font: 600 .9375rem/1.3 var(--text); color: var(--ink); text-wrap: balance; }
+.foot__legal { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 20px; border-block-start: 1px solid rgba(19, 36, 31, .22); padding-block: 36px calc(104px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: .9375rem; }
+.foot__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; font-weight: 600; color: var(--ink); }
+.foot__legal span { order: 2; flex-basis: 100%; font-size: .8125rem; color: var(--ink); }
 @media (hover: hover) { .foot .foot__in a:hover, .foot__legal a:hover { text-decoration: underline; text-underline-offset: 4px; } }
 @media (min-width: 900px) {
   .foot__top { padding-block: 64px 30px; }
@@ -444,9 +444,11 @@ html:is(.calm, .disable-animations) .foot__front { transform: none; }
   .foot__in { grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: center; column-gap: 96px; padding-block: 34px 44px; }
   .foot__legal { padding-block-end: calc(96px + env(safe-area-inset-bottom, 0px)); }
 }
-/* high contrast: the sea is black, the swell rests, the lines stay white */
+/* high contrast: the sea is black, the swell rests, the lines are white */
 html.high-contrast .foot { --sea: #000; }
 html.high-contrast .foot__swell { display: none; }
+html.high-contrast :is(.foot__sea, .foot__h, .foot .foot__in a, .foot__legal a, .foot__legal span) { color: #fff; }
+html.high-contrast .foot__legal { border-block-start-color: rgba(255, 255, 255, .6); }
 
 /* ---------- floating: WhatsApp and the cookie note ---------- */
 .tab { position: fixed; z-index: 70; inset-inline-end: 0; bottom: var(--browser-chrome-bottom); width: 178px; height: 84px; display: flex; align-items: flex-end; color: #fff; font-weight: 700; opacity: 0; transform: translateY(100%); pointer-events: none; transition: opacity .25s, transform .4s var(--ease); }
@@ -618,6 +620,13 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
 .wheel__screen video[data-on] { opacity: 1; }
 
+/* D290 (Nati, 15.11.2026: "אני רוצה צבעים יותר 'שמחים'. תשנה את הפלטת צבעים שמשתנה כל הזמן. גם באייקון וגם בפוטר"):
+   a happier walk, seven colours a round in the same 36 s. The clear half (the disc's water, the footer's sea, the
+   marker): turquoise, sky, lilac, pink, coral, sun, lime. The deep half ("Wave", the footer's W, the chat's send
+   button): the jewel tone of the first five (deep teal, royal, violet, raspberry, red-orange), then fuchsia beside the
+   sun and purple beside the lime. A deep yellow or a deep green after an orange is olive and brown on the way, so the
+   deep half turns back through the warm purples instead; white on it reads at 5.2:1 or more along the whole walk.
+   At rest (?calm=1, "ללא אנימציות") everything stands on the brand. */
 /* ---------- D262: the logo's mark never stands still in colour (Nati, 13.11.2026). The lower half walks slowly through
    six clear colours and the upper half through the deep tone of each, one full round in 36 seconds, so the change
    is felt more than seen. Only the fill of two small paths changes (paint only, no layout). A keyframe
@@ -625,21 +634,22 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .mw-logo [data-part="mark"] path:nth-child(1) { animation: mark-deep 36s linear infinite; }
 .mw-logo [data-part="mark"] path:nth-child(2) { animation: mark-clear 36s linear infinite; }
 @keyframes mark-clear {
-  0%, 100% { fill: #14A390; }
-  16.66% { fill: #2E9BE6; }
-  33.33% { fill: #7B6CF0; }
-  50% { fill: #EE6A8C; }
-  66.66% { fill: #F59A3C; }
-  75% { fill: #EFC53A; } /* through yellow, so orange never turns olive on its way to green */
-  83.33% { fill: #5DBB4F; }
+  0%, 100% { fill: #19C4B1; }
+  14.29% { fill: #3AA8FF; }
+  28.57% { fill: #8E7CFF; }
+  42.86% { fill: #FF6BAE; }
+  57.14% { fill: #FF8558; }
+  71.43% { fill: #FFC53D; }
+  85.71% { fill: #66D36E; }
 }
 @keyframes mark-deep {
-  0%, 100% { fill: #13241F; }
-  16.66% { fill: #12233F; }
-  33.33% { fill: #1F1B45; }
-  50% { fill: #3A1630; }
-  66.66% { fill: #3B2412; }
-  83.33% { fill: #17301A; }
+  0%, 100% { fill: #0B7A70; }
+  14.29% { fill: #1E62D0; }
+  28.57% { fill: #5A3ED6; }
+  42.86% { fill: #C2185B; }
+  57.14% { fill: #B53A1A; }
+  71.43% { fill: #B0127A; }
+  85.71% { fill: #6233C8; }
 }
 /* D268 (Nati, 14.11.2026): "Wave" in the header, its drop, and the footer's W change with the disc, on the same clock
    (Shell syncs every walk to the page's start). Text takes a deeper shade of each colour, as "Wave" always did
@@ -648,41 +658,43 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .walk-w0 { animation: walk-w0 36s linear infinite; }
 .walk-w1 { animation: walk-w1 36s linear infinite; }
 .walk-stroke { animation: walk-stroke 36s linear infinite; }
+.walk-ink { color: #0F8478; animation: walk-ink 36s linear infinite; }
+.walk-bg { animation: walk-bg 36s linear infinite; }
 @keyframes walk-text {
-  0%, 100% { fill: #0F8478; }
-  16.66% { fill: #257CB8; }
-  33.33% { fill: #6256C0; }
-  50% { fill: #BE5570; }
-  66.66% { fill: #C47B30; }
-  75% { fill: #BF9E2E; }
-  83.33% { fill: #4A963F; }
+  0%, 100% { fill: #0B7A70; }
+  14.29% { fill: #1E62D0; }
+  28.57% { fill: #5A3ED6; }
+  42.86% { fill: #C2185B; }
+  57.14% { fill: #B53A1A; }
+  71.43% { fill: #B0127A; }
+  85.71% { fill: #6233C8; }
 }
 @keyframes walk-w0 {
-  0%, 100% { stop-color: #27C2AE; }
-  16.66% { stop-color: #4DAAEA; }
-  33.33% { stop-color: #8F82F2; }
-  50% { stop-color: #F1809D; }
-  66.66% { stop-color: #F7A959; }
-  75% { stop-color: #F1CE58; }
-  83.33% { stop-color: #75C569; }
+  0%, 100% { stop-color: #19C4B1; }
+  14.29% { stop-color: #3AA8FF; }
+  28.57% { stop-color: #8E7CFF; }
+  42.86% { stop-color: #FF6BAE; }
+  57.14% { stop-color: #FF8558; }
+  71.43% { stop-color: #FFC53D; }
+  85.71% { stop-color: #66D36E; }
 }
 @keyframes walk-w1 {
-  0%, 100% { stop-color: #0F8478; }
-  16.66% { stop-color: #257CB8; }
-  33.33% { stop-color: #6256C0; }
-  50% { stop-color: #BE5570; }
-  66.66% { stop-color: #C47B30; }
-  75% { stop-color: #BF9E2E; }
-  83.33% { stop-color: #4A963F; }
+  0%, 100% { stop-color: #0B7A70; }
+  14.29% { stop-color: #1E62D0; }
+  28.57% { stop-color: #5A3ED6; }
+  42.86% { stop-color: #C2185B; }
+  57.14% { stop-color: #B53A1A; }
+  71.43% { stop-color: #B0127A; }
+  85.71% { stop-color: #6233C8; }
 }
 @keyframes walk-stroke {
-  0%, 100% { stroke: #14A390; }
-  16.66% { stroke: #2E9BE6; }
-  33.33% { stroke: #7B6CF0; }
-  50% { stroke: #EE6A8C; }
-  66.66% { stroke: #F59A3C; }
-  75% { stroke: #EFC53A; }
-  83.33% { stroke: #5DBB4F; }
+  0%, 100% { stroke: #19C4B1; }
+  14.29% { stroke: #3AA8FF; }
+  28.57% { stroke: #8E7CFF; }
+  42.86% { stroke: #FF6BAE; }
+  57.14% { stroke: #FF8558; }
+  71.43% { stroke: #FFC53D; }
+  85.71% { stroke: #66D36E; }
 }
 
 
@@ -708,3 +720,30 @@ main :is(h1, h2, h3, h4) { font-family: "MW Head XL", "MW Head XL Fallback", Ari
 .oops__acts { display: flex; flex-wrap: wrap; gap: 12px; }
 /* D281: three sentences of content left the headings' face for the text's (EFT OffSet): the note under the hero's
    buttons, the footer's line, the signature's WhatsApp line (proof.css) */
+@keyframes walk-ink {
+  0%, 100% { color: #0B7A70; }
+  14.29% { color: #1E62D0; }
+  28.57% { color: #5A3ED6; }
+  42.86% { color: #C2185B; }
+  57.14% { color: #B53A1A; }
+  71.43% { color: #B0127A; }
+  85.71% { color: #6233C8; }
+}
+@keyframes walk-bg {
+  0%, 100% { background-color: #0B7A70; }
+  14.29% { background-color: #1E62D0; }
+  28.57% { background-color: #5A3ED6; }
+  42.86% { background-color: #C2185B; }
+  57.14% { background-color: #B53A1A; }
+  71.43% { background-color: #B0127A; }
+  85.71% { background-color: #6233C8; }
+}
+@keyframes walk-mark {
+  0%, 100% { background-color: #19C4B1; }
+  14.29% { background-color: #3AA8FF; }
+  28.57% { background-color: #8E7CFF; }
+  42.86% { background-color: #FF6BAE; }
+  57.14% { background-color: #FF8558; }
+  71.43% { background-color: #FFC53D; }
+  85.71% { background-color: #66D36E; }
+}

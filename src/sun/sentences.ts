@@ -1,4 +1,4 @@
-// sun · a new line after every sentence (D282, Nati 16.11.2026: "תדאג לרדת שורה אחרי נקודות").
+// sun · a new line after every sentence (D282, Nati 15.11.2026: "תדאג לרדת שורה אחרי נקודות").
 // In running text, a period that ends a sentence and has more words after it ends the line: the next sentence starts
 // on a new one. Done once on the page, not in the copy: the copy stays plain sentences in content.ts and the data
 // files, and every text on the site (the legal pages' own markup too) gets the same rule.

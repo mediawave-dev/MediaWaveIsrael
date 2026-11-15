@@ -1,4 +1,4 @@
-/* sun · everything centred (D282, Nati 16.11.2026: "ותמרכז טקסטים בבקשה בכל האתר"). Loaded last, and every rule starts
+/* sun · everything centred (D282, Nati 15.11.2026: "ותמרכז טקסטים בבקשה בכל האתר"). Loaded last, and every rule starts
    at :root, so it outranks the sections' own rules wherever their CSS lands in the bundle.
    The hero, the contact circle, the date slip and the footer were centred already. Where a section was built on its
    reading edge, it gets a centred form of the same idea instead of text simply pushed to the middle:

@@ -67,7 +67,7 @@ export function Say({ children, alt }: { children: string; alt?: string }) {
   )
 }
 
-/** D285, D286 (Nati, 16.11.2026: "תוריד את הבועה מכפתור ההמבורגר... ותעצב אותו אחרת שיהיה סופר יפהפה וייחודי", then
+/** D285, D286 (Nati, 15.11.2026: "תוריד את הבועה מכפתור ההמבורגר... ותעצב אותו אחרת שיהיה סופר יפהפה וייחודי", then
     "תעשה פשוט שלושה גלים יפהפיים"): the menu's glyph is three waves, one above the other, each the horizon line of the
     MediaWave disc that stands beside it in the corner (the same dip at the start and rise at the end). The button's
     aria-expanded drives it (btn.css): open, the outer two flatten into straight strokes as they turn into an X and the

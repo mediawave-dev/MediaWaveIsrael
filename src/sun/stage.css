@@ -1,0 +1,74 @@
+/* sun · the closing statement and the "site you loved" thread (D290; Home.tsx Pitch and Custom, the motion from stage.ts).
+   Every moving part reads a progress variable that stage.ts writes from the visitor's scroll, with 1 as its fallback:
+   without scripts, in the prerender, with ?calm=1 and with "ללא אנימציות" both sections stand finished. Only
+   transform and opacity move, each on its own box. */
+
+/* ---------- the closing statement ---------- */
+.pitch { padding-block: 84px 96px; overflow: clip; }
+.pitch__in { display: grid; justify-items: center; text-align: center; }
+.pitch__we { margin: 0; font-size: clamp(2.75rem, 11.5vw, 5.75rem); line-height: 1.04; font-weight: 700; color: var(--ink); }
+.pitch__big { margin: 10px 0 0; font: 700 clamp(1.875rem, 7.6vw, 3.5rem)/1.12 var(--display); color: var(--ink); }
+.pitch__call { margin: 24px auto 0; max-width: 24em; font: 600 clamp(1.125rem, 4.6vw, 1.4375rem)/1.5 var(--text); color: var(--ink-text); }
+
+/* each line rises from behind its own horizon: what falls under the line's foot is cut away, what rises above it is
+   free (so the hop can pass it) */
+.pitch__line { display: block; clip-path: inset(-60% -12% 0 -12%); padding-block-end: .16em; }
+/* the cascade: the line's progress (--l) stretched by --f so its last word lands exactly at 1, each word --j steps
+   behind the one before it, softened at both ends */
+.pitch .w {
+  --k: clamp(0, calc(var(--l, 1) * var(--f, 1) - var(--j, 0) * .15), 1);
+  --e: calc(var(--k) * var(--k) * (3 - 2 * var(--k)));
+  display: inline-block; transform: translateY(calc((1 - var(--e)) * 112%)); opacity: var(--e);
+}
+/* "שתקפיץ" hops on its way in: up past its place halfway, then down into it */
+.pitch .pitch__jump { --bump: calc(4 * var(--e) * (1 - var(--e))); transform: translateY(calc((1 - var(--e)) * 112% - var(--bump) * 30%)) rotate(calc(var(--bump) * -6deg)); }
+/* "לקוחות": a marker sweeps under it in reading direction, in the happy walk's clear colour */
+.pitch__mark { position: relative; isolation: isolate; background: none; color: inherit; padding-inline: .04em; }
+.pitch__mark::before { content: ""; position: absolute; z-index: -1; inset-inline: -.06em; bottom: .1em; height: .38em; border-radius: .14em; background: #FFC53D; opacity: .62; transform: scaleX(var(--m, 1)); transform-origin: right; animation: walk-mark 36s linear infinite; }
+html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
+
+/* the button comes up last with a small throw (--l5), and a ring spreads from it once as it settles (--h) */
+.pitch__cta { position: relative; display: grid; justify-self: stretch; justify-items: center; margin-block-start: 32px; transform: translateY(calc((1 - var(--l5, 1)) * 36px)) scale(calc(.9 + .1 * var(--l5, 1))); opacity: clamp(0, calc(var(--l5, 1) * 1.3), 1); }
+.pitch__cta .btn { width: min(100%, 320px); }
+.pitch__cta::before { content: ""; position: absolute; top: 0; bottom: 0; inset-inline: 0; margin-inline: auto; width: min(100%, 320px); border-radius: 999px; box-shadow: 0 0 0 2px #19C4B1; transform: scale(calc(1 + .22 * var(--h, 1)), calc(1 + .8 * var(--h, 1))); opacity: calc(var(--h, 1) * (1 - var(--h, 1)) * 2.8); pointer-events: none; }
+@media (min-width: 900px) { .pitch { padding-block: 120px 128px; } .pitch__call { margin-block-start: 30px; } }
+
+/* ---------- "a site you loved": a short WhatsApp thread with MediaWave ---------- */
+.custom { padding-block: 72px 104px; }
+.chat { width: min(100%, 420px); margin-inline: auto; border-radius: 28px; background: #fff; box-shadow: 0 0 0 1px rgba(19, 36, 31, .08), 0 34px 60px -34px rgba(19, 36, 31, .5); overflow: hidden; text-align: start; }
+.chat__head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; }
+.chat__avatar { display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 50%; background: #F1F7F5; }
+.chat__avatar .mw-logo { width: 28px; height: 28px; }
+.chat__who { display: grid; gap: 2px; }
+.chat__who b { font: 700 1.0625rem/1.2 var(--display); color: var(--ink); }
+.chat__who small { font: 600 .8125rem/1.3 var(--text); color: var(--ink-2); }
+.chat__thread { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0; padding: 18px 14px 14px; list-style: none; background: #EEF6F3; }
+/* a message: in from its tail's corner, a little past its size and back */
+.chat__msg, .chat__typing { justify-self: start; border-radius: 18px; border-start-start-radius: 5px; background: #fff; box-shadow: 0 1px 1.5px rgba(19, 36, 31, .14); transform-origin: 100% 0; }
+.chat__msg { max-width: 88%; padding: 10px 14px 11px; font: 600 1.0625rem/1.45 var(--text); color: var(--ink); text-align: start; transform: translateY(calc((1 - var(--c, 1)) * 16px)) scale(calc(.8 + .2 * var(--c, 1))); opacity: clamp(0, calc(var(--c, 1) * 1.6), 1); }
+/* the dots type in the answer's own place (the same grid cell), so the thread never changes height */
+.chat__typing, .chat__msg--answer { grid-row: 3; grid-column: 1; }
+.chat__typing { align-self: start; display: flex; gap: 5px; padding: 15px 16px; transform: scale(calc(.7 + .3 * var(--ct, 0))); opacity: var(--ct, 0); }
+.chat__typing i { width: 7px; height: 7px; border-radius: 50%; background: #93A49E; }
+.custom[data-typing] .chat__typing i { animation: chat-dot 1s ease-in-out infinite; }
+.custom[data-typing] .chat__typing i:nth-child(2) { animation-delay: .15s; }
+.custom[data-typing] .chat__typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes chat-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+/* the reply line: the WhatsApp link, a field with the send button in the walk's deep colour */
+.chat__reply { display: flex; align-items: center; gap: 10px; padding: 8px 12px 14px; background: #EEF6F3; transform: translateY(calc((1 - var(--cr, 1)) * 18px)); opacity: var(--cr, 1); -webkit-tap-highlight-color: transparent; }
+.chat__field { flex: 1; display: flex; align-items: center; min-height: 50px; padding-inline: 18px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px rgba(19, 36, 31, .12); font: 600 1rem/1.3 var(--text); color: var(--ink-2); text-align: start; transition: box-shadow .25s ease; }
+.chat__send { display: grid; place-items: center; flex: none; width: 50px; height: 50px; border-radius: 50%; background: #0B7A70; color: #fff; box-shadow: 0 10px 18px -10px rgba(19, 36, 31, .6); transition: transform .45s cubic-bezier(.2, 1.5, .4, 1); }
+.chat__send svg { width: 24px; height: 24px; }
+@media (hover: hover) {
+  .chat__reply:hover .chat__send { transform: scale(1.08) rotate(-8deg); }
+  .chat__reply:hover .chat__field { box-shadow: 0 0 0 2px rgba(19, 36, 31, .3); }
+}
+.chat__reply:active .chat__send { transform: scale(.92); transition-duration: .12s; }
+.chat__reply:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+@media (min-width: 900px) { .custom { padding-block: 96px 104px; } }
+
+/* high contrast: black and white, the marker a grey */
+html.high-contrast :is(.chat__thread, .chat__reply) { background: #fff; }
+html.high-contrast :is(.chat__msg, .chat__typing, .chat__field) { box-shadow: 0 0 0 2px #000; }
+html.high-contrast .chat__send { background: #000; }
+html.high-contrast .pitch__mark::before { background: #000; opacity: .18; }

@@ -29,6 +29,27 @@ export const WA = {
   hero: getWhatsAppUrl('היי, אשמח לשמוע על דף נחיתה או אתר לעסק שלי.'),
 }
 
+/** D290 (Nati, 15.11.2026): "תכניס בתוכן דברים בסגנון: אנחנו MediaWave / סוכנות שתקפיץ לך את העסק. / תביא לך לקוחות. /
+    צור קשר עוד היום ותראה מה נוכל לעשות בשבילך." The closing statement before the form (Home.tsx, Pitch), said to the
+    many as everywhere on the site. `jump` is the word that hops as it enters, `mark` the word the marker sweeps. */
+export const PITCH = {
+  we: 'אנחנו',
+  lines: [
+    { text: 'סוכנות שתקפיץ לכם את העסק.', jump: 'שתקפיץ' },
+    { text: 'תביא לכם לקוחות.', mark: 'לקוחות' },
+  ],
+  call: 'צרו קשר עוד היום ותראו מה נוכל לעשות בשבילכם.',
+}
+
+/** D290 (Nati): "יש לכם דוגמה לאתר שאהבתם? / משהו ספציפי וייחודי שאין לאף אחד? / דברו איתנו! מבטיחים לעשות הכל כדי שתצאו
+    מרוצים." Three messages from MediaWave in a short WhatsApp thread after "what we build" (Home.tsx, Custom); the
+    reply line under them opens WhatsApp with a message that is already written. */
+export const CUSTOM = {
+  msgs: ['יש לכם דוגמה לאתר שאהבתם?', 'משהו ספציפי וייחודי שאין לאף אחד?', 'דברו איתנו! מבטיחים לעשות הכל כדי שתצאו מרוצים.'],
+  reply: 'כתבו לנו את הרעיון שלכם',
+  wa: getWhatsAppUrl('היי, יש לי רעיון לאתר ואשמח לשמוע מה אפשר לעשות.'),
+}
+
 export const NAV = [
   { href: '/#about', label: 'מי אנחנו' },
   { href: '/#offer', label: 'מה אנחנו בונים' },

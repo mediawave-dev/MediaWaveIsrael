@@ -2,7 +2,7 @@
 // the promise with the wheel of sites, nice to meet you, what we build, how it goes, four questions, the form.
 // D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
 // the wheel; the work list, the page diagram and the price sheet left the page.
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ChangeEvent, type FormEvent } from 'react'
 import SEO from '../components/SEO'
 import { SITE_CONTACT } from '../data/site'
 import { getWhatsAppUrl } from '../utils/whatsapp'
@@ -13,10 +13,13 @@ import './lead.css'
 import Wheel from './Wheel'
 import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
-import { ABOUT, CONTACT, FAQ, HERO, LAUNCH, OFFER, PROCESS, WA } from './content'
+import { ABOUT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue, keepFlowing } from './btn'
+import { back, seg, soft, useStage } from './stage'
+import { LogoMark } from '../components/ui/Logo'
+import './stage.css'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
 
@@ -181,6 +184,107 @@ function Faq() {
               <p>{f.answer}</p>
             </details>
           ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** D290: a line's words, each in its own box and numbered for the cascade (stage.css reads --j); `jump` is the word that
+    hops as it enters, `mark` the word the marker sweeps under. Punctuation rides with its word. */
+function Words({ text, jump, mark }: { text: string; jump?: string; mark?: string }) {
+  return (
+    <>
+      {text.split(' ').map((w, j) => {
+        const core = w.replace(/[.,!?]+$/, '')
+        const tail = w.slice(core.length)
+        return (
+          <span key={j}>{j > 0 && ' '}
+            <span className={core === jump ? 'w pitch__jump' : 'w'} style={{ '--j': j } as CSSProperties}>
+              {core === mark ? <mark className="pitch__mark">{core}</mark> : core}{tail}
+            </span>
+          </span>
+        )
+      })}
+    </>
+  )
+}
+/** a line's own progress (--l, one of the section's --l1..--l4) and its stretch (--f), so its last word lands at 1 */
+const lineVars = (words: number, v: string) => ({ '--f': (1 + 0.15 * (words - 1)).toFixed(2), '--l': `var(--${v}, 1)` } as CSSProperties)
+
+/** D290 (Nati, 15.11.2026: "אני רוצה כל משפט נכנס בזמן אחר עם אנימציה יפהפייה... שזה ייראה סופר מקצועי וסופר מזמין.
+    שהיוזר ירצה ללחוץ על הכפתור"): the closing statement before the form. Each line rises from behind its own horizon,
+    word after word, at its own moment of the visitor's scroll (useStage: back and forth with the finger, never on a
+    threshold): "אנחנו MediaWave." with Wave in the logo's walking colour; the agency line, whose "שתקפיץ" hops as it
+    lands; the customers line, a marker sweeping under "לקוחות"; the call; and last the button, which comes up with a
+    small throw while a ring spreads from it once, and then plays its WhatsApp relay. */
+function Pitch() {
+  const arrived = useRef(false)
+  const ref = useStage<HTMLElement>((p, put, el) => {
+    put('--l1', seg(p, 0, 0.26))
+    put('--l2', seg(p, 0.14, 0.44))
+    put('--l3', seg(p, 0.3, 0.6))
+    put('--m', soft(seg(p, 0.5, 0.74)))
+    put('--l4', seg(p, 0.48, 0.78))
+    put('--l5', back(seg(p, 0.64, 0.92), 0.12))
+    put('--h', seg(p, 0.8, 1))
+    if (p > 0.995 && !arrived.current) { arrived.current = true; cue(el.querySelector('.pitch__cta .btn'), 'relay', 240) }
+    else if (p < 0.4) arrived.current = false
+  }, { from: 0.92, span: 0.68 })
+  const n = (t: string) => t.split(' ').length
+  return (
+    <section className="pitch" aria-labelledby="pitch-h" ref={ref}>
+      <div className="wrap pitch__in">
+        <h2 id="pitch-h" className="pitch__we">
+          <span className="pitch__line" style={lineVars(2, 'l1')}>
+            <span className="w" style={{ '--j': 0 } as CSSProperties}>{PITCH.we}</span>{' '}
+            <span className="w" style={{ '--j': 1 } as CSSProperties}><span dir="ltr">Media<span className="walk-ink">Wave</span></span>.</span>
+          </span>
+        </h2>
+        {PITCH.lines.map((l, i) => (
+          <p key={l.text} className="pitch__big">
+            <span className="pitch__line" style={lineVars(n(l.text), `l${i + 2}`)}><Words text={l.text} jump={l.jump} mark={l.mark} /></span>
+          </p>
+        ))}
+        <p className="pitch__call"><span className="pitch__line" style={lineVars(n(PITCH.call), 'l4')}><Words text={PITCH.call} /></span></p>
+        <div className="pitch__cta"><WhatsAppButton placement="pitch" /></div>
+      </div>
+    </section>
+  )
+}
+
+/** D290 (Nati: "יש לכם דוגמה לאתר שאהבתם? משהו ספציפי וייחודי שאין לאף אחד? דברו איתנו!... גם את זה תכניס ותממש
+    בחוכמה"): three messages from MediaWave in a short WhatsApp thread, the channel the button opens. They arrive with
+    the scroll: the two questions, three dots typing, the answer; under them the reply line, which is the WhatsApp link
+    (the message in it already written). The dots stand in the answer's own place, so nothing below ever moves. */
+function Custom() {
+  const ref = useStage<HTMLElement>((p, put, el) => {
+    put('--c1', back(seg(p, 0.02, 0.24), 0.1))
+    put('--c2', back(seg(p, 0.18, 0.4), 0.1))
+    const t = seg(p, 0.36, 0.56)
+    put('--ct', Math.sin(Math.PI * t))
+    el.toggleAttribute('data-typing', t > 0.02 && t < 0.98)
+    put('--c3', back(seg(p, 0.54, 0.76), 0.1))
+    put('--cr', soft(seg(p, 0.68, 0.92)))
+  }, { from: 0.95, span: 0.72 })
+  return (
+    <section className="custom" aria-labelledby="custom-q" ref={ref}>
+      <div className="wrap">
+        <div className="chat">
+          <div className="chat__head">
+            <span className="chat__avatar"><LogoMark decorative /></span>
+            <span className="chat__who"><b>MediaWave</b><small>{SITE_CONTACT.responseTime}</small></span>
+          </div>
+          <ol className="chat__thread">
+            <li id="custom-q" className="chat__msg" style={{ '--c': 'var(--c1, 1)' } as CSSProperties}>{CUSTOM.msgs[0]}</li>
+            <li className="chat__msg" style={{ '--c': 'var(--c2, 1)' } as CSSProperties}>{CUSTOM.msgs[1]}</li>
+            <li className="chat__typing" aria-hidden="true"><i /><i /><i /></li>
+            <li className="chat__msg chat__msg--answer" style={{ '--c': 'var(--c3, 1)' } as CSSProperties}>{CUSTOM.msgs[2]}</li>
+          </ol>
+          <a className="chat__reply" href={CUSTOM.wa} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'custom' })}>
+            <span className="chat__field">{CUSTOM.reply}</span>
+            <span className="chat__send walk-bg" aria-hidden="true"><IconWhatsApp /></span>
+          </a>
         </div>
       </div>
     </section>
@@ -450,8 +554,10 @@ export default function Home() {
       <VoiceAt place="hero" />
       <About />
       <Offer />
+      <Custom />
       <Process />
       <Faq />
+      <Pitch />
       <Contact />
     </>
   )
