@@ -3,6 +3,13 @@
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
 Every ruling is in `DECISIONS.rtl.md` (D237 to D284). The next decision number is **D285**.
 
+## IN PRODUCTION since 16.11.2026 (main 0c44b78; rollback tag `prod-before-sun` = 50a31eb)
+- Checked on https://mediawave.co.il after the deploy: the new bundle, 12 pages clean at 390 and 1440 (axe 0, no overflow, no layout jump), a garbage URL answers 404, /your-site 302 to home, /api/event rejects an empty POST with 400 (no fake event sent), /api/lead 200.
+- Lighthouse mobile, median of 3: / 95, /services/landing-pages/ 98, /privacy/ 97; a11y and best practices 100; CLS 0; LCP 2.6 / 1.9 / 2.4 s (lab, the same level as D274 before the day's work). SEO 92 only because Cloudflare's managed robots.txt adds a `Content-Signal` line Lighthouse does not know (not in the repo; there before the release too); his call in the Cloudflare dashboard.
+- GPTBot and ClaudeBot still get 403 from the Cloudflare zone; the search and user agents get 200 (his call, unchanged).
+- Open: real-iPhone check; whether Fontype's free licence covers web embedding (flagged to him, D283); the main checkout's CLAUDE.md "Current state" was updated in its working copy, not committed.
+- Cloudflare builds production for `main` minutes after the branch preview of the same commit: wait for the production bundle name to change before judging a deploy.
+
 ## Latest (15.11 night): D275 to D278 on both previews
 - **Buttons (D275, D277):** every button is a capsule of lens glass (`src/sun/btn.css`; the refraction filter is injected by `btn.ts` only in Chromium, the iPhone shows frosted glass). One conductor in `btn.ts` plays one beat at a time; every WhatsApp button plays the relay he described, as amended in D278 (chevrons from the middle out to the left, the MediaWave disc rolling in on its horizon in the header disc's colours, chevrons again, label back; the message line is gone; the ink glass is 84%); "איך זה עובד" dives in every turn (D280). Parts in `ButtonParts.tsx` (Glyph, Go, Say, Stage).
 - **Phones (D276, D279):** only switchon, mediawave-2026 and maof keep the status strip (`STEADY_TOP` in `Wheel.tsx`); the rest run full screen under the island. iPhone 17 look in `sun.css` (`.wheel__card`, `--bz`, `--rad`, `--sb`, the island, the status strip from `--shot` set in `Wheel.tsx` and the service shots in `pages.tsx`).
