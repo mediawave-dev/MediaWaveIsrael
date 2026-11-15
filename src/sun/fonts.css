@@ -24,21 +24,18 @@
 @font-face { font-family: "MW Head XL"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 99%; unicode-range: U+0041-005A, U+0061-007A; }
 @font-face { font-family: "MW Head XL Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 100.6%; }
 
-/* the running text (D292, Nati 15.11.2026: "תממש את mediawave font 5 שיהיה הפונט של התוכן (לא של הכותרות) באתר", then,
-   from a board of every weight of font5, font6 and font7: "אני רוצה את font7 bold"): mediawave-font7 Bold, our own face
-   (source G:\Projects\fonts\mediawave-font7, copies in OneDrive\Fonts\עברית\MediaWave). One cut says the whole text, as
-   OffSet Bold did (D281): emphasis inside it is said by the full ink (sun.css), and only 801-900 take the Black.
-   The file holds only what it draws; the range below is exactly its cmap, so the few ASCII signs it lacks
-   (# $ & * @ < > [ ] and the like) fall to the fallback instead of a missing glyph.
-   Its Hebrew letters stand at 0.56 em: at 97% they stand where EFT OffSet's stood at 96%, and its lines run about 2%
-   shorter, so no line wraps that did not wrap before. Latin stays Saira, as everywhere.
-   History: EFT OffSet Bold (D281); font5 Medium was tried locally on the way (not shipped). */
-@font-face { font-family: "MW Text"; src: url("/fonts/mw7/mediawave-font7-Bold.woff2") format("woff2"); font-weight: 100 800; font-display: swap; size-adjust: 97%; unicode-range: U+0020-0022, U+0025, U+0027-0029, U+002B-003B, U+003F, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+200E-200F, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+20AA; }
-@font-face { font-family: "MW Text"; src: url("/fonts/mw7/mediawave-font7-Black.woff2") format("woff2"); font-weight: 801 900; font-display: swap; size-adjust: 97%; unicode-range: U+0020-0022, U+0025, U+0027-0029, U+002B-003B, U+003F, U+00A0, U+05BE, U+05D0-05EA, U+05F3-05F4, U+200E-200F, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+20AA; }
-/* Saira is declared once per font7 weight range: Chrome builds a family's faces into groups of equal weight ranges and
-   picks one group per weight, so a Saira at 100-900 beside split Hebrew ranges would win a weight and drop its Hebrew
-   to the fallback (seen with font5 at 600) */
-@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 800; font-display: swap; size-adjust: 85%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
-@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 801 900; font-display: swap; size-adjust: 85%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
-/* Arial Bold at font7 Bold's width (its Hebrew letters' average advance at 97%), so the swap barely moves a line */
-@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 92%; }
+/* the running text (D294, Nati 15.11.2026, from a board of the content faces he is usually offered, set on this site's
+   own text: "תממש את A"): Assistant Bold (Hafontia's Hebrew on Source Sans, SIL OFL, licence beside the files), one
+   cut for the whole text as font7 Bold and OffSet Bold were before it: soft ink for the text, full ink for emphasis.
+   Two files from @fontsource/assistant 5.3.0: its Hebrew subset as is, and its Latin subset cut down to digits and
+   punctuation, since Latin letters stay Saira as everywhere:
+     python -m fontTools.subset assistant-latin-700-normal.woff2 --unicodes="U+0020-0040,U+005B-0060,U+007B-00BF,U+2013-2014,U+2018-201D,U+2026" --flavor=woff2 --layout-features='*'
+   Its Hebrew letters stand at 0.571 em: at 95% they stand where font7's stood at 97% (and OffSet's at 96%), and its
+   lines run about the same length. Every face here has the same weight range on purpose: Chrome groups a family's
+   faces by equal weight ranges and picks one group per weight (D292).
+   History: EFT OffSet Bold (D281), mediawave-font7 Bold (D292). */
+@font-face { font-family: "MW Text"; src: url("/fonts/assistant/assistant-hebrew-700-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 95%; unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: "MW Text"; src: url("/fonts/assistant/assistant-punct-700.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 95%; unicode-range: U+0020-0040, U+005B-0060, U+007B-00BF, U+2013-2014, U+2018-201D, U+2026; }
+@font-face { font-family: "MW Text"; src: url("/fonts/saira/saira-semi-condensed-600.woff2") format("woff2"); font-weight: 100 900; font-display: swap; size-adjust: 85%; unicode-range: U+0041-005A, U+0061-007A, U+00C0-00FF; }
+/* Arial Bold at Assistant Bold's width (its Hebrew letters' average advance at 95%), so the swap barely moves a line */
+@font-face { font-family: "MW Text Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 100 900; size-adjust: 93%; }

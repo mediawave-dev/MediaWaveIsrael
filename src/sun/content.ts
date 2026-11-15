@@ -50,6 +50,27 @@ export const CUSTOM = {
   wa: getWhatsAppUrl('היי, יש לי רעיון לאתר ואשמח לשמוע מה אפשר לעשות.'),
 }
 
+/** D295 (Nati, 15.11.2026: "הצ'אט שעונה"): the thread answers. Under the three messages the visitor taps a quick reply
+    to the thread's own question (an example of a site they loved), MediaWave writes back and asks what to build, and
+    after the second tap the message to send is written in the input row, ready for WhatsApp. The visitor's lines are in
+    the first person singular, which Hebrew says the same for a man and a woman; MediaWave speaks to the many, as
+    everywhere on the site. [קופי: נתי] until he approves the lines. */
+export const CHAT = {
+  example: [
+    { key: 'yes', chip: 'כן, יש לי דוגמה', reply: 'מעולה. ומה תרצו שנבנה?', line: 'יש לי דוגמה לאתר שאהבתי, אשלח אותה כאן.' },
+    { key: 'no', chip: 'עוד לא, תפתיעו אותי', reply: 'בשמחה. ומה תרצו שנבנה?', line: 'עוד אין לי דוגמה, אשמח לרעיונות.' },
+  ],
+  kind: [
+    { key: 'landing', chip: 'דף נחיתה', line: 'אשמח לדף נחיתה לעסק שלי.' },
+    { key: 'brand', chip: 'אתר תדמית', line: 'אשמח לאתר תדמית לעסק שלי.' },
+    { key: 'course', chip: 'אתר לקורס או לליווי', line: 'אשמח לאתר לקורס או לתוכנית ליווי.' },
+    { key: 'unsure', chip: 'עוד לא החלטתי', line: 'אשמח לשמוע מה מתאים לעסק שלי.' },
+  ],
+  done: 'יופי. כתבנו לכם את ההודעה למטה, נשאר רק לשלוח.',
+  chips: 'תשובות מהירות',
+  message: (kind: string, example: string) => `היי, ${kind} ${example}`,
+}
+
 export const NAV = [
   { href: '/#about', label: 'מי אנחנו' },
   { href: '/#offer', label: 'מה אנחנו בונים' },

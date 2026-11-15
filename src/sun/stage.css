@@ -54,8 +54,8 @@ html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 .chat__status { display: grid; font-size: .8125rem; line-height: 1.3; font-weight: 400; color: #667781; }
 .chat__status > span { grid-area: 1 / 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .2s ease; }
 .chat__typing { opacity: 0; color: #008069; }
-.custom[data-typing] .chat__online { opacity: 0; }
-.custom[data-typing] .chat__typing { opacity: 1; }
+.custom:is([data-typing], [data-writing]) .chat__online { opacity: 0; }
+.custom:is([data-typing], [data-writing]) .chat__typing { opacity: 1; }
 .chat__tools { flex: none; display: flex; gap: 18px; padding-inline-end: 4px; }
 .chat__tools svg { width: 22px; height: 22px; fill: none; stroke: #111B21; stroke-width: 1.8; stroke-linejoin: round; }
 /* the ground, with our own faint pattern of small waves and discs */
@@ -77,6 +77,42 @@ html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 .chat__msg:first-child { border-start-start-radius: 0; margin-block-start: 2px; }
 .chat__msg:first-child::before { content: ""; position: absolute; top: 0; inset-inline-start: -8px; width: 8px; height: 13px; background: #fff; clip-path: polygon(0 0, 100% 0, 0 100%); }
 .chat__time { float: inline-end; position: relative; top: 7px; margin-inline-start: 12px; font-size: .6875rem; line-height: 1; color: #667781; white-space: nowrap; }
+
+/* D295: the conversation. Its box keeps its height from the first tap (Home.tsx, useChat) and the lines scroll inside it */
+/* flow-root: the "היום" chip's top margin stays inside the box before and after it is held (overflow makes it a
+   formatting context, and without one from the start that margin would fall outside and the box would lose 2px) */
+.chat__scroll { display: flow-root; overscroll-behavior: contain; scrollbar-width: none; }
+.chat__scroll::-webkit-scrollbar { display: none; }
+.chat__scroll[data-held] { overflow-y: auto; }
+/* a run's first bubble has the tail (MediaWave's at its top right, the visitor's at its top left, in RTL) */
+.chat__msg[data-tail] { border-start-start-radius: 0; margin-block-start: 6px; }
+.chat__msg[data-tail]::before { content: ""; position: absolute; top: 0; inset-inline-start: -8px; width: 8px; height: 13px; background: #fff; clip-path: polygon(0 0, 100% 0, 0 100%); }
+/* the visitor's line: WhatsApp's own green bubble, on the other side, with the two blue ticks */
+.chat__msg--me { justify-self: end; background: #D9FDD3; transform-origin: 0 0; }
+.chat__msg--me[data-tail] { border-start-start-radius: 8px; border-start-end-radius: 0; }
+.chat__msg--me[data-tail]::before { inset-inline-start: auto; inset-inline-end: -8px; background: #D9FDD3; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.chat__ticks { display: inline-block; width: 16px; height: 10px; margin-inline-start: 3px; vertical-align: -1px; fill: none; stroke: #53BDEB; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.chat__vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* the quick replies: WhatsApp's buttons under a message, white, the text in WhatsApp's green */
+.chat__chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-block-start: 8px; transform: translateY(calc((1 - var(--cr, 1)) * 12px)); opacity: var(--cr, 1); }
+.chat__chip {
+  min-height: 44px; padding: 8px 10px; border: 0; border-radius: 8px; background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13);
+  font-family: inherit; font-size: .9375rem; line-height: 1.25; font-weight: 500; color: #008069; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background-color .2s ease, transform .2s ease;
+}
+@media (hover: hover) { .chat__chip:hover { background: #F0F2F5; } }
+.chat__chip:active { transform: scale(.97); }
+.chat__chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+/* a line or a set of replies that the conversation adds comes in from its tail's corner, as the thread's own did */
+@keyframes chat-in { from { opacity: 0; transform: translateY(12px) scale(.86); } to { opacity: 1; transform: none; } }
+.chat__msg[data-new], .chat__chips[data-new] { animation: chat-in .32s cubic-bezier(.2, 1.2, .4, 1) both; }
+/* the written message sits in the input on one line, and the send button calls once, twice */
+.chat__text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.chat__text--ready { color: #111B21; }
+@keyframes chat-call { 0% { box-shadow: 0 1px 2px rgba(11, 20, 26, .2), 0 0 0 0 rgba(0, 168, 132, .55); } 100% { box-shadow: 0 1px 2px rgba(11, 20, 26, .2), 0 0 0 16px rgba(0, 168, 132, 0); } }
+.custom[data-ready] .chat__send { animation: chat-call 1.1s ease-out .3s 2; }
+@media (prefers-reduced-motion: reduce) { .chat__msg[data-new], .chat__chips[data-new], .custom[data-ready] .chat__send { animation: none; } }
+html:is(.calm, .disable-animations) :is(.chat__msg[data-new], .chat__chips[data-new], .custom[data-ready] .chat__send) { animation: none; }
 /* the input: the WhatsApp link, a white field with the smiley and our line, the green send button */
 .chat__reply { display: flex; align-items: center; gap: 6px; margin-block-start: 14px; transform: translateY(calc((1 - var(--cr, 1)) * 16px)); opacity: var(--cr, 1); -webkit-tap-highlight-color: transparent; }
 .chat__field { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; min-height: 46px; padding-inline: 12px 16px; border-radius: 24px; background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); font-size: 1rem; line-height: 1.3; font-weight: 400; color: #54656F; text-align: start; transition: box-shadow .25s ease; }
@@ -94,7 +130,9 @@ html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 
 /* high contrast: black and white, the marker a grey */
 html.high-contrast :is(.chat__body, .chat__head) { background: #fff; }
-html.high-contrast :is(.chat__msg, .chat__field, .chat__day) { box-shadow: 0 0 0 2px #000; }
+html.high-contrast :is(.chat__msg, .chat__field, .chat__day, .chat__chip) { box-shadow: 0 0 0 2px #000; }
+html.high-contrast .chat__msg--me, html.high-contrast .chat__msg--me[data-tail]::before { background: #fff; }
+html.high-contrast .chat__chip { color: #000; }
 html.high-contrast :is(.chat__time, .chat__status, .chat__typing, .chat__field) { color: #000; }
 html.high-contrast .chat__send { background: #000; }
 html.high-contrast .pitch__mark::before { background: #000; opacity: .18; }

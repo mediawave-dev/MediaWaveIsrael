@@ -13,7 +13,7 @@ import './lead.css'
 import Wheel from './Wheel'
 import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
-import { ABOUT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
+import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue, keepFlowing } from './btn'
@@ -264,7 +264,58 @@ function Pitch() {
     button. While the answer is being written the status line says "מקליד/ה…", as WhatsApp does. The patterned ground is
     our own (small waves and discs), not WhatsApp's drawing. */
 const WA_TIMES = ['10:24', '10:24', '10:25']
+/** D295: the times of the lines the conversation adds, in order (each answer and the reply to it share a minute) */
+const SAID_TIMES = ['10:26', '10:26', '10:27', '10:27']
+type Said = { me: boolean; text: string }
+type Chip = { key: string; chip: string; line: string; reply?: string }
+
+/** D295 (Nati: "הצ'אט שעונה"): the thread answers. Two quick replies under it answer its question; MediaWave writes
+    back ("מקליד/ה…" in the status line, as WhatsApp does) and asks what to build; after the second tap the message is
+    written in the input row and the send button calls once. At the first tap the conversation's box keeps the height
+    it has, and from then on the lines scroll inside it, as in WhatsApp, so nothing below the chat ever moves. Without
+    scripts the quick replies stand there and the input row is the WhatsApp link with the general message, as before. */
+function useChat() {
+  const box = useRef<HTMLDivElement>(null)
+  const [said, setSaid] = useState<Said[]>([])
+  const [writing, setWriting] = useState(false)
+  const [example, setExample] = useState<Chip | null>(null)
+  const [kind, setKind] = useState<Chip | null>(null)
+  const timer = useRef(0)
+  const byKeys = useRef(false)
+  useEffect(() => () => clearTimeout(timer.current), [])
+  const still = () => /[?&]calm=1(&|$)/.test(location.search) || document.documentElement.classList.contains('disable-animations')
+    || matchMedia('(prefers-reduced-motion: reduce)').matches
+  const answer = (c: Chip, step: 'example' | 'kind', keys: boolean) => {
+    if (writing) return
+    byKeys.current = keys
+    const el = box.current
+    if (el && !el.hasAttribute('data-held')) { el.style.height = `${el.getBoundingClientRect().height}px`; el.setAttribute('data-held', '') }
+    setSaid((s) => [...s, { me: true, text: c.chip }])
+    setWriting(true)
+    track('cta_click', { placement: 'custom-chat', step, value: c.key })
+    timer.current = window.setTimeout(() => {
+      setWriting(false)
+      if (step === 'example') { setExample(c); setSaid((s) => [...s, { me: false, text: c.reply ?? '' }]) }
+      else { setKind(c); setSaid((s) => [...s, { me: false, text: CHAT.done }]) }
+    }, still() ? 250 : 1100)
+  }
+  // the newest line comes into view inside the box; a keyboard user lands on the next replies (or on the send row)
+  useEffect(() => {
+    const el = box.current
+    if (el?.hasAttribute('data-held')) el.scrollTo({ top: el.scrollHeight, behavior: still() ? 'auto' : 'smooth' })
+    if (!writing && byKeys.current && el) {
+      const next = el.querySelector<HTMLElement>('.chat__chip') ?? el.closest('.chat')?.querySelector<HTMLElement>('.chat__reply')
+      next?.focus({ preventScroll: true })
+    }
+  }, [said, writing])
+  const chips: { step: 'example' | 'kind'; list: Chip[] } | null = writing ? null
+    : !example ? { step: 'example', list: CHAT.example } : !kind ? { step: 'kind', list: CHAT.kind } : null
+  const message = example && kind ? CHAT.message(kind.line, example.line) : null
+  return { box, said, writing, chips, message, answer, example, kind }
+}
+
 function Custom() {
+  const chat = useChat()
   const ref = useStage<HTMLElement>((p, put, el) => {
     put('--c1', back(seg(p, 0.02, 0.24), 0.1))
     put('--c2', back(seg(p, 0.18, 0.4), 0.1))
@@ -275,7 +326,7 @@ function Custom() {
   }, { from: 0.95, span: 0.72 })
   const cs = ['var(--c1, 1)', 'var(--c2, 1)', 'var(--c3, 1)']
   return (
-    <section className="custom" aria-labelledby="custom-q" ref={ref}>
+    <section className="custom" aria-labelledby="custom-q" ref={ref} data-writing={chat.writing ? '' : undefined} data-ready={chat.message ? '' : undefined}>
       <div className="wrap">
         <div className="chat">
           <div className="chat__head">
@@ -290,18 +341,34 @@ function Custom() {
             </span>
           </div>
           <div className="chat__body">
-            <p className="chat__day" aria-hidden="true">היום</p>
-            <ol className="chat__thread">
-              {CUSTOM.msgs.map((m, i) => (
-                <li key={m} id={i === 0 ? 'custom-q' : undefined} className="chat__msg" style={{ '--c': cs[i] } as CSSProperties}>
-                  {m}<span className="chat__time" aria-hidden="true">{WA_TIMES[i]}</span>
-                </li>
-              ))}
-            </ol>
-            <a className="chat__reply" href={CUSTOM.wa} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'custom' })}>
+            <div className="chat__scroll" ref={chat.box}>
+              <p className="chat__day" aria-hidden="true">היום</p>
+              <ol className="chat__thread" aria-live="polite">
+                {CUSTOM.msgs.map((m, i) => (
+                  <li key={m} id={i === 0 ? 'custom-q' : undefined} className="chat__msg" style={{ '--c': cs[i] } as CSSProperties}>
+                    {m}<span className="chat__time" aria-hidden="true">{WA_TIMES[i]}</span>
+                  </li>
+                ))}
+                {chat.said.map((m, i) => (
+                  <li key={i} className={m.me ? 'chat__msg chat__msg--me' : 'chat__msg'} data-new="" data-tail={i === 0 || chat.said[i - 1].me !== m.me ? '' : undefined}>
+                    {m.me && <span className="chat__vh">אתם: </span>}{m.text}
+                    <span className="chat__time" aria-hidden="true">{SAID_TIMES[i]}{m.me && <svg className="chat__ticks" viewBox="0 0 18 11" focusable="false"><path d="M1 6l3.2 3.2L11.5 1.6M7.2 9.2 8.4 10.4 16.9 1.6" /></svg>}</span>
+                  </li>
+                ))}
+              </ol>
+              {chat.chips && (
+                <div className="chat__chips" role="group" aria-label={CHAT.chips} key={chat.chips.step} data-new={chat.said.length ? '' : undefined}>
+                  {chat.chips.list.map((c) => (
+                    <button key={c.key} type="button" className="chat__chip" onClick={(e) => chat.answer(c, chat.chips!.step, e.detail === 0)}>{c.chip}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a className="chat__reply" href={chat.message ? getWhatsAppUrl(chat.message) : CUSTOM.wa} target="_blank" rel="noopener"
+              onClick={() => track('whatsapp_click', chat.message ? { placement: 'custom', example: chat.example?.key ?? '', kind: chat.kind?.key ?? '' } : { placement: 'custom' })}>
               <span className="chat__field">
                 <svg className="chat__emoji" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M8.3 14.2a4.6 4.6 0 0 0 7.4 0" /><circle cx="9" cy="9.8" r=".6" /><circle cx="15" cy="9.8" r=".6" /></svg>
-                <span>{CUSTOM.reply}</span>
+                <span className={chat.message ? 'chat__text chat__text--ready' : 'chat__text'}>{chat.message ?? CUSTOM.reply}</span>
               </span>
               <span className="chat__send" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10.2 15 12 3.4 13.8Z" /></svg></span>
             </a>
