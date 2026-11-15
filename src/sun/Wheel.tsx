@@ -35,6 +35,13 @@ const ORDER: [string, string][] = [
   ['switchon', 'top'], ['machtesh', 'top'], ['maof', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
   ['horizon', 'top'], ['zimzum', 'top'], ['ben-david', 'top'], ['hila', 'top'],
 ]
+/** D279 (Nati, 16.11.2026, on the Machtesh phone: "תסדר שבאתר מכתש האתר יהיה על כל המסך. בחלק העליון זה לא טבעי"):
+    the status strip behind the island (D276) is painted from the top of the still picture, so it is right only where
+    the recording keeps that colour at its top all the way through. Measured on every recording (the top row at 1, 5,
+    9 and 13 s against the picture): these three keep it. Every other site scrolls to another colour (Machtesh to its
+    dark header), so it runs on the whole screen, under the island, as an app does. */
+const STEADY_TOP = new Set(['switchon', 'mediawave-2026', 'maof'])
+
 function deck(): Card[] {
   const known = new Set(PROJECTS.map((p) => p.slug))
   const unit: Card[] = [...ORDER.filter(([slug]) => known.has(slug)).map(([slug, crop]): Card => ({ kind: 'shot', slug, crop })), { kind: 'next' }]
@@ -217,7 +224,7 @@ export default function Wheel() {
         {deck().map((c, i) => (
           <div className="wheel__slot" key={i} style={{ '--i': i } as React.CSSProperties}>
             {c.kind === 'shot' ? (
-              <div className="wheel__card" data-crop={c.crop} style={{ '--shot': `url(/work/${c.slug}-card-${c.crop}.webp)` } as React.CSSProperties}>
+              <div className={`wheel__card${STEADY_TOP.has(c.slug) ? '' : ' wheel__card--full'}`} data-crop={c.crop} style={{ '--shot': `url(/work/${c.slug}-card-${c.crop}.webp)` } as React.CSSProperties}>
                 <div className="wheel__screen">
                   {videos && <video src={videoOf(c.slug, c.crop)} muted loop playsInline preload="none" tabIndex={-1} disablePictureInPicture disableRemotePlayback
                     onLoadedMetadata={(e) => { const v = e.currentTarget; v.currentTime = (i * 3.1) % (v.duration || 1) }} />}

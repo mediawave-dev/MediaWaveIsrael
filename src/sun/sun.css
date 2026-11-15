@@ -247,7 +247,7 @@ html.menu-open .pin__blob { filter: none; }
 /* the island: black glass with the camera's lens at its far end */
 /* the status bar, as on a real iPhone: the site's own colour runs up behind the island (the top row of its picture,
    stretched; --shot is set on the card), so the island never covers the site's header and no black band is left */
-.wheel__card:not(.wheel__card--next) { padding-block-start: var(--sb); background: var(--shot, none) 50% 0 / 100% 40000% no-repeat padding-box, #050807; }
+.wheel__card:not(.wheel__card--next, .wheel__card--full) { padding-block-start: var(--sb); background: var(--shot, none) 50% 0 / 100% 40000% no-repeat padding-box, #050807; }
 .wheel__card::before { content: ""; position: absolute; z-index: 2; top: calc(var(--cw) * .027); left: 50%; width: 31%; height: calc(var(--cw) * .092); transform: translateX(-50%); border-radius: 99px; background: radial-gradient(circle at 80% 50%, #22344a 0 calc(var(--cw) * .011), rgba(34, 52, 74, 0) calc(var(--cw) * .02)), #000; }
 .wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
 .wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
@@ -584,6 +584,7 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
    at the top, glides down over about twenty seconds, rests, and comes back. Cards start at different moments.
    The accessibility panel's stop and ?reduce=1 stop it (the global rule on html.disable-animations). ---------- */
 .wheel__screen { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 0 0 calc(var(--rad) - var(--bz)) calc(var(--rad) - var(--bz)); container-type: size; }
+.wheel__card--full .wheel__screen { border-radius: calc(var(--rad) - var(--bz)); }
 .wheel__screen img { border-radius: 0 !important; }
 /* D259: the recording lies over the first screen; the still picture stays under it as the poster and the fallback */
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }

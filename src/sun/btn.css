@@ -118,3 +118,9 @@ html.lens-ok :is(.btn.btn, .tab.tab) { -webkit-backdrop-filter: blur(3px) url(#m
 html.high-contrast :is(.btn.btn, .tab.tab, .icon-btn) { background: #fff; color: #000; box-shadow: 0 0 0 2px #000; -webkit-backdrop-filter: none; backdrop-filter: none; }
 html.high-contrast :is(.btn.btn--ink, .tab.tab) { background: #000; color: #fff; }
 html.high-contrast :is(.btn.btn, .tab.tab)::before, html.high-contrast :is(.btn.btn, .tab.tab)::after { display: none; }
+
+/* D279 (Nati, 16.11.2026: "תעצב אותן גם כמו את הכפתורים שמצד שמאל למעלה"): on the white corner and the white panel
+   the clear glass vanishes into the paper. There the glass carries the field's mint itself, at the share that gives the
+   header's buttons' colour over the field (#C9E8E2 at 70% over white = white glass at 30% over the mint). */
+:is(.pin__menu, .a11y__head .icon-btn) { background: rgba(201, 232, 226, .7); }
+html.high-contrast :is(.pin__menu, .a11y__head .icon-btn) { background: #fff; }
