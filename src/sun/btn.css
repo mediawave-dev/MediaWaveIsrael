@@ -44,10 +44,13 @@
 .stage__go { width: 20px; height: 20px; }
 .stage__go i { position: absolute; inset: 0; display: block; opacity: 0; }
 .stage__go svg { display: block; width: 100%; height: 100%; }
-.stage__wa { opacity: 0; }
-.stage__wa .glyph { width: 24px; height: 24px; }
-.stage__wa .glyph__dots { gap: 1.5px; }
-.stage__wa .glyph__dots i { width: 3px; height: 3px; }
+/* the MediaWave disc: the logo's two halves, in the header disc's colours of the moment (btn.ts writes --disc-a and
+   --disc-b as the disc comes in); on the ink glass the upper half is white, the logo's dark-ground rule */
+.stage__disc { width: 26px; height: 26px; opacity: 0; }
+.stage__disc svg { display: block; width: 100%; height: 100%; }
+.disc__a { fill: var(--disc-a, var(--ink)); }
+.disc__b { fill: var(--disc-b, #14A390); }
+:is(.btn--ink, .tab) .disc__a { fill: #fff; }
 
 /* light on it, then the press: it gives like jelly and springs back */
 @media (hover: hover) {
@@ -103,7 +106,8 @@ html.lens-ok :is(.btn.btn, .tab.tab) { -webkit-backdrop-filter: blur(3px) url(#m
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
 }
-:is(.btn.btn--ink, .tab.tab) { color: #fff; background: rgba(19, 36, 31, .72); }
+/* D278 (Nati: "תעשה את הכפתור מעט יותר גוון כהה אבל עדיין שקוף"): the ink glass a shade deeper, still clear */
+:is(.btn.btn--ink, .tab.tab) { color: #fff; background: rgba(19, 36, 31, .84); }
 .icon-btn {
   background: rgba(255, 255, 255, .3);
   -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6);

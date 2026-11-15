@@ -40,7 +40,7 @@ const KIND_ICON: Record<string, JSX.Element> = {
 export function WhatsAppButton({ href = WA.hero, placement, label = HERO.cta, tone = 'ink' }: { href?: string; placement: string; label?: string; tone?: 'ink' | 'sun' | 'paper' }) {
   return (
     <a className={`btn btn--${tone}`} href={href} target="_blank" rel="noopener" onClick={wa(placement)} data-beats="relay">
-      <Glyph /><Say alt={WA.ready}>{label}</Say><Go /><Stage />
+      <Glyph /><Say>{label}</Say><Go /><Stage />
     </a>
   )
 }

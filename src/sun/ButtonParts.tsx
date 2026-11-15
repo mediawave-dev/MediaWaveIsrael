@@ -3,7 +3,9 @@
 //   Glyph  the WhatsApp mark in layers: its bubble stays, the handset inside can step aside for three typing dots.
 //   Go     the onward chevrons as three pieces: two seen, a third waiting behind them, so they can flow forward.
 //   Say    the label and, in the same place, a second line that the button shows now and then (hidden until then).
+//   Stage  the middle of a WhatsApp button, where the relay plays.
 // btn.ts plays the beats; without scripts, in the prerender and with "ללא אנימציות" these stand still as plain parts.
+import { LOGO_ART } from '../components/ui/logo-paths'
 
 const RING = 'M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z'
 const HANDSET = 'M16.5 14.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4a.5.5 0 0 0 0-.4c0-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5 5 0 0 0 1.1 2.7 11.5 11.5 0 0 0 4.4 3.9c.6.3 1.1.4 1.5.5a3.6 3.6 0 0 0 1.6.1 2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.2-.2-.2-.4-.3Z'
@@ -31,8 +33,10 @@ export function Go() {
 }
 
 /** The middle of a WhatsApp button, empty at rest. In its turn (btn.ts, relay) the label steps aside and this stage
-    plays: chevrons set off from the middle and run out at the end, the second line, the WhatsApp mark typing, the
-    chevrons again, and the label comes back. */
+    plays: chevrons set off from the middle and run out at the end, the MediaWave disc comes in (D278, Nati: "תשים את
+    האייקון היפה שלנו של mediawave"), the chevrons again, and the label comes back. The disc is the logo's own two
+    halves (logos/horizon, through LOGO_ART), drawn here without the logo's endless colour walk: btn.ts gives it the
+    header disc's colour of that moment, so it stays on the page's one colour clock (D268). */
 export function Stage() {
   return (
     <span className="stage" aria-hidden="true">
@@ -41,10 +45,15 @@ export function Stage() {
         <i><svg {...svg}><path {...CHEVRON} d="M14 6l-6 6 6 6" /></svg></i>
         <i><svg {...svg}><path {...CHEVRON} d="M14 6l-6 6 6 6" /></svg></i>
       </span>
-      <span className="stage__wa"><Glyph /></span>
+      <span className="stage__disc">
+        <svg viewBox={DISC.viewBox} aria-hidden="true" focusable="false">
+          {DISC.parts.map((p) => <path key={p.part} className={p.part === 'mark-a' ? 'disc__a' : 'disc__b'} d={p.d} />)}
+        </svg>
+      </span>
     </span>
   )
 }
+const DISC = LOGO_ART.mark
 
 const words = (s: string) => s.split(' ').map((w, i) => <span key={i}>{i > 0 && ' '}<span className="w">{w}</span></span>)
 
