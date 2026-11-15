@@ -381,16 +381,19 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
   .contact__in { width: 380px; }
 }
 
-/* ---------- footer ---------- */
-.foot { background: var(--paper); padding-block: 8px 28px; }
-.foot__in { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 16px; padding-block: 40px 28px; }
-.foot__brand, .foot__in > div:last-child { grid-column: 1 / -1; }
-.foot__in > div:last-child { display: flex; flex-wrap: wrap; column-gap: 22px; }
-.foot__in > div:last-child .foot__h { width: 100%; }
-.foot__brand .mw-logo { height: 34px; width: auto; }
+/* ---------- footer (D288, Nati 16.11.2026, option 6: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי") ----------
+   The logo's horizon across the page's end (Shell.tsx, Footer): above the line, on the paper, the MW mark, its line and
+   the four ways to reach us; the line is the disc's wave (down on the left, up on the right); below it, on the deep
+   teal, the site's two link lists and the legal line, the back-to-top buoy riding its rule. The teal is deep enough
+   for white text (6.0:1) and the pale labels (5.4:1). The light motion: a paler swell behind the wave drifts while the
+   footer is on screen (data-live), and the wave moves a few pixels with the scroll (--fx). */
+.foot { --sea: #0D6F65; background: var(--paper); }
+.foot__top { display: grid; justify-items: center; text-align: center; padding-block: 48px 26px; }
+.foot__brand { display: grid; justify-items: center; }
+.foot__brand p { margin: 14px auto 0; font-weight: 600; max-width: 20em; text-wrap: balance; color: var(--ink-text); }
 /* the MW mark (13.11.2026): the short form of the name, only here. Its two lights run from the first colour to the second */
 /* D268: the mark is a button that opens it into the header's logo and closes it back (Emblem.tsx) */
-.foot__mark { --mw-m0: #2A4A42; --mw-m1: var(--ink); --mw-w0: #27C2AE; --mw-w1: #0F8478; display: block; width: min(100%, 330px); margin-inline: auto; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; }
+.foot__mark { --mw-m0: #2A4A42; --mw-m1: var(--ink); --mw-w0: #27C2AE; --mw-w1: #0F8478; display: block; width: min(100%, 300px); margin-inline: auto; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; border-radius: 14px; -webkit-tap-highlight-color: transparent; }
 .foot__mark:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
 .foot__brand .mw-emblem { display: block; width: 100%; height: auto; }
 /* a pointer over it: the brackets lean the way they point (outward to open, inward to close) */
@@ -400,34 +403,48 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
   .foot__mark:hover [data-k="br"] polyline { transform: translateX(8px); }
 }
 html.high-contrast .mw-emblem { --mw-m0: #000; --mw-w0: var(--logo-b); }
-.foot__brand p { margin-block-start: 14px; font-weight: 600; max-width: 18em; text-wrap: balance; }
-.foot__h { font: 700 1.0625rem/1.3 var(--display); margin-block-end: 6px; }
-.foot nav a, .foot__in > div > a { display: flex; align-items: center; min-height: 44px; font-weight: 500; text-wrap: balance; }
-.foot__in a { width: fit-content; min-width: 44px; }
-@media (hover: hover) { .foot__in a:hover, .foot__legal a:hover { text-decoration: underline; text-underline-offset: 4px; } }
-.foot__legal { border-block-start: 2px solid var(--ink); padding-block-start: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 16px; font-size: .9375rem; padding-block-end: calc(104px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); }
-.foot__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; }
-.foot__legal span { flex-basis: 100%; }
+
+/* the four ways to reach us: round, in the ink; a pointer lifts one and it turns to the sea's teal */
+.foot__ways { display: flex; justify-content: center; gap: 14px; margin: 24px 0 0; padding: 0; list-style: none; }
+.foot__way { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: #fff; box-shadow: 0 10px 18px -12px rgba(19, 36, 31, .6); transition: transform .45s cubic-bezier(.2, 1.5, .4, 1), background-color .25s ease; -webkit-tap-highlight-color: transparent; }
+.foot__way svg { width: 22px; height: 22px; }
+@media (hover: hover) { .foot__way:hover { transform: translateY(-3px); background: var(--sea); } }
+.foot__way:active { transform: scale(.94); transition-duration: .12s; }
+.foot__way:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+/* the horizon: the wave, and the paler swell behind it that drifts by one wave's length and starts over */
+.foot__horizon { position: relative; height: 44px; margin-block-start: 8px; overflow: hidden; }
+.foot__swell, .foot__front { position: absolute; top: 0; bottom: 0; display: block; }
+.foot__swell { top: -7px; left: 0; width: 200%; opacity: .5; }
+.foot__front { left: -6%; width: 112%; transform: translateX(calc(var(--fx, 0) * 1px)); }
+.foot__horizon svg { display: block; width: 100%; height: 100%; }
+.foot__swell svg { fill: #14A390; }
+.foot__front svg { fill: var(--sea); }
+.foot[data-live] .foot__swell { animation: foot-swell 22s linear infinite; }
+@keyframes foot-swell { to { transform: translateX(-50%); } }
+html:is(.calm, .disable-animations) .foot .foot__swell { animation: none; }
+html:is(.calm, .disable-animations) .foot__front { transform: none; }
+
+/* the sea: the two lists side by side, the legal line under them, room at the end for the floating capsule */
+.foot__sea { background: var(--sea); color: #fff; margin-block-start: -1px; }
+.foot__in { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-block: 20px 28px; text-align: center; }
+.foot__in nav { display: grid; justify-items: center; align-content: start; }
+.foot__h { font: 700 .75rem/1 var(--display); letter-spacing: .14em; color: #E2F6F2; margin: 0 0 10px; }
+.foot .foot__in a { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; min-width: 44px; font: 600 .9375rem/1.3 var(--text); color: #fff; text-wrap: balance; }
+.foot__legal { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 20px; border-block-start: 1px solid rgba(255, 255, 255, .32); padding-block: 36px calc(104px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: .9375rem; }
+.foot__legal a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; font-weight: 600; color: #fff; }
+.foot__legal span { order: 2; flex-basis: 100%; font-size: .8125rem; color: rgba(255, 255, 255, .85); }
+@media (hover: hover) { .foot .foot__in a:hover, .foot__legal a:hover { text-decoration: underline; text-underline-offset: 4px; } }
 @media (min-width: 900px) {
-  .foot__in { gap: 40px; padding-block: 56px 48px; }
-  .foot__legal { padding-block-end: 0; }
-  .foot__legal span { flex-basis: auto; }
+  .foot__top { padding-block: 64px 30px; }
+  .foot__horizon { height: 72px; }
+  .foot__swell { top: -10px; }
+  .foot__in { grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: center; column-gap: 96px; padding-block: 34px 44px; }
+  .foot__legal { padding-block-end: calc(96px + env(safe-area-inset-bottom, 0px)); }
 }
-/* 14.11.2026, Nati: "תמרכז כל מיני דברים שיהיו סימטריים". The footer stands on one centre axis at every width: the MW
-   mark and its line, the two link columns side by side (the contact row under them on a phone, a third column on a
-   wide screen), and the bottom line with the back-to-top buoy riding the middle of the rule, like the buoys on the
-   waves between the sections. */
-.foot__in { text-align: center; justify-items: center; }
-.foot__brand { display: grid; justify-items: center; }
-.foot__brand p { margin-inline: auto; }
-.foot__in > nav { display: grid; justify-items: center; align-content: start; }
-.foot nav a, .foot__in > div > a { justify-content: center; }
-.foot__in > div:last-child { justify-content: center; }
-.foot__legal { position: relative; justify-content: center; text-align: center; padding-block-start: 40px; }
-@media (min-width: 900px) {
-  .foot__in { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 1040px; }
-  .foot__in > div:last-child { grid-column: auto; display: grid; justify-items: center; align-content: start; }
-}
+/* high contrast: the sea is black, the swell rests, the lines stay white */
+html.high-contrast .foot { --sea: #000; }
+html.high-contrast .foot__swell { display: none; }
 
 /* ---------- floating: WhatsApp and the cookie note ---------- */
 .tab { position: fixed; z-index: 70; inset-inline-end: 0; bottom: var(--browser-chrome-bottom); width: 178px; height: 84px; display: flex; align-items: flex-end; color: #fff; font-weight: 700; opacity: 0; transform: translateY(100%); pointer-events: none; transition: opacity .25s, transform .4s var(--ease); }

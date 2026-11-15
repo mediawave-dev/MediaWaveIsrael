@@ -9,7 +9,7 @@ import Emblem from './Emblem'
 import { SITE_CONTACT } from '../data/site'
 import { track } from '../utils/analytics'
 import { ALSO, NAV, WA } from './content'
-import { IconA11y, IconChevron, IconClose } from './icons'
+import { IconA11y, IconChevron, IconClose, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 import { Buoy } from './Tide'
 import { Glyph, Go, MenuGlyph, Say, Stage } from './ButtonParts'
 import { cue } from './btn'
@@ -162,40 +162,98 @@ function Header() {
   )
 }
 
+/** D288 (Nati, 16.11.2026, option 6 of six: "שיהיה איכותי עם אנימציה קלילה שתתן מראה אלגנטי"): the footer is the logo's
+    horizon drawn across the page's end. Above the line, on the paper, the MW mark, its line and the four ways to reach
+    us; the line is the disc's own wave; below it, on the deep teal, the two link lists and the legal line, with the
+    back-to-top buoy on its rule. The light motion (useHorizon): a paler swell behind the wave drifts slowly sideways
+    while the footer is on screen, and the wave moves a little with the scroll. */
 function Footer() {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
+  const foot = useRef<HTMLElement>(null)
+  useHorizon(foot)
+  const ways = [
+    { href: WA.hero, label: 'וואטסאפ', icon: <IconWhatsApp />, out: true, ev: 'whatsapp_click' },
+    { href: tel, label: `טלפון ${SITE_CONTACT.phone}`, icon: <IconPhone />, out: false, ev: 'tel_click' },
+    { href: `mailto:${SITE_CONTACT.email}`, label: `אימייל ${SITE_CONTACT.email}`, icon: <IconMail />, out: false, ev: 'mailto_click' },
+    { href: SITE_CONTACT.instagramUrl, label: 'אינסטגרם', icon: <IconInstagram />, out: true, ev: 'instagram_click' },
+  ] as const
   return (
-    <footer className="foot">
-      <div className="wrap foot__in">
+    <footer className="foot" ref={foot}>
+      <div className="wrap foot__top">
         <div className="foot__brand">
           <Emblem />
           <p>דפי נחיתה, אתרי תדמית ואתרים לתוכניות ליווי.</p>
         </div>
-        <nav aria-label="בדף הבית">
-          <h2 className="foot__h">באתר</h2>
-          {NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
-        </nav>
-        <nav aria-label="שירותים">
-          <h2 className="foot__h">שירותים</h2>
-          {ALSO.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
-        </nav>
-        <div>
-          <h2 className="foot__h">קשר</h2>
-          <a href={WA.hero} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'footer' })}>וואטסאפ</a>
-          <a href={tel} dir="ltr" onClick={() => track('tel_click', { placement: 'footer' })}>{SITE_CONTACT.phone}</a>
-          <a href={`mailto:${SITE_CONTACT.email}`} dir="ltr" onClick={() => track('mailto_click', { placement: 'footer' })}>{SITE_CONTACT.email}</a>
-          <a href={SITE_CONTACT.instagramUrl} target="_blank" rel="noopener" onClick={() => track('instagram_click', { placement: 'footer' })}>אינסטגרם</a>
-        </div>
+        <ul className="foot__ways" aria-label="דרכים ליצירת קשר">
+          {ways.map((w) => (
+            <li key={w.ev}>
+              <a className="foot__way" href={w.href} aria-label={w.label} {...(w.out ? { target: '_blank', rel: 'noopener' } : {})}
+                onClick={() => track(w.ev, { placement: 'footer' })}>{w.icon}</a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div className="wrap foot__legal">
-        <span>© {new Date().getFullYear()} MediaWave Israel</span>
-        <a href="/terms/">תקנון</a>
-        <a href="/privacy/">פרטיות</a>
-        <a href="/accessibility/">נגישות</a>
-        <Buoy at="foot" to="top" label="חזרה לראש הדף" />
+      <div className="foot__horizon" aria-hidden="true">
+        <span className="foot__swell"><svg viewBox="0 0 800 44" preserveAspectRatio="none" focusable="false"><path d={SWELL} /></svg></span>
+        <span className="foot__front"><svg viewBox="0 0 400 44" preserveAspectRatio="none" focusable="false"><path d={FRONT} /></svg></span>
+      </div>
+      <div className="foot__sea">
+        <div className="wrap foot__in">
+          <nav aria-label="בדף הבית">
+            <p className="foot__h" aria-hidden="true">SITE</p>
+            {NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
+          </nav>
+          <nav aria-label="שירותים">
+            <p className="foot__h" aria-hidden="true">SERVICES</p>
+            {ALSO.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
+          </nav>
+        </div>
+        <div className="wrap foot__legal">
+          <span>© {new Date().getFullYear()} MediaWave Israel</span>
+          <a href="/terms/">תקנון</a>
+          <a href="/privacy/">פרטיות</a>
+          <a href="/accessibility/">נגישות</a>
+          <Buoy at="foot" to="top" label="חזרה לראש הדף" />
+        </div>
       </div>
     </footer>
   )
+}
+
+/** The horizon: the disc's wave, down on the left half and up on the right (logos/horizon), the sea below it.
+    The swell behind it is the same wave, twice, so it can drift by one length and start over without a seam. */
+const FRONT = 'M0 22C100 40 100 40 200 22S300 4 400 22V44H0Z'
+const SWELL = 'M0 22C100 40 100 40 200 22S300 4 400 22S500 40 600 22S700 4 800 22V44H0Z'
+
+/** The footer's light motion. The swell drifts only while the footer is on screen (data-live, a CSS animation of a
+    transform on its own box, the compositor's work); the wave follows the scroll a few pixels (--fx), read in the
+    scroll event and written once a frame. Nothing moves with ?calm=1 or "ללא אנימציות", or in the prerender. */
+function useHorizon(foot: React.RefObject<HTMLElement>) {
+  useEffect(() => {
+    const el = foot.current
+    if (!el || PRERENDER || typeof IntersectionObserver === 'undefined') return
+    const html = document.documentElement
+    const still = () => html.classList.contains('calm') || html.classList.contains('disable-animations')
+    let live = false
+    let raf = 0
+    let fx = 0
+    const write = () => { raf = 0; el.style.setProperty('--fx', fx.toFixed(1)) }
+    const onScroll = () => {
+      if (!live || still()) return
+      const r = el.getBoundingClientRect()
+      const k = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)))
+      fx = (k - 0.5) * 36
+      if (!raf) raf = requestAnimationFrame(write)
+    }
+    const io = new IntersectionObserver(([e]) => {
+      live = e.isIntersecting
+      el.toggleAttribute('data-live', live)
+      if (live) onScroll()
+    })
+    io.observe(el)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => { io.disconnect(); window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf) }
+  }, [foot])
 }
 
 const CONSENT_KEY = 'mw_cookie_consent'
