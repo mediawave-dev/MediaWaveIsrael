@@ -1,7 +1,13 @@
-# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D292 (all live)
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D295 (D293 live; D294, D295 local)
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D292). The next decision number is **D293**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D295). The next decision number is **D296**.
+
+## Latest (15.11 night)
+- **D293 live** (main f23d1da): the colour walk is seven vivid colours (turquoise to lime, OKLCH 0.76, 28 s, 28 OKLCH stops so nothing goes olive) on the disc's lower half, the footer sea, the footer W and the marker. Production gates clean, footer modes 0 errors.
+- **D294 local** (e5406ed): running text Assistant Bold (`public/fonts/assistant`, OFL), picked "A" from the usual content faces board. font7 files removed from the site.
+- **D295 local** (e5406ed): the chat that answers (`useChat` in `Home.tsx`, `CHAT` in `content.ts`, styles in `stage.css`): two quick replies, MediaWave answers, four kinds, then the WhatsApp message is written in the input. The box holds its height at the first tap; section height 561 before and after. Recorder: scratch `chat/chat-video.mjs <base> yes|no <kind>`.
+- Both checked on the build (gates 12 pages clean, overlap 0, narrow only the sticker). Waiting for his yes to push `main`.
 
 ## D292 in production (his "Yes, to production", 15.11 evening; main 0f7424e, both previews on the same commit)
 - The running text is **mediawave-font7 Bold** (our Kriti-spirited face), picked from numbered boards of every weight of font5, font6 and font7. Headings, buttons and labels stay Artzisraeli; Latin Saira; the chat the system face.
