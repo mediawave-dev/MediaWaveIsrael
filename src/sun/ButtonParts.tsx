@@ -73,10 +73,11 @@ export function Say({ children, alt }: { children: string; alt?: string }) {
     aria-expanded drives it (btn.css): open, the outer two flatten into straight strokes as they turn into an X and the
     middle one flattens away; under a pointer the three turn over one after the other, a ripple passing. One wave,
     laid at the middle three times and placed by transforms, so every change is a transform that eases. */
-const WAVE = 'M4 12c2.67 2 5.33 2 8 0s5.33-2 8 0'
+// the wave spans the glyph's whole width; its rise is the disc's own (8.6% of a full wave, logos/horizon), D287
+const WAVE = 'M4 12c2.67 1.85 5.33 1.85 8 0s5.33-1.85 8 0'
 export function MenuGlyph() {
   return (
-    <svg className="menu-glyph" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+    <svg className="menu-glyph" viewBox="4 4 16 16" width="18" height="18" aria-hidden="true" focusable="false">
       <path className="menu-glyph__a" d={WAVE} />
       <path className="menu-glyph__w" d={WAVE} />
       <path className="menu-glyph__b" d={WAVE} />

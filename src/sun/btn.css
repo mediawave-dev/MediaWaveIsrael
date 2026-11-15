@@ -134,16 +134,23 @@ html.high-contrast .a11y__head .icon-btn { background: #fff; }
    width under every scale (non-scaling-stroke), so a flattened wave is a clean stroke with round ends. */
 .menu-glyph { display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.9px; stroke-linecap: round; stroke-linejoin: round; }
 .menu-glyph path { vector-effect: non-scaling-stroke; transform-box: view-box; transform-origin: 12px 12px; transition: transform .55s cubic-bezier(.3, 1.25, .4, 1), opacity .25s ease; }
-.menu-glyph__a { transform: translate(0, -5.6px) rotate(0deg) scale(1, 1); }
+.menu-glyph__a { transform: translate(0, -4.8px) rotate(0deg) scale(1, 1); }
 .menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(1, 1); transition-delay: .05s; }
-.menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, 1); transition-delay: .1s; }
+.menu-glyph__b { transform: translate(0, 4.8px) rotate(0deg) scale(1, 1); transition-delay: .1s; }
 [aria-expanded="true"] > .menu-glyph path { transition-delay: 0s; }
 [aria-expanded="true"] > .menu-glyph .menu-glyph__a { transform: translate(0, 0) rotate(45deg) scale(1, .001); }
 [aria-expanded="true"] > .menu-glyph .menu-glyph__b { transform: translate(0, 0) rotate(-45deg) scale(1, .001); }
 [aria-expanded="true"] > .menu-glyph .menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(.15, .001); opacity: 0; }
 @media (hover: hover) {
-  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__a { transform: translate(0, -5.6px) rotate(0deg) scale(1, -1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__a { transform: translate(0, -4.8px) rotate(0deg) scale(1, -1); }
   [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__w { transform: translate(0, 0) rotate(0deg) scale(1, -1); }
-  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__b { transform: translate(0, 5.6px) rotate(0deg) scale(1, -1); }
+  [aria-expanded="false"]:hover > .menu-glyph .menu-glyph__b { transform: translate(0, 4.8px) rotate(0deg) scale(1, -1); }
 }
 html.disable-animations .menu-glyph path { transition: none; }
+
+/* D287 (Nati: "שתהיה פרופורציה מושלמת בין האייקון לבין הגלים, גם במקום על הרקע וגם בגודל ביניהם"): in the folded
+   corner one module sets every length, the disc's diameter (--lh): the waves fill a square of it, their rise is the
+   disc's horizon's and their line is as thick as the white line across the disc (8.8% of it); half a diameter apart
+   from the disc (the logo's own clear space); and the pair stands half a diameter from the top of the screen, from its
+   side, and from the white's edge under the disc (sun.css, the corner). */
+.pin .menu-glyph { width: var(--lh); height: var(--lh); stroke-width: calc(var(--lh) * .088); }

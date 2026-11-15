@@ -156,10 +156,19 @@ html.calm :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part=
 .head__tools { display: flex; align-items: center; gap: 2px; }
 .head__cta { display: none; }
 
-.pin { --p: 0; --lh: 25px; --w0: 322; --h0: 96; --w1: 132; --h1: 76; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: calc(12px + env(safe-area-inset-right, 0px)); pointer-events: none; }
+.pin { --p: 0; --lh: 25px; --w0: 322; --h0: 96; --w1: 132; --h1: 77; position: fixed; z-index: 50; top: 0; inset-inline-start: 0; display: flex; align-items: center; height: 66px; padding-inline-start: calc(var(--pad0, 12px) + env(safe-area-inset-right, 0px)); pointer-events: none; }
 .pin > * { pointer-events: auto; }
 .pin__blob { position: absolute; top: 0; inset-inline-start: 0; width: calc(var(--w0) * 1px); height: calc(var(--h0) * 1px); max-width: none; fill: var(--paper); filter: drop-shadow(0 6px 14px rgba(23, 24, 28, .22)); pointer-events: none; transform-origin: 100% 0; transform: scale(calc(1 - (1 - var(--w1) / var(--w0)) * var(--p)), calc(1 - (1 - var(--h1) / var(--h0)) * var(--p))); will-change: transform; }
 .pin__menu { position: relative; flex: none; width: calc(44px * var(--p)); opacity: calc(var(--p) * 1.6 - .6); visibility: hidden; overflow: hidden; }
+/* D287: the folded pair in one module, the disc's diameter (--lh). Half of it (--m) between the disc and the waves,
+   above them, beside them at the screen's edge, and under the disc to the white's edge. Each length goes from the open
+   header's to the folded one's with the fold (--p), so the open header is as it was. --pad0 and --shift are the open
+   corner's padding and the desktop's slide toward the edge; --pin-h is the corner's height. */
+.pin { --m: calc(var(--lh) / 2); --pad0: 12px; --shift: 0px; --pin-h: 66px; }
+/* the waves' square stands --m from the screen's side (a margin, so it may pull past the corner's padding), and the
+   disc --m from the waves (the button is 44px wide, the disc's clip keeps a tenth of a diameter, the logo 4px) */
+.pin__menu { margin-inline-start: calc((var(--m) - (44px - var(--lh)) / 2 + var(--shift) - var(--pad0)) * var(--p)); margin-inline-end: calc((var(--lh) * .9 - 26px) * var(--p)); }
+.pin__menu, .pin__logo { translate: 0 calc((var(--lh) - var(--pin-h) / 2) * var(--p)); }
 .pin[data-folded] .pin__menu, html.menu-open .pin__menu { visibility: visible; }
 .pin__logo { position: relative; display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; padding-inline-start: 4px; }
 /* the logo art is drawn left to right (the mark, then the name): the clip narrows from the name's end, the mark
@@ -177,8 +186,8 @@ html.menu-open .pin__blob { filter: none; }
 .sheet nav :is(a, button) { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 54px; font: 700 1.25rem/1.2 var(--display); text-align: start; border-block-end: 1px solid var(--line); }
 .sheet nav svg { opacity: .55; }
 /* narrow phones: a smaller logo, so the corner wave stays clear of the two buttons beside it */
-@media (max-width: 389px) { .pin { --lh: 22px; --w0: 284; --h0: 88; --w1: 128; --h1: 74; height: 64px; } }
-@media (max-width: 339px) { .pin { --lh: 19px; --w0: 244; --h0: 80; --w1: 122; --h1: 70; height: 60px; } }
+@media (max-width: 389px) { .pin { --lh: 22px; --w0: 284; --h0: 88; --w1: 128; --h1: 65.5; height: 64px; --pin-h: 64px; } }
+@media (max-width: 339px) { .pin { --lh: 19px; --w0: 244; --h0: 80; --w1: 122; --h1: 55; height: 60px; --pin-h: 60px; } }
 @media (min-width: 1100px) {
   .head__in { min-height: 116px; padding: 20px 40px 0; justify-content: flex-start; gap: 36px; }
   /* the links start clear of the corner wave */
@@ -191,7 +200,7 @@ html.menu-open .pin__blob { filter: none; }
   .head__cta svg:last-child { transition: transform .25s var(--ease); }
   @media (hover: hover) { .head__cta:hover svg:last-child { transform: translateX(-4px); } }
   .head__menu { display: none; }
-  .pin { --lh: 30px; --w0: 436; --h0: 124; --w1: 150; --h1: 84; height: 84px; padding-inline-start: 34px; transform: translateX(calc(var(--p) * 18px)); }
+  .pin { --lh: 30px; --w0: 436; --h0: 124; --w1: 190; --h1: 96; height: 84px; --pin-h: 84px; --pad0: 34px; --shift: 18px; transform: translateX(calc(var(--p) * 18px)); }
   .sheet { inset-inline: 0 auto; width: 420px; padding: 96px 34px 28px; border-radius: 0; border-end-end-radius: 32px; }
 }
 
