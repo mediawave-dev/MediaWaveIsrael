@@ -227,11 +227,11 @@ const SWELL = 'M0 22C100 40 100 40 200 22S300 4 400 22S500 40 600 22S700 4 800 2
 
 /** D289 (Nati: "אני רוצה שהצבע למטה ישתנה כל הזמן כמו האייקון שמשתנה. בצורה טבעית ואיכותית"): the sea walks through the
     disc's colours on the disc's own clock (D262, D268: 36 s a round, every walk started at the page's time zero).
-    D290 (the happier walk): the sea is the disc's water, its clear half (sun.css, mark-clear: the same stops in the
-    same places), bright, with the ink on it at 5.0:1 or more along the whole walk; the swell behind the wave is the
-    same colour at half strength. */
+    D290: the sea is the disc's water, its lower half (sun.css, mark-clear: the same stops in the same places), with
+    the ink on it; the swell behind the wave is the same colour at half strength. D291: the pastel spectrum. */
 const WALK_MS = 36000
-const CLEAR: [number, string][] = [[0, '#19C4B1'], [1 / 7, '#3AA8FF'], [2 / 7, '#8E7CFF'], [3 / 7, '#FF6BAE'], [4 / 7, '#FF8558'], [5 / 7, '#FFC53D'], [6 / 7, '#66D36E'], [1, '#19C4B1']]
+const PASTEL = ['#93E3D8', '#9DDAFE', '#C3C9FF', '#E7C1F4', '#FCBCD4', '#FEC1A6', '#F5E198', '#B6DEAD']
+const CLEAR: [number, string][] = [...PASTEL.map((c, i) => [i / PASTEL.length, c] as [number, string]), [1, PASTEL[0]]]
 const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 function walkAt(stops: [number, string][], k: number) {
   let i = 0

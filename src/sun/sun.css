@@ -387,10 +387,10 @@ html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg);
    teal, the site's two link lists and the legal line, the back-to-top buoy riding its rule. The light motion: a paler
    swell behind the wave drifts while the footer is on screen (data-live), and the wave moves a few pixels with the
    scroll (--fx). D289: while it is on screen the sea walks through the disc's colours on the disc's clock (Shell.tsx,
-   useHorizon writes --sea). D290 (the happier walk): the sea is the disc's water, its clear half, bright, with the
-   ink on it (5.0:1 or more along the whole walk); the swell is the same colour at half strength. Here it rests on the
-   brand's teal (ink on it 5.1:1). */
-.foot { --sea: #14A390; background: var(--paper); }
+   useHorizon writes --sea). D290: the sea is the disc's water, its lower half, with the ink on it; the swell is the
+   same colour at half strength. D291: the pastel spectrum (sun.css, mark-clear); here it rests on the first of it,
+   aqua (ink on it 12:1). */
+.foot { --sea: #93E3D8; background: var(--paper); }
 .foot__top { display: grid; justify-items: center; text-align: center; padding-block: 48px 26px; }
 .foot__brand { display: grid; justify-items: center; }
 .foot__brand p { margin: 14px auto 0; font-weight: 600; max-width: 20em; text-wrap: balance; color: var(--ink-text); }
@@ -620,81 +620,70 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 .wheel__screen video { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; }
 .wheel__screen video[data-on] { opacity: 1; }
 
-/* D290 (Nati, 15.11.2026: "אני רוצה צבעים יותר 'שמחים'. תשנה את הפלטת צבעים שמשתנה כל הזמן. גם באייקון וגם בפוטר"):
-   a happier walk, seven colours a round in the same 36 s. The clear half (the disc's water, the footer's sea, the
-   marker): turquoise, sky, lilac, pink, coral, sun, lime. The deep half ("Wave", the footer's W, the chat's send
-   button): the jewel tone of the first five (deep teal, royal, violet, raspberry, red-orange), then fuchsia beside the
-   sun and purple beside the lime. A deep yellow or a deep green after an orange is olive and brown on the way, so the
-   deep half turns back through the warm purples instead; white on it reads at 5.2:1 or more along the whole walk.
-   At rest (?calm=1, "ללא אנימציות") everything stands on the brand. */
-/* ---------- D262: the logo's mark never stands still in colour (Nati, 13.11.2026). The lower half walks slowly through
-   six clear colours and the upper half through the deep tone of each, one full round in 36 seconds, so the change
-   is felt more than seen. Only the fill of two small paths changes (paint only, no layout). A keyframe
-   animation outranks the paths' inline fill. The accessibility panel's "ללא אנימציות" stops it on the brand colours. ---------- */
-.mw-logo [data-part="mark"] path:nth-child(1) { animation: mark-deep 36s linear infinite; }
+/* D291 (Nati, 15.11.2026: "אולי בצבעים ניצמד פשוט לצבעי פסטל וזהו. כל ספקטרום צבעי הפסטל זה מה שישתנה בצבעים של
+   האייקון והפוטר והלוגו של mw. שייראה איכותי ביותר", and "אני רוצה שהחלק העליון של האייקון יישאר בצבע שהיה. שיישאר
+   סטטי. מה שמשתנה מבחינת צבעים זה רק החלק התחתון בלבד"): the walk is the pastel spectrum, eight shades at one
+   lightness and one strength (OKLCH 0.86 / 0.08, the yellow a little lighter so it stays butter, not khaki), a round in
+   36 s: aqua, sky, periwinkle, lilac, pink, peach, butter, pistachio. It colours only the disc's lower half (the
+   water, also in the buoys and the step rings), the footer's sea (ink on it 9:1 or more), the footer MW's W (two stronger
+   shades of the same hue, so the letter keeps its weight beside the ink M) and its brackets, and the marker in the
+   closing statement. The disc's upper half, "Wave" and every text colour stand still in the brand's colours.
+   D262 (13.11.2026): the change is slow enough to be felt more than seen; only fills change (paint, no layout); a
+   keyframe animation outranks the inline fill; ?calm=1 and "ללא אנימציות" stop it on the brand colours. */
 .mw-logo [data-part="mark"] path:nth-child(2) { animation: mark-clear 36s linear infinite; }
-@keyframes mark-clear {
-  0%, 100% { fill: #19C4B1; }
-  14.29% { fill: #3AA8FF; }
-  28.57% { fill: #8E7CFF; }
-  42.86% { fill: #FF6BAE; }
-  57.14% { fill: #FF8558; }
-  71.43% { fill: #FFC53D; }
-  85.71% { fill: #66D36E; }
-}
-@keyframes mark-deep {
-  0%, 100% { fill: #0B7A70; }
-  14.29% { fill: #1E62D0; }
-  28.57% { fill: #5A3ED6; }
-  42.86% { fill: #C2185B; }
-  57.14% { fill: #B53A1A; }
-  71.43% { fill: #B0127A; }
-  85.71% { fill: #6233C8; }
-}
-/* D268 (Nati, 14.11.2026): "Wave" in the header, its drop, and the footer's W change with the disc, on the same clock
-   (Shell syncs every walk to the page's start). Text takes a deeper shade of each colour, as "Wave" always did
-   (#0F8478 beside the disc's #14A390), so the word stays readable even in yellow. */
-.mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text { animation: walk-text 36s linear infinite; }
 .walk-w0 { animation: walk-w0 36s linear infinite; }
 .walk-w1 { animation: walk-w1 36s linear infinite; }
 .walk-stroke { animation: walk-stroke 36s linear infinite; }
-.walk-ink { color: #0F8478; animation: walk-ink 36s linear infinite; }
-.walk-bg { animation: walk-bg 36s linear infinite; }
-@keyframes walk-text {
-  0%, 100% { fill: #0B7A70; }
-  14.29% { fill: #1E62D0; }
-  28.57% { fill: #5A3ED6; }
-  42.86% { fill: #C2185B; }
-  57.14% { fill: #B53A1A; }
-  71.43% { fill: #B0127A; }
-  85.71% { fill: #6233C8; }
+.walk-ink { color: #0F8478; }
+@keyframes mark-clear {
+  0%, 100% { fill: #93E3D8; }
+  12.5% { fill: #9DDAFE; }
+  25% { fill: #C3C9FF; }
+  37.5% { fill: #E7C1F4; }
+  50% { fill: #FCBCD4; }
+  62.5% { fill: #FEC1A6; }
+  75% { fill: #F5E198; }
+  87.5% { fill: #B6DEAD; }
 }
 @keyframes walk-w0 {
-  0%, 100% { stop-color: #19C4B1; }
-  14.29% { stop-color: #3AA8FF; }
-  28.57% { stop-color: #8E7CFF; }
-  42.86% { stop-color: #FF6BAE; }
-  57.14% { stop-color: #FF8558; }
-  71.43% { stop-color: #FFC53D; }
-  85.71% { stop-color: #66D36E; }
+  0%, 100% { stop-color: #49C4B7; }
+  12.5% { stop-color: #61B9EA; }
+  25% { stop-color: #9EA4E9; }
+  37.5% { stop-color: #CB98DB; }
+  50% { stop-color: #E590B1; }
+  62.5% { stop-color: #E89772; }
+  75% { stop-color: #E3C566; }
+  87.5% { stop-color: #88BF7C; }
 }
 @keyframes walk-w1 {
-  0%, 100% { stop-color: #0B7A70; }
-  14.29% { stop-color: #1E62D0; }
-  28.57% { stop-color: #5A3ED6; }
-  42.86% { stop-color: #C2185B; }
-  57.14% { stop-color: #B53A1A; }
-  71.43% { stop-color: #B0127A; }
-  85.71% { stop-color: #6233C8; }
+  0%, 100% { stop-color: #2AA99C; }
+  12.5% { stop-color: #369DD1; }
+  25% { stop-color: #8489DA; }
+  37.5% { stop-color: #B17AC2; }
+  50% { stop-color: #CB7196; }
+  62.5% { stop-color: #CE7951; }
+  75% { stop-color: #C6A848; }
+  87.5% { stop-color: #69A45C; }
 }
 @keyframes walk-stroke {
-  0%, 100% { stroke: #19C4B1; }
-  14.29% { stroke: #3AA8FF; }
-  28.57% { stroke: #8E7CFF; }
-  42.86% { stroke: #FF6BAE; }
-  57.14% { stroke: #FF8558; }
-  71.43% { stroke: #FFC53D; }
-  85.71% { stroke: #66D36E; }
+  0%, 100% { stroke: #49C4B7; }
+  12.5% { stroke: #61B9EA; }
+  25% { stroke: #9EA4E9; }
+  37.5% { stroke: #CB98DB; }
+  50% { stroke: #E590B1; }
+  62.5% { stroke: #E89772; }
+  75% { stroke: #E3C566; }
+  87.5% { stroke: #88BF7C; }
+}
+@keyframes walk-mark {
+  0%, 100% { background-color: #93E3D8; }
+  12.5% { background-color: #9DDAFE; }
+  25% { background-color: #C3C9FF; }
+  37.5% { background-color: #E7C1F4; }
+  50% { background-color: #FCBCD4; }
+  62.5% { background-color: #FEC1A6; }
+  75% { background-color: #F5E198; }
+  87.5% { background-color: #B6DEAD; }
 }
 
 
@@ -720,30 +709,3 @@ main :is(h1, h2, h3, h4) { font-family: "MW Head XL", "MW Head XL Fallback", Ari
 .oops__acts { display: flex; flex-wrap: wrap; gap: 12px; }
 /* D281: three sentences of content left the headings' face for the text's (EFT OffSet): the note under the hero's
    buttons, the footer's line, the signature's WhatsApp line (proof.css) */
-@keyframes walk-ink {
-  0%, 100% { color: #0B7A70; }
-  14.29% { color: #1E62D0; }
-  28.57% { color: #5A3ED6; }
-  42.86% { color: #C2185B; }
-  57.14% { color: #B53A1A; }
-  71.43% { color: #B0127A; }
-  85.71% { color: #6233C8; }
-}
-@keyframes walk-bg {
-  0%, 100% { background-color: #0B7A70; }
-  14.29% { background-color: #1E62D0; }
-  28.57% { background-color: #5A3ED6; }
-  42.86% { background-color: #C2185B; }
-  57.14% { background-color: #B53A1A; }
-  71.43% { background-color: #B0127A; }
-  85.71% { background-color: #6233C8; }
-}
-@keyframes walk-mark {
-  0%, 100% { background-color: #19C4B1; }
-  14.29% { background-color: #3AA8FF; }
-  28.57% { background-color: #8E7CFF; }
-  42.86% { background-color: #FF6BAE; }
-  57.14% { background-color: #FF8558; }
-  71.43% { background-color: #FFC53D; }
-  85.71% { background-color: #66D36E; }
-}

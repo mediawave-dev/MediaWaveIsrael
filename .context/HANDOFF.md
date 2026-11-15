@@ -1,11 +1,12 @@
-# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D290 (D289 and D290 local)
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D291 (D289 to D291 local)
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D290). The next decision number is **D291**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D291). The next decision number is **D292**.
 
 ## Waiting for his go (local on `night/statement-20261114`, not pushed anywhere)
 - **D289:** the footer's sea walks with the disc's colours, read from the disc's own animation clock (`useHorizon` in `Shell.tsx`).
 - **D290:** the happier walk (seven colours; the clear half = the disc's water and now the footer's sea with ink text, 4.98:1 or more; the deep half turns back through fuchsia and purple so it never goes olive or brown), plus two sections that enter with the scroll: `Custom` (a WhatsApp thread, after Offer) and `Pitch` ("אנחנו MediaWave", before Contact) in `Home.tsx`, the motion hook `src/sun/stage.ts`, styles `src/sun/stage.css`, copy `PITCH` and `CUSTOM` in `content.ts` (his wording turned to the plural).
+- **D291:** the walk is the pastel spectrum (eight shades, `mark-clear` and the Shell `PASTEL` list) on the disc's lower half, the footer sea, the footer W and the marker only; the disc's upper half and "Wave" stand still. The chat is drawn as WhatsApp's light screen in the system face (`stage.css`, `Custom` in `Home.tsx`).
 - Checked on the build: 12 pages clean at 390 and 1440, axe 0, no layout jump; the two sections stand finished with ?calm=1 and the stop switch; the footer in its four modes. Scripts: `C:/tmp/night/fonts/stage-still.mjs`, `foot-modes.mjs`, `walk-contrast.mjs`, recorders `stage-video.mjs`, `sea-walk.mjs`.
 - On his yes: push `night/statement-20261114:main` (command below), wait for the production bundle to change, rerun the gates on mediawave.co.il.
 - Records fixed in D290: D279 to D289 were logged as 16.11 by mistake; everything, the release included, happened on 15.11.

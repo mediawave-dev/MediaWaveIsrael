@@ -257,34 +257,55 @@ function Pitch() {
     בחוכמה"): three messages from MediaWave in a short WhatsApp thread, the channel the button opens. They arrive with
     the scroll: the two questions, three dots typing, the answer; under them the reply line, which is the WhatsApp link
     (the message in it already written). The dots stand in the answer's own place, so nothing below ever moves. */
+/** D291 (Nati: "אם אתה כבר מדמה הודעת וואטסאפ תעשה את זה שייראה ממש כמו וואטסאפ. כולל הפונט"): the thread is drawn as
+    WhatsApp's own light screen, set in the phone's system face (what WhatsApp itself uses: SF on an iPhone, Roboto on
+    Android, Segoe UI on Windows): the white bar with the name and the status line, the beige chat ground, the "היום"
+    chip, white bubbles with the tail on the first of the run and the time in each, and the input with the green send
+    button. While the answer is being written the status line says "מקליד/ה…", as WhatsApp does. The patterned ground is
+    our own (small waves and discs), not WhatsApp's drawing. */
+const WA_TIMES = ['10:24', '10:24', '10:25']
 function Custom() {
   const ref = useStage<HTMLElement>((p, put, el) => {
     put('--c1', back(seg(p, 0.02, 0.24), 0.1))
     put('--c2', back(seg(p, 0.18, 0.4), 0.1))
     const t = seg(p, 0.36, 0.56)
-    put('--ct', Math.sin(Math.PI * t))
     el.toggleAttribute('data-typing', t > 0.02 && t < 0.98)
     put('--c3', back(seg(p, 0.54, 0.76), 0.1))
     put('--cr', soft(seg(p, 0.68, 0.92)))
   }, { from: 0.95, span: 0.72 })
+  const cs = ['var(--c1, 1)', 'var(--c2, 1)', 'var(--c3, 1)']
   return (
     <section className="custom" aria-labelledby="custom-q" ref={ref}>
       <div className="wrap">
         <div className="chat">
           <div className="chat__head">
+            <svg className="chat__back" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4.5 16.5 12 9 19.5" /></svg>
             <span className="chat__avatar"><LogoMark decorative /></span>
-            <span className="chat__who"><b>MediaWave</b><small>{SITE_CONTACT.responseTime}</small></span>
+            <span className="chat__who">
+              <b>MediaWave</b>
+              <small className="chat__status"><span className="chat__online">{SITE_CONTACT.responseTime}</span><span className="chat__typing" aria-hidden="true">מקליד/ה…</span></small>
+            </span>
+            <span className="chat__tools" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false"><path d="M6.6 3.5h2.6l1.5 4.2-2 1.4a12 12 0 0 0 6.2 6.2l1.4-2 4.2 1.5v2.6a2 2 0 0 1-2.1 2A16.6 16.6 0 0 1 4.6 5.6a2 2 0 0 1 2-2.1Z" /></svg>
+            </span>
           </div>
-          <ol className="chat__thread">
-            <li id="custom-q" className="chat__msg" style={{ '--c': 'var(--c1, 1)' } as CSSProperties}>{CUSTOM.msgs[0]}</li>
-            <li className="chat__msg" style={{ '--c': 'var(--c2, 1)' } as CSSProperties}>{CUSTOM.msgs[1]}</li>
-            <li className="chat__typing" aria-hidden="true"><i /><i /><i /></li>
-            <li className="chat__msg chat__msg--answer" style={{ '--c': 'var(--c3, 1)' } as CSSProperties}>{CUSTOM.msgs[2]}</li>
-          </ol>
-          <a className="chat__reply" href={CUSTOM.wa} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'custom' })}>
-            <span className="chat__field">{CUSTOM.reply}</span>
-            <span className="chat__send walk-bg" aria-hidden="true"><IconWhatsApp /></span>
-          </a>
+          <div className="chat__body">
+            <p className="chat__day" aria-hidden="true">היום</p>
+            <ol className="chat__thread">
+              {CUSTOM.msgs.map((m, i) => (
+                <li key={m} id={i === 0 ? 'custom-q' : undefined} className="chat__msg" style={{ '--c': cs[i] } as CSSProperties}>
+                  {m}<span className="chat__time" aria-hidden="true">{WA_TIMES[i]}</span>
+                </li>
+              ))}
+            </ol>
+            <a className="chat__reply" href={CUSTOM.wa} target="_blank" rel="noopener" onClick={() => track('whatsapp_click', { placement: 'custom' })}>
+              <span className="chat__field">
+                <svg className="chat__emoji" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M8.3 14.2a4.6 4.6 0 0 0 7.4 0" /><circle cx="9" cy="9.8" r=".6" /><circle cx="15" cy="9.8" r=".6" /></svg>
+                <span>{CUSTOM.reply}</span>
+              </span>
+              <span className="chat__send" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10.2 15 12 3.4 13.8Z" /></svg></span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

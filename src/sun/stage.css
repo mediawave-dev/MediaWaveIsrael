@@ -24,7 +24,7 @@
 .pitch .pitch__jump { --bump: calc(4 * var(--e) * (1 - var(--e))); transform: translateY(calc((1 - var(--e)) * 112% - var(--bump) * 30%)) rotate(calc(var(--bump) * -6deg)); }
 /* "לקוחות": a marker sweeps under it in reading direction, in the happy walk's clear colour */
 .pitch__mark { position: relative; isolation: isolate; background: none; color: inherit; padding-inline: .04em; }
-.pitch__mark::before { content: ""; position: absolute; z-index: -1; inset-inline: -.06em; bottom: .1em; height: .38em; border-radius: .14em; background: #FFC53D; opacity: .62; transform: scaleX(var(--m, 1)); transform-origin: right; animation: walk-mark 36s linear infinite; }
+.pitch__mark::before { content: ""; position: absolute; z-index: -1; inset-inline: -.06em; bottom: .1em; height: .38em; border-radius: .14em; background: #F5E198; transform: scaleX(var(--m, 1)); transform-origin: right; animation: walk-mark 36s linear infinite; }
 html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 
 /* the button comes up last with a small throw (--l5), and a ring spreads from it once as it settles (--h) */
@@ -33,42 +33,68 @@ html:is(.calm, .disable-animations) .pitch__mark::before { animation: none; }
 .pitch__cta::before { content: ""; position: absolute; top: 0; bottom: 0; inset-inline: 0; margin-inline: auto; width: min(100%, 320px); border-radius: 999px; box-shadow: 0 0 0 2px #19C4B1; transform: scale(calc(1 + .22 * var(--h, 1)), calc(1 + .8 * var(--h, 1))); opacity: calc(var(--h, 1) * (1 - var(--h, 1)) * 2.8); pointer-events: none; }
 @media (min-width: 900px) { .pitch { padding-block: 120px 128px; } .pitch__call { margin-block-start: 30px; } }
 
-/* ---------- "a site you loved": a short WhatsApp thread with MediaWave ---------- */
+/* ---------- "a site you loved": a short WhatsApp thread with MediaWave ----------
+   D291: drawn as WhatsApp's own light screen, in the phone's system face (WhatsApp uses it too). WhatsApp's colours:
+   ground #EFEAE2, bubble #FFF, text #111B21, time and secondary #667781, send #00A884. The ground's pattern is ours. */
 .custom { padding-block: 72px 104px; }
-.chat { width: min(100%, 420px); margin-inline: auto; border-radius: 28px; background: #fff; box-shadow: 0 0 0 1px rgba(19, 36, 31, .08), 0 34px 60px -34px rgba(19, 36, 31, .5); overflow: hidden; text-align: start; }
-.chat__head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; }
-.chat__avatar { display: grid; place-items: center; flex: none; width: 42px; height: 42px; border-radius: 50%; background: #F1F7F5; }
-.chat__avatar .mw-logo { width: 28px; height: 28px; }
-.chat__who { display: grid; gap: 2px; }
-.chat__who b { font: 700 1.0625rem/1.2 var(--display); color: var(--ink); }
-.chat__who small { font: 600 .8125rem/1.3 var(--text); color: var(--ink-2); }
-.chat__thread { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin: 0; padding: 18px 14px 14px; list-style: none; background: #EEF6F3; }
-/* a message: in from its tail's corner, a little past its size and back */
-.chat__msg, .chat__typing { justify-self: start; border-radius: 18px; border-start-start-radius: 5px; background: #fff; box-shadow: 0 1px 1.5px rgba(19, 36, 31, .14); transform-origin: 100% 0; }
-.chat__msg { max-width: 88%; padding: 10px 14px 11px; font: 600 1.0625rem/1.45 var(--text); color: var(--ink); text-align: start; transform: translateY(calc((1 - var(--c, 1)) * 16px)) scale(calc(.8 + .2 * var(--c, 1))); opacity: clamp(0, calc(var(--c, 1) * 1.6), 1); }
-/* the dots type in the answer's own place (the same grid cell), so the thread never changes height */
-.chat__typing, .chat__msg--answer { grid-row: 3; grid-column: 1; }
-.chat__typing { align-self: start; display: flex; gap: 5px; padding: 15px 16px; transform: scale(calc(.7 + .3 * var(--ct, 0))); opacity: var(--ct, 0); }
-.chat__typing i { width: 7px; height: 7px; border-radius: 50%; background: #93A49E; }
-.custom[data-typing] .chat__typing i { animation: chat-dot 1s ease-in-out infinite; }
-.custom[data-typing] .chat__typing i:nth-child(2) { animation-delay: .15s; }
-.custom[data-typing] .chat__typing i:nth-child(3) { animation-delay: .3s; }
-@keyframes chat-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
-/* the reply line: the WhatsApp link, a field with the send button in the walk's deep colour */
-.chat__reply { display: flex; align-items: center; gap: 10px; padding: 8px 12px 14px; background: #EEF6F3; transform: translateY(calc((1 - var(--cr, 1)) * 18px)); opacity: var(--cr, 1); -webkit-tap-highlight-color: transparent; }
-.chat__field { flex: 1; display: flex; align-items: center; min-height: 50px; padding-inline: 18px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px rgba(19, 36, 31, .12); font: 600 1rem/1.3 var(--text); color: var(--ink-2); text-align: start; transition: box-shadow .25s ease; }
-.chat__send { display: grid; place-items: center; flex: none; width: 50px; height: 50px; border-radius: 50%; background: #0B7A70; color: #fff; box-shadow: 0 10px 18px -10px rgba(19, 36, 31, .6); transition: transform .45s cubic-bezier(.2, 1.5, .4, 1); }
-.chat__send svg { width: 24px; height: 24px; }
+.chat {
+  width: min(100%, 420px); margin-inline: auto; border-radius: 26px; overflow: hidden; text-align: start;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Hebrew", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased; color: #111B21; background: #EFEAE2;
+  box-shadow: 0 0 0 1px rgba(11, 20, 26, .08), 0 34px 60px -34px rgba(11, 20, 26, .45);
+}
+.chat :where(b, small, p, li, span) { font-family: inherit; }
+/* the bar: back, picture, name and status, video and call */
+.chat__head { display: flex; align-items: center; gap: 9px; padding: 10px 10px 10px 16px; background: #fff; box-shadow: 0 1px 0 rgba(11, 20, 26, .08); position: relative; z-index: 1; }
+.chat__back { flex: none; width: 22px; height: 22px; fill: none; stroke: #111B21; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.chat__avatar { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1px rgba(11, 20, 26, .1); }
+.chat__avatar .mw-logo { width: 26px; height: 26px; }
+.chat__who { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.chat__who b { font-size: 1rem; line-height: 1.25; font-weight: 600; color: #111B21; }
+.chat__status { display: grid; font-size: .8125rem; line-height: 1.3; font-weight: 400; color: #667781; }
+.chat__status > span { grid-area: 1 / 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .2s ease; }
+.chat__typing { opacity: 0; color: #008069; }
+.custom[data-typing] .chat__online { opacity: 0; }
+.custom[data-typing] .chat__typing { opacity: 1; }
+.chat__tools { flex: none; display: flex; gap: 18px; padding-inline-end: 4px; }
+.chat__tools svg { width: 22px; height: 22px; fill: none; stroke: #111B21; stroke-width: 1.8; stroke-linejoin: round; }
+/* the ground, with our own faint pattern of small waves and discs */
+.chat__body {
+  padding: 12px 12px 12px;
+  background-color: #EFEAE2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='132' fill='none' stroke='%23E1D9CA' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M14 26c4-4 8-4 12 0s8 4 12 0'/%3E%3Ccircle cx='96' cy='22' r='7'/%3E%3Cpath d='M89 22h14'/%3E%3Cpath d='M72 74c4-4 8-4 12 0s8 4 12 0'/%3E%3Ccircle cx='30' cy='92' r='5'/%3E%3Cpath d='M108 106l6 6M114 106l-6 6'/%3E%3Cpath d='M48 120c3-3 6-3 9 0s6 3 9 0'/%3E%3Ccircle cx='60' cy='46' r='2'/%3E%3C/svg%3E");
+}
+.chat__day { margin: 2px auto 10px; width: fit-content; padding: 5px 12px; border-radius: 8px; background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); font-size: .75rem; line-height: 1.2; font-weight: 500; color: #54656F; text-align: center; }
+.chat__thread { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; margin: 0; padding: 0; list-style: none; }
+/* a message from MediaWave: white, the tail on the first of the run (in RTL its top right), the time at its end.
+   It comes in from the tail's corner, a little past its size and back. */
+.chat__msg {
+  position: relative; justify-self: start; max-width: 86%; padding: 6px 9px 8px 9px; border-radius: 8px; background: #fff;
+  box-shadow: 0 1px .5px rgba(11, 20, 26, .13); font-size: 1rem; line-height: 1.4; font-weight: 400; color: #111B21; text-align: start;
+  transform-origin: 100% 0; transform: translateY(calc((1 - var(--c, 1)) * 14px)) scale(calc(.82 + .18 * var(--c, 1)));
+  opacity: clamp(0, calc(var(--c, 1) * 1.6), 1);
+}
+.chat__msg:first-child { border-start-start-radius: 0; margin-block-start: 2px; }
+.chat__msg:first-child::before { content: ""; position: absolute; top: 0; inset-inline-start: -8px; width: 8px; height: 13px; background: #fff; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.chat__time { float: inline-end; position: relative; top: 7px; margin-inline-start: 12px; font-size: .6875rem; line-height: 1; color: #667781; white-space: nowrap; }
+/* the input: the WhatsApp link, a white field with the smiley and our line, the green send button */
+.chat__reply { display: flex; align-items: center; gap: 6px; margin-block-start: 14px; transform: translateY(calc((1 - var(--cr, 1)) * 16px)); opacity: var(--cr, 1); -webkit-tap-highlight-color: transparent; }
+.chat__field { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; min-height: 46px; padding-inline: 12px 16px; border-radius: 24px; background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); font-size: 1rem; line-height: 1.3; font-weight: 400; color: #54656F; text-align: start; transition: box-shadow .25s ease; }
+.chat__emoji { flex: none; width: 24px; height: 24px; fill: none; stroke: #54656F; stroke-width: 1.6; stroke-linecap: round; }
+.chat__emoji circle:not(:first-child) { fill: #54656F; }
+.chat__send { display: grid; place-items: center; flex: none; width: 48px; height: 48px; border-radius: 50%; background: #00A884; color: #fff; box-shadow: 0 1px 2px rgba(11, 20, 26, .2); transition: transform .45s cubic-bezier(.2, 1.5, .4, 1); }
+.chat__send svg { width: 22px; height: 22px; fill: currentColor; transform: scaleX(-1); }
 @media (hover: hover) {
-  .chat__reply:hover .chat__send { transform: scale(1.08) rotate(-8deg); }
-  .chat__reply:hover .chat__field { box-shadow: 0 0 0 2px rgba(19, 36, 31, .3); }
+  .chat__reply:hover .chat__send { transform: scale(1.08); }
+  .chat__reply:hover .chat__field { box-shadow: 0 0 0 2px rgba(0, 168, 132, .45); }
 }
 .chat__reply:active .chat__send { transform: scale(.92); transition-duration: .12s; }
-.chat__reply:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+.chat__reply:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 24px; }
 @media (min-width: 900px) { .custom { padding-block: 96px 104px; } }
 
 /* high contrast: black and white, the marker a grey */
-html.high-contrast :is(.chat__thread, .chat__reply) { background: #fff; }
-html.high-contrast :is(.chat__msg, .chat__typing, .chat__field) { box-shadow: 0 0 0 2px #000; }
+html.high-contrast :is(.chat__body, .chat__head) { background: #fff; }
+html.high-contrast :is(.chat__msg, .chat__field, .chat__day) { box-shadow: 0 0 0 2px #000; }
+html.high-contrast :is(.chat__time, .chat__status, .chat__typing, .chat__field) { color: #000; }
 html.high-contrast .chat__send { background: #000; }
 html.high-contrast .pitch__mark::before { background: #000; opacity: .18; }
