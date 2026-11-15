@@ -60,9 +60,10 @@ function Hero() {
       <div className="hero__cta">
         <div className="hero__actions">
           <WhatsAppButton placement="hero" />
-          {/* the answer is further down: its chevrons turn down now and then, and its label says how many steps */}
-          <a className="btn btn--line" href="#process" data-beats="dive say" onClick={() => track('cta_click', { placement: 'hero_process' })}>
-            <Say alt={`${PROCESS.steps.length} שלבים`}>{HERO.second}</Say><Go />
+          {/* the answer is further down: in every turn its chevrons turn down and flow down (D280, Nati: "תחזיר את מה
+              שעשית קודם בכפתור 'איך זה עובד' שהחיצים היו כלפי מטה"; the "4 שלבים" line that took every other turn is gone) */}
+          <a className="btn btn--line" href="#process" data-beats="dive" onClick={() => track('cta_click', { placement: 'hero_process' })}>
+            <Say>{HERO.second}</Say><Go />
           </a>
         </div>
         <p className="hero__note">{HERO.note}</p>
