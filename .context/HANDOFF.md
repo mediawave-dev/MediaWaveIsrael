@@ -1,7 +1,15 @@
-# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D291 (D289 to D291 local)
+# HANDOFF: the statement site (look `sun`), state on 15.11.2026 after D292 (all live)
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D291). The next decision number is **D292**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D292). The next decision number is **D293**.
+
+## D292 in production (his "Yes, to production", 15.11 evening; main 0f7424e, both previews on the same commit)
+- The running text is **mediawave-font7 Bold** (our Kriti-spirited face), picked from numbered boards of every weight of font5, font6 and font7. Headings, buttons and labels stay Artzisraeli; Latin Saira; the chat the system face.
+- `src/sun/fonts.css`: font7 Bold answers 100-800, Black 801-900, size-adjust 97%; Saira declared once per weight range (one Saira at 100-900 beside split ranges steals a weight in Chrome and drops the Hebrew to Arial Bold). Files in `public/fonts/mw7/`; preload in `scripts/prerender.mjs`.
+- Text keeps the soft ink (`--ink-text`), emphasis the full ink, as with OffSet Bold (D281).
+- On the way, font5 Regular and a new font5 Medium were tried (Medium added to `G:\Projects\fonts\mediawave-font5\build.py` and `gate.json`, gate PASS, copy in OneDrive). Not shipped.
+- Live check: the home page preloads `mw7/mediawave-font7-Bold.woff2` (200, font/woff2), bundle index-06Ic1sTD.js; production gates clean on 12 pages; calm/stop and footer modes 0 errors.
+- Board tooling (scratch, not project files): `weights2.mjs <base> <font> <size%>` injects a face over `--text` as a data URL; `fontboard.mjs <font> <label>` builds the numbered board.
 
 ## D289 to D291 in production (his "Yes, to production", 15.11; main 7777111, both previews on the same commit)
 - **D289:** the footer's sea walks with the disc's colours, read from the disc's own animation clock (`useHorizon` in `Shell.tsx`).
