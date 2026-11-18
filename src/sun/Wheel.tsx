@@ -58,10 +58,22 @@ function useVideosReady() {
     // D270: every regular visit gets the moving phones, as with the rest of the motion (D160). A guard on Save-Data and on
     // a "3g" estimate left real phones on stills (Nati, 14.11: "האתרים בקרוסלה לא נגללים"): Chrome on Android calls any
     // line with 270 ms round trips "3g". The cost stays small anyway: only the phones on the screen load and play.
+    // D297: while the opener plays, the phones wait as stills: six videos starting to decode under its cover cost
+    // the wave frames. They start once it has ended (the timer is the net if it never says so).
     let t = 0
+    let net = 0
+    let asked = false
     const go = () => { t = window.setTimeout(() => setOn(true), 1500) }
-    if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
-    return () => { clearTimeout(t); window.removeEventListener('load', go) }
+    const start = () => {
+      if (asked) return
+      asked = true
+      if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
+    }
+    if (document.documentElement.classList.contains('mw-intro')) {
+      window.addEventListener('mw-intro-end', start, { once: true })
+      net = window.setTimeout(start, 15000)
+    } else start()
+    return () => { clearTimeout(t); clearTimeout(net); window.removeEventListener('load', go); window.removeEventListener('mw-intro-end', start) }
   }, [])
   return on
 }
@@ -110,6 +122,9 @@ export default function Wheel() {
     if (!el || !r || (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return
     const html = document.documentElement
     const still = () => html.classList.contains('disable-animations')
+    // D297: once its opening has played, the wheel does not drift under the opener's cover (nobody sees it, and the
+    // wave wants every frame); the class leaving <html> wakes the loop (the observer below)
+    const under = () => html.classList.contains('mw-intro-cover')
     // D160: a regular visit sees the wheel turn even when the OS flag is set (Windows sets it on many machines,
     // Nati's included). What stops it: a pointer on it, the accessibility panel's "ללא אנימציות", ?reduce=1, ?calm=1.
     const calm = /[?&]calm=1(&|$)/.test(location.search)
@@ -150,11 +165,11 @@ export default function Wheel() {
       }
       if (!held) {
         if (Math.abs(v) > 0.05) { a += v * dt; v *= Math.pow(0.04, dt) } // a fling eases out in about a second
-        else if (!hover && !calm && !still() && t >= rest) a -= drift() * dt
+        else if (!hover && !calm && !still() && !under() && t >= rest) a -= drift() * dt
       }
       paint()
       // nothing left to move (calm, "ללא אנימציות", no fling, no opening): the loop sleeps until a hand or the panel wakes it
-      const idle = open < 0 && !held && Math.abs(v) <= 0.05 && (calm || still())
+      const idle = open < 0 && !held && Math.abs(v) <= 0.05 && (calm || still() || under())
       raf = seen && !document.hidden && !idle ? requestAnimationFrame(tick) : 0
     }
     const run = () => { if (!raf && seen && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(tick) } }

@@ -311,7 +311,12 @@ function Floating() {
     on()
     window.addEventListener('scroll', on, { passive: true })
     let t = 0
-    try { if (!localStorage.getItem(CONSENT_KEY)) t = window.setTimeout(() => setConsent(true), 2500) } catch { /* private mode: no note */ }
+    // D297: under the opener the note comes at once, not after 2.5 s. Its first paint (a blurred shadow, a glass
+    // button) holds the GPU for a quarter of a second on a cold cache: at once, that falls while the page boots
+    // under the cover and the first wave has not left yet (the opener waits for quiet frames); 2.5 s in, it fell
+    // in the middle of the wave. The last wave uncovers the note with the page (sun.css keeps it under the cover).
+    const wait = document.documentElement.classList.contains('mw-intro') ? 0 : 2500
+    try { if (!localStorage.getItem(CONSENT_KEY)) t = window.setTimeout(() => setConsent(true), wait) } catch { /* private mode: no note */ }
     return () => { window.removeEventListener('scroll', on); clearTimeout(t) }
   }, [])
   const choose = (v: 'accepted' | 'rejected') => { try { localStorage.setItem(CONSENT_KEY, v) } catch { /* nothing to keep */ } setConsent(false) }

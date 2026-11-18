@@ -100,6 +100,18 @@
         var d = document.documentElement;
         if (d.getAttribute('data-look') !== 'sun' || location.pathname !== '/' || /[?&]reduce=1(&|$)/.test(location.search)) return;
         d.classList.add('sun-open');
+        // the opener (D296): the wave that says hello, once per visit (?intro=1 plays it again). Never for a
+        // driven browser (the gates) or with ?calm=1. The mint cover is on from the first paint (sun.css);
+        // src/sun/opener plays it, and lifts the cover at once where there is no real GPU to draw the sea. The
+        // WebGL context is NOT made here: before the first paint that call waits for the GPU process (traced: 88 ms,
+        // and 35 more for the renderer's name), and it would hold the page's first paint back for every visitor.
+        // If the opener never boots, the cover lifts by itself.
+        var q = location.search, intro = false;
+        try { intro = /[?&]intro=1(&|$)/.test(q) || (!navigator.webdriver && !/[?&]calm=1(&|$)/.test(q) && !sessionStorage.getItem('mw-wave-intro') && !!window.WebGLRenderingContext); } catch (e) {}
+        if (intro) {
+          d.classList.add('mw-intro', 'mw-intro-cover');
+          setTimeout(function () { if (!window.__mwIntro) d.classList.remove('mw-intro', 'mw-intro-cover'); }, 4000);
+        }
         setTimeout(function () { d.classList.remove('sun-open', 'sun-play'); }, 7000);
       } catch (e) {} })();
     </script>

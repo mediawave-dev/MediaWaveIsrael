@@ -12,6 +12,7 @@ import SunApp from './SunApp'
 import './center.css'
 import { startButtons } from './btn'
 import { startSentences } from './sentences'
+import { startOpener } from './opener/opener'
 import { installStaleChunkReload } from '../utils/stale-chunk'
 
 // a tab from before a deploy reloads once instead of failing on chunks that are gone
@@ -21,6 +22,12 @@ installStaleChunkReload()
 if (/[?&]reduce=1(&|$)/.test(location.search)) document.documentElement.classList.add('disable-animations')
 // ?calm=1 also has to reach the CSS loops (the buoys, the water, the logo's colour walk): they read this class
 if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.add('calm')
+// D296: the opener, only when index.html asked for it, and before anything else here: its shader compiles in the
+// GPU process while React boots. It rides in the first download (8 KB gzipped): as a chunk of its own it cost a
+// first visit one more round trip under the cover, measured half a second on this machine.
+if (document.documentElement.classList.contains('mw-intro')) {
+  try { startOpener() } catch { document.documentElement.classList.remove('mw-intro', 'mw-intro-cover') }
+}
 // D275: the buttons' beats (and the lens filter where the browser can draw it)
 startButtons()
 // D282: a new line after every sentence in the running text (sentences.ts)

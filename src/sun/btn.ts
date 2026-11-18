@@ -22,7 +22,11 @@ type Beat = 'flow' | 'type' | 'say' | 'dive' | 'relay'
 const html = () => document.documentElement
 const frozen = () => html().classList.contains('disable-animations')
 const calm = () => frozen() || html().classList.contains('calm')
-const resting = () => calm() || html().classList.contains('menu-open')
+// D297: no beats while the opener plays over the page, except the very first one. The first beat on the lens glass
+// costs the GPU a tenth of a second once (a cold pipeline; traced): under the opener it is played at once, while the
+// page boots under the cover and the first wave has not left, instead of right after the page is uncovered.
+let warmed = true
+const resting = () => calm() || html().classList.contains('menu-open') || (warmed && html().classList.contains('mw-intro'))
 const PRERENDER = () => !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
 /** A spring as a CSS linear() curve (stiffness, damping, mass 1), with how long it takes to settle. */
@@ -278,15 +282,18 @@ export function startButtons() {
         turns.set(pick, { n: t.n + 1, at: now })
         if (list.length) {
           // the next turn is counted from the end of this beat, so a long beat never runs into the next one
+          warmed = true
           void play(pick, list[t.n % list.length]).then(() => window.setTimeout(conduct, 3400 + Math.random() * 1400))
           return
         }
-      } else wait = 1200
+      } else wait = warmed ? 1200 : 120
     }
     window.setTimeout(conduct, wait)
   }
-  // the first beat waits for the hero's opening to finish
-  window.setTimeout(conduct, 2600)
+  // the first beat waits for the hero's opening to finish; under the opener it comes at once (see `resting`), and if
+  // no button has shown up within a second it is given up, so it can never land in the middle of a wave
+  if (html().classList.contains('mw-intro')) { warmed = false; window.setTimeout(() => { warmed = true }, 1100) }
+  window.setTimeout(conduct, warmed ? 2600 : 250)
 
   // a hand comes first
   const HAND = '.btn, .tab, .head__cta'

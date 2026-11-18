@@ -277,6 +277,15 @@ html.sun-open.sun-play .sticker { opacity: 1; transform: rotate(8deg) scale(1); 
 html.disable-animations.sun-open .wheel__ring { transform: none; }
 html.disable-animations.sun-open .sticker { opacity: 1; transform: rotate(8deg); }
 
+/* ---------- the opener (D296). From the first paint the page is a mint beach with a strip of sea at its foot (a
+   plain gradient, lower than the real sea ever rests): the cover stands over the whole page, and src/sun/opener
+   fades the real sea in over it. ---------- */
+html.mw-intro-cover body::before { content: ""; position: fixed; inset: 0; z-index: 47; background: linear-gradient(to top, #18A99B 0, #45CFBB 4.5%, #A9E8DD 8.5%, var(--sun) 10%); }
+/* The cookie note stands under the cover while the opener plays, so the last wave uncovers it with the page. It is
+   not hidden: hidden, its first paint came when the opener ended, and that paint (a blurred shadow, a glass button)
+   froze the GPU for a quarter of a second in front of the visitor (D297, traced). */
+html.mw-intro .consent { z-index: 46; }
+
 /* ---------- about: nice to meet you. Plain lines, the last one is the point ---------- */
 .about__line { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; margin-block-end: 18px; max-width: 36em; text-wrap: pretty; }
 /* the last line (D246): a light sentence, then the point, large. A yellow bar at the reading side holds them. */

@@ -1,0 +1,40 @@
+/* sun · the opener (D296): a canvas of sea over the page, and the bubbles the wave leaves on the shore.
+   It stands under the pinned logo corner (z 50) and over everything else, so the logo is on the beach from the first frame.
+   The bubbles are placed by transform from the canvas's own coordinates, hence the physical left and top here. */
+.opener { position: fixed; inset: 0; z-index: 48; overflow: hidden; touch-action: none; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; transition: opacity .6s ease; }
+.opener--open { pointer-events: none; }
+.opener--out { opacity: 0; }
+.opener__sea { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .5s ease; }
+.opener[data-live] .opener__sea { opacity: 1; }
+.opener--sand { background: var(--sun); }
+.opener__life { position: absolute; inset: 0; }
+/* the sentence's sharp copy over the sea's own (opener.ts): two canvases, clipped along the waterline. Only the
+   letters are painted on them, so the marker the sea draws under the last word shows between them. */
+.opener__say { position: absolute; inset: 0; pointer-events: none; }
+.opener__ln { position: absolute; left: 0; opacity: 0; }
+.opener__sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* the two small controls, on the water, there from the first second: the sound (it waits for a touch, as every
+   browser demands, and says so) and the way out. English micro-labels; each has a Hebrew name for a screen reader. */
+.opener__ui { position: absolute; inset-inline: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; gap: 10px; opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .35s ease, transform .5s var(--ease); }
+.opener--ui .opener__ui { opacity: 1; transform: none; pointer-events: auto; }
+.opener__ui button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 99px; background: rgba(8, 44, 42, .78); color: #fff; font-family: var(--display); font-size: .9375rem; line-height: 1; white-space: nowrap; transition: background-color .2s; }
+.opener__ui button[hidden] { display: none; }
+.opener__ui button:hover { background: rgba(8, 44, 42, .92); }
+.opener__ui button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 99px; }
+.opener__ui svg { flex: none; }
+/* the speaker: its waves breathe while it waits for the touch, stand when it is on, and give way to a cross when off */
+.opener__no { display: none; }
+.opener[data-sound="off"] .opener__no { display: inline; }
+.opener[data-sound="off"] .opener__on { display: none; }
+.opener[data-sound="armed"] .opener__on { animation: opener-wait 1.6s ease-in-out infinite; }
+@keyframes opener-wait { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+/* a customer: a message bubble with its three dots. It grows as the wave lifts it, rocks on the water,
+   and when the wave sets it down the dots start writing. All of it is driven by opener.ts, on the sea's clock, and
+   every part that moves has its own layer, so a frame of it is the compositor's work and nothing is painted again. */
+.ob { position: absolute; left: 0; top: 0; width: var(--s); height: calc(var(--s) * .68); margin: calc(var(--s) * -.34) 0 0 calc(var(--s) * -.5); will-change: transform; }
+.ob__b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: calc(var(--s) * .085); background: #fff; border-radius: calc(var(--s) * .27); transform-origin: 50% 90%; will-change: transform; box-shadow: 0 calc(var(--s) * .12) calc(var(--s) * .2) calc(var(--s) * -.08) rgba(3, 50, 46, .45); }
+.ob__b::after { content: ""; position: absolute; bottom: calc(var(--s) * -.105); right: calc(var(--s) * .15); width: calc(var(--s) * .2); height: calc(var(--s) * .13); background: #fff; clip-path: polygon(0 0, 100% 0, 78% 100%); }
+.ob--l .ob__b::after { right: auto; left: calc(var(--s) * .15); clip-path: polygon(0 0, 100% 0, 22% 100%); }
+.ob__b i { width: calc(var(--s) * .12); height: calc(var(--s) * .12); border-radius: 50%; background: var(--ink); opacity: .2; will-change: transform, opacity; }

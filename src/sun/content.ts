@@ -71,6 +71,20 @@ export const CHAT = {
   message: (kind: string, example: string) => `היי, ${kind} ${example}`,
 }
 
+/** D296: the opener's sentence, Nati's words (18.11.2026). `split` is the statement's two lines, `last` the word the marker goes under.
+    D297: the two small controls are English micro-labels (his rule for interface hints), each with a Hebrew name for a screen reader. */
+export const OPENER = {
+  hi: 'היי אנחנו MediaWave,',
+  say: 'ואנחנו טובים בלהביא לכם לקוחות.',
+  split: ['ואנחנו טובים', 'בלהביא לכם לקוחות.'],
+  last: 'לקוחות',
+  skip: 'Skip',
+  skipAria: 'דילוג על הפתיחה',
+  /** the sound control's three states: waiting for a touch (a finger, then a mouse), on, off */
+  sound: [['Tap for sound', 'Click for sound'], 'Sound on', 'Sound off'] as const,
+  soundAria: 'קול הגלים',
+}
+
 export const NAV = [
   { href: '/#about', label: 'מי אנחנו' },
   { href: '/#offer', label: 'מה אנחנו בונים' },
