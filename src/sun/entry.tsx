@@ -12,7 +12,7 @@ import SunApp from './SunApp'
 import './center.css'
 import { startButtons } from './btn'
 import { startSentences } from './sentences'
-import { startOpener } from './opener/opener'
+import { showWhy, startOpener } from './opener/opener'
 import { installStaleChunkReload } from '../utils/stale-chunk'
 
 // a tab from before a deploy reloads once instead of failing on chunks that are gone
@@ -26,7 +26,10 @@ if (/[?&]calm=1(&|$)/.test(location.search)) document.documentElement.classList.
 // GPU process while React boots. It rides in the first download (8 KB gzipped): as a chunk of its own it cost a
 // first visit one more round trip under the cover, measured half a second on this machine.
 if (document.documentElement.classList.contains('mw-intro')) {
-  try { startOpener() } catch { document.documentElement.classList.remove('mw-intro', 'mw-intro-cover') }
+  try { startOpener() } catch (err) { document.documentElement.classList.remove('mw-intro', 'mw-intro-cover'); showWhy([`opener: it threw at start: ${String(err).slice(0, 300)}`]) }
+} else if ((window as unknown as { __mwLate?: number }).__mwLate) {
+  // the page's code arrived after the head had already lifted the cover (five seconds): no opener on this visit
+  showWhy([`opener: not started, the code arrived ${Math.round(performance.now())} ms after the page, after the cover was lifted`])
 }
 // D275: the buttons' beats (and the lens filter where the browser can draw it)
 startButtons()

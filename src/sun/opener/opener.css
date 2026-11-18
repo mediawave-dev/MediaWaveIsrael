@@ -23,12 +23,12 @@
 .opener__ui button:hover { background: rgba(8, 44, 42, .92); }
 .opener__ui button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 99px; }
 .opener__ui svg { flex: none; }
-/* the speaker: its waves breathe while it waits for the touch, stand when it is on, and give way to a cross when off */
+/* the speaker: its waves are faint while it waits for the touch, full when it is on, and give way to a cross when off
+   (nothing here loops: an animated SVG path is a style pass and a paint on every frame of the sea) */
 .opener__no { display: none; }
 .opener[data-sound="off"] .opener__no { display: inline; }
 .opener[data-sound="off"] .opener__on { display: none; }
-.opener[data-sound="armed"] .opener__on { animation: opener-wait 1.6s ease-in-out infinite; }
-@keyframes opener-wait { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+.opener[data-sound="armed"] .opener__on { opacity: .45; }
 
 /* a customer: a message bubble with its three dots. It grows as the wave lifts it, rocks on the water,
    and when the wave sets it down the dots start writing. All of it is driven by opener.ts, on the sea's clock, and

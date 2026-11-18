@@ -38,8 +38,20 @@ const A0 = 0.036, A1 = 0.03
 /** The sea's resolutions, in canvas pixels per CSS pixel, and the time the probe's frame of full water may take (ms).
     The probe includes the wait for the answer, so 13 leaves a 60 Hz frame its margin: measured on Iris Xe, 8 to 11.5
     at the starting resolution on a phone screen and at 1440 and 1920 wide, all of which then hold 60 frames a second. */
-const SCALES = [2, 1.5, 1.25, 1, 0.75]
+const SCALES = [2, 1.5, 1.25, 1, 0.75, 0.6, 0.5]
 const BUDGET = 13
+
+/** With ?why=1 the page says, in a small box, what the opener did on this device and why (D297: it played on every
+    desktop check and gave itself up on Nati's phone, where nothing could be measured from here). */
+export function showWhy(lines: string[]): void {
+  try { sessionStorage.setItem('mw-wave-why', lines.join(' | ')) } catch { /* nothing to keep */ }
+  if (!/[?&]why=1(&|$)/.test(location.search)) return
+  const box = document.createElement('pre')
+  box.dir = 'ltr'
+  box.style.cssText = 'position:fixed;z-index:99999;left:8px;right:8px;bottom:8px;margin:0;padding:10px 12px;border-radius:12px;background:#0b1512;color:#d7fff4;font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;user-select:text;-webkit-user-select:text'
+  box.textContent = lines.join('\n')
+  document.body.appendChild(box)
+}
 
 export function startOpener(): void {
   const html = document.documentElement
@@ -78,6 +90,20 @@ export function startOpener(): void {
   let ended = false
   let opened = false
   let raf = 0
+  // ---- what happened, for ?why=1
+  const born = Math.round(performance.now())
+  let why = 'played to the end'
+  let renderer = '?'
+  let frames = 0, lateFrames = 0, worstFrame = 0
+  const report = () => showWhy([
+    `opener: ${why}`,
+    `started ${born} ms after the page; linked +${linkedAt ? Math.round(linkedAt - t0) : '-'}; sea up +${liveAt ? Math.round(liveAt - t0) : '-'}; first wave +${goAt ? Math.round(goAt - t0) : '-'}`,
+    `probe ${cost ? cost.toFixed(1) + ' ms' : '-'} x${asks}; resolution ${scale} of ${window.devicePixelRatio}; canvas ${cv.width}x${cv.height}; screen ${W}x${H}`,
+    `frames ${frames}, late ${lateFrames}, worst ${Math.round(worstFrame)} ms; screen ${hz || '?'} Hz${stride2 ? ', drawn at half' : ''}`,
+    `gpu: ${renderer}`,
+    `sound: ${sea.state()} (${sea.cost() || '-'})`,
+    navigator.userAgent.replace(/Mozilla\/5\.0 |AppleWebKit\/[\d.]+ \(KHTML, like Gecko\) |Safari\/[\d.]+/g, ''),
+  ])
   const open = () => {
     if (opened) return
     opened = true
@@ -97,6 +123,7 @@ export function startOpener(): void {
     window.setTimeout(() => sea.close(), 2600)
     html.classList.remove('mw-intro')
     window.dispatchEvent(new Event('mw-intro-end'))
+    try { report() } catch { showWhy([`opener: ${why}`]) } // an end before the stage was set has less to tell
     // The sea's context is never torn down while the page lives: destroying it (loseContext, or the canvas being
     // collected) is a frame of 100 to 280 ms on the GPU, and it would fall on the page the visitor has just been
     // given. The canvas shrinks to one pixel and stays in the window's keeping.
@@ -107,7 +134,7 @@ export function startOpener(): void {
   }
 
   const gl = cv.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false, depth: false, stencil: false, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: true })
-  if (!gl) { end(false); return }
+  if (!gl) { why = 'no WebGL context on a real GPU'; end(false); return }
   document.body.appendChild(root)
 
   // ---- the program, compiled off the main thread where the browser can (a synchronous compile is a long task).
@@ -120,14 +147,16 @@ export function startOpener(): void {
       would cost seconds of blocking). */
   const ask = () => {
     const dbg = gl.getExtension('WEBGL_debug_renderer_info')
-    if (/swiftshader|llvmpipe|software|basic render/i.test(String(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)))) return false
+    renderer = String(dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER))
+    if (/swiftshader|llvmpipe|software|basic render/i.test(renderer)) return false
     par = gl.getExtension('KHR_parallel_shader_compile')
     return true
   }
   const sh = (type: number, src: string) => { const s = gl.createShader(type)!; gl.shaderSource(s, src); gl.compileShader(s); return s }
   const prog = gl.createProgram()!
+  const fragment = sh(gl.FRAGMENT_SHADER, FRAG)
   gl.attachShader(prog, sh(gl.VERTEX_SHADER, VERT))
-  gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FRAG))
+  gl.attachShader(prog, fragment)
   gl.linkProgram(prog)
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
@@ -328,10 +357,16 @@ export function startOpener(): void {
   const drops = new Float32Array(18).fill(-99)
   let dropI = 0
   let fadedSound = false
+  let uiOn = false
+  /** A style is written only when its value has changed: a bubble lying on the shore, or a dot between two hops,
+      costs the frame nothing (on a phone's CPU thirty writes a frame were a real part of it). */
+  type Kept = HTMLElement & { _t?: string; _o?: string }
+  const move = (el: Kept, v: string) => { if (el._t !== v) { el._t = v; el.style.transform = v } }
+  const fade = (el: Kept, v: string) => { if (el._o !== v) { el._o = v; el.style.opacity = v } }
   const warm = (b: Bub) => {
-    b.el.style.opacity = '0.01'
-    b.el.style.transform = `translate3d(${(b.x * W).toFixed(1)}px,${(H * (1 - b.y)).toFixed(1)}px,0)`
-    b.body.style.transform = 'none'
+    fade(b.el, '0.01')
+    move(b.el, `translate3d(${(b.x * W).toFixed(1)}px,${(H * (1 - b.y)).toFixed(1)}px,0)`)
+    move(b.body, 'none')
   }
   const reset = () => {
     t = 0; clock = 0; L = rest; surge = 0; back = 0; amp = A0; wet = [rest + 0.02, A0, 0.8, 0]; drops.fill(-99); dropI = 0
@@ -359,7 +394,7 @@ export function startOpener(): void {
       if (b.state === 3) continue
       const xu = b.x * asp
       const f = front(xu) - 0.018 - (b.s / H) * 0.32
-      if (b.state === 0) { if (t >= W2 && f > b.y) { b.state = 1; b.born = clock; b.fl = 1; b.el.style.opacity = '' } else continue }
+      if (b.state === 0) { if (t >= W2 && f > b.y) { b.state = 1; b.born = clock; b.fl = 1; fade(b.el, '') } else continue }
       else if (b.state === 1 && f <= b.y) {
         b.state = 2; b.land = clock; b.el.classList.add('ob--on')
         ring(xu, b.y - (b.s / H) * 0.2)
@@ -371,22 +406,23 @@ export function startOpener(): void {
       const py = H * (1 - lv) + Math.sin(clock * 3.1 + b.ph) * 3 * b.fl
       const px = b.x * W + Math.sin(clock * 1.7 + b.ph) * 4 * b.fl
       const r = b.rot + (Math.sin(clock * 2.3 + b.ph) * 9 - b.rot) * b.fl
-      b.el.style.transform = `translate3d(${px.toFixed(1)}px,${py.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg)`
+      move(b.el, `translate3d(${px.toFixed(1)}px,${py.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg)`)
       // it grows as the wave lifts it, gives a little when it is set down, and then its three dots start writing
       const k = backOut(ramp(clock, b.born, 0.5))
       const sq = b.land < 0 ? 0 : Math.pow(1 - ramp(clock, b.land, 0.5), 2) * Math.cos(ramp(clock, b.land, 0.5) * 7)
-      b.body.style.transform = `scale(${(k * (1 + 0.09 * sq)).toFixed(3)},${(k * (1 - 0.15 * sq)).toFixed(3)})`
+      move(b.body, `scale(${(k * (1 + 0.09 * sq)).toFixed(3)},${(k * (1 - 0.15 * sq)).toFixed(3)})`)
       for (let j = 0; j < 3; j++) {
         const u = b.land < 0 ? 1 : (((clock - b.land - 0.25 - j * 0.16) % 1.2) + 1.2) % 1.2 / 1.2
         const up = b.land >= 0 && clock - b.land > 0.25 + j * 0.16 && u < 0.55 ? Math.sin((Math.PI * u) / 0.55) : 0
-        b.dots[j].style.opacity = (0.2 + 0.65 * up).toFixed(2)
-        b.dots[j].style.transform = `translateY(${(-0.075 * up * b.w).toFixed(1)}px)`
+        fade(b.dots[j], (0.2 + 0.65 * up).toFixed(2))
+        move(b.dots[j], `translateY(${(-0.075 * up * b.w).toFixed(1)}px)`)
       }
       if (py < -90) { b.state = 3; b.el.style.display = 'none' }
     }
 
     if (!opened && L - amp * 0.64 - 0.035 > 1) open()
-    root.classList.toggle('opener--ui', clock > 0.5 && t < w3)
+    const ui = clock > 0.5 && t < w3
+    if (ui !== uiOn) { uiOn = ui; root.classList.toggle('opener--ui', ui) }
     if (!fadedSound && t > w3 + FADE && !held) { fadedSound = true; sea.fade() }
     if (t > w3 + END && !held) end()
   }
@@ -469,7 +505,7 @@ export function startOpener(): void {
 
   // ---- the hand: a touch on the water, the two buttons, the keys, a scroll
   const skip = () => {
-    if (!live) { end(false); return } // "let me in" before the sea is even up: the page, at once
+    if (!live) { why = 'skipped (a key, a scroll or a swipe) before the sea was up'; end(false); return } // "let me in": the page, at once
     if (ended || t >= w3) return
     armed = true
     w3 = t
@@ -495,7 +531,7 @@ export function startOpener(): void {
   let tx = 0, ty = 0
   const onTouchStart = (e: TouchEvent) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY }
   const onTouchMove = (e: TouchEvent) => { if (!opened && Math.hypot(e.touches[0].clientX - tx, e.touches[0].clientY - ty) > 28) skip() }
-  const mo = new MutationObserver(() => { if (stopped()) end(false) })
+  const mo = new MutationObserver(() => { if (stopped()) { why = 'animations were switched off'; end(false) } })
   mo.observe(html, { attributes: true, attributeFilter: ['class'] })
   root.addEventListener('click', onClick)
   window.addEventListener('keydown', onKey)
@@ -527,6 +563,11 @@ export function startOpener(): void {
   let linkedAt = 0
   let liveAt = 0
   let probed = 0
+  let goAt = 0
+  let stride2 = false
+  let odd = false
+  let hz = 0
+  const beats: number[] = []
   let asks = 0
   let asked = false
   let pollAt = performance.now() + 300
@@ -543,19 +584,21 @@ export function startOpener(): void {
     if (ended) return
     raf = requestAnimationFrame(frame)
     if (!live) {
-      if (now - t0 > 4500 || stopped()) { end(false); return }
+      if (now - t0 > 6000 || stopped()) { why = stopped() ? 'animations are off' : `gave up: the sea was not up after 6 s (fonts ${fontsIn ? 'in' : 'not in'}, shader ${linkedAt ? 'linked' : 'not linked'})`; end(false); return }
       if (!asked) {
         if (now - t0 < 150) return
         asked = true
-        if (!ask()) { end(false); return }
+        if (!ask()) { why = 'a software renderer, no real GPU'; end(false); return }
       }
       // "is it linked yet?" is itself a question the GPU process answers in turn, behind the compile it is asked
       // about: put every frame, it held the main thread for 70 and 150 ms (traced). It is put first after a third
       // of a second, by when a phone has long finished, and then six times a second.
       if (!linkedAt && now >= pollAt) { pollAt = now + 160; if (linked()) linkedAt = now }
       if (!fontsIn || !linkedAt) return
-      if (!ready()) { end(false); return }
-      scale = Math.min(window.devicePixelRatio || 1, 2)
+      if (!ready()) { why = `the shader did not link: ${(gl.getShaderInfoLog(fragment) || gl.getProgramInfoLog(prog) || '').slice(0, 300)}`; end(false); return }
+      // a phone starts at one and a half canvas pixels per CSS pixel: its GPU has less to spend on more pixels, the
+      // water is soft by nature, and the sentence has its own sharp copy on top
+      scale = Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.5 : 2)
       stage()
       live = true
       // for the checks: ms until the program linked / until the sea was up
@@ -566,7 +609,11 @@ export function startOpener(): void {
       draw()
       return
     }
+    // A 90 or 120 Hz screen (most new phones): the sea is drawn on every second frame. Sixty even frames a second
+    // look smoother than a hundred uneven ones, and the GPU gets a whole 16 ms for each.
+    if (stride2) { odd = !odd; if (odd) return }
     const real = now - last
+    if (!armed && beats.length < 40) beats.push(real)
     // ---- before the first wave. The resting sea is on the screen and lapping, and under the cover the page is still
     //      booting and painting itself for the first time, on the main thread and on the GPU. The sea's resolution is
     //      settled now, when frames come on time (a probe taken in the middle of that boot read "far too slow" on a
@@ -576,24 +623,30 @@ export function startOpener(): void {
       quiet = real < 28 ? quiet + 1 : 0
       const late = now - liveAt > 4000
       const lowest = SCALES[SCALES.length - 1]
-      const tooSlow = (ms: number) => ms * (lowest / scale) ** 2 > BUDGET * 1.5
+      // "too slow" is a GPU that could not hold thirty frames a second even at the lowest resolution
+      const tooSlow = (ms: number) => ms * (lowest / scale) ** 2 > BUDGET * 2.4
       if (probed === 0 && (quiet >= 6 || late)) { dearest(false); probed = 1; quiet = 0 }
       else if (probed === 1 && (quiet >= 4 || late)) {
         cost = Math.min(cost || Infinity, dearest(true))
         asks++
         if (tooSlow(cost) && asks < 3 && !late) quiet = 0 // perhaps the page got in the way: once more, when it is calm
-        else if (tooSlow(cost)) { root.dataset.probe = `slow/${cost.toFixed(0)}`; freeTarget(); end(); return } // smooth or not at all
+        else if (tooSlow(cost)) { root.dataset.probe = `slow/${cost.toFixed(0)}`; why = `gave up: one frame of full water takes ${cost.toFixed(0)} ms at resolution ${scale}`; freeTarget(); end(); return } // smooth or not at all
         else {
           // a GPU that cannot draw full water in time draws fewer pixels, never fewer frames
           if (cost > BUDGET) { const want = scale * Math.sqrt(BUDGET / cost); scale = SCALES.find((s2) => s2 < scale && s2 <= want) ?? lowest; stage() }
           freeTarget()
           probed = 2; quiet = 0
+          // how fast does this screen tick? (the median of the frames so far; under 12.5 ms is 90 Hz or more)
+          const sorted = beats.slice().sort((x2, y2) => x2 - y2)
+          hz = sorted.length ? Math.round(1000 / sorted[sorted.length >> 1]) : 60
+          stride2 = hz > 80
           root.dataset.probe = `${cost.toFixed(1)}/${scale}` // the probe's frame cost / the resolution
         }
       }
       armed = probed === 2 && (quiet >= 14 || late)
-      if (armed) root.dataset.go = '1'
+      if (armed) { root.dataset.go = '1'; goAt = now }
     }
+    else if (!held && !ended) { frames++; if (real > 25) lateFrames++; if (real > worstFrame) worstFrame = real }
     // the cover's painted sea (sun.css) has done its work once the real one has faded in over it
     if (!opened && now - liveAt > 600) root.classList.add('opener--sand')
     const dt = clamp(real / 1000, 0, 0.05)

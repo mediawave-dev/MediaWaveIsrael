@@ -352,7 +352,23 @@ function useOneColourClock() {
   const { pathname } = useLocation()
   useEffect(() => {
     if (PRERENDER || typeof document.getAnimations !== 'function') return
-    const sync = () => document.getAnimations().forEach((a) => { const name = (a as CSSAnimation).animationName; if (name && /^(mark|walk)-/.test(name)) a.startTime = 0 })
+    // D297: while the opener plays the walks stand still (sun.css pauses the page's other loops; these ones are
+    // driven from here, and giving one a start time sets it running again, so they are paused from here too). When
+    // the opener ends they go on from the colour they stood at, all of them shifted by the same pause, so they still
+    // share one clock.
+    const html = document.documentElement
+    let stoodAt: number | null = null
+    let shift = 0
+    const sync = () => {
+      const walks = document.getAnimations().filter((a) => { const name = (a as CSSAnimation).animationName; return !!name && /^(mark|walk)-/.test(name) })
+      if (html.classList.contains('mw-intro')) {
+        walks.forEach((a) => a.pause())
+        if (stoodAt === null && walks[0]) stoodAt = Number(walks[0].currentTime) || 0
+        return
+      }
+      if (stoodAt !== null) { shift = Number(document.timeline.currentTime) - stoodAt; stoodAt = null }
+      walks.forEach((a) => { a.startTime = shift })
+    }
     const t = window.setTimeout(sync, 60)
     const mo = new MutationObserver(() => window.setTimeout(sync, 60))
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })

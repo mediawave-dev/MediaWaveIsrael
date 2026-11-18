@@ -285,6 +285,12 @@ html.mw-intro-cover body::before { content: ""; position: fixed; inset: 0; z-ind
    not hidden: hidden, its first paint came when the opener ended, and that paint (a blurred shadow, a glass button)
    froze the GPU for a quarter of a second in front of the visitor (D297, traced). */
 html.mw-intro .consent { z-index: 46; }
+/* While the opener plays, the page's own endless loops stand still (the water in the step rings, the buoys, the
+   colour walks, the footer's swell). None of them can run on the compositor (they animate SVG and colours), so each
+   one cost every frame a style pass, a layout and a paint of the page under the cover: traced at a phone's CPU speed,
+   19 ms of main thread a frame, which left the sea no way to hold sixty. They go on from where they stood when the
+   opener ends. */
+html.mw-intro :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-part="mark"] path, .mw-logo path[data-part="wave"], .mw-logo path[data-part="drop"], .walk-text, .walk-w0, .walk-w1, .walk-stroke, .walk-ink, .walk-bg, .foot__swell, .pitch__mark::before) { animation-play-state: paused !important; }
 
 /* ---------- about: nice to meet you. Plain lines, the last one is the point ---------- */
 .about__line { font-size: clamp(1.125rem, 2.2vw, 1.3125rem); line-height: 1.7; margin-block-end: 18px; max-width: 36em; text-wrap: pretty; }

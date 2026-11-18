@@ -110,7 +110,7 @@
         try { intro = /[?&]intro=1(&|$)/.test(q) || (!navigator.webdriver && !/[?&]calm=1(&|$)/.test(q) && !sessionStorage.getItem('mw-wave-intro') && !!window.WebGLRenderingContext); } catch (e) {}
         if (intro) {
           d.classList.add('mw-intro', 'mw-intro-cover');
-          setTimeout(function () { if (!window.__mwIntro) d.classList.remove('mw-intro', 'mw-intro-cover'); }, 4000);
+          setTimeout(function () { if (!window.__mwIntro) { d.classList.remove('mw-intro', 'mw-intro-cover'); window.__mwLate = 1; } }, 5000);
         }
         setTimeout(function () { d.classList.remove('sun-open', 'sun-play'); }, 7000);
       } catch (e) {} })();
