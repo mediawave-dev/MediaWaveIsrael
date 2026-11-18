@@ -1,9 +1,11 @@
-# HANDOFF: the statement site (look `sun`), state on 18.11.2026: D295 live, D296 and D297 (the opener, its sound) local and waiting for Nati
+# HANDOFF: the statement site (look `sun`), state on 18.11.2026: D295 live; D296 and D297 (the opener, its sound) on both previews, not in production
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
 Every ruling is in `DECISIONS.rtl.md` (D237 to D297). The next decision number is **D298**.
 
-## Latest (18.11): D296, the opener "a wave of customers": built, NOT committed, NOT pushed, waiting for his verdict
+## Latest (18.11): D296 and D297, the opener "a wave of customers" with its sound: on both previews (his "כן תדחוף"), main untouched
+- Commits 66c98d0 (the opener) and 37d6818 (a fix found on the preview), pushed to `night/statement-20261114` and `redesign/statement-20261112`. `main` is still b59afc6 (production bundle index-BJNXEOIX.js). Production needs his explicit yes.
+- Found only on the deployed preview: on a cold first visit over a real network the GPU probe ran while the page was still loading pictures, read "too slow", and the opener gave itself up every time. Fixed in 37d6818 (the sea goes live at once, the probe draws off screen when frames are calm). Checked against the preview: 3 cold visits play, `modes.mjs <preview>` all passed, 3 `perf.mjs` runs with no dropped frame. Lesson: run `why.mjs <preview>` after every push; localhost does not show this.
 - His ask: an opening screen that says "היי אנחנו MediaWave, ואנחנו טובים בלהביא לכם לקוחות.", code only, jaw-dropping, intuitive for a first visit.
 - What it is: the page as a beach seen from above. Wave 1 leaves the greeting, wave 2 leaves the statement and message bubbles (the customers) on the shore, wave 3 covers everything and uncovers the site, still wet. About 8.5 s; a tap, a key, a scroll or "דילוג" sends the last wave at once.
 - Code: `src/sun/opener/` (`opener.ts` the score, the bubbles, the sharp text canvases; `shader.ts` the sea; `opener.css`). Wiring: the second inline script in `index.html` (decides `html.mw-intro` and makes the canvas), `entry.tsx` (starts it first; it is in the first download, about 8 KB gzipped), `sun.css` (the cover), `content.ts` (`OPENER`). Under the cover the page boots as always (the wheel's opening too).
