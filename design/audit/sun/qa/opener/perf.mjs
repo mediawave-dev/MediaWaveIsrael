@@ -31,6 +31,7 @@ await p.evaluateOnNewDocument(() => {
     const o = document.querySelector('.opener')
     if (o && !window.__marks.root) window.__marks.root = n
     if (o && o.dataset.live && !window.__marks.live) { window.__marks.live = n; window.__marks.probe = o.dataset.live }
+    if (o && o.dataset.probe) window.__marks.probe = o.dataset.live + ' ' + o.dataset.probe
     if (o && o.dataset.go && !window.__marks.go) { window.__marks.go = n; window.__marks.goFrames = window.__f.length }
     if (!c.contains('mw-intro-cover') && window.__marks.on && !window.__marks.open) window.__marks.open = n
     if (!c.contains('mw-intro') && window.__marks.on && !window.__marks.end) window.__marks.end = n

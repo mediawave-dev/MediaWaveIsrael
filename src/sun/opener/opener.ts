@@ -169,6 +169,7 @@ export function startOpener(): void {
     cv.width = Math.round(W * scale)
     cv.height = Math.round(H * scale)
     gl.viewport(0, 0, cv.width, cv.height)
+    freeTarget()
 
     const narrow = W < 720
     const big = OPENER.split
@@ -429,22 +430,40 @@ export function startOpener(): void {
     gl.drawArrays(gl.TRIANGLES, 0, 3)
   }
 
-  /** What one frame of full, running water costs this GPU at the current resolution (ms): the frame is drawn and,
-      when `wait` is set, one pixel is read back, which waits for the GPU. Asked before the sea is shown, so the
-      resolution is settled before the first wave and never changes under the visitor's eyes.
+  /** What one frame of full, running water costs this GPU at the current resolution (ms): the frame is drawn into a
+      texture, off the screen, and, when `wait` is set, one pixel is read back, which waits for the GPU.
+      It is asked while the resting sea is already on the screen, before the first wave, so the resolution is settled
+      before anything runs and never changes under the visitor's eyes.
       The first such frame is drawn WITHOUT waiting (the warm-up): on Windows the driver compiles the shader for real
-      at its first draw, 0.4 s, and reading a pixel back made the page's main thread sit through it (Lighthouse:
-      1.5 s of blocking). The frame loop waits until frames run on time again and only then asks, three times. */
+      at its first draw, 0.4 s, and reading a pixel back made the page's main thread sit through it. */
+  let target: { fb: WebGLFramebuffer | null; tx: WebGLTexture | null } | null = null
+  const freeTarget = () => { if (target) { gl.deleteFramebuffer(target.fb); gl.deleteTexture(target.tx); target = null } }
   const dearest = (wait: boolean) => {
+    if (!target) {
+      const tx = gl.createTexture(), fb = gl.createFramebuffer()
+      gl.activeTexture(gl.TEXTURE1)
+      gl.bindTexture(gl.TEXTURE_2D, tx)
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, cv.width, cv.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fb)
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tx, 0)
+      gl.bindTexture(gl.TEXTURE_2D, null)
+      gl.activeTexture(gl.TEXTURE0)
+      target = { fb, tx }
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, target.fb)
     const keep = { L, surge, back, wet }
     L = 1.3; surge = 1; back = 0.5; wet = [1.3, A0, 1, 0]
     const px = new Uint8Array(4)
     const once = () => { const a = performance.now(); draw(); if (wait) gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); return performance.now() - a }
-    // the least of three: under the cover the page is still painting itself, and a probe that shared the GPU with
-    // that read 15 ms where the next run read 11. A renderer that needs a tenth of a second is not asked again.
+    // the least of three: the page under the cover may still be painting, and a probe that shared the GPU with it
+    // read 15 ms where the next run read 11. A renderer that needs a tenth of a second is not asked again at once.
     let ms = once()
     if (wait && ms < 100) ms = Math.min(ms, once(), once())
     L = keep.L; surge = keep.surge; back = keep.back; wet = keep.wet
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null)
     return ms
   }
 
@@ -507,10 +526,10 @@ export function startOpener(): void {
   let quiet = 0
   let linkedAt = 0
   let liveAt = 0
-  let warmAt = 0
+  let probed = 0
+  let asks = 0
   let asked = false
   let pollAt = performance.now() + 300
-  let calm = 0
   let cost = 0
   const paces: number[] = []
   const t0 = performance.now()
@@ -535,41 +554,46 @@ export function startOpener(): void {
       // of a second, by when a phone has long finished, and then six times a second.
       if (!linkedAt && now >= pollAt) { pollAt = now + 160; if (linked()) linkedAt = now }
       if (!fontsIn || !linkedAt) return
-      if (!warmAt) {
-        if (!ready()) { end(false); return }
-        scale = Math.min(window.devicePixelRatio || 1, 2)
-        stage()
-        dearest(false)
-        warmAt = last = now
-        return
-      }
-      // the warm-up frame is on its way through the driver: ask only once three frames in a row have come on time
-      calm = now - last < 28 ? calm + 1 : 0
-      last = now
-      if (calm < 3 && now - warmAt < 1500) return
-      // a GPU that cannot draw full water in time draws fewer pixels, never fewer frames
-      cost = dearest(true)
-      // smooth or not at all: where even the lowest resolution would miss its frames, the visitor gets the page
-      const lowest = SCALES[SCALES.length - 1]
-      if (cost * (lowest / scale) ** 2 > BUDGET * 1.5) { root.dataset.live = `slow/${cost.toFixed(0)}`; end(false); return }
-      if (cost > BUDGET) {
-        const want = scale * Math.sqrt(BUDGET / cost)
-        scale = SCALES.find((s) => s < scale && s <= want) ?? SCALES[SCALES.length - 1]
-        stage()
-      }
+      if (!ready()) { end(false); return }
+      scale = Math.min(window.devicePixelRatio || 1, 2)
+      stage()
       live = true
-      // for the checks: ms until the program linked / until the sea was up / the probe's frame cost / the resolution
-      root.dataset.live = `${Math.round(linkedAt - t0)}/${Math.round(performance.now() - t0)}/${cost.toFixed(1)}/${scale}`
-      last = liveAt = performance.now()
-      draw() // the resting sea, over the probe's frame of full water, before the canvas starts to fade in
+      // for the checks: ms until the program linked / until the sea was up
+      root.dataset.live = `${Math.round(linkedAt - t0)}/${Math.round(performance.now() - t0)}`
+      // the sound's engine in this same frame: the sea has not begun to fade in, so the wait is not seen
       sea.prepare()
+      last = liveAt = performance.now()
+      draw()
       return
     }
     const real = now - last
-    // the first wave waits for quiet (fourteen frames on time in a row, two seconds at most): under the cover the page
-    // is still booting and painting itself for the first time, on the main thread and on the GPU, and a wave that
-    // stutters is worse than a sea that laps a moment longer
-    if (!armed) { quiet = real < 28 ? quiet + 1 : 0; armed = quiet >= 14 || now - liveAt > 2000; if (armed) root.dataset.go = '1' }
+    // ---- before the first wave. The resting sea is on the screen and lapping, and under the cover the page is still
+    //      booting and painting itself for the first time, on the main thread and on the GPU. The sea's resolution is
+    //      settled now, when frames come on time (a probe taken in the middle of that boot read "far too slow" on a
+    //      real network and the opener gave itself up: found on the preview). Then the wave waits for quiet: a wave
+    //      that stutters is worse than a sea that laps a moment longer. Four seconds at most.
+    if (!armed) {
+      quiet = real < 28 ? quiet + 1 : 0
+      const late = now - liveAt > 4000
+      const lowest = SCALES[SCALES.length - 1]
+      const tooSlow = (ms: number) => ms * (lowest / scale) ** 2 > BUDGET * 1.5
+      if (probed === 0 && (quiet >= 6 || late)) { dearest(false); probed = 1; quiet = 0 }
+      else if (probed === 1 && (quiet >= 4 || late)) {
+        cost = Math.min(cost || Infinity, dearest(true))
+        asks++
+        if (tooSlow(cost) && asks < 3 && !late) quiet = 0 // perhaps the page got in the way: once more, when it is calm
+        else if (tooSlow(cost)) { root.dataset.probe = `slow/${cost.toFixed(0)}`; freeTarget(); end(); return } // smooth or not at all
+        else {
+          // a GPU that cannot draw full water in time draws fewer pixels, never fewer frames
+          if (cost > BUDGET) { const want = scale * Math.sqrt(BUDGET / cost); scale = SCALES.find((s2) => s2 < scale && s2 <= want) ?? lowest; stage() }
+          freeTarget()
+          probed = 2; quiet = 0
+          root.dataset.probe = `${cost.toFixed(1)}/${scale}` // the probe's frame cost / the resolution
+        }
+      }
+      armed = probed === 2 && (quiet >= 14 || late)
+      if (armed) root.dataset.go = '1'
+    }
     // the cover's painted sea (sun.css) has done its work once the real one has faded in over it
     if (!opened && now - liveAt > 600) root.classList.add('opener--sand')
     const dt = clamp(real / 1000, 0, 0.05)
@@ -597,7 +621,7 @@ export function startOpener(): void {
     w.__mwOpener = {
       seek: (to: number) => { held = true; armed = true; reset(); while (t < to) step(1 / 60) },
       play: () => { held = false },
-      info: () => ({ t, L, scale, cost, W, H, live, opened, ended, sound: sea.state() }),
+      info: () => ({ t, L, scale, cost, W, H, live: live && probed === 2, opened, ended, sound: sea.state() }),
       wav: async (secs = 9.2) => {
         const rate = 44100
         const off = new OfflineAudioContext(2, Math.ceil(rate * secs), rate)
