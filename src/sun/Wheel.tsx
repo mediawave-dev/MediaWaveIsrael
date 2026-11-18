@@ -70,6 +70,8 @@ function useVideosReady() {
       if (document.readyState === 'complete') go(); else window.addEventListener('load', go, { once: true })
     }
     if (document.documentElement.classList.contains('mw-intro')) {
+      // (the second and a half after it stays: started at once, the videos' first decoding cost the opener's own
+      // fade-out its frames, measured 34 to 134 ms each)
       window.addEventListener('mw-intro-end', start, { once: true })
       net = window.setTimeout(start, 15000)
     } else start()

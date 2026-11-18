@@ -104,6 +104,8 @@ export type Sea = {
   toggle: () => void
   drive: (surge: number, back: number, level: number, breath: number) => void
   plip: (i: number, vol?: number) => void
+  /** the tab was hidden (true) or is looked at again (false) */
+  hush: (hidden: boolean) => void
   /** the last wave is going out: the sea fades with it */
   fade: () => void
   close: () => void
@@ -156,6 +158,10 @@ export function makeSea(onChange: () => void): Sea {
     },
     drive(surge, back, lv, breath) { if (state === 'on' && ctx && voice) voice.set(surge, back, lv, breath, ctx.currentTime) },
     plip(i, vol) { if (state === 'on' && ctx && voice && !faded) voice.plip(i, ctx.currentTime + 0.005, vol) },
+    hush(hidden) {
+      if (!ctx || state !== 'on') return
+      if (hidden) void ctx.suspend().catch(() => { /* closing */ }); else void ctx.resume().catch(() => { /* closing */ })
+    },
     fade() { if (!faded) { faded = true; level(0, 0.5) } },
     close() {
       clearTimeout(timer)

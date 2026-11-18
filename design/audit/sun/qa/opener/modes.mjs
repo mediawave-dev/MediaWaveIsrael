@@ -74,6 +74,36 @@ for (const [name, url] of [['?calm=1', '/?calm=1'], ['?reduce=1', '/?reduce=1'],
   const ok = await p.waitForSelector('.opener[data-go]', { timeout: 12000 }).then(() => true, () => false)
   say('font requests fail: the opener still plays', ok, await state(p)); await ctx.close()
 }
+{ // an error in the middle of the animation (a driver, a browser never run here): the cover must not stay
+  const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  await p.evaluateOnNewDocument(() => { const d = WebGLRenderingContext.prototype.drawArrays; let n = 0; WebGLRenderingContext.prototype.drawArrays = function (...x) { if (++n > 90) throw new Error('driver went away'); return d.apply(this, x) } })
+  await p.goto(base + '/?why=1', { waitUntil: 'domcontentloaded' })
+  await p.waitForFunction(() => !document.documentElement.classList.contains('mw-intro') && !document.querySelector('.opener'), { timeout: 15000 }).catch(() => {})
+  const st = await state(p)
+  say('an error mid-animation: the page is given at once', !st.intro && !st.cover && !st.opener, { why: await p.evaluate(() => (sessionStorage.getItem('mw-wave-why') || '').split(' | ')[0]) }); await ctx.close()
+}
+{ // a screen that ticks 30 times a second (an iPhone saving battery): it plays, the wave does not wait its limit, the sea keeps its resolution
+  const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  await p.evaluateOnNewDocument(() => { const raf = window.requestAnimationFrame.bind(window); window.requestAnimationFrame = (cb) => raf(() => raf(cb)) })
+  await p.goto(base + '/?why=1', { waitUntil: 'domcontentloaded' })
+  await p.waitForFunction(() => sessionStorage.getItem('mw-wave-why'), { timeout: 40000 }).catch(() => {})
+  const lines = await p.evaluate(() => (sessionStorage.getItem('mw-wave-why') || '').split(' | '))
+  const wave = Number((/first wave \+(\d+)/.exec(lines[1] || '') || [])[1]), up = Number((/sea up \+(\d+)/.exec(lines[1] || '') || [])[1]), res = Number((/resolution ([\d.]+)/.exec(lines[2] || '') || [])[1])
+  say('30 frames a second: plays, no long wait, full resolution', /played/.test(lines[0] || '') && wave - up < 1800 && res >= 1.5, { why: lines[0], waitMs: wave - up, resolution: res, frames: lines[3] }); await ctx.close()
+}
+{ // Tab means "on with the page"; "Skip" does not start the sound
+  const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 1280, height: 800 })
+  await p.goto(base + '/', { waitUntil: 'domcontentloaded' }); await p.waitForSelector('.opener.opener--ui', { timeout: 9000 }).catch(() => {}); await sleep(600)
+  const names = await p.evaluate(() => [...document.querySelectorAll('.opener__ui button')].map((b) => b.getAttribute('aria-label') + ' / ' + b.textContent.trim()))
+  await p.keyboard.press('Tab')
+  const open = await p.waitForFunction(() => !document.documentElement.classList.contains('mw-intro-cover'), { timeout: 3000 }).then(() => true, () => false)
+  say('Tab: the cover lifts', open, { names }); await ctx.close()
+  const ctx2 = await real.createBrowserContext(); const p2 = await ctx2.newPage(); await p2.setViewport({ width: 1280, height: 800 })
+  await p2.goto(base + '/', { waitUntil: 'domcontentloaded' }); await p2.waitForSelector('.opener.opener--ui', { timeout: 9000 }).catch(() => {}); await sleep(600)
+  await p2.click('.opener__skip'); await sleep(300)
+  const snd = await p2.evaluate(() => document.querySelector('.opener')?.dataset.sound)
+  say('Skip does not start the sound', snd === 'armed', { sound: snd, labelsHoldTheirWord: names.every((n) => n.split(' / ')[0].startsWith(n.split(' / ')[1])) }); await ctx2.close()
+}
 { // "Skip" sends the last wave
   const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 1280, height: 800 })
   await p.goto(base + '/', { waitUntil: 'domcontentloaded' }); await p.waitForSelector('.opener.opener--ui', { timeout: 9000 }).catch(() => {}); await sleep(900)

@@ -63,7 +63,7 @@ export function startOpener(): void {
   const root = document.createElement('div')
   root.className = 'opener'
   root.innerHTML = `<div class="opener__life" aria-hidden="true"></div><div class="opener__say" aria-hidden="true"></div><p class="opener__sr">${OPENER.hi} ${OPENER.say}</p>
-<div class="opener__ui"><button type="button" class="opener__sound" aria-label="${OPENER.soundAria}" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9.5v5h3.6L12 18V6L7.6 9.5H4z" fill="currentColor"/><path class="opener__on" d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path class="opener__no" d="M15.6 9.6l4.8 4.8m0-4.8l-4.8 4.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span lang="en" dir="ltr"></span></button><button type="button" class="opener__skip" aria-label="${OPENER.skipAria}"><span lang="en" dir="ltr">${OPENER.skip}</span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 6l-6 6 6 6m7-12l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`
+<div class="opener__ui"><button type="button" class="opener__sound" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9.5v5h3.6L12 18V6L7.6 9.5H4z" fill="currentColor"/><path class="opener__on" d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path class="opener__no" d="M15.6 9.6l4.8 4.8m0-4.8l-4.8 4.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span lang="en" dir="ltr"></span></button><button type="button" class="opener__skip" aria-label="${OPENER.skip} · ${OPENER.skipAria}"><span lang="en" dir="ltr">${OPENER.skip}</span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 6l-6 6 6 6m7-12l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`
   const cv = document.createElement('canvas')
   cv.className = 'opener__sea'
   cv.setAttribute('aria-hidden', 'true')
@@ -80,6 +80,8 @@ export function startOpener(): void {
     if (sea.cost()) root.dataset.audio = sea.cost()
     soundBtn.hidden = s === 'none'
     soundBtn.setAttribute('aria-pressed', s === 'on' ? 'true' : 'false')
+    // the accessible name holds the word on the button (a voice command says what it sees), then the Hebrew
+    window.setTimeout(() => soundBtn.setAttribute('aria-label', `${soundLabel.textContent} · ${OPENER.soundAria}`), 0)
     soundLabel.textContent = s === 'on' ? OPENER.sound[1] : s === 'off' ? OPENER.sound[2] : OPENER.sound[0][window.matchMedia('(hover: hover) and (pointer: fine)').matches ? 1 : 0]
   }
   const sea = makeSea(() => paintSound())
@@ -127,7 +129,7 @@ export function startOpener(): void {
     // The sea's context is never torn down while the page lives: destroying it (loseContext, or the canvas being
     // collected) is a frame of 100 to 280 ms on the GPU, and it would fall on the page the visitor has just been
     // given. The canvas shrinks to one pixel and stays in the window's keeping.
-    const rest2 = () => { root.remove(); w.__mwSea = cv }
+    const rest2 = () => { root.remove(); gl?.deleteTexture(tex); cv.width = cv.height = 1; w.__mwSea = cv }
     if (!fade) { rest2(); return }
     root.classList.add('opener--out')
     window.setTimeout(rest2, 650)
@@ -515,8 +517,9 @@ export function startOpener(): void {
   const onClick = (e: MouseEvent) => {
     const at = e.target as Element
     if (at.closest('.opener__sound')) { sea.toggle(); return }
-    sea.wake()
+    // "Skip" is the way out: it does not also start the sound (a sea already on is heard to its end)
     if (at.closest('.opener__skip')) { skip(); return }
+    sea.wake()
     if (!live || opened) return
     const xu = (e.clientX / W) * asp, lv = 1 - e.clientY / H
     ring(xu, lv)
@@ -524,7 +527,9 @@ export function startOpener(): void {
   }
   const onKey = (e: KeyboardEvent) => {
     const onButton = !!(e.target as Element | null)?.closest?.('button, a, input, select, textarea')
-    if (e.key === 'Escape' || ((e.key === 'Enter' || e.key === ' ') && !onButton)) { sea.wake(); skip() }
+    // Tab and the scrolling keys too: the page under the cover takes the focus and scrolls, and neither can be seen
+    const on = e.key === 'Tab' || e.key === 'PageDown' || e.key === 'PageUp' || e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'End' || e.key === 'Home'
+    if (e.key === 'Escape' || (on && !opened && !onButton) || ((e.key === 'Enter' || e.key === ' ') && !onButton)) skip()
   }
   const onWheel = (e: Event) => { if (!opened) { e.preventDefault(); skip() } }
   // a finger that travels means "scroll": on with the page. A tap that slips a little is still a tap.
@@ -546,8 +551,19 @@ export function startOpener(): void {
     if (lv < front(xu) - 0.01) ring(xu, lv)
   }
   root.addEventListener('pointermove', onPointer)
+  // a tab that is not looked at makes no sound (its frames stop by themselves; the audio would not)
+  const onVisible = () => sea.hush(document.hidden)
+  document.addEventListener('visibilitychange', onVisible)
+  cleanup.push(() => document.removeEventListener('visibilitychange', onVisible))
   let rz = 0
-  const onResize = () => { clearTimeout(rz); rz = window.setTimeout(() => { if (!ended && live) stage() }, 120) }
+  const onResize = () => {
+    clearTimeout(rz)
+    rz = window.setTimeout(() => {
+      if (ended || !live) return
+      // the level is taken up where the new stage puts it, so the turn of a phone is not heard and seen as a surge
+      try { stage(); L = levelAt(t) + 0.007 * Math.sin(clock * 1.9) + 0.004 * Math.sin(clock * 3.1 + 1) } catch (err) { why = `stopped on an error at a resize: ${String(err).slice(0, 200)}`; end(false) }
+    }, 120)
+  }
   window.addEventListener('resize', onResize)
   cleanup.push(() => {
     mo.disconnect(); clearTimeout(rz)
@@ -568,6 +584,15 @@ export function startOpener(): void {
   let odd = false
   let hz = 0
   const beats: number[] = []
+  /** A frame is on time if it took less than about one and a half of this screen's own ticks. The tick is read off
+      the fastest quarter of the frames so far: while a page boots many frames run long, but a quarter still come at
+      the screen's pace. A fixed 28 ms called every frame late on a phone that ticks 30 times a second (an iPhone
+      saving battery): the wave waited its full limit and the sea gave up resolution for nothing. */
+  const onTime = () => {
+    if (beats.length < 8) return 28
+    const fast = beats.slice().sort((x2, y2) => x2 - y2)[beats.length >> 2]
+    return Math.max(28, fast * 1.6 * (stride2 ? 2 : 1))
+  }
   let asks = 0
   let asked = false
   let pollAt = performance.now() + 300
@@ -583,11 +608,19 @@ export function startOpener(): void {
   const fontsDone = () => { fontsIn = true }
   try { Promise.all([document.fonts.load('700 40px "MW Head"', 'היי אנחנו'), document.fonts.load('700 40px "MW Head"', 'MediaWave')]).then(fontsDone, fontsDone) } catch { fontsIn = true }
   window.setTimeout(fontsDone, 1800)
+  // The cover must never stay. Whatever goes wrong in a frame (a driver, a browser this was never run on), the
+  // visitor gets the page; and so they do if half a minute has gone by, however it went (a tab left and come back to).
   const frame = (now: number) => {
+    try { tick(now) } catch (err) { why = `stopped on an error: ${String(err).slice(0, 200)}`; end(false) }
+  }
+  const net = window.setTimeout(() => { why = 'gave up: forty seconds had passed'; end(false) }, 40000)
+  cleanup.push(() => clearTimeout(net))
+  const tick = (now: number) => {
     if (ended) return
     raf = requestAnimationFrame(frame)
+    if (now - t0 > 30000) { why = 'gave up: thirty seconds had passed'; end(false); return }
     if (!live) {
-      if (now - t0 > 6000 || stopped()) { why = stopped() ? 'animations are off' : `gave up: the sea was not up after 6 s (fonts ${fontsIn ? 'in' : 'not in'}, shader ${linkedAt ? 'linked' : 'not linked'})`; end(false); return }
+      if (now - t0 > 4500 || stopped()) { why = stopped() ? 'animations are off' : `gave up: the sea was not up after 4.5 s (fonts ${fontsIn ? 'in' : 'not in'}, shader ${linkedAt ? 'linked' : 'not linked'})`; end(false); return }
       if (!asked) {
         if (now - t0 < 150) return
         asked = true
@@ -623,8 +656,8 @@ export function startOpener(): void {
     //      real network and the opener gave itself up: found on the preview). Then the wave waits for quiet: a wave
     //      that stutters is worse than a sea that laps a moment longer. Four seconds at most.
     if (!armed) {
-      quiet = real < 28 ? quiet + 1 : 0
-      const late = now - liveAt > 4000
+      quiet = real < onTime() ? quiet + 1 : 0
+      const late = now - liveAt > 3000
       const lowest = SCALES[SCALES.length - 1]
       // "too slow" is a GPU that could not hold thirty frames a second even at the lowest resolution
       const tooSlow = (ms: number) => ms * (lowest / scale) ** 2 > BUDGET * 2.4
@@ -637,6 +670,13 @@ export function startOpener(): void {
         else {
           // a GPU that cannot draw full water in time draws fewer pixels, never fewer frames
           if (cost > BUDGET) { const want = scale * Math.sqrt(BUDGET / cost); scale = SCALES.find((s2) => s2 < scale && s2 <= want) ?? lowest; stage() }
+          else {
+            // ... and one that has room to spare draws more: a phone starts at 1.5, and a strong one (Nati's read
+            // 4.6 ms) goes up to two canvas pixels per CSS pixel, where foam and threads are visibly finer
+            const top = Math.min(window.devicePixelRatio || 1, 2)
+            const finer = SCALES.find((s2) => s2 > scale && s2 <= top && cost * (s2 / scale) ** 2 <= BUDGET * 0.7)
+            if (finer) { scale = finer; stage() }
+          }
           freeTarget()
           probed = 2; quiet = 0
           // how fast does this screen tick? (the median of the frames so far; under 12.5 ms is 90 Hz or more)
@@ -649,7 +689,7 @@ export function startOpener(): void {
       armed = probed === 2 && (quiet >= 14 || late)
       if (armed) { root.dataset.go = '1'; goAt = now }
     }
-    else if (!held && !ended) { frames++; if (real > 25) lateFrames++; if (real > worstFrame) worstFrame = real }
+    else if (!held && !ended) { frames++; if (real > onTime()) lateFrames++; if (real > worstFrame) worstFrame = real }
     // the cover's painted sea (sun.css) has done its work once the real one has faded in over it
     if (!opened && now - liveAt > 600) root.classList.add('opener--sand')
     const dt = clamp(real / 1000, 0, 0.05)
@@ -665,7 +705,7 @@ export function startOpener(): void {
       if (counted === 36) {
         counted = -1
         const i = SCALES.indexOf(scale)
-        if (paces.sort((a2, b2) => a2 - b2)[15] > 26 && i >= 0 && i < SCALES.length - 1) { scale = SCALES[i + 1]; stage() }
+        if (paces.sort((a2, b2) => a2 - b2)[15] > onTime() && i >= 0 && i < SCALES.length - 1) { scale = SCALES[i + 1]; stage() }
       }
     }
   }

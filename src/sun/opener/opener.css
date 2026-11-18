@@ -16,8 +16,8 @@
 
 /* the two small controls, on the water, there from the first second: the sound (it waits for a touch, as every
    browser demands, and says so) and the way out. English micro-labels; each has a Hebrew name for a screen reader. */
-.opener__ui { position: absolute; inset-inline: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; gap: 10px; opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .35s ease, transform .5s var(--ease); }
-.opener--ui .opener__ui { opacity: 1; transform: none; pointer-events: auto; }
+.opener__ui { position: absolute; inset-inline: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(8px); pointer-events: none; transition: opacity .35s ease, transform .5s var(--ease), visibility 0s .35s; }
+.opener--ui .opener__ui { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition-delay: 0s; }
 .opener__ui button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 99px; background: rgba(8, 44, 42, .78); color: #fff; font-family: var(--display); font-size: .9375rem; line-height: 1; white-space: nowrap; transition: background-color .2s; }
 .opener__ui button[hidden] { display: none; }
 .opener__ui button:hover { background: rgba(8, 44, 42, .92); }
