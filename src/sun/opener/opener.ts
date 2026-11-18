@@ -574,12 +574,15 @@ export function startOpener(): void {
   let cost = 0
   const paces: number[] = []
   const t0 = performance.now()
-  const fonts = Promise.race([
-    Promise.all([document.fonts.load(font(40), 'היי אנחנו'), document.fonts.load(font(40), 'MediaWave')]),
-    new Promise((r) => setTimeout(r, 1800)),
-  ])
+  // The sentence's two faces (Hebrew, Latin), asked for by the heading family alone, and whatever the answer the sea
+  // goes on: loaded, failed, or 1.8 s gone. Asked with the whole fallback list, the request REJECTS on a phone
+  // (the fallback is local("Arial Bold"), which Android does not have), and a wait that only listened for success
+  // never ended: on Nati's phone the opener stood still for six seconds and gave way to the page (D297; it could not
+  // happen on Windows, where every check was run).
   let fontsIn = false
-  void fonts.then(() => { fontsIn = true })
+  const fontsDone = () => { fontsIn = true }
+  try { Promise.all([document.fonts.load('700 40px "MW Head"', 'היי אנחנו'), document.fonts.load('700 40px "MW Head"', 'MediaWave')]).then(fontsDone, fontsDone) } catch { fontsIn = true }
+  window.setTimeout(fontsDone, 1800)
   const frame = (now: number) => {
     if (ended) return
     raf = requestAnimationFrame(frame)

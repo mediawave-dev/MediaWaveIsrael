@@ -67,6 +67,13 @@ for (const [name, url] of [['?calm=1', '/?calm=1'], ['?reduce=1', '/?reduce=1'],
   await p.waitForFunction(() => !document.documentElement.classList.contains('mw-intro'), { timeout: 8000 }).catch(() => {})
   say('Escape: the page is uncovered within 1.3 s and the opener ends', open < 1300 && !(await state(p)).intro, { openMs: open, endMs: Date.now() - t0 }); await ctx.close()
 }
+{ // a browser whose font requests fail (Android has no Arial for the fallback face): the sea still comes up
+  const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true })
+  await p.evaluateOnNewDocument(() => { document.fonts.load = () => Promise.reject(new DOMException('A network error occurred.', 'NetworkError')) })
+  await p.goto(base + '/', { waitUntil: 'domcontentloaded' })
+  const ok = await p.waitForSelector('.opener[data-go]', { timeout: 12000 }).then(() => true, () => false)
+  say('font requests fail: the opener still plays', ok, await state(p)); await ctx.close()
+}
 { // "Skip" sends the last wave
   const ctx = await real.createBrowserContext(); const p = await ctx.newPage(); await p.setViewport({ width: 1280, height: 800 })
   await p.goto(base + '/', { waitUntil: 'domcontentloaded' }); await p.waitForSelector('.opener.opener--ui', { timeout: 9000 }).catch(() => {}); await sleep(900)
