@@ -1,7 +1,11 @@
 # HANDOFF: the statement site (look `sun`), state on 18.11.2026: D296 and D297 (the opener, its sound) live
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D297). The next decision number is **D298**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D298). The next decision number is **D299**.
+
+## Open right now (18.11): D298 is on both previews and NOT in production
+- "מה כלול במחיר?" on the home page said writing is paid for separately, against the steps on the same page (D254: it is inside a landing page's price). Fixed in `src/data/faqs.ts`; picture `design/audit/sun/opener/faq-included.png` (`design/audit/sun/qa/faq-shot.mjs`). Waiting for his yes to push `main`.
+- After the opener he asked for ideas and got ten (in the conversation of 18.11): 1 real client proof, 2 form mail and the numbers page (Cloudflare keys), 3 a lighter site on phones (pause the page's loops off screen, pin the LCP to the H1, a real iPhone check), 4 AI crawlers and robots, 5 one project told start to end, 6 this fix, 7 price and time beside each kind of site, 8 a landing page of our own for ads, 9 a small step ("send us your page, three notes in 24 hours"), 10 the accessibility statement and the share picture after the opener (the statement was NOT checked at the release). He picked 6 so far.
 
 ## Latest (18.11): D296 and D297, the opener "a wave of customers" with its sound, IN PRODUCTION
 - Live since 18.11.2026: main 8f151a3, bundle index-ee_iyK-8.js. Rollback: tag `prod-before-opener` (b59afc6), or the Cloudflare Pages dashboard. Both previews are on the same code.
