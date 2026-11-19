@@ -1,9 +1,15 @@
 # HANDOFF: the statement site (look `sun`), state on 18.11.2026: D296 and D297 (the opener, its sound) live
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D298). The next decision number is **D299**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D299). The next decision number is **D300**.
 
-## Open right now (18.11): D298 is on both previews and NOT in production
+## Open right now (19.11): D299 (five design upgrades) is on both previews and NOT in production
+- He asked for five design proposals after a web check, then "תממש הכל... ותעלה בסוף את העבודה לתצוגה מקדימה". All five are built (details in D299): the work band "דפים ואתרים שבנינו" (a fan of three phones, `Work` in `src/sun/Home.tsx`, `src/sun/Phone.tsx`), real recordings in the rings of "מה אתם צריכים?", one leading colour (`src/sun/walk.ts`: the contact circle and the closing bars take a tint of the logo disc's colour; the opener's marker is #12CCBC), a slim cookie note with two equal choices, and desk layouts from 1100 px (`src/sun/work.css`).
+- Waiting for him: his look at the preview on his phone and on a computer; the new copy in `WORK` (`src/sun/content.ts`); then his yes for production, which would also carry D298.
+- Not checked: a real iPhone; how the walking tint of the contact circle looks to him over a whole 28 s round.
+- Pictures of every changed part: `node design/audit/sun/qa/d299-shots.mjs [base] [phone|desk] [query]` (writes to `design/audit/sun/qa/out/d299/`).
+
+## 18.11: D298 is on both previews and NOT in production (it goes out with D299)
 - "מה כלול במחיר?" on the home page said writing is paid for separately, against the steps on the same page (D254: it is inside a landing page's price). Fixed in `src/data/faqs.ts`; picture `design/audit/sun/opener/faq-included.png` (`design/audit/sun/qa/faq-shot.mjs`). Waiting for his yes to push `main`.
 - After the opener he asked for ideas and got ten (in the conversation of 18.11): 1 real client proof, 2 form mail and the numbers page (Cloudflare keys), 3 a lighter site on phones (pause the page's loops off screen, pin the LCP to the H1, a real iPhone check), 4 AI crawlers and robots, 5 one project told start to end, 6 this fix, 7 price and time beside each kind of site, 8 a landing page of our own for ads, 9 a small step ("send us your page, three notes in 24 hours"), 10 the accessibility statement and the share picture after the opener (the statement was NOT checked at the release). He picked 6 so far.
 

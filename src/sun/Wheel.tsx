@@ -40,7 +40,7 @@ const ORDER: [string, string][] = [
     the recording keeps that colour at its top all the way through. Measured on every recording (the top row at 1, 5,
     9 and 13 s against the picture): these three keep it. Every other site scrolls to another colour (Machtesh to its
     dark header), so it runs on the whole screen, under the island, as an app does. */
-const STEADY_TOP = new Set(['switchon', 'mediawave-2026', 'maof'])
+export const STEADY_TOP = new Set(['switchon', 'mediawave-2026', 'maof'])
 
 function deck(): Card[] {
   const known = new Set(PROJECTS.map((p) => p.slug))
@@ -51,7 +51,7 @@ function deck(): Card[] {
 /** D259: every card is a real recording of its site (scripts/record-work.mjs): scrolled slowly with all its own motion.
     The first screen stays as the poster; the videos are attached only once the page has loaded and gone quiet. */
 const videoOf = (slug: string, crop: string) => `/work/${slug}-card-${crop}.mp4`
-function useVideosReady() {
+export function useVideosReady() {
   const [on, setOn] = useState(false)
   useEffect(() => {
     if ((window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__) return

@@ -120,13 +120,29 @@ export const ABOUT = {
 
 export const OFFER = {
   h2: 'מה |אתם צריכים?',
+  // D299: `shot` is the real recording in the kind's porthole, a site of that kind that we built (the kinds as
+  // src/data/services.ts files them). There is no programme site of ours yet, so that porthole shows none.
   kinds: [
-    { tone: 'sun', name: 'דף נחיתה', line: 'אתם משלמים על מודעות, ומי שלוחץ עליהן צריך מקום אחד להשאיר בו פרטים.' },
-    { tone: 'blue', name: 'אתר תדמית', line: 'לקוחות מחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שהם מרימים טלפון.' },
-    { tone: 'coral', name: 'אתר לתוכנית ליווי', line: 'אתם מוכרים קורס או ליווי, ורוב המתעניינים עוד מתלבטים.' },
+    { tone: 'sun', shot: 'hila', name: 'דף נחיתה', line: 'אתם משלמים על מודעות, ומי שלוחץ עליהן צריך מקום אחד להשאיר בו פרטים.' },
+    { tone: 'blue', shot: 'ben-david', name: 'אתר תדמית', line: 'לקוחות מחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שהם מרימים טלפון.' },
+    { tone: 'coral', shot: '', name: 'אתר לתוכנית ליווי', line: 'אתם מוכרים קורס או ליווי, ורוב המתעניינים עוד מתלבטים.' },
   ],
   // Nati's line (D254), said after the three situations it answers
   close: ['אתם יודעים מה אתם רוצים שיקרה.', 'אנחנו נעזור לזה לקרות.'],
+}
+
+/** D299: the work comes back in the middle of the page, large. Three of the sites the wheel carries, each said by its
+    kind and its trade, without a client's name and without a link (D240). The kinds are the ones services.ts files
+    them under; the jeep site has no filed kind and is called a site. [קופי: נתי] */
+export const WORK = {
+  h2: 'דפים ואתרים |שבנינו',
+  items: [
+    { slug: 'yael-levy', kind: 'אתר תדמית', line: 'לטיפול רגשי ואישי.' },
+    { slug: 'switchon', kind: 'דף נחיתה', line: 'להצבת מכונות אוטומטיות במקומות עבודה.' },
+    { slug: 'horizon', kind: 'אתר', line: "לטיולי ג'יפים באילת." },
+  ],
+  show: 'להציג את',
+  hint: ['Tap a phone', 'Click a phone'],
 }
 
 export const PROCESS = {

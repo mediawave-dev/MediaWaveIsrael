@@ -33,7 +33,9 @@ uniform vec3 uDrop[6];  // where a bubble touched down: x, y, when
 
 const vec3 INK = vec3(.075, .141, .122);
 const vec3 TEAL = vec3(.059, .518, .471);
-const vec3 SUN = vec3(1., .80, .20);
+// D299: the marker under the last word stands in the colour the logo's disc rests on while the opener plays
+// (#12CCBC, the walk's first stop), where it used to be a yellow of its own
+const vec3 SUN = vec3(.071, .80, .737);
 
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float noise(vec2 p){

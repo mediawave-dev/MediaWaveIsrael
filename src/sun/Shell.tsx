@@ -13,6 +13,7 @@ import { IconA11y, IconChevron, IconClose, IconInstagram, IconMail, IconPhone, I
 import { Buoy } from './Tide'
 import { Glyph, Go, MenuGlyph, Say, Stage } from './ButtonParts'
 import { cue } from './btn'
+import { CLEAR, WALK_MS, walkAt } from './walk'
 
 const PRERENDER = typeof window !== 'undefined' && !!(window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
@@ -229,20 +230,7 @@ const SWELL = 'M0 22C100 40 100 40 200 22S300 4 400 22S500 40 600 22S700 4 800 2
     disc's colours on the disc's own clock (D262, D268: 36 s a round, every walk started at the page's time zero).
     D290: the sea is the disc's water, its lower half (sun.css, mark-clear: the same stops in the same places), with
     the ink on it; the swell behind the wave is the same colour at half strength. D291: the pastel spectrum. */
-const WALK_MS = 28000
-// D293: the vivid walk, the same stops as mark-clear in sun.css (seven colours, four OKLCH stops each)
-const VIVID = ['#12CCBC', '#0CC9D1', '#03C6E6', '#0CC1FD', '#63B9FE', '#83B2FE', '#9BAAFE', '#B0A2FF', '#C896FF', '#E584FB', '#F87CE0', '#FE7FC0', '#FE85A4', '#FF8893', '#FF8A83', '#FE8D70', '#FE8F5B', '#FF933B', '#FF9D05', '#FBAF02', '#F1BC0C', '#D8BF05', '#BABF06', '#9CC409', '#78CA3E', '#46D065', '#0FD18B', '#06CEA7']
-const CLEAR: [number, string][] = [...VIVID.map((c, i) => [i / VIVID.length, c] as [number, string]), [1, VIVID[0]]]
-const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
-function walkAt(stops: [number, string][], k: number) {
-  let i = 0
-  while (i < stops.length - 2 && k > stops[i + 1][0]) i++
-  const [k0, c0] = stops[i]
-  const [k1, c1] = stops[i + 1]
-  const t = k1 > k0 ? (k - k0) / (k1 - k0) : 0
-  const a = rgb(c0), b = rgb(c1)
-  return `rgb(${a.map((v, j) => Math.round(v + (b[j] - v) * t)).join(' ')})`
-}
+// D299: the walk's stops and its clock live in walk.ts, which the contact circle reads too
 
 /** The footer's light motion. The swell drifts only while the footer is on screen (data-live, a CSS animation of a
     transform on its own box, the compositor's work); the wave follows the scroll a few pixels (--fx), read in the
@@ -329,8 +317,9 @@ function Floating() {
         <div className="consent" role="region" aria-label="עוגיות">
           <p>האתר משתמש בעוגיות לתפקוד ולמדידה. <a href="/privacy/">פרטים</a></p>
           <div>
-            <button type="button" className="btn btn--ink btn--small" onClick={() => choose('accepted')}>בסדר</button>
-            <button type="button" className="consent__no" onClick={() => choose('rejected')}>רק חיוניות</button>
+            {/* D299: two equal choices, the same capsule for both */}
+            <button type="button" className="consent__btn" onClick={() => choose('accepted')}>בסדר</button>
+            <button type="button" className="consent__btn" onClick={() => choose('rejected')}>רק חיוניות</button>
           </div>
         </div>
       )}

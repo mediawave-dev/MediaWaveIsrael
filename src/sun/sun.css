@@ -365,7 +365,7 @@ html.mw-intro :is(.buoy, .tide__run, .tide__water, .tide__deep, .mw-logo [data-p
    for fields, one white button. ---------- */
 /* D263: only the sides are cut (the screen's edge), never the top: the small circle stands whole above the big one */
 .contact { position: relative; overflow-x: clip; background: var(--paper); padding-block: 64px 56px; }
-.contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--sun); }
+.contact::before { content: ""; position: absolute; top: 6px; inset-inline-end: -90px; width: 300px; aspect-ratio: 1; border-radius: 50%; background: var(--tint2, var(--sun)); }
 /* a side service ends on its price band (D254): the circles start below the band's hanging wave, not under it */
 :is(.band--cream, .band--blue) + .contact { margin-block-start: var(--wave-h); }
 .contact__disc { --d: clamp(620px, 168vw, 760px); position: relative; width: var(--d); height: var(--d); margin-inline: calc(50% - var(--d) / 2); display: grid; place-items: center; border-radius: 50%; background: var(--sun); box-shadow: 0 34px 60px -34px rgba(23, 24, 28, .55); }
@@ -476,13 +476,27 @@ html.high-contrast .foot__legal { border-block-start-color: rgba(255, 255, 255, 
 html:not(.menu-open) .tab[data-on] .tab__wave path, html:not(.menu-open) .tab[data-on] > span { pointer-events: auto; }
 html.menu-open .tab { opacity: 0; pointer-events: none; }
 /* the note stands at the lower place and is lifted over the WhatsApp corner by a transform: moving it by `bottom` counted as layout shift while a phone scrolled */
-.consent { position: fixed; z-index: 69; inset-inline: 12px; bottom: calc(12px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); transform: translateY(-80px); max-width: 420px; display: grid; gap: 10px; padding: 14px 16px; background: #fff; border-radius: 20px; box-shadow: 0 0 0 2px var(--ink), 0 18px 36px -14px rgba(23, 24, 28, .5); font-size: .9375rem; line-height: 1.45; transition: transform .4s var(--ease); }
+/* D299 (Nati, 19.11.2026: "הודעת עוגיות קלה יותר"): one slim line. The words at the reading side, the two choices beside
+   them as two capsules of the same size, weight and outline (neither is the "right" one). No frame of ink, no glass:
+   a hairline and a soft shadow, so its first paint costs the GPU nothing (D297). On a narrow phone the choices drop
+   under the words. */
+.consent { position: fixed; z-index: 69; inset-inline: 10px; bottom: calc(10px + var(--browser-chrome-bottom) + env(safe-area-inset-bottom, 0px)); transform: translateY(-80px); max-width: 620px; margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 12px; padding: 8px 10px 8px 14px; background: #fff; border-radius: 18px; box-shadow: 0 0 0 1px rgba(19, 36, 31, .14), 0 14px 30px -16px rgba(19, 36, 31, .5); font-size: .8125rem; line-height: 1.4; color: var(--ink); text-align: start; transition: transform .4s var(--ease); }
 .consent:has(+ .tab:not([data-on])) { transform: none; }
+.consent p { flex: 1 1 148px; min-width: 0; margin: 0; text-wrap: pretty; }
 /* the link's target is 44 px; the negative margin keeps the line it stands in at its own height */
 .consent a { display: inline-block; padding: 12px 4px; margin: -12px -4px; color: var(--blue-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-.consent div { display: flex; align-items: center; gap: 14px; }
-.consent__no { min-height: 44px; padding-inline: 6px; font-weight: 600; }
-@media (hover: hover) { .consent__no:hover { text-decoration: underline; } }
+.consent div { flex: none; display: flex; align-items: center; gap: 6px; }
+.consent__btn { position: relative; min-height: 38px; padding-inline: 14px; border-radius: 99px; box-shadow: inset 0 0 0 1.5px var(--ink); background: #fff; color: var(--ink); font: 700 .875rem/1 var(--display); white-space: nowrap; transition: background-color .2s, color .2s; }
+/* the capsule is 38 px high and takes a tap over 44 */
+.consent__btn::after { content: ""; position: absolute; inset: -3px 0; }
+@media (hover: hover) { .consent__btn:hover { background: var(--ink); color: #fff; } }
+.consent__btn:active { background: var(--ink); color: #fff; }
+.consent__btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+@media (min-width: 900px) {
+  /* on a computer it is one row, as wide as its words, in the middle (over the WhatsApp capsule once that is up) */
+  .consent { inset-inline: 24px; padding: 8px 10px 8px 20px; font-size: .9375rem; width: fit-content; }
+  .consent p { flex: 0 1 auto; }
+}
 
 /* ---------- inner pages ---------- */
 .phero { background: var(--sun-sweep); padding-block: 12px 40px; }
@@ -599,7 +613,9 @@ html.high-contrast .btn--sun { border-color: #000; box-shadow: 0 0 0 2px #000; }
 
 /* ---------- the contact circle (D256): pastel yellow, an envelope, and one moment as it comes into view.
    Before the observer runs (no script, the prerender) everything stands in its final place. ---------- */
-.contact__disc { background: var(--pastel); }
+/* D299: one leading colour. The circle takes a pale tint of the colour the logo's disc shows at that moment (walk.ts
+   writes --tint and --tint2 on the section while it is on the screen); without it, the pastel it always had. */
+.contact__disc { background: var(--tint, var(--pastel)); }
 .env { display: block; justify-self: center; margin-block-end: 8px; overflow: visible; }
 .env path { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
 .env__body > path:first-child { fill: #FFF6D6; }

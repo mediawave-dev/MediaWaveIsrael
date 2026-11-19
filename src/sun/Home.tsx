@@ -1,5 +1,6 @@
-// sun · the home page (D237-D240). Six short stops and one action (WhatsApp):
-// the promise with the wheel of sites, nice to meet you, what we build, how it goes, four questions, the form.
+// sun · the home page (D237-D240). Short stops and one action (WhatsApp):
+// the promise with the wheel of sites, nice to meet you, what we build, three sites up close (D299), the thread, how it
+// goes, four questions, the closing statement, the form.
 // D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
 // the wheel; the work list, the page diagram and the price sheet left the page.
 import { useEffect, useRef, useState, type CSSProperties, type ChangeEvent, type FormEvent } from 'react'
@@ -10,16 +11,19 @@ import { isValidName, isValidPhone, validationErrors } from '../utils/validation
 import { track } from '../utils/analytics'
 import { MIN_FILL_MS, TRAP_FIELD, leadReady, sendLead } from '../utils/lead'
 import './lead.css'
-import Wheel from './Wheel'
+import Wheel, { useVideosReady } from './Wheel'
+import { Phone, usePlayInView } from './Phone'
+import { useWalkTint } from './walk'
 import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
-import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
+import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA, WORK } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue, keepFlowing } from './btn'
 import { back, seg, soft, useStage } from './stage'
 import { LogoMark } from '../components/ui/Logo'
 import './stage.css'
+import './work.css'
 
 const wa = (placement: string) => () => track('whatsapp_click', { placement })
 
@@ -75,6 +79,14 @@ function Hero() {
   )
 }
 
+/** The closing pair of a section: a light sentence, then the point, large. D299: the short bar over it takes a tint of
+    the colour the logo's disc shows at that moment (walk.ts), where it used to stand in a colour of its own. */
+function Close({ pair, className = '' }: { pair: string[]; className?: string }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  useWalkTint(ref)
+  return <p ref={ref} className={`about__close${className ? ` ${className}` : ''}`}><span>{pair[0]}</span> <b>{pair[1]}</b></p>
+}
+
 /** Nice to meet you: who we are, the problem we keep meeting, and what we do about it. */
 function About() {
   return (
@@ -82,31 +94,87 @@ function About() {
       <div className="wrap wrap--narrow">
         <H2 id="about-h">{ABOUT.h2}</H2>
         {ABOUT.lines.map((l) => <p key={l} className="about__line">{l}</p>)}
-        <p className="about__close"><span>{ABOUT.close[0]}</span> <b>{ABOUT.close[1]}</b></p>
+        <Close pair={ABOUT.close} />
         <Signature />
       </div>
     </section>
   )
 }
 
+/** D299 (Nati, 19.11.2026: "מסך חי קטן אמיתי במקום שלושת האייקונים"): each kind's ring is a porthole onto a site of
+    that kind that we built, its real recording running in it (the same recordings as the wheel's phones; they play only
+    while the ring is on the screen). The programme kind has no site of ours yet, so its porthole keeps the line drawing,
+    on ink: nothing is shown that was not built. */
 function Offer() {
+  const ref = useRef<HTMLElement>(null)
+  const videos = useVideosReady()
+  usePlayInView(ref, videos)
   return (
-    <section id="offer" className="band band--cream" aria-labelledby="offer-h">
+    <section id="offer" className="band band--cream" aria-labelledby="offer-h" ref={ref}>
       <Buoy at="top" to="offer" label="לחלק הבא, מה אתם צריכים" />
       <div className="wrap">
         <H2 id="offer-h">{OFFER.h2}</H2>
         <ul className="kinds">
           {OFFER.kinds.map((k) => (
             <li key={k.name} className="kind">
-              <span className="ring" aria-hidden="true">
-                <svg viewBox="0 0 48 48" width="56" height="56" focusable="false">{KIND_ICON[k.tone]}</svg>
-              </span>
+              {k.shot ? (
+                <span className="ring ring--shot" aria-hidden="true">
+                  <span className="ring__glass">
+                    {videos && <video src={`/work/${k.shot}-card-top.mp4`} muted loop playsInline preload="none" tabIndex={-1} disablePictureInPicture disableRemotePlayback />}
+                    <img src={`/work/${k.shot}-card-top.webp`} alt="" width={528} height={1056} loading="lazy" decoding="async" draggable={false} />
+                  </span>
+                </span>
+              ) : (
+                <span className="ring ring--ink" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" width="56" height="56" focusable="false">{KIND_ICON[k.tone]}</svg>
+                </span>
+              )}
               <h3 className="h3"><a className="kind__link" href={KIND_HREF[k.tone]} onClick={() => track('cta_click', { placement: `offer_${k.tone}` })}><span>{k.name}</span><IconChevrons /></a></h3>
               <p>{k.line}</p>
             </li>
           ))}
         </ul>
-        <p className="about__close offer__close"><span>{OFFER.close[0]}</span> <b>{OFFER.close[1]}</b></p>
+        <Close pair={OFFER.close} className="offer__close" />
+      </div>
+    </section>
+  )
+}
+
+/** D299 (Nati, 19.11.2026: "העבודות חוזרות באמצע הדף, בגדול"): three of the sites we built, as a fan of phones. The one
+    in front runs its recording; a tap on a phone at the side brings it to the front, and one line under the fan says
+    what the front one is (its kind and its trade, no client's name and no link, D240). The fan opens with the
+    visitor's scroll (useStage, D273): the front phone rises, the two behind it slide out to its sides. Without scripts,
+    with ?calm=1 and with "ללא אנימציות" the fan stands open, the first screens as stills. */
+function Work() {
+  const [front, setFront] = useState(1)
+  const [touch, setTouch] = useState<boolean | null>(null)
+  const videos = useVideosReady()
+  const ref = useStage<HTMLElement>((p, put) => {
+    put('--rise', back(seg(p, 0.04, 0.52), 0.06))
+    put('--fan', back(seg(p, 0.3, 0.86), 0.07))
+    put('--cap', soft(seg(p, 0.62, 1)))
+  }, { from: 0.94, span: 0.7 })
+  usePlayInView(ref, videos, '[data-pos="0"] video')
+  useEffect(() => { setTouch(matchMedia('(hover: none)').matches) }, [])
+  const n = WORK.items.length
+  const shown = WORK.items[front]
+  return (
+    <section id="work" className="work" aria-labelledby="work-h" ref={ref}>
+      <div className="wrap">
+        <H2 id="work-h">{WORK.h2}</H2>
+        <div className="work__fan">
+          {WORK.items.map((w, i) => {
+            const pos = (i - front + n) % n
+            return (
+              <button key={w.slug} type="button" className="work__seat" data-pos={pos} aria-current={pos === 0 ? 'true' : undefined}
+                aria-label={`${WORK.show} ${w.kind} ${w.line}`} onClick={() => { if (pos !== 0) { setFront(i); track('cta_click', { placement: 'work_fan', value: w.slug }) } }}>
+                <span className="work__in"><Phone slug={w.slug} play={videos} /></span>
+              </button>
+            )
+          })}
+        </div>
+        <p className="work__cap" aria-live="polite"><span key={shown.slug}><b>{shown.kind}</b> {shown.line}</span></p>
+        <p className="work__hint" aria-hidden="true">{touch === null ? null : WORK.hint[touch ? 0 : 1]}</p>
       </div>
     </section>
   )
@@ -173,7 +241,7 @@ function Faq() {
     mainEntity: FAQ.items.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })),
   }
   return (
-    <section id="faq" className="band" aria-labelledby="faq-h">
+    <section id="faq" className="band faqs" aria-labelledby="faq-h">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       <div className="wrap wrap--narrow">
         <H2 id="faq-h">{FAQ.h2}</H2>
@@ -605,6 +673,8 @@ function useContactMotion() {
 export function Contact({ h2 = CONTACT.h2, lede = CONTACT.lede, waHref = WA.hero, ask }: { h2?: string; lede?: string; waHref?: string; ask?: string }) {
   const tel = `tel:${SITE_CONTACT.phone.replace(/-/g, '')}`
   const motion = useContactMotion()
+  // D299: the circle and the small one behind it take a pale tint of the walk's colour (sun.css reads --tint, --tint2)
+  useWalkTint(motion, 0.66, 0.46)
   return (
     <>
     {/* a client's sentence stands right over the circle, on every page that ends with the form */}
@@ -642,7 +712,11 @@ export default function Home() {
       <VoiceAt place="hero" />
       <About />
       <Offer />
-      <Custom />
+      {/* D299: the work, then the thread about a site of your own; side by side on a computer (work.css) */}
+      <div className="duo">
+        <Work />
+        <Custom />
+      </div>
       <Process />
       <Faq />
       <Pitch />
