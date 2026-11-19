@@ -1,4 +1,4 @@
-// D299: the parts that changed, one picture each, on a phone and on a computer.
+// D299, D300: the parts that changed, one picture each, on a phone and on a computer.
 // node d299-shots.mjs [base] [only: phone|desk] [query]
 import fs from 'fs'
 import path from 'path'
@@ -14,7 +14,7 @@ const out = `${HERE}/out/d299`
 fs.mkdirSync(out, { recursive: true })
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 const MODES = { phone: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true }, desk: { width: 1440, height: 900, deviceScaleFactor: 1 } }
-const PARTS = [['about', '#about'], ['offer', '#offer'], ['work', '#work'], ['custom', '.custom'], ['faq', '#faq'], ['pitch', '.pitch'], ['contact', '#contact']]
+const PARTS = [['about', '#about'], ['offer', '#offer'], ['custom', '.custom'], ['faq', '#faq'], ['pitch', '.pitch'], ['contact', '#contact']]
 const b = await puppeteer.launch({ headless: 'new', args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'] })
 for (const [mode, vp] of Object.entries(MODES)) {
   if (only && only !== mode) continue
@@ -45,16 +45,16 @@ for (const [mode, vp] of Object.entries(MODES)) {
     if (!ok) { console.log(mode, name, 'MISSING'); continue }
     await wait(1900)
     await p.screenshot({ path: `${out}/${mode}-${name}.jpg`, type: 'jpeg', quality: 88 })
-    if (name === 'work') {
-      // a tap on the phone at the side brings it to the front
-      const before = await p.evaluate(() => document.querySelector('.work__cap')?.textContent)
-      await p.evaluate(() => document.querySelector('.work__seat[data-pos="1"]')?.click())
-      await wait(1500)
-      await p.screenshot({ path: `${out}/${mode}-work-2.jpg`, type: 'jpeg', quality: 88 })
-      const st = await p.evaluate(() => ({ cap: document.querySelector('.work__cap')?.textContent, playing: [...document.querySelectorAll('.work video')].map((v) => `${v.closest('[data-pos]').dataset.pos}:${v.paused ? 'paused' : 'plays'}`), rings: [...document.querySelectorAll('.ring__glass video')].map((v) => (v.paused ? 'paused' : 'plays')) }))
-      console.log(mode, 'work', JSON.stringify({ before, ...st }))
+    if (name === 'offer') {
+      const state = () => p.evaluate(() => [...document.querySelectorAll('.kind')].map((k) => { const v = k.querySelector('video'); return `${k.dataset.pos}:${v ? (v.paused ? 'paused' : 'plays') + (v.hasAttribute('data-on') ? '' : ' hidden') : 'no video'}` }).join(', '))
+      console.log(mode, 'examples', await state())
+      // on a phone a tap on the phone at the side brings it to the front
+      if (await p.evaluate(() => { const x = document.querySelector('.kind[data-pos="1"] button.kind__seat'); if (x) x.click(); return !!x })) {
+        await wait(1600)
+        await p.screenshot({ path: `${out}/${mode}-offer-2.jpg`, type: 'jpeg', quality: 88 })
+        console.log(mode, 'after a tap', await state())
+      }
     }
-    if (name === 'offer') console.log(mode, 'rings', await p.evaluate(() => [...document.querySelectorAll('.ring__glass video')].map((v) => (v.paused ? 'paused' : 'plays') + (v.hasAttribute('data-on') ? ' shown' : ' hidden')).join(', ')))
     if (name === 'contact') console.log(mode, 'tint', await p.evaluate(() => { const c = document.querySelector('#contact'); return [c.style.getPropertyValue('--tint'), c.style.getPropertyValue('--tint2'), getComputedStyle(c.querySelector('.contact__disc')).backgroundColor].join(' | ') }))
   }
   const wide = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth)

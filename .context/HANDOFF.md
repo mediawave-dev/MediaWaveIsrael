@@ -1,9 +1,15 @@
 # HANDOFF: the statement site (look `sun`), state on 18.11.2026: D296 and D297 (the opener, its sound) live
 
 Older handoffs, including the round-by-round notes D237 to D253, are in `.context/handoff-archive/HANDOFF-until-D253.md`.
-Every ruling is in `DECISIONS.rtl.md` (D237 to D299). The next decision number is **D300**.
+Every ruling is in `DECISIONS.rtl.md` (D237 to D300). The next decision number is **D301**.
 
-## Open right now (19.11): D299 (five design upgrades) is on both previews and NOT in production
+## Open right now (19.11, later): D300 (an example site per kind) is LOCAL ONLY, not on the previews
+- After seeing D299 on the preview he wrote: "במקום לחזור על עבודות, תבנה דוגמאות איכותיות עבור דף נחיתה, אתר תדמית ותוכנית ליווי. שייראה אמין". The work band and the client recordings in the rings are gone; "מה אתם צריכים?" now shows three example sites of fictional businesses, each in a phone under the word "דוגמה" (`Offer` in `src/sun/Home.tsx`, `src/sun/work.css`).
+- The examples: `design/examples/{kav,snunit,kvasim}/index.html` (standalone pages, code only, no photographs): a solar landing page, a carpentry workshop's image site, a sleep consultant's programme site. He rejected the first round (generic names, the same skeleton three times, a marker under a heading as on our own site) and then asked for another business instead of an architects' office: each example now has its own name placement, hero alignment and emphasis. Their pictures: `node design/examples/shot.mjs <name>`. Their recordings in `public/work/`: `node scripts/record-work.mjs kav snunit kvasim --url=kav:file:///<worktree>/design/examples/kav/index.html ...`, then the still is the recording's first frame (ffmpeg to webp, 528 wide).
+- Not pushed: his rule is that a new design goes to a preview only after he saw it and approved. The previews still carry D299 (commit 5994587).
+- Waiting for him: his look at the pictures; whether to add free licensed photographs to the examples (as in D271); then the preview, then production (D298, D299, D300 together).
+
+## 19.11: D299 (five design upgrades) is on both previews and NOT in production (its work band and rings were replaced by D300)
 - He asked for five design proposals after a web check, then "תממש הכל... ותעלה בסוף את העבודה לתצוגה מקדימה". All five are built (details in D299): the work band "דפים ואתרים שבנינו" (a fan of three phones, `Work` in `src/sun/Home.tsx`, `src/sun/Phone.tsx`), real recordings in the rings of "מה אתם צריכים?", one leading colour (`src/sun/walk.ts`: the contact circle and the closing bars take a tint of the logo disc's colour; the opener's marker is #12CCBC), a slim cookie note with two equal choices, and desk layouts from 1100 px (`src/sun/work.css`).
 - Waiting for him: his look at the preview on his phone and on a computer; the new copy in `WORK` (`src/sun/content.ts`); then his yes for production, which would also carry D298.
 - Not checked: a real iPhone; how the walking tint of the contact circle looks to him over a whole 28 s round.

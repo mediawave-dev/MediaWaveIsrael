@@ -1,6 +1,6 @@
 // sun · the home page (D237-D240). Short stops and one action (WhatsApp):
-// the promise with the wheel of sites, nice to meet you, what we build, three sites up close (D299), the thread, how it
-// goes, four questions, the closing statement, the form.
+// the promise with the wheel of sites, nice to meet you, what we build (an example site for each kind, D300), the
+// thread, how it goes, four questions, the closing statement, the form.
 // D240 (Nati): fewer words and sections, no client names, no links to the sites. The sites are seen only on
 // the wheel; the work list, the page diagram and the price sheet left the page.
 import { useEffect, useRef, useState, type CSSProperties, type ChangeEvent, type FormEvent } from 'react'
@@ -16,7 +16,7 @@ import { Phone, usePlayInView } from './Phone'
 import { useWalkTint } from './walk'
 import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
-import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA, WORK } from './content'
+import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
 import { IconChevron, IconChevrons, IconInstagram, IconMail, IconPhone, IconWhatsApp } from './icons'
 import { Glyph, Go, Say, Stage } from './ButtonParts'
 import { cue, keepFlowing } from './btn'
@@ -33,14 +33,8 @@ export function H2({ id, children }: { id?: string; children: string }) {
   return <h2 id={id} className="h2">{lead}<b>{bold}</b></h2>
 }
 
-/** Line drawings for the three kinds of site: black outline, one yellow part (Libra's icon language). */
 /** Each kind's own page. The key is the kind's tone, which every version of the copy keeps. */
 const KIND_HREF: Record<string, string> = { sun: '/services/landing-pages/', blue: '/services/building-websites/', coral: '/services/program-sites/' }
-const KIND_ICON: Record<string, JSX.Element> = {
-  sun: (<><rect x="14" y="6" width="20" height="36" rx="3" /><path d="M19 13h10M19 18h7" /><rect className="fill" x="19" y="27" width="10" height="6" rx="3" /></>),
-  blue: (<><rect x="6" y="10" width="36" height="26" rx="3" /><path d="M6 17h36M18 42h12M24 36v6" /><rect className="fill" x="11" y="22" width="11" height="9" rx="1.5" /><path d="M27 23h10M27 28h7" /></>),
-  coral: (<><circle className="fill" cx="24" cy="15" r="6" /><path d="M11 40c1-8 6-12 13-12s12 4 13 12" /><path d="M33 9l2 2 4-5" /></>),
-}
 
 /** D275 (Nati: "קודם החיצים מתחילים באמצע וזזים שמאלה עד שנעלמים, ואז מופיע הכיתוב של ההודעה, ואז האייקון של וואטסאפ,
     ושוב החיצים וחוזר חלילה"): in its turn the label steps aside for the stage (btn.ts, relay). */
@@ -101,80 +95,57 @@ function About() {
   )
 }
 
-/** D299 (Nati, 19.11.2026: "מסך חי קטן אמיתי במקום שלושת האייקונים"): each kind's ring is a porthole onto a site of
-    that kind that we built, its real recording running in it (the same recordings as the wheel's phones; they play only
-    while the ring is on the screen). The programme kind has no site of ours yet, so its porthole keeps the line drawing,
-    on ink: nothing is shown that was not built. */
+/** D300 (Nati, 19.11.2026: "במקום לחזור על עבודות, תבנה דוגמאות איכותיות עבור דף נחיתה, אתר תדמית ותוכנית ליווי.
+    שייראה אמין"): each kind of site is shown by an example built for it, a whole small site of a fictional business,
+    running as a recording in a phone under the word "דוגמה" (design/examples/; the real work stays on the wheel).
+    On a phone the three stand as a fan over the three kinds: the front one plays, a tap brings another forward, and
+    the fan opens with the visitor's scroll (useStage, D273). On a computer each kind stands under its own phone and
+    all three play. Without scripts, with ?calm=1 and with "ללא אנימציות" everything stands open, as stills. */
 function Offer() {
-  const ref = useRef<HTMLElement>(null)
+  const [front, setFront] = useState(0)
+  const [wide, setWide] = useState(false)
   const videos = useVideosReady()
-  usePlayInView(ref, videos)
+  const ref = useStage<HTMLElement>((p, put) => {
+    put('--rise', back(seg(p, 0.04, 0.5), 0.06))
+    put('--fan', back(seg(p, 0.28, 0.82), 0.07))
+    put('--k1', back(seg(p, 0.02, 0.46), 0.06))
+    put('--k2', back(seg(p, 0.14, 0.58), 0.06))
+    put('--k3', back(seg(p, 0.26, 0.7), 0.06))
+  }, { from: 0.9, span: 0.62 })
+  usePlayInView(ref, videos, wide ? undefined : '[data-pos="0"] video')
+  useEffect(() => {
+    const mq = matchMedia('(min-width: 900px)')
+    const on = () => setWide(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  const n = OFFER.kinds.length
   return (
-    <section id="offer" className="band band--cream" aria-labelledby="offer-h" ref={ref}>
+    <section id="offer" className="band band--cream offer" aria-labelledby="offer-h" ref={ref}>
       <Buoy at="top" to="offer" label="לחלק הבא, מה אתם צריכים" />
       <div className="wrap">
         <H2 id="offer-h">{OFFER.h2}</H2>
         <ul className="kinds">
-          {OFFER.kinds.map((k) => (
-            <li key={k.name} className="kind">
-              {k.shot ? (
-                <span className="ring ring--shot" aria-hidden="true">
-                  <span className="ring__glass">
-                    {videos && <video src={`/work/${k.shot}-card-top.mp4`} muted loop playsInline preload="none" tabIndex={-1} disablePictureInPicture disableRemotePlayback />}
-                    <img src={`/work/${k.shot}-card-top.webp`} alt="" width={528} height={1056} loading="lazy" decoding="async" draggable={false} />
-                  </span>
-                </span>
-              ) : (
-                <span className="ring ring--ink" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" width="56" height="56" focusable="false">{KIND_ICON[k.tone]}</svg>
-                </span>
-              )}
-              <h3 className="h3"><a className="kind__link" href={KIND_HREF[k.tone]} onClick={() => track('cta_click', { placement: `offer_${k.tone}` })}><span>{k.name}</span><IconChevrons /></a></h3>
-              <p>{k.line}</p>
-            </li>
-          ))}
-        </ul>
-        <Close pair={OFFER.close} className="offer__close" />
-      </div>
-    </section>
-  )
-}
-
-/** D299 (Nati, 19.11.2026: "העבודות חוזרות באמצע הדף, בגדול"): three of the sites we built, as a fan of phones. The one
-    in front runs its recording; a tap on a phone at the side brings it to the front, and one line under the fan says
-    what the front one is (its kind and its trade, no client's name and no link, D240). The fan opens with the
-    visitor's scroll (useStage, D273): the front phone rises, the two behind it slide out to its sides. Without scripts,
-    with ?calm=1 and with "ללא אנימציות" the fan stands open, the first screens as stills. */
-function Work() {
-  const [front, setFront] = useState(1)
-  const [touch, setTouch] = useState<boolean | null>(null)
-  const videos = useVideosReady()
-  const ref = useStage<HTMLElement>((p, put) => {
-    put('--rise', back(seg(p, 0.04, 0.52), 0.06))
-    put('--fan', back(seg(p, 0.3, 0.86), 0.07))
-    put('--cap', soft(seg(p, 0.62, 1)))
-  }, { from: 0.94, span: 0.7 })
-  usePlayInView(ref, videos, '[data-pos="0"] video')
-  useEffect(() => { setTouch(matchMedia('(hover: none)').matches) }, [])
-  const n = WORK.items.length
-  const shown = WORK.items[front]
-  return (
-    <section id="work" className="work" aria-labelledby="work-h" ref={ref}>
-      <div className="wrap">
-        <H2 id="work-h">{WORK.h2}</H2>
-        <div className="work__fan">
-          {WORK.items.map((w, i) => {
+          {OFFER.kinds.map((k, i) => {
             const pos = (i - front + n) % n
+            const phone = (<><span className="kind__in"><Phone slug={k.shot} play={videos} /></span><span className="kind__eg">{OFFER.eg}</span></>)
             return (
-              <button key={w.slug} type="button" className="work__seat" data-pos={pos} aria-current={pos === 0 ? 'true' : undefined}
-                aria-label={`${WORK.show} ${w.kind} ${w.line}`} onClick={() => { if (pos !== 0) { setFront(i); track('cta_click', { placement: 'work_fan', value: w.slug }) } }}>
-                <span className="work__in"><Phone slug={w.slug} play={videos} /></span>
-              </button>
+              <li key={k.name} className="kind" data-pos={pos}>
+                {/* on a computer every phone is in view and nothing needs bringing forward: the seat is no button there */}
+                {wide ? <span className="kind__seat">{phone}</span> : (
+                  <button type="button" className="kind__seat" aria-label={`${OFFER.show} ${k.name}`} aria-pressed={pos === 0}
+                    onClick={() => { if (pos !== 0) { setFront(i); track('cta_click', { placement: 'offer_fan', value: k.shot }) } }}>{phone}</button>
+                )}
+                <div className="kind__text">
+                  <h3 className="h3"><a className="kind__link" href={KIND_HREF[k.tone]} onClick={() => track('cta_click', { placement: `offer_${k.tone}` })}><span>{k.name}</span><IconChevrons /></a></h3>
+                  <p>{k.line}</p>
+                </div>
+              </li>
             )
           })}
-        </div>
-        <p className="work__cap" aria-live="polite"><span key={shown.slug}><b>{shown.kind}</b> {shown.line}</span></p>
-        <p className="work__hint" aria-hidden="true">{touch === null ? null : WORK.hint[touch ? 0 : 1]}</p>
+        </ul>
+        <Close pair={OFFER.close} className="offer__close" />
       </div>
     </section>
   )
@@ -712,11 +683,7 @@ export default function Home() {
       <VoiceAt place="hero" />
       <About />
       <Offer />
-      {/* D299: the work, then the thread about a site of your own; side by side on a computer (work.css) */}
-      <div className="duo">
-        <Work />
-        <Custom />
-      </div>
+      <Custom />
       <Process />
       <Faq />
       <Pitch />

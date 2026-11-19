@@ -1,0 +1,204 @@
+<!doctype html>
+<!-- Example site for the "אתר לתוכנית ליווי" kind (D300). A fictional business: ספירת כבשים, ליווי שינה לתינוקות.
+     Shown on mediawave.co.il only as a recording inside a phone, marked "דוגמה". Everything is drawn in code. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ספירת כבשים · תוכנית ליווי לשינה של תינוקות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --night: #191838; --night-2: #2C2862; --cream: #FFF6EC; --peach: #FFC9A9; --peach-ink: #7A3A16; --lilac: #B9B4FF; --star: #FFE9A8; --ink: #23214A; --ink-2: #5C5A80; }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: var(--cream); }
+  body { font: 400 17px/1.6 "Assistant", Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  h1, h2, h3 { font-family: "Fredoka", "Assistant", Arial, sans-serif; font-weight: 600; }
+  .rise { opacity: var(--p, 1); transform: translateY(calc((1 - var(--p, 1)) * 24px)); }
+
+  /* the night: the menu at the reading side, the name with its sheep at the other; the words stand at the reading
+     side under a moon that leans in from the far corner */
+  .night { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--night) 0, var(--night-2) 70%, #3F3A84 100%); color: #fff; }
+  .sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sky .st { fill: var(--star); animation: twinkle 3.4s ease-in-out infinite; }
+  .sky .st:nth-child(3n) { animation-delay: -1.1s; } .sky .st:nth-child(3n+1) { animation-delay: -2.3s; }
+  @keyframes twinkle { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+  header { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 0; }
+  .burger { display: grid; gap: 5px; width: 44px; height: 44px; place-content: center; border-radius: 14px; background: rgba(255, 255, 255, .1); }
+  .burger i { display: block; width: 20px; height: 2.5px; border-radius: 2px; background: #fff; }
+  .logo { display: flex; align-items: center; gap: 8px; font: 600 1.0625rem/1.05 "Fredoka", sans-serif; text-align: start; }
+  .logo svg { width: 40px; height: 30px; }
+  .moon { position: absolute; top: 84px; inset-inline-end: -34px; width: 150px; height: 150px; filter: drop-shadow(0 0 30px rgba(255, 233, 168, .5)); transform: translateY(calc(var(--moonY, 0) * 1px)) rotate(calc(var(--moonR, 0) * 1deg)); }
+  .say { position: relative; padding: 118px 22px 0; }
+  .say small { display: inline-block; padding: 5px 12px; border-radius: 99px; background: rgba(185, 180, 255, .2); font-size: .8125rem; font-weight: 700; color: #DAD7FF; }
+  .say h1 { margin-block-start: 14px; font-size: 2.6rem; line-height: 1.08; }
+  .say h1 span { display: block; color: var(--star); }
+  .say p { margin-block-start: 14px; max-width: 17em; font-size: 1.125rem; font-weight: 600; color: #DAD7FF; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 58px; padding-inline: 28px; border-radius: 99px; background: var(--peach); color: var(--peach-ink); font: 600 1.1875rem/1 "Fredoka", sans-serif; }
+  .say .btn { margin-block-start: 22px; }
+  /* the field: sheep go over the fence one after the other, and the count goes up */
+  .field { position: relative; height: 150px; margin-block-start: 6px; }
+  .field::after { content: ""; position: absolute; inset-inline: -4%; bottom: -1px; height: 46px; background: var(--cream); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+  .fence { position: absolute; bottom: 30px; left: 50%; width: 92px; height: 52px; margin-left: -46px; z-index: 1; }
+  .sheep { position: absolute; z-index: 2; bottom: 34px; left: 0; width: 62px; height: 46px; transform: translate(calc(var(--x, 280) * 1px), calc(var(--y, 0) * 1px)) rotate(calc(var(--r, 0) * 1deg)); }
+  .sheep--wait { --x: 322; --y: 0; --r: 0; opacity: .55; z-index: 1; }
+  .count { position: absolute; z-index: 1; bottom: 96px; left: 50%; width: 46px; height: 46px; margin-left: -23px; display: grid; place-items: center; border-radius: 50%; background: var(--star); color: var(--ink); font: 600 1.25rem/1 "Fredoka", sans-serif; transform: scale(var(--pop, 1)); }
+
+  .hi { display: grid; grid-template-columns: 5px 1fr; gap: 16px; padding: 18px 22px 0; }
+  .hi::before { content: ""; border-radius: 3px; background: var(--peach); }
+  .hi p { font-size: 1.125rem; font-weight: 600; }
+  .hi b { font-family: "Fredoka", sans-serif; font-weight: 600; }
+
+  /* three weeks: the moon fills as the weeks pass */
+  .weeks { padding: 40px 22px 0; }
+  .weeks h2, .get h2, .faq h2 { font-size: 1.75rem; line-height: 1.2; }
+  .week { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; margin-block-start: 16px; padding: 18px 16px; border-radius: 24px; background: #fff; box-shadow: 0 16px 30px -24px rgba(35, 33, 74, .5); }
+  .weeks h2 + .week { margin-block-start: 22px; }
+  .phase { width: 64px; height: 64px; border-radius: 50%; background: var(--night); position: relative; overflow: hidden; box-shadow: 0 0 0 4px #EDEBFF; }
+  .phase i { position: absolute; inset: 0; border-radius: 50%; background: var(--star); clip-path: inset(0 0 0 calc((1 - var(--full) * var(--p, 1)) * 100%)); }
+  .week small { display: block; font-size: .8125rem; font-weight: 700; color: #8C6BD9; }
+  .week h3 { font-size: 1.3125rem; line-height: 1.2; }
+  .week p { margin-block-start: 2px; font-size: 1rem; line-height: 1.45; color: var(--ink-2); font-weight: 600; }
+
+  /* the sleep diary: the nights' wakings go down */
+  .diary { margin: 30px 18px 0; padding: 22px 20px 18px; border-radius: 26px; background: var(--night); color: #fff; }
+  .diary h3 { font-size: 1.3125rem; }
+  .diary p { font-size: .9375rem; color: #BDB9F2; font-weight: 600; }
+  .bars { display: grid; grid-template-columns: repeat(7, 1fr); align-items: end; gap: 9px; height: 132px; margin-block-start: 16px; padding-block-end: 2px; border-block-end: 1.5px solid rgba(255, 255, 255, .25); }
+  .bars i { display: block; height: calc(var(--h) * var(--p, 1) * 1%); border-radius: 9px 9px 2px 2px; background: linear-gradient(180deg, var(--lilac), #7E78E8); }
+  .bars i:nth-last-child(-n+2) { background: linear-gradient(180deg, var(--star), #F4C96B); }
+  .axis { display: grid; grid-template-columns: repeat(7, 1fr); gap: 9px; margin-block-start: 8px; font: 600 .8125rem/1 "Fredoka", sans-serif; text-align: center; color: #BDB9F2; }
+
+  .get { padding: 40px 22px 0; }
+  .get ul { list-style: none; padding: 0; margin-block-start: 18px; display: grid; gap: 12px; }
+  .get li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; font-size: 1.0625rem; font-weight: 600; }
+  .get li::before { content: ""; width: 30px; height: 30px; border-radius: 50%; background: var(--peach) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A3A16' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 16px no-repeat; }
+  .price { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; margin-block-start: 26px; padding: 20px; border-radius: 26px; background: #fff; box-shadow: 0 0 0 2px var(--ink); }
+  .price span { font-weight: 700; color: var(--ink-2); line-height: 1.35; }
+  .price b { grid-row: span 2; font: 600 2.5rem/1 "Fredoka", sans-serif; }
+  .price .btn { grid-column: 1 / -1; margin-block-start: 12px; background: var(--ink); color: #fff; }
+
+  .faq { padding: 40px 22px 0; }
+  .q { margin-block-start: 14px; padding: 16px 18px; border-radius: 20px; background: #F1EEFF; }
+  .faq h2 + .q { margin-block-start: 18px; }
+  .q h3 { font-size: 1.125rem; line-height: 1.3; }
+  .q p { margin-block-start: 4px; color: var(--ink-2); font-weight: 600; line-height: 1.5; }
+  footer { margin-block-start: 40px; padding: 30px 22px 38px; background: var(--night); color: #BDB9F2; font-size: .875rem; font-weight: 600; }
+  footer b { display: block; font: 600 2.25rem/1.05 "Fredoka", sans-serif; color: var(--star); margin-block-end: 10px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="sheep" viewBox="0 0 62 46">
+    <path d="M22 34v9M30 35v8M38 35v8M45 33v10" stroke="#F3D9C6" stroke-width="3.5" stroke-linecap="round"/>
+    <g fill="#fff"><circle cx="24" cy="24" r="11"/><circle cx="34" cy="18" r="11"/><circle cx="44" cy="24" r="11"/><circle cx="29" cy="30" r="9"/><circle cx="40" cy="30" r="9"/></g>
+    <ellipse cx="13" cy="20" rx="7.500" ry="8.500" fill="#F3D9C6"/><ellipse cx="18.500" cy="13" rx="3" ry="5" transform="rotate(40 18.500 13)" fill="#F3D9C6"/>
+    <circle cx="10.500" cy="19" r="1.500" fill="#23214A"/>
+  </symbol>
+</svg>
+<div class="night">
+  <svg class="sky" viewBox="0 0 390 640" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <g>
+      <circle class="st" cx="204" cy="92" r="2.2"/><circle class="st" cx="150" cy="150" r="1.6"/><circle class="st" cx="262" cy="118" r="1.4"/>
+      <circle class="st" cx="352" cy="104" r="2"/><circle class="st" cx="318" cy="76" r="1.5"/><circle class="st" cx="182" cy="196" r="1.3"/>
+      <circle class="st" cx="48" cy="300" r="1.5"/><circle class="st" cx="24" cy="400" r="2.2"/><circle class="st" cx="366" cy="512" r="1.8"/>
+      <circle class="st" cx="72" cy="470" r="1.5"/><circle class="st" cx="230" cy="64" r="1.2"/><circle class="st" cx="120" cy="250" r="1.4"/>
+      <path class="st" d="M60 360l2.600 6.400 6.400 2.600-6.400 2.600-2.600 6.400-2.600-6.400-6.400-2.600 6.400-2.600Z"/>
+      <path class="st" d="M300 520l2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/>
+    </g>
+  </svg>
+  <svg class="moon" viewBox="0 0 120 120" aria-hidden="true">
+    <defs><mask id="cut"><rect width="120" height="120" fill="#fff"/><circle cx="38" cy="46" r="46" fill="#000"/></mask></defs>
+    <circle cx="60" cy="60" r="54" fill="#FFE9A8" mask="url(#cut)"/>
+    <circle cx="86" cy="74" r="5" fill="#F3D27F" mask="url(#cut)"/><circle cx="74" cy="96" r="3.500" fill="#F3D27F" mask="url(#cut)"/>
+  </svg>
+  <header>
+    <span class="burger"><i></i><i></i><i></i></span>
+    <span class="logo"><span>ספירת<br>כבשים</span><svg viewBox="0 0 62 46"><use href="#sheep"/></svg></span>
+  </header>
+  <div class="say">
+    <small>ליווי שינה לתינוקות ולפעוטות</small>
+    <h1>לילה שלם של שינה.<span>גם לכם.</span></h1>
+    <p>תוכנית ליווי אישית של שלושה שבועות, מגיל 4 חודשים ועד שנתיים וחצי.</p>
+    <span class="btn">שיחת היכרות בלי עלות</span>
+  </div>
+  <div class="field" aria-hidden="true">
+    <span class="count" id="count">7</span>
+    <svg class="fence" viewBox="0 0 92 52"><path d="M8 52V8M46 52V4M84 52V8M2 20h88M2 38h88" fill="none" stroke="#C9C5F5" stroke-width="5" stroke-linecap="round"/></svg>
+    <svg class="sheep sheep--wait" viewBox="0 0 62 46"><use href="#sheep"/></svg>
+    <svg class="sheep" id="jumper" viewBox="0 0 62 46"><use href="#sheep"/></svg>
+  </div>
+</div>
+
+<section class="hi">
+  <p class="rise" data-s><b>היי, אני דנה.</b> יועצת שינה ואמא לשלושה. אני לא מביאה שיטה אחת לכולם. בונים יחד דרך שמתאימה לתינוק שלכם ולבית שלכם.</p>
+</section>
+
+<section class="weeks">
+  <h2 class="rise" data-s>מה קורה בשלושה שבועות</h2>
+  <div class="week rise" data-s><span class="phase" style="--full:.34"><i></i></span><div><small>שבוע 1</small><h3>מסדרים את היום</h3><p>שעות ערות, ארוחות ותנומות שמתאימות לגיל.</p></div></div>
+  <div class="week rise" data-s><span class="phase" style="--full:.62"><i></i></span><div><small>שבוע 2</small><h3>לומדים להירדם</h3><p>טקס שינה קצר, ודרך הרדמה שנוח לכם איתה.</p></div></div>
+  <div class="week rise" data-s><span class="phase" style="--full:1"><i></i></span><div><small>שבוע 3</small><h3>לילה רצוף</h3><p>פחות יקיצות, ותוכנית לימים של שיניים ומחלות.</p></div></div>
+</section>
+
+<section class="diary rise" data-s>
+  <h3>יומן השינה שממלאים יחד</h3>
+  <p>יקיצות בלילה, לאורך התוכנית</p>
+  <div class="bars" data-s><i style="--h:100"></i><i style="--h:86"></i><i style="--h:80"></i><i style="--h:58"></i><i style="--h:42"></i><i style="--h:22"></i><i style="--h:16"></i></div>
+  <div class="axis"><span>1</span><span>4</span><span>7</span><span>10</span><span>14</span><span>18</span><span>21</span></div>
+</section>
+
+<section class="get">
+  <h2 class="rise" data-s>מה מקבלים</h2>
+  <ul>
+    <li class="rise" data-s>פגישת בית של שעה וחצי, עם שני ההורים</li>
+    <li class="rise" data-s>תוכנית כתובה לפי הגיל והבית שלכם</li>
+    <li class="rise" data-s>ליווי יומי בוואטסאפ לאורך שלושה שבועות</li>
+    <li class="rise" data-s>שיחת סיכום, וכלים לימים שאחרי</li>
+  </ul>
+  <div class="price rise" data-s><span>ליווי מלא, שלושה שבועות</span><b>2,900 ₪</b><span>אפשר בשלושה תשלומים</span><span class="btn">לשיחת היכרות</span></div>
+</section>
+
+<section class="faq">
+  <h2 class="rise" data-s>שאלות ששואלים אותי</h2>
+  <div class="q rise" data-s><h3>זה אומר לתת לו לבכות?</h3><p>לא. בוחרים יחד דרך שאתם שלמים איתה, ואני איתכם בכל לילה.</p></div>
+  <div class="q rise" data-s><h3>ומה אם אני מניקה בלילה?</h3><p>ממשיכים להניק. מסדרים את ההנקות, לא מבטלים אותן.</p></div>
+</section>
+<footer><b>ספירת כבשים</b>ליווי שינה עם דנה · מודיעין והסביבה</footer>
+
+<script>
+  const parts = [...document.querySelectorAll('[data-s]')]
+  const moon = document.querySelector('.moon'), jumper = document.getElementById('jumper'), count = document.getElementById('count')
+  const JUMP = 2400
+  let seen = -1
+  function frame(t) {
+    const vh = innerHeight, doc = document.documentElement.scrollHeight
+    for (const el of parts) {
+      const r = el.getBoundingClientRect()
+      const left = doc - (scrollY + r.top)
+      const p = Math.min(1, Math.max(0, (vh * 0.96 - r.top) / Math.min(vh * 0.34, Math.max(60, left * 0.6))))
+      el.style.setProperty('--p', (p * p * (3 - 2 * p)).toFixed(3))
+    }
+    // the moon sinks a little and turns as the night scrolls away
+    const k = Math.min(scrollY, 420)
+    moon.style.setProperty('--moonY', (k * 0.16).toFixed(1))
+    moon.style.setProperty('--moonR', (k * 0.04).toFixed(2))
+    // a sheep comes in from the reading side, goes over the fence and leaves; the count goes up as it clears the top
+    const n = Math.floor(t / JUMP), u = (t % JUMP) / JUMP
+    const w = innerWidth
+    const run = Math.min(1, u / 0.86), e = run * run * (3 - 2 * run)
+    const x = w * 0.74 - e * (w * 0.74 + 70)
+    const mid = w / 2 - 31
+    const d = Math.max(0, 1 - Math.abs(x - mid) / 96)
+    jumper.style.setProperty('--x', x.toFixed(1))
+    jumper.style.setProperty('--y', (-58 * Math.sin(Math.PI * d / 2) * (d > 0 ? 1 : 0)).toFixed(1))
+    jumper.style.setProperty('--r', ((x - mid) / 96 * (d > 0 ? 14 : 0)).toFixed(1))
+    if (x < mid && seen !== n) { seen = n; count.textContent = String(7 + (n % 9)) }
+    count.style.setProperty('--pop', (1 + 0.22 * Math.max(0, 1 - Math.abs(x - (mid - 30)) / 40)).toFixed(3))
+    requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
+</script>
+</body>
+</html>

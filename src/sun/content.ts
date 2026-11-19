@@ -120,29 +120,18 @@ export const ABOUT = {
 
 export const OFFER = {
   h2: 'מה |אתם צריכים?',
-  // D299: `shot` is the real recording in the kind's porthole, a site of that kind that we built (the kinds as
-  // src/data/services.ts files them). There is no programme site of ours yet, so that porthole shows none.
+  // D300 (Nati, 19.11.2026: "במקום לחזור על עבודות, תבנה דוגמאות איכותיות עבור דף נחיתה, אתר תדמית ותוכנית ליווי"):
+  // `shot` is the kind's example site, built for this page (design/examples/<shot>/, a fictional business) and shown
+  // as a recording in a phone under the word "דוגמה". The real work stays on the wheel alone.
   kinds: [
-    { tone: 'sun', shot: 'hila', name: 'דף נחיתה', line: 'אתם משלמים על מודעות, ומי שלוחץ עליהן צריך מקום אחד להשאיר בו פרטים.' },
-    { tone: 'blue', shot: 'ben-david', name: 'אתר תדמית', line: 'לקוחות מחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שהם מרימים טלפון.' },
-    { tone: 'coral', shot: '', name: 'אתר לתוכנית ליווי', line: 'אתם מוכרים קורס או ליווי, ורוב המתעניינים עוד מתלבטים.' },
+    { tone: 'sun', shot: 'kav', name: 'דף נחיתה', line: 'אתם משלמים על מודעות, ומי שלוחץ עליהן צריך מקום אחד להשאיר בו פרטים.' },
+    { tone: 'blue', shot: 'snunit', name: 'אתר תדמית', line: 'לקוחות מחפשים אתכם בגוגל, ורוצים לראות מי אתם לפני שהם מרימים טלפון.' },
+    { tone: 'coral', shot: 'kvasim', name: 'אתר לתוכנית ליווי', line: 'אתם מוכרים קורס או ליווי, ורוב המתעניינים עוד מתלבטים.' },
   ],
+  eg: 'דוגמה',
+  show: 'להביא קדימה את הדוגמה של',
   // Nati's line (D254), said after the three situations it answers
   close: ['אתם יודעים מה אתם רוצים שיקרה.', 'אנחנו נעזור לזה לקרות.'],
-}
-
-/** D299: the work comes back in the middle of the page, large. Three of the sites the wheel carries, each said by its
-    kind and its trade, without a client's name and without a link (D240). The kinds are the ones services.ts files
-    them under; the jeep site has no filed kind and is called a site. [קופי: נתי] */
-export const WORK = {
-  h2: 'דפים ואתרים |שבנינו',
-  items: [
-    { slug: 'yael-levy', kind: 'אתר תדמית', line: 'לטיפול רגשי ואישי.' },
-    { slug: 'switchon', kind: 'דף נחיתה', line: 'להצבת מכונות אוטומטיות במקומות עבודה.' },
-    { slug: 'horizon', kind: 'אתר', line: "לטיולי ג'יפים באילת." },
-  ],
-  show: 'להציג את',
-  hint: ['Tap a phone', 'Click a phone'],
 }
 
 export const PROCESS = {

@@ -1,0 +1,194 @@
+<!doctype html>
+<!-- Example site for the "דף נחיתה" kind (D300). A fictional business: קו המשווה, אנרגיה סולארית. Shown on
+     mediawave.co.il only as a recording inside a phone, marked "דוגמה". Everything is drawn in code: no photographs. -->
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>קו המשווה · בדיקת התאמה לגג</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+  :root { --navy: #14213D; --navy-2: #46506A; --sun: #FFB703; --fire: #F77F00; --sky: #FFF3D6; --panel: #1C3A66; }
+  * { box-sizing: border-box; margin: 0; }
+  html { background: #fff; }
+  body { font: 400 17px/1.55 "Assistant", Arial, sans-serif; color: var(--navy); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  h1, h2, h3, .num, .btn { font-family: "Secular One", "Assistant", Arial, sans-serif; font-weight: 400; }
+  .wrap { padding-inline: 22px; }
+  .rise { opacity: var(--p, 1); transform: translateY(calc((1 - var(--p, 1)) * 24px)); }
+
+  /* a strip of the office's hours over the page, then the name in the middle: a landing page has no menu */
+  .strip { display: flex; justify-content: space-between; align-items: center; height: 52px; padding-inline: 18px; background: var(--navy); color: #fff; font-size: .8125rem; font-weight: 700; }
+  .strip b { color: var(--sun); font-weight: 700; }
+  .logo { display: grid; justify-items: center; gap: 2px; padding-block-start: 22px; }
+  .logo svg { width: 46px; height: 34px; }
+  .logo b { font: 400 1.625rem/1.1 "Secular One", sans-serif; }
+  .logo small { font-size: .75rem; font-weight: 700; letter-spacing: .16em; color: var(--navy-2); }
+
+  .hero { background: linear-gradient(180deg, var(--sky) 0, #FFF9EA 58%, #fff 100%); padding-block-end: 8px; text-align: center; }
+  h1 { margin-block-start: 22px; font-size: 2.3rem; line-height: 1.2; letter-spacing: -.01em; }
+  /* the electricity bill is a slip of paper, a little askew */
+  h1 .bill { display: inline-block; margin-block-start: 6px; padding: 2px 14px 4px; background: #fff; border-radius: 4px; transform: rotate(-2.5deg); box-shadow: 0 0 0 2px var(--navy), 5px 6px 0 var(--sun); }
+  .lede { margin: 20px auto 0; max-width: 19em; font-size: 1.125rem; color: var(--navy-2); font-weight: 600; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 58px; padding-inline: 30px; border: 0; border-radius: 16px; background: var(--fire); color: #fff; font-size: 1.25rem; box-shadow: 0 6px 0 #C25F00, 0 18px 26px -12px rgba(247, 127, 0, .7); }
+  .btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .hero .btn { margin-block-start: 22px; }
+  .small { margin-block-start: 16px; font-size: .9375rem; font-weight: 600; color: var(--navy-2); }
+
+  /* the house: the sun turns, light runs over the panels, the current runs down to the meter */
+  .house { display: block; width: 100%; height: auto; margin-block-start: 6px; }
+  .rays { transform-origin: 306px 74px; animation: spin 36s linear infinite; }
+  .sun { transform: translateY(calc(var(--sunY, 0) * 1px)); }
+  .shine { animation: shine 4.2s ease-in-out infinite; }
+  .flow { stroke-dasharray: 2 9; animation: flow 1.1s linear infinite; }
+  .tick { transform-origin: 327px 236px; animation: spin 2.6s linear infinite reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shine { 0%, 12% { transform: translateX(-130px); } 70%, 100% { transform: translateX(330px); } }
+  @keyframes flow { to { stroke-dashoffset: -11; } }
+
+  /* the calculator */
+  .calc { margin: 6px 18px 0; padding: 22px 20px 20px; border-radius: 24px; background: var(--navy); color: #fff; box-shadow: 0 26px 40px -26px rgba(20, 33, 61, .8); }
+  .calc h2 { font-size: 1.375rem; line-height: 1.25; text-align: center; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; margin-block-start: 18px; font-weight: 600; color: #C9D2E6; }
+  .row b { font: 400 1.5rem/1 "Secular One", sans-serif; color: #fff; }
+  .track { position: relative; height: 12px; margin-block-start: 12px; border-radius: 99px; background: #2B3A5E; }
+  .fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: calc(var(--v, .5) * 100%); border-radius: 99px; background: linear-gradient(270deg, var(--sun), var(--fire)); }
+  .thumb { position: absolute; top: 50%; inset-inline-start: calc(var(--v, .5) * 100%); width: 30px; height: 30px; margin: -15px -15px 0; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px rgba(255, 183, 3, .55), 0 6px 12px rgba(0, 0, 0, .35); }
+  .save { margin-block-start: 22px; padding: 16px; border-radius: 18px; background: #fff; color: var(--navy); text-align: center; }
+  .save span { display: block; font-size: .9375rem; font-weight: 700; color: var(--navy-2); }
+  .save .num { display: block; margin-block-start: 2px; font-size: 2.75rem; line-height: 1.05; color: var(--fire); }
+  .calc small { display: block; margin-block-start: 12px; text-align: center; font-size: .8125rem; color: #AEB9D2; }
+
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 26px 18px 0; }
+  .fact { padding: 18px 12px; border-radius: 20px; background: var(--sky); text-align: center; }
+  .fact .num { display: block; font-size: 2.5rem; line-height: 1; }
+  .fact span { display: block; margin-block-start: 6px; font-size: .9375rem; font-weight: 700; line-height: 1.3; }
+
+  .steps { padding: 44px 22px 8px; }
+  .steps h2 { font-size: 1.75rem; line-height: 1.18; text-align: center; }
+  .steps ol { list-style: none; padding: 0; margin-block-start: 26px; display: grid; gap: 22px; position: relative; }
+  .steps ol::before { content: ""; position: absolute; top: 20px; bottom: 30px; inset-inline-start: 21px; border-inline-start: 2.5px dashed #F2C879; }
+  .steps li { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; }
+  .steps .n { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--sun); font: 400 1.25rem/1 "Secular One", sans-serif; box-shadow: 0 0 0 5px #fff; }
+  .steps h3 { font-size: 1.25rem; line-height: 1.2; }
+  .steps p { margin-block-start: 3px; color: var(--navy-2); font-weight: 600; }
+
+  .form { margin: 40px 18px 0; padding: 26px 20px 24px; border-radius: 26px; background: var(--sky); box-shadow: 0 0 0 2px var(--navy); }
+  .form h2 { font-size: 1.625rem; line-height: 1.2; text-align: center; }
+  .field { display: block; margin-block-start: 14px; }
+  .field span { display: block; font-size: .9375rem; font-weight: 700; margin-block-end: 5px; }
+  .field i { display: block; height: 54px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1.5px rgba(20, 33, 61, .3); }
+  .form .btn { width: 100%; margin-block-start: 20px; }
+  .form .small { text-align: center; }
+  footer { margin-block-start: 34px; padding: 22px 22px 34px; background: var(--navy); color: #C9D2E6; text-align: center; font-size: .8125rem; font-weight: 600; line-height: 1.7; }
+  footer b { display: block; font: 400 1.125rem/1.4 "Secular One", sans-serif; color: #fff; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="strip"><span>בדיקת גג <b>בחינם</b></span><span>8:00 עד 18:00</span></div>
+  <div class="logo">
+    <svg viewBox="0 0 46 34" aria-hidden="true"><circle cx="23" cy="9" r="6.500" fill="#FFB703"/><path d="M4 31l19-13 19 13" fill="none" stroke="#14213D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>קו המשווה</b><small>אנרגיה סולארית לבית</small>
+  </div>
+  <div class="wrap">
+    <h1>הגג שלכם יכול לשלם את <span class="bill">חשבון החשמל</span></h1>
+    <p class="lede">בודקים את הגג בחינם, ואומרים לכם ביושר אם זה משתלם לכם.</p>
+    <span class="btn">בדיקת התאמה לגג<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></span>
+    <p class="small">בלי התחייבות. תשובה תוך יום עסקים אחד.</p>
+  </div>
+  <svg class="house" viewBox="0 0 390 290" aria-hidden="true">
+    <defs>
+      <clipPath id="roof"><path d="M122 100h206l-58 72H64Z"/></clipPath>
+      <linearGradient id="glint" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    </defs>
+    <g class="sun">
+      <circle cx="306" cy="74" r="62" fill="#FFB703" opacity=".16"/>
+      <g class="rays" stroke="#FFB703" stroke-width="5" stroke-linecap="round">
+        <path d="M306 4v14M306 130v14M236 74h14M362 74h14M256.500 24.500l10 10M345.500 113.500l10 10M355.500 24.500l-10 10M266.500 113.500l-10 10"/>
+      </g>
+      <circle cx="306" cy="74" r="36" fill="#FFB703"/>
+    </g>
+    <path d="M0 268h390" stroke="#14213D" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="36" cy="246" r="24" fill="#8FC79A"/><circle cx="60" cy="254" r="16" fill="#6FB47C"/>
+    <path d="M36 268v-22" stroke="#14213D" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M78 170h210v98H78Z" fill="#FFFDF7" stroke="#14213D" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M112 268v-56a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v56" fill="#F77F00" stroke="#14213D" stroke-width="2.5"/>
+    <circle cx="140" cy="240" r="2.5" fill="#14213D"/>
+    <path d="M186 198h62v40h-62ZM217 198v40M186 218h62" fill="#CDE7F7" stroke="#14213D" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M122 100h206l-58 72H64Z" fill="#1C3A66" stroke="#14213D" stroke-width="2.5" stroke-linejoin="round"/>
+    <g clip-path="url(#roof)">
+      <g stroke="#8FB4E6" stroke-width="1.6" opacity=".9">
+        <path d="M102.670 124h206M83.330 148h206"/>
+        <path d="M163.200 100l-58 72M204.400 100l-58 72M245.600 100l-58 72M286.800 100l-58 72"/>
+      </g>
+      <path class="shine" d="M40 96h70l-62 80h-70Z" fill="url(#glint)"/>
+    </g>
+    <path class="flow" d="M288 172h22v40" fill="none" stroke="#F77F00" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="296" y="212" width="62" height="48" rx="8" fill="#fff" stroke="#14213D" stroke-width="2.5"/>
+    <circle cx="327" cy="236" r="13" fill="#FFF3D6" stroke="#14213D" stroke-width="2"/>
+    <path class="tick" d="M327 236v-9" stroke="#F77F00" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<section class="calc rise" data-s>
+  <h2>כמה אתם משלמים היום על חשמל?</h2>
+  <div class="row"><span>חשבון חודשי</span><b id="bill">₪ 800</b></div>
+  <div class="track"><span class="fill"></span><span class="thumb"></span></div>
+  <div class="save"><span>חיסכון משוער בשנה</span><b class="num" id="save">₪ 8,200</b></div>
+  <small>הערכה ראשונית. המספר המדויק יוצא מבדיקת הגג.</small>
+</section>
+
+<div class="facts">
+  <div class="fact rise" data-s><b class="num">25</b><span>שנות אחריות על הפאנלים</span></div>
+  <div class="fact rise" data-s><b class="num">1</b><span>יום עבודה להתקנה מלאה</span></div>
+</div>
+
+<section class="steps">
+  <h2 class="rise" data-s>מהטלפון הראשון ועד שהמונה מסתובב לאחור</h2>
+  <ol>
+    <li class="rise" data-s><span class="n">1</span><div><h3>בדיקת גג</h3><p>מגיעים, מודדים ומצלמים. חצי שעה אצלכם בבית.</p></div></li>
+    <li class="rise" data-s><span class="n">2</span><div><h3>הצעה ברורה</h3><p>כמה זה עולה, כמה זה מחזיר, ובתוך כמה זמן.</p></div></li>
+    <li class="rise" data-s><span class="n">3</span><div><h3>התקנה</h3><p>צוות שלנו, לא קבלני משנה. יום עבודה אחד.</p></div></li>
+    <li class="rise" data-s><span class="n">4</span><div><h3>חיבור לרשת</h3><p>את כל הניירת מול חברת החשמל אנחנו עושים.</p></div></li>
+  </ol>
+</section>
+
+<section class="form rise" data-s>
+  <h2>רוצים לדעת אם הגג שלכם מתאים?</h2>
+  <label class="field"><span>שם מלא</span><i></i></label>
+  <label class="field"><span>טלפון</span><i></i></label>
+  <label class="field"><span>יישוב</span><i></i></label>
+  <span class="btn">שלחו לי בדיקת התאמה</span>
+  <p class="small">חוזרים אליכם עד מחר בצהריים.</p>
+</section>
+<footer><b>קו המשווה</b>מערכות סולאריות לבתים פרטיים<br>השרון והשפלה</footer>
+
+<script>
+  // every part with data-s rises as it comes up the screen, with the scroll (back and forth)
+  const parts = [...document.querySelectorAll('[data-s]')]
+  const sun = document.querySelector('.sun')
+  const calc = document.querySelector('.calc'), bill = document.getElementById('bill'), save = document.getElementById('save')
+  const fmt = (n) => '₪ ' + n.toLocaleString('en-US')
+  function frame(t) {
+    const vh = innerHeight, doc = document.documentElement.scrollHeight
+    for (const el of parts) {
+      const r = el.getBoundingClientRect()
+      const left = doc - (scrollY + r.top)
+      const p = Math.min(1, Math.max(0, (vh * 0.96 - r.top) / Math.min(vh * 0.34, Math.max(60, left * 0.6))))
+      el.style.setProperty('--p', (p * p * (3 - 2 * p)).toFixed(3))
+    }
+    sun.style.setProperty('--sunY', (-Math.min(scrollY, 260) * 0.09).toFixed(1))
+    // the slider shows itself: the bill glides between 450 and 1,300 and the saving follows it
+    const v = 0.5 + 0.42 * Math.sin(t / 1500)
+    const b = Math.round((450 + v * 850) / 10) * 10
+    calc.style.setProperty('--v', v.toFixed(3))
+    bill.textContent = fmt(b)
+    save.textContent = fmt(Math.round(b * 12 * 0.86 / 100) * 100)
+    requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
+</script>
+</body>
+</html>
