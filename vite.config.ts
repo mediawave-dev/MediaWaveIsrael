@@ -36,6 +36,32 @@ function lookHtml(look: Look): Plugin {
   }
 }
 
+/** Dev only (D299): the dev server has no Pages Functions, so /api/reviews runs the function itself, with the key
+    from .dev.vars. One answer is kept for ten minutes, so a reload does not ask Google again. */
+function devReviews(): Plugin {
+  let kept: { at: number; status: number; body: string } | undefined
+  return {
+    name: 'mediawave-dev-reviews',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/api/reviews', async (_req, res) => {
+        let answer = kept && Date.now() - kept.at < 600_000 ? kept : undefined
+        if (!answer) {
+          const vars = existsSync('.dev.vars') ? readFileSync('.dev.vars', 'utf8') : ''
+          const key = /^GOOGLE_PLACES_KEY=(.+)$/m.exec(vars)?.[1].trim()
+          const fn = await server.ssrLoadModule('/functions/api/reviews.ts')
+          const out: Response = await fn.onRequestGet({ request: new Request('http://localhost/api/reviews'), env: { GOOGLE_PLACES_KEY: key }, waitUntil: () => {} })
+          answer = { at: Date.now(), status: out.status, body: await out.text() }
+          kept = out.ok ? answer : undefined
+        }
+        res.statusCode = answer.status
+        res.setHeader('content-type', 'application/json; charset=utf-8')
+        res.end(answer.body)
+      })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
@@ -47,7 +73,7 @@ export default defineConfig(({ command, mode }) => {
   const entry = fileURLToPath(new URL(look === 'sun' ? './src/sun/entry.tsx' : './src/entry.legacy.tsx', import.meta.url))
 
   return {
-    plugins: [react(), tailwindcss(), lookHtml(look)],
+    plugins: [react(), tailwindcss(), lookHtml(look), devReviews()],
     envPrefix: ['VITE_', 'SANITY_STUDIO_'],
     // dev: a worktree's node_modules may be a link to another checkout's; serve its real folder too, or the
     // @fontsource files under it answer 403 (D271, the studio's fonts on /concept)

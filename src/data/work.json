@@ -115,5 +115,32 @@
       ]
     },
     "concept": true
+  },
+  {
+    "slug": "alon",
+    "name": "אלון, שיפוצים ותכנון",
+    "url": "https://alon-shiputzim.netlify.app/",
+    "hide": "#nl-badge-frame, .float, .a11y-panel",
+    "rec": {
+      "top": [
+        0,
+        2150,
+        13
+      ]
+    }
+  },
+  {
+    "slug": "hava",
+    "name": "חוה ברהני",
+    "url": "https://hava-landing-page.pages.dev/",
+    "hide": "#stickyCta",
+    "veil": ".hero-cta",
+    "rec": {
+      "top": [
+        0,
+        2300,
+        13
+      ]
+    }
   }
 ]

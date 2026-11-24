@@ -240,8 +240,9 @@ html.menu-open .pin__blob { filter: none; }
 }
 
 /* the wheel: slots stand on a circle of radius --R around the ring's origin; the ring alone turns */
-/* D271: 20 slots at 18 degrees; every radius x1.25 keeps the gap between two phones what it was at 22.5 degrees */
-.wheel { --cw: 176px; --ch: 352px; --R: 710px; --step: 18deg; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+/* D271: 20 slots at 18 degrees; every radius x1.25 keeps the gap between two phones what it was at 22.5 degrees.
+   D298: 24 slots at 15 degrees (Wheel.tsx SLOTS); every radius x1.2 (18 / 15) keeps that gap again */
+.wheel { --cw: 176px; --ch: 352px; --R: 852px; --step: 15deg; position: relative; height: calc(var(--ch) + 60px); overflow: hidden; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
 .wheel:active { cursor: grabbing; }
 .wheel__ground { position: absolute; inset-inline: -3%; bottom: -1px; height: calc(var(--ch) * .46); background: var(--paper); border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
 .wheel__ring { position: absolute; left: 50%; top: calc(18px + var(--ch) / 2 + var(--R)); width: 0; height: 0; will-change: transform; }
@@ -261,10 +262,10 @@ html.menu-open .pin__blob { filter: none; }
 .wheel__card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; }
 .wheel__card--next { display: grid; place-content: center; justify-items: center; gap: 14px; text-align: center; background: var(--ink); color: #fff; font: 700 1.5rem/1.15 var(--display); }
 .wheel__card--next b { font-size: 2.25rem; color: var(--sun); }
-@media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 775px; } }
+@media (min-width: 600px) { .wheel { --cw: 190px; --ch: 380px; --R: 930px; } }
 @media (min-width: 900px) {
-  /* the radius that keeps a calm gap between two phones (D261; x1.25 for 18 degrees, D271) */
-  .wheel { --cw: 236px; --ch: 472px; --R: 975px; height: calc(var(--ch) + 150px); }
+  /* the radius that keeps a calm gap between two phones (D261; x1.25 for 18 degrees, D271; x1.2 for 15 degrees, D298) */
+  .wheel { --cw: 236px; --ch: 472px; --R: 1170px; height: calc(var(--ch) + 150px); }
   .wheel__ground { height: calc(var(--ch) * .62); }
 }
 

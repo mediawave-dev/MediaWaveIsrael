@@ -7,6 +7,8 @@
 // Writes public/work/<slug>-card-top.webp and -card-s1.webp, -card-s2.webp ...
 // "capture": false keeps a project's hand-made card (the old MediaWave site needs a GPU browser);
 // "captureUrl" shoots another address than the public one (an archived copy of a site whose domain lapsed).
+// "veil": selectors made transparent in place (D298): what the live page shows only in reduced motion, so the still
+// matches the recording's first frame (Hava's hero button, which her photo covers) without moving the layout.
 import puppeteer from 'puppeteer'
 import sharp from 'sharp'
 import { readFileSync, mkdirSync } from 'node:fs'
@@ -42,6 +44,7 @@ for (const p of list) {
   })
   await hideFloating()
   if (p.hide) await page.addStyleTag({ content: p.hide + " { display: none !important }" })
+  if (p.veil) await page.addStyleTag({ content: p.veil + " { opacity: 0 !important }" })
   // walk down to the last cut once, so lazy pictures and reveal-on-scroll blocks on the way are in
   for (let y = 0; y <= Math.max(...cuts.map((c) => c[1])) + 780; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(250) }
   // (D257-D258 made tall scrolling strips here; since D260 the cards are videos, scripts/record-work.mjs)

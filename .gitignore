@@ -68,3 +68,6 @@ design/audit/impeccable/*.json
 
 # the media round's candidate board and search cache (third-party previews, never published)
 design/media/
+
+# Cloudflare Pages Functions secrets for local dev (wrangler)
+.dev.vars
