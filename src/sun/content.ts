@@ -145,6 +145,17 @@ export const LAUNCH = {
   end: 'דף נחיתה רגיל באוויר עד',
 }
 
+/** D299 (Moria, 24.11.2026: "שיראו ממש שזה ביקורות מגוגל לא סתם לעצב ביקורות"): the Google reviews section
+    (Reviews.tsx). The reviews, the rating and the count come from Google (functions/api/reviews.ts); these are only
+    the section's own words, made together with Nati (Moria, 24.11). */
+export const REVIEWS = {
+  h2: 'מה כתבו עלינו |בגוגל',
+  all: 'לכל הביקורות בגוגל',
+  write: 'כתבו לנו ביקורת',
+  one: 'לביקורת בגוגל',
+  source: 'הביקורות מגיעות מ־Google Maps ומתעדכנות לבד.',
+}
+
 const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']
 export const FAQ = {
   h2: 'שאלות |שחוזרות',

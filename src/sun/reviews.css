@@ -1,0 +1,60 @@
+/* sun · the Google reviews (D299, Reviews.tsx). On the cream band, between the steps (mint) and the questions (paper).
+   Built from what is already there: the white frame and shadow the work wears (.wheel__card, .voice__shot), the
+   link onward (.more), the house type. Google's own marks say whose reviews these are: the four-colour G and the
+   yellow stars. Logical properties only; no motion but the links' contained hover. */
+
+/* the summary: G, the score, the stars over the count */
+.reviews__sum { display: flex; justify-content: center; align-items: center; gap: 14px; margin-block: -8px 32px; }
+.reviews__g { inline-size: 40px; block-size: 40px; flex: none; }
+.reviews__score { font: 700 clamp(2.75rem, 11vw, 3.75rem)/1 var(--display); }
+.reviews__of { display: grid; gap: 4px; justify-items: start; }
+.reviews__of a { font-weight: 700; color: var(--ink); text-underline-offset: 4px; min-block-size: 32px; display: inline-flex; align-items: center; }
+@media (hover: hover) { .reviews__of a:hover { text-decoration: underline; } }
+
+/* the stars: five grey, five yellow over them, cut to the rating */
+.stars { position: relative; display: inline-block; font-size: var(--s); line-height: 1; letter-spacing: 0; white-space: nowrap; direction: ltr; }
+.stars__off { color: #DADCE0; }
+.stars__on { position: absolute; inset-block-start: 0; left: 0; inline-size: var(--fill); overflow: hidden; color: #FBBC04; }
+
+/* the cards: a rail to swipe on a phone; from 760 px rows of equal cards (two, then three from 1000 px), each card
+   two tracks wide, so a short last row can stand in the middle */
+.reviews__list { display: grid; grid-auto-flow: column; grid-auto-columns: min(84%, 340px); gap: 16px; margin-inline: calc(var(--gutter) * -1); padding: 6px var(--gutter) 28px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+.reviews__list::-webkit-scrollbar { display: none; }
+@media (min-width: 760px) {
+  .reviews__list { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-inline: 0; padding: 6px 0 28px; overflow: visible; }
+  .reviews__list .rev { grid-column: span 2; }
+  .reviews__list .rev:nth-child(2n+1):last-child { grid-column: 2 / span 2; }
+}
+@media (min-width: 1000px) {
+  .reviews__list { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .reviews__list .rev:nth-child(2n+1):last-child { grid-column: span 2; }
+  .reviews__list .rev:nth-child(3n+1):last-child { grid-column: 3 / span 2; }
+  .reviews__list .rev:nth-child(3n+1):nth-last-child(2) { grid-column: 2 / span 2; }
+}
+
+/* centred like every text on the site (D282, center.css): the disc over the name, the stars, the words, the link;
+   Google's G in the card's corner */
+.rev { position: relative; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 24px 22px 14px; border-radius: 22px; background: var(--paper); box-shadow: 0 16px 34px -18px rgba(19, 36, 31, .45), 0 2px 6px -2px rgba(19, 36, 31, .12); }
+.rev__by { display: grid; justify-items: center; gap: 8px; }
+/* Google's default avatar: the author's initial on a disc */
+.rev__face { flex: none; display: grid; place-items: center; inline-size: 42px; block-size: 42px; border-radius: 50%; background: var(--sun); color: var(--ink); font: 700 1.125rem/1 var(--display); }
+.rev__who { display: grid; min-inline-size: 0; flex: 1; line-height: 1.35; }
+.rev__name { font-weight: 700; color: var(--ink); overflow-wrap: anywhere; text-underline-offset: 3px; }
+@media (hover: hover) { a.rev__name:hover { text-decoration: underline; } }
+.rev__when { font-size: .875rem; color: var(--ink-2); }
+.rev__g { position: absolute; inset-block-start: 18px; inset-inline-end: 18px; inline-size: 20px; block-size: 20px; }
+/* the review as its author wrote it, line breaks and all */
+.rev__text { flex: 1; white-space: pre-line; overflow-wrap: anywhere; color: var(--ink); line-height: 1.65; }
+.rev__more { font-size: .9375rem; }
+
+.reviews__go { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 28px; margin-block-start: 4px; }
+.reviews__src { margin-block-start: 8px; font-size: .875rem; color: var(--ink-2); text-align: center; }
+
+@media (min-width: 900px) {
+  .reviews__sum { margin-block: -16px 40px; }
+  .reviews__g { inline-size: 48px; block-size: 48px; }
+}
+
+/* high contrast (the accessibility panel): frames get a line, the disc goes white on black */
+html.high-contrast .rev { outline: 2px solid #000; outline-offset: -2px; box-shadow: none; }
+html.high-contrast .rev__face { background: #000; color: #fff; }

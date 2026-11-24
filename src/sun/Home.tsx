@@ -11,6 +11,7 @@ import { track } from '../utils/analytics'
 import { MIN_FILL_MS, TRAP_FIELD, leadReady, sendLead } from '../utils/lead'
 import './lead.css'
 import Wheel from './Wheel'
+import Reviews from './Reviews'
 import { Buoy, Tide, useRise } from './Tide'
 import { GoogleLine, Signature, SpeedCheck, VoiceAt } from './Proof'
 import { ABOUT, CHAT, CONTACT, CUSTOM, FAQ, HERO, LAUNCH, OFFER, PITCH, PROCESS, WA } from './content'
@@ -644,6 +645,7 @@ export default function Home() {
       <Offer />
       <Custom />
       <Process />
+      <Reviews />
       <Faq />
       <Pitch />
       <Contact />
