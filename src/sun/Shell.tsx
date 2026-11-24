@@ -230,8 +230,8 @@ const SWELL = 'M0 22C100 40 100 40 200 22S300 4 400 22S500 40 600 22S700 4 800 2
     D290: the sea is the disc's water, its lower half (sun.css, mark-clear: the same stops in the same places), with
     the ink on it; the swell behind the wave is the same colour at half strength. D291: the pastel spectrum. */
 const WALK_MS = 28000
-// D293: the vivid walk, the same stops as mark-clear in sun.css (seven colours, four OKLCH stops each)
-const VIVID = ['#12CCBC', '#0CC9D1', '#03C6E6', '#0CC1FD', '#63B9FE', '#83B2FE', '#9BAAFE', '#B0A2FF', '#C896FF', '#E584FB', '#F87CE0', '#FE7FC0', '#FE85A4', '#FF8893', '#FF8A83', '#FE8D70', '#FE8F5B', '#FF933B', '#FF9D05', '#FBAF02', '#F1BC0C', '#D8BF05', '#BABF06', '#9CC409', '#78CA3E', '#46D065', '#0FD18B', '#06CEA7']
+// D300: the calm walk around the turquoise, the same stops as mark-clear in sun.css (D293 had seven vivid colours)
+const VIVID = ['#17CCBB', '#0FCBC3', '#11CACB', '#0EC9D2', '#11C8D7', '#06C8DC', '#0DC7DE', '#10C7DF', '#0DC7DE', '#06C8DC', '#11C8D7', '#0EC9D2', '#11CACB', '#0FCBC3', '#17CCBB', '#2ACCB2', '#39CCA9', '#46CCA1', '#50CB9A', '#57CB95', '#5BCB92', '#5DCB91', '#5BCB92', '#57CB95', '#50CB9A', '#46CCA1', '#39CCA9', '#2ACCB2']
 const CLEAR: [number, string][] = [...VIVID.map((c, i) => [i / VIVID.length, c] as [number, string]), [1, VIVID[0]]]
 const rgb = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
 function walkAt(stops: [number, string][], k: number) {
