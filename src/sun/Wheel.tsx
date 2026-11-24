@@ -16,7 +16,8 @@ import { IconWhatsApp } from './icons'
 import { track } from '../utils/analytics'
 
 // D270/D271: 20 slots at 18 degrees (nine sites and the "next" card, each twice); the radius grew with them (sun.css)
-const SLOTS = 20
+// D298: 24 slots at 15 degrees (eleven sites and the "next" card, each twice); every radius x1.2 of D271's (sun.css)
+const SLOTS = 24
 const STEP = 360 / SLOTS
 /** The opening's numbers; sun.css holds the same starting pose (html.sun-open .wheel__ring). */
 const OPEN = { turn: 56, below: 0.86, seconds: 1.8, rise: 1.0 }
@@ -30,17 +31,21 @@ type Card = Shot | { kind: 'next' }
     turns, and the two sites with a woman's face in the hero (sisters' sites) stand four places apart (90 degrees),
     so they are never side by side. A card whose project is missing from work.json is skipped.
     D271: the two concept sites (maof, zimzum) go in without moving the rest, four places apart, and neither stands
-    beside the old MediaWave site (Nati: "תשלב אותם (לא אחד ליד השני)"). */
+    beside the old MediaWave site (Nati: "תשלב אותם (לא אחד ליד השני)").
+    D298 (Moria, 24.11.2026: "תוסיף גם את האתר https://alon-shiputzim.netlify.app/"): Alon is a light screen, so it stands
+    between the two dark ones that were side by side (the old MediaWave site and Horizon). Then "וגם זה
+    https://hava-landing-page.pages.dev/": Hava, light with a woman's face in the hero, comes after Horizon, four places
+    from Yael and three from Hila, so no two faces stand side by side. */
 const ORDER: [string, string][] = [
   ['switchon', 'top'], ['machtesh', 'top'], ['maof', 'top'], ['yael-levy', 'top'], ['mediawave-2026', 'top'],
-  ['horizon', 'top'], ['zimzum', 'top'], ['ben-david', 'top'], ['hila', 'top'],
+  ['alon', 'top'], ['horizon', 'top'], ['hava', 'top'], ['zimzum', 'top'], ['ben-david', 'top'], ['hila', 'top'],
 ]
 /** D279 (Nati, 15.11.2026, on the Machtesh phone: "תסדר שבאתר מכתש האתר יהיה על כל המסך. בחלק העליון זה לא טבעי"):
     the status strip behind the island (D276) is painted from the top of the still picture, so it is right only where
     the recording keeps that colour at its top all the way through. Measured on every recording (the top row at 1, 5,
     9 and 13 s against the picture): these three keep it. Every other site scrolls to another colour (Machtesh to its
-    dark header), so it runs on the whole screen, under the island, as an app does. */
-const STEADY_TOP = new Set(['switchon', 'mediawave-2026', 'maof'])
+    dark header), so it runs on the whole screen, under the island, as an app does. D298: Alon's fixed header keeps it too. */
+const STEADY_TOP = new Set(['switchon', 'mediawave-2026', 'maof', 'alon'])
 
 function deck(): Card[] {
   const known = new Set(PROJECTS.map((p) => p.slug))
