@@ -151,9 +151,7 @@ export const LAUNCH = {
 export const REVIEWS = {
   h2: 'מה כתבו עלינו |בגוגל',
   all: 'לכל הביקורות בגוגל',
-  write: 'כתבו לנו ביקורת',
   one: 'לביקורת בגוגל',
-  source: 'הביקורות מגיעות מ־Google Maps ומתעדכנות לבד.',
 }
 
 const FAQ_IDS = ['faq-price', 'faq-8', 'faq-own', 'faq-9']

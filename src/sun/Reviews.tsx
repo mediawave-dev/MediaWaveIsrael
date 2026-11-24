@@ -1,8 +1,9 @@
 // sun · the Google reviews (D299). What clients wrote on the studio's Google profile, read live from Google
-// (functions/api/reviews.ts, kept a day at the edge): the rating, how many reviews, and the reviews Google hands out
-// (five at most, in Google's order). A new review on Google reaches the page within a day, with no hand in between.
-// It reads as Google's: Google's mark, the stars, each author's name linking to their Google profile, the text as they
-// wrote it, and a link to every review on Google Maps (Google's terms ask for all of these).
+// (functions/api/reviews.ts, kept a day at the edge): the rating and the reviews Google hands out (five at most, in
+// Google's order). A new review on Google reaches the page within a day, with no hand in between.
+// It reads as Google's: Google's mark, the stars, "Google Maps", each author's name linking to their Google profile, the
+// text as they wrote it, and a link to every review on Google Maps (Google's terms ask for all of these).
+// No count of reviews and no "write us a review" (Moria, 24.11: a small number works against us).
 // No faces (docs/PROOF.rtl.md): the author's initial in a disc stands where Google shows a photo.
 // The prerendered page has no section; it loads when the visitor comes near it, and stays away if Google has nothing.
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
@@ -13,7 +14,7 @@ import './reviews.css'
 
 /** the answer of /api/reviews (functions/api/reviews.ts, ReviewsAnswer) */
 interface Review { author: string; authorUrl?: string; rating: number; when: string; time?: string; text: string; url?: string }
-interface Answer { rating: number; count: number; url: string; write?: string; reviews: Review[] }
+interface Answer { rating: number; count: number; url: string; reviews: Review[] }
 
 const PRERENDER = typeof window !== 'undefined' && (window as unknown as { __PRERENDER__?: boolean }).__PRERENDER__
 
@@ -38,8 +39,6 @@ function Stars({ rating, size = 18 }: { rating: number; size?: number }) {
     </span>
   )
 }
-
-const countLine = (n: number) => (n === 1 ? 'ביקורת אחת בגוגל' : `${n} ביקורות בגוגל`)
 
 /** The answer, once the visitor is within a screen or so of the section. Nothing in the prerender. */
 function useReviews() {
@@ -102,7 +101,8 @@ export default function Reviews() {
           <b className="reviews__score">{answer.rating.toFixed(1)}</b>
           <span className="reviews__of">
             <Stars rating={answer.rating} size={22} />
-            <a href={answer.url} {...out} onClick={() => track('cta_click', { placement: 'google_reviews_count' })}>{countLine(answer.count)}</a>
+            {/* Google's terms: Places data shown without a map carries "Google Maps", in English, unchanged and on one line */}
+            <a className="reviews__maps" href={answer.url} {...out} lang="en" dir="ltr" onClick={() => track('cta_click', { placement: 'google_reviews_maps' })}>Google Maps</a>
           </span>
         </div>
         <ul className="reviews__list">
@@ -112,13 +112,7 @@ export default function Reviews() {
           <a className="more" href={answer.url} {...out} onClick={() => track('cta_click', { placement: 'google_reviews_all' })}>
             <span>{REVIEWS.all}</span><IconChevrons />
           </a>
-          {answer.write && (
-            <a className="more" href={answer.write} {...out} onClick={() => track('cta_click', { placement: 'google_review_write' })}>
-              <span>{REVIEWS.write}</span><IconChevrons />
-            </a>
-          )}
         </div>
-        <p className="reviews__src">{REVIEWS.source}</p>
       </div>
     </section>
   )
