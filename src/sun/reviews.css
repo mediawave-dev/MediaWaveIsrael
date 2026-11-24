@@ -8,8 +8,9 @@
 .reviews__g { inline-size: 40px; block-size: 40px; flex: none; }
 .reviews__score { font: 700 clamp(2.75rem, 11vw, 3.75rem)/1 var(--display); }
 .reviews__of { display: grid; gap: 4px; justify-items: start; }
-.reviews__of a { font-weight: 700; color: var(--ink); text-underline-offset: 4px; min-block-size: 32px; display: inline-flex; align-items: center; }
-@media (hover: hover) { .reviews__of a:hover { text-decoration: underline; } }
+/* Google's attribution, as its terms ask: "Google Maps" in English, unchanged, on one line */
+.reviews__maps { display: inline-flex; align-items: center; min-block-size: 32px; font-size: .9375rem; font-weight: 600; color: var(--ink-2); white-space: nowrap; text-underline-offset: 4px; }
+@media (hover: hover) { .reviews__maps:hover { text-decoration: underline; } }
 
 /* the stars: five grey, five yellow over them, cut to the rating */
 .stars { position: relative; display: inline-block; font-size: var(--s); line-height: 1; letter-spacing: 0; white-space: nowrap; direction: ltr; }
@@ -48,7 +49,6 @@
 .rev__more { font-size: .9375rem; }
 
 .reviews__go { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 28px; margin-block-start: 4px; }
-.reviews__src { margin-block-start: 8px; font-size: .875rem; color: var(--ink-2); text-align: center; }
 
 @media (min-width: 900px) {
   .reviews__sum { margin-block: -16px 40px; }
